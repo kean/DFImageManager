@@ -91,7 +91,7 @@
       return nil;
    }
    if (!options) {
-      options = [self _requestOptionsForAsset:asset];
+      options = [_conf imageManager:self createRequestOptionsForAsset:asset];
    }
    NSString *operationID = [_conf imageManager:self createOperationIDForAsset:asset options:options];
    DFImageRequestID *requestID = [[DFImageRequestID alloc] initWithOperationID:operationID];
@@ -244,14 +244,6 @@
    }
 }
 
-- (DFImageRequestOptions *)_requestOptionsForAsset:(id)asset {
-   DFImageRequestOptions *options;
-   if ([_conf respondsToSelector:@selector(imageManager:createRequestOptionsForAsset:)]) {
-      options = [_conf imageManager:self createRequestOptionsForAsset:asset];
-   }
-   return options ?: [DFImageRequestOptions defaultOptions];
-}
-
 #pragma mark - Prefetching
 
 - (DFImageRequestID *)prefetchImageForAsset:(id)asset options:(DFImageRequestOptions *)options {
@@ -259,7 +251,7 @@
       return nil;
    }
    if (!options) {
-      options = [self _requestOptionsForAsset:asset];
+      options = [_conf imageManager:self createRequestOptionsForAsset:asset];
       options.priority = DFImageRequestPriorityLow;
    }
    options.prefetch = YES;

@@ -30,6 +30,8 @@
  */
 @protocol DFImageManagerConfiguration <NSObject>
 
+- (DFImageRequestOptions *)imageManager:(id<DFImageManager>)proivder createRequestOptionsForAsset:(id)asset;
+
 - (NSString *)imageManager:(id<DFImageManager>)manager createOperationIDForAsset:(id)asset options:(DFImageRequestOptions *)options;
 
 - (NSArray *)imageManager:(id<DFImageManager>)manager createOperationsForAsset:(id)asset options:(DFImageRequestOptions *)options;
@@ -39,8 +41,6 @@
 - (BOOL)imageManager:(id<DFImageManager>)manager shouldCancelOperations:(NSArray *)operations;
 
 @optional
-
-- (DFImageRequestOptions *)imageManager:(id<DFImageManager>)proivder createRequestOptionsForAsset:(id)asset;
 
 - (void)imageManager:(id<DFImageManager>)manager didEncounterError:(NSError *)error;
 
