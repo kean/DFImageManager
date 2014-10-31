@@ -26,9 +26,9 @@
 
 typedef void (^DFImageRequestCompletion)(UIImage *image, NSDictionary *info);
 
-extern const NSString *DFImageInfoSourceKey;
-extern const NSString *DFImageInfoErrorKey;
-extern const NSString *DFImageInfoDataKey;
+extern NSString *const DFImageInfoSourceKey;
+extern NSString *const DFImageInfoErrorKey;
+extern NSString *const DFImageInfoDataKey;
 
 
 typedef NS_ENUM(NSUInteger, DFImageCacheStoragePolicy) {
@@ -51,4 +51,4 @@ static const DFImageRequestPriority DFImageRequestPriorityNormal = NSOperationQu
 static const DFImageRequestPriority DFImageRequestPriorityHigh = NSOperationQueuePriorityHigh;
 static const DFImageRequestPriority DFImageRequestPriorityVeryHigh = NSOperationQueuePriorityVeryHigh;
 
-extern const NSString *DFImageErrorDomain;
+extern NSString *const DFImageErrorDomain;
