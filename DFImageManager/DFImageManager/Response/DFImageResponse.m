@@ -60,7 +60,7 @@
 }
 
 - (id)mutableCopyWithZone:(NSZone *)zone {
-   return [[DFMutableURLImageResponse alloc] initWithResponse:self];
+   return [[DFMutableImageResponse alloc] initWithResponse:self];
 }
 
 + (instancetype)emptyResponse {
@@ -70,6 +70,6 @@
 @end
 
 
-@implementation DFMutableURLImageResponse
+@implementation DFMutableImageResponse
 
 @end

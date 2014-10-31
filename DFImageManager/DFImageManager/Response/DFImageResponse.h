@@ -39,7 +39,7 @@
 @end
 
 
-@interface DFMutableURLImageResponse : DFImageResponse
+@interface DFMutableImageResponse : DFImageResponse
 
 @property (nonatomic) UIImage *image;
 @property (nonatomic) NSError *error;
