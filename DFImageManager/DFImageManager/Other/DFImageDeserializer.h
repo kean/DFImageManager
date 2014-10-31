@@ -20,15 +20,9 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import <Foundation/Foundation.h>
-#import "DFImageManagerConfigurationProtocol.h"
-#import "DFImageManagerProtocol.h"
+#import "DFURLResponseDeserializing.h"
 
 
-@interface DFImageManager : NSObject <DFImageManager>
-
-@property (nonatomic, readonly) id<DFImageManagerConfiguration> configuration;
-
-- (instancetype)initWithConfiguration:(id<DFImageManagerConfiguration>)configuration;
+@interface DFImageDeserializer : NSObject <DFURLResponseDeserializing>
 
 @end

@@ -20,15 +20,28 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import <Foundation/Foundation.h>
-#import "DFImageManagerConfigurationProtocol.h"
+#import "DFImageManagerOperationProtocol.h"
 #import "DFImageManagerProtocol.h"
 
+@class DFImageRequestOptions;
 
-@interface DFImageManager : NSObject <DFImageManager>
 
-@property (nonatomic, readonly) id<DFImageManagerConfiguration> configuration;
+/*! Factory for multiple image provider components.
+ */
+@protocol DFImageManagerConfiguration <NSObject>
 
-- (instancetype)initWithConfiguration:(id<DFImageManagerConfiguration>)configuration;
+- (NSString *)imageManager:(id<DFImageManager>)manager createOperationIDForAsset:(id)asset options:(DFImageRequestOptions *)options;
+
+- (NSArray *)imageManager:(id<DFImageManager>)manager createOperationsForAsset:(id)asset options:(DFImageRequestOptions *)options;
+
+- (BOOL)imageManager:(id<DFImageManager>)manager shouldOperationsFinishExecuting:(NSArray *)operations finishedOperation:(NSOperation<DFImageManagerOperation> *)operation;
+
+- (BOOL)imageManager:(id<DFImageManager>)manager shouldCancelOperations:(NSArray *)operations;
+
+@optional
+
+- (DFImageRequestOptions *)imageManager:(id<DFImageManager>)proivder createRequestOptionsForAsset:(id)asset;
+
+- (void)imageManager:(id<DFImageManager>)manager didEncounterError:(NSError *)error;
 
 @end

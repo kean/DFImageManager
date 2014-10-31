@@ -20,15 +20,56 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import <Foundation/Foundation.h>
-#import "DFImageManagerConfigurationProtocol.h"
-#import "DFImageManagerProtocol.h"
+#import "DFImageResponse.h"
 
 
-@interface DFImageManager : NSObject <DFImageManager>
+@interface DFImageResponse ()
 
-@property (nonatomic, readonly) id<DFImageManagerConfiguration> configuration;
+@property (nonatomic) UIImage *image;
+@property (nonatomic) NSError *error;
+@property (nonatomic) DFImageSource source;
+@property (nonatomic) NSData *data;
+@property (nonatomic) NSDictionary *userInfo;
 
-- (instancetype)initWithConfiguration:(id<DFImageManagerConfiguration>)configuration;
+@end
+
+@implementation DFImageResponse
+
+- (instancetype)initWithImage:(UIImage *)image error:(NSError *)error source:(DFImageSource)source {
+   if (self = [super init]) {
+      _image = image;
+      _error = error;
+      _source = source;
+   }
+   return self;
+}
+
+- (instancetype)initWithResponse:(DFImageResponse *)response {
+   if (self = [super init]) {
+      _image = response.image;
+      _error = response.error;
+      _source = response.source;
+      _data = response.data;
+      _userInfo = response.userInfo;
+   }
+   return response;
+}
+
+- (id)copyWithZone:(NSZone *)zone {
+   return [[DFImageResponse alloc] initWithResponse:self];
+}
+
+- (id)mutableCopyWithZone:(NSZone *)zone {
+   return [[DFMutableURLImageResponse alloc] initWithResponse:self];
+}
+
++ (instancetype)emptyResponse {
+   return [[DFImageResponse alloc] initWithImage:nil error:nil source:0];
+}
+
+@end
+
+
+@implementation DFMutableURLImageResponse
 
 @end

@@ -21,14 +21,34 @@
 // THE SOFTWARE.
 
 #import <Foundation/Foundation.h>
-#import "DFImageManagerConfigurationProtocol.h"
-#import "DFImageManagerProtocol.h"
+#import <UIKit/UIKit.h>
 
 
-@interface DFImageManager : NSObject <DFImageManager>
+typedef void (^DFImageRequestCompletion)(UIImage *image, NSDictionary *info);
 
-@property (nonatomic, readonly) id<DFImageManagerConfiguration> configuration;
+extern const NSString *DFImageInfoSourceKey;
+extern const NSString *DFImageInfoErrorKey;
+extern const NSString *DFImageInfoDataKey;
 
-- (instancetype)initWithConfiguration:(id<DFImageManagerConfiguration>)configuration;
 
-@end
+typedef NS_ENUM(NSUInteger, DFImageCacheStoragePolicy) {
+   DFImageCacheStorageAllowed,
+   DFImageCacheStorageAllowedInMemoryOnly,
+   DFImageCacheStorageNotAllowed
+};
+
+typedef NS_ENUM(NSUInteger, DFImageSource) {
+   DFImageSourceMemoryCache,
+   DFImageSourceDiskCache,
+   DFImageSourceExternal
+};
+
+
+typedef NSOperationQueuePriority DFImageRequestPriority;
+static const DFImageRequestPriority DFImageRequestPriorityVeryLow = NSOperationQueuePriorityVeryLow;
+static const DFImageRequestPriority DFImageRequestPriorityLow = NSOperationQueuePriorityLow;
+static const DFImageRequestPriority DFImageRequestPriorityNormal = NSOperationQueuePriorityNormal;
+static const DFImageRequestPriority DFImageRequestPriorityHigh = NSOperationQueuePriorityHigh;
+static const DFImageRequestPriority DFImageRequestPriorityVeryHigh = NSOperationQueuePriorityVeryHigh;
+
+extern const NSString *DFImageErrorDomain;

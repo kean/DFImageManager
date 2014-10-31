@@ -20,15 +20,26 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import <Foundation/Foundation.h>
-#import "DFImageManagerConfigurationProtocol.h"
-#import "DFImageManagerProtocol.h"
+#import "DFImageDecoder.h"
+#import "DFImageManagerDefines.h"
+#import "DFImageDeserializer.h"
 
 
-@interface DFImageManager : NSObject <DFImageManager>
+@implementation DFImageDeserializer
 
-@property (nonatomic, readonly) id<DFImageManagerConfiguration> configuration;
+- (BOOL)isValidResponse:(NSHTTPURLResponse *)response error:(NSError *__autoreleasing *)error {
+   if (response.statusCode != 200) {
+      if (error) {
+         *error = [NSError errorWithDomain:NSURLErrorDomain code:response.statusCode userInfo:nil];
+      }
+      return NO;
+   }
+   return YES;
+}
 
-- (instancetype)initWithConfiguration:(id<DFImageManagerConfiguration>)configuration;
+- (id)objectFromResponse:(NSURLResponse *)response data:(NSData *)data error:(NSError *__autoreleasing *)error {
+   UIImage *image = [[UIImage alloc] initWithData:data scale:[UIScreen mainScreen].scale];
+   return [DFImageDecoder decodedImage:image];
+}
 
 @end

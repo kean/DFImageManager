@@ -20,15 +20,34 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import <Foundation/Foundation.h>
-#import "DFImageManagerConfigurationProtocol.h"
-#import "DFImageManagerProtocol.h"
+#import "DFImageRequestID.h"
 
 
-@interface DFImageManager : NSObject <DFImageManager>
+@interface DFImageRequestID ()
 
-@property (nonatomic, readonly) id<DFImageManagerConfiguration> configuration;
+@property (nonatomic, readonly) NSString *operationID;
+@property (nonatomic, readonly) NSString *handlerID;
 
-- (instancetype)initWithConfiguration:(id<DFImageManagerConfiguration>)configuration;
+@end
+
+@implementation DFImageRequestID
+
+- (instancetype)initWithOperationID:(NSString *)operationID handlerID:(NSString *)handlerID {
+   if (self = [super init]) {
+      NSParameterAssert(operationID);
+      NSParameterAssert(handlerID);
+      _operationID = operationID;
+      _handlerID = handlerID;
+   }
+   return self;
+}
+
+- (instancetype)initWithOperationID:(NSString *)operationID {
+   return [self initWithOperationID:operationID ?: [[NSUUID UUID] UUIDString] handlerID:[[NSUUID UUID] UUIDString]];
+}
+
+- (NSString *)description {
+   return [NSString stringWithFormat:@"<%@ %p> { operationID = %@, handlerID = %@ }", [self class], self, self.operationID, self.handlerID];
+}
 
 @end

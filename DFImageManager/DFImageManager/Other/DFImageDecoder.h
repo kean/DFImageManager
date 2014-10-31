@@ -21,14 +21,11 @@
 // THE SOFTWARE.
 
 #import <Foundation/Foundation.h>
-#import "DFImageManagerConfigurationProtocol.h"
-#import "DFImageManagerProtocol.h"
+#import <UIKit/UIKit.h>
 
 
-@interface DFImageManager : NSObject <DFImageManager>
+@interface DFImageDecoder : NSObject
 
-@property (nonatomic, readonly) id<DFImageManagerConfiguration> configuration;
-
-- (instancetype)initWithConfiguration:(id<DFImageManagerConfiguration>)configuration;
++ (UIImage *)decodedImage:(UIImage *)image;
 
 @end

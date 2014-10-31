@@ -21,14 +21,14 @@
 // THE SOFTWARE.
 
 #import <Foundation/Foundation.h>
-#import "DFImageManagerConfigurationProtocol.h"
-#import "DFImageManagerProtocol.h"
+
+@class DFImageResponse;
 
 
-@interface DFImageManager : NSObject <DFImageManager>
+@protocol DFImageManagerOperation <NSObject>
 
-@property (nonatomic, readonly) id<DFImageManagerConfiguration> configuration;
-
-- (instancetype)initWithConfiguration:(id<DFImageManagerConfiguration>)configuration;
+/*! Should be available on operation completion.
+ */
+- (DFImageResponse *)imageFetchResponse;
 
 @end

@@ -20,15 +20,34 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import <Foundation/Foundation.h>
-#import "DFImageManagerConfigurationProtocol.h"
-#import "DFImageManagerProtocol.h"
+#import "DFURLResponseDeserializing.h"
 
 
-@interface DFImageManager : NSObject <DFImageManager>
+@interface DFURLConnectionOperation : NSOperation <NSURLConnectionDataDelegate>
 
-@property (nonatomic, readonly) id<DFImageManagerConfiguration> configuration;
+@property (nonatomic) id<DFURLResponseDeserializing> deserializer;
+@property (nonatomic) NSURLRequest *request;
+@property (nonatomic) NSString *runLoopMode;
 
-- (instancetype)initWithConfiguration:(id<DFImageManagerConfiguration>)configuration;
+@property (nonatomic, readonly) NSURLConnection *connection;
+@property (nonatomic, readonly) NSURLResponse *response;
+@property (nonatomic, readonly) NSData *data;
+@property (nonatomic, readonly) id responseObject;
+@property (nonatomic, readonly) NSError *error;
+
+- (id)initWithRequest:(NSURLRequest *)request;
+
+- (void)didStart;
+- (void)finish;
+- (void)didFinish;
+
+- (void)startConnection:(NSURLConnection *)connection;
+
+@end
+
+
+@interface DFURLConnectionOperation (HTTP)
+
+@property (nonatomic, readonly) NSHTTPURLResponse *HTTPResponse;
 
 @end

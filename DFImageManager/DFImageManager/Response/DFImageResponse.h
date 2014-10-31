@@ -20,15 +20,31 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import <Foundation/Foundation.h>
-#import "DFImageManagerConfigurationProtocol.h"
-#import "DFImageManagerProtocol.h"
+#import "DFImageManagerDefines.h"
 
 
-@interface DFImageManager : NSObject <DFImageManager>
+@interface DFImageResponse : NSObject <NSCopying, NSMutableCopying>
 
-@property (nonatomic, readonly) id<DFImageManagerConfiguration> configuration;
+@property (nonatomic, readonly) UIImage *image;
+@property (nonatomic, readonly) NSError *error;
+@property (nonatomic, readonly) DFImageSource source;
+@property (nonatomic, readonly) NSData *data;
+@property (nonatomic, readonly) NSDictionary *userInfo;
 
-- (instancetype)initWithConfiguration:(id<DFImageManagerConfiguration>)configuration;
+- (instancetype)initWithImage:(UIImage *)image error:(NSError *)error source:(DFImageSource)source;
+- (instancetype)initWithResponse:(DFImageResponse *)response;
+
++ (instancetype)emptyResponse;
+
+@end
+
+
+@interface DFMutableURLImageResponse : DFImageResponse
+
+@property (nonatomic) UIImage *image;
+@property (nonatomic) NSError *error;
+@property (nonatomic) DFImageSource source;
+@property (nonatomic) NSData *data;
+@property (nonatomic) NSDictionary *userInfo;
 
 @end

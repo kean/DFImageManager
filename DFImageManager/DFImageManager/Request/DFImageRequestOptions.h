@@ -20,15 +20,27 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import <Foundation/Foundation.h>
-#import "DFImageManagerConfigurationProtocol.h"
-#import "DFImageManagerProtocol.h"
+#import "DFImageManagerDefines.h"
 
 
-@interface DFImageManager : NSObject <DFImageManager>
+@interface DFImageRequestOptions : NSObject <NSCopying>
 
-@property (nonatomic, readonly) id<DFImageManagerConfiguration> configuration;
+/*! @note Will probably change in future versions. For now just make sure that you use the same storage policy for the same URL.
+ */
+@property (nonatomic) DFImageCacheStoragePolicy cacheStoragePolicy;
 
-- (instancetype)initWithConfiguration:(id<DFImageManagerConfiguration>)configuration;
+/*! Fetch request priority. Translates to NSOperationQueuePriority.
+ */
+@property (nonatomic) DFImageRequestPriority priority;
+
+@property (nonatomic) BOOL networkAccessAllowed;
+
+/*! Marks request as a prefetch operation. Default NO.
+ */
+@property (nonatomic) BOOL prefetch;
+
+- (instancetype)initWithOptions:(DFImageRequestOptions *)options;
+
++ (instancetype)defaultOptions;
 
 @end

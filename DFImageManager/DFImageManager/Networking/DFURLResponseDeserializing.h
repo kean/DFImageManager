@@ -21,14 +21,10 @@
 // THE SOFTWARE.
 
 #import <Foundation/Foundation.h>
-#import "DFImageManagerConfigurationProtocol.h"
-#import "DFImageManagerProtocol.h"
 
+@protocol DFURLResponseDeserializing <NSObject>
 
-@interface DFImageManager : NSObject <DFImageManager>
-
-@property (nonatomic, readonly) id<DFImageManagerConfiguration> configuration;
-
-- (instancetype)initWithConfiguration:(id<DFImageManagerConfiguration>)configuration;
+- (id)objectFromResponse:(NSURLResponse *)response data:(NSData *)data error:(NSError *__autoreleasing *)error;
+- (BOOL)isValidResponse:(NSURLResponse *)response error:(NSError *__autoreleasing *)error;
 
 @end

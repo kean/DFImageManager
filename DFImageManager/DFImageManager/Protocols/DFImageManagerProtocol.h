@@ -20,15 +20,26 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import <Foundation/Foundation.h>
-#import "DFImageManagerConfigurationProtocol.h"
-#import "DFImageManagerProtocol.h"
+#import "DFImageManagerDefines.h"
+
+@class DFImageRequestOptions;
+@class DFImageRequestID;
 
 
-@interface DFImageManager : NSObject <DFImageManager>
+@protocol DFImageManager <NSObject>
 
-@property (nonatomic, readonly) id<DFImageManagerConfiguration> configuration;
+- (DFImageRequestID *)requestImageForAsset:(id)asset options:(DFImageRequestOptions *)options completion:(void (^)(UIImage *image, NSDictionary *info))completion;
+- (void)cancelRequestWithID:(DFImageRequestID *)requestID;
 
-- (instancetype)initWithConfiguration:(id<DFImageManagerConfiguration>)configuration;
+- (void)setPriority:(DFImageRequestPriority)priority forRequestWithID:(DFImageRequestID *)requestID;
+
+/*! Start prefetch operation with a given prefetch priority. You would normally DFImageRequestPriorityLow or DFImageRequestPriorityVeryLow.
+ */
+- (DFImageRequestID *)prefetchImageForAsset:(id)asset options:(DFImageRequestOptions *)options;
+
+/*! Cancels all image prefetching operations.
+ @note Do not cancel operations that were started as a prefetch operations but than were assigned 'real' handlers.
+ */
+- (void)stopPrefetchingAllImages;
 
 @end

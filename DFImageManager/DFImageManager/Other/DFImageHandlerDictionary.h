@@ -21,14 +21,17 @@
 // THE SOFTWARE.
 
 #import <Foundation/Foundation.h>
-#import "DFImageManagerConfigurationProtocol.h"
-#import "DFImageManagerProtocol.h"
 
 
-@interface DFImageManager : NSObject <DFImageManager>
+@class DFImageRequestID;
 
-@property (nonatomic, readonly) id<DFImageManagerConfiguration> configuration;
+@interface DFImageHandlerDictionary : NSObject
 
-- (instancetype)initWithConfiguration:(id<DFImageManagerConfiguration>)configuration;
+- (void)addHandler:(id)handler forRequestID:(DFImageRequestID *)requestID;
+- (id)handlerForRequestID:(DFImageRequestID *)requestID;
+- (void)removeHandlerForRequestID:(DFImageRequestID *)requestID;
+- (NSArray *)handlersForOperationID:(NSString *)key;
+- (void)removeAllHandlersForOperationID:(NSString *)operationID;
+- (NSDictionary *)allHandlers;
 
 @end
