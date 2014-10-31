@@ -22,8 +22,8 @@
 
 #import "DFImageManagerDefines.h"
 
-NSString *DFImageInfoSourceKey = @"DFImageInfoSourceKey";
-NSString *DFImageInfoErrorKey = @"DFImageInfoErrorKey";
-NSString *DFImageInfoDataKey = @"DFImageInfoDataKey";
+NSString *const DFImageInfoSourceKey = @"DFImageInfoSourceKey";
+NSString *const DFImageInfoErrorKey = @"DFImageInfoErrorKey";
+NSString *const DFImageInfoDataKey = @"DFImageInfoDataKey";
 
-NSString *DFImageErrorDomain = @"DFImageErrorDomain";
+NSString *const DFImageErrorDomain = @"DFImageErrorDomain";
