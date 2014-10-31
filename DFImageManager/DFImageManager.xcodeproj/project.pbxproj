@@ -59,6 +59,7 @@
 		0C2BD4F81A03A66000412BE3 /* DFURLConnectionOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFURLConnectionOperation.m; sourceTree = "<group>"; };
 		0C2BD4F91A03A66000412BE3 /* DFURLResponseDeserializing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFURLResponseDeserializing.h; sourceTree = "<group>"; };
 		0C2BD4FB1A03AEB800412BE3 /* DFImageManagerOperationProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFImageManagerOperationProtocol.h; sourceTree = "<group>"; };
+		0C2BD52B1A03B15300412BE3 /* DFImageManagerKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFImageManagerKit.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -100,6 +101,7 @@
 		0C2BD4BA1A03A28000412BE3 /* DFImageManager */ = {
 			isa = PBXGroup;
 			children = (
+				0C2BD52B1A03B15300412BE3 /* DFImageManagerKit.h */,
 				0C2BD4BB1A03A28000412BE3 /* DFImageManager.h */,
 				0C2BD4BD1A03A28000412BE3 /* DFImageManager.m */,
 				0C2BD4CF1A03A2EA00412BE3 /* DFImageManagerDefines.h */,
