@@ -11,5 +11,6 @@ Pod::Spec.new do |s|
    s.source       = { :git => "https://github.com/kean/DFImageManager.git", :tag => s.version.to_s }
    s.source_files  = "DFImageManager/DFImageManager/**/*.{h,m}"
    s.requires_arc = true
-   s.dependency = "DFCache", "~> 1.0"
+
+   s.dependency "DFCache", "~> 1.0"
 end
