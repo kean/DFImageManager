@@ -21,7 +21,6 @@
 // THE SOFTWARE.
 
 #import "DFImageHandlerDictionary.h"
-#import "DFImageRequestID+Protected.h"
 
 
 @implementation DFImageHandlerDictionary {
@@ -35,30 +34,30 @@
    return self;
 }
 
-- (void)addHandler:(id)handler forRequestID:(DFImageRequestID *)requestID {
-   NSMutableDictionary *handlers = _handlers[requestID.operationID];
+- (void)addHandler:(id)handler forRequestID:(NSString *)requestID handler:(NSString *)handlerID {
+   NSMutableDictionary *handlers = _handlers[requestID];
    if (!handlers) {
       handlers = [NSMutableDictionary new];
-      _handlers[requestID.operationID] = handlers;
+      _handlers[requestID] = handlers;
    }
-   [handlers setObject:handler forKey:requestID.handlerID];
+   [handlers setObject:handler forKey:handlerID];
 }
 
-- (id)handlerForRequestID:(DFImageRequestID *)requestID {
-   return _handlers[requestID.operationID][requestID.handlerID];
+- (id)handlerForRequestID:(NSString *)requestID handlerID:(NSString *)handlerID {
+   return _handlers[requestID][handlerID];
 }
 
-- (void)removeHandlerForRequestID:(DFImageRequestID *)requestID {
-   NSMutableDictionary *handlers = _handlers[requestID.operationID];
-   [handlers removeObjectForKey:requestID.handlerID];
+- (void)removeHandlerForRequestID:(NSString *)requestID handlerID:(NSString *)handlerID {
+   NSMutableDictionary *handlers = _handlers[requestID];
+   [handlers removeObjectForKey:handlerID];
 }
 
-- (NSArray *)handlersForOperationID:(NSString *)key {
-   return [_handlers[key] allValues];
+- (NSArray *)handlersForRequestID:(NSString *)requestID {
+   return [_handlers[requestID] allValues];
 }
 
-- (void)removeAllHandlersForOperationID:(NSString *)operationID {
-   [_handlers removeObjectForKey:operationID];
+- (void)removeAllHandlersForRequestID:(NSString *)requestID {
+   [_handlers removeObjectForKey:requestID];
 }
 
 - (NSDictionary *)allHandlers {

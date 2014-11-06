@@ -32,13 +32,15 @@
 
 - (DFImageRequestOptions *)imageManager:(id<DFImageManager>)proivder createRequestOptionsForAsset:(id)asset;
 
-- (NSString *)imageManager:(id<DFImageManager>)manager createOperationIDForAsset:(id)asset options:(DFImageRequestOptions *)options;
+- (NSString *)imageManager:(id<DFImageManager>)manager createRequestIDForAsset:(id)asset options:(DFImageRequestOptions *)options;
 
-- (NSArray *)imageManager:(id<DFImageManager>)manager createOperationsForAsset:(id)asset options:(DFImageRequestOptions *)options;
+/*! Return nil if no work is required.
+ */
+- (NSOperation<DFImageManagerOperation> *)imageManager:(id<DFImageManager>)manager createOperationForAsset:(id)asset options:(DFImageRequestOptions *)options previousOperation:(NSOperation<DFImageManagerOperation> *)previousOperation;
 
-- (BOOL)imageManager:(id<DFImageManager>)manager shouldOperationsFinishExecuting:(NSArray *)operations finishedOperation:(NSOperation<DFImageManagerOperation> *)operation;
+- (void)imageManager:(id<DFImageManager>)manager enqueueOperation:(NSOperation<DFImageManagerOperation> *)operation;
 
-- (BOOL)imageManager:(id<DFImageManager>)manager shouldCancelOperations:(NSArray *)operations;
+- (BOOL)imageManager:(id<DFImageManager>)manager shouldCancelOperation:(NSOperation<DFImageManagerOperation> *)operation;
 
 @optional
 

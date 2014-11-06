@@ -25,13 +25,13 @@
 
 @interface DFImageRequestID (Protected)
 
-@property (nonatomic, readonly) NSString *operationID;
+@property (nonatomic, readonly) NSString *requestID;
 @property (nonatomic, readonly) NSString *handlerID;
 
-- (instancetype)initWithOperationID:(NSString *)operationID handlerID:(NSString *)handlerID;
+- (instancetype)initWithRequestID:(NSString *)requestID handlerID:(NSString *)handlerID;
 
-/*! Initializes request ID with a given operation ID. Handler ID is generated automatically during initialization.
+/*! Initializes request ID with a given requestID ID. Handler ID is generated automatically during initialization.
  */
-- (instancetype)initWithOperationID:(NSString *)operationID;
+- (instancetype)initWithRequestID:(NSString *)requestID;
 
 @end

@@ -23,15 +23,13 @@
 #import <Foundation/Foundation.h>
 
 
-@class DFImageRequestID;
-
 @interface DFImageHandlerDictionary : NSObject
 
-- (void)addHandler:(id)handler forRequestID:(DFImageRequestID *)requestID;
-- (id)handlerForRequestID:(DFImageRequestID *)requestID;
-- (void)removeHandlerForRequestID:(DFImageRequestID *)requestID;
-- (NSArray *)handlersForOperationID:(NSString *)key;
-- (void)removeAllHandlersForOperationID:(NSString *)operationID;
+- (void)addHandler:(id)handler forRequestID:(NSString *)requestID handler:(NSString *)handlerID;
+- (id)handlerForRequestID:(NSString *)requestID handlerID:(NSString *)handlerID;
+- (void)removeHandlerForRequestID:(NSString *)requestID handlerID:(NSString *)handlerID;
+- (NSArray *)handlersForRequestID:(NSString *)requestID;
+- (void)removeAllHandlersForRequestID:(NSString *)requestID;
 - (NSDictionary *)allHandlers;
 
 @end
