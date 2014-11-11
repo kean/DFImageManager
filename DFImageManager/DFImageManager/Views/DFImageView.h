@@ -37,7 +37,7 @@ typedef NS_ENUM(NSUInteger, DFImageViewAnimation) {
 @interface DFImageView : UIView
 
 @property (nonatomic) id<DFImageManager> imageManager;
-@property (nonatomic) UIImageView *imageView;
+@property (nonatomic, readonly) UIImageView *imageView;
 @property (nonatomic) DFImageViewAnimation animation;
 
 /*! Placeholder color is displayed when the image is being loaded. It doesn't interfere with the background color of the view so that the images that has transparency are displayed properly.
@@ -47,6 +47,10 @@ typedef NS_ENUM(NSUInteger, DFImageViewAnimation) {
 /*! Automatically changes image request priorities when image view gets added/removed from the window. Default value is YES.
  */
 @property (nonatomic) BOOL managesRequestPriorities;
+
+/*! Image that gets displayed when either the request failes or when a given asset is nil.
+ */
+@property (nonatomic) UIImage *failureImage;
 
 - (void)setImageWithAsset:(id)asset;
 - (void)setImageWithAsset:(id)asset options:(DFImageRequestOptions *)options;

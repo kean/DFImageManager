@@ -25,9 +25,16 @@
 #import "DFImageView.h"
 
 
+@interface DFImageView ()
+
+@property (nonatomic, readonly) UIImageView *failureImageView;
+
+@end
+
 @implementation DFImageView {
    DFImageRequestID *_requestID;
    UIView *_backgroundView;
+   UIImageView *_failureImageView;
 }
 
 - (void)dealloc {
@@ -69,6 +76,11 @@
 - (void)setImageWithAsset:(id)asset options:(DFImageRequestOptions *)options {
    [self prepareForReuse];
    
+   if (!asset) {
+      self.failureImageView.hidden = NO;
+      return;
+   }
+   
    DFImageView *__weak weakSelf = self;
    options = options ?: [self.imageManager requestOptionsForAsset:asset];
    if (self.managesRequestPriorities) {
@@ -91,12 +103,38 @@
    
 }
 
-- (void)requestDidFailWithError:(NSError *)error info:(NSDictionary *)info {
-   // do nothing
+#pragma mark - Handling Failure
+
+- (UIImageView *)failureImageView {
+   if (!self.failureImage) {
+      return nil;
+   }
+   if (!_failureImageView) {
+      UIImageView *imageView = [[UIImageView alloc] initWithFrame:self.bounds];
+      imageView.contentMode = UIViewContentModeCenter;
+      imageView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+      imageView.image = self.failureImage;
+      imageView.hidden = YES;
+      _failureImageView = imageView;
+      [self addSubview:_failureImageView];
+   }
+   return _failureImageView;
 }
+
+- (void)setFailureImage:(UIImage *)failureImage {
+   _failureImage = failureImage;
+   _failureImageView.image = failureImage;
+}
+
+- (void)requestDidFailWithError:(NSError *)error info:(NSDictionary *)info {
+   self.failureImageView.hidden = NO;
+}
+
+#pragma mark - Reuse
 
 - (void)prepareForReuse {
    self.imageView.image = nil;
+   _failureImageView.hidden = YES;
    _backgroundView.alpha = 1.f;
    [self _df_cancelFetching];
    _requestID = nil;
