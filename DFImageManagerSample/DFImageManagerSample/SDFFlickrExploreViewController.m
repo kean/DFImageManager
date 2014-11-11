@@ -7,21 +7,69 @@
 //
 
 #import "SDFFlickrExploreViewController.h"
+#import "SDFFlickrRecentPhotosModel.h"
+
 
 @interface SDFFlickrExploreViewController ()
 
+<UICollectionViewDataSource,
+UICollectionViewDelegate,
+UICollectionViewDelegateFlowLayout,
+SDFFlickrRecentPhotosDelegate>
+
+@property (nonatomic) IBOutlet UICollectionView *collectionView;
+
 @end
 
-@implementation SDFFlickrExploreViewController
-
-- (void)viewDidLoad {
-   [super viewDidLoad];
-   // Do any additional setup after loading the view, typically from a nib.
+@implementation SDFFlickrExploreViewController {
+    SDFFlickrRecentPhotosModel *_model;
+    NSMutableArray *_photos;
 }
 
-- (void)didReceiveMemoryWarning {
-   [super didReceiveMemoryWarning];
-   // Dispose of any resources that can be recreated.
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    
+    [self.collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:NSStringFromClass([UICollectionViewCell class])];
+    UICollectionViewFlowLayout *layout = (id)self.collectionView.collectionViewLayout;
+    layout.sectionInset = UIEdgeInsetsMake(4.f, 4.f, 4.f, 4.f);
+    
+    _photos = [NSMutableArray new];
+    
+    _model = [SDFFlickrRecentPhotosModel new];
+    _model.delegate = self;
+    [_model load];
+}
+
+#pragma mark - <SDFFlickrRecentPhotosDelegate>
+
+- (void)flickrRecentPhotosModel:(SDFFlickrRecentPhotosModel *)model didLoadPhotos:(NSArray *)photos forPage:(NSUInteger)page {
+    [_photos addObjectsFromArray:photos];
+    [_collectionView reloadData];
+}
+
+#pragma mark - <UICollectionViewDataSource>
+
+- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
+    return 1;
+}
+
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
+    return _photos.count;
+}
+
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+    UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:NSStringFromClass([UICollectionViewCell class]) forIndexPath:indexPath];
+    cell.backgroundColor = [UIColor redColor];
+    return cell;
+}
+
+#pragma mark - <UICollectionViewDelegate>
+
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
+    UICollectionViewFlowLayout *layout = (id)collectionViewLayout;
+    CGFloat width = collectionView.bounds.size.width - layout.sectionInset.left - layout.sectionInset.right - layout.minimumInteritemSpacing * 3;
+    CGFloat side = width / 4.0; // It's not pixel perfect, but it's ok for now.
+    return CGSizeMake(side, side);
 }
 
 @end
