@@ -37,7 +37,6 @@ typedef NS_ENUM(NSUInteger, DFImageViewAnimation) {
 @interface DFImageView : UIView
 
 @property (nonatomic) id<DFImageManager> imageManager;
-@property (nonatomic, readonly) UIImageView *imageView;
 @property (nonatomic) DFImageViewAnimation animation;
 
 /*! Placeholder color is displayed when the image is being loaded. It doesn't interfere with the background color of the view so that the images that has transparency are displayed properly.
@@ -51,6 +50,12 @@ typedef NS_ENUM(NSUInteger, DFImageViewAnimation) {
 /*! Image that gets displayed when either the request failes or when a given asset is nil.
  */
 @property (nonatomic) UIImage *failureImage;
+
+@property (nonatomic, readonly) UIImageView *imageView;
+
+/*! Lazily creates and returns failure image view. The property is made public so that you can modify view's behavior. For example, you might want to change it's layout or content mode.
+ */
+@property (nonatomic, readonly) UIImageView *failureImageView;
 
 - (void)setImageWithAsset:(id)asset;
 - (void)setImageWithAsset:(id)asset options:(DFImageRequestOptions *)options;
