@@ -15,6 +15,8 @@
 		0C8578031A123DBA00067EA4 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0C8578021A123DBA00067EA4 /* Images.xcassets */; };
 		0C8578061A123DBA00067EA4 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0C8578041A123DBA00067EA4 /* LaunchScreen.xib */; };
 		0C8578121A123DBA00067EA4 /* DFImageManagerSampleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C8578111A123DBA00067EA4 /* DFImageManagerSampleTests.m */; };
+		0C8578211A12408500067EA4 /* SDFFlickrPhoto.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C85781E1A12408500067EA4 /* SDFFlickrPhoto.m */; };
+		0C8578221A12408500067EA4 /* SDFFlickrRecentPhotosModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C8578201A12408500067EA4 /* SDFFlickrRecentPhotosModel.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -43,6 +45,10 @@
 		0C85780B1A123DBA00067EA4 /* DFImageManagerSampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DFImageManagerSampleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		0C8578101A123DBA00067EA4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0C8578111A123DBA00067EA4 /* DFImageManagerSampleTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DFImageManagerSampleTests.m; sourceTree = "<group>"; };
+		0C85781D1A12408500067EA4 /* SDFFlickrPhoto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDFFlickrPhoto.h; sourceTree = "<group>"; };
+		0C85781E1A12408500067EA4 /* SDFFlickrPhoto.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDFFlickrPhoto.m; sourceTree = "<group>"; };
+		0C85781F1A12408500067EA4 /* SDFFlickrRecentPhotosModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDFFlickrRecentPhotosModel.h; sourceTree = "<group>"; };
+		0C8578201A12408500067EA4 /* SDFFlickrRecentPhotosModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDFFlickrRecentPhotosModel.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -84,6 +90,7 @@
 		0C8577F11A123DBA00067EA4 /* DFImageManagerSample */ = {
 			isa = PBXGroup;
 			children = (
+				0C85781B1A12408500067EA4 /* Source Code */,
 				0C8577F61A123DBA00067EA4 /* AppDelegate.h */,
 				0C8577F71A123DBA00067EA4 /* AppDelegate.m */,
 				0C8577F91A123DBA00067EA4 /* FirstViewController.h */,
@@ -122,6 +129,25 @@
 				0C8578101A123DBA00067EA4 /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		0C85781B1A12408500067EA4 /* Source Code */ = {
+			isa = PBXGroup;
+			children = (
+				0C85781C1A12408500067EA4 /* Model */,
+			);
+			path = "Source Code";
+			sourceTree = "<group>";
+		};
+		0C85781C1A12408500067EA4 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				0C85781D1A12408500067EA4 /* SDFFlickrPhoto.h */,
+				0C85781E1A12408500067EA4 /* SDFFlickrPhoto.m */,
+				0C85781F1A12408500067EA4 /* SDFFlickrRecentPhotosModel.h */,
+				0C8578201A12408500067EA4 /* SDFFlickrRecentPhotosModel.m */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -224,7 +250,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0C8578211A12408500067EA4 /* SDFFlickrPhoto.m in Sources */,
 				0C8577FE1A123DBA00067EA4 /* SecondViewController.m in Sources */,
+				0C8578221A12408500067EA4 /* SDFFlickrRecentPhotosModel.m in Sources */,
 				0C8577F81A123DBA00067EA4 /* AppDelegate.m in Sources */,
 				0C8577FB1A123DBA00067EA4 /* FirstViewController.m in Sources */,
 				0C8577F51A123DBA00067EA4 /* main.m in Sources */,
@@ -418,6 +446,7 @@
 				0C8578171A123DBA00067EA4 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		0C8578181A123DBA00067EA4 /* Build configuration list for PBXNativeTarget "DFImageManagerSampleTests" */ = {
 			isa = XCConfigurationList;
@@ -426,6 +455,7 @@
 				0C85781A1A123DBA00067EA4 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
