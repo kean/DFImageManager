@@ -20,31 +20,17 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "DFImageManagerDefines.h"
-
-@class DFImageRequestOptions;
-@class DFImageRequestID;
+#import <UIKit/UIKit.h>
 
 
-@protocol DFImageManager <NSObject>
+typedef NS_ENUM(NSUInteger, DFImageViewAnimation) {
+   DFImageViewAnimationNone,
+   DFImageViewAnimationFade,
+   DFImageViewAnimationCrossDissolve
+};
 
-- (DFImageRequestID *)requestImageForAsset:(id)asset options:(DFImageRequestOptions *)options completion:(void (^)(UIImage *image, NSDictionary *info))completion;
+@interface UIImageView (DFImageManager)
 
-- (void)cancelRequestWithID:(DFImageRequestID *)requestID;
-
-- (void)setPriority:(DFImageRequestPriority)priority forRequestWithID:(DFImageRequestID *)requestID;
-
-/*! Returns default options for a given asset.
- */
-- (DFImageRequestOptions *)requestOptionsForAsset:(id)asset;
-
-/*! Start prefetch operation with a given prefetch priority. You would normally DFImageRequestPriorityLow or DFImageRequestPriorityVeryLow.
- */
-- (DFImageRequestID *)prefetchImageForAsset:(id)asset options:(DFImageRequestOptions *)options;
-
-/*! Cancels all image prefetching operations.
- @note Do not cancel operations that were started as a prefetch operations but than were assigned 'real' handlers.
- */
-- (void)stopPrefetchingAllImages;
+- (void)df_setImage:(UIImage *)image withAnimation:(DFImageViewAnimation)animation;
 
 @end

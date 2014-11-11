@@ -20,31 +20,33 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "DFImageManagerDefines.h"
+#import "DFImageManagerProtocol.h"
+#import "UIImageView+DFImageManager.h"
+#import <UIKit/UIKit.h>
 
 @class DFImageRequestOptions;
-@class DFImageRequestID;
 
 
-@protocol DFImageManager <NSObject>
+@interface DFImageView : UIImageView
 
-- (DFImageRequestID *)requestImageForAsset:(id)asset options:(DFImageRequestOptions *)options completion:(void (^)(UIImage *image, NSDictionary *info))completion;
+@property (nonatomic) id<DFImageManager> imageManager;
+@property (nonatomic) DFImageViewAnimation animation;
 
-- (void)cancelRequestWithID:(DFImageRequestID *)requestID;
-
-- (void)setPriority:(DFImageRequestPriority)priority forRequestWithID:(DFImageRequestID *)requestID;
-
-/*! Returns default options for a given asset.
+/*! Automatically changes image request priorities when image view gets added/removed from the window. Default value is YES.
  */
-- (DFImageRequestOptions *)requestOptionsForAsset:(id)asset;
+@property (nonatomic) BOOL managesRequestPriorities;
 
-/*! Start prefetch operation with a given prefetch priority. You would normally DFImageRequestPriorityLow or DFImageRequestPriorityVeryLow.
- */
-- (DFImageRequestID *)prefetchImageForAsset:(id)asset options:(DFImageRequestOptions *)options;
+- (void)setImageWithAsset:(id)asset;
+- (void)setImageWithAsset:(id)asset options:(DFImageRequestOptions *)options;
 
-/*! Cancels all image prefetching operations.
- @note Do not cancel operations that were started as a prefetch operations but than were assigned 'real' handlers.
- */
-- (void)stopPrefetchingAllImages;
+- (void)prepareForReuse;
+
+@end
+
+
+@interface DFImageView (SubclassingHooks)
+
+- (void)requestDidFinishWithImage:(UIImage *)image source:(DFImageSource)source info:(NSDictionary *)info;
+- (void)requestDidFailWithError:(NSError *)error info:(NSDictionary *)info;
 
 @end

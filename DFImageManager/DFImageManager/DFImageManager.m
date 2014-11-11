@@ -80,6 +80,12 @@
 
 #pragma mark - Fetching
 
+- (DFImageRequestOptions *)requestOptionsForAsset:(id)asset {
+   DFImageRequestOptions *options = [_conf imageManager:self createRequestOptionsForAsset:asset];
+   NSAssert(options, @"Options must not be nil");
+   return options;
+}
+
 - (DFImageRequestID *)requestImageForAsset:(id)asset options:(DFImageRequestOptions *)options completion:(DFImageRequestCompletion)completion {
    NSParameterAssert(asset);
    if (!asset) {

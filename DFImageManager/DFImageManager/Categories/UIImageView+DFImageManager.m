@@ -20,31 +20,35 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "DFImageManagerDefines.h"
+#import "UIImageView+DFImageManager.h"
 
-@class DFImageRequestOptions;
-@class DFImageRequestID;
+@implementation UIImageView (DFImageManager)
 
-
-@protocol DFImageManager <NSObject>
-
-- (DFImageRequestID *)requestImageForAsset:(id)asset options:(DFImageRequestOptions *)options completion:(void (^)(UIImage *image, NSDictionary *info))completion;
-
-- (void)cancelRequestWithID:(DFImageRequestID *)requestID;
-
-- (void)setPriority:(DFImageRequestPriority)priority forRequestWithID:(DFImageRequestID *)requestID;
-
-/*! Returns default options for a given asset.
- */
-- (DFImageRequestOptions *)requestOptionsForAsset:(id)asset;
-
-/*! Start prefetch operation with a given prefetch priority. You would normally DFImageRequestPriorityLow or DFImageRequestPriorityVeryLow.
- */
-- (DFImageRequestID *)prefetchImageForAsset:(id)asset options:(DFImageRequestOptions *)options;
-
-/*! Cancels all image prefetching operations.
- @note Do not cancel operations that were started as a prefetch operations but than were assigned 'real' handlers.
- */
-- (void)stopPrefetchingAllImages;
+- (void)df_setImage:(UIImage *)image withAnimation:(DFImageViewAnimation)animation {
+   self.image = image;
+   switch (animation) {
+      case DFImageViewAnimationNone:
+         break;
+      case DFImageViewAnimationFade: {
+         CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"opacity"];
+         animation.keyPath = @"opacity";
+         animation.fromValue = @0.f;
+         animation.toValue = @1.f;
+         animation.duration = 0.15f;
+         [self.layer addAnimation:animation forKey:@"opacity"];
+      }
+         break;
+      case DFImageViewAnimationCrossDissolve: {
+         [UIView transitionWithView:self
+                           duration:0.2f
+                            options:UIViewAnimationOptionTransitionCrossDissolve
+                         animations:nil
+                         completion:nil];
+      }
+         break;
+      default:
+         break;
+   }
+}
 
 @end
