@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		0C8577F51A123DBA00067EA4 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C8577F41A123DBA00067EA4 /* main.m */; };
 		0C8577F81A123DBA00067EA4 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C8577F71A123DBA00067EA4 /* AppDelegate.m */; };
-		0C8577FB1A123DBA00067EA4 /* FirstViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C8577FA1A123DBA00067EA4 /* FirstViewController.m */; };
+		0C8577FB1A123DBA00067EA4 /* SDFFlickrExploreViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C8577FA1A123DBA00067EA4 /* SDFFlickrExploreViewController.m */; };
 		0C8577FE1A123DBA00067EA4 /* SecondViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C8577FD1A123DBA00067EA4 /* SecondViewController.m */; };
 		0C8578011A123DBA00067EA4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0C8577FF1A123DBA00067EA4 /* Main.storyboard */; };
 		0C8578031A123DBA00067EA4 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0C8578021A123DBA00067EA4 /* Images.xcassets */; };
@@ -35,8 +35,8 @@
 		0C8577F41A123DBA00067EA4 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		0C8577F61A123DBA00067EA4 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		0C8577F71A123DBA00067EA4 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		0C8577F91A123DBA00067EA4 /* FirstViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FirstViewController.h; sourceTree = "<group>"; };
-		0C8577FA1A123DBA00067EA4 /* FirstViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FirstViewController.m; sourceTree = "<group>"; };
+		0C8577F91A123DBA00067EA4 /* SDFFlickrExploreViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SDFFlickrExploreViewController.h; sourceTree = "<group>"; };
+		0C8577FA1A123DBA00067EA4 /* SDFFlickrExploreViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SDFFlickrExploreViewController.m; sourceTree = "<group>"; };
 		0C8577FC1A123DBA00067EA4 /* SecondViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SecondViewController.h; sourceTree = "<group>"; };
 		0C8577FD1A123DBA00067EA4 /* SecondViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SecondViewController.m; sourceTree = "<group>"; };
 		0C8578001A123DBA00067EA4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -93,8 +93,8 @@
 				0C85781B1A12408500067EA4 /* Source Code */,
 				0C8577F61A123DBA00067EA4 /* AppDelegate.h */,
 				0C8577F71A123DBA00067EA4 /* AppDelegate.m */,
-				0C8577F91A123DBA00067EA4 /* FirstViewController.h */,
-				0C8577FA1A123DBA00067EA4 /* FirstViewController.m */,
+				0C8577F91A123DBA00067EA4 /* SDFFlickrExploreViewController.h */,
+				0C8577FA1A123DBA00067EA4 /* SDFFlickrExploreViewController.m */,
 				0C8577FC1A123DBA00067EA4 /* SecondViewController.h */,
 				0C8577FD1A123DBA00067EA4 /* SecondViewController.m */,
 				0C8577FF1A123DBA00067EA4 /* Main.storyboard */,
@@ -254,7 +254,7 @@
 				0C8577FE1A123DBA00067EA4 /* SecondViewController.m in Sources */,
 				0C8578221A12408500067EA4 /* SDFFlickrRecentPhotosModel.m in Sources */,
 				0C8577F81A123DBA00067EA4 /* AppDelegate.m in Sources */,
-				0C8577FB1A123DBA00067EA4 /* FirstViewController.m in Sources */,
+				0C8577FB1A123DBA00067EA4 /* SDFFlickrExploreViewController.m in Sources */,
 				0C8577F51A123DBA00067EA4 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

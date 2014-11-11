@@ -8,8 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface FirstViewController : UIViewController
-
+@interface SDFFlickrExploreViewController : UIViewController
 
 @end
-
