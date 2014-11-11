@@ -21,16 +21,28 @@
 // THE SOFTWARE.
 
 #import "DFImageManagerProtocol.h"
-#import "UIImageView+DFImageManager.h"
 #import <UIKit/UIKit.h>
 
 @class DFImageRequestOptions;
 
+typedef NS_ENUM(NSUInteger, DFImageViewAnimation) {
+   DFImageViewAnimationNone,
+   DFImageViewAnimationFade,
+   DFImageViewAnimationCrossDissolve
+};
 
-@interface DFImageView : UIImageView
+
+/*! Implements most of the basic functionality required to fetch images and then display them with animation.
+ */
+@interface DFImageView : UIView
 
 @property (nonatomic) id<DFImageManager> imageManager;
+@property (nonatomic) UIImageView *imageView;
 @property (nonatomic) DFImageViewAnimation animation;
+
+/*! Placeholder color is displayed when the image is being loaded. It doesn't interfere with the background color of the view so that the images that has transparency are displayed properly.
+ */
+@property (nonatomic) UIColor *placeholderColor;
 
 /*! Automatically changes image request priorities when image view gets added/removed from the window. Default value is YES.
  */
@@ -44,6 +56,8 @@
 @end
 
 
+/*! Subclassing hooks are method intended to be overrided in case you want to extend/or change default behavior of DFImageView. You don't have to call super if you override one of this methods.
+ */
 @interface DFImageView (SubclassingHooks)
 
 - (void)requestDidFinishWithImage:(UIImage *)image source:(DFImageSource)source info:(NSDictionary *)info;

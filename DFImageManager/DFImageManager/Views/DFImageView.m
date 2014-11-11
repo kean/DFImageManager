@@ -27,12 +27,37 @@
 
 @implementation DFImageView {
    DFImageRequestID *_requestID;
+   UIView *_backgroundView;
+}
+
+- (void)dealloc {
+   [self _df_cancelFetching];
 }
 
 - (instancetype)initWithFrame:(CGRect)frame {
    if (self = [super initWithFrame:frame]) {
       _animation = DFImageViewAnimationFade;
       _managesRequestPriorities = YES;
+      _placeholderColor = [UIColor colorWithRed:200.0/255.0 green:200.0/255.0 blue:200.0/255.0 alpha:1.f];
+      self.clipsToBounds = YES;
+      
+      _imageView = ({
+         UIImageView *view = [[UIImageView alloc] initWithFrame:self.bounds];
+         view.contentMode = UIViewContentModeScaleAspectFill;
+         view.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+         view.clipsToBounds = YES;
+         view;
+      });
+      
+      _backgroundView = ({
+         UIView *view = [[UIView alloc] initWithFrame:self.bounds];
+         view.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+         view.backgroundColor = self.placeholderColor;
+         view;
+      });
+      
+      [self addSubview:_backgroundView];
+      [self addSubview:_imageView];
    }
    return self;
 }
@@ -42,6 +67,8 @@
 }
 
 - (void)setImageWithAsset:(id)asset options:(DFImageRequestOptions *)options {
+   [self prepareForReuse];
+   
    DFImageView *__weak weakSelf = self;
    options = options ?: [self.imageManager requestOptionsForAsset:asset];
    if (self.managesRequestPriorities) {
@@ -60,7 +87,7 @@
 
 - (void)requestDidFinishWithImage:(UIImage *)image source:(DFImageSource)source info:(NSDictionary *)info {
    DFImageViewAnimation animation = source != DFImageSourceMemoryCache ? _animation : DFImageViewAnimationNone;
-   [self df_setImage:image withAnimation:animation];
+   [self _df_setImage:image withAnimation:animation];
    
 }
 
@@ -69,7 +96,8 @@
 }
 
 - (void)prepareForReuse {
-   self.image = nil;
+   self.imageView.image = nil;
+   _backgroundView.alpha = 1.f;
    [self _df_cancelFetching];
    _requestID = nil;
 }
@@ -89,6 +117,58 @@
       if (_requestID) {
          [self.imageManager setPriority:priority forRequestWithID:_requestID];
       }
+   }
+}
+
+#pragma mark - Animation
+
+- (void)_df_setImage:(UIImage *)image withAnimation:(DFImageViewAnimation)animation {
+   self.imageView.image = image;
+   switch (animation) {
+      case DFImageViewAnimationNone:
+         _backgroundView.alpha = 0.f;
+         break;
+      case DFImageViewAnimationFade: {
+         [self.imageView.layer addAnimation:({
+            CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"opacity"];
+            animation.keyPath = @"opacity";
+            animation.fromValue = @0.f;
+            animation.toValue = @1.f;
+            animation.duration = 0.2f;
+            animation;
+         }) forKey:@"opacity"];
+         
+         _backgroundView.alpha = 0.f;
+         [_backgroundView.layer addAnimation:({
+            CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"opacity"];
+            animation.keyPath = @"opacity";
+            animation.fromValue = @1.f;
+            animation.toValue = @0.f;
+            animation.duration = 0.3f;
+            animation;
+         }) forKey:@"opacity"];
+      }
+         break;
+      case DFImageViewAnimationCrossDissolve: {
+         [UIView transitionWithView:self
+                           duration:0.2f
+                            options:UIViewAnimationOptionTransitionCrossDissolve
+                         animations:nil
+                         completion:nil];
+         
+         _backgroundView.alpha = 0.f;
+         [_backgroundView.layer addAnimation:({
+            CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"opacity"];
+            animation.keyPath = @"opacity";
+            animation.fromValue = @1.f;
+            animation.toValue = @0.f;
+            animation.duration = 0.3f;
+            animation;
+         }) forKey:@"opacity"];
+      }
+         break;
+      default:
+         break;
    }
 }
 
