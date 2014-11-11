@@ -25,12 +25,6 @@
 #import "DFImageView.h"
 
 
-@interface DFImageView ()
-
-@property (nonatomic, readonly) UIImageView *failureImageView;
-
-@end
-
 @implementation DFImageView {
    DFImageRequestID *_requestID;
    UIView *_backgroundView;
