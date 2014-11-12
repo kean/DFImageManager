@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0C057A2B1A13542900DC76C6 /* DFImageManagerConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C057A2A1A13542900DC76C6 /* DFImageManagerConfiguration.m */; };
 		0C2BD4BC1A03A28000412BE3 /* DFImageManager.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0C2BD4BB1A03A28000412BE3 /* DFImageManager.h */; };
 		0C2BD4BE1A03A28000412BE3 /* DFImageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C2BD4BD1A03A28000412BE3 /* DFImageManager.m */; };
 		0C2BD4D11A03A2EA00412BE3 /* DFImageManagerDefines.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C2BD4D01A03A2EA00412BE3 /* DFImageManagerDefines.m */; };
@@ -37,6 +38,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0C057A291A13542900DC76C6 /* DFImageManagerConfiguration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFImageManagerConfiguration.h; sourceTree = "<group>"; };
+		0C057A2A1A13542900DC76C6 /* DFImageManagerConfiguration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFImageManagerConfiguration.m; sourceTree = "<group>"; };
 		0C2BD4B81A03A28000412BE3 /* libDFImageManager.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libDFImageManager.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		0C2BD4BB1A03A28000412BE3 /* DFImageManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DFImageManager.h; sourceTree = "<group>"; };
 		0C2BD4BD1A03A28000412BE3 /* DFImageManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DFImageManager.m; sourceTree = "<group>"; };
@@ -94,6 +97,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0C057A281A13541900DC76C6 /* Configuration */ = {
+			isa = PBXGroup;
+			children = (
+				0C057A291A13542900DC76C6 /* DFImageManagerConfiguration.h */,
+				0C057A2A1A13542900DC76C6 /* DFImageManagerConfiguration.m */,
+			);
+			path = Configuration;
+			sourceTree = "<group>";
+		};
 		0C2BD4AF1A03A28000412BE3 = {
 			isa = PBXGroup;
 			children = (
@@ -129,6 +141,7 @@
 				0C2BD4E31A03A3B200412BE3 /* Response */,
 				0C2BD4F61A03A66000412BE3 /* Networking */,
 				0C8573B01A121C9C00067EA4 /* Views */,
+				0C057A281A13541900DC76C6 /* Configuration */,
 			);
 			path = DFImageManager;
 			sourceTree = "<group>";
@@ -374,6 +387,7 @@
 				0CAF725F1A0B961A0057419A /* DFImageCacheStoreOperation.m in Sources */,
 				0C2BD4EB1A03A3B200412BE3 /* DFImageResponse.m in Sources */,
 				0C2BD4EA1A03A3B200412BE3 /* DFImageRequestOptions.m in Sources */,
+				0C057A2B1A13542900DC76C6 /* DFImageManagerConfiguration.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

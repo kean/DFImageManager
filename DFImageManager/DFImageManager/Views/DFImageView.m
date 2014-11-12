@@ -20,6 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+#import "DFImageManager.h"
 #import "DFImageManagerProtocol.h"
 #import "DFImageRequestOptions.h"
 #import "DFImageView.h"
@@ -37,6 +38,8 @@
 
 - (instancetype)initWithFrame:(CGRect)frame {
    if (self = [super initWithFrame:frame]) {
+       self.imageManager = [DFImageManager sharedManager];
+       
       _animation = DFImageViewAnimationFade;
       _managesRequestPriorities = YES;
       _placeholderColor = [UIColor colorWithRed:200.0/255.0 green:200.0/255.0 blue:200.0/255.0 alpha:1.f];

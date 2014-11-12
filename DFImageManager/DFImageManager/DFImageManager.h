@@ -24,11 +24,21 @@
 #import "DFImageManagerConfigurationProtocol.h"
 #import "DFImageManagerProtocol.h"
 
+@class DFCache;
+
 
 @interface DFImageManager : NSObject <DFImageManager>
 
 @property (nonatomic, readonly) id<DFImageManagerConfiguration> configuration;
 
 - (instancetype)initWithConfiguration:(id<DFImageManagerConfiguration>)configuration;
+
+// Basic dependency injectors.
+
++ (id<DFImageManager>)sharedManager;
++ (void)setSharedManager:(id<DFImageManager>)manager;
+
++ (DFCache *)sharedCache;
++ (void)setSharedCache:(DFCache *)cache;
 
 @end
