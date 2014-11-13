@@ -1,0 +1,13 @@
+PODS:
+  - DFCache (1.3.3)
+  - DFImageManager (0.0.2):
+    - DFCache (~> 1.0)
+
+DEPENDENCIES:
+  - DFImageManager
+
+SPEC CHECKSUMS:
+  DFCache: 8f7be5e2f3ea0278bc2a43c05125ef8906001c4e
+  DFImageManager: 30bc1bd0cdbbc3c392081dbd93c365a06b608206
+
+COCOAPODS: 0.34.4
