@@ -4,4 +4,4 @@ xcodeproj "DFImageManagerSample.xcodeproj"
 
 source "https://github.com/CocoaPods/Specs.git"
 
-pod "DFImageManager"
+pod "DFImageManager", :path => "../../"

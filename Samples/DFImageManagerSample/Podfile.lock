@@ -4,10 +4,14 @@ PODS:
     - DFCache (~> 1.0)
 
 DEPENDENCIES:
-  - DFImageManager
+  - DFImageManager (from `../../`)
+
+EXTERNAL SOURCES:
+  DFImageManager:
+    :path: ../../
 
 SPEC CHECKSUMS:
   DFCache: 8f7be5e2f3ea0278bc2a43c05125ef8906001c4e
-  DFImageManager: 30bc1bd0cdbbc3c392081dbd93c365a06b608206
+  DFImageManager: f9500af5642ab37ef86808282a7e591835daa0e3
 
 COCOAPODS: 0.34.4
