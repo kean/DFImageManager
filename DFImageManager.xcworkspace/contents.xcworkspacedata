@@ -5,9 +5,6 @@
       location = "group:DFImageManager/DFImageManager.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:DFImageManagerSample/DFImageManagerSample.xcodeproj">
-   </FileRef>
-   <FileRef
       location = "group:Pods/Pods.xcodeproj">
    </FileRef>
 </Workspace>
