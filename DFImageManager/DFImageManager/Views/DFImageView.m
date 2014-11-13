@@ -135,7 +135,8 @@
     _backgroundView.alpha = 1.f;
     [self _df_cancelFetching];
     _requestID = nil;
-    [self.layer removeAllAnimations];
+    [_backgroundView.layer removeAllAnimations];
+    [_imageView.layer removeAllAnimations];
 }
 
 - (void)_df_cancelFetching {
