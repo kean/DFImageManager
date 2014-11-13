@@ -23,11 +23,11 @@
 #import "DFImageCacheLookupOperation.h"
 #import "DFImageCacheStoreOperation.h"
 #import "DFImageDeserializer.h"
+#import "DFImageFetchConnectionOperation.h"
 #import "DFImageManager.h"
 #import "DFImageManagerConfiguration.h"
 #import "DFImageRequestOptions.h"
 #import "DFImageResponse.h"
-#import "DFURLConnectionOperation.h"
 #import <DFCache/DFCache.h>
 
 
@@ -121,7 +121,13 @@ NSString *const DFImageManagerCacheStoreOperationType = @"DFImageManagerCacheSto
 }
 
 - (NSOperation<DFImageManagerOperation> *)createImageFetchOperationForAsset:(id)asset options:(DFImageRequestOptions *)options {
-
+    if ([asset isKindOfClass:[NSString class]]) {
+        NSURL *URL = [NSURL URLWithString:asset];
+        NSMutableURLRequest *HTTPRequest = [[NSMutableURLRequest alloc] initWithURL:URL cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:30.f];
+        DFImageFetchConnectionOperation *operation = [[DFImageFetchConnectionOperation alloc] initWithRequest:HTTPRequest];
+        operation.deserializer = [DFImageDeserializer new];
+        return operation;
+    }
     return nil;
 }
 
@@ -138,7 +144,7 @@ NSString *const DFImageManagerCacheStoreOperationType = @"DFImageManagerCacheSto
 - (NSString *)operationTypeForOperation:(NSOperation *)operation {
     if ([operation isKindOfClass:[DFImageCacheLookupOperation class]]) {
         return DFImageManagerCacheLookupOperationType;
-    } else if ([operation isKindOfClass:[DFURLConnectionOperation class]]) {
+    } else if ([operation isKindOfClass:[DFImageFetchConnectionOperation class]]) {
         return DFImageManagerImageFetchOperationType;
     } else  if ([operation isKindOfClass:[DFImageCacheStoreOperation class]]){
         return DFImageManagerCacheStoreOperationType;
@@ -169,7 +175,7 @@ NSString *const DFImageManagerCacheStoreOperationType = @"DFImageManagerCacheSto
 }
 
 - (BOOL)imageManager:(id<DFImageManager>)manager shouldCancelOperation:(NSOperation<DFImageManagerOperation> *)operation {
-    if ([operation isKindOfClass:[DFURLConnectionOperation class]]) {
+    if ([operation isKindOfClass:[DFImageFetchConnectionOperation class]]) {
         return !operation.isExecuting;
     } else {
         return YES;

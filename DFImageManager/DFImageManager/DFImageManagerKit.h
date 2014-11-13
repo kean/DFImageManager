@@ -24,6 +24,7 @@
 
 #import "DFImageManagerDefines.h"
 #import "DFImageManager.h"
+#import "DFImageManagerConfiguration.h"
 
 #import "DFImageManagerProtocol.h"
 #import "DFImageManagerConfigurationProtocol.h"
@@ -37,3 +38,5 @@
 
 #import "DFURLConnectionOperation.h"
 #import "DFURLResponseDeserializing.h"
+
+#import "DFImageView.h"
