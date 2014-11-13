@@ -33,21 +33,21 @@
 @implementation DFImageRequestID
 
 - (instancetype)initWithRequestID:(NSString *)requestID handlerID:(NSString *)handlerID {
-   if (self = [super init]) {
-      NSParameterAssert(requestID);
-      NSParameterAssert(handlerID);
-      _requestID = requestID;
-      _handlerID = handlerID;
-   }
-   return self;
+    if (self = [super init]) {
+        NSParameterAssert(requestID);
+        NSParameterAssert(handlerID);
+        _requestID = requestID;
+        _handlerID = handlerID;
+    }
+    return self;
 }
 
 - (instancetype)initWithRequestID:(NSString *)requestID {
-   return [self initWithRequestID:requestID ?: [[NSUUID UUID] UUIDString] handlerID:[[NSUUID UUID] UUIDString]];
+    return [self initWithRequestID:requestID ?: [[NSUUID UUID] UUIDString] handlerID:[[NSUUID UUID] UUIDString]];
 }
 
 - (NSString *)description {
-   return [NSString stringWithFormat:@"<%@ %p> { requestID = %@, handlerID = %@ }", [self class], self, self.requestID, self.handlerID];
+    return [NSString stringWithFormat:@"<%@ %p> { requestID = %@, handlerID = %@ }", [self class], self, self.requestID, self.handlerID];
 }
 
 @end

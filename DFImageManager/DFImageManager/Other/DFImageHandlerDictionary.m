@@ -24,44 +24,44 @@
 
 
 @implementation DFImageHandlerDictionary {
-   NSMutableDictionary *_handlers;
+    NSMutableDictionary *_handlers;
 }
 
 - (instancetype)init {
-   if (self = [super init]) {
-      _handlers = [NSMutableDictionary new];
-   }
-   return self;
+    if (self = [super init]) {
+        _handlers = [NSMutableDictionary new];
+    }
+    return self;
 }
 
 - (void)addHandler:(id)handler forRequestID:(NSString *)requestID handler:(NSString *)handlerID {
-   NSMutableDictionary *handlers = _handlers[requestID];
-   if (!handlers) {
-      handlers = [NSMutableDictionary new];
-      _handlers[requestID] = handlers;
-   }
-   [handlers setObject:handler forKey:handlerID];
+    NSMutableDictionary *handlers = _handlers[requestID];
+    if (!handlers) {
+        handlers = [NSMutableDictionary new];
+        _handlers[requestID] = handlers;
+    }
+    [handlers setObject:handler forKey:handlerID];
 }
 
 - (id)handlerForRequestID:(NSString *)requestID handlerID:(NSString *)handlerID {
-   return _handlers[requestID][handlerID];
+    return _handlers[requestID][handlerID];
 }
 
 - (void)removeHandlerForRequestID:(NSString *)requestID handlerID:(NSString *)handlerID {
-   NSMutableDictionary *handlers = _handlers[requestID];
-   [handlers removeObjectForKey:handlerID];
+    NSMutableDictionary *handlers = _handlers[requestID];
+    [handlers removeObjectForKey:handlerID];
 }
 
 - (NSArray *)handlersForRequestID:(NSString *)requestID {
-   return [_handlers[requestID] allValues];
+    return [_handlers[requestID] allValues];
 }
 
 - (void)removeAllHandlersForRequestID:(NSString *)requestID {
-   [_handlers removeObjectForKey:requestID];
+    [_handlers removeObjectForKey:requestID];
 }
 
 - (NSDictionary *)allHandlers {
-   return [_handlers copy];
+    return [_handlers copy];
 }
 
 @end

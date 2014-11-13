@@ -32,15 +32,15 @@ extern NSString *const DFImageInfoDataKey;
 
 
 typedef NS_ENUM(NSUInteger, DFImageCacheStoragePolicy) {
-   DFImageCacheStorageAllowed,
-   DFImageCacheStorageAllowedInMemoryOnly,
-   DFImageCacheStorageNotAllowed
+    DFImageCacheStorageAllowed,
+    DFImageCacheStorageAllowedInMemoryOnly,
+    DFImageCacheStorageNotAllowed
 };
 
 typedef NS_ENUM(NSUInteger, DFImageSource) {
-   DFImageSourceMemoryCache,
-   DFImageSourceDiskCache,
-   DFImageSourceExternal
+    DFImageSourceMemoryCache,
+    DFImageSourceDiskCache,
+    DFImageSourceExternal
 };
 
 

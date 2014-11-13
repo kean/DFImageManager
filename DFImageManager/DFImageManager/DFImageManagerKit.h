@@ -36,6 +36,9 @@
 
 #import "DFImageDecoder.h"
 
+#import "DFImageCacheLookupOperation.h"
+#import "DFImageCacheStoreOperation.h"
+#import "DFImageFetchConnectionOperation.h"
 #import "DFURLConnectionOperation.h"
 #import "DFURLResponseDeserializing.h"
 

@@ -36,35 +36,35 @@
 @implementation DFImageResponse
 
 - (instancetype)initWithImage:(UIImage *)image error:(NSError *)error source:(DFImageSource)source {
-   if (self = [super init]) {
-      _image = image;
-      _error = error;
-      _source = source;
-   }
-   return self;
+    if (self = [super init]) {
+        _image = image;
+        _error = error;
+        _source = source;
+    }
+    return self;
 }
 
 - (instancetype)initWithResponse:(DFImageResponse *)response {
-   if (self = [super init]) {
-      _image = response.image;
-      _error = response.error;
-      _source = response.source;
-      _data = response.data;
-      _userInfo = response.userInfo;
-   }
-   return response;
+    if (self = [super init]) {
+        _image = response.image;
+        _error = response.error;
+        _source = response.source;
+        _data = response.data;
+        _userInfo = response.userInfo;
+    }
+    return response;
 }
 
 - (id)copyWithZone:(NSZone *)zone {
-   return [[DFImageResponse alloc] initWithResponse:self];
+    return [[DFImageResponse alloc] initWithResponse:self];
 }
 
 - (id)mutableCopyWithZone:(NSZone *)zone {
-   return [[DFMutableImageResponse alloc] initWithResponse:self];
+    return [[DFMutableImageResponse alloc] initWithResponse:self];
 }
 
 + (instancetype)emptyResponse {
-   return [[DFImageResponse alloc] initWithImage:nil error:nil source:0];
+    return [[DFImageResponse alloc] initWithImage:nil error:nil source:0];
 }
 
 @end

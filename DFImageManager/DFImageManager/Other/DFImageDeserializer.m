@@ -28,18 +28,18 @@
 @implementation DFImageDeserializer
 
 - (BOOL)isValidResponse:(NSHTTPURLResponse *)response error:(NSError *__autoreleasing *)error {
-   if (response.statusCode != 200) {
-      if (error) {
-         *error = [NSError errorWithDomain:NSURLErrorDomain code:response.statusCode userInfo:nil];
-      }
-      return NO;
-   }
-   return YES;
+    if (response.statusCode != 200) {
+        if (error) {
+            *error = [NSError errorWithDomain:NSURLErrorDomain code:response.statusCode userInfo:nil];
+        }
+        return NO;
+    }
+    return YES;
 }
 
 - (id)objectFromResponse:(NSURLResponse *)response data:(NSData *)data error:(NSError *__autoreleasing *)error {
-   UIImage *image = [[UIImage alloc] initWithData:data scale:[UIScreen mainScreen].scale];
-   return [DFImageDecoder decodedImage:image];
+    UIImage *image = [[UIImage alloc] initWithData:data scale:[UIScreen mainScreen].scale];
+    return [DFImageDecoder decodedImage:image];
 }
 
 @end

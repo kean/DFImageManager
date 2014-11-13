@@ -40,94 +40,94 @@
 @synthesize finished = _finished;
 
 - (instancetype)initWithAsset:(id)asset options:(DFImageRequestOptions *)options cache:(DFCache *)cache {
-   if (self = [super init]) {
-      _asset = asset;
-      _options = options;
-      _cache = cache;
-      [self setCacheKeyForAsset:^NSString *(id asset, DFImageRequestOptions *options) {
-         if ([asset isKindOfClass:[NSString class]]) {
-            return asset;
-         } else {
-            return nil;
-         }
-      }];
-   }
-   return self;
+    if (self = [super init]) {
+        _asset = asset;
+        _options = options;
+        _cache = cache;
+        [self setCacheKeyForAsset:^NSString *(id asset, DFImageRequestOptions *options) {
+            if ([asset isKindOfClass:[NSString class]]) {
+                return asset;
+            } else {
+                return nil;
+            }
+        }];
+    }
+    return self;
 }
 
 - (void)start {
-   @synchronized(self) {
-      if ([self isCancelled]) {
-         [self finish];
-         return;
-      }
-      self.executing = YES;
-   }
-   
-   NSString *cacheKey = self.cacheKeyForAsset ? self.cacheKeyForAsset(_asset, _options) : nil;
-   
-   DFImageCacheStoragePolicy policy = _options.cacheStoragePolicy;
-   
-   // Memory cache lookup.
-   if (policy == DFImageCacheStorageAllowed ||
-       policy == DFImageCacheStorageAllowedInMemoryOnly) {
-      UIImage *image = [self.cache.memoryCache objectForKey:cacheKey];
-      if (image) {
-         _response = [[DFImageResponse alloc] initWithImage:image error:nil source:DFImageSourceMemoryCache];
-         [self finish];
-         return;
-      }
-   }
-   
-   // Disk cache lookup.
-   if (policy == DFImageCacheStorageAllowed) {
-      UIImage *image = [self.cache cachedImageForKey:cacheKey];
-      if (image) {
-         _response = [[DFImageResponse alloc] initWithImage:image error:nil source:DFImageSourceDiskCache];
-         [self finish];
-         return;
-      }
-   }
-   
-   [self finish];
+    @synchronized(self) {
+        if ([self isCancelled]) {
+            [self finish];
+            return;
+        }
+        self.executing = YES;
+    }
+    
+    NSString *cacheKey = self.cacheKeyForAsset ? self.cacheKeyForAsset(_asset, _options) : nil;
+    
+    DFImageCacheStoragePolicy policy = _options.cacheStoragePolicy;
+    
+    // Memory cache lookup.
+    if (policy == DFImageCacheStorageAllowed ||
+        policy == DFImageCacheStorageAllowedInMemoryOnly) {
+        UIImage *image = [self.cache.memoryCache objectForKey:cacheKey];
+        if (image) {
+            _response = [[DFImageResponse alloc] initWithImage:image error:nil source:DFImageSourceMemoryCache];
+            [self finish];
+            return;
+        }
+    }
+    
+    // Disk cache lookup.
+    if (policy == DFImageCacheStorageAllowed) {
+        UIImage *image = [self.cache cachedImageForKey:cacheKey];
+        if (image) {
+            _response = [[DFImageResponse alloc] initWithImage:image error:nil source:DFImageSourceDiskCache];
+            [self finish];
+            return;
+        }
+    }
+    
+    [self finish];
 }
 
 #pragma mark - <DFImageManagerOperation>
 
 - (DFImageResponse *)imageFetchResponse {
-   return _response;
+    return _response;
 }
 
 #pragma mark - Operation
 
 - (void)finish {
-   @synchronized(self) {
-      if (_executing) {
-         self.executing = NO;
-      }
-      self.finished = YES;
-   }
+    @synchronized(self) {
+        if (_executing) {
+            self.executing = NO;
+        }
+        self.finished = YES;
+    }
 }
 
 - (void)cancel {
-   @synchronized(self) {
-      if (self.isCancelled) {
-         return;
-      }
-      [super cancel];
-   }
+    @synchronized(self) {
+        if (self.isCancelled) {
+            return;
+        }
+        [super cancel];
+    }
 }
 
 - (void)setFinished:(BOOL)finished {
-   [self willChangeValueForKey:@"isFinished"];
-   _finished = finished;
-   [self didChangeValueForKey:@"isFinished"];
+    [self willChangeValueForKey:@"isFinished"];
+    _finished = finished;
+    [self didChangeValueForKey:@"isFinished"];
 }
 
 - (void)setExecuting:(BOOL)executing {
-   [self willChangeValueForKey:@"isExecuting"];
-   _executing = executing;
-   [self didChangeValueForKey:@"isExecuting"];
+    [self willChangeValueForKey:@"isExecuting"];
+    _executing = executing;
+    [self didChangeValueForKey:@"isExecuting"];
 }
 
 @end

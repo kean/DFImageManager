@@ -26,48 +26,48 @@
 @implementation DFImageRequestOptions
 
 + (instancetype)defaultOptions {
-   return [[self class] new];
+    return [[self class] new];
 }
 
 - (instancetype)init {
-   if (self = [super init]) {
-      _cacheStoragePolicy = DFImageCacheStorageAllowed;
-      _priority = DFImageRequestPriorityNormal;
-      _prefetch = NO;
-      _networkAccessAllowed = YES;
-   }
-   return self;
+    if (self = [super init]) {
+        _cacheStoragePolicy = DFImageCacheStorageAllowed;
+        _priority = DFImageRequestPriorityNormal;
+        _prefetch = NO;
+        _networkAccessAllowed = YES;
+    }
+    return self;
 }
 
 - (instancetype)initWithOptions:(DFImageRequestOptions *)options {
-   if (self = [super init]) {
-      _cacheStoragePolicy = options.cacheStoragePolicy;
-      _priority = options.priority;
-      _prefetch = options.prefetch;
-      _networkAccessAllowed = options.networkAccessAllowed;
-   }
-   return self;
+    if (self = [super init]) {
+        _cacheStoragePolicy = options.cacheStoragePolicy;
+        _priority = options.priority;
+        _prefetch = options.prefetch;
+        _networkAccessAllowed = options.networkAccessAllowed;
+    }
+    return self;
 }
 
 - (id)copyWithZone:(NSZone *)zone {
-   return [[DFImageRequestOptions alloc] initWithOptions:self];
+    return [[DFImageRequestOptions alloc] initWithOptions:self];
 }
 
 - (NSString *)description {
-   return [NSString stringWithFormat:@"<%@ %p> { cache_storage_policy = %i, priority = %@, prefetch = %i, network_access_allowed = %i }", [self class], self, (int)_cacheStoragePolicy, [DFImageRequestOptions _descriptionForPriority:_priority], _prefetch, _networkAccessAllowed];
+    return [NSString stringWithFormat:@"<%@ %p> { cache_storage_policy = %i, priority = %@, prefetch = %i, network_access_allowed = %i }", [self class], self, (int)_cacheStoragePolicy, [DFImageRequestOptions _descriptionForPriority:_priority], _prefetch, _networkAccessAllowed];
 }
 
 + (NSString *)_descriptionForPriority:(DFImageRequestPriority)priority {
-   static NSDictionary *table;
-   static dispatch_once_t onceToken;
-   dispatch_once(&onceToken, ^{
-      table = @{ @(DFImageRequestPriorityVeryLow) : @".VeryLow",
-                 @(DFImageRequestPriorityLow) : @".Low",
-      @(DFImageRequestPriorityNormal) : @".Normal",
-                 @(DFImageRequestPriorityHigh) : @".High",
-                 @(DFImageRequestPriorityVeryHigh) : @".VeryHigh" };
-   });
-   return table[@(priority)];
+    static NSDictionary *table;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        table = @{ @(DFImageRequestPriorityVeryLow) : @".VeryLow",
+                   @(DFImageRequestPriorityLow) : @".Low",
+                   @(DFImageRequestPriorityNormal) : @".Normal",
+                   @(DFImageRequestPriorityHigh) : @".High",
+                   @(DFImageRequestPriorityVeryHigh) : @".VeryHigh" };
+    });
+    return table[@(priority)];
 }
 
 @end
