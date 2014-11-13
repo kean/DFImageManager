@@ -7,7 +7,9 @@
 //
 
 #import "SDFFlickrExploreViewController.h"
+#import "SDFFlickrPhoto.h"
 #import "SDFFlickrRecentPhotosModel.h"
+#import <DFImageManagerKit.h>
 
 
 @interface SDFFlickrExploreViewController ()
@@ -59,7 +61,18 @@ SDFFlickrRecentPhotosDelegate>
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:NSStringFromClass([UICollectionViewCell class]) forIndexPath:indexPath];
-    cell.backgroundColor = [UIColor redColor];
+
+    DFImageView *imageView = (id)[cell viewWithTag:123];
+    if (!imageView) {
+        imageView = [[DFImageView alloc] initWithFrame:cell.contentView.bounds];
+        imageView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+        imageView.tag = 123;
+        [cell addSubview:imageView];
+    }
+
+    SDFFlickrPhoto *photo = _photos[indexPath.row];
+    [imageView setImageWithAsset:photo.photoURLSmall];
+    
     return cell;
 }
 
