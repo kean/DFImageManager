@@ -38,32 +38,43 @@
 
 - (instancetype)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {
-        self.imageManager = [DFImageManager sharedManager];
-        
-        _animation = DFImageViewAnimationFade;
-        _managesRequestPriorities = YES;
-        _placeholderColor = [UIColor colorWithRed:200.0/255.0 green:200.0/255.0 blue:200.0/255.0 alpha:1.f];
-        self.clipsToBounds = YES;
-        
-        _imageView = ({
-            UIImageView *view = [[UIImageView alloc] initWithFrame:self.bounds];
-            view.contentMode = UIViewContentModeScaleAspectFill;
-            view.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-            view.clipsToBounds = YES;
-            view;
-        });
-        
-        _backgroundView = ({
-            UIView *view = [[UIView alloc] initWithFrame:self.bounds];
-            view.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-            view.backgroundColor = self.placeholderColor;
-            view;
-        });
-        
-        [self addSubview:_backgroundView];
-        [self addSubview:_imageView];
+        [self _commonInit];
     }
     return self;
+}
+
+- (id)initWithCoder:(NSCoder *)aDecoder {
+    if (self = [super initWithCoder:aDecoder]) {
+        [self _commonInit];
+    }
+    return self;
+}
+
+- (void)_commonInit {
+    self.imageManager = [DFImageManager sharedManager];
+    
+    _animation = DFImageViewAnimationFade;
+    _managesRequestPriorities = YES;
+    _placeholderColor = [UIColor colorWithRed:200.0/255.0 green:200.0/255.0 blue:200.0/255.0 alpha:1.f];
+    self.clipsToBounds = YES;
+    
+    _imageView = ({
+        UIImageView *view = [[UIImageView alloc] initWithFrame:self.bounds];
+        view.contentMode = UIViewContentModeScaleAspectFill;
+        view.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+        view.clipsToBounds = YES;
+        view;
+    });
+    
+    _backgroundView = ({
+        UIView *view = [[UIView alloc] initWithFrame:self.bounds];
+        view.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+        view.backgroundColor = self.placeholderColor;
+        view;
+    });
+    
+    [self addSubview:_backgroundView];
+    [self addSubview:_imageView];
 }
 
 - (void)setImageWithAsset:(id)asset {

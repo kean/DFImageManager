@@ -71,7 +71,7 @@ NSString *const DFImageManagerCacheStoreOperationType = @"DFImageManagerCacheSto
 
 - (NSArray *)parametersForOptions:(DFImageRequestOptions *)options {
     NSMutableArray *parameters = [NSMutableArray new];
-    [parameters addObject:[NSString stringWithFormat:@"cache_storage_policy=%lu", options.cacheStoragePolicy]];
+    [parameters addObject:[NSString stringWithFormat:@"cache_storage_policy=%lu", (unsigned long)options.cacheStoragePolicy]];
     [parameters addObject:[NSString stringWithFormat:@"network_access_allowed=%i", options.networkAccessAllowed]];
     return [parameters copy];
 }
