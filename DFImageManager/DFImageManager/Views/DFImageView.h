@@ -57,6 +57,8 @@ typedef NS_ENUM(NSUInteger, DFImageViewAnimation) {
  */
 @property (nonatomic, readonly) UIImageView *failureImageView;
 
+- (void)setImage:(UIImage *)image;
+
 - (void)setImageWithAsset:(id)asset;
 - (void)setImageWithAsset:(id)asset options:(DFImageRequestOptions *)options;
 

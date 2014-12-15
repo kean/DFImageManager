@@ -170,6 +170,10 @@
 
 #pragma mark - Animation
 
+- (void)setImage:(UIImage *)image {
+    [self _df_setImage:image withAnimation:DFImageViewAnimationNone];
+}
+
 - (void)_df_setImage:(UIImage *)image withAnimation:(DFImageViewAnimation)animation {
     self.imageView.image = image;
     switch (animation) {
