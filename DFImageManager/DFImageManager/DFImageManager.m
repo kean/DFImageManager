@@ -92,7 +92,6 @@
 }
 
 - (DFImageRequestID *)requestImageForAsset:(id)asset options:(DFImageRequestOptions *)options completion:(DFImageRequestCompletion)completion {
-    NSParameterAssert(asset);
     if (!asset) {
         dispatch_async(dispatch_get_main_queue(), ^{
             if (completion) {
