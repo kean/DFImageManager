@@ -34,7 +34,6 @@
 @property (nonatomic) id asset;
 @property (nonatomic, copy) DFImageRequestOptions *options;
 @property (nonatomic, copy) DFImageRequestCompletion completion;
-@property (nonatomic) BOOL isPrefetch;
 
 - (instancetype)initWithAsset:(id)asset options:(DFImageRequestOptions *)options completion:(DFImageRequestCompletion)completion;
 
@@ -107,19 +106,23 @@
     DFImageRequestID *requestID = [[DFImageRequestID alloc] initWithRequestID:stringRequestID];
     
     dispatch_async(_syncQueue, ^{
-        _DFImageFetchHandler *handler = [[_DFImageFetchHandler alloc] initWithAsset:asset options:options completion:completion];
-        // Subscribe hanler for a given requestID.
-        [_handlers addHandler:handler forRequestID:requestID.requestID handler:requestID.handlerID];
-        
-        // find existing operation
-        NSOperation<DFImageManagerOperation> *operation = _operations[requestID.requestID];
-        if (operation) { // similar request is already being executed
-            return; // only valid operations remain in the dictionary
-        } else {
-            [self _requestImageForAsset:asset options:options requestID:requestID previousOperation:nil];
-        }
+        [self _requestImageForAsset:asset options:options requestID:requestID completion:completion];
     });
     return requestID;
+}
+
+- (void)_requestImageForAsset:(id)asset options:(DFImageRequestOptions *)options requestID:(DFImageRequestID *)requestID completion:(DFImageRequestCompletion)completion {
+    _DFImageFetchHandler *handler = [[_DFImageFetchHandler alloc] initWithAsset:asset options:options completion:completion];
+    // Subscribe hanler for a given requestID.
+    [_handlers addHandler:handler forRequestID:requestID.requestID handler:requestID.handlerID];
+    
+    // find existing operation
+    NSOperation<DFImageManagerOperation> *operation = _operations[requestID.requestID];
+    if (operation) { // similar request is already being executed
+        return; // only valid operations remain in the dictionary
+    } else {
+        [self _requestImageForAsset:asset options:options requestID:requestID previousOperation:nil];
+    }
 }
 
 - (void)_requestImageForAsset:(id)asset options:(DFImageRequestOptions *)options requestID:(DFImageRequestID *)requestID previousOperation:(NSOperation<DFImageManagerOperation> *)previousOperation {
@@ -236,27 +239,63 @@
     }
 }
 
-#pragma mark - Prefetching
+#pragma mark - Preheating
 
-- (DFImageRequestID *)prefetchImageForAsset:(id)asset options:(DFImageRequestOptions *)options {
-    if (!asset) {
-        return nil;
+- (void)startPreheatingAssets:(NSArray *)assets options:(DFImageRequestOptions *)options {
+    if (assets.count) {
+        dispatch_async(_syncQueue, ^{
+            [self _startPreheatingAssets:assets options:options];
+        });
     }
+}
+
+- (void)stopPreheatingAssets:(NSArray *)assets options:(DFImageRequestOptions *)options {
+    if (assets.count) {
+        dispatch_async(_syncQueue, ^{
+            [self _stopPreheatingAssets:assets options:options];
+        });
+    }
+}
+
+- (void)_startPreheatingAssets:(NSArray *)assets options:(DFImageRequestOptions *)options {
+    for (id asset in assets) {
+        options = [self _preheatingOptionsForAsset:asset options:options];
+        DFImageRequestID *requestID = [self _preheatingRequestIDForAsset:asset options:options];
+        _DFImageFetchHandler *handler = [_handlers handlerForRequestID:requestID.requestID handlerID:requestID.handlerID];
+        if (!handler) {
+            [self _requestImageForAsset:asset options:options requestID:requestID completion:nil];
+        }
+    }
+}
+
+- (void)_stopPreheatingAssets:(NSArray *)assets options:(DFImageRequestOptions *)options {
+    for (id asset in assets) {
+        options = [self _preheatingOptionsForAsset:asset options:options];
+        DFImageRequestID *requestID = [self _preheatingRequestIDForAsset:asset options:options];
+        [self _cancelRequestWithID:requestID];
+    }
+}
+
+- (DFImageRequestOptions *)_preheatingOptionsForAsset:(id)asset options:(DFImageRequestOptions *)options {
     if (!options) {
         options = [self requestOptionsForAsset:asset];
         options.priority = DFImageRequestPriorityLow;
     }
-    options.prefetch = YES;
-    return [self requestImageForAsset:asset options:options completion:nil];
+    return options;
 }
 
-- (void)stopPrefetchingAllImages {
+- (DFImageRequestID *)_preheatingRequestIDForAsset:(id)asset options:(DFImageRequestOptions *)options {
+    NSString *stringRequestID = [_conf imageManager:self createRequestIDForAsset:asset options:options];
+    return [[DFImageRequestID alloc] initWithRequestID:stringRequestID handlerID:@"preheat"];
+}
+
+- (void)stopPreheatingImageForAllAssets {
     dispatch_async(_syncQueue, ^{
         NSDictionary *handlers = [_handlers allHandlers];
         [handlers enumerateKeysAndObjectsUsingBlock:^(NSString *requestID, NSDictionary *handlersForOperation, BOOL *stop) {
             NSMutableArray *requestIDs = [NSMutableArray new];
             [handlersForOperation enumerateKeysAndObjectsUsingBlock:^(NSString *handlerID, _DFImageFetchHandler *handler, BOOL *stop) {
-                if (handler.options.prefetch) {
+                if ([handlerID isEqualToString:@"preheat"]) {
                     [requestIDs addObject:[[DFImageRequestID alloc] initWithRequestID:requestID handlerID:handlerID]];
                 }
             }];
@@ -265,16 +304,6 @@
             }
         }];
     });
-}
-
-- (NSArray *)_prefetchHandlersFromHandlers:(NSArray *)handlers {
-    NSMutableArray *prefetchHandlers = [NSMutableArray new];
-    for (_DFImageFetchHandler *handler in handlers) {
-        if (handler.options.prefetch) {
-            [prefetchHandlers addObject:handler];
-        }
-    }
-    return prefetchHandlers;
 }
 
 #pragma mark - Dependency Injectors

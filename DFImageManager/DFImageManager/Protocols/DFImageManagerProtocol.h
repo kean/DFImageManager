@@ -38,13 +38,12 @@
  */
 - (DFImageRequestOptions *)requestOptionsForAsset:(id)asset;
 
-/*! Start prefetch operation with a given prefetch priority. You would normally DFImageRequestPriorityLow or DFImageRequestPriorityVeryLow.
- */
-- (DFImageRequestID *)prefetchImageForAsset:(id)asset options:(DFImageRequestOptions *)options;
+- (void)startPreheatingAssets:(NSArray *)assets options:(DFImageRequestOptions *)options;
+- (void)stopPreheatingAssets:(NSArray *)assets options:(DFImageRequestOptions *)options;
 
-/*! Cancels all image prefetching operations.
- @note Do not cancel operations that were started as a prefetch operations but than were assigned 'real' handlers.
+/*! Cancels all image preheating operations.
+ @note Do not cancel operations that were started as a preheat operations but than were assigned 'real' handlers.
  */
-- (void)stopPrefetchingAllImages;
+- (void)stopPreheatingImageForAllAssets;
 
 @end

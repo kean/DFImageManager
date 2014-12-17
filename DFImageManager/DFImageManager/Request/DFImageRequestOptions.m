@@ -33,7 +33,6 @@
     if (self = [super init]) {
         _cacheStoragePolicy = DFImageCacheStorageAllowed;
         _priority = DFImageRequestPriorityNormal;
-        _prefetch = NO;
         _networkAccessAllowed = YES;
     }
     return self;
@@ -43,7 +42,6 @@
     if (self = [super init]) {
         _cacheStoragePolicy = options.cacheStoragePolicy;
         _priority = options.priority;
-        _prefetch = options.prefetch;
         _networkAccessAllowed = options.networkAccessAllowed;
     }
     return self;
@@ -54,7 +52,7 @@
 }
 
 - (NSString *)description {
-    return [NSString stringWithFormat:@"<%@ %p> { cache_storage_policy = %i, priority = %@, prefetch = %i, network_access_allowed = %i }", [self class], self, (int)_cacheStoragePolicy, [DFImageRequestOptions _descriptionForPriority:_priority], _prefetch, _networkAccessAllowed];
+    return [NSString stringWithFormat:@"<%@ %p> { cache_storage_policy = %i, priority = %@, network_access_allowed = %i }", [self class], self, (int)_cacheStoragePolicy, [DFImageRequestOptions _descriptionForPriority:_priority], _networkAccessAllowed];
 }
 
 + (NSString *)_descriptionForPriority:(DFImageRequestPriority)priority {

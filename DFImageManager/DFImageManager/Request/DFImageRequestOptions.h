@@ -35,10 +35,6 @@
 
 @property (nonatomic) BOOL networkAccessAllowed;
 
-/*! Marks request as a prefetch operation. Default NO.
- */
-@property (nonatomic) BOOL prefetch;
-
 - (instancetype)initWithOptions:(DFImageRequestOptions *)options;
 
 + (instancetype)defaultOptions;
