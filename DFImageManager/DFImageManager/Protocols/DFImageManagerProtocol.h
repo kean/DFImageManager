@@ -38,8 +38,8 @@
  */
 - (DFImageRequestOptions *)requestOptionsForAsset:(id)asset;
 
-- (void)startPreheatingAssets:(NSArray *)assets options:(DFImageRequestOptions *)options;
-- (void)stopPreheatingAssets:(NSArray *)assets options:(DFImageRequestOptions *)options;
+- (void)startPreheatingImageForAssets:(NSArray *)assets options:(DFImageRequestOptions *)options;
+- (void)stopPreheatingImagesForAssets:(NSArray *)assets options:(DFImageRequestOptions *)options;
 
 /*! Cancels all image preheating operations.
  @note Do not cancel operations that were started as a preheat operations but than were assigned 'real' handlers.

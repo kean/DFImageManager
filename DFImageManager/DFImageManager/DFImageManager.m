@@ -241,23 +241,23 @@
 
 #pragma mark - Preheating
 
-- (void)startPreheatingAssets:(NSArray *)assets options:(DFImageRequestOptions *)options {
+- (void)startPreheatingImageForAssets:(NSArray *)assets options:(DFImageRequestOptions *)options {
     if (assets.count) {
         dispatch_async(_syncQueue, ^{
-            [self _startPreheatingAssets:assets options:options];
+            [self _startPreheatingImageForAssets:assets options:options];
         });
     }
 }
 
-- (void)stopPreheatingAssets:(NSArray *)assets options:(DFImageRequestOptions *)options {
+- (void)stopPreheatingImagesForAssets:(NSArray *)assets options:(DFImageRequestOptions *)options {
     if (assets.count) {
         dispatch_async(_syncQueue, ^{
-            [self _stopPreheatingAssets:assets options:options];
+            [self _stopPreheatingImagesForAssets:assets options:options];
         });
     }
 }
 
-- (void)_startPreheatingAssets:(NSArray *)assets options:(DFImageRequestOptions *)options {
+- (void)_startPreheatingImageForAssets:(NSArray *)assets options:(DFImageRequestOptions *)options {
     for (id asset in assets) {
         options = [self _preheatingOptionsForAsset:asset options:options];
         DFImageRequestID *requestID = [self _preheatingRequestIDForAsset:asset options:options];
@@ -268,7 +268,7 @@
     }
 }
 
-- (void)_stopPreheatingAssets:(NSArray *)assets options:(DFImageRequestOptions *)options {
+- (void)_stopPreheatingImagesForAssets:(NSArray *)assets options:(DFImageRequestOptions *)options {
     for (id asset in assets) {
         options = [self _preheatingOptionsForAsset:asset options:options];
         DFImageRequestID *requestID = [self _preheatingRequestIDForAsset:asset options:options];
