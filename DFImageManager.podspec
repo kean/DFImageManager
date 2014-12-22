@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
    s.name         = "DFImageManager"
-   s.version      = "0.0.4"
+   s.version      = "0.0.5"
    s.summary      = "Complete solution for fetching, caching and adjusting images"
    s.homepage     = "https://github.com/kean/DFImageManager"
    s.license      = { :type => "MIT", :file => "LICENSE" }
@@ -12,5 +12,5 @@ Pod::Spec.new do |s|
    s.source_files  = "DFImageManager/DFImageManager/**/*.{h,m}"
    s.requires_arc = true
 
-   s.dependency "DFCache", "~> 1.0"
+   s.dependency "DFCache", "~> 2.0"
 end
