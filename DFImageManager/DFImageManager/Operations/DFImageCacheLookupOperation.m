@@ -24,7 +24,7 @@
 #import "DFImageManagerDefines.h"
 #import "DFImageRequestOptions.h"
 #import "DFImageResponse.h"
-#import <DFCache+DFImage.h>
+#import <DFCache/DFCache.h>
 
 
 @interface DFImageCacheLookupOperation ()
@@ -81,7 +81,7 @@
     
     // Disk cache lookup.
     if (policy == DFImageCacheStorageAllowed) {
-        UIImage *image = [self.cache cachedImageForKey:cacheKey];
+        UIImage *image = [self.cache cachedObjectForKey:cacheKey];
         if (image) {
             _response = [[DFImageResponse alloc] initWithImage:image error:nil source:DFImageSourceDiskCache];
             [self finish];

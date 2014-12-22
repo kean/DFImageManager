@@ -40,54 +40,22 @@
  */
 - (NSDictionary *)batchCachedDataForKeys:(NSArray *)keys;
 
-/*! Returns dictionary with objects from memory cache that correspond to the given keys.
+/*! Retrieves batch of objects that correspond to the given keys.
+ @param keys Array of the unique keys.
+ @param completion Completion block. Batch dictionary contains key : object pairs retrieved from receiver.
+ */
+- (void)batchCachedObjectsForKeys:(NSArray *)keys completion:(void (^)(NSDictionary *batch))completion;
+
+/*! Returns batch of objects that correspond to the given keys.
  @param keys Array of the unique keys.
  @return NSDictionary instance with key:data pairs.
  */
 - (NSDictionary *)batchCachedObjectsForKeys:(NSArray *)keys;
 
-/*! Retrieves batch of objects that correspond to the given keys.
- @param keys Array of the unique keys.
- @param decode Decoding block returning object from data.
- @param cost Cost block returning cost for memory cache. Might be nil.
- @param completion Completion block. Batch dictionary contains key : object pairs retrieved from receiver.
- */
-- (void)batchCachedObjectsForKeys:(NSArray *)keys
-                           decode:(DFCacheDecodeBlock)decode
-                             cost:(DFCacheCostBlock)cost
-                       completion:(void (^)(NSDictionary *batch))completion;
-
-/*! Returns batch of objects that correspond to the given keys.
- @param keys Array of the unique keys.
- @param decode Decoding block returning object from data.
- @param cost Cost block returning cost for memory cache. Might be nil.
- @return NSDictionary instance with key:data pairs.
- */
-- (NSDictionary *)batchCachedObjectsForKeys:(NSArray *)keys decode:(DFCacheDecodeBlock)decode cost:(DFCacheCostBlock)cost;
-
 /*! Retrieves first found object for the given keys.
  @param key The unique key.
- @param decode Decoding block returning object from data.
- @param cost Cost block returning cost for memory cache.
  @param completion Completion block.
  */
-- (void)firstCachedObjectForKeys:(NSArray *)keys
-                          decode:(DFCacheDecodeBlock)decode
-                            cost:(DFCacheCostBlock)cost
-                      completion:(void (^)(id object, NSString *key))completion;
-
-#pragma mark - Deprecated
-
-/*! Deprecated method. Use - (void)batchCachedDataForKeys:(NSArray *)keys completion:(void (^)(NSDictionary *batch))completion instead.
- */
-- (void)cachedDataForKeys:(NSArray *)keys completion:(void (^)(NSDictionary *batch))completion DEPRECATED_ATTRIBUTE;
-
-/*! Deprecated method. Use - (void)batchCachedObjectsForKeys:(NSArray *)keys decode:(DFCacheDecodeBlock)decode cost:(DFCacheCostBlock)cost completion:(void (^)(NSDictionary *batch))completion instead.
- */
-- (void)cachedObjectsForKeys:(NSArray *)keys decode:(DFCacheDecodeBlock)decode cost:(DFCacheCostBlock)cost completion:(void (^)(NSDictionary *batch))completion DEPRECATED_ATTRIBUTE;
-
-/* Deprecated method. Use - (void)firstCachedObjectForKeys:(NSArray *)keys decode:(DFCacheDecodeBlock)decode cost:(DFCacheCostBlock)cost completion:(void (^)(id object, NSString *key))completion instead.
- */
-- (void)cachedObjectForAnyKey:(NSArray *)keys decode:(DFCacheDecodeBlock)decode cost:(DFCacheCostBlock)cost completion:(void (^)(id object, NSString *key))completion DEPRECATED_ATTRIBUTE;
+- (void)firstCachedObjectForKeys:(NSArray *)keys completion:(void (^)(id object, NSString *key))completion;
 
 @end

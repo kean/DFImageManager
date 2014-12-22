@@ -5,4 +5,4 @@ workspace "DFImageManager.xcworkspace"
 
 source "https://github.com/CocoaPods/Specs.git"
 
-pod "DFCache", "~> 1.0"
+pod "DFCache", "~> 2.0"

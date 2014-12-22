@@ -23,7 +23,7 @@
 #import "DFImageCacheStoreOperation.h"
 #import "DFImageRequestOptions.h"
 #import "DFImageResponse.h"
-#import <DFCache+DFImage.h>
+#import <DFCache/DFCache.h>
 
 
 @interface DFImageCacheStoreOperation ()
@@ -83,10 +83,10 @@
     NSString *cacheKey = self.cacheKeyForAsset ? self.cacheKeyForAsset(_asset, _options) : nil;
     switch (options.cacheStoragePolicy) {
         case DFImageCacheStorageAllowed:
-            [_cache storeImage:response.image imageData:response.data forKey:cacheKey];
+            [_cache storeObject:response.image forKey:cacheKey data:response.data];
             break;
         case DFImageCacheStorageAllowedInMemoryOnly:
-            [_cache storeObject:response.image forKey:cacheKey cost:DFCacheCostUIImage];
+            [_cache setObject:response.image forKey:cacheKey];
             break;
         default:
             break;

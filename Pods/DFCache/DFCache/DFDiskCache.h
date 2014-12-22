@@ -28,7 +28,7 @@ static const unsigned long long DFDiskCacheCapacityUnlimited = 0;
  */
 @interface DFDiskCache : DFFileStorage
 
-- (id)initWithName:(NSString *)name;
+- (instancetype)initWithName:(NSString *)name;
 
 /*! Maximum disk cache capacity. Default value is 100 Mb.
  @discussion Not a strict limit. Disk storage is actually cleaned up only when cleanup method gets called.

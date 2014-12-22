@@ -27,13 +27,13 @@
 
 static char _blockToken;
 
-+ (id)scheduledTimerWithTimeInterval:(NSTimeInterval)timeInterval block:(void (^)())block userInfo:(id)userInfo repeats:(BOOL)repeats {
++ (NSTimer *)scheduledTimerWithTimeInterval:(NSTimeInterval)timeInterval block:(void (^)())block userInfo:(id)userInfo repeats:(BOOL)repeats {
     NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:timeInterval target:self selector:@selector(_timerDidFire:) userInfo:userInfo repeats:repeats];
     objc_setAssociatedObject(timer, &_blockToken, block, OBJC_ASSOCIATION_COPY);
     return timer;
 }
 
-+ (id)timerWithTimeInterval:(NSTimeInterval)timeInterval block:(void (^)())block userInfo:(id)userInfo repeats:(BOOL)repeats {
++ (NSTimer *)timerWithTimeInterval:(NSTimeInterval)timeInterval block:(void (^)())block userInfo:(id)userInfo repeats:(BOOL)repeats {
     NSTimer *timer = [NSTimer timerWithTimeInterval:timeInterval target:self selector:@selector(_timerDidFire:) userInfo:userInfo repeats:repeats];
     objc_setAssociatedObject(timer, &_blockToken, block, OBJC_ASSOCIATION_COPY);
     return timer;

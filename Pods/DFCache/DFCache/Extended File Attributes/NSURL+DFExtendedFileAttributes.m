@@ -25,22 +25,22 @@
 
 @implementation NSURL (DFExtendedFileAttributes)
 
-- (int)setExtendedAttributeValue:(id<NSCoding>)value forKey:(NSString *)key {
+- (int)df_setExtendedAttributeValue:(id<NSCoding>)value forKey:(NSString *)key {
     NSData *data = [NSKeyedArchiver archivedDataWithRootObject:value];
-    return [self setExtendedAttributeData:data forKey:key options:0];
+    return [self df_setExtendedAttributeData:data forKey:key options:0];
 }
 
-- (int)setExtendedAttributeData:(NSData *)data forKey:(NSString *)key options:(int)options {
+- (int)df_setExtendedAttributeData:(NSData *)data forKey:(NSString *)key options:(int)options {
     int error = setxattr(self.path.fileSystemRepresentation, [key UTF8String], [data bytes], [data length], 0, options);
     return !error ? 0 : errno;
 }
 
-- (id)extendedAttributeValueForKey:(NSString *)key error:(int *)error {
-    NSData *data = [self extendedAttributeDataForKey:key error:error options:0];
+- (id)df_extendedAttributeValueForKey:(NSString *)key error:(int *)error {
+    NSData *data = [self df_extendedAttributeDataForKey:key error:error options:0];
     return data ? [NSKeyedUnarchiver unarchiveObjectWithData:data] : nil;
 }
 
-- (NSData *)extendedAttributeDataForKey:(NSString *)k error:(int *)error options:(int)options {
+- (NSData *)df_extendedAttributeDataForKey:(NSString *)k error:(int *)error options:(int)options {
     const char *path = self.path.fileSystemRepresentation;
     const char *key = [k UTF8String];
     void *buffer;
@@ -63,20 +63,20 @@ handle_error:
     return nil;
 }
 
-- (int)removeExtendedAttributeForKey:(NSString *)key {
-    return [self removeExtendedAttributeForKey:key options:0];
+- (int)df_removeExtendedAttributeForKey:(NSString *)key {
+    return [self df_removeExtendedAttributeForKey:key options:0];
 }
 
-- (int)removeExtendedAttributeForKey:(NSString *)key options:(int)options {
+- (int)df_removeExtendedAttributeForKey:(NSString *)key options:(int)options {
     int error = removexattr(self.path.fileSystemRepresentation, [key UTF8String], options);
     return !error ? 0 : errno;
 }
 
-- (NSArray *)extendedAttributesList:(int *)error {
-    return [self extendedAttributesList:error options:0];
+- (NSArray *)df_extendedAttributesList:(int *)error {
+    return [self df_extendedAttributesList:error options:0];
 }
 
-- (NSArray *)extendedAttributesList:(int *)error options:(int)options {
+- (NSArray *)df_extendedAttributesList:(int *)error options:(int)options {
     const char *path = self.path.fileSystemRepresentation;
     char *buffer;
     ssize_t size = listxattr(path, NULL, SIZE_T_MAX, options);

@@ -22,7 +22,7 @@
 
 @interface DFCacheTimer : NSTimer
 
-+ (id)scheduledTimerWithTimeInterval:(NSTimeInterval)timeInterval block:(void (^)())block userInfo:(id)userInfo repeats:(BOOL)repeats;
-+ (id)timerWithTimeInterval:(NSTimeInterval)timeInterval block:(void (^)())block userInfo:(id)userInfo repeats:(BOOL)repeats;
++ (NSTimer *)scheduledTimerWithTimeInterval:(NSTimeInterval)timeInterval block:(void (^)())block userInfo:(id)userInfo repeats:(BOOL)repeats;
++ (NSTimer *)timerWithTimeInterval:(NSTimeInterval)timeInterval block:(void (^)())block userInfo:(id)userInfo repeats:(BOOL)repeats;
 
 @end

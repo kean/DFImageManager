@@ -29,7 +29,7 @@
  @param path Storage directory path.
  @param error A pointer to an error object. If an error occurs while creating storage directory, the pointer is set to the file system error (see NSFileManager). You may specify nil for this parameter if you do not want the error information.
  */
-- (id)initWithPath:(NSString *)path error:(NSError *__autoreleasing *)error;
+- (instancetype)initWithPath:(NSString *)path error:(NSError *__autoreleasing *)error NS_DESIGNATED_INITIALIZER;
 
 /*! Returns storage directory path.
  */

@@ -27,7 +27,7 @@
     NSFileManager *_fileManager;
 }
 
-- (id)initWithPath:(NSString *)path error:(NSError *__autoreleasing *)error {
+- (instancetype)initWithPath:(NSString *)path error:(NSError *__autoreleasing *)error {
     if (self = [super init]) {
         if (!path.length) {
             [NSException raise:NSInvalidArgumentException format:@"Attempting to initialize storage without directory path"];
