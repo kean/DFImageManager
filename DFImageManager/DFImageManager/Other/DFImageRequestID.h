@@ -23,6 +23,6 @@
 #import <Foundation/Foundation.h>
 
 
-@interface DFImageRequestID : NSObject
+@interface DFImageRequestID : NSObject <NSCopying>
 
 @end

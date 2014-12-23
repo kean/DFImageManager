@@ -46,6 +46,10 @@
     return [self initWithRequestID:requestID ?: [[NSUUID UUID] UUIDString] handlerID:[[NSUUID UUID] UUIDString]];
 }
 
+- (id)copyWithZone:(NSZone *)zone {
+    return [[DFImageRequestID alloc] initWithRequestID:self.requestID handlerID:self.handlerID];
+}
+
 - (NSString *)description {
     return [NSString stringWithFormat:@"<%@ %p> { requestID = %@, handlerID = %@ }", [self class], self, self.requestID, self.handlerID];
 }
