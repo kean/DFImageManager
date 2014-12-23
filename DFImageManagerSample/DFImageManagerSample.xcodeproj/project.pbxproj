@@ -15,6 +15,8 @@
 		0CF593571A4948C4007C5B56 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0CF593551A4948C4007C5B56 /* LaunchScreen.xib */; };
 		0CF593631A4948C4007C5B56 /* DFImageManagerSampleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CF593621A4948C4007C5B56 /* DFImageManagerSampleTests.m */; };
 		0CF593761A494A56007C5B56 /* SDFCompositeSampleCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CF593751A494A56007C5B56 /* SDFCompositeSampleCollectionViewController.m */; };
+		0CF5937C1A494CEB007C5B56 /* SDFFlickrPhoto.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CF593791A494CEB007C5B56 /* SDFFlickrPhoto.m */; };
+		0CF5937D1A494CEB007C5B56 /* SDFFlickrRecentPhotosModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CF5937B1A494CEB007C5B56 /* SDFFlickrRecentPhotosModel.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -43,6 +45,10 @@
 		0CF593621A4948C4007C5B56 /* DFImageManagerSampleTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DFImageManagerSampleTests.m; sourceTree = "<group>"; };
 		0CF593741A494A56007C5B56 /* SDFCompositeSampleCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDFCompositeSampleCollectionViewController.h; sourceTree = "<group>"; };
 		0CF593751A494A56007C5B56 /* SDFCompositeSampleCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDFCompositeSampleCollectionViewController.m; sourceTree = "<group>"; };
+		0CF593781A494CEB007C5B56 /* SDFFlickrPhoto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDFFlickrPhoto.h; sourceTree = "<group>"; };
+		0CF593791A494CEB007C5B56 /* SDFFlickrPhoto.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDFFlickrPhoto.m; sourceTree = "<group>"; };
+		0CF5937A1A494CEB007C5B56 /* SDFFlickrRecentPhotosModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDFFlickrRecentPhotosModel.h; sourceTree = "<group>"; };
+		0CF5937B1A494CEB007C5B56 /* SDFFlickrRecentPhotosModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDFFlickrRecentPhotosModel.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -135,6 +141,7 @@
 			isa = PBXGroup;
 			children = (
 				0CF593731A494A47007C5B56 /* Composite Sample View Controller */,
+				0CF593771A494C2F007C5B56 /* Model */,
 			);
 			path = "View Controllers";
 			sourceTree = "<group>";
@@ -147,6 +154,18 @@
 			);
 			path = "Composite Sample View Controller";
 			sourceTree = "<group>";
+		};
+		0CF593771A494C2F007C5B56 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				0CF593781A494CEB007C5B56 /* SDFFlickrPhoto.h */,
+				0CF593791A494CEB007C5B56 /* SDFFlickrPhoto.m */,
+				0CF5937A1A494CEB007C5B56 /* SDFFlickrRecentPhotosModel.h */,
+				0CF5937B1A494CEB007C5B56 /* SDFFlickrRecentPhotosModel.m */,
+			);
+			name = Model;
+			path = DFImageManagerSample/Source/Model;
+			sourceTree = SOURCE_ROOT;
 		};
 /* End PBXGroup section */
 
@@ -248,7 +267,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0CF5937C1A494CEB007C5B56 /* SDFFlickrPhoto.m in Sources */,
 				0CF593761A494A56007C5B56 /* SDFCompositeSampleCollectionViewController.m in Sources */,
+				0CF5937D1A494CEB007C5B56 /* SDFFlickrRecentPhotosModel.m in Sources */,
 				0CF5934F1A4948C4007C5B56 /* SDFMenuViewController.m in Sources */,
 				0CF5934C1A4948C4007C5B56 /* SDFAppDelegate.m in Sources */,
 				0CF593491A4948C4007C5B56 /* main.m in Sources */,
