@@ -1,2 +1,1 @@
-DFImageManager
-==============
+# DFImageManager (In Development)
