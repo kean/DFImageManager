@@ -65,6 +65,16 @@ static NSString * const reuseIdentifier = @"Cell";
     [DFImageManager setSharedCache:cache];
 }
 
+- (void)viewDidLayoutSubviews {
+    [super viewDidLayoutSubviews];
+ 
+    UICollectionViewFlowLayout *layout = (id)self.collectionViewLayout;
+    layout.minimumLineSpacing = 2.f;
+    layout.minimumInteritemSpacing = 2.f;
+    CGFloat side = (self.collectionView.bounds.size.width - 3.0 * 2.0) / 4.0;
+    layout.itemSize = CGSizeMake(side, side);
+}
+
 #pragma mark - <UICollectionViewDataSource>
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
@@ -77,7 +87,6 @@ static NSString * const reuseIdentifier = @"Cell";
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifier forIndexPath:indexPath];
-    cell.backgroundColor = [UIColor redColor];
 
     DFImageView *imageView = (id)[cell viewWithTag:15];
     if (!imageView) {
