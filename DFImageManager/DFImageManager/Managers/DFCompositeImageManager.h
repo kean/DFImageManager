@@ -10,7 +10,7 @@
 #import "DFImageManagerProtocol.h"
 #import <Foundation/Foundation.h>
 
-@interface DFCompoundImageManager : NSObject <DFImageManager>
+@interface DFCompositeImageManager : NSObject <DFImageManager>
 
 - (instancetype)initWithImageManagerFactory:(id<DFImageManagerFactory>)imageManagerFactory;
 

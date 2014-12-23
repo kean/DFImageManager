@@ -6,10 +6,10 @@
 //  Copyright (c) 2014 Alexander Grebenyuk. All rights reserved.
 //
 
-#import "DFCompoundImageManager.h"
+#import "DFCompositeImageManager.h"
 #import "DFImageRequestID.h"
 
-@implementation DFCompoundImageManager {
+@implementation DFCompositeImageManager {
     NSMutableDictionary *_imageManagers;
 }
 
