@@ -46,8 +46,20 @@
     return [self initWithRequestID:requestID ?: [[NSUUID UUID] UUIDString] handlerID:[[NSUUID UUID] UUIDString]];
 }
 
+- (BOOL)isEqual:(id)object {
+    if (object == self) {
+        return YES;
+    }
+    if ([object class] != [self class]) {
+        return NO;
+    }
+    DFImageRequestID *other = object;
+    return ([other.requestID isEqualToString:self.requestID] &&
+            [other.handlerID isEqualToString:self.handlerID]);
+}
+
 - (id)copyWithZone:(NSZone *)zone {
-    return [[DFImageRequestID alloc] initWithRequestID:self.requestID handlerID:self.handlerID];
+    return self;
 }
 
 - (NSString *)description {

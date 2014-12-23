@@ -25,14 +25,17 @@
     }
 }
 
-- (id<DFImageManager>)imageManagerForAssetClass:(Class)assetClass {
-    return _imageManagers[NSStringFromClass(assetClass)];
-}
-
 #pragma mark - <DFImageManagerFactory>
 
 - (id<DFImageManager>)imageManagerForAsset:(id)asset {
-    return [self imageManagerForAssetClass:[asset class]];
+    id<DFImageManager> __block imageManager;
+    [_imageManagers enumerateKeysAndObjectsUsingBlock:^(NSString *key, id<DFImageManager> object, BOOL *stop) {
+        if ([asset isKindOfClass:NSClassFromString(key)]) {
+            imageManager = object;
+            *stop = YES;
+        }
+    }];
+    return imageManager;
 }
 
 @end

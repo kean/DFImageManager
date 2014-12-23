@@ -13,6 +13,5 @@
 @interface DFImageManagerFactory : NSObject <DFImageManagerFactory>
 
 - (void)registerImageManager:(id<DFImageManager>)imageManager forAssetClass:(Class)assetClass;
-- (id<DFImageManager>)imageManagerForAssetClass:(Class)assetClass;
 
 @end

@@ -22,13 +22,17 @@
 
 #import <Foundation/Foundation.h>
 
+#import "DFImageManagerProtocol.h"
+#import "DFImageManagerConfigurationProtocol.h"
+#import "DFImageManagerOperationProtocol.h"
+
 #import "DFImageManagerDefines.h"
 #import "DFImageManager.h"
 #import "DFImageManagerConfiguration.h"
 
-#import "DFImageManagerProtocol.h"
-#import "DFImageManagerConfigurationProtocol.h"
-#import "DFImageManagerOperationProtocol.h"
+#import "DFImageManagerFactoryProtocol.h"
+#import "DFImageManagerFactory.h"
+#import "DFCompositeImageManager.h"
 
 #import "DFImageRequestID.h"
 #import "DFImageRequestOptions.h"
