@@ -20,6 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+#import "DFImageRequest.h"
 #import "DFImageRequestOptions.h"
 #import "DFImageResponse.h"
 #import "DFPHAssetlocalIdentifier.h"
@@ -47,24 +48,16 @@
 @synthesize executing = _executing;
 @synthesize finished = _finished;
 
-- (instancetype)initWithAssetLocalIdentifier:(DFPHAssetlocalIdentifier *)assetLocalIdentifier targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options {
-    if (self = [self _initWithTargetSize:targetSize contentMode:contentMode options:options]) {
-        _assetLocalIdentifier = assetLocalIdentifier;
-    }
-    return self;
-}
-
-- (instancetype)initWithAsset:(PHAsset *)asset targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options {
-    if (self = [self _initWithTargetSize:targetSize contentMode:contentMode options:options]) {
-        _asset = asset;
-    }
-    return self;
-}
-
-- (instancetype)_initWithTargetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options {
+- (instancetype)initWithRequest:(DFImageRequest *)request {
     if (self = [super init]) {
-        _targetSize = targetSize;
-        _options = options;
+        if ([request.asset isKindOfClass:[PHAsset class]]) {
+            _asset = request.asset;
+        } else {
+            _assetLocalIdentifier = request.asset;
+        }
+        _targetSize = request.targetSize;
+        _contentMode = request.contentMode;
+        _options = request.options;
     }
     return self;
 }
@@ -82,7 +75,6 @@
         _asset = [[PHAsset fetchAssetsWithLocalIdentifiers:@[_assetLocalIdentifier.identifier] options:nil] firstObject];
     }
     
-
     PHImageRequestOptions *options = [PHImageRequestOptions new];
     options.networkAccessAllowed = _options.networkAccessAllowed;
     options.deliveryMode = PHImageRequestOptionsDeliveryModeHighQualityFormat;

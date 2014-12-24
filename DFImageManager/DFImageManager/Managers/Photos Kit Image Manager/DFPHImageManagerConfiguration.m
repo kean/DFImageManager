@@ -53,20 +53,24 @@
 }
 
 - (NSString *)imageManager:(id<DFImageManager>)manager operationIDForRequest:(DFImageRequest *)request {
-    // TODO: Implement properly
-    return [self imageManager:manager uniqueIDForAsset:request.asset];
+    NSString *assetID = [self imageManager:manager uniqueIDForAsset:request.asset];
+    // TODO: Do something with targetSize
+    NSArray *parameters = [self _operationParametersForRequest:request];
+    return [NSString stringWithFormat:@"requestID?%@&asset_id=%@", [parameters componentsJoinedByString:@"&"], assetID];
+}
+
+- (NSArray *)_operationParametersForRequest:(DFImageRequest *)request {
+    NSMutableArray *parameters = [NSMutableArray new];
+    // We ignore cache storage policy
+    [parameters addObject:[NSString stringWithFormat:@"target_size=%@", NSStringFromCGSize(request.targetSize)]];
+    [parameters addObject:[NSString stringWithFormat:@"content_mode=%i", (int)request.contentMode]];
+    [parameters addObject:[NSString stringWithFormat:@"network_access_allowed=%i", request.options.networkAccessAllowed]];
+    return [parameters copy];
 }
 
 - (NSOperation<DFImageManagerOperation> *)imageManager:(id<DFImageManager>)manager createOperationForRequest:(DFImageRequest *)request previousOperation:(NSOperation<DFImageManagerOperation> *)previousOperation {
-    id asset = request.asset;
     if (!previousOperation) {
-        if ([asset isKindOfClass:[PHAsset class]]) {
-            //      return [[DFPHImageFetchOperation alloc] initWithAsset:asset options:(id)options];
-        }
-        
-        else if ([asset isKindOfClass:[DFPHAssetlocalIdentifier class]]) {
-            //        return [[DFPHImageFetchOperation alloc] initWithAssetLocalIdentifier:asset options:(id)options];
-        }
+        return [[DFPHImageFetchOperation alloc] initWithRequest:request];
     }
     return nil;
 }

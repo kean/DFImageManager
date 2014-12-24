@@ -6,18 +6,18 @@
 //  Copyright (c) 2014 Alexander Grebenyuk. All rights reserved.
 //
 
-#import "SDFCompositeSampleCollectionViewController.h"
+#import "SDFNetworkSampleCollectionViewController.h"
 #import "SDFFlickrPhoto.h"
 #import "SDFFlickrRecentPhotosModel.h"
 #import <DFImageManager/DFImageManagerKit.h>
 #import <DFCache/DFCache.h>
 
 
-@interface SDFCompositeSampleCollectionViewController () <SDFFlickrRecentPhotosModelDelegate>
+@interface SDFNetworkSampleCollectionViewController () <SDFFlickrRecentPhotosModelDelegate>
 
 @end
 
-@implementation SDFCompositeSampleCollectionViewController {
+@implementation SDFNetworkSampleCollectionViewController {
     UIActivityIndicatorView *_activityIndicatorView;
     NSMutableArray *_photos;
     SDFFlickrRecentPhotosModel *_model;

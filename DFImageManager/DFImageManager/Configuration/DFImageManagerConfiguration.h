@@ -23,6 +23,8 @@
 #import "DFImageManagerConfigurationProtocol.h"
 #import <Foundation/Foundation.h>
 
+@class DFImageRequest;
+
 
 extern NSString *const DFImageManagerCacheLookupOperationType;
 extern NSString *const DFImageManagerImageFetchOperationType;
@@ -37,7 +39,7 @@ extern NSString *const DFImageManagerCacheStoreOperationType;
 
 @interface DFImageManagerConfiguration (SubclassingHooks)
 
-- (NSArray *)operationParametersForOptions:(DFImageRequestOptions *)options;
+- (NSArray *)operationParametersForRequest:(DFImageRequest *)request;
 
 // operations factory methods
 

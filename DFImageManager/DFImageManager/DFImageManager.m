@@ -158,8 +158,11 @@
         for (_DFImageFetchHandler *handler in handlers) {
             // TODO: Add test whether the image should be processed
             // TODO: Create extra operation for processing! Don't do it on sync queue.
-            UIImage *processedImage = [_processor processImageForKey:assetID image:image targetSize:handler.request.targetSize contentMode:handler.request.contentMode];
-            
+            UIImage *processedImage = image;
+            if (_processor != nil) {
+                processedImage = [_processor processImageForKey:assetID image:image targetSize:handler.request.targetSize contentMode:handler.request.contentMode];
+            }
+
             if (handler.completion != nil) {
                 dispatch_async(dispatch_get_main_queue(), ^{
                     handler.completion(processedImage, info);

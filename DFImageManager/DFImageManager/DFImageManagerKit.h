@@ -44,6 +44,10 @@
 
 #import "DFNetworkImageManagerConfiguration.h"
 
+#import "DFPHImageManagerConfiguration.h"
+#import "DFPHImageFetchOperation.h"
+#import "DFPHAssetlocalIdentifier.h"
+
 #import "DFImageDecoder.h"
 
 #import "DFImageCacheLookupOperation.h"

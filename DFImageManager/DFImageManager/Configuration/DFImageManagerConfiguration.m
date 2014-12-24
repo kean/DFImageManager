@@ -43,16 +43,12 @@ NSString *const DFImageManagerCacheStoreOperationType = @"DFImageManagerCacheSto
 
 - (NSString *)imageManager:(id<DFImageManager>)manager operationIDForRequest:(DFImageRequest *)request {
     NSString *assetID = [self imageManager:manager uniqueIDForAsset:request.asset];
-    // TODO: Do something with targetSize
-    NSArray *parameters = [self operationParametersForOptions:request.options];
+    NSArray *parameters = [self operationParametersForRequest:request];
     return [NSString stringWithFormat:@"requestID?%@&asset_id=%@", [parameters componentsJoinedByString:@"&"], assetID];
 }
 
-- (NSArray *)operationParametersForOptions:(DFImageRequestOptions *)options {
-    NSMutableArray *parameters = [NSMutableArray new];
-    [parameters addObject:[NSString stringWithFormat:@"cache_storage_policy=%lu", (unsigned long)options.cacheStoragePolicy]];
-    [parameters addObject:[NSString stringWithFormat:@"network_access_allowed=%i", options.networkAccessAllowed]];
-    return [parameters copy];
+- (NSArray *)operationParametersForRequest:(DFImageRequest *)request {
+    return @[];
 }
 
 - (NSOperation<DFImageManagerOperation> *)imageManager:(id<DFImageManager>)manager createOperationForRequest:(DFImageRequest *)request previousOperation:(NSOperation<DFImageManagerOperation> *)previousOperation {

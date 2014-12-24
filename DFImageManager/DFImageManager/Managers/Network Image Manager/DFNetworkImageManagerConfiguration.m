@@ -65,6 +65,14 @@
     }
 }
 
+- (NSArray *)operationParametersForRequest:(DFImageRequest *)request {
+    NSMutableArray *parameters = [NSMutableArray new];
+    // We ignore targetSize and contentMode, because we can't modify the given URL
+    [parameters addObject:[NSString stringWithFormat:@"cache_storage_policy=%lu", (unsigned long)request.options.cacheStoragePolicy]];
+    [parameters addObject:[NSString stringWithFormat:@"network_access_allowed=%i", request.options.networkAccessAllowed]];
+    return [parameters copy];
+}
+
 #pragma mark - Subclassing Hooks
 
 - (NSOperation<DFImageManagerOperation> *)createCacheLookupOperationForRequest:(DFImageRequest *)request {

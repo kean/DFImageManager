@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SDFCompositeSampleCollectionViewController : UICollectionViewController
+@interface SDFNetworkSampleCollectionViewController : UICollectionViewController
 
 @end

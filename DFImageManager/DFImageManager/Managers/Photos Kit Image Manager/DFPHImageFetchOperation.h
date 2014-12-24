@@ -24,6 +24,7 @@
 #import "DFImageManagerOperationProtocol.h"
 #import <Foundation/Foundation.h>
 
+@class DFImageRequest;
 @class DFImageRequestOptions;
 @class DFPHAssetlocalIdentifier;
 @class PHAsset;
@@ -31,7 +32,6 @@
 
 @interface DFPHImageFetchOperation : NSOperation <DFImageManagerOperation>
 
-- (instancetype)initWithAsset:(PHAsset *)asset targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options;
-- (instancetype)initWithAssetLocalIdentifier:(DFPHAssetlocalIdentifier *)assetLocalIdentifier targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options;
+- (instancetype)initWithRequest:(DFImageRequest *)request;
 
 @end
