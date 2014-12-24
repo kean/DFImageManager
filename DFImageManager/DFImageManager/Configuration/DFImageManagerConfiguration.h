@@ -37,8 +37,6 @@ extern NSString *const DFImageManagerCacheStoreOperationType;
 @interface DFImageManagerConfiguration (SubclassingHooks)
 
 // methods for constracting requestID
-
-- (NSString *)uniqueIDForAsset:(id)asset;
 - (NSArray *)parametersForOptions:(DFImageRequestOptions *)options;
 
 // operations factory methods

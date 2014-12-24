@@ -31,16 +31,22 @@ extern NSString *const DFImageInfoErrorKey;
 extern NSString *const DFImageInfoDataKey;
 
 
-typedef NS_ENUM(NSUInteger, DFImageCacheStoragePolicy) {
+typedef NS_ENUM(NSInteger, DFImageCacheStoragePolicy) {
     DFImageCacheStorageAllowed,
     DFImageCacheStorageAllowedInMemoryOnly,
     DFImageCacheStorageNotAllowed
 };
 
-typedef NS_ENUM(NSUInteger, DFImageSource) {
+typedef NS_ENUM(NSInteger, DFImageSource) {
     DFImageSourceMemoryCache,
     DFImageSourceDiskCache,
     DFImageSourceExternal
+};
+
+typedef NS_ENUM(NSInteger, DFImageContentMode) {
+    DFImageContentModeAspectFill = 0,
+    DFImageContentModeAspectFit = 1,
+    DFImageContentModeDefault = DFImageContentModeAspectFill
 };
 
 

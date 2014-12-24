@@ -28,7 +28,14 @@
 
 @protocol DFImageManager <NSObject>
 
-- (DFImageRequestID *)requestImageForAsset:(id)asset options:(DFImageRequestOptions *)options completion:(void (^)(UIImage *image, NSDictionary *info))completion;
+/*! Requests an image representation for the specified asset.
+ @param asset The asset whose image data is to be loaded.
+ @param targetSize The target size in pixels of image to be returned.
+ @param contentMode An option for how to fit the image to the aspect ratio of the requested size. For details, see DFImageContentMode.
+ @param options Options specifying how image manager should handle the request.
+ @param completion A block to be called when image loading is complete, providing the requested image or information about the status of the request.
+ */
+- (DFImageRequestID *)requestImageForAsset:(id)asset targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options completion:(void (^)(UIImage *image, NSDictionary *info))completion;
 
 - (void)cancelRequestWithID:(DFImageRequestID *)requestID;
 
@@ -38,8 +45,8 @@
  */
 - (DFImageRequestOptions *)requestOptionsForAsset:(id)asset;
 
-- (void)startPreheatingImageForAssets:(NSArray *)assets options:(DFImageRequestOptions *)options;
-- (void)stopPreheatingImagesForAssets:(NSArray *)assets options:(DFImageRequestOptions *)options;
+- (void)startPreheatingImageForAssets:(NSArray *)assets targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options;
+- (void)stopPreheatingImagesForAssets:(NSArray *)assets targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options;
 
 /*! Cancels all image preheating operations.
  @note Do not cancel operations that were started as a preheat operations but than were assigned 'real' handlers.

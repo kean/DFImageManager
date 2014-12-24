@@ -52,7 +52,10 @@ static NSString * const reuseIdentifier = @"Cell";
 }
 
 - (void)_configureImageManager {
-    DFImageManager *networkImageManager = [[DFImageManager alloc] initWithConfiguration:[DFImageManagerConfiguration new]];
+    // TODO: Change cache configuration.
+    DFImageProcessingManager *imageProcessingManager = [DFImageProcessingManager new];
+    
+    DFImageManager *networkImageManager = [[DFImageManager alloc] initWithConfiguration:[DFImageManagerConfiguration new] imageProcessingManager:imageProcessingManager];
     
     DFImageManagerFactory *factory = [DFImageManagerFactory new];
     [factory registerImageManager:networkImageManager forAssetClass:[NSString class]];
@@ -97,7 +100,7 @@ static NSString * const reuseIdentifier = @"Cell";
     }
     
     SDFFlickrPhoto *photo = _photos[indexPath.row];
-    [imageView setImageWithAsset:photo.photoURLSmall];
+    [imageView setImageWithAsset:photo.photoURL];
     
     return cell;
 }

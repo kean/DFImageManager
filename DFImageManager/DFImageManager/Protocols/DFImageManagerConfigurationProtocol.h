@@ -30,7 +30,9 @@
  */
 @protocol DFImageManagerConfiguration <NSObject>
 
-- (NSString *)imageManager:(id<DFImageManager>)manager createRequestIDForAsset:(id)asset options:(DFImageRequestOptions *)options;
+- (NSString *)imageManager:(id<DFImageManager>)manager uniqueIDForAsset:(id)asset;
+
+- (NSString *)imageManager:(id<DFImageManager>)manager createRequestIDForAsset:(id)asset options:(DFImageRequestOptions *)options DEPRECATED_ATTRIBUTE;
 
 /*! Return nil if no work is required.
  */

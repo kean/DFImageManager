@@ -20,27 +20,16 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "DFImageManagerConfigurationProtocol.h"
-#import "DFImageManagerProtocol.h"
-#import "DFImageProcessingManagerProtocol.h"
+#import "DFImageManagerDefines.h"
 #import <Foundation/Foundation.h>
 
-@class DFCache;
 
+@protocol DFImageProcessingManager <NSObject>
 
-@interface DFImageManager : NSObject <DFImageManager>
-
-@property (nonatomic, readonly) id<DFImageManagerConfiguration> configuration;
-@property (nonatomic, readonly) id<DFImageProcessingManager> imageProcessingManager;
-
-- (instancetype)initWithConfiguration:(id<DFImageManagerConfiguration>)configuration imageProcessingManager:(id<DFImageProcessingManager>)processingManager;
-
-// Basic dependency injectors.
-
-+ (id<DFImageManager>)sharedManager;
-+ (void)setSharedManager:(id<DFImageManager>)manager;
-
-+ (DFCache *)sharedCache;
-+ (void)setSharedCache:(DFCache *)cache;
+/*! Returns cached image for a given key and options.
+ @param targetSize The target size in pixels of image to be returned. 
+ */
+- (UIImage *)processedImageForKey:(NSString *)key targetSize:(CGSize)size contentMode:(DFImageContentMode)contentMode;
+- (UIImage *)processImageForKey:(NSString *)key image:(UIImage *)image targetSize:(CGSize)size contentMode:(DFImageContentMode)contentMode;
 
 @end

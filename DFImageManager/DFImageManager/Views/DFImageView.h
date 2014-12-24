@@ -37,6 +37,11 @@ typedef NS_ENUM(NSUInteger, DFImageViewAnimation) {
 @interface DFImageView : UIView
 
 @property (nonatomic) id<DFImageManager> imageManager;
+
+@property (nonatomic) CGSize targetSize;
+
+@property (nonatomic) DFImageContentMode contentMode;
+
 @property (nonatomic) DFImageViewAnimation animation;
 
 /*! Placeholder color is displayed when the image is being loaded. It doesn't interfere with the background color of the view so that the images that has transparency are displayed properly.
@@ -60,7 +65,8 @@ typedef NS_ENUM(NSUInteger, DFImageViewAnimation) {
 - (void)setImage:(UIImage *)image;
 
 - (void)setImageWithAsset:(id)asset;
-- (void)setImageWithAsset:(id)asset options:(DFImageRequestOptions *)options;
+- (void)setImageWithAsset:(id)asset targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode;
+- (void)setImageWithAsset:(id)asset targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options;
 
 - (void)prepareForReuse;
 

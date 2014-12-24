@@ -54,19 +54,19 @@ NSString *const DFImageManagerCacheStoreOperationType = @"DFImageManagerCacheSto
 
 #pragma mark - <DFImageManagerConfiguration>
 
-- (NSString *)imageManager:(id<DFImageManager>)manager createRequestIDForAsset:(id)asset options:(DFImageRequestOptions *)options {
-    NSArray *parameters = [self parametersForOptions:options];
-    NSString *assetID = [self uniqueIDForAsset:asset];
-    return [NSString stringWithFormat:@"requestID?%@&asset_id=%@", [parameters componentsJoinedByString:@"&"], assetID];
-}
-
-- (NSString *)uniqueIDForAsset:(id)asset {
+- (NSString *)imageManager:(id<DFImageManager>)manager uniqueIDForAsset:(id)asset {
     if ([asset isKindOfClass:[NSString class]]) {
         return asset;
     } else {
         [NSException raise:NSInvalidArgumentException format:@"Unsupported asset %@", asset];
         return nil;
     }
+}
+
+- (NSString *)imageManager:(id<DFImageManager>)manager createRequestIDForAsset:(id)asset options:(DFImageRequestOptions *)options {
+    NSArray *parameters = [self parametersForOptions:options];
+    NSString *assetID = [self imageManager:manager uniqueIDForAsset:asset];
+    return [NSString stringWithFormat:@"requestID?%@&asset_id=%@", [parameters componentsJoinedByString:@"&"], assetID];
 }
 
 - (NSArray *)parametersForOptions:(DFImageRequestOptions *)options {

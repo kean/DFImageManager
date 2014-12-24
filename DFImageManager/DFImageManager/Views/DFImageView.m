@@ -54,6 +54,7 @@
     self.imageManager = [DFImageManager sharedManager];
     
     _animation = DFImageViewAnimationFade;
+    _contentMode = DFImageContentModeDefault;
     _managesRequestPriorities = YES;
     _placeholderColor = [UIColor colorWithRed:200.0/255.0 green:200.0/255.0 blue:200.0/255.0 alpha:1.f];
     self.clipsToBounds = YES;
@@ -77,11 +78,24 @@
     [self addSubview:_imageView];
 }
 
-- (void)setImageWithAsset:(id)asset {
-    [self setImageWithAsset:asset options:nil];
+- (CGSize)targetSize {
+    if (CGSizeEqualToSize(CGSizeZero, _targetSize)) {
+        CGSize size = self.bounds.size;
+        CGFloat scale = [UIScreen mainScreen].scale;
+        return CGSizeMake(size.width * scale, size.height * scale);
+    }
+    return _targetSize;
 }
 
-- (void)setImageWithAsset:(id)asset options:(DFImageRequestOptions *)options {
+- (void)setImageWithAsset:(id)asset {
+    [self setImageWithAsset:asset targetSize:self.targetSize contentMode:self.contentMode options:nil];
+}
+
+- (void)setImageWithAsset:(id)asset targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode {
+    [self setImageWithAsset:asset targetSize:targetSize contentMode:contentMode options:nil];
+}
+
+- (void)setImageWithAsset:(id)asset targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options {
     [self prepareForReuse];
     
     if (!asset) {
@@ -94,7 +108,7 @@
     if (self.managesRequestPriorities) {
         options.priority = (self.window == nil) ? DFImageRequestPriorityNormal : DFImageRequestPriorityVeryHigh;
     }
-    _requestID = [self.imageManager requestImageForAsset:asset options:options completion:^(UIImage *image, NSDictionary *info) {
+    _requestID = [self.imageManager requestImageForAsset:asset targetSize:targetSize contentMode:contentMode options:options completion:^(UIImage *image, NSDictionary *info) {
         DFImageSource source = [info[DFImageInfoSourceKey] unsignedIntegerValue];
         NSError *error = info[DFImageInfoErrorKey];
         if (image) {

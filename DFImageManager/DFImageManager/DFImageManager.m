@@ -32,18 +32,22 @@
 @interface _DFImageFetchHandler : NSObject
 
 @property (nonatomic) id asset;
+@property (nonatomic) CGSize targetSize;
+@property (nonatomic) DFImageContentMode contentMode;
 @property (nonatomic, copy) DFImageRequestOptions *options;
 @property (nonatomic, copy) DFImageRequestCompletion completion;
 
-- (instancetype)initWithAsset:(id)asset options:(DFImageRequestOptions *)options completion:(DFImageRequestCompletion)completion;
+- (instancetype)initWithAsset:(id)asset targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options completion:(DFImageRequestCompletion)completion;
 
 @end
 
 @implementation _DFImageFetchHandler
 
-- (instancetype)initWithAsset:(id)asset options:(DFImageRequestOptions *)options completion:(DFImageRequestCompletion)completion {
+- (instancetype)initWithAsset:(id)asset targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options completion:(DFImageRequestCompletion)completion {
     if (self = [super init]) {
         _asset = asset;
+        _targetSize = targetSize;
+        _contentMode = contentMode;
         _options = options;
         _completion = completion;
     }
@@ -51,7 +55,7 @@
 }
 
 - (NSString *)description {
-    return [NSString stringWithFormat:@"<%@ %p> { asset = %@, options = %@, completion = %@ }", [self class], self, _asset, _options, _completion];
+    return [NSString stringWithFormat:@"<%@ %p> { asset = %@, targetSize = %@, contentMode = %i, options = %@, completion = %@ }", [self class], self, _asset, NSStringFromCGSize(_targetSize), (int)_contentMode, _options, _completion];
 }
 
 @end
@@ -65,10 +69,12 @@
 }
 
 @synthesize configuration = _conf;
+@synthesize imageProcessingManager = _processor;
 
-- (instancetype)initWithConfiguration:(id<DFImageManagerConfiguration>)configuration {
+- (instancetype)initWithConfiguration:(id<DFImageManagerConfiguration>)configuration imageProcessingManager:(id<DFImageProcessingManager>)processingManager {
     if (self = [super init]) {
         _conf = configuration;
+        _processor = processingManager;
         
         _syncQueue = dispatch_queue_create([[NSString stringWithFormat:@"%@-queue-%p", [self class], self] UTF8String], DISPATCH_QUEUE_SERIAL);
         _handlers = [DFImageHandlerDictionary new];
@@ -90,7 +96,7 @@
     return options;
 }
 
-- (DFImageRequestID *)requestImageForAsset:(id)asset options:(DFImageRequestOptions *)options completion:(DFImageRequestCompletion)completion {
+- (DFImageRequestID *)requestImageForAsset:(id)asset targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options completion:(void (^)(UIImage *, NSDictionary *))completion {
     if (!asset) {
         dispatch_async(dispatch_get_main_queue(), ^{
             if (completion) {
@@ -99,6 +105,21 @@
         });
         return nil;
     }
+    
+    // Test if resized image exists.
+    // TODO: Add test whether the image should be processed
+    NSString *assetUID = [_conf imageManager:self uniqueIDForAsset:asset];
+    UIImage *image = [_processor processedImageForKey:assetUID targetSize:targetSize contentMode:contentMode];
+    if (image) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (completion) {
+                completion(image, nil);
+            }
+        });
+        return nil;
+    }
+    
+    // Start fetching.
     if (!options) {
         options = [self requestOptionsForAsset:asset];
     }
@@ -106,13 +127,13 @@
     DFImageRequestID *requestID = [[DFImageRequestID alloc] initWithRequestID:stringRequestID];
     
     dispatch_async(_syncQueue, ^{
-        [self _requestImageForAsset:asset options:options requestID:requestID completion:completion];
+        [self _requestImageForAsset:asset targetSize:targetSize contentMode:contentMode options:options requestID:requestID completion:completion];
     });
     return requestID;
 }
 
-- (void)_requestImageForAsset:(id)asset options:(DFImageRequestOptions *)options requestID:(DFImageRequestID *)requestID completion:(DFImageRequestCompletion)completion {
-    _DFImageFetchHandler *handler = [[_DFImageFetchHandler alloc] initWithAsset:asset options:options completion:completion];
+- (void)_requestImageForAsset:(id)asset targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options requestID:(DFImageRequestID *)requestID completion:(DFImageRequestCompletion)completion {
+    _DFImageFetchHandler *handler = [[_DFImageFetchHandler alloc] initWithAsset:asset targetSize:targetSize contentMode:contentMode options:options completion:completion];
     // Subscribe hanler for a given requestID.
     [_handlers addHandler:handler forRequestID:requestID.requestID handler:requestID.handlerID];
     
@@ -133,13 +154,21 @@
         NSDictionary *info = [self _infoFromResponse:response];
         
         NSArray *handlers = [_handlers handlersForRequestID:requestID.requestID];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            for (_DFImageFetchHandler *handler in handlers) {
-                if (handler.completion) {
-                    handler.completion(image, info);
-                }
+        
+        // Process image
+        NSString *assetID = [_conf imageManager:self uniqueIDForAsset:asset];
+        
+        for (_DFImageFetchHandler *handler in handlers) {
+            // TODO: Add test whether the image should be processed
+            // TODO: Create extra operation for processing! Don't do it on sync queue.
+            UIImage *processedImage = [_processor processImageForKey:assetID image:image targetSize:handler.targetSize contentMode:handler.contentMode];
+            
+            if (handler.completion) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    handler.completion(processedImage, info);
+                });
             }
-        });
+        }
         
         [_operations removeObjectForKey:requestID.requestID];
         [_handlers removeAllHandlersForRequestID:requestID.requestID];
@@ -241,34 +270,34 @@
 
 #pragma mark - Preheating
 
-- (void)startPreheatingImageForAssets:(NSArray *)assets options:(DFImageRequestOptions *)options {
+- (void)startPreheatingImageForAssets:(NSArray *)assets targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options {
     if (assets.count) {
         dispatch_async(_syncQueue, ^{
-            [self _startPreheatingImageForAssets:assets options:options];
+            [self _startPreheatingImageForAssets:assets targetSize:targetSize contentMode:contentMode options:options];
         });
     }
 }
 
-- (void)stopPreheatingImagesForAssets:(NSArray *)assets options:(DFImageRequestOptions *)options {
+- (void)stopPreheatingImagesForAssets:(NSArray *)assets targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options {
     if (assets.count) {
         dispatch_async(_syncQueue, ^{
-            [self _stopPreheatingImagesForAssets:assets options:options];
+            [self _stopPreheatingImagesForAssets:assets targetSize:targetSize contentMode:contentMode options:options];
         });
     }
 }
 
-- (void)_startPreheatingImageForAssets:(NSArray *)assets options:(DFImageRequestOptions *)options {
+- (void)_startPreheatingImageForAssets:(NSArray *)assets targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options {
     for (id asset in assets) {
         options = [self _preheatingOptionsForAsset:asset options:options];
         DFImageRequestID *requestID = [self _preheatingRequestIDForAsset:asset options:options];
         _DFImageFetchHandler *handler = [_handlers handlerForRequestID:requestID.requestID handlerID:requestID.handlerID];
         if (!handler) {
-            [self _requestImageForAsset:asset options:options requestID:requestID completion:nil];
+            [self _requestImageForAsset:asset targetSize:targetSize contentMode:contentMode options:options requestID:requestID completion:nil];
         }
     }
 }
 
-- (void)_stopPreheatingImagesForAssets:(NSArray *)assets options:(DFImageRequestOptions *)options {
+- (void)_stopPreheatingImagesForAssets:(NSArray *)assets targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options {
     for (id asset in assets) {
         options = [self _preheatingOptionsForAsset:asset options:options];
         DFImageRequestID *requestID = [self _preheatingRequestIDForAsset:asset options:options];

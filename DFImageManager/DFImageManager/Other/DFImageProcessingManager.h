@@ -20,27 +20,17 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "DFImageManagerConfigurationProtocol.h"
-#import "DFImageManagerProtocol.h"
 #import "DFImageProcessingManagerProtocol.h"
 #import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
-@class DFCache;
+/*! Processes and caches images retrieved by different image managers.
+ */
+@interface DFImageProcessingManager : NSObject <DFImageProcessingManager>
 
+- (instancetype)initWithCache:(NSCache *)cache;
+- (instancetype)init;
 
-@interface DFImageManager : NSObject <DFImageManager>
-
-@property (nonatomic, readonly) id<DFImageManagerConfiguration> configuration;
-@property (nonatomic, readonly) id<DFImageProcessingManager> imageProcessingManager;
-
-- (instancetype)initWithConfiguration:(id<DFImageManagerConfiguration>)configuration imageProcessingManager:(id<DFImageProcessingManager>)processingManager;
-
-// Basic dependency injectors.
-
-+ (id<DFImageManager>)sharedManager;
-+ (void)setSharedManager:(id<DFImageManager>)manager;
-
-+ (DFCache *)sharedCache;
-+ (void)setSharedCache:(DFCache *)cache;
+@property (nonatomic, readonly) NSCache *cache;
 
 @end
