@@ -28,4 +28,9 @@
 
 - (id<DFImageManager>)imageManagerForAsset:(id)asset;
 
+@optional
+/*! Add a chance for a factory to transform an asset before it ever gets processed by the framework.
+ */
+- (id)transformedAsset:(id)asset;
+
 @end

@@ -36,6 +36,7 @@
 }
 
 - (DFImageRequestID *)requestImageForAsset:(id)asset targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options completion:(void (^)(UIImage *, NSDictionary *))completion {
+    asset = [self _transformedAssetForAsset:asset];
     id<DFImageManager> imageManager = [self.imageManagerFactory imageManagerForAsset:asset];
     DFImageRequestID *requestID = [imageManager requestImageForAsset:asset targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:options completion:completion];
     if (imageManager != nil && requestID != nil) {
@@ -53,23 +54,29 @@
 }
 
 - (DFImageRequestOptions *)requestOptionsForAsset:(id)asset {
+    asset = [self _transformedAssetForAsset:asset];
     id<DFImageManager> imageManager = [self.imageManagerFactory imageManagerForAsset:asset];
     return [imageManager requestOptionsForAsset:asset];
 }
 
 - (void)startPreheatingImageForAssets:(NSArray *)assets targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options {
     for (id asset in assets) {
-        // TODO: Optimize this code.
-        id<DFImageManager> imageManager = [self.imageManagerFactory imageManagerForAsset:asset];
-        [imageManager startPreheatingImageForAssets:assets targetSize:targetSize contentMode:contentMode options:options];
+        id transformedAsset = [self _transformedAssetForAsset:asset];
+        id<DFImageManager> imageManager = [self.imageManagerFactory imageManagerForAsset:transformedAsset];
+        if (transformedAsset != nil) {
+            [imageManager startPreheatingImageForAssets:@[transformedAsset] targetSize:targetSize contentMode:contentMode options:options];
+        }
     }
 }
 
 - (void)stopPreheatingImagesForAssets:(NSArray *)assets targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options {
     for (id asset in assets) {
         // TODO: Optimize this code.
-        id<DFImageManager> imageManager = [self.imageManagerFactory imageManagerForAsset:asset];
-        [imageManager stopPreheatingImagesForAssets:assets targetSize:targetSize contentMode:contentMode options:options];
+        id transformedAsset = [self _transformedAssetForAsset:asset];
+        id<DFImageManager> imageManager = [self.imageManagerFactory imageManagerForAsset:transformedAsset];
+        if (transformedAsset != nil) {
+            [imageManager stopPreheatingImagesForAssets:@[transformedAsset] targetSize:targetSize contentMode:contentMode options:options];
+        }
     }
 }
 
@@ -83,6 +90,13 @@
 
 - (id<DFImageManager>)_imageManagerForRequestID:(DFImageRequestID *)requestID {
     return requestID != nil ? _imageManagers[requestID] : nil;
+}
+
+- (id)_transformedAssetForAsset:(id)asset {
+    if ([self.imageManagerFactory respondsToSelector:@selector(transformedAsset:)]) {
+        return [self.imageManagerFactory transformedAsset:asset];
+    }
+    return asset;
 }
 
 @end

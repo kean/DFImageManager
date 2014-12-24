@@ -75,7 +75,7 @@
         default:
             break;
     }
-    if (key != nil && processedImage != nil && processedImage != image) {
+    if (key != nil && processedImage != nil) {
         NSString *cacheKey = [self _cacheKeyWithKey:key targetSize:size contentMode:contentMode];
         [_cache setObject:processedImage forKey:cacheKey];
     }
