@@ -235,7 +235,10 @@
         return;
     }
     NSArray *remainingHandlers = [_handlers handlersForRequestID:requestID.requestID];
-    BOOL cancel = remainingHandlers.count == 0 && [_conf imageManager:self shouldCancelOperation:operation];
+    BOOL cancel = remainingHandlers.count == 0;
+    if (cancel && [_conf respondsToSelector:@selector(imageManager:shouldCancelOperation:)]) {
+        cancel = [_conf imageManager:self shouldCancelOperation:operation];
+    }
     if (cancel) {
         [operation cancel];
         [_operations removeObjectForKey:requestID.requestID];

@@ -20,32 +20,18 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+#import "DFImageManagerDefines.h"
 #import "DFImageManagerOperationProtocol.h"
-#import "DFImageManagerProtocol.h"
+#import <Foundation/Foundation.h>
 
 @class DFImageRequestOptions;
+@class DFPHAssetlocalIdentifier;
+@class PHAsset;
 
 
-/*! Factory for multiple image provider components.
- */
-@protocol DFImageManagerConfiguration <NSObject>
+@interface DFPHImageFetchOperation : NSOperation <DFImageManagerOperation>
 
-- (NSString *)imageManager:(id<DFImageManager>)manager uniqueIDForAsset:(id)asset;
-
-- (NSString *)imageManager:(id<DFImageManager>)manager createRequestIDForAsset:(id)asset options:(DFImageRequestOptions *)options DEPRECATED_ATTRIBUTE;
-
-/*! Return nil if no work is required.
- */
-- (NSOperation<DFImageManagerOperation> *)imageManager:(id<DFImageManager>)manager createOperationForAsset:(id)asset options:(DFImageRequestOptions *)options previousOperation:(NSOperation<DFImageManagerOperation> *)previousOperation;
-
-- (void)imageManager:(id<DFImageManager>)manager enqueueOperation:(NSOperation<DFImageManagerOperation> *)operation;
-
-@optional
-
-- (DFImageRequestOptions *)imageManager:(id<DFImageManager>)manager createRequestOptionsForAsset:(id)asset;
-
-- (BOOL)imageManager:(id<DFImageManager>)manager shouldCancelOperation:(NSOperation<DFImageManagerOperation> *)operation;
-
-- (void)imageManager:(id<DFImageManager>)manager didEncounterError:(NSError *)error;
+- (instancetype)initWithAsset:(PHAsset *)asset targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options;
+- (instancetype)initWithAssetLocalIdentifier:(DFPHAssetlocalIdentifier *)assetLocalIdentifier targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options;
 
 @end
