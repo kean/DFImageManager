@@ -26,6 +26,7 @@
 #import "DFImageFetchConnectionOperation.h"
 #import "DFImageManager.h"
 #import "DFImageManagerConfiguration.h"
+#import "DFImageRequest.h"
 #import "DFImageRequestOptions.h"
 #import "DFImageResponse.h"
 #import <DFCache/DFCache.h>
@@ -63,9 +64,10 @@ NSString *const DFImageManagerCacheStoreOperationType = @"DFImageManagerCacheSto
     }
 }
 
-- (NSString *)imageManager:(id<DFImageManager>)manager createRequestIDForAsset:(id)asset options:(DFImageRequestOptions *)options {
-    NSArray *parameters = [self parametersForOptions:options];
-    NSString *assetID = [self imageManager:manager uniqueIDForAsset:asset];
+- (NSString *)imageManager:(id<DFImageManager>)manager operationIDForRequest:(DFImageRequest *)request {
+    // TODO: Do something with targetSize
+    NSArray *parameters = [self parametersForOptions:request.options];
+    NSString *assetID = [self imageManager:manager uniqueIDForAsset:request.asset];
     return [NSString stringWithFormat:@"requestID?%@&asset_id=%@", [parameters componentsJoinedByString:@"&"], assetID];
 }
 
@@ -76,33 +78,35 @@ NSString *const DFImageManagerCacheStoreOperationType = @"DFImageManagerCacheSto
     return [parameters copy];
 }
 
-- (NSOperation<DFImageManagerOperation> *)imageManager:(id<DFImageManager>)manager createOperationForAsset:(id)asset options:(DFImageRequestOptions *)options previousOperation:(NSOperation<DFImageManagerOperation> *)previousOperation {
+- (NSOperation<DFImageManagerOperation> *)imageManager:(id<DFImageManager>)manager createOperationForRequest:(DFImageRequest *)request previousOperation:(NSOperation<DFImageManagerOperation> *)previousOperation {
     NSOperation<DFImageManagerOperation> *nextOperation;
     
     NSString *previousOperationType = previousOperation ? [self operationTypeForOperation:previousOperation] : nil;
     
+    DFImageRequestOptions *options = request.options;
+    
     if (!previousOperation) {
         if (options.cacheStoragePolicy != DFImageCacheStorageNotAllowed) {
-            nextOperation = [self createCacheLookupOperationForAsset:asset options:options];
+            nextOperation = [self createCacheLookupOperationForRequest:request];
         }
         
         // cache lookup operation wasn't created
         if (!nextOperation && options.networkAccessAllowed) {
-            nextOperation = [self createImageFetchOperationForAsset:asset options:options];
+            nextOperation = [self createImageFetchOperationForRequest:request];
         }
     }
     
     else if ([previousOperationType isEqualToString:DFImageManagerCacheLookupOperationType]) {
         DFImageResponse *response = [previousOperation imageFetchResponse];
         if (!response.image && options.networkAccessAllowed) {
-            nextOperation =  [self createImageFetchOperationForAsset:asset options:options];
+            nextOperation =  [self createImageFetchOperationForRequest:request];
         }
     }
     
     else if ([previousOperationType isEqualToString:DFImageManagerImageFetchOperationType]) {
         // start cache store operation
         if (options.cacheStoragePolicy != DFImageCacheStorageNotAllowed) {
-            NSOperation *cacheStoreOperation = [self createCacheStoreOperationForAsset:asset options:options previousOperation:previousOperation];
+            NSOperation *cacheStoreOperation = [self createCacheStoreOperationForRequest:request previousOperation:previousOperation];
             [self _enqueueOperation:cacheStoreOperation];
             return nil; // we don't wont DFImageManager to see this operation
         }
@@ -111,18 +115,18 @@ NSString *const DFImageManagerCacheStoreOperationType = @"DFImageManagerCacheSto
     return nextOperation;
 }
 
-- (NSOperation<DFImageManagerOperation> *)createCacheLookupOperationForAsset:(id)asset options:(DFImageRequestOptions *)options {
-    if ([asset isKindOfClass:[NSString class]]) {
-        return [[DFImageCacheLookupOperation alloc] initWithAsset:asset options:options cache:[DFImageManager sharedCache]];
+- (NSOperation<DFImageManagerOperation> *)createCacheLookupOperationForRequest:(DFImageRequest *)request {
+    if ([request.asset isKindOfClass:[NSString class]]) {
+        return [[DFImageCacheLookupOperation alloc] initWithAsset:request.asset options:request.options cache:[DFImageManager sharedCache]];
     } else {
-        [NSException raise:NSInvalidArgumentException format:@"Unsupported asset %@", asset];
+        [NSException raise:NSInvalidArgumentException format:@"Unsupported asset %@", request.asset];
         return nil;
     }
 }
 
-- (NSOperation<DFImageManagerOperation> *)createImageFetchOperationForAsset:(id)asset options:(DFImageRequestOptions *)options {
-    if ([asset isKindOfClass:[NSString class]]) {
-        NSURL *URL = [NSURL URLWithString:asset];
+- (NSOperation<DFImageManagerOperation> *)createImageFetchOperationForRequest:(DFImageRequest *)request {
+    if ([request.asset isKindOfClass:[NSString class]]) {
+        NSURL *URL = [NSURL URLWithString:request.asset];
         NSMutableURLRequest *HTTPRequest = [[NSMutableURLRequest alloc] initWithURL:URL cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:30.f];
         DFImageFetchConnectionOperation *operation = [[DFImageFetchConnectionOperation alloc] initWithRequest:HTTPRequest];
         operation.deserializer = [DFImageDeserializer new];
@@ -131,11 +135,11 @@ NSString *const DFImageManagerCacheStoreOperationType = @"DFImageManagerCacheSto
     return nil;
 }
 
-- (NSOperation *)createCacheStoreOperationForAsset:(id)asset options:(DFImageRequestOptions *)options previousOperation:(NSOperation<DFImageManagerOperation> *)previousOperation {
+- (NSOperation *)createCacheStoreOperationForRequest:(DFImageRequest *)request previousOperation:(NSOperation<DFImageManagerOperation> *)previousOperation {
     DFImageResponse *response = [previousOperation imageFetchResponse];
     DFCache *cache = [DFImageManager sharedCache];
     if (cache) {
-        return [[DFImageCacheStoreOperation alloc] initWithAsset:asset options:options response:response cache:cache];
+        return [[DFImageCacheStoreOperation alloc] initWithAsset:request.asset options:request.options response:response cache:cache];
     } else {
         return nil;
     }

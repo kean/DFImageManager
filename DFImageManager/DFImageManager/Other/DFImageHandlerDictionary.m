@@ -34,30 +34,30 @@
     return self;
 }
 
-- (void)addHandler:(id)handler forRequestID:(NSString *)requestID handler:(NSString *)handlerID {
-    NSMutableDictionary *handlers = _handlers[requestID];
+- (void)addHandler:(id)handler forOperationID:(NSString *)operationID handlerID:(NSString *)handlerID {
+    NSMutableDictionary *handlers = _handlers[operationID];
     if (!handlers) {
         handlers = [NSMutableDictionary new];
-        _handlers[requestID] = handlers;
+        _handlers[operationID] = handlers;
     }
     [handlers setObject:handler forKey:handlerID];
 }
 
-- (id)handlerForRequestID:(NSString *)requestID handlerID:(NSString *)handlerID {
-    return _handlers[requestID][handlerID];
+- (id)handlerForOperationID:(NSString *)operationID handlerID:(NSString *)handlerID {
+    return _handlers[operationID][handlerID];
 }
 
-- (void)removeHandlerForRequestID:(NSString *)requestID handlerID:(NSString *)handlerID {
-    NSMutableDictionary *handlers = _handlers[requestID];
+- (void)removeHandlerForOperationID:(NSString *)operationID handlerID:(NSString *)handlerID {
+    NSMutableDictionary *handlers = _handlers[operationID];
     [handlers removeObjectForKey:handlerID];
 }
 
-- (NSArray *)handlersForRequestID:(NSString *)requestID {
-    return [_handlers[requestID] allValues];
+- (NSArray *)handlersForOperationID:(NSString *)operationID {
+    return [_handlers[operationID] allValues];
 }
 
-- (void)removeAllHandlersForRequestID:(NSString *)requestID {
-    [_handlers removeObjectForKey:requestID];
+- (void)removeAllHandlersForOperationID:(NSString *)operationID {
+    [_handlers removeObjectForKey:operationID];
 }
 
 - (NSDictionary *)allHandlers {

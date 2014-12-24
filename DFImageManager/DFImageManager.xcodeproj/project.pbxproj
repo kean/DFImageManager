@@ -27,6 +27,7 @@
 		0CA129561A4A4E2300FB4688 /* DFPHImageManagerConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CA129551A4A4E2300FB4688 /* DFPHImageManagerConfiguration.m */; };
 		0CA129591A4A4E3700FB4688 /* DFPHImageFetchOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CA129581A4A4E3700FB4688 /* DFPHImageFetchOperation.m */; };
 		0CA1295C1A4A500800FB4688 /* DFPHAssetlocalIdentifier.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CA1295B1A4A500800FB4688 /* DFPHAssetlocalIdentifier.m */; };
+		0CA129631A4A591200FB4688 /* DFImageRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CA129621A4A591200FB4688 /* DFImageRequest.m */; };
 		0CAF725C1A0B93E30057419A /* DFImageCacheLookupOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CAF725B1A0B93E30057419A /* DFImageCacheLookupOperation.m */; };
 		0CAF725F1A0B961A0057419A /* DFImageCacheStoreOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CAF725E1A0B961A0057419A /* DFImageCacheStoreOperation.m */; };
 		759916756D11680DBEF1CEA9 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D00E60156B6ED9152E7865EE /* libPods.a */; };
@@ -95,6 +96,8 @@
 		0CA129581A4A4E3700FB4688 /* DFPHImageFetchOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFPHImageFetchOperation.m; sourceTree = "<group>"; };
 		0CA1295A1A4A500800FB4688 /* DFPHAssetlocalIdentifier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFPHAssetlocalIdentifier.h; sourceTree = "<group>"; };
 		0CA1295B1A4A500800FB4688 /* DFPHAssetlocalIdentifier.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFPHAssetlocalIdentifier.m; sourceTree = "<group>"; };
+		0CA129611A4A591200FB4688 /* DFImageRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFImageRequest.h; sourceTree = "<group>"; };
+		0CA129621A4A591200FB4688 /* DFImageRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFImageRequest.m; sourceTree = "<group>"; };
 		0CAF725A1A0B93E30057419A /* DFImageCacheLookupOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFImageCacheLookupOperation.h; sourceTree = "<group>"; };
 		0CAF725B1A0B93E30057419A /* DFImageCacheLookupOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFImageCacheLookupOperation.m; sourceTree = "<group>"; };
 		0CAF725D1A0B961A0057419A /* DFImageCacheStoreOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFImageCacheStoreOperation.h; sourceTree = "<group>"; };
@@ -228,6 +231,8 @@
 			children = (
 				0C2BD4E11A03A3B200412BE3 /* DFImageRequestOptions.h */,
 				0C2BD4E21A03A3B200412BE3 /* DFImageRequestOptions.m */,
+				0CA129611A4A591200FB4688 /* DFImageRequest.h */,
+				0CA129621A4A591200FB4688 /* DFImageRequest.m */,
 			);
 			path = Request;
 			sourceTree = "<group>";
@@ -448,6 +453,7 @@
 				0C2BD4E81A03A3B200412BE3 /* DFImageHandlerDictionary.m in Sources */,
 				0CA129481A4A3CB500FB4688 /* DFImageProcessingManager.m in Sources */,
 				0C5C25AF1A146B7A006C5791 /* DFImageFetchConnectionOperation.m in Sources */,
+				0CA129631A4A591200FB4688 /* DFImageRequest.m in Sources */,
 				0CA1295C1A4A500800FB4688 /* DFPHAssetlocalIdentifier.m in Sources */,
 				0C8573B31A121CAD00067EA4 /* DFImageView.m in Sources */,
 				0CAF725F1A0B961A0057419A /* DFImageCacheStoreOperation.m in Sources */,

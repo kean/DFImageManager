@@ -39,6 +39,7 @@
 
 - (void)cancelRequestWithID:(DFImageRequestID *)requestID;
 
+// TODO: Make optional if possible
 - (void)setPriority:(DFImageRequestPriority)priority forRequestWithID:(DFImageRequestID *)requestID;
 
 /*! Returns default options for a given asset.

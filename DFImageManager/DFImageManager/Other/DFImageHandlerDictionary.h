@@ -25,11 +25,11 @@
 
 @interface DFImageHandlerDictionary : NSObject
 
-- (void)addHandler:(id)handler forRequestID:(NSString *)requestID handler:(NSString *)handlerID;
-- (id)handlerForRequestID:(NSString *)requestID handlerID:(NSString *)handlerID;
-- (void)removeHandlerForRequestID:(NSString *)requestID handlerID:(NSString *)handlerID;
-- (NSArray *)handlersForRequestID:(NSString *)requestID;
-- (void)removeAllHandlersForRequestID:(NSString *)requestID;
+- (void)addHandler:(id)handler forOperationID:(NSString *)operationID handlerID:(NSString *)handlerID;
+- (id)handlerForOperationID:(NSString *)operationID handlerID:(NSString *)handlerID;
+- (void)removeHandlerForOperationID:(NSString *)operationID handlerID:(NSString *)handlerID;
+- (NSArray *)handlersForOperationID:(NSString *)operationID;
+- (void)removeAllHandlersForOperationID:(NSString *)operationID;
 - (NSDictionary *)allHandlers;
 
 @end

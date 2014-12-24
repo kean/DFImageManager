@@ -23,6 +23,7 @@
 #import "DFImageManagerOperationProtocol.h"
 #import "DFImageManagerProtocol.h"
 
+@class DFImageRequest;
 @class DFImageRequestOptions;
 
 
@@ -32,11 +33,13 @@
 
 - (NSString *)imageManager:(id<DFImageManager>)manager uniqueIDForAsset:(id)asset;
 
-- (NSString *)imageManager:(id<DFImageManager>)manager createRequestIDForAsset:(id)asset options:(DFImageRequestOptions *)options DEPRECATED_ATTRIBUTE;
+/*! Creates operationID for request so that existing operations could be reused for new handlers.
+ */
+- (NSString *)imageManager:(id<DFImageManager>)manager operationIDForRequest:(DFImageRequest *)request;
 
 /*! Return nil if no work is required.
  */
-- (NSOperation<DFImageManagerOperation> *)imageManager:(id<DFImageManager>)manager createOperationForAsset:(id)asset options:(DFImageRequestOptions *)options previousOperation:(NSOperation<DFImageManagerOperation> *)previousOperation;
+- (NSOperation<DFImageManagerOperation> *)imageManager:(id<DFImageManager>)manager createOperationForRequest:(DFImageRequest *)request previousOperation:(NSOperation<DFImageManagerOperation> *)previousOperation;
 
 - (void)imageManager:(id<DFImageManager>)manager enqueueOperation:(NSOperation<DFImageManagerOperation> *)operation;
 

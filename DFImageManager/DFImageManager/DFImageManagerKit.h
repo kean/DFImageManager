@@ -37,6 +37,7 @@
 #import "DFImageManagerFactory.h"
 #import "DFCompositeImageManager.h"
 
+#import "DFImageRequest.h"
 #import "DFImageRequestID.h"
 #import "DFImageRequestOptions.h"
 #import "DFImageResponse.h"

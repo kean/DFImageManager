@@ -41,9 +41,11 @@ extern NSString *const DFImageManagerCacheStoreOperationType;
 
 // operations factory methods
 
-- (NSOperation<DFImageManagerOperation> *)createCacheLookupOperationForAsset:(id)asset options:(DFImageRequestOptions *)options;
-- (NSOperation<DFImageManagerOperation> *)createImageFetchOperationForAsset:(id)asset options:(DFImageRequestOptions *)options;
-- (NSOperation *)createCacheStoreOperationForAsset:(id)asset options:(DFImageRequestOptions *)options previousOperation:(NSOperation<DFImageManagerOperation> *)previousOperation;
+// TODO: Rewrite to use DFImageRequest
+
+- (NSOperation<DFImageManagerOperation> *)createCacheLookupOperationForRequest:(DFImageRequest *)request;
+- (NSOperation<DFImageManagerOperation> *)createImageFetchOperationForRequest:(DFImageRequest *)request;
+- (NSOperation *)createCacheStoreOperationForRequest:(DFImageRequest *)request previousOperation:(NSOperation<DFImageManagerOperation> *)previousOperation;
 
 - (NSString *)operationTypeForOperation:(NSOperation *)operation;
 

@@ -7,7 +7,20 @@
 //
 
 #import "DFImageRequest.h"
+#import "DFImageRequestOptions.h"
 
 @implementation DFImageRequest
+
+- (instancetype)initWithAsset:(id)asset targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options {
+    if (self = [super init]) {
+        _asset = asset;
+        _targetSize = targetSize;
+        _contentMode = contentMode;
+        _options = [options copy];
+    }
+    return self;
+}
+
+// TODO: Add description
 
 @end

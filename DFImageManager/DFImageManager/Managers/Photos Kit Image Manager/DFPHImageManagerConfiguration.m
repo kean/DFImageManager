@@ -20,6 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+#import "DFImageRequest.h"
 #import "DFImageRequestOptions.h"
 #import "DFPHAssetlocalIdentifier.h"
 #import "DFPHImageFetchOperation.h"
@@ -51,12 +52,13 @@
     }
 }
 
-- (NSString *)imageManager:(id<DFImageManager>)manager createRequestIDForAsset:(id)asset options:(DFImageRequestOptions *)options {
+- (NSString *)imageManager:(id<DFImageManager>)manager operationIDForRequest:(DFImageRequest *)request {
     // TODO: Implement properly
-    return [self imageManager:manager uniqueIDForAsset:asset];
+    return [self imageManager:manager uniqueIDForAsset:request.asset];
 }
 
-- (NSOperation<DFImageManagerOperation> *)imageManager:(id<DFImageManager>)manager createOperationForAsset:(id)asset options:(DFImageRequestOptions *)options previousOperation:(NSOperation<DFImageManagerOperation> *)previousOperation {
+- (NSOperation<DFImageManagerOperation> *)imageManager:(id<DFImageManager>)manager createOperationForRequest:(DFImageRequest *)request previousOperation:(NSOperation<DFImageManagerOperation> *)previousOperation {
+    id asset = request.asset;
     if (!previousOperation) {
         if ([asset isKindOfClass:[PHAsset class]]) {
             //      return [[DFPHImageFetchOperation alloc] initWithAsset:asset options:(id)options];

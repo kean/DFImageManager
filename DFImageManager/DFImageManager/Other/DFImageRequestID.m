@@ -25,25 +25,25 @@
 
 @interface DFImageRequestID ()
 
-@property (nonatomic, readonly) NSString *requestID;
+@property (nonatomic, readonly) NSString *operationID;
 @property (nonatomic, readonly) NSString *handlerID;
 
 @end
 
 @implementation DFImageRequestID
 
-- (instancetype)initWithRequestID:(NSString *)requestID handlerID:(NSString *)handlerID {
+- (instancetype)initWithOperationID:(NSString *)operationID handlerID:(NSString *)handlerID {
     if (self = [super init]) {
-        NSParameterAssert(requestID);
+        NSParameterAssert(operationID);
         NSParameterAssert(handlerID);
-        _requestID = requestID;
+        _operationID = operationID;
         _handlerID = handlerID;
     }
     return self;
 }
 
-- (instancetype)initWithRequestID:(NSString *)requestID {
-    return [self initWithRequestID:requestID ?: [[NSUUID UUID] UUIDString] handlerID:[[NSUUID UUID] UUIDString]];
+- (instancetype)initWithOperationID:(NSString *)operationID {
+    return [self initWithOperationID:operationID ?: [[NSUUID UUID] UUIDString] handlerID:[[NSUUID UUID] UUIDString]];
 }
 
 - (BOOL)isEqual:(id)object {
@@ -54,7 +54,7 @@
         return NO;
     }
     DFImageRequestID *other = object;
-    return ([other.requestID isEqualToString:self.requestID] &&
+    return ([other.operationID isEqualToString:self.operationID] &&
             [other.handlerID isEqualToString:self.handlerID]);
 }
 
@@ -63,7 +63,7 @@
 }
 
 - (NSString *)description {
-    return [NSString stringWithFormat:@"<%@ %p> { requestID = %@, handlerID = %@ }", [self class], self, self.requestID, self.handlerID];
+    return [NSString stringWithFormat:@"<%@ %p> { operationID = %@, handlerID = %@ }", [self class], self, self.operationID, self.handlerID];
 }
 
 @end
