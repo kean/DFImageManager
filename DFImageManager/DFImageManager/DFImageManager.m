@@ -340,7 +340,6 @@
 #pragma mark - Dependency Injectors
 
 static id<DFImageManager> _sharedManager;
-static DFCache *_sharedCache;
 
 + (id<DFImageManager>)sharedManager {
     @synchronized(self) {
@@ -351,18 +350,6 @@ static DFCache *_sharedCache;
 + (void)setSharedManager:(id<DFImageManager>)manager {
     @synchronized(self) {
         _sharedManager = manager;
-    }
-}
-
-+ (DFCache *)sharedCache {
-    @synchronized(self) {
-        return _sharedCache;
-    }
-}
-
-+ (void)setSharedCache:(DFCache *)cache {
-    @synchronized(self) {
-        _sharedCache = cache;
     }
 }
 

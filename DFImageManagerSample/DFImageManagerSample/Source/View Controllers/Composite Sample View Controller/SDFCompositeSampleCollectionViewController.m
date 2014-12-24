@@ -21,13 +21,14 @@
     UIActivityIndicatorView *_activityIndicatorView;
     NSMutableArray *_photos;
     SDFFlickrRecentPhotosModel *_model;
+    
+    DFCache *_cache;
 }
 
 static NSString * const reuseIdentifier = @"Cell";
 
 - (void)dealloc {
-    [[DFImageManager sharedCache] removeAllObjects];
-    [DFImageManager setSharedCache:nil];
+    [_cache removeAllObjects];
     [DFImageManager setSharedManager:nil];
 }
 
@@ -55,6 +56,7 @@ static NSString * const reuseIdentifier = @"Cell";
     DFImageProcessingManager *imageProcessingManager = [DFImageProcessingManager new];
     
     DFCache *cache = [[DFCache alloc] initWithName:[[NSUUID UUID] UUIDString]];
+    _cache = cache;
     
     DFNetworkImageManagerConfiguration *networkImageManagerConfiguration = [[DFNetworkImageManagerConfiguration alloc] initWithCache:cache];
     DFImageManager *networkImageManager = [[DFImageManager alloc] initWithConfiguration:networkImageManagerConfiguration imageProcessingManager:imageProcessingManager];

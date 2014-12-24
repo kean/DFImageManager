@@ -40,7 +40,4 @@
 + (id<DFImageManager>)sharedManager;
 + (void)setSharedManager:(id<DFImageManager>)manager;
 
-+ (DFCache *)sharedCache;
-+ (void)setSharedCache:(DFCache *)cache;
-
 @end
