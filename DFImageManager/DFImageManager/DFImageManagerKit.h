@@ -42,6 +42,8 @@
 #import "DFImageRequestOptions.h"
 #import "DFImageResponse.h"
 
+#import "DFNetworkImageManagerConfiguration.h"
+
 #import "DFImageDecoder.h"
 
 #import "DFImageCacheLookupOperation.h"

@@ -20,16 +20,11 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "DFImageCacheLookupOperation.h"
-#import "DFImageCacheStoreOperation.h"
-#import "DFImageDeserializer.h"
-#import "DFImageFetchConnectionOperation.h"
 #import "DFImageManager.h"
 #import "DFImageManagerConfiguration.h"
 #import "DFImageRequest.h"
 #import "DFImageRequestOptions.h"
 #import "DFImageResponse.h"
-#import <DFCache/DFCache.h>
 
 
 NSString *const DFImageManagerCacheLookupOperationType = @"DFImageManagerCacheLookupOperationType";
@@ -37,41 +32,23 @@ NSString *const DFImageManagerImageFetchOperationType = @"DFImageManagerImageFet
 NSString *const DFImageManagerCacheStoreOperationType = @"DFImageManagerCacheStoreOperationType";
 
 
-@implementation DFImageManagerConfiguration {
-    NSOperationQueue *_queueForCache;
-    NSOperationQueue *_queueForNetwork;
-}
-
-- (instancetype)init{
-    if (self = [super init]) {
-        _queueForCache = [NSOperationQueue new];
-        _queueForCache.maxConcurrentOperationCount = 1;
-        
-        _queueForNetwork = [NSOperationQueue new];
-        _queueForNetwork.maxConcurrentOperationCount = 2;
-    }
-    return self;
-}
+@implementation DFImageManagerConfiguration
 
 #pragma mark - <DFImageManagerConfiguration>
 
 - (NSString *)imageManager:(id<DFImageManager>)manager uniqueIDForAsset:(id)asset {
-    if ([asset isKindOfClass:[NSString class]]) {
-        return asset;
-    } else {
-        [NSException raise:NSInvalidArgumentException format:@"Unsupported asset %@", asset];
-        return nil;
-    }
+    [NSException raise:NSInvalidArgumentException format:@"Abstract method called %@", NSStringFromSelector(_cmd)];
+    return nil;
 }
 
 - (NSString *)imageManager:(id<DFImageManager>)manager operationIDForRequest:(DFImageRequest *)request {
-    // TODO: Do something with targetSize
-    NSArray *parameters = [self parametersForOptions:request.options];
     NSString *assetID = [self imageManager:manager uniqueIDForAsset:request.asset];
+    // TODO: Do something with targetSize
+    NSArray *parameters = [self operationParametersForOptions:request.options];
     return [NSString stringWithFormat:@"requestID?%@&asset_id=%@", [parameters componentsJoinedByString:@"&"], assetID];
 }
 
-- (NSArray *)parametersForOptions:(DFImageRequestOptions *)options {
+- (NSArray *)operationParametersForOptions:(DFImageRequestOptions *)options {
     NSMutableArray *parameters = [NSMutableArray new];
     [parameters addObject:[NSString stringWithFormat:@"cache_storage_policy=%lu", (unsigned long)options.cacheStoragePolicy]];
     [parameters addObject:[NSString stringWithFormat:@"network_access_allowed=%i", options.networkAccessAllowed]];
@@ -98,7 +75,7 @@ NSString *const DFImageManagerCacheStoreOperationType = @"DFImageManagerCacheSto
     
     else if ([previousOperationType isEqualToString:DFImageManagerCacheLookupOperationType]) {
         DFImageResponse *response = [previousOperation imageFetchResponse];
-        if (!response.image && options.networkAccessAllowed) {
+        if (!response.image) {
             nextOperation =  [self createImageFetchOperationForRequest:request];
         }
     }
@@ -116,45 +93,19 @@ NSString *const DFImageManagerCacheStoreOperationType = @"DFImageManagerCacheSto
 }
 
 - (NSOperation<DFImageManagerOperation> *)createCacheLookupOperationForRequest:(DFImageRequest *)request {
-    if ([request.asset isKindOfClass:[NSString class]]) {
-        return [[DFImageCacheLookupOperation alloc] initWithAsset:request.asset options:request.options cache:[DFImageManager sharedCache]];
-    } else {
-        [NSException raise:NSInvalidArgumentException format:@"Unsupported asset %@", request.asset];
-        return nil;
-    }
+    return nil;
 }
 
 - (NSOperation<DFImageManagerOperation> *)createImageFetchOperationForRequest:(DFImageRequest *)request {
-    if ([request.asset isKindOfClass:[NSString class]]) {
-        NSURL *URL = [NSURL URLWithString:request.asset];
-        NSMutableURLRequest *HTTPRequest = [[NSMutableURLRequest alloc] initWithURL:URL cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:30.f];
-        DFImageFetchConnectionOperation *operation = [[DFImageFetchConnectionOperation alloc] initWithRequest:HTTPRequest];
-        operation.deserializer = [DFImageDeserializer new];
-        return operation;
-    }
     return nil;
 }
 
 - (NSOperation *)createCacheStoreOperationForRequest:(DFImageRequest *)request previousOperation:(NSOperation<DFImageManagerOperation> *)previousOperation {
-    DFImageResponse *response = [previousOperation imageFetchResponse];
-    DFCache *cache = [DFImageManager sharedCache];
-    if (cache) {
-        return [[DFImageCacheStoreOperation alloc] initWithAsset:request.asset options:request.options response:response cache:cache];
-    } else {
-        return nil;
-    }
+    return nil;
 }
 
 - (NSString *)operationTypeForOperation:(NSOperation *)operation {
-    if ([operation isKindOfClass:[DFImageCacheLookupOperation class]]) {
-        return DFImageManagerCacheLookupOperationType;
-    } else if ([operation isKindOfClass:[DFImageFetchConnectionOperation class]]) {
-        return DFImageManagerImageFetchOperationType;
-    } else  if ([operation isKindOfClass:[DFImageCacheStoreOperation class]]){
-        return DFImageManagerCacheStoreOperationType;
-    } else {
-        return nil;
-    }
+    return nil;
 }
 
 - (void)imageManager:(id<DFImageManager>)manager enqueueOperation:(NSOperation<DFImageManagerOperation> *)operation {
@@ -166,24 +117,7 @@ NSString *const DFImageManagerCacheStoreOperationType = @"DFImageManagerCacheSto
 }
 
 - (NSOperationQueue *)operationQueueForOperation:(NSOperation *)operation {
-    if (!operation) {
-        return nil;
-    }
-    NSString *operationType = [self operationTypeForOperation:operation];
-    if ([operationType isEqualToString:DFImageManagerCacheLookupOperationType] || [operationType isEqualToString:DFImageManagerCacheStoreOperationType]) {
-        return _queueForCache;
-    } else if ([operationType isEqualToString:DFImageManagerImageFetchOperationType]) {
-        return _queueForNetwork;
-    }
     return nil;
-}
-
-- (BOOL)imageManager:(id<DFImageManager>)manager shouldCancelOperation:(NSOperation<DFImageManagerOperation> *)operation {
-    if ([operation isKindOfClass:[DFImageFetchConnectionOperation class]]) {
-        return !operation.isExecuting;
-    } else {
-        return YES;
-    }
 }
 
 @end

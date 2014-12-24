@@ -20,16 +20,16 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+#import "DFImageManagerConfiguration.h"
 #import <Foundation/Foundation.h>
 
-@class PHAsset;
+@class DFCache;
 
 
-@interface DFPHAssetlocalIdentifier : NSObject
+@interface DFNetworkImageManagerConfiguration : DFImageManagerConfiguration
 
-@property (nonatomic, readonly) NSString *identifier;
+@property (nonatomic, readonly) DFCache *cache;
 
-- (instancetype)initWithIdentifier:(NSString *)identifier;
-+ (instancetype)localIdentifierForAsset:(PHAsset *)asset;
+- (instancetype)initWithCache:(DFCache *)cache;
 
 @end

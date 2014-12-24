@@ -28,7 +28,8 @@ extern NSString *const DFImageManagerCacheLookupOperationType;
 extern NSString *const DFImageManagerImageFetchOperationType;
 extern NSString *const DFImageManagerCacheStoreOperationType;
 
-
+/*! Base image manager configuration that implements <DFImageManagerConfiguration> protocol with specific operations flow (cache lookup ~> fetch ~> cache store). 
+ */
 @interface DFImageManagerConfiguration : NSObject <DFImageManagerConfiguration>
 
 @end
@@ -36,8 +37,7 @@ extern NSString *const DFImageManagerCacheStoreOperationType;
 
 @interface DFImageManagerConfiguration (SubclassingHooks)
 
-// methods for constracting requestID
-- (NSArray *)parametersForOptions:(DFImageRequestOptions *)options;
+- (NSArray *)operationParametersForOptions:(DFImageRequestOptions *)options;
 
 // operations factory methods
 

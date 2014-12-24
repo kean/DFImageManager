@@ -52,10 +52,12 @@ static NSString * const reuseIdentifier = @"Cell";
 }
 
 - (void)_configureImageManager {
-    // TODO: Change cache configuration.
     DFImageProcessingManager *imageProcessingManager = [DFImageProcessingManager new];
     
-    DFImageManager *networkImageManager = [[DFImageManager alloc] initWithConfiguration:[DFImageManagerConfiguration new] imageProcessingManager:imageProcessingManager];
+    DFCache *cache = [[DFCache alloc] initWithName:[[NSUUID UUID] UUIDString]];
+    
+    DFNetworkImageManagerConfiguration *networkImageManagerConfiguration = [[DFNetworkImageManagerConfiguration alloc] initWithCache:cache];
+    DFImageManager *networkImageManager = [[DFImageManager alloc] initWithConfiguration:networkImageManagerConfiguration imageProcessingManager:imageProcessingManager];
     
     DFImageManagerFactory *factory = [DFImageManagerFactory new];
     [factory registerImageManager:networkImageManager forAssetClass:[NSString class]];
@@ -63,9 +65,6 @@ static NSString * const reuseIdentifier = @"Cell";
     DFCompositeImageManager *compositeImageManager = [[DFCompositeImageManager alloc] initWithImageManagerFactory:factory];
     
     [DFImageManager setSharedManager:compositeImageManager];
-    
-    DFCache *cache = [[DFCache alloc] initWithName:[[NSUUID UUID] UUIDString]];
-    [DFImageManager setSharedCache:cache];
 }
 
 - (void)viewDidLayoutSubviews {
