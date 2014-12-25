@@ -21,18 +21,13 @@
 // THE SOFTWARE.
 
 #import "DFCompositeImageManager.h"
-#import "DFImageManagerBlockValueTransformer.h"
 #import "DFImageRequestID+Protected.h"
 #import "DFImageRequestID.h"
 
 
-#define _DF_TRANSFORMED_ASSET(asset) _transformer ? [_transformer transformedAsset:asset] : asset
-
 @implementation DFCompositeImageManager {
     NSMutableArray *_managers;
 }
-
-@synthesize valueTransformer = _transformer;
 
 - (instancetype)initWithImageManagers:(NSArray *)imageManagers {
     if (self = [super init]) {
@@ -66,19 +61,13 @@
     return nil;
 }
 
-- (void)setValueTransformerWithBlock:(id (^)(id))block {
-    self.valueTransformer = [[DFImageManagerBlockValueTransformer alloc] initWithBlock:block];
-}
-
 #pragma mark - <DFImageManager>
 
 - (BOOL)canHandleAsset:(id)asset {
-    asset = _DF_TRANSFORMED_ASSET(asset);
     return [[self _managerForAsset:asset] canHandleAsset:asset];
 }
 
 - (DFImageRequestID *)requestImageForAsset:(id)asset targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options completion:(void (^)(UIImage *, NSDictionary *))completion {
-    asset = _DF_TRANSFORMED_ASSET(asset);
     return [[self _managerForAsset:asset] requestImageForAsset:asset targetSize:targetSize contentMode:contentMode options:options completion:completion];
 }
 
@@ -91,24 +80,18 @@
 }
 
 - (DFImageRequestOptions *)requestOptionsForAsset:(id)asset {
-    return [[self _managerForAsset:asset] requestOptionsForAsset:_DF_TRANSFORMED_ASSET(asset)];
+    return [[self _managerForAsset:asset] requestOptionsForAsset:asset];
 }
 
 - (void)startPreheatingImageForAssets:(NSArray *)assets targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options {
     for (id asset in assets) {
-        id transformedAsset = _DF_TRANSFORMED_ASSET(asset);
-        if (transformedAsset != nil) {
-            [[self _managerForAsset:transformedAsset] startPreheatingImageForAssets:@[transformedAsset] targetSize:targetSize contentMode:contentMode options:options];
-        }
+        [[self _managerForAsset:asset] startPreheatingImageForAssets:@[asset] targetSize:targetSize contentMode:contentMode options:options];
     }
 }
 
 - (void)stopPreheatingImagesForAssets:(NSArray *)assets targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options {
     for (id asset in assets) {
-        id transformedAsset = _DF_TRANSFORMED_ASSET(asset);
-        if (transformedAsset != nil) {
-            [[self _managerForAsset:transformedAsset] stopPreheatingImagesForAssets:@[transformedAsset] targetSize:targetSize contentMode:contentMode options:options];
-        }
+        [[self _managerForAsset:asset] stopPreheatingImagesForAssets:@[asset] targetSize:targetSize contentMode:contentMode options:options];
     }
 }
 

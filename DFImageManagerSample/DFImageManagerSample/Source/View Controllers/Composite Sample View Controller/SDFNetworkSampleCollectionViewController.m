@@ -9,6 +9,7 @@
 #import "SDFNetworkSampleCollectionViewController.h"
 #import "SDFFlickrPhoto.h"
 #import "SDFFlickrRecentPhotosModel.h"
+#import <DFProxyImageManager.h>
 #import <DFImageManager/DFImageManagerKit.h>
 #import <DFCache/DFCache.h>
 
@@ -63,8 +64,13 @@ static NSString * const reuseIdentifier = @"Cell";
     DFImageManager *networkImageManager = [[DFImageManager alloc] initWithConfiguration:networkImageManagerConfiguration imageProcessingManager:imageProcessingManager];
     
     DFCompositeImageManager *compositeImageManager = [[DFCompositeImageManager alloc] initWithImageManagers:@[networkImageManager]];
+    DFProxyImageManager *proxyImageManager = [[DFProxyImageManager alloc] initWithImageManager:compositeImageManager];
+    [proxyImageManager setValueTransformerWithBlock:^id(id asset) {
+      //  NSLog(@"starting/cancelling asset request = %@", asset);
+        return asset;
+    }];
     
-    [DFImageManager setSharedManager:compositeImageManager];
+    [DFImageManager setSharedManager:proxyImageManager];
 }
 
 - (void)viewDidLayoutSubviews {

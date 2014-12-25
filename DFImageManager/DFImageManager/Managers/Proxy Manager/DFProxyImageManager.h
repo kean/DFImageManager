@@ -20,39 +20,20 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+#import "DFImageManagerProtocol.h"
+#import "DFImageManagerValueTransformerProtocol.h"
 #import <Foundation/Foundation.h>
 
-#import "DFImageManagerProtocol.h"
-#import "DFImageManagerConfigurationProtocol.h"
-#import "DFImageManagerOperationProtocol.h"
+@interface DFProxyImageManager : NSProxy <DFImageManager>
 
-#import "DFImageManagerDefines.h"
-#import "DFImageManager.h"
-#import "DFImageManagerConfiguration.h"
+@property (nonatomic) id<DFImageManager> imageManager;
 
-#import "DFCompositeImageManager.h"
-#import "DFProxyImageManager.h"
+- (instancetype)initWithImageManager:(id<DFImageManager>)imageManager;
 
-#import "DFImageProcessingManagerProtocol.h"
-#import "DFImageProcessingManager.h"
+/*! Set value transformer in case you need to transform assets before passing them to the image manager factory and to the image managers.
+ */
+@property (nonatomic) id<DFImageManagerValueTransformer> valueTransformer;
 
-#import "DFImageRequest.h"
-#import "DFImageRequestID.h"
-#import "DFImageRequestOptions.h"
-#import "DFImageResponse.h"
+- (void)setValueTransformerWithBlock:(id (^)(id asset))valueTransfomer;
 
-#import "DFNetworkImageManagerConfiguration.h"
-
-#import "DFPHImageManagerConfiguration.h"
-#import "DFPHImageFetchOperation.h"
-#import "DFPHAssetlocalIdentifier.h"
-
-#import "DFImageDecoder.h"
-
-#import "DFImageCacheLookupOperation.h"
-#import "DFImageCacheStoreOperation.h"
-#import "DFImageFetchConnectionOperation.h"
-#import "DFURLConnectionOperation.h"
-#import "DFURLResponseDeserializing.h"
-
-#import "DFImageView.h"
+@end

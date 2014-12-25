@@ -21,7 +21,6 @@
 // THE SOFTWARE.
 
 #import "DFImageManagerProtocol.h"
-#import "DFImageManagerValueTransformerProtocol.h"
 #import <Foundation/Foundation.h>
 
 
@@ -35,11 +34,5 @@
 - (void)addImageManagers:(NSArray /* <DFImageManager> */ *)imageManagers;
 - (void)removeImageManager:(id<DFImageManager>)imageManager;
 - (void)removeImageManagers:(NSArray /* <DFImageManager> */ *)imageManagers;
-
-/*! Set value transformer in case you need to transform assets before passing them to the image manager factory and to the image managers.
- */
-@property (nonatomic) id<DFImageManagerValueTransformer> valueTransformer;
-
-- (void)setValueTransformerWithBlock:(id (^)(id))valueTransfomer;
 
 @end
