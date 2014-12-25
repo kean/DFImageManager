@@ -42,7 +42,8 @@
 
 #pragma mark - <DFImageManagerConfiguration>
 
-- (BOOL)imageManager:(id<DFImageManager>)manager canHandleAsset:(id)asset {
+- (BOOL)imageManager:(id<DFImageManager>)manager canHandleRequest:(DFImageRequest *)request {
+    id asset = request.asset;
     return [asset isKindOfClass:[PHAsset class]] || [asset isKindOfClass:[DFPHAssetlocalIdentifier class]];
 }
 

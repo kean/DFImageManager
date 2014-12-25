@@ -52,9 +52,9 @@
     [_managers removeObjectsInArray:imageManagers];
 }
 
-- (id<DFCoreImageManager>)_managerForAsset:(id)asset {
+- (id<DFCoreImageManager>)_managerForRequest:(DFImageRequest *)request {
     for (id<DFCoreImageManager> manager in _managers) {
-        if ([manager canHandleAsset:asset]) {
+        if ([manager canHandleRequest:request]) {
             return manager;
         }
     }
@@ -63,12 +63,12 @@
 
 #pragma mark - <DFCoreImageManager>
 
-- (BOOL)canHandleAsset:(id)asset {
-    return [[self _managerForAsset:asset] canHandleAsset:asset];
+- (BOOL)canHandleRequest:(DFImageRequest *)request {
+    return [self _managerForRequest:request] != nil;
 }
 
 - (DFImageRequestID *)requestImageForRequest:(DFImageRequest *)request completion:(void (^)(UIImage *, NSDictionary *))completion {
-    return [[self _managerForAsset:request.asset] requestImageForRequest:request completion:completion];
+    return [[self _managerForRequest:request] requestImageForRequest:request completion:completion];
 }
 
 - (void)cancelRequestWithID:(DFImageRequestID *)requestID {
@@ -81,13 +81,13 @@
 
 - (void)startPreheatingImagesForRequests:(NSArray *)requests {
     for (DFImageRequest *request in requests) {
-        [[self _managerForAsset:request.asset] startPreheatingImagesForRequests:@[request]];
+        [[self _managerForRequest:request] startPreheatingImagesForRequests:@[request]];
     }
 }
 
 - (void)stopPreheatingImagesForRequests:(NSArray *)requests {
     for (DFImageRequest *request in requests) {
-        [[self _managerForAsset:request.asset] stopPreheatingImagesForRequests:@[request]];
+        [[self _managerForRequest:request] stopPreheatingImagesForRequests:@[request]];
     }
 }
 

@@ -81,8 +81,8 @@
 
 #pragma mark - <DFCoreImageManager>
 
-- (BOOL)canHandleAsset:(id)asset {
-    return [_conf imageManager:self canHandleAsset:asset];
+- (BOOL)canHandleRequest:(DFImageRequest *)request {
+    return [_conf imageManager:self canHandleRequest:request];
 }
 
 #pragma mark Fetching

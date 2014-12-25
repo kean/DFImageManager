@@ -50,8 +50,9 @@
 
 #pragma mark - <DFCoreImageManager>
 
-- (BOOL)canHandleAsset:(id)asset {
-    return [_manager canHandleAsset:_DF_TRANSFORMED_ASSET(asset)];
+- (BOOL)canHandleRequest:(DFImageRequest *)request {
+    request.asset = _DF_TRANSFORMED_ASSET(request.asset);
+    return [_manager canHandleRequest:request];
 }
 
 - (DFImageRequestID *)requestImageForRequest:(DFImageRequest *)request completion:(void (^)(UIImage *, NSDictionary *))completion {

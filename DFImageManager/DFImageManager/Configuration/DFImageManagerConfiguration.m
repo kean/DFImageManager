@@ -36,7 +36,7 @@ NSString *const DFImageManagerCacheStoreOperationType = @"DFImageManagerCacheSto
 
 #pragma mark - <DFImageManagerConfiguration>
 
-- (BOOL)imageManager:(id<DFImageManager>)manager canHandleAsset:(id)asset {
+- (BOOL)imageManager:(id<DFImageManager>)manager canHandleRequest:(DFImageRequest *)request {
     return NO;
 }
 

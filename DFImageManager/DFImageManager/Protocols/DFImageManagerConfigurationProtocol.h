@@ -31,7 +31,7 @@
  */
 @protocol DFImageManagerConfiguration <NSObject>
 
-- (BOOL)imageManager:(id<DFImageManager>)manager canHandleAsset:(id)asset;
+- (BOOL)imageManager:(id<DFImageManager>)manager canHandleRequest:(DFImageRequest *)request;
 
 - (NSString *)imageManager:(id<DFImageManager>)manager uniqueIDForAsset:(id)asset;
 

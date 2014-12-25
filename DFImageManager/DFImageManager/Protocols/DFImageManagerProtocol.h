@@ -29,7 +29,7 @@
 
 @protocol DFCoreImageManager <NSObject>
 
-- (BOOL)canHandleAsset:(id)asset;
+- (BOOL)canHandleRequest:(DFImageRequest *)request;
 
 - (DFImageRequestID *)requestImageForRequest:(DFImageRequest *)request completion:(void (^)(UIImage *image, NSDictionary *info))completion;
 
