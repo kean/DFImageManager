@@ -28,10 +28,10 @@
 
 @interface DFImageRequest : NSObject
 
-@property (nonatomic, readonly) id asset;
-@property (nonatomic, readonly) CGSize targetSize;
-@property (nonatomic, readonly) DFImageContentMode contentMode;
-@property (nonatomic, readonly) DFImageRequestOptions *options;
+@property (nonatomic) id asset;
+@property (nonatomic) CGSize targetSize;
+@property (nonatomic) DFImageContentMode contentMode;
+@property (nonatomic) DFImageRequestOptions *options;
 
 - (instancetype)initWithAsset:(id)asset targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options NS_DESIGNATED_INITIALIZER;
 

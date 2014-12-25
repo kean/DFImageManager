@@ -25,14 +25,15 @@
 
 
 /*! Composite image manager is a dynamic dispatcher in a chain of responsibility. Each image manager added to the composite manager defines the types of assets if can handle. The rest assets are passed to the next image manager in the chain.
+ @note Automatically adapts DFImageManager to <DFCoreImageManager> protocol.
  */
 @interface DFCompositeImageManager : NSObject <DFImageManager>
 
 - (instancetype)initWithImageManagers:(NSArray /* id<DFImageManager> */ *)imageManagers NS_DESIGNATED_INITIALIZER;
 
-- (void)addImageManager:(id<DFImageManager>)imageManager;
-- (void)addImageManagers:(NSArray /* <DFImageManager> */ *)imageManagers;
-- (void)removeImageManager:(id<DFImageManager>)imageManager;
-- (void)removeImageManagers:(NSArray /* <DFImageManager> */ *)imageManagers;
+- (void)addImageManager:(id<DFCoreImageManager>)imageManager;
+- (void)addImageManagers:(NSArray /* <DFCoreImageManager> */ *)imageManagers;
+- (void)removeImageManager:(id<DFCoreImageManager>)imageManager;
+- (void)removeImageManagers:(NSArray /* <DFCoreImageManager> */ *)imageManagers;
 
 @end

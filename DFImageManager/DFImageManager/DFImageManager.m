@@ -79,18 +79,15 @@
     return self;
 }
 
+#pragma mark - <DFCoreImageManager>
+
 - (BOOL)canHandleAsset:(id)asset {
     return [_conf imageManager:self canHandleAsset:asset];
 }
 
-#pragma mark - Fetching
+#pragma mark Fetching
 
-- (DFImageRequestID *)requestImageForAsset:(id)asset targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options completion:(void (^)(UIImage *, NSDictionary *))completion {
-    DFImageRequest *request = [[DFImageRequest alloc] initWithAsset:asset targetSize:targetSize contentMode:contentMode options:options];
-    return [self _requestImageForRequest:request completion:completion];
-}
-
-- (DFImageRequestID *)_requestImageForRequest:(DFImageRequest *)request completion:(DFImageRequestCompletion)completion {
+- (DFImageRequestID *)requestImageForRequest:(DFImageRequest *)request completion:(DFImageRequestCompletion)completion {
     NSString *operationID = [_conf imageManager:self operationIDForRequest:request];
     DFImageRequestID *requestID = [[DFImageRequestID alloc] initWithImageManager:self operationID:operationID];
     dispatch_async(_syncQueue, ^{
@@ -201,7 +198,7 @@
     });
 }
 
-#pragma mark - Cancel
+#pragma mark Cancel
 
 - (void)cancelRequestWithID:(DFImageRequestID *)requestID {
     if (requestID != nil) {
@@ -230,7 +227,7 @@
     }
 }
 
-#pragma mark - Priorities
+#pragma mark Priorities
 
 + (NSOperationQueuePriority)_queuePriorityForHandlers:(NSArray *)handlers {
     DFImageRequestPriority maxPriority = DFImageRequestPriorityVeryLow;
@@ -254,28 +251,19 @@
     }
 }
 
-#pragma mark - Preheating
+#pragma mark Preheating
 
-- (void)startPreheatingImageForAssets:(NSArray *)assets targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options {
-    if (assets.count) {
+- (void)startPreheatingImagesForRequests:(NSArray *)requests {
+    if (requests.count) {
         dispatch_async(_syncQueue, ^{
-            [self _startPreheatingImageForAssets:assets targetSize:targetSize contentMode:contentMode options:options];
+            [self _startPreheatingImageForRequests:requests];
         });
     }
 }
 
-- (void)stopPreheatingImagesForAssets:(NSArray *)assets targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options {
-    if (assets.count) {
-        dispatch_async(_syncQueue, ^{
-            [self _stopPreheatingImagesForAssets:assets targetSize:targetSize contentMode:contentMode options:options];
-        });
-    }
-}
-
-- (void)_startPreheatingImageForAssets:(NSArray *)assets targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options {
-    for (id asset in assets) {
-        options = [self _preheatingOptionsForAsset:asset options:options];
-        DFImageRequest *request = [[DFImageRequest alloc] initWithAsset:asset targetSize:targetSize contentMode:contentMode options:options];
+- (void)_startPreheatingImageForRequests:(NSArray *)requests {
+    for (DFImageRequest *request in requests) {
+        request.options.priority = DFImageRequestPriorityLow;
         DFImageRequestID *requestID = [self _preheatingIDForRequest:request];
         _DFImageFetchHandler *handler = [_handlers handlerForOperationID:requestID.operationID handlerID:requestID.handlerID];
         if (!handler) {
@@ -284,21 +272,20 @@
     }
 }
 
-- (void)_stopPreheatingImagesForAssets:(NSArray *)assets targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options {
-    for (id asset in assets) {
-        options = [self _preheatingOptionsForAsset:asset options:options];
-        DFImageRequest *request = [[DFImageRequest alloc] initWithAsset:asset targetSize:targetSize contentMode:contentMode options:options];
-        DFImageRequestID *requestID = [self _preheatingIDForRequest:request];
-        [self _cancelRequestWithID:requestID];
+- (void)stopPreheatingImagesForRequests:(NSArray *)requests {
+    if (requests.count) {
+        dispatch_async(_syncQueue, ^{
+            [self _stopPreheatingImagesForRequests:requests];
+        });
     }
 }
 
-- (DFImageRequestOptions *)_preheatingOptionsForAsset:(id)asset options:(DFImageRequestOptions *)options {
-    if (!options) {
-        options = [DFImageRequestOptions defaultOptions];
+- (void)_stopPreheatingImagesForRequests:(NSArray *)requests {
+    for (DFImageRequest *request in requests) {
+        request.options.priority = DFImageRequestPriorityLow;
+        DFImageRequestID *requestID = [self _preheatingIDForRequest:request];
+        [self _cancelRequestWithID:requestID];
     }
-    options.priority = DFImageRequestPriorityLow;
-    return options;
 }
 
 - (DFImageRequestID *)_preheatingIDForRequest:(DFImageRequest *)request {
@@ -321,6 +308,28 @@
             }
         }];
     });
+}
+
+#pragma mark - <DFImageManager>
+
+- (DFImageRequestID *)requestImageForAsset:(id)asset targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options completion:(void (^)(UIImage *, NSDictionary *))completion {
+    return [self requestImageForRequest:[[DFImageRequest alloc] initWithAsset:asset targetSize:targetSize contentMode:contentMode options:options] completion:completion];
+}
+
+- (void)startPreheatingImageForAssets:(NSArray *)assets targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options {
+    [self startPreheatingImagesForRequests:[self _requestsForAssets:assets targetSize:targetSize contentMode:contentMode options:options]];
+}
+
+- (void)stopPreheatingImagesForAssets:(NSArray *)assets targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options {
+    [self stopPreheatingImagesForRequests:[self _requestsForAssets:assets targetSize:targetSize contentMode:contentMode options:options]];
+}
+
+- (NSArray *)_requestsForAssets:(NSArray *)assets targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options {
+    NSMutableArray *requests = [NSMutableArray new];
+    for (id asset in assets) {
+        [requests addObject:[[DFImageRequest alloc] initWithAsset:asset targetSize:targetSize contentMode:contentMode options:options]];
+    }
+    return [requests copy];
 }
 
 #pragma mark - Dependency Injectors

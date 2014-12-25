@@ -21,14 +21,38 @@
 // THE SOFTWARE.
 
 #import "DFImageManagerDefines.h"
+#import "DFImageRequest.h"
 #import "DFImageRequestID.h"
 
 @class DFImageRequestOptions;
 
 
-@protocol DFImageManager <NSObject>
+@protocol DFCoreImageManager <NSObject>
 
 - (BOOL)canHandleAsset:(id)asset;
+
+- (DFImageRequestID *)requestImageForRequest:(DFImageRequest *)request completion:(void (^)(UIImage *image, NSDictionary *info))completion;
+
+- (void)cancelRequestWithID:(DFImageRequestID *)requestID;
+
+// TODO: Make optional if possible
+- (void)setPriority:(DFImageRequestPriority)priority forRequestWithID:(DFImageRequestID *)requestID;
+
+- (void)startPreheatingImagesForRequests:(NSArray /* DFImageRequest */ *)requests;
+- (void)stopPreheatingImagesForRequests:(NSArray /* DFImageRequest */ *)requests;
+
+/*! Cancels all image preheating operations.
+ @note Do not cancel operations that were started as a preheat operations but than were assigned 'real' handlers.
+ */
+- (void)stopPreheatingImageForAllAssets;
+
+@end
+
+
+/*! Convenience methods.
+ @discussion Implementation details. All you need to do is pack given parameters in a DFImageRequest object and dispatch it to the appropriate DFCoreImageManager method.
+ */
+@protocol DFConvenienceImageManager <NSObject>
 
 /*! Requests an image representation for the specified asset.
  @param asset The asset whose image data is to be loaded. If asset is nil behavior is undefined.
@@ -39,17 +63,13 @@
  */
 - (DFImageRequestID *)requestImageForAsset:(id)asset targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options completion:(void (^)(UIImage *image, NSDictionary *info))completion;
 
-- (void)cancelRequestWithID:(DFImageRequestID *)requestID;
-
-// TODO: Make optional if possible
-- (void)setPriority:(DFImageRequestPriority)priority forRequestWithID:(DFImageRequestID *)requestID;
-
 - (void)startPreheatingImageForAssets:(NSArray *)assets targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options;
+
 - (void)stopPreheatingImagesForAssets:(NSArray *)assets targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options;
 
-/*! Cancels all image preheating operations.
- @note Do not cancel operations that were started as a preheat operations but than were assigned 'real' handlers.
- */
-- (void)stopPreheatingImageForAllAssets;
+@end
+
+
+@protocol DFImageManager <DFCoreImageManager, DFConvenienceImageManager>
 
 @end

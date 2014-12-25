@@ -61,14 +61,14 @@
     return nil;
 }
 
-#pragma mark - <DFImageManager>
+#pragma mark - <DFCoreImageManager>
 
 - (BOOL)canHandleAsset:(id)asset {
     return [[self _managerForAsset:asset] canHandleAsset:asset];
 }
 
-- (DFImageRequestID *)requestImageForAsset:(id)asset targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options completion:(void (^)(UIImage *, NSDictionary *))completion {
-    return [[self _managerForAsset:asset] requestImageForAsset:asset targetSize:targetSize contentMode:contentMode options:options completion:completion];
+- (DFImageRequestID *)requestImageForRequest:(DFImageRequest *)request completion:(void (^)(UIImage *, NSDictionary *))completion {
+    return [[self _managerForAsset:request.asset] requestImageForRequest:request completion:completion];
 }
 
 - (void)cancelRequestWithID:(DFImageRequestID *)requestID {
@@ -79,15 +79,15 @@
     [requestID setPriority:priority];
 }
 
-- (void)startPreheatingImageForAssets:(NSArray *)assets targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options {
-    for (id asset in assets) {
-        [[self _managerForAsset:asset] startPreheatingImageForAssets:@[asset] targetSize:targetSize contentMode:contentMode options:options];
+- (void)startPreheatingImagesForRequests:(NSArray *)requests {
+    for (DFImageRequest *request in requests) {
+        [[self _managerForAsset:request.asset] startPreheatingImagesForRequests:@[request]];
     }
 }
 
-- (void)stopPreheatingImagesForAssets:(NSArray *)assets targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options {
-    for (id asset in assets) {
-        [[self _managerForAsset:asset] stopPreheatingImagesForAssets:@[asset] targetSize:targetSize contentMode:contentMode options:options];
+- (void)stopPreheatingImagesForRequests:(NSArray *)requests {
+    for (DFImageRequest *request in requests) {
+        [[self _managerForAsset:request.asset] stopPreheatingImagesForRequests:@[request]];
     }
 }
 
@@ -95,6 +95,28 @@
     for (id<DFImageManager> manager in _managers) {
         [manager stopPreheatingImageForAllAssets];
     }
+}
+
+#pragma mark - <DFImageManager>
+
+- (DFImageRequestID *)requestImageForAsset:(id)asset targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options completion:(void (^)(UIImage *, NSDictionary *))completion {
+    return [self requestImageForRequest:[[DFImageRequest alloc] initWithAsset:asset targetSize:targetSize contentMode:contentMode options:options] completion:completion];
+}
+
+- (void)startPreheatingImageForAssets:(NSArray *)assets targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options {
+    [self startPreheatingImagesForRequests:[self _requestsForAssets:assets targetSize:targetSize contentMode:contentMode options:options]];
+}
+
+- (void)stopPreheatingImagesForAssets:(NSArray *)assets targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options {
+    [self stopPreheatingImagesForRequests:[self _requestsForAssets:assets targetSize:targetSize contentMode:contentMode options:options]];
+}
+
+- (NSArray *)_requestsForAssets:(NSArray *)assets targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options {
+    NSMutableArray *requests = [NSMutableArray new];
+    for (id asset in assets) {
+        [requests addObject:[[DFImageRequest alloc] initWithAsset:asset targetSize:targetSize contentMode:contentMode options:options]];
+    }
+    return [requests copy];
 }
 
 @end
