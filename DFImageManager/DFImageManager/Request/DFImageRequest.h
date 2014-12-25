@@ -19,6 +19,6 @@
 @property (nonatomic, readonly) DFImageContentMode contentMode;
 @property (nonatomic, readonly) DFImageRequestOptions *options;
 
-- (instancetype)initWithAsset:(id)asset targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options;
+- (instancetype)initWithAsset:(id)asset targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options NS_DESIGNATED_INITIALIZER;
 
 @end

@@ -31,6 +31,6 @@
 
 @property (nonatomic, copy) NSString* (^cacheKeyForAsset)(id asset, DFImageRequestOptions *options);
 
-- (instancetype)initWithAsset:(id)asset options:(DFImageRequestOptions *)options response:(DFImageResponse *)response cache:(DFCache *)cache;
+- (instancetype)initWithAsset:(id)asset options:(DFImageRequestOptions *)options response:(DFImageResponse *)response cache:(DFCache *)cache NS_DESIGNATED_INITIALIZER;
 
 @end

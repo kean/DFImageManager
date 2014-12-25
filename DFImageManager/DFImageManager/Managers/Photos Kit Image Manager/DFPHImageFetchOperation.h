@@ -32,6 +32,6 @@
 
 @interface DFPHImageFetchOperation : NSOperation <DFImageManagerOperation>
 
-- (instancetype)initWithRequest:(DFImageRequest *)request;
+- (instancetype)initWithRequest:(DFImageRequest *)request NS_DESIGNATED_INITIALIZER;
 
 @end

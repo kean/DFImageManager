@@ -28,7 +28,7 @@
  */
 @interface DFImageProcessingManager : NSObject <DFImageProcessingManager>
 
-- (instancetype)initWithCache:(NSCache *)cache;
+- (instancetype)initWithCache:(NSCache *)cache NS_DESIGNATED_INITIALIZER;
 - (instancetype)init;
 
 @property (nonatomic, readonly) NSCache *cache;

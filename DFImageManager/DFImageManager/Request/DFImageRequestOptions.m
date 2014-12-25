@@ -39,7 +39,7 @@
 }
 
 - (instancetype)initWithOptions:(DFImageRequestOptions *)options {
-    if (self = [super init]) {
+    if (self = [self init]) {
         _cacheStoragePolicy = options.cacheStoragePolicy;
         _priority = options.priority;
         _networkAccessAllowed = options.networkAccessAllowed;

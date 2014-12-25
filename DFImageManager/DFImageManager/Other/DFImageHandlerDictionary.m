@@ -40,7 +40,7 @@
         handlers = [NSMutableDictionary new];
         _handlers[operationID] = handlers;
     }
-    [handlers setObject:handler forKey:handlerID];
+    handlers[handlerID] = handler;
 }
 
 - (id)handlerForOperationID:(NSString *)operationID handlerID:(NSString *)handlerID {

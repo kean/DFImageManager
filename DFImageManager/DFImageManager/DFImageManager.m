@@ -36,7 +36,7 @@
 @property (nonatomic, readonly) DFImageRequest *request;
 @property (nonatomic, readonly) DFImageRequestCompletion completion;
 
-- (instancetype)initWithRequest:(DFImageRequest *)request completion:(DFImageRequestCompletion)completion;
+- (instancetype)initWithRequest:(DFImageRequest *)request completion:(DFImageRequestCompletion)completion NS_DESIGNATED_INITIALIZER;
 
 @end
 

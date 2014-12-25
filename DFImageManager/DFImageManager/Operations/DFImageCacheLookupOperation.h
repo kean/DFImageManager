@@ -36,6 +36,6 @@
 @property (nonatomic, readonly) DFImageResponse *response;
 @property (nonatomic, copy) NSString* (^cacheKeyForAsset)(id asset, DFImageRequestOptions *options);
 
-- (instancetype)initWithAsset:(id)asset options:(DFImageRequestOptions *)options cache:(DFCache *)cache;
+- (instancetype)initWithAsset:(id)asset options:(DFImageRequestOptions *)options cache:(DFCache *)cache NS_DESIGNATED_INITIALIZER;
 
 @end

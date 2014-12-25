@@ -29,7 +29,7 @@
 
 @property (nonatomic, readonly) NSString *identifier;
 
-- (instancetype)initWithIdentifier:(NSString *)identifier;
+- (instancetype)initWithIdentifier:(NSString *)identifier NS_DESIGNATED_INITIALIZER;
 + (instancetype)localIdentifierForAsset:(PHAsset *)asset;
 
 @end

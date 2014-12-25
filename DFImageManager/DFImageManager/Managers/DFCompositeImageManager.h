@@ -26,7 +26,7 @@
 
 @interface DFCompositeImageManager : NSObject <DFImageManager>
 
-- (instancetype)initWithImageManagerFactory:(id<DFImageManagerFactory>)imageManagerFactory;
+- (instancetype)initWithImageManagerFactory:(id<DFImageManagerFactory>)imageManagerFactory NS_DESIGNATED_INITIALIZER;
 
 @property (nonatomic, readonly) id<DFImageManagerFactory> imageManagerFactory;
 

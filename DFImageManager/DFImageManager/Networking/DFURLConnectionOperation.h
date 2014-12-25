@@ -35,7 +35,7 @@
 @property (nonatomic, readonly) id responseObject;
 @property (nonatomic, readonly) NSError *error;
 
-- (id)initWithRequest:(NSURLRequest *)request;
+- (instancetype)initWithRequest:(NSURLRequest *)request NS_DESIGNATED_INITIALIZER;
 
 - (void)didStart;
 - (void)finish;

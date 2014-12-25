@@ -33,7 +33,7 @@
 @property (nonatomic, readonly) id<DFImageManagerConfiguration> configuration;
 @property (nonatomic, readonly) id<DFImageProcessingManager> imageProcessingManager;
 
-- (instancetype)initWithConfiguration:(id<DFImageManagerConfiguration>)configuration imageProcessingManager:(id<DFImageProcessingManager>)processingManager;
+- (instancetype)initWithConfiguration:(id<DFImageManagerConfiguration>)configuration imageProcessingManager:(id<DFImageProcessingManager>)processingManager NS_DESIGNATED_INITIALIZER;
 
 // Basic dependency injectors.
 

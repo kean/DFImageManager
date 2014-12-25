@@ -30,6 +30,6 @@
 
 @property (nonatomic, readonly) DFCache *cache;
 
-- (instancetype)initWithCache:(DFCache *)cache;
+- (instancetype)initWithCache:(DFCache *)cache NS_DESIGNATED_INITIALIZER;
 
 @end

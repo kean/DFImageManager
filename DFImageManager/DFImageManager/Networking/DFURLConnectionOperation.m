@@ -37,7 +37,7 @@
 @synthesize executing = _executing;
 @synthesize finished = _finished;
 
-- (id)initWithRequest:(NSURLRequest *)request {
+- (instancetype)initWithRequest:(NSURLRequest *)request {
     if (self = [super init]) {
         _request = request;
         _runLoopMode = NSRunLoopCommonModes;

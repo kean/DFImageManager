@@ -30,6 +30,6 @@
 - (void)removeHandlerForOperationID:(NSString *)operationID handlerID:(NSString *)handlerID;
 - (NSArray *)handlersForOperationID:(NSString *)operationID;
 - (void)removeAllHandlersForOperationID:(NSString *)operationID;
-- (NSDictionary *)allHandlers;
+@property (NS_NONATOMIC_IOSONLY, readonly, copy) NSDictionary *allHandlers;
 
 @end
