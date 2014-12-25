@@ -24,6 +24,9 @@
 #import "DFImageManagerValueTransformerProtocol.h"
 #import <Foundation/Foundation.h>
 
+
+/*! Use proxy image manager in case you need to transform application specific interfaces to the interfaces supported by the image manager. Image manager will always recieve transformed assets.
+ */
 @interface DFProxyImageManager : NSProxy <DFImageManager>
 
 @property (nonatomic) id<DFImageManager> imageManager;
