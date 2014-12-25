@@ -25,4 +25,12 @@
 
 @interface DFImageRequestID : NSObject <NSCopying>
 
+/*! Cancels the request.
+ */
+- (void)cancel;
+
+/*! Changes the request priority.
+ */
+- (void)setPriority:(DFImageRequestPriority)priority;
+
 @end

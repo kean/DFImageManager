@@ -22,6 +22,7 @@
 
 #import "DFCompositeImageManager.h"
 #import "DFImageManagerBlockValueTransformer.h"
+#import "DFImageRequestID+Protected.h"
 #import "DFImageRequestID.h"
 
 
@@ -29,14 +30,12 @@
 
 @implementation DFCompositeImageManager {
     NSMutableArray *_managers;
-    NSMutableDictionary *_managersForRequests;
 }
 
 @synthesize valueTransformer = _transformer;
 
 - (instancetype)initWithImageManagers:(NSArray *)imageManagers {
     if (self = [super init]) {
-        _managersForRequests = [NSMutableDictionary new];
         _managers = [NSMutableArray arrayWithArray:imageManagers];
     }
     return self;
@@ -67,6 +66,10 @@
     return nil;
 }
 
+- (void)setValueTransformerWithBlock:(id (^)(id))block {
+    self.valueTransformer = [[DFImageManagerBlockValueTransformer alloc] initWithBlock:block];
+}
+
 #pragma mark - <DFImageManager>
 
 - (BOOL)canHandleAsset:(id)asset {
@@ -76,20 +79,15 @@
 
 - (DFImageRequestID *)requestImageForAsset:(id)asset targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options completion:(void (^)(UIImage *, NSDictionary *))completion {
     asset = _DF_TRANSFORMED_ASSET(asset);
-    id<DFImageManager> imageManager = [self _managerForAsset:asset];
-    DFImageRequestID *requestID = [imageManager requestImageForAsset:asset targetSize:targetSize contentMode:contentMode options:options completion:completion];
-    if (imageManager != nil && requestID != nil) {
-        _managersForRequests[requestID] = imageManager;
-    }
-    return requestID;
+    return [[self _managerForAsset:asset] requestImageForAsset:asset targetSize:targetSize contentMode:contentMode options:options completion:completion];
 }
 
 - (void)cancelRequestWithID:(DFImageRequestID *)requestID {
-    [((id<DFImageManager>)_managersForRequests[requestID]) cancelRequestWithID:requestID];
+    [requestID cancel];
 }
 
 - (void)setPriority:(DFImageRequestPriority)priority forRequestWithID:(DFImageRequestID *)requestID {
-    [((id<DFImageManager>)_managersForRequests[requestID]) setPriority:priority forRequestWithID:requestID];
+    [requestID setPriority:priority];
 }
 
 - (DFImageRequestOptions *)requestOptionsForAsset:(id)asset {
@@ -99,9 +97,8 @@
 - (void)startPreheatingImageForAssets:(NSArray *)assets targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options {
     for (id asset in assets) {
         id transformedAsset = _DF_TRANSFORMED_ASSET(asset);
-        id<DFImageManager> imageManager = [self _managerForAsset:transformedAsset];
         if (transformedAsset != nil) {
-            [imageManager startPreheatingImageForAssets:@[transformedAsset] targetSize:targetSize contentMode:contentMode options:options];
+            [[self _managerForAsset:transformedAsset] startPreheatingImageForAssets:@[transformedAsset] targetSize:targetSize contentMode:contentMode options:options];
         }
     }
 }
@@ -109,23 +106,16 @@
 - (void)stopPreheatingImagesForAssets:(NSArray *)assets targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options {
     for (id asset in assets) {
         id transformedAsset = _DF_TRANSFORMED_ASSET(asset);
-        id<DFImageManager> imageManager = [self _managerForAsset:transformedAsset];
         if (transformedAsset != nil) {
-            [imageManager stopPreheatingImagesForAssets:@[transformedAsset] targetSize:targetSize contentMode:contentMode options:options];
+            [[self _managerForAsset:transformedAsset] stopPreheatingImagesForAssets:@[transformedAsset] targetSize:targetSize contentMode:contentMode options:options];
         }
     }
 }
 
 - (void)stopPreheatingImageForAllAssets {
-    [_managersForRequests enumerateKeysAndObjectsUsingBlock:^(id key, id<DFImageManager> imageManager, BOOL *stop) {
-        [imageManager stopPreheatingImageForAllAssets];
-    }];
-}
-
-#pragma mark -
-
-- (void)setValueTransformerWithBlock:(id (^)(id))block {
-    self.valueTransformer = [[DFImageManagerBlockValueTransformer alloc] initWithBlock:block];
+    for (id<DFImageManager> manager in _managers) {
+        [manager stopPreheatingImageForAllAssets];
+    }
 }
 
 @end

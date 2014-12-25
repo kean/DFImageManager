@@ -20,11 +20,13 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+#import "DFImageManagerProtocol.h"
 #import "DFImageRequestID.h"
 
 
 @interface DFImageRequestID ()
 
+@property (nonatomic, weak, readonly) id<DFImageManager> imageManager;
 @property (nonatomic, readonly) NSString *operationID;
 @property (nonatomic, readonly) NSString *handlerID;
 
@@ -32,18 +34,27 @@
 
 @implementation DFImageRequestID
 
-- (instancetype)initWithOperationID:(NSString *)operationID handlerID:(NSString *)handlerID {
+- (instancetype)initWithImageManager:(id<DFImageManager>)imageManager operationID:(NSString *)operationID handlerID:(NSString *)handlerID {
     if (self = [super init]) {
         NSParameterAssert(operationID);
         NSParameterAssert(handlerID);
+        _imageManager = imageManager;
         _operationID = operationID;
         _handlerID = handlerID;
     }
     return self;
 }
 
-- (instancetype)initWithOperationID:(NSString *)operationID {
-    return [self initWithOperationID:operationID ?: [[NSUUID UUID] UUIDString] handlerID:[[NSUUID UUID] UUIDString]];
+- (instancetype)initWithImageManager:(id<DFImageManager>)imageManager operationID:(NSString *)operationID {
+    return [self initWithImageManager:imageManager operationID:operationID ?: [[NSUUID UUID] UUIDString] handlerID:[[NSUUID UUID] UUIDString]];
+}
+
+- (void)cancel {
+    [self.imageManager cancelRequestWithID:self];
+}
+
+- (void)setPriority:(DFImageRequestPriority)priority {
+    [self.imageManager setPriority:priority forRequestWithID:self];
 }
 
 - (BOOL)isEqual:(id)object {
@@ -54,7 +65,8 @@
         return NO;
     }
     DFImageRequestID *other = object;
-    return ([other.operationID isEqualToString:self.operationID] &&
+    return ([other.imageManager isEqual:self.imageManager] &&
+            [other.operationID isEqualToString:self.operationID] &&
             [other.handlerID isEqualToString:self.handlerID]);
 }
 
@@ -63,7 +75,7 @@
 }
 
 - (NSString *)description {
-    return [NSString stringWithFormat:@"<%@ %p> { operationID = %@, handlerID = %@ }", [self class], self, self.operationID, self.handlerID];
+    return [NSString stringWithFormat:@"<%@ %p> { imageManager = %@, operationID = %@, handlerID = %@ }", [self class], self, self.imageManager, self.operationID, self.handlerID];
 }
 
 @end

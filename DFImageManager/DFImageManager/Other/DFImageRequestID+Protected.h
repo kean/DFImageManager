@@ -25,13 +25,16 @@
 
 @interface DFImageRequestID (Protected)
 
+/*! Image manager that originated request ID.
+ */
+@property (nonatomic, weak, readonly) id<DFImageManager> imageManager;
 @property (nonatomic, readonly) NSString *operationID;
 @property (nonatomic, readonly) NSString *handlerID;
 
-- (instancetype)initWithOperationID:(NSString *)operationID handlerID:(NSString *)handlerID;
+- (instancetype)initWithImageManager:(id<DFImageManager>)imageManager operationID:(NSString *)operationID handlerID:(NSString *)handlerID;
 
 /*! Initializes request ID with a given requestID ID. Handler ID is generated automatically during initialization.
  */
-- (instancetype)initWithOperationID:(NSString *)operationID;
+- (instancetype)initWithImageManager:(id<DFImageManager>)imageManager operationID:(NSString *)operationID;
 
 @end

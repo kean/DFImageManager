@@ -165,9 +165,7 @@
 }
 
 - (void)_df_cancelFetching {
-    if (_requestID) {
-        [self.imageManager cancelRequestWithID:_requestID];
-    }
+    [_requestID cancel];
 }
 
 #pragma mark - Priorities
@@ -176,9 +174,7 @@
     [super willMoveToWindow:newWindow];
     if (self.managesRequestPriorities) {
         DFImageRequestPriority priority = (newWindow == nil) ? DFImageRequestPriorityNormal : DFImageRequestPriorityVeryHigh;
-        if (_requestID) {
-            [self.imageManager setPriority:priority forRequestWithID:_requestID];
-        }
+        [_requestID setPriority:priority];
     }
 }
 

@@ -21,9 +21,9 @@
 // THE SOFTWARE.
 
 #import "DFImageManagerDefines.h"
+#import "DFImageRequestID.h"
 
 @class DFImageRequestOptions;
-@class DFImageRequestID;
 
 
 @protocol DFImageManager <NSObject>

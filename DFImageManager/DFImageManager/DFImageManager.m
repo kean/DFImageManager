@@ -112,7 +112,7 @@
     }
     DFImageRequest *request = [[DFImageRequest alloc] initWithAsset:asset targetSize:targetSize contentMode:contentMode options:options];
     NSString *operationID = [_conf imageManager:self operationIDForRequest:request];
-    DFImageRequestID *requestID = [[DFImageRequestID alloc] initWithOperationID:operationID];
+    DFImageRequestID *requestID = [[DFImageRequestID alloc] initWithImageManager:self operationID:operationID];
     
     dispatch_async(_syncQueue, ^{
         [self _requestImageForRequest:request requestID:requestID completion:completion];
@@ -324,7 +324,7 @@
 
 - (DFImageRequestID *)_preheatingIDForRequest:(DFImageRequest *)request {
     NSString *operationID = [_conf imageManager:self operationIDForRequest:request];
-    return [[DFImageRequestID alloc] initWithOperationID:operationID handlerID:@"preheat"];
+    return [[DFImageRequestID alloc] initWithImageManager:self operationID:operationID handlerID:@"preheat"];
 }
 
 - (void)stopPreheatingImageForAllAssets {
@@ -334,7 +334,7 @@
             NSMutableArray *requestIDs = [NSMutableArray new];
             [handlersForOperation enumerateKeysAndObjectsUsingBlock:^(NSString *handlerID, _DFImageFetchHandler *handler, BOOL *stop) {
                 if ([handlerID isEqualToString:@"preheat"]) {
-                    [requestIDs addObject:[[DFImageRequestID alloc] initWithOperationID:requestID handlerID:handlerID]];
+                    [requestIDs addObject:[[DFImageRequestID alloc]initWithImageManager:self operationID:requestID handlerID:handlerID]];
                 }
             }];
             for (DFImageRequestID *requestID in requestIDs) {
