@@ -23,6 +23,7 @@
 #import "DFImageManagerBlockValueTransformer.h"
 #import "DFProxyImageManager.h"
 
+
 #define _DF_TRANSFORMED_ASSET(asset) _transformer ? [_transformer transformedAsset:asset] : asset
 
 @implementation DFProxyImageManager
@@ -30,7 +31,7 @@
 @synthesize valueTransformer = _transformer;
 @synthesize imageManager = _manager;
 
-- (instancetype)initWithImageManager:(id<DFImageManager>)imageManager {
+- (instancetype)initWithImageManager:(id<DFCoreImageManager>)imageManager {
     self.imageManager = imageManager;
     return self;
 }

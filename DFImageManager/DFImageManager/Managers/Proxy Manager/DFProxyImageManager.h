@@ -29,9 +29,9 @@
  */
 @interface DFProxyImageManager : NSProxy <DFImageManager>
 
-@property (nonatomic) id<DFImageManager> imageManager;
+@property (nonatomic) id<DFCoreImageManager> imageManager;
 
-- (instancetype)initWithImageManager:(id<DFImageManager>)imageManager;
+- (instancetype)initWithImageManager:(id<DFCoreImageManager>)imageManager;
 
 /*! Set value transformer in case you need to transform assets before passing them to the image manager factory and to the image managers.
  */

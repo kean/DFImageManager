@@ -26,7 +26,7 @@
 
 
 @implementation DFCompositeImageManager {
-    NSMutableArray *_managers;
+    NSMutableArray /* id<DFCoreImageManager> */ *_managers;
 }
 
 - (instancetype)initWithImageManagers:(NSArray *)imageManagers {
@@ -36,7 +36,7 @@
     return self;
 }
 
-- (void)addImageManager:(id<DFImageManager>)imageManager {
+- (void)addImageManager:(id<DFCoreImageManager>)imageManager {
     [self addImageManagers:@[imageManager]];
 }
 
@@ -44,7 +44,7 @@
     [_managers addObjectsFromArray:imageManagers];
 }
 
-- (void)removeImageManager:(id<DFImageManager>)imageManager {
+- (void)removeImageManager:(id<DFCoreImageManager>)imageManager {
     [self removeImageManagers:@[imageManager]];
 }
 
@@ -52,8 +52,8 @@
     [_managers removeObjectsInArray:imageManagers];
 }
 
-- (id<DFImageManager>)_managerForAsset:(id)asset {
-    for (id<DFImageManager> manager in _managers) {
+- (id<DFCoreImageManager>)_managerForAsset:(id)asset {
+    for (id<DFCoreImageManager> manager in _managers) {
         if ([manager canHandleAsset:asset]) {
             return manager;
         }
@@ -92,7 +92,7 @@
 }
 
 - (void)stopPreheatingImageForAllAssets {
-    for (id<DFImageManager> manager in _managers) {
+    for (id<DFCoreImageManager> manager in _managers) {
         [manager stopPreheatingImageForAllAssets];
     }
 }

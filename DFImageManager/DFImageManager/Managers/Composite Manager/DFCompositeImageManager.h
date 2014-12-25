@@ -29,7 +29,7 @@
  */
 @interface DFCompositeImageManager : NSObject <DFImageManager>
 
-- (instancetype)initWithImageManagers:(NSArray /* id<DFImageManager> */ *)imageManagers NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithImageManagers:(NSArray /* id<DFCoreImageManager> */ *)imageManagers NS_DESIGNATED_INITIALIZER;
 
 - (void)addImageManager:(id<DFCoreImageManager>)imageManager;
 - (void)addImageManagers:(NSArray /* <DFCoreImageManager> */ *)imageManagers;
