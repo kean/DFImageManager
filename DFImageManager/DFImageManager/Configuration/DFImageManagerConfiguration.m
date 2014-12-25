@@ -36,6 +36,10 @@ NSString *const DFImageManagerCacheStoreOperationType = @"DFImageManagerCacheSto
 
 #pragma mark - <DFImageManagerConfiguration>
 
+- (BOOL)imageManager:(id<DFImageManager>)manager canHandleAsset:(id)asset {
+    return NO;
+}
+
 - (NSString *)imageManager:(id<DFImageManager>)manager uniqueIDForAsset:(id)asset {
     [NSException raise:NSInvalidArgumentException format:@"Abstract method called %@", NSStringFromSelector(_cmd)];
     return nil;

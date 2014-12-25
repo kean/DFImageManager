@@ -42,6 +42,10 @@
 
 #pragma mark - <DFImageManagerConfiguration>
 
+- (BOOL)imageManager:(id<DFImageManager>)manager canHandleAsset:(id)asset {
+    return [asset isKindOfClass:[PHAsset class]] || [asset isKindOfClass:[DFPHAssetlocalIdentifier class]];
+}
+
 - (NSString *)imageManager:(id<DFImageManager>)manager uniqueIDForAsset:(id)asset {
     if ([asset isKindOfClass:[PHAsset class]]) {
         return [((PHAsset *)asset) localIdentifier];

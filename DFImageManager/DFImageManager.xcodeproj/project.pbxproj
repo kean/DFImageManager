@@ -20,7 +20,6 @@
 		0C2BD4FA1A03A66000412BE3 /* DFURLConnectionOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C2BD4F81A03A66000412BE3 /* DFURLConnectionOperation.m */; };
 		0C3304B31A4A67B4001808F3 /* DFNetworkImageManagerConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C3304B21A4A67B4001808F3 /* DFNetworkImageManagerConfiguration.m */; };
 		0C5C25AF1A146B7A006C5791 /* DFImageFetchConnectionOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C5C25AE1A146B7A006C5791 /* DFImageFetchConnectionOperation.m */; };
-		0C77A4371A49431800538A36 /* DFImageManagerFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C77A4361A49431800538A36 /* DFImageManagerFactory.m */; };
 		0C8573B31A121CAD00067EA4 /* DFImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C8573B21A121CAD00067EA4 /* DFImageView.m */; };
 		0CA07D801A4BD08900B16F38 /* DFCompositeImageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CA07D7F1A4BD08900B16F38 /* DFCompositeImageManager.m */; };
 		0CA07D841A4BD1AF00B16F38 /* DFImageManagerBlockValueTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CA07D831A4BD1AF00B16F38 /* DFImageManagerBlockValueTransformer.m */; };
@@ -82,9 +81,6 @@
 		0C3304B21A4A67B4001808F3 /* DFNetworkImageManagerConfiguration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFNetworkImageManagerConfiguration.m; sourceTree = "<group>"; };
 		0C5C25AD1A146B7A006C5791 /* DFImageFetchConnectionOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFImageFetchConnectionOperation.h; sourceTree = "<group>"; };
 		0C5C25AE1A146B7A006C5791 /* DFImageFetchConnectionOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFImageFetchConnectionOperation.m; sourceTree = "<group>"; };
-		0C77A4341A4942DC00538A36 /* DFImageManagerFactoryProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFImageManagerFactoryProtocol.h; sourceTree = "<group>"; };
-		0C77A4351A49431800538A36 /* DFImageManagerFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFImageManagerFactory.h; sourceTree = "<group>"; };
-		0C77A4361A49431800538A36 /* DFImageManagerFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFImageManagerFactory.m; sourceTree = "<group>"; };
 		0C8573B11A121CAD00067EA4 /* DFImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFImageView.h; sourceTree = "<group>"; };
 		0C8573B21A121CAD00067EA4 /* DFImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFImageView.m; sourceTree = "<group>"; };
 		0CA07D7E1A4BD08900B16F38 /* DFCompositeImageManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFCompositeImageManager.h; sourceTree = "<group>"; };
@@ -168,8 +164,6 @@
 				0C2BD52B1A03B15300412BE3 /* DFImageManagerKit.h */,
 				0C2BD4BB1A03A28000412BE3 /* DFImageManager.h */,
 				0C2BD4BD1A03A28000412BE3 /* DFImageManager.m */,
-				0C77A4351A49431800538A36 /* DFImageManagerFactory.h */,
-				0C77A4361A49431800538A36 /* DFImageManagerFactory.m */,
 				0C2BD4CF1A03A2EA00412BE3 /* DFImageManagerDefines.h */,
 				0C2BD4D01A03A2EA00412BE3 /* DFImageManagerDefines.m */,
 				0C77A4391A4944E100538A36 /* Managers */,
@@ -229,7 +223,6 @@
 				0C2BD4DF1A03A3B200412BE3 /* DFImageManagerProtocol.h */,
 				0C2BD4DE1A03A3B200412BE3 /* DFImageManagerConfigurationProtocol.h */,
 				0C2BD4FB1A03AEB800412BE3 /* DFImageManagerOperationProtocol.h */,
-				0C77A4341A4942DC00538A36 /* DFImageManagerFactoryProtocol.h */,
 				0CA129491A4A3F3200FB4688 /* DFImageProcessingManagerProtocol.h */,
 				0CA07D811A4BD0CC00B16F38 /* DFImageManagerValueTransformerProtocol.h */,
 			);
@@ -469,7 +462,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				0C2BD4E91A03A3B200412BE3 /* DFImageRequestID.m in Sources */,
-				0C77A4371A49431800538A36 /* DFImageManagerFactory.m in Sources */,
 				0C2BD4FA1A03A66000412BE3 /* DFURLConnectionOperation.m in Sources */,
 				0CA07D841A4BD1AF00B16F38 /* DFImageManagerBlockValueTransformer.m in Sources */,
 				0C3304B31A4A67B4001808F3 /* DFNetworkImageManagerConfiguration.m in Sources */,

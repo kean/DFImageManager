@@ -53,6 +53,10 @@
 
 #pragma mark - <DFImageManagerConfiguration>
 
+- (BOOL)imageManager:(id<DFImageManager>)manager canHandleAsset:(id)asset {
+    return [asset isKindOfClass:[NSString class]];
+}
+
 - (NSString *)imageManager:(id<DFImageManager>)manager uniqueIDForAsset:(id)asset {
     return (NSString *)asset;
 }

@@ -30,12 +30,10 @@
 #import "DFImageManager.h"
 #import "DFImageManagerConfiguration.h"
 
+#import "DFCompositeImageManager.h"
+
 #import "DFImageProcessingManagerProtocol.h"
 #import "DFImageProcessingManager.h"
-
-#import "DFImageManagerFactoryProtocol.h"
-#import "DFImageManagerFactory.h"
-#import "DFCompositeImageManager.h"
 
 #import "DFImageRequest.h"
 #import "DFImageRequestID.h"

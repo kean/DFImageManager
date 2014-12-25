@@ -79,6 +79,10 @@
     return self;
 }
 
+- (BOOL)canHandleAsset:(id)asset {
+    return [_conf imageManager:self canHandleAsset:asset];
+}
+
 #pragma mark - Fetching
 
 - (DFImageRequestOptions *)requestOptionsForAsset:(id)asset {

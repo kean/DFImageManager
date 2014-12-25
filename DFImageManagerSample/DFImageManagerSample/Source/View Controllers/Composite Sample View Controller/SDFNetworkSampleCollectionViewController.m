@@ -62,10 +62,7 @@ static NSString * const reuseIdentifier = @"Cell";
     DFNetworkImageManagerConfiguration *networkImageManagerConfiguration = [[DFNetworkImageManagerConfiguration alloc] initWithCache:cache];
     DFImageManager *networkImageManager = [[DFImageManager alloc] initWithConfiguration:networkImageManagerConfiguration imageProcessingManager:imageProcessingManager];
     
-    DFImageManagerFactory *factory = [DFImageManagerFactory new];
-    [factory registerImageManager:networkImageManager forAssetClass:[NSString class]];
-    
-    DFCompositeImageManager *compositeImageManager = [[DFCompositeImageManager alloc] initWithImageManagerFactory:factory];
+    DFCompositeImageManager *compositeImageManager = [[DFCompositeImageManager alloc] initWithImageManagers:@[networkImageManager]];
     
     [DFImageManager setSharedManager:compositeImageManager];
 }

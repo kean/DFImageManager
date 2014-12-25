@@ -31,6 +31,8 @@
  */
 @protocol DFImageManagerConfiguration <NSObject>
 
+- (BOOL)imageManager:(id<DFImageManager>)manager canHandleAsset:(id)asset;
+
 - (NSString *)imageManager:(id<DFImageManager>)manager uniqueIDForAsset:(id)asset;
 
 /*! Creates operationID for request so that existing operations could be reused for new handlers.

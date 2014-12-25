@@ -28,6 +28,8 @@
 
 @protocol DFImageManager <NSObject>
 
+- (BOOL)canHandleAsset:(id)asset;
+
 /*! Requests an image representation for the specified asset.
  @param asset The asset whose image data is to be loaded.
  @param targetSize The target size in pixels of image to be returned.
@@ -42,6 +44,7 @@
 // TODO: Make optional if possible
 - (void)setPriority:(DFImageRequestPriority)priority forRequestWithID:(DFImageRequestID *)requestID;
 
+// TOOD: Make optional if possible
 /*! Returns default options for a given asset.
  */
 - (DFImageRequestOptions *)requestOptionsForAsset:(id)asset;

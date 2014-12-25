@@ -20,17 +20,21 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "DFImageManagerFactoryProtocol.h"
 #import "DFImageManagerProtocol.h"
 #import "DFImageManagerValueTransformerProtocol.h"
 #import <Foundation/Foundation.h>
 
 
+/*! Composite image manager built using chain of responsibility design pattern. Each image manager added to the composite image manager defines the types of assets if can handle. The rest assets are passed to the next image manager in the chain.
+ */
 @interface DFCompositeImageManager : NSObject <DFImageManager>
 
-- (instancetype)initWithImageManagerFactory:(id<DFImageManagerFactory>)imageManagerFactory NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithImageManagers:(NSArray /* id<DFImageManager> */ *)imageManagers NS_DESIGNATED_INITIALIZER;
 
-@property (nonatomic, readonly) id<DFImageManagerFactory> imageManagerFactory;
+- (void)addImageManager:(id<DFImageManager>)imageManager;
+- (void)addImageManagers:(NSArray /* <DFImageManager> */ *)imageManagers;
+- (void)removeImageManager:(id<DFImageManager>)imageManager;
+- (void)removeImageManagers:(NSArray /* <DFImageManager> */ *)imageManagers;
 
 /*! Set value transformer in case you need to transform assets before passing them to the image manager factory and to the image managers.
  */
