@@ -20,14 +20,25 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "DFImageManagerFactoryProtocol.h"
-#import "DFImageManagerProtocol.h"
-#import <Foundation/Foundation.h>
+#import "DFImageManagerBlockValueTransformer.h"
 
-@interface DFCompositeImageManager : NSObject <DFImageManager>
 
-- (instancetype)initWithImageManagerFactory:(id<DFImageManagerFactory>)imageManagerFactory NS_DESIGNATED_INITIALIZER;
+@implementation DFImageManagerBlockValueTransformer {
+    id (^_block)(id);
+}
 
-@property (nonatomic, readonly) id<DFImageManagerFactory> imageManagerFactory;
+- (instancetype)initWithBlock:(id (^)(id))block {
+    if (self = [super init]) {
+        NSParameterAssert(block);
+        _block = [block copy];
+    }
+    return self;
+}
+
+#pragma mark - <DFImageManagerValueTransformer>
+
+- (id)transformedAsset:(id)asset {
+    return _block(asset);
+}
 
 @end

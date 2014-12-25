@@ -21,24 +21,32 @@
 // THE SOFTWARE.
 
 #import "DFCompositeImageManager.h"
+#import "DFImageManagerBlockValueTransformer.h"
 #import "DFImageRequestID.h"
+
+#define _DF_TRANSFORMED_ASSET(asset) _transformer ? [_transformer transformedAsset:asset] : asset
 
 @implementation DFCompositeImageManager {
     NSMutableDictionary *_imageManagers;
 }
 
+@synthesize valueTransformer = _transformer;
+@synthesize imageManagerFactory = _factory;
+
 - (instancetype)initWithImageManagerFactory:(id<DFImageManagerFactory>)imageManagerFactory {
     if (self = [super init]) {
         _imageManagers = [NSMutableDictionary new];
-        _imageManagerFactory = imageManagerFactory;
+        _factory = imageManagerFactory;
     }
     return self;
 }
 
+#pragma mark - <DFImageManager>
+
 - (DFImageRequestID *)requestImageForAsset:(id)asset targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options completion:(void (^)(UIImage *, NSDictionary *))completion {
-    asset = [self _transformedAssetForAsset:asset];
-    id<DFImageManager> imageManager = [self.imageManagerFactory imageManagerForAsset:asset];
-    DFImageRequestID *requestID = [imageManager requestImageForAsset:asset targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:options completion:completion];
+    asset = _DF_TRANSFORMED_ASSET(asset);
+    id<DFImageManager> imageManager = [_factory imageManagerForAsset:asset];
+    DFImageRequestID *requestID = [imageManager requestImageForAsset:asset targetSize:targetSize contentMode:contentMode options:options completion:completion];
     if (imageManager != nil && requestID != nil) {
         _imageManagers[requestID] = imageManager;
     }
@@ -46,23 +54,21 @@
 }
 
 - (void)cancelRequestWithID:(DFImageRequestID *)requestID {
-    [[self _imageManagerForRequestID:requestID] cancelRequestWithID:requestID];
+    [((id<DFImageManager>)_imageManagers[requestID]) cancelRequestWithID:requestID];
 }
 
 - (void)setPriority:(DFImageRequestPriority)priority forRequestWithID:(DFImageRequestID *)requestID {
-    [[self _imageManagerForRequestID:requestID] setPriority:priority forRequestWithID:requestID];
+    [((id<DFImageManager>)_imageManagers[requestID]) setPriority:priority forRequestWithID:requestID];
 }
 
 - (DFImageRequestOptions *)requestOptionsForAsset:(id)asset {
-    asset = [self _transformedAssetForAsset:asset];
-    id<DFImageManager> imageManager = [self.imageManagerFactory imageManagerForAsset:asset];
-    return [imageManager requestOptionsForAsset:asset];
+    return [[_factory imageManagerForAsset:asset] requestOptionsForAsset:_DF_TRANSFORMED_ASSET(asset)];
 }
 
 - (void)startPreheatingImageForAssets:(NSArray *)assets targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options {
     for (id asset in assets) {
-        id transformedAsset = [self _transformedAssetForAsset:asset];
-        id<DFImageManager> imageManager = [self.imageManagerFactory imageManagerForAsset:transformedAsset];
+        id transformedAsset = _DF_TRANSFORMED_ASSET(asset);
+        id<DFImageManager> imageManager = [_factory imageManagerForAsset:transformedAsset];
         if (transformedAsset != nil) {
             [imageManager startPreheatingImageForAssets:@[transformedAsset] targetSize:targetSize contentMode:contentMode options:options];
         }
@@ -71,9 +77,8 @@
 
 - (void)stopPreheatingImagesForAssets:(NSArray *)assets targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options {
     for (id asset in assets) {
-        // TODO: Optimize this code.
-        id transformedAsset = [self _transformedAssetForAsset:asset];
-        id<DFImageManager> imageManager = [self.imageManagerFactory imageManagerForAsset:transformedAsset];
+        id transformedAsset = _DF_TRANSFORMED_ASSET(asset);
+        id<DFImageManager> imageManager = [_factory imageManagerForAsset:transformedAsset];
         if (transformedAsset != nil) {
             [imageManager stopPreheatingImagesForAssets:@[transformedAsset] targetSize:targetSize contentMode:contentMode options:options];
         }
@@ -88,15 +93,8 @@
 
 #pragma mark -
 
-- (id<DFImageManager>)_imageManagerForRequestID:(DFImageRequestID *)requestID {
-    return requestID != nil ? _imageManagers[requestID] : nil;
-}
-
-- (id)_transformedAssetForAsset:(id)asset {
-    if ([self.imageManagerFactory respondsToSelector:@selector(transformedAsset:)]) {
-        return [self.imageManagerFactory transformedAsset:asset];
-    }
-    return asset;
+- (void)setValueTransformerWithBlock:(id (^)(id))block {
+    self.valueTransformer = [[DFImageManagerBlockValueTransformer alloc] initWithBlock:block];
 }
 
 @end

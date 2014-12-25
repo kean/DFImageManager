@@ -20,12 +20,22 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+#import "DFImageManagerFactoryProtocol.h"
 #import "DFImageManagerProtocol.h"
+#import "DFImageManagerValueTransformerProtocol.h"
 #import <Foundation/Foundation.h>
 
 
-@protocol DFImageManagerFactory <NSObject>
+@interface DFCompositeImageManager : NSObject <DFImageManager>
 
-- (id<DFImageManager>)imageManagerForAsset:(id)asset;
+- (instancetype)initWithImageManagerFactory:(id<DFImageManagerFactory>)imageManagerFactory NS_DESIGNATED_INITIALIZER;
+
+@property (nonatomic, readonly) id<DFImageManagerFactory> imageManagerFactory;
+
+/*! Set value transformer in case you need to transform assets before passing them to the image manager factory and to the image managers.
+ */
+@property (nonatomic) id<DFImageManagerValueTransformer> valueTransformer;
+
+- (void)setValueTransformerWithBlock:(id (^)(id))valueTransfomer;
 
 @end

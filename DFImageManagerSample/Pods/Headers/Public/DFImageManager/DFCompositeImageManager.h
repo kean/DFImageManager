@@ -1,1 +1,1 @@
-../../../../../DFImageManager/DFImageManager/Managers/DFCompositeImageManager.h
+../../../../../DFImageManager/DFImageManager/Managers/Composite Manager/DFCompositeImageManager.h
