@@ -79,10 +79,6 @@
     [requestID setPriority:priority];
 }
 
-- (DFImageRequestOptions *)requestOptionsForAsset:(id)asset {
-    return [[self _managerForAsset:asset] requestOptionsForAsset:asset];
-}
-
 - (void)startPreheatingImageForAssets:(NSArray *)assets targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options {
     for (id asset in assets) {
         [[self _managerForAsset:asset] startPreheatingImageForAssets:@[asset] targetSize:targetSize contentMode:contentMode options:options];

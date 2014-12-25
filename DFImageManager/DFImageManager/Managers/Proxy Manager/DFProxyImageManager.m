@@ -57,10 +57,6 @@
     return [_manager requestImageForAsset:_DF_TRANSFORMED_ASSET(asset) targetSize:targetSize contentMode:contentMode options:options completion:completion];
 }
 
-- (DFImageRequestOptions *)requestOptionsForAsset:(id)asset {
-    return [_manager requestOptionsForAsset:_DF_TRANSFORMED_ASSET(asset)];
-}
-
 - (void)startPreheatingImageForAssets:(NSArray *)assets targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options {
     [_manager startPreheatingImageForAssets:[self _transformedAssets:assets] targetSize:targetSize contentMode:contentMode options:options];
 }

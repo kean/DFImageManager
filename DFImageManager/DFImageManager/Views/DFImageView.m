@@ -104,7 +104,7 @@
     }
     
     DFImageView *__weak weakSelf = self;
-    options = options ?: [self.imageManager requestOptionsForAsset:asset];
+    options = options ?: [DFImageRequestOptions defaultOptions];
     if (self.managesRequestPriorities) {
         options.priority = (self.window == nil) ? DFImageRequestPriorityNormal : DFImageRequestPriorityVeryHigh;
     }

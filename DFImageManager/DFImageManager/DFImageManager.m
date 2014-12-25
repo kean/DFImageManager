@@ -85,35 +85,14 @@
 
 #pragma mark - Fetching
 
-- (DFImageRequestOptions *)requestOptionsForAsset:(id)asset {
-    DFImageRequestOptions *options;
-    if ([_conf respondsToSelector:@selector(imageManager:createRequestOptionsForAsset:)]) {
-        options = [_conf imageManager:self createRequestOptionsForAsset:asset];
-    }
-    if (!options) {
-        options = [DFImageRequestOptions defaultOptions];
-    }
-    return options;
+- (DFImageRequestID *)requestImageForAsset:(id)asset targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options completion:(void (^)(UIImage *, NSDictionary *))completion {
+    DFImageRequest *request = [[DFImageRequest alloc] initWithAsset:asset targetSize:targetSize contentMode:contentMode options:options];
+    return [self _requestImageForRequest:request completion:completion];
 }
 
-- (DFImageRequestID *)requestImageForAsset:(id)asset targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options completion:(void (^)(UIImage *, NSDictionary *))completion {
-    if (!asset) {
-        if (completion != nil) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                completion(nil, nil);
-            });
-        }
-        return nil;
-    }
-    
-    // Start fetching.
-    if (!options) {
-        options = [self requestOptionsForAsset:asset];
-    }
-    DFImageRequest *request = [[DFImageRequest alloc] initWithAsset:asset targetSize:targetSize contentMode:contentMode options:options];
+- (DFImageRequestID *)_requestImageForRequest:(DFImageRequest *)request completion:(DFImageRequestCompletion)completion {
     NSString *operationID = [_conf imageManager:self operationIDForRequest:request];
     DFImageRequestID *requestID = [[DFImageRequestID alloc] initWithImageManager:self operationID:operationID];
-    
     dispatch_async(_syncQueue, ^{
         [self _requestImageForRequest:request requestID:requestID completion:completion];
     });
@@ -316,9 +295,9 @@
 
 - (DFImageRequestOptions *)_preheatingOptionsForAsset:(id)asset options:(DFImageRequestOptions *)options {
     if (!options) {
-        options = [self requestOptionsForAsset:asset];
-        options.priority = DFImageRequestPriorityLow;
+        options = [DFImageRequestOptions defaultOptions];
     }
+    options.priority = DFImageRequestPriorityLow;
     return options;
 }
 

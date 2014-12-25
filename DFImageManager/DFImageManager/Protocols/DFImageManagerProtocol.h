@@ -31,7 +31,7 @@
 - (BOOL)canHandleAsset:(id)asset;
 
 /*! Requests an image representation for the specified asset.
- @param asset The asset whose image data is to be loaded.
+ @param asset The asset whose image data is to be loaded. If asset is nil behavior is undefined.
  @param targetSize The target size in pixels of image to be returned.
  @param contentMode An option for how to fit the image to the aspect ratio of the requested size. For details, see DFImageContentMode.
  @param options Options specifying how image manager should handle the request.
@@ -43,11 +43,6 @@
 
 // TODO: Make optional if possible
 - (void)setPriority:(DFImageRequestPriority)priority forRequestWithID:(DFImageRequestID *)requestID;
-
-// TOOD: Make optional if possible
-/*! Returns default options for a given asset.
- */
-- (DFImageRequestOptions *)requestOptionsForAsset:(id)asset;
 
 - (void)startPreheatingImageForAssets:(NSArray *)assets targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options;
 - (void)stopPreheatingImagesForAssets:(NSArray *)assets targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options;
