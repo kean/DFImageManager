@@ -22,6 +22,7 @@
 
 #import "DFImageUtilities.h"
 
+
 @implementation DFImageUtilities
 
 + (UIImage *)imageWithImage:(UIImage *)image aspectFitSize:(CGSize)boundsSize {
@@ -106,6 +107,86 @@
     UIImage *croppedImage = [UIImage imageWithCGImage:croppedImageRef scale:image.scale orientation:image.imageOrientation];
     CGImageRelease(croppedImageRef);
     return croppedImage;
+}
+
+#pragma mark - Decompressing
+
++ (UIImage *)decompressedWithImage:(UIImage *)image {
+    return [self decompressedWithImage:image scale:1.f];
+}
+
++ (UIImage *)decompressedImageWithImage:(UIImage *)image aspectFitPixelSize:(CGSize)size {
+    CGSize imageSize = DFImageBitmapPixelSize(image);
+    CGFloat scale = DFAspectFitScale(imageSize, size);
+    return [self decompressedWithImage:image scale:scale];
+}
+
++ (UIImage *)decompressedImageWithImage:(UIImage *)image aspectFillPixelSize:(CGSize)size {
+    CGSize imageSize = DFImageBitmapPixelSize(image);
+    CGFloat scale = DFAspectFillScale(imageSize, size);
+    return [self decompressedWithImage:image scale:scale];
+}
+
++ (UIImage *)decompressedWithImage:(UIImage *)image scale:(CGFloat)scale {
+    if (!image) {
+        return nil;
+    }
+    if (image.images) {
+        return image;
+    }
+    CGImageRef imageRef = image.CGImage;
+    CGSize imageSize = CGSizeMake(CGImageGetWidth(imageRef), CGImageGetHeight(imageRef));
+    imageSize = DFSizeScaled(imageSize, scale);
+        
+    CGRect imageRect = (CGRect){.origin = CGPointZero, .size = imageSize};
+    
+    CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
+    CGBitmapInfo bitmapInfo = CGImageGetBitmapInfo(imageRef);
+    
+    int infoMask = (bitmapInfo & kCGBitmapAlphaInfoMask);
+    BOOL anyNonAlpha = (infoMask == kCGImageAlphaNone ||
+                        infoMask == kCGImageAlphaNoneSkipFirst ||
+                        infoMask == kCGImageAlphaNoneSkipLast);
+    
+    // CGBitmapContextCreate doesn't support kCGImageAlphaNone with RGB.
+    // https://developer.apple.com/library/mac/#qa/qa1037/_index.html
+    if (infoMask == kCGImageAlphaNone && CGColorSpaceGetNumberOfComponents(colorSpace) > 1) {
+        // Unset the old alpha info.
+        bitmapInfo &= ~kCGBitmapAlphaInfoMask;
+        
+        // Set noneSkipFirst.
+        bitmapInfo |= kCGImageAlphaNoneSkipFirst;
+    }
+    // Some PNGs tell us they have alpha but only 3 components. Odd.
+    else if (!anyNonAlpha && CGColorSpaceGetNumberOfComponents(colorSpace) == 3) {
+        // Unset the old alpha info.
+        bitmapInfo &= ~kCGBitmapAlphaInfoMask;
+        bitmapInfo |= kCGImageAlphaPremultipliedFirst;
+    }
+    
+    // It calculates the bytes-per-row based on the bitsPerComponent and width arguments.
+    CGContextRef context = CGBitmapContextCreate(NULL,
+                                                 imageSize.width,
+                                                 imageSize.height,
+                                                 CGImageGetBitsPerComponent(imageRef),
+                                                 0,
+                                                 colorSpace,
+                                                 bitmapInfo);
+    CGColorSpaceRelease(colorSpace);
+    
+    // If failed, return original image
+    if (!context) {
+        return image;
+    }
+    
+    CGContextDrawImage(context, imageRect, imageRef);
+    CGImageRef decompressedImageRef = CGBitmapContextCreateImage(context);
+    
+    CGContextRelease(context);
+    
+    UIImage *decompressedImage = [UIImage imageWithCGImage:decompressedImageRef scale:image.scale orientation:image.imageOrientation];
+    CGImageRelease(decompressedImageRef);
+    return decompressedImage;
 }
 
 @end

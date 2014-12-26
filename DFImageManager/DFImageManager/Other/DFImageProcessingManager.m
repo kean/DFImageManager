@@ -63,14 +63,13 @@
     if (!image) {
         return nil;
     }
-    // TODO: Don't do anything if target size is bigger than requested size.
     UIImage *processedImage;
     switch (contentMode) {
         case DFImageContentModeAspectFit:
-            processedImage = [DFImageUtilities imageWithImage:image aspectFitPixelSize:size];
+            processedImage = [DFImageUtilities decompressedImageWithImage:image aspectFitPixelSize:size];
             break;
         case DFImageContentModeAspectFill:
-            processedImage = [DFImageUtilities imageWithImage:image aspectFillPixelSize:size];
+            processedImage = [DFImageUtilities decompressedImageWithImage:image aspectFillPixelSize:size];
             break;
         default:
             break;

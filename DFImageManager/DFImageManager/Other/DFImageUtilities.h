@@ -23,6 +23,7 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
+
 static inline CGFloat
 DFAspectFitScale(CGSize imageSize, CGSize boundsSize) {
     CGFloat scaleWidth = boundsSize.width / imageSize.width;
@@ -70,6 +71,8 @@ DFImagePixelSize(UIImage *image) {
 
 #pragma mark - Image Scaling
 
+// decompress given image and draw in a given size
+
 // Points
 + (UIImage *)imageWithImage:(UIImage *)image scaledToSize:(CGSize)size;
 + (UIImage *)imageWithImage:(UIImage *)image aspectFitSize:(CGSize)size;
@@ -82,5 +85,11 @@ DFImagePixelSize(UIImage *image) {
 #pragma mark - Crop
 
 + (UIImage *)croppedImageWithImage:(UIImage *)image normalizedCropRect:(CGRect)cropRect;
+
+#pragma mark - Decompressing
+
++ (UIImage *)decompressedWithImage:(UIImage *)image;
++ (UIImage *)decompressedImageWithImage:(UIImage *)image aspectFitPixelSize:(CGSize)size;
++ (UIImage *)decompressedImageWithImage:(UIImage *)image aspectFillPixelSize:(CGSize)size;
 
 @end

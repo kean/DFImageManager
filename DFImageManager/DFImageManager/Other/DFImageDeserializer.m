@@ -20,7 +20,6 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "DFImageDecoder.h"
 #import "DFImageManagerDefines.h"
 #import "DFImageDeserializer.h"
 
@@ -38,8 +37,7 @@
 }
 
 - (id)objectFromResponse:(NSURLResponse *)response data:(NSData *)data error:(NSError *__autoreleasing *)error {
-    UIImage *image = [[UIImage alloc] initWithData:data scale:[UIScreen mainScreen].scale];
-    return [DFImageDecoder decodedImage:image];
+    return [[UIImage alloc] initWithData:data scale:[UIScreen mainScreen].scale];
 }
 
 @end
