@@ -122,6 +122,7 @@ extern NSString *const DFCacheAttributeMetadataKey;
 - (void)storeObject:(id)object forKey:(NSString *)key data:(NSData *)data;
 
 /*! Stores object into memory cache. Uses a given value transformer (or value transformer from factory in case given transformer is nil) to encode object and stores data into disk cache. Value transformer gets associated with data.
+ @note Raises an exception when provided with an invalid value transformer.
  @param object The object to store into memory cache.
  @param key The unique key.
  @param valueTransformer Value transformer used to encode and decode data.
@@ -129,6 +130,7 @@ extern NSString *const DFCacheAttributeMetadataKey;
 - (void)storeObject:(id)object forKey:(NSString *)key valueTransformer:(id<DFValueTransforming>)valueTransformer;
 
 /*! Stores object into memory cache. If data is not nil than stores data into disk cache and retrieves value transformer from factory and associates it with data. If data is nil uses a given value transformer (or value transformer from factory in case given transformer is nil) to encode object and stores data into disk cache. Value transformer gets associated with data.
+ @note Raises an exception when provided with an invalid value transformer.
  @param object The object to store into memory cache.
  @param key The unique key.
  @param valueTransformer Value transformer used to encode and decode data.

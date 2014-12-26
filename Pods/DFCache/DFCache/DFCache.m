@@ -103,32 +103,15 @@ static NSString *const DFCacheAttributeValueTransformerKey = @"_df_cache_value_t
         return;
     }
     id object = [self.memoryCache objectForKey:key];
-    if (object) {
+    if (object != nil) {
         _dwarf_cache_callback(completion, object);
         return;
     }
-    [self _cachedObjectForKey:key valueTransformer:valueTransformer completion:completion];
-}
-
-- (void)_cachedObjectForKey:(NSString *)key valueTransformer:(id<DFValueTransforming>)inputValueTransformer completion:(void (^)(id))completion {
-    dispatch_async(_ioQueue, ^{
-        NSData *data = [self.diskCache dataForKey:key];
-        if (!data) {
-            _dwarf_cache_callback(completion, nil);
-            return;
+    dispatch_async(_processingQueue, ^{
+        @autoreleasepool {
+            id object = [self _cachedObjectForKey:key valueTransformer:valueTransformer];
+            _dwarf_cache_callback(completion, object);
         }
-        id<DFValueTransforming> valueTransformer = inputValueTransformer;
-        if (!inputValueTransformer) {
-            NSURL *fileURL = [self.diskCache URLForKey:key];
-            valueTransformer = [fileURL df_extendedAttributeValueForKey:DFCacheAttributeValueTransformerKey error:nil];
-        }
-        dispatch_async(_processingQueue, ^{
-            @autoreleasepool {
-                id object = [valueTransformer reverseTransfomedValue:data];
-                [self _setObject:object forKey:key valueTransformer:valueTransformer];
-                _dwarf_cache_callback(completion, object);
-            }
-        });
     });
 }
 
@@ -141,7 +124,7 @@ static NSString *const DFCacheAttributeValueTransformerKey = @"_df_cache_value_t
         return nil;
     }
     id object = [self.memoryCache objectForKey:key];
-    if (object) {
+    if (object != nil) {
         return object;
     }
     @autoreleasepool {
@@ -154,7 +137,7 @@ static NSString *const DFCacheAttributeValueTransformerKey = @"_df_cache_value_t
     id<DFValueTransforming> __block valueTransformer = inputValueTransformer;
     dispatch_sync(_ioQueue, ^{
         data = [self.diskCache dataForKey:key];
-        if (!valueTransformer) {
+        if (data != nil && !valueTransformer) {
             NSURL *fileURL = [self.diskCache URLForKey:key];
             valueTransformer = [fileURL df_extendedAttributeValueForKey:DFCacheAttributeValueTransformerKey error:nil];
         }
@@ -191,16 +174,11 @@ static NSString *const DFCacheAttributeValueTransformerKey = @"_df_cache_value_t
     }
     dispatch_async(_ioQueue, ^{
         @autoreleasepool {
-            NSData *__block encodedData = data;
+            NSData *encodedData = data;
             if (!encodedData) {
-                @try {
-                    encodedData = [valueTransformer transformedValue:object];
-                }
-                @catch (NSException *exception) {
-                    // Do nothing
-                }
+                encodedData = [valueTransformer transformedValue:object];
             }
-            if (encodedData) {
+            if (encodedData != nil) {
                 [self.diskCache setData:encodedData forKey:key];
                 if (valueTransformer) {
                     NSURL *fileURL = [self.diskCache URLForKey:key];
@@ -246,7 +224,7 @@ static NSString *const DFCacheAttributeValueTransformerKey = @"_df_cache_value_t
 }
 
 - (void)removeObjectForKey:(NSString *)key {
-    if (key) {
+    if (key != nil) {
         [self removeObjectsForKeys:@[key]];
     }
 }

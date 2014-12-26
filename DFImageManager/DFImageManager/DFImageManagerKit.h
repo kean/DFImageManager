@@ -47,8 +47,6 @@
 #import "DFPHImageFetchOperation.h"
 #import "DFPHAssetlocalIdentifier.h"
 
-#import "DFImageDecoder.h"
-
 #import "DFImageCacheLookupOperation.h"
 #import "DFImageCacheStoreOperation.h"
 #import "DFImageFetchConnectionOperation.h"
@@ -56,3 +54,5 @@
 #import "DFURLResponseDeserializing.h"
 
 #import "DFImageView.h"
+
+#import "DFImageUtilities.h"
