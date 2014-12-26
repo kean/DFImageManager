@@ -237,7 +237,7 @@
     for (_DFImageFetchHandler *handler in handlers) {
         maxPriority = MAX(handler.request.options.priority, maxPriority);
     }
-    return maxPriority;
+    return (NSOperationQueuePriority)maxPriority;
 }
 
 - (void)setPriority:(DFImageRequestPriority)priority forRequestWithID:(DFImageRequestID *)requestID {
