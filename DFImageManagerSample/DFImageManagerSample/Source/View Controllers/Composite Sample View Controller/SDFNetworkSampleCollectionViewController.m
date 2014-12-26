@@ -33,6 +33,18 @@ static NSString * const reuseIdentifier = @"Cell";
     [DFImageManager setSharedManager:nil];
 }
 
+- (instancetype)init {
+    return [self initWithCollectionViewLayout:[UICollectionViewFlowLayout new]];
+}
+
+- (instancetype)initWithCollectionViewLayout:(UICollectionViewLayout *)layout {
+    if (self = [super initWithCollectionViewLayout:layout]) {
+        _numberOfItemsPerRow = 4;
+        _shouldUseCompositeImageRequests = NO;
+    }
+    return self;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     
@@ -79,7 +91,7 @@ static NSString * const reuseIdentifier = @"Cell";
     UICollectionViewFlowLayout *layout = (id)self.collectionViewLayout;
     layout.minimumLineSpacing = 2.f;
     layout.minimumInteritemSpacing = 2.f;
-    CGFloat side = (self.collectionView.bounds.size.width - 3.0 * 2.0) / 4.0;
+    CGFloat side = (self.collectionView.bounds.size.width - (self.numberOfItemsPerRow - 1) * 2.0) / self.numberOfItemsPerRow;
     layout.itemSize = CGSizeMake(side, side);
 }
 
@@ -105,7 +117,16 @@ static NSString * const reuseIdentifier = @"Cell";
     }
     
     SDFFlickrPhoto *photo = _photos[indexPath.row];
-    [imageView setImageWithAsset:photo.photoURL];
+    if (self.shouldUseCompositeImageRequests ){
+        // We specifically resize placeholder to make it even smaller
+        DFImageRequest *requestWithSmallURL = [[DFImageRequest alloc] initWithAsset:photo.photoURLSmall targetSize:CGSizeMake(50.f, 50.f) contentMode:DFImageContentModeAspectFit options:nil];
+
+        DFImageRequest *requestWithBigURL = [[DFImageRequest alloc] initWithAsset:photo.photoURLBig targetSize:imageView.targetSize contentMode:imageView.contentMode options:nil];
+        
+        [imageView setImagesWithRequests:@[ requestWithSmallURL, requestWithBigURL] ];
+    } else {
+        [imageView setImageWithAsset:photo.photoURL];
+    }
     
     return cell;
 }

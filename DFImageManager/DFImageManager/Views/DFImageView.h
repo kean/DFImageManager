@@ -36,7 +36,7 @@ typedef NS_ENUM(NSUInteger, DFImageViewAnimation) {
  */
 @interface DFImageView : UIView
 
-@property (nonatomic) id<DFImageManager> imageManager;
+@property (nonatomic) id<DFCoreImageManager> imageManager;
 
 @property (nonatomic) CGSize targetSize;
 
@@ -65,8 +65,11 @@ typedef NS_ENUM(NSUInteger, DFImageViewAnimation) {
 - (void)setImage:(UIImage *)image;
 
 - (void)setImageWithAsset:(id)asset;
-- (void)setImageWithAsset:(id)asset targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode;
 - (void)setImageWithAsset:(id)asset targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options;
+
+/*! Starts composite request with a given requests. For more info see DFCompositeImageRequest.
+ */
+- (void)setImagesWithRequests:(NSArray /* DFImageRequest */ *)requests;
 
 - (void)prepareForReuse;
 

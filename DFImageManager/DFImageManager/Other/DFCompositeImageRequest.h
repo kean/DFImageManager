@@ -20,22 +20,22 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "DFImageManagerConfigurationProtocol.h"
+#import "DFImageManagerDefines.h"
 #import "DFImageManagerProtocol.h"
-#import "DFImageProcessingManagerProtocol.h"
 #import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
 
-@interface DFImageManager : NSObject <DFImageManager>
+@interface DFCompositeImageRequest : NSObject
 
-@property (nonatomic, readonly) id<DFImageManagerConfiguration> configuration;
-@property (nonatomic, readonly) id<DFImageProcessingManager> imageProcessingManager;
+@property (nonatomic, weak) id<DFCoreImageManager> imageManager;
 
-- (instancetype)initWithConfiguration:(id<DFImageManagerConfiguration>)configuration imageProcessingManager:(id<DFImageProcessingManager>)processingManager NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithRequests:(NSArray /* DFImageRequest */ *)requests handler:(void (^)(UIImage *image, NSDictionary *info, BOOL isLastRequest))handler NS_DESIGNATED_INITIALIZER;
 
-// Basic dependency injectors.
++ (DFCompositeImageRequest *)requestImageForRequests:(NSArray /* DFImageRequest */ *)requests handler:(void (^)(UIImage *image, NSDictionary *info, BOOL isLastRequest))handler;
 
-+ (id<DFImageManager>)sharedManager;
-+ (void)setSharedManager:(id<DFImageManager>)manager;
+- (void)start;
+- (void)cancel;
+- (void)setPriority:(DFImageRequestPriority)priority;
 
 @end

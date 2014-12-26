@@ -17,6 +17,10 @@ static NSString * const reuseIdentifier = @"Cell";
     NSArray * /* PHFetchResult */ _assets;
 }
 
+- (instancetype)init {
+    return [self initWithCollectionViewLayout:[UICollectionViewFlowLayout new]];
+}
+
 - (void)dealloc {
     [DFImageManager setSharedManager:nil];
 }

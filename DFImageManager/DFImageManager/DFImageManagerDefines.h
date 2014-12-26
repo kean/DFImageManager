@@ -26,6 +26,7 @@
 
 typedef void (^DFImageRequestCompletion)(UIImage *image, NSDictionary *info);
 
+extern NSString *const DFImageInfoRequestIDKey;
 extern NSString *const DFImageInfoSourceKey;
 extern NSString *const DFImageInfoErrorKey;
 extern NSString *const DFImageInfoDataKey;

@@ -25,6 +25,7 @@
 @property (nonatomic) NSString *title;
 @property (nonatomic) NSString *photoURL;
 @property (nonatomic) NSString *photoURLSmall;
+@property (nonatomic) NSString *photoURLBig;
 
 - (id)initWithJSON:(NSDictionary *)JSON;
 

@@ -10,4 +10,7 @@
 
 @interface SDFNetworkSampleCollectionViewController : UICollectionViewController
 
+@property (nonatomic) BOOL shouldUseCompositeImageRequests;
+@property (nonatomic) NSInteger numberOfItemsPerRow;
+
 @end

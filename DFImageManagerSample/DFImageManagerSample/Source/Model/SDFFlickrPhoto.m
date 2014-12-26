@@ -26,8 +26,13 @@
         self.server = [JSON valueForKey:@"server"];
         self.title = [JSON valueForKey:@"title"];
         // http://farm{farm-id}.staticflickr.com/{server-id}/{id}_{secret}.jpg
-        self.photoURL = [NSString stringWithFormat:@"http://farm%@.staticflickr.com/%@/%@_%@_m.jpg", self.farm, self.server, self.itemid, self.secret];
-        self.photoURLSmall = [NSString stringWithFormat:@"http://farm%@.staticflickr.com/%@/%@_%@_s.jpg", self.farm, self.server, self.itemid, self.secret];
+        
+        NSString *(^photoWithSize)(NSString *) = ^NSString *(NSString *size) {
+            return [NSString stringWithFormat:@"http://farm%@.staticflickr.com/%@/%@_%@_%@.jpg", self.farm, self.server, self.itemid, self.secret, size];
+        };
+        self.photoURL = photoWithSize(@"m");
+        self.photoURLSmall = photoWithSize(@"s");
+        self.photoURLBig = photoWithSize(@"b");
     }
     return self;
 }

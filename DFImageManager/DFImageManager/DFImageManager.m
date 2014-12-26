@@ -103,8 +103,10 @@
     UIImage *image = [_processor processedImageForKey:assetUID targetSize:request.targetSize contentMode:request.contentMode];
     if (image != nil) {
         if (completion != nil) {
+            NSDictionary *info = @{ DFImageInfoRequestIDKey : requestID,
+                                    DFImageInfoSourceKey : @(DFImageSourceMemoryCache) };
             dispatch_async(dispatch_get_main_queue(), ^{
-                completion(image, nil);
+                completion(image, info);
             });
         }
         return;
@@ -128,7 +130,8 @@
     if (!operation) { // no more work required
         DFImageResponse *response = [previousOperation imageFetchResponse]; // get respone from previous operation (if there is one)
         UIImage *image = response.image;
-        NSDictionary *info = [self _infoFromResponse:response];
+        NSMutableDictionary *info = [self _infoFromResponse:response];
+        info[DFImageInfoRequestIDKey] = requestID;
         
         NSArray *handlers = [_handlers handlersForOperationID:requestID.operationID];
         
@@ -177,7 +180,7 @@
     });
 }
 
-- (NSDictionary *)_infoFromResponse:(DFImageResponse *)response {
+- (NSMutableDictionary *)_infoFromResponse:(DFImageResponse *)response {
     NSMutableDictionary *info = [NSMutableDictionary new];
     info[DFImageInfoSourceKey] = @(response.source);
     if (response.error != nil) {
@@ -187,7 +190,7 @@
         info[DFImageInfoDataKey] = response.data;
     }
     [info addEntriesFromDictionary:response.userInfo];
-    return [info copy];
+    return info;
 }
 
 - (void)_didEncounterError:(NSError *)error {

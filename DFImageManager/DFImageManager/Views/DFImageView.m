@@ -20,6 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+#import "DFCompositeImageRequest.h"
 #import "DFImageManager.h"
 #import "DFImageManagerProtocol.h"
 #import "DFImageRequestOptions.h"
@@ -27,7 +28,7 @@
 
 
 @implementation DFImageView {
-    DFImageRequestID *_requestID;
+    DFCompositeImageRequest *_request;
     UIView *_backgroundView;
     UIImageView *_failureImageView;
 }
@@ -91,38 +92,53 @@
     [self setImageWithAsset:asset targetSize:self.targetSize contentMode:self.contentMode options:nil];
 }
 
-- (void)setImageWithAsset:(id)asset targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode {
-    [self setImageWithAsset:asset targetSize:targetSize contentMode:contentMode options:nil];
+- (void)setImageWithAsset:(id)asset targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options {
+    DFImageRequest *request;
+    if (asset != nil) {
+        request = [[DFImageRequest alloc] initWithAsset:asset targetSize:targetSize contentMode:contentMode options:options];
+    }
+    [self setImagesWithRequests:(request != nil) ? @[request] : nil];
 }
 
-- (void)setImageWithAsset:(id)asset targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options {
+- (void)setImagesWithRequests:(NSArray *)requests {
     [self prepareForReuse];
     
-    if (!asset) {
+    if (!requests.count) {
         self.failureImageView.hidden = NO;
         return;
     }
     
-    DFImageView *__weak weakSelf = self;
-    options = options ?: [DFImageRequestOptions defaultOptions];
     if (self.managesRequestPriorities) {
-        options.priority = (self.window == nil) ? DFImageRequestPriorityNormal : DFImageRequestPriorityVeryHigh;
+        for (DFImageRequest *request in requests) {
+            request.options.priority = (self.window == nil) ? DFImageRequestPriorityNormal : DFImageRequestPriorityVeryHigh;
+        }
     }
-    _requestID = [self.imageManager requestImageForAsset:asset targetSize:targetSize contentMode:contentMode options:options completion:^(UIImage *image, NSDictionary *info) {
+    
+    DFImageView *__weak weakSelf = self;
+    _request = [[DFCompositeImageRequest alloc] initWithRequests:requests handler:^(UIImage *image, NSDictionary *info, BOOL isLastRequest) {
         DFImageSource source = [info[DFImageInfoSourceKey] unsignedIntegerValue];
         NSError *error = info[DFImageInfoErrorKey];
-        if (image) {
+        if (image != nil) {
             [weakSelf requestDidFinishWithImage:image source:source info:info];
-        } else {
+        } else if (!self.imageView.image){
             [weakSelf requestDidFailWithError:error info:info];
+        } else {
+            // Do nothing.
         }
     }];
+    [_request start];
 }
 
 - (void)requestDidFinishWithImage:(UIImage *)image source:(DFImageSource)source info:(NSDictionary *)info {
-    DFImageViewAnimation animation = source != DFImageSourceMemoryCache ? _animation : DFImageViewAnimationNone;
+    DFImageViewAnimation animation = DFImageViewAnimationNone;
+    if (self.animation != DFImageViewAnimationNone) {
+        if (self.imageView.image != nil) {
+            animation = DFImageViewAnimationCrossDissolve;
+        } else {
+            animation = source != DFImageSourceMemoryCache ? _animation : DFImageViewAnimationNone;
+        }
+    }
     [self _df_setImage:image withAnimation:animation];
-    
 }
 
 #pragma mark - Handling Failure
@@ -159,13 +175,14 @@
     _failureImageView.hidden = YES;
     _backgroundView.alpha = 1.f;
     [self _df_cancelFetching];
-    _requestID = nil;
+    _request = nil;
+    [self.layer removeAllAnimations];
     [_backgroundView.layer removeAllAnimations];
     [_imageView.layer removeAllAnimations];
 }
 
 - (void)_df_cancelFetching {
-    [_requestID cancel];
+    [_request cancel];
 }
 
 #pragma mark - Priorities
@@ -174,7 +191,7 @@
     [super willMoveToWindow:newWindow];
     if (self.managesRequestPriorities) {
         DFImageRequestPriority priority = (newWindow == nil) ? DFImageRequestPriorityNormal : DFImageRequestPriorityVeryHigh;
-        [_requestID setPriority:priority];
+        [_request setPriority:priority];
     }
 }
 
