@@ -55,12 +55,12 @@ typedef NS_ENUM(NSInteger, DFImageContentMode) {
     DFImageContentModeDefault = DFImageContentModeAspectFill
 };
 
-
-typedef NSOperationQueuePriority DFImageRequestPriority;
-static const DFImageRequestPriority DFImageRequestPriorityVeryLow = NSOperationQueuePriorityVeryLow;
-static const DFImageRequestPriority DFImageRequestPriorityLow = NSOperationQueuePriorityLow;
-static const DFImageRequestPriority DFImageRequestPriorityNormal = NSOperationQueuePriorityNormal;
-static const DFImageRequestPriority DFImageRequestPriorityHigh = NSOperationQueuePriorityHigh;
-static const DFImageRequestPriority DFImageRequestPriorityVeryHigh = NSOperationQueuePriorityVeryHigh;
+typedef NS_ENUM(NSInteger, DFImageRequestPriority) {
+    DFImageRequestPriorityVeryLow = NSOperationQueuePriorityVeryLow,
+    DFImageRequestPriorityLow = NSOperationQueuePriorityLow,
+    DFImageRequestPriorityNormal = NSOperationQueuePriorityNormal,
+    DFImageRequestPriorityHigh = NSOperationQueuePriorityHigh,
+    DFImageRequestPriorityVeryHigh = NSOperationQueuePriorityVeryHigh
+};
 
 extern NSString *const DFImageErrorDomain;
