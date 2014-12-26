@@ -32,6 +32,11 @@ extern NSString *const DFImageInfoErrorKey;
 extern NSString *const DFImageInfoDataKey;
 
 
+/* Size to pass when requesting the largest image for asset available (contentMode will be ignored).
+ */
+extern CGSize const DFImageManagerMaximumSize;
+
+
 typedef NS_ENUM(NSInteger, DFImageCacheStoragePolicy) {
     DFImageCacheStorageAllowed,
     DFImageCacheStorageAllowedInMemoryOnly,

@@ -38,6 +38,10 @@
     return self;
 }
 
+- (instancetype)initWithAsset:(id)asset {
+    return [self initWithAsset:asset targetSize:DFImageManagerMaximumSize contentMode:DFImageContentModeDefault options:nil];
+}
+
 - (NSString *)description {
     return [NSString stringWithFormat:@"<%@ %p> { asset = %@, targetSize = %@, contentMode = %i, options = %@ }", [self class], self, self.asset, NSStringFromCGSize(self.targetSize), (int)self.contentMode, self.options];
 }

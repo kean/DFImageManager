@@ -34,5 +34,6 @@
 @property (nonatomic) DFImageRequestOptions *options;
 
 - (instancetype)initWithAsset:(id)asset targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithAsset:(id)asset;
 
 @end

@@ -28,3 +28,5 @@ NSString *const DFImageInfoErrorKey = @"DFImageInfoErrorKey";
 NSString *const DFImageInfoDataKey = @"DFImageInfoDataKey";
 
 NSString *const DFImageErrorDomain = @"DFImageErrorDomain";
+
+CGSize const DFImageManagerMaximumSize = { FLT_MAX, FLT_MAX };
