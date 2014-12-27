@@ -35,8 +35,6 @@
 
 @property (nonatomic) BOOL networkAccessAllowed;
 
-- (instancetype)initWithOptions:(DFImageRequestOptions *)options;
-
 + (instancetype)defaultOptions;
 
 @end

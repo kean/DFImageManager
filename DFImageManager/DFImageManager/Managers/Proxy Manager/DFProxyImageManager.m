@@ -51,11 +51,13 @@
 #pragma mark - <DFCoreImageManager>
 
 - (BOOL)canHandleRequest:(DFImageRequest *)request {
+    request = [request copy];
     request.asset = _DF_TRANSFORMED_ASSET(request.asset);
     return [_manager canHandleRequest:request];
 }
 
 - (DFImageRequestID *)requestImageForRequest:(DFImageRequest *)request completion:(void (^)(UIImage *, NSDictionary *))completion {
+    request = [request copy];
     request.asset = _DF_TRANSFORMED_ASSET(request.asset);
     return [_manager requestImageForRequest:request completion:completion];
 }
@@ -69,10 +71,13 @@
 }
 
 - (NSArray *)_transformedRequests:(NSArray *)requests {
+    NSMutableArray *transformedRequests = [NSMutableArray new];
     for (DFImageRequest *request in requests) {
-        request.asset = _DF_TRANSFORMED_ASSET(request.asset);
+        DFImageRequest *transformedRequest = [request copy];
+        transformedRequest.asset = _DF_TRANSFORMED_ASSET(request.asset);
+        [transformedRequests addObject:transformedRequest];
     }
-    return requests;
+    return [transformedRequests copy];
 }
 
 #pragma mark - <DFImageManager>

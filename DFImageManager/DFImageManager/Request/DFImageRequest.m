@@ -30,10 +30,7 @@
         _asset = asset;
         _targetSize = targetSize;
         _contentMode = contentMode;
-        _options = [options copy];
-        if (!_options) {
-            _options = [DFImageRequestOptions defaultOptions];
-        }
+        _options = options ?: [DFImageRequestOptions defaultOptions];
     }
     return self;
 }
@@ -42,8 +39,18 @@
     return [self initWithAsset:asset targetSize:DFImageManagerMaximumSize contentMode:DFImageContentModeDefault options:nil];
 }
 
+- (id)copyWithZone:(NSZone *)zone {
+    DFImageRequest *request = [DFImageRequest new];
+    request.asset = self.asset;
+    request.targetSize = self.targetSize;
+    request.contentMode = self.contentMode;
+    request.options = [self.options copy];
+    request.userInfo = [self.userInfo copy];
+    return request;
+}
+
 - (NSString *)description {
-    return [NSString stringWithFormat:@"<%@ %p> { asset = %@, targetSize = %@, contentMode = %i, options = %@ }", [self class], self, self.asset, NSStringFromCGSize(self.targetSize), (int)self.contentMode, self.options];
+    return [NSString stringWithFormat:@"<%@ %p> { asset = %@, targetSize = %@, contentMode = %i, options = %@, userInfo = %@ }", [self class], self, self.asset, NSStringFromCGSize(self.targetSize), (int)self.contentMode, self.options, self.userInfo];
 }
 
 @end

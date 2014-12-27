@@ -93,6 +93,7 @@
 #pragma mark Fetching
 
 - (DFImageRequestID *)requestImageForRequest:(DFImageRequest *)request completion:(DFImageRequestCompletion)completion {
+    request = [request copy];
     NSString *operationID = [_conf imageManager:self operationIDForRequest:request];
     DFImageRequestID *requestID = [[DFImageRequestID alloc] initWithImageManager:self operationID:operationID];
     dispatch_async(_syncQueue, ^{
@@ -265,6 +266,7 @@
 #pragma mark Preheating
 
 - (void)startPreheatingImagesForRequests:(NSArray *)requests {
+    requests = [[NSArray alloc] initWithArray:requests copyItems:YES];
     if (requests.count) {
         dispatch_async(_syncQueue, ^{
             [self _startPreheatingImageForRequests:requests];
@@ -284,6 +286,7 @@
 }
 
 - (void)stopPreheatingImagesForRequests:(NSArray *)requests {
+    requests = [[NSArray alloc] initWithArray:requests copyItems:YES];
     if (requests.count) {
         dispatch_async(_syncQueue, ^{
             [self _stopPreheatingImagesForRequests:requests];
