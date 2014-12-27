@@ -69,7 +69,8 @@ static NSString * const reuseIdentifier = @"Cell";
 - (void)_configureImageManager {
     DFImageProcessingManager *imageProcessingManager = [DFImageProcessingManager new];
     
-    DFCache *cache = [[DFCache alloc] initWithName:[[NSUUID UUID] UUIDString]];
+    // We don't want memory cache, because we use caching image processing manager.
+    DFCache *cache = [[DFCache alloc] initWithName:[[NSUUID UUID] UUIDString] memoryCache:nil];
     _cache = cache;
     
     DFNetworkImageManagerConfiguration *networkImageManagerConfiguration = [[DFNetworkImageManagerConfiguration alloc] initWithCache:cache];

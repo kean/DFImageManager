@@ -27,12 +27,10 @@
 
 @property (nonatomic, readonly) UIImage *image;
 @property (nonatomic, readonly) NSError *error;
-@property (nonatomic, readonly) DFImageSource source;
 @property (nonatomic, readonly) NSData *data;
 @property (nonatomic, readonly) NSDictionary *userInfo;
 
-- (instancetype)initWithImage:(UIImage *)image error:(NSError *)error source:(DFImageSource)source;
-- (instancetype)initWithResponse:(DFImageResponse *)response;
+- (instancetype)initWithImage:(UIImage *)image error:(NSError *)error;
 
 + (instancetype)emptyResponse;
 
@@ -43,7 +41,6 @@
 
 @property (nonatomic) UIImage *image;
 @property (nonatomic) NSError *error;
-@property (nonatomic) DFImageSource source;
 @property (nonatomic) NSData *data;
 @property (nonatomic) NSDictionary *userInfo;
 

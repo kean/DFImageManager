@@ -116,10 +116,9 @@
     
     DFImageView *__weak weakSelf = self;
     _request = [[DFCompositeImageRequest alloc] initWithRequests:requests handler:^(UIImage *image, NSDictionary *info, BOOL isLastRequest) {
-        DFImageSource source = [info[DFImageInfoSourceKey] unsignedIntegerValue];
         NSError *error = info[DFImageInfoErrorKey];
         if (image != nil) {
-            [weakSelf requestDidFinishWithImage:image source:source info:info];
+            [weakSelf requestDidFinishWithImage:image info:info];
         } else if (!self.imageView.image){
             [weakSelf requestDidFailWithError:error info:info];
         } else {
@@ -129,13 +128,14 @@
     [_request start];
 }
 
-- (void)requestDidFinishWithImage:(UIImage *)image source:(DFImageSource)source info:(NSDictionary *)info {
+- (void)requestDidFinishWithImage:(UIImage *)image info:(NSDictionary *)info {
+    BOOL fromMemory = [info[DFImageInfoResultIsFromMemoryCacheKey] boolValue];
     DFImageViewAnimation animation = DFImageViewAnimationNone;
     if (self.animation != DFImageViewAnimationNone) {
         if (self.imageView.image != nil) {
             animation = DFImageViewAnimationCrossDissolve;
         } else {
-            animation = source != DFImageSourceMemoryCache ? _animation : DFImageViewAnimationNone;
+            animation = fromMemory ? DFImageViewAnimationNone : _animation;
         }
     }
     [self _df_setImage:image withAnimation:animation];

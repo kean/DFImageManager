@@ -33,7 +33,6 @@
         DFMutableImageResponse *response = [DFMutableImageResponse new];
         response.image = self.responseObject;
         response.error = self.error;
-        response.source = DFImageSourceExternal;
         if (self.responseObject) {
             response.data = self.data;
         }

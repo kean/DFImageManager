@@ -27,9 +27,12 @@
 typedef void (^DFImageRequestCompletion)(UIImage *image, NSDictionary *info);
 
 extern NSString *const DFImageInfoRequestIDKey;
-extern NSString *const DFImageInfoSourceKey;
 extern NSString *const DFImageInfoErrorKey;
 extern NSString *const DFImageInfoDataKey;
+
+/*! Boolean value indicating whether the image was returned from memory cache. (NSNumber)
+ */
+extern NSString *const DFImageInfoResultIsFromMemoryCacheKey;
 
 
 /* Size to pass when requesting the largest image for asset available (contentMode will be ignored).
@@ -41,12 +44,6 @@ typedef NS_ENUM(NSInteger, DFImageCacheStoragePolicy) {
     DFImageCacheStorageAllowed,
     DFImageCacheStorageAllowedInMemoryOnly,
     DFImageCacheStorageNotAllowed
-};
-
-typedef NS_ENUM(NSInteger, DFImageSource) {
-    DFImageSourceMemoryCache,
-    DFImageSourceDiskCache,
-    DFImageSourceExternal
 };
 
 typedef NS_ENUM(NSInteger, DFImageContentMode) {

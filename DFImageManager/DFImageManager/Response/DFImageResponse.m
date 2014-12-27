@@ -27,7 +27,6 @@
 
 @property (nonatomic) UIImage *image;
 @property (nonatomic) NSError *error;
-@property (nonatomic) DFImageSource source;
 @property (nonatomic) NSData *data;
 @property (nonatomic) NSDictionary *userInfo;
 
@@ -35,11 +34,10 @@
 
 @implementation DFImageResponse
 
-- (instancetype)initWithImage:(UIImage *)image error:(NSError *)error source:(DFImageSource)source {
+- (instancetype)initWithImage:(UIImage *)image error:(NSError *)error {
     if (self = [super init]) {
         _image = image;
         _error = error;
-        _source = source;
     }
     return self;
 }
@@ -48,7 +46,6 @@
     if (self = [super init]) {
         _image = response.image;
         _error = response.error;
-        _source = response.source;
         _data = response.data;
         _userInfo = response.userInfo;
     }
@@ -64,7 +61,7 @@
 }
 
 + (instancetype)emptyResponse {
-    return [[DFImageResponse alloc] initWithImage:nil error:nil source:0];
+    return [[DFImageResponse alloc] initWithImage:nil error:nil];
 }
 
 @end

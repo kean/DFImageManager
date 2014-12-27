@@ -80,7 +80,7 @@ typedef NS_ENUM(NSUInteger, DFImageViewAnimation) {
  */
 @interface DFImageView (SubclassingHooks)
 
-- (void)requestDidFinishWithImage:(UIImage *)image source:(DFImageSource)source info:(NSDictionary *)info;
+- (void)requestDidFinishWithImage:(UIImage *)image info:(NSDictionary *)info;
 - (void)requestDidFailWithError:(NSError *)error info:(NSDictionary *)info;
 
 @end

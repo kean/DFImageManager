@@ -103,27 +103,18 @@
 }
 
 - (void)_requestImageForRequest:(DFImageRequest *)request requestID:(DFImageRequestID *)requestID completion:(DFImageRequestCompletion)completion {
-    // Test if resized image exists.
-    // TODO: Add test whether the image should be processed
     NSString *assetUID = [_conf imageManager:self uniqueIDForAsset:request.asset];
     UIImage *image = [_processor processedImageForKey:assetUID targetSize:request.targetSize contentMode:request.contentMode];
     if (image != nil) {
-        if (completion != nil) {
-            // TODO: Complete using shared method.
-            NSDictionary *info = @{ DFImageInfoRequestIDKey : requestID,
-                                    DFImageInfoSourceKey : @(DFImageSourceMemoryCache) };
-            dispatch_async(dispatch_get_main_queue(), ^{
-                completion(image, info);
-            });
-        }
+        [self _completeRequestWithImage:image info:@{ DFImageInfoResultIsFromMemoryCacheKey : @YES } requestID:requestID completion:completion];
         return;
     }
     
     _DFImageFetchHandler *handler = [[_DFImageFetchHandler alloc] initWithRequest:request requestID:requestID completion:completion];
-    // Subscribe hanler for a given requestID.
+    // Subscribe handler for a given requestID.
     [_handlers addHandler:handler forOperationID:requestID.operationID handlerID:requestID.handlerID];
     
-    // Find existing operation chain or start new one.
+    // Find existing operation chain or start a new one.
     NSOperation<DFImageManagerOperation> *operation = _operations[requestID.operationID];
     if (!operation) {
         [self _requestImageForRequest:request operationID:requestID.operationID previousOperation:nil];
@@ -134,12 +125,12 @@
     NSOperation<DFImageManagerOperation> *operation = [_conf imageManager:self createOperationForRequest:request previousOperation:previousOperation];
     if (!operation) { // No more work required.
         DFImageResponse *response = [previousOperation imageFetchResponse];
-        [self _completeRequest:request response:response operationID:operationID];
+        [self _didCompleteAllOperationsForID:operationID response:response];
     } else {
         DFImageManager *__weak weakSelf = self;
         NSOperation<DFImageManagerOperation> *__weak weakOp = operation;
         [operation setCompletionBlock:^{
-            [weakSelf _operationDidComplete:weakOp request:request operationID:operationID];
+            [weakSelf _didCompleteOperation:weakOp request:request operationID:operationID];
         }];
         NSArray *handlers = [_handlers handlersForOperationID:operationID];
         operation.queuePriority = [DFImageManager _queuePriorityForHandlers:handlers];
@@ -148,50 +139,54 @@
     }
 }
 
-- (void)_operationDidComplete:(NSOperation<DFImageManagerOperation> *)operation request:(DFImageRequest *)request operationID:(NSString *)operationID {
+- (void)_didCompleteOperation:(NSOperation<DFImageManagerOperation> *)operation request:(DFImageRequest *)request operationID:(NSString *)operationID {
     dispatch_async(_syncQueue, ^{
         if (_operations[operationID] == operation) {
+            [_operations removeObjectForKey:operationID];
             [self _requestImageForRequest:request operationID:operationID previousOperation:operation];
         }
     });
 }
 
-- (void)_completeRequest:(DFImageRequest *)request response:(DFImageResponse *)response operationID:(NSString *)operationID {
+- (void)_didCompleteAllOperationsForID:(NSString *)operationID response:(DFImageResponse *)response {
     UIImage *image = response.image;
     NSDictionary *info = [self _infoFromResponse:response];
     
-    NSString *assetID = [_conf imageManager:self uniqueIDForAsset:request.asset];
+    NSArray *handlers = [_handlers handlersForOperationID:operationID];
+    [_handlers removeAllHandlersForOperationID:operationID];
     
-    for (_DFImageFetchHandler *handler in [_handlers handlersForOperationID:operationID]) {
-        // TODO: Add test whether the image should be processed.
-        // TODO: Move to background.
-        // TODO: Provide a way to extend image processing.
-        UIImage *processedImage = image;
-        if (_processor != nil) {
-            processedImage = [_processor processImageForKey:assetID image:image targetSize:handler.request.targetSize contentMode:handler.request.contentMode];
-        }
+    for (_DFImageFetchHandler *handler in handlers) {
+        DFImageRequest *request = handler.request;
+        DFImageRequestID *requestID = handler.requestID;
+        DFImageRequestCompletion completion = handler.completion;
         
-        NSMutableDictionary *mutableInfo = [NSMutableDictionary dictionaryWithDictionary:info];
-        mutableInfo[DFImageInfoRequestIDKey] = handler.requestID;
-        
-        if (handler.completion != nil) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                handler.completion(processedImage, mutableInfo);
-            });
+        if (_processor != nil && image != nil) {
+            NSString *assetID = [_conf imageManager:self uniqueIDForAsset:request.asset];
+            [_processor processImageForKey:assetID image:image targetSize:request.targetSize contentMode:request.contentMode completion:^(UIImage *image) {
+                [self _completeRequestWithImage:image info:info requestID:requestID completion:completion];
+            }];
+        } else {
+            [self _completeRequestWithImage:image info:info requestID:requestID completion:completion];
         }
     }
-    
-    [_operations removeObjectForKey:operationID];
-    [_handlers removeAllHandlersForOperationID:operationID];
     
     if (response.error != nil) {
         [self _didEncounterError:response.error];
     }
 }
 
+- (void)_completeRequestWithImage:(UIImage *)image info:(NSDictionary *)info requestID:(DFImageRequestID *)requestID completion:(DFImageRequestCompletion)completion {
+    if (completion != nil) {
+        NSMutableDictionary *mutableInfo = [NSMutableDictionary dictionaryWithDictionary:info];
+        mutableInfo[DFImageInfoRequestIDKey] = requestID;
+        dispatch_async(dispatch_get_main_queue(), ^{
+            completion(image, mutableInfo);
+        });
+    }
+}
+
 - (NSDictionary *)_infoFromResponse:(DFImageResponse *)response {
     NSMutableDictionary *info = [NSMutableDictionary new];
-    info[DFImageInfoSourceKey] = @(response.source);
     if (response.error != nil) {
         info[DFImageInfoErrorKey] = response.error;
     }

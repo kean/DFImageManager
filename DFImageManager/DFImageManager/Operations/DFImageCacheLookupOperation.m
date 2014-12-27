@@ -73,7 +73,7 @@
         policy == DFImageCacheStorageAllowedInMemoryOnly) {
         UIImage *image = [self.cache.memoryCache objectForKey:cacheKey];
         if (image) {
-            _response = [[DFImageResponse alloc] initWithImage:image error:nil source:DFImageSourceMemoryCache];
+            _response = [[DFImageResponse alloc] initWithImage:image error:nil];
             [self finish];
             return;
         }
@@ -83,7 +83,7 @@
     if (policy == DFImageCacheStorageAllowed) {
         UIImage *image = [self.cache cachedObjectForKey:cacheKey];
         if (image) {
-            _response = [[DFImageResponse alloc] initWithImage:image error:nil source:DFImageSourceDiskCache];
+            _response = [[DFImageResponse alloc] initWithImage:image error:nil];
             [self finish];
             return;
         }
