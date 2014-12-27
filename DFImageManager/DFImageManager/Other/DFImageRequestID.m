@@ -57,6 +57,10 @@
     [self.imageManager setPriority:priority forRequestWithID:self];
 }
 
+- (NSUInteger)hash {
+    return [self.operationID hash];
+}
+
 - (BOOL)isEqual:(id)object {
     if (object == self) {
         return YES;

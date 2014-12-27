@@ -21,6 +21,7 @@
 // THE SOFTWARE.
 
 #import "DFImageDeserializer.h"
+#import <UIKit/UIKit.h>
 
 
 @implementation DFImageDeserializer
