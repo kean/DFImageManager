@@ -33,7 +33,7 @@
 
 - (instancetype)initWithConfiguration:(id<DFImageManagerConfiguration>)configuration imageProcessingManager:(id<DFImageProcessingManager>)processingManager NS_DESIGNATED_INITIALIZER;
 
-// Basic dependency injectors.
+// Dependency injectors.
 
 + (id<DFImageManager>)sharedManager;
 + (void)setSharedManager:(id<DFImageManager>)manager;
