@@ -20,6 +20,10 @@
 		0C2BD4FA1A03A66000412BE3 /* DFURLConnectionOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C2BD4F81A03A66000412BE3 /* DFURLConnectionOperation.m */; };
 		0C3304B31A4A67B4001808F3 /* DFNetworkImageManagerConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C3304B21A4A67B4001808F3 /* DFNetworkImageManagerConfiguration.m */; };
 		0C5C25AF1A146B7A006C5791 /* DFImageFetchConnectionOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C5C25AE1A146B7A006C5791 /* DFImageFetchConnectionOperation.m */; };
+		0C7476A21A4E6EA6004FE2EE /* TDFTesting.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C7476A11A4E6EA6004FE2EE /* TDFTesting.m */; };
+		0C7476A31A4E6EAF004FE2EE /* libDFImageManager.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0C2BD4B81A03A28000412BE3 /* libDFImageManager.a */; };
+		0C7476A71A4E6EC0004FE2EE /* TDFImageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C7476A61A4E6EC0004FE2EE /* TDFImageManager.m */; };
+		0C7476A91A4E6EE4004FE2EE /* Image.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0C7476A81A4E6EE4004FE2EE /* Image.jpg */; };
 		0C8573B31A121CAD00067EA4 /* DFImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C8573B21A121CAD00067EA4 /* DFImageView.m */; };
 		0CA07D801A4BD08900B16F38 /* DFCompositeImageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CA07D7F1A4BD08900B16F38 /* DFCompositeImageManager.m */; };
 		0CA07D841A4BD1AF00B16F38 /* DFImageManagerBlockValueTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CA07D831A4BD1AF00B16F38 /* DFImageManagerBlockValueTransformer.m */; };
@@ -33,7 +37,18 @@
 		0CAF725C1A0B93E30057419A /* DFImageCacheLookupOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CAF725B1A0B93E30057419A /* DFImageCacheLookupOperation.m */; };
 		0CAF725F1A0B961A0057419A /* DFImageCacheStoreOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CAF725E1A0B961A0057419A /* DFImageCacheStoreOperation.m */; };
 		759916756D11680DBEF1CEA9 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D00E60156B6ED9152E7865EE /* libPods.a */; };
+		D5B5778D11F3E03C0BAF5A84 /* libPods-DFImageManagerTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 474B3B2A4B60166EEC189790 /* libPods-DFImageManagerTests.a */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		0C7476A41A4E6EB5004FE2EE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0C2BD4B01A03A28000412BE3 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 0C2BD4B71A03A28000412BE3;
+			remoteInfo = DFImageManager;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		0C2BD4B61A03A28000412BE3 /* CopyFiles */ = {
@@ -49,6 +64,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		035B7C0D28050FFB6069B45A /* Pods-DFImageManagerTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DFImageManagerTests.release.xcconfig"; path = "../Pods/Target Support Files/Pods-DFImageManagerTests/Pods-DFImageManagerTests.release.xcconfig"; sourceTree = "<group>"; };
 		0C057A291A13542900DC76C6 /* DFImageManagerConfiguration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFImageManagerConfiguration.h; sourceTree = "<group>"; };
 		0C057A2A1A13542900DC76C6 /* DFImageManagerConfiguration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFImageManagerConfiguration.m; sourceTree = "<group>"; };
 		0C22BD901A4CDCA100AF48E0 /* DFCompositeImageRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFCompositeImageRequest.h; sourceTree = "<group>"; };
@@ -82,6 +98,10 @@
 		0C3304B21A4A67B4001808F3 /* DFNetworkImageManagerConfiguration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFNetworkImageManagerConfiguration.m; sourceTree = "<group>"; };
 		0C5C25AD1A146B7A006C5791 /* DFImageFetchConnectionOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFImageFetchConnectionOperation.h; sourceTree = "<group>"; };
 		0C5C25AE1A146B7A006C5791 /* DFImageFetchConnectionOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFImageFetchConnectionOperation.m; sourceTree = "<group>"; };
+		0C7476A01A4E6EA6004FE2EE /* TDFTesting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDFTesting.h; sourceTree = "<group>"; };
+		0C7476A11A4E6EA6004FE2EE /* TDFTesting.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDFTesting.m; sourceTree = "<group>"; };
+		0C7476A61A4E6EC0004FE2EE /* TDFImageManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDFImageManager.m; sourceTree = "<group>"; };
+		0C7476A81A4E6EE4004FE2EE /* Image.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Image.jpg; sourceTree = "<group>"; };
 		0C8573B11A121CAD00067EA4 /* DFImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFImageView.h; sourceTree = "<group>"; };
 		0C8573B21A121CAD00067EA4 /* DFImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFImageView.m; sourceTree = "<group>"; };
 		0CA07D7E1A4BD08900B16F38 /* DFCompositeImageManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFCompositeImageManager.h; sourceTree = "<group>"; };
@@ -109,7 +129,9 @@
 		0CAF725D1A0B961A0057419A /* DFImageCacheStoreOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFImageCacheStoreOperation.h; sourceTree = "<group>"; };
 		0CAF725E1A0B961A0057419A /* DFImageCacheStoreOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFImageCacheStoreOperation.m; sourceTree = "<group>"; };
 		440E992BEB531A6CE7B52C0F /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "../Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		474B3B2A4B60166EEC189790 /* libPods-DFImageManagerTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-DFImageManagerTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9CD33F4B636DE31D168E5274 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "../Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
+		A4D2C3C33B6EF8B3B92153CA /* Pods-DFImageManagerTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DFImageManagerTests.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-DFImageManagerTests/Pods-DFImageManagerTests.debug.xcconfig"; sourceTree = "<group>"; };
 		D00E60156B6ED9152E7865EE /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -126,6 +148,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0C7476A31A4E6EAF004FE2EE /* libDFImageManager.a in Frameworks */,
+				D5B5778D11F3E03C0BAF5A84 /* libPods-DFImageManagerTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -185,7 +209,11 @@
 		0C2BD4C41A03A28000412BE3 /* DFImageManagerTests */ = {
 			isa = PBXGroup;
 			children = (
+				0C74769E1A4E6E95004FE2EE /* Tests */,
+				0C74769F1A4E6E9B004FE2EE /* Resources */,
 				0C2BD4C51A03A28000412BE3 /* Supporting Files */,
+				0C7476A01A4E6EA6004FE2EE /* TDFTesting.h */,
+				0C7476A11A4E6EA6004FE2EE /* TDFTesting.m */,
 			);
 			path = DFImageManagerTests;
 			sourceTree = "<group>";
@@ -271,6 +299,22 @@
 			path = "Network Image Manager";
 			sourceTree = "<group>";
 		};
+		0C74769E1A4E6E95004FE2EE /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				0C7476A61A4E6EC0004FE2EE /* TDFImageManager.m */,
+			);
+			path = Tests;
+			sourceTree = "<group>";
+		};
+		0C74769F1A4E6E9B004FE2EE /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				0C7476A81A4E6EE4004FE2EE /* Image.jpg */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
 		0C77A4391A4944E100538A36 /* Managers */ = {
 			isa = PBXGroup;
 			children = (
@@ -340,6 +384,8 @@
 			children = (
 				440E992BEB531A6CE7B52C0F /* Pods.debug.xcconfig */,
 				9CD33F4B636DE31D168E5274 /* Pods.release.xcconfig */,
+				A4D2C3C33B6EF8B3B92153CA /* Pods-DFImageManagerTests.debug.xcconfig */,
+				035B7C0D28050FFB6069B45A /* Pods-DFImageManagerTests.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -348,6 +394,7 @@
 			isa = PBXGroup;
 			children = (
 				D00E60156B6ED9152E7865EE /* libPods.a */,
+				474B3B2A4B60166EEC189790 /* libPods-DFImageManagerTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -378,13 +425,16 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 0C2BD4CC1A03A28000412BE3 /* Build configuration list for PBXNativeTarget "DFImageManagerTests" */;
 			buildPhases = (
+				23032368A4DB2757B19D20D0 /* Check Pods Manifest.lock */,
 				0C2BD4BF1A03A28000412BE3 /* Sources */,
 				0C2BD4C01A03A28000412BE3 /* Frameworks */,
 				0C2BD4C11A03A28000412BE3 /* Resources */,
+				CE1F8389756D0BF9DA73F279 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				0C7476A51A4E6EB5004FE2EE /* PBXTargetDependency */,
 			);
 			name = DFImageManagerTests;
 			productName = DFImageManagerTests;
@@ -431,12 +481,28 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0C7476A91A4E6EE4004FE2EE /* Image.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		23032368A4DB2757B19D20D0 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
 		B478EE6CF60EA845DA9889CF /* Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -450,6 +516,21 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/../Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		CE1F8389756D0BF9DA73F279 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/../Pods/Target Support Files/Pods-DFImageManagerTests/Pods-DFImageManagerTests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		D7A40990BDF6589534DE0EF5 /* Check Pods Manifest.lock */ = {
@@ -505,10 +586,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0C7476A71A4E6EC0004FE2EE /* TDFImageManager.m in Sources */,
+				0C7476A21A4E6EA6004FE2EE /* TDFTesting.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		0C7476A51A4E6EB5004FE2EE /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 0C2BD4B71A03A28000412BE3 /* DFImageManager */;
+			targetProxy = 0C7476A41A4E6EB5004FE2EE /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		0C2BD4C71A03A28000412BE3 /* Debug */ = {
@@ -607,6 +698,7 @@
 		};
 		0C2BD4CD1A03A28000412BE3 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = A4D2C3C33B6EF8B3B92153CA /* Pods-DFImageManagerTests.debug.xcconfig */;
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
@@ -624,6 +716,7 @@
 		};
 		0C2BD4CE1A03A28000412BE3 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 035B7C0D28050FFB6069B45A /* Pods-DFImageManagerTests.release.xcconfig */;
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
