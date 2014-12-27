@@ -100,7 +100,6 @@
 - (void)_didFetchImage:(UIImage *)result {
     DFMutableImageResponse *response = [DFMutableImageResponse new];
     response.image = result;
-    response.source = DFImageSourceExternal;
     _response = [response copy];
     [self finish];
 }
