@@ -57,9 +57,6 @@
 @end
 
 
-
-
-
 @interface _DFRequestExecutionContext : NSObject
 
 @property (nonatomic, readonly) DFImageRequest *request;
