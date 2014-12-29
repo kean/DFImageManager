@@ -1,27 +1,38 @@
+// The MIT License (MIT)
 //
-//  DFValueTransformer.m
-//  DFCache
+// Copyright (c) 2014 Alexander Grebenyuk (github.com/kean).
 //
-//  Created by Alexander Grebenyuk on 12/17/14.
-//  Copyright (c) 2014 com.github.kean. All rights reserved.
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
 //
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
 
 #import "DFValueTransformer.h"
 #import "DFCacheImageDecoder.h"
 
 
+NSString *const DFValueTransformerNSCodingName = @"DFValueTransformerNSCodingName";
+NSString *const DFValueTransformerJSONName = @"DFValueTransformerJSONName";
+
+#if (__IPHONE_OS_VERSION_MIN_REQUIRED)
+NSString *const DFValueTransformerUIImageName = @"DFValueTransformerUIImageName";
+#endif
+
+
 @implementation DFValueTransformer
-
-- (id)initWithCoder:(NSCoder *__unused)decoder {
-    if (self = [super init]) {
-        // do nothing
-    }
-    return self;
-}
-
-- (void)encodeWithCoder:(NSCoder *__unused)coder {
-    // do nothing
-}
 
 - (NSData *)transformedValue:(id __unused)value {
     [NSException raise:NSInternalInconsistencyException format:@"Abstract method called %@", NSStringFromSelector(_cmd)];
@@ -69,6 +80,7 @@
 - (instancetype)init {
     if (self = [super init]) {
         _compressionQuality = 0.75f;
+        _allowsImageDecompression = YES;
     }
     return self;
 }
@@ -87,7 +99,11 @@
 }
 
 - (id)reverseTransfomedValue:(NSData *)data {
-    return [DFCacheImageDecoder decompressedImageWithData:data];
+    if (self.allowsImageDecompression) {
+        return [DFCacheImageDecoder decompressedImageWithData:data];
+    } else {
+        return [[UIImage alloc] initWithData:data scale:[UIScreen mainScreen].scale];
+    }
 }
 
 - (NSUInteger)costForValue:(id)value {

@@ -28,9 +28,6 @@
 #pragma mark - Read (Batch)
 
 - (void)batchCachedDataForKeys:(NSArray *)keys completion:(void (^)(NSDictionary *batch))completion {
-    if (!completion) {
-        return;
-    }
     if (!keys.count) {
         _dwarf_cache_callback(completion, nil);
         return;
@@ -48,7 +45,7 @@
     NSMutableDictionary *batch = [NSMutableDictionary new];
     for (NSString *key in keys) {
         NSData *data = [self cachedDataForKey:key];
-        if (data) {
+        if (data != nil) {
             batch[key] = data;
         }
     }
@@ -56,9 +53,6 @@
 }
 
 - (void)batchCachedObjectsForKeys:(NSArray *)keys completion:(void (^)(NSDictionary *))completion {
-    if (!completion) {
-        return;
-    }
     if (!keys.count) {
         _dwarf_cache_callback(completion, nil);
         return;
@@ -76,7 +70,7 @@
     NSMutableDictionary *batch = [NSMutableDictionary new];
     for (NSString *key in keys) {
         id object = [self cachedObjectForKey:key];
-        if (object) {
+        if (object != nil) {
             batch[key] = object;
         }
     }
@@ -84,27 +78,28 @@
 }
 
 - (void)firstCachedObjectForKeys:(NSArray *)keys completion:(void (^)(id, NSString *))completion {
-    if (!completion) {
-        return;
-    }
     [self _firstCachedObjectForKeys:[keys mutableCopy] completion:completion];
 }
 
 - (void)_firstCachedObjectForKeys:(NSMutableArray *)keys completion:(void (^)(id, NSString *))completion {
     if (!keys.count) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            completion(nil, nil);
-        });
+        if (completion != nil) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                completion(nil, nil);
+            });
+        }
         return;
     }
     NSString *key = keys[0];
     [keys removeObjectAtIndex:0];
     DFCache *__weak weakSelf = self;
     [self cachedObjectForKey:key completion:^(id object) {
-        if (object) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                completion(object, key);
-            });
+        if (object != nil) {
+            if (completion != nil) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    completion(object, key);
+                });
+            }
         } else {
             [weakSelf _firstCachedObjectForKeys:keys completion:completion];
         }

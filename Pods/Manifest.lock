@@ -1,15 +1,15 @@
 PODS:
-  - DFCache (2.0.1)
+  - DFCache (3.0.0)
   - OHHTTPStubs (3.1.10):
     - OHHTTPStubs/Core (= 3.1.10)
   - OHHTTPStubs/Core (3.1.10)
 
 DEPENDENCIES:
-  - DFCache (~> 2.0)
+  - DFCache (~> 3.0)
   - OHHTTPStubs
 
 SPEC CHECKSUMS:
-  DFCache: de06db746b9f4b3985dd7c2dffc4cefa3353fbee
+  DFCache: fdbdc4760896920386dba7b97bca25d37060aaeb
   OHHTTPStubs: 2038e929b6abb94881000524c1cb4aba0a1bb4a2
 
 COCOAPODS: 0.35.0

@@ -32,7 +32,7 @@ NSString *const DFCacheAttributeMetadataKey = @"_df_cache_metadata_key";
 
 /*! Extended attribute name used to store value transformer associated with data.
  */
-static NSString *const DFCacheAttributeValueTransformerKey = @"_df_cache_value_transformer_key";
+static NSString *const DFCacheAttributeValueTransformerNameKey = @"_df_cache_value_transformer_name_key";
 
 
 @implementation DFCache {
@@ -94,10 +94,6 @@ static NSString *const DFCacheAttributeValueTransformerKey = @"_df_cache_value_t
 #pragma mark - Read
 
 - (void)cachedObjectForKey:(NSString *)key completion:(void (^)(id))completion {
-    [self cachedObjectForKey:key valueTransformer:nil completion:completion];
-}
-
-- (void)cachedObjectForKey:(NSString *)key valueTransformer:(id<DFValueTransforming>)valueTransformer completion:(void (^)(id))completion {
     if (!key.length) {
         _dwarf_cache_callback(completion, nil);
         return;
@@ -109,17 +105,13 @@ static NSString *const DFCacheAttributeValueTransformerKey = @"_df_cache_value_t
     }
     dispatch_async(_processingQueue, ^{
         @autoreleasepool {
-            id object = [self _cachedObjectForKey:key valueTransformer:valueTransformer];
+            id object = [self _cachedObjectForKey:key];
             _dwarf_cache_callback(completion, object);
         }
     });
 }
 
 - (id)cachedObjectForKey:(NSString *)key {
-    return [self cachedObjectForKey:key valueTransformer:nil];
-}
-
-- (id)cachedObjectForKey:(NSString *)key valueTransformer:(id<DFValueTransforming>)valueTransformer {
     if (!key.length) {
         return nil;
     }
@@ -128,20 +120,21 @@ static NSString *const DFCacheAttributeValueTransformerKey = @"_df_cache_value_t
         return object;
     }
     @autoreleasepool {
-        return [self _cachedObjectForKey:key valueTransformer:valueTransformer];
+        return [self _cachedObjectForKey:key];
     }
 }
 
-- (id)_cachedObjectForKey:(NSString *)key valueTransformer:(id<DFValueTransforming>)inputValueTransformer {
+- (id)_cachedObjectForKey:(NSString *)key {
     NSData *__block data;
-    id<DFValueTransforming> __block valueTransformer = inputValueTransformer;
+    NSString *__block valueTransformerName;
     dispatch_sync(_ioQueue, ^{
-        data = [self.diskCache dataForKey:key];
-        if (data != nil && !valueTransformer) {
-            NSURL *fileURL = [self.diskCache URLForKey:key];
-            valueTransformer = [fileURL df_extendedAttributeValueForKey:DFCacheAttributeValueTransformerKey error:nil];
+        NSURL *fileURL = [self.diskCache URLForKey:key];
+        data = [NSData dataWithContentsOfURL:fileURL];
+        if (data != nil) {
+            valueTransformerName = [fileURL df_extendedAttributeValueForKey:DFCacheAttributeValueTransformerNameKey error:nil];
         }
     });
+    id<DFValueTransforming> valueTransformer = [self.valueTransfomerFactory valueTransformerForName:valueTransformerName];
     id object = [valueTransformer reverseTransfomedValue:data];
     [self _setObject:object forKey:key valueTransformer:valueTransformer];
     return object;
@@ -150,25 +143,18 @@ static NSString *const DFCacheAttributeValueTransformerKey = @"_df_cache_value_t
 #pragma mark - Write
 
 - (void)storeObject:(id)object forKey:(NSString *)key {
-    [self storeObject:object forKey:key valueTransformer:nil data:nil];
+    [self storeObject:object forKey:key data:nil];
 }
 
 - (void)storeObject:(id)object forKey:(NSString *)key data:(NSData *)data {
-    [self storeObject:object forKey:key valueTransformer:nil data:data];
-}
-
-- (void)storeObject:(id)object forKey:(NSString *)key valueTransformer:(id<DFValueTransforming>)valueTransformer {
-    [self storeObject:object forKey:key valueTransformer:valueTransformer data:nil];
-}
-
-- (void)storeObject:(id)object forKey:(NSString *)key valueTransformer:(id<DFValueTransforming>)valueTransformer data:(NSData *)data {
     if (!key.length) {
         return;
     }
-    if (!valueTransformer) {
-        valueTransformer = [self.valueTransfomerFactory valueTransformerForValue:object];
-    }
+    NSString *valueTransformerName = [self.valueTransfomerFactory valueTransformerNameForValue:object];
+    id<DFValueTransforming> valueTransformer = [self.valueTransfomerFactory valueTransformerForName:valueTransformerName];
+    
     [self _setObject:object forKey:key valueTransformer:valueTransformer];
+    
     if (!data && !valueTransformer) {
         return;
     }
@@ -179,10 +165,10 @@ static NSString *const DFCacheAttributeValueTransformerKey = @"_df_cache_value_t
                 encodedData = [valueTransformer transformedValue:object];
             }
             if (encodedData != nil) {
-                [self.diskCache setData:encodedData forKey:key];
-                if (valueTransformer) {
-                    NSURL *fileURL = [self.diskCache URLForKey:key];
-                    [fileURL df_setExtendedAttributeValue:valueTransformer forKey:DFCacheAttributeValueTransformerKey];
+                NSURL *fileURL = [self.diskCache URLForKey:key];
+                [encodedData writeToURL:fileURL atomically:YES];
+                if (valueTransformerName != nil) {
+                    [fileURL df_setExtendedAttributeValue:valueTransformerName forKey:DFCacheAttributeValueTransformerNameKey];
                 }
             }
         }
@@ -198,7 +184,8 @@ static NSString *const DFCacheAttributeValueTransformerKey = @"_df_cache_value_t
         return;
     }
     if (!valueTransformer) {
-        valueTransformer = [self.valueTransfomerFactory valueTransformerForValue:object];
+        NSString *valueTransformerName = [self.valueTransfomerFactory valueTransformerNameForValue:object];
+        valueTransformer = [self.valueTransfomerFactory valueTransformerForName:valueTransformerName];
     }
     NSUInteger cost = 0;
     if ([valueTransformer respondsToSelector:@selector(costForValue:)]) {
@@ -364,3 +351,19 @@ static NSString *const DFCacheAttributeValueTransformerKey = @"_df_cache_value_t
 }
 
 @end
+
+
+#if (__IPHONE_OS_VERSION_MIN_REQUIRED)
+@implementation DFCache (UIImage)
+
+- (void)setAllowsImageDecompression:(BOOL)allowsImageDecompression {
+    DFValueTransformerUIImage *transformer = [self.valueTransfomerFactory valueTransformerForName:DFValueTransformerUIImageName];
+    if ([transformer isKindOfClass:[DFValueTransformerUIImage class]]) {
+        transformer.allowsImageDecompression = allowsImageDecompression;
+    } else {
+        NSLog(@"Failed to set allowsImageDecompression. %@", self);
+    }
+}
+
+@end
+#endif

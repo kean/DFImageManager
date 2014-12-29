@@ -24,9 +24,11 @@
 
 static inline void
 _dwarf_cache_callback(void (^block)(id), id object) {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        block(object);
-    });
+    if (block != nil) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            block(object);
+        });
+    }
 }
 
 /*! Produces 160-bit hash value using SHA-1 algorithm.

@@ -12,5 +12,5 @@ Pod::Spec.new do |s|
    s.source_files  = "DFImageManager/DFImageManager/**/*.{h,m}"
    s.requires_arc = true
 
-   s.dependency "DFCache", "~> 2.0"
+   s.dependency "DFCache", "~> 3.0"
 end
