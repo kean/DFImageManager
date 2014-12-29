@@ -31,10 +31,10 @@
 @property (nonatomic, readonly) NSString *operationID;
 @property (nonatomic, readonly) NSString *handlerID;
 
-- (instancetype)initWithImageManager:(id<DFImageManager>)imageManager operationID:(NSString *)operationID handlerID:(NSString *)handlerID;
+- (instancetype)initWithImageManager:(id<DFImageManager>)imageManager;
 
-/*! Initializes request ID with a given requestID ID. Handler ID is generated automatically during initialization.
- */
-- (instancetype)initWithImageManager:(id<DFImageManager>)imageManager operationID:(NSString *)operationID;
+- (void)setOperationID:(NSString *)operationID handlerID:(NSString *)handlerID;
+
++ (DFImageRequestID *)requestIDWithImageManager:(id<DFImageManager>)imageManager operationID:(NSString *)operationID handlerID:(NSString *)handlerID;
 
 @end

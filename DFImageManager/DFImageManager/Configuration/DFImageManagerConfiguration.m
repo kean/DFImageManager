@@ -47,11 +47,17 @@ NSString *const DFImageManagerCacheStoreOperationType = @"DFImageManagerCacheSto
 
 - (NSString *)imageManager:(id<DFImageManager>)manager operationIDForRequest:(DFImageRequest *)request {
     NSString *assetID = [self imageManager:manager uniqueIDForAsset:request.asset];
-    NSArray *parameters = [self operationParametersForRequest:request];
-    return [NSString stringWithFormat:@"requestID?%@&asset_id=%@", [parameters componentsJoinedByString:@"&"], assetID];
+    
+    NSMutableString *operationID = [[NSMutableString alloc] initWithString:@"requestID?"];
+    NSArray *keyPaths = [self keyPathForRequestParametersAffectingOperationID:request];
+    for (NSString *keyPath in keyPaths) {
+        [operationID appendFormat:@"%@=%@&", keyPath, [request valueForKeyPath:keyPath]];
+    }
+    [operationID appendFormat:@"assetID=%@", assetID];
+    return operationID;
 }
 
-- (NSArray *)operationParametersForRequest:(DFImageRequest *)request {
+- (NSArray *)keyPathForRequestParametersAffectingOperationID:(DFImageRequest *)request {
     return @[];
 }
 

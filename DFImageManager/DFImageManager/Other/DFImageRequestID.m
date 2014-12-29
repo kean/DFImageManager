@@ -34,19 +34,26 @@
 
 @implementation DFImageRequestID
 
-- (instancetype)initWithImageManager:(id<DFImageManager>)imageManager operationID:(NSString *)operationID handlerID:(NSString *)handlerID {
+- (instancetype)initWithImageManager:(id<DFImageManager>)imageManager {
     if (self = [super init]) {
-        NSParameterAssert(operationID);
-        NSParameterAssert(handlerID);
         _imageManager = imageManager;
-        _operationID = operationID;
-        _handlerID = handlerID;
     }
     return self;
 }
 
-- (instancetype)initWithImageManager:(id<DFImageManager>)imageManager operationID:(NSString *)operationID {
-    return [self initWithImageManager:imageManager operationID:operationID ?: [[NSUUID UUID] UUIDString] handlerID:[[NSUUID UUID] UUIDString]];
++ (DFImageRequestID *)requestIDWithImageManager:(id<DFImageManager>)imageManager operationID:(NSString *)operationID handlerID:(NSString *)handlerID {
+    DFImageRequestID *requestID = [[DFImageRequestID alloc] initWithImageManager:imageManager];
+    [requestID setOperationID:operationID handlerID:handlerID];
+    return requestID;
+}
+
+- (void)setOperationID:(NSString *)operationID handlerID:(NSString *)handlerID {
+    if (_operationID != nil ||
+        _handlerID != nil) {
+        [NSException raise:NSInternalInconsistencyException format:@"Attempting to rewrite image request state"];
+    }
+    _operationID = operationID;
+    _handlerID = handlerID;
 }
 
 - (void)cancel {
@@ -55,27 +62,6 @@
 
 - (void)setPriority:(DFImageRequestPriority)priority {
     [self.imageManager setPriority:priority forRequestWithID:self];
-}
-
-- (NSUInteger)hash {
-    return [self.operationID hash];
-}
-
-- (BOOL)isEqual:(id)object {
-    if (object == self) {
-        return YES;
-    }
-    if ([object class] != [self class]) {
-        return NO;
-    }
-    DFImageRequestID *other = object;
-    return ([other.imageManager isEqual:self.imageManager] &&
-            [other.operationID isEqualToString:self.operationID] &&
-            [other.handlerID isEqualToString:self.handlerID]);
-}
-
-- (id)copyWithZone:(NSZone *)zone {
-    return self;
 }
 
 - (NSString *)description {

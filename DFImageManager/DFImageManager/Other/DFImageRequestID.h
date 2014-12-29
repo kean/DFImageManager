@@ -23,7 +23,7 @@
 #import <Foundation/Foundation.h>
 
 
-@interface DFImageRequestID : NSObject <NSCopying>
+@interface DFImageRequestID : NSObject
 
 /*! Cancels the request.
  */

@@ -69,12 +69,23 @@
     }
 }
 
-- (NSArray *)operationParametersForRequest:(DFImageRequest *)request {
-    NSMutableArray *parameters = [NSMutableArray new];
+- (NSArray *)keyPathForRequestParametersAffectingOperationID:(DFImageRequest *)request {
+    static NSArray *_keyPaths;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        _keyPaths = @[ @"options.cacheStoragePolicy",
+                       @"options.networkAccessAllowed" ];
+        
+    });
+    return _keyPaths;
+    
+    
+    /*
     // We ignore targetSize and contentMode, because we can't modify the given URL
     [parameters addObject:[NSString stringWithFormat:@"cache_storage_policy=%lu", (unsigned long)request.options.cacheStoragePolicy]];
     [parameters addObject:[NSString stringWithFormat:@"network_access_allowed=%i", request.options.networkAccessAllowed]];
     return [parameters copy];
+     */
 }
 
 #pragma mark - Subclassing Hooks

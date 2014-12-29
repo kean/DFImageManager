@@ -94,9 +94,10 @@
 
 - (DFImageRequestID *)requestImageForRequest:(DFImageRequest *)request completion:(DFImageRequestCompletion)completion {
     request = [request copy];
-    NSString *operationID = [_conf imageManager:self operationIDForRequest:request];
-    DFImageRequestID *requestID = [[DFImageRequestID alloc] initWithImageManager:self operationID:operationID];
+    DFImageRequestID *requestID = [[DFImageRequestID alloc] initWithImageManager:self]; // Represents requestID future.
     dispatch_async(_syncQueue, ^{
+        NSString *operationID = [_conf imageManager:self operationIDForRequest:request];
+        [requestID setOperationID:operationID handlerID:[[NSUUID UUID] UUIDString]];
         [self _requestImageForRequest:request requestID:requestID completion:completion];
     });
     return requestID;
@@ -299,20 +300,20 @@
 
 - (DFImageRequestID *)_preheatingIDForRequest:(DFImageRequest *)request {
     NSString *operationID = [_conf imageManager:self operationIDForRequest:request];
-    return [[DFImageRequestID alloc] initWithImageManager:self operationID:operationID handlerID:@"preheat"];
+    return [DFImageRequestID requestIDWithImageManager:self operationID:operationID handlerID:@"preheat"];
 }
 
 - (void)stopPreheatingImageForAllAssets {
     dispatch_async(_syncQueue, ^{
         NSDictionary *handlers = [_handlers allHandlers];
-        [handlers enumerateKeysAndObjectsUsingBlock:^(NSString *requestID, NSDictionary *handlersForOperation, BOOL *stop) {
-            NSMutableArray *requestIDs = [NSMutableArray new];
+        [handlers enumerateKeysAndObjectsUsingBlock:^(NSString *operationID, NSDictionary *handlersForOperation, BOOL *stop) {
+            NSMutableArray *operationIDs = [NSMutableArray new];
             [handlersForOperation enumerateKeysAndObjectsUsingBlock:^(NSString *handlerID, _DFImageFetchHandler *handler, BOOL *stop) {
                 if ([handlerID isEqualToString:@"preheat"]) {
-                    [requestIDs addObject:[[DFImageRequestID alloc]initWithImageManager:self operationID:requestID handlerID:handlerID]];
+                    [operationIDs addObject:[DFImageRequestID requestIDWithImageManager:self operationID:operationID handlerID:handlerID]];
                 }
             }];
-            for (DFImageRequestID *requestID in requestIDs) {
+            for (DFImageRequestID *requestID in operationIDs) {
                 [self _cancelRequestWithID:requestID];
             }
         }];

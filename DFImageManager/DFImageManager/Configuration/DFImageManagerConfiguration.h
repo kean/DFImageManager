@@ -39,7 +39,7 @@ extern NSString *const DFImageManagerCacheStoreOperationType;
 
 @interface DFImageManagerConfiguration (SubclassingHooks)
 
-- (NSArray *)operationParametersForRequest:(DFImageRequest *)request;
+- (NSArray *)keyPathForRequestParametersAffectingOperationID:(DFImageRequest *)request;
 
 // factory methods
 

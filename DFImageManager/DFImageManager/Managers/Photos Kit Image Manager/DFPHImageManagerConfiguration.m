@@ -59,18 +59,25 @@
 
 - (NSString *)imageManager:(id<DFImageManager>)manager operationIDForRequest:(DFImageRequest *)request {
     NSString *assetID = [self imageManager:manager uniqueIDForAsset:request.asset];
-    // TODO: Do something with targetSize
-    NSArray *parameters = [self _operationParametersForRequest:request];
-    return [NSString stringWithFormat:@"requestID?%@&asset_id=%@", [parameters componentsJoinedByString:@"&"], assetID];
+    
+    NSMutableString *operationID = [[NSMutableString alloc] initWithString:@"requestID?"];
+    NSArray *keyPaths = [self _keyPathForRequestParametersAffectingOperationID:request];
+    for (NSString *keyPath in keyPaths) {
+        [operationID appendFormat:@"%@=%@&", keyPath, [request valueForKeyPath:keyPath]];
+    }
+    [operationID appendFormat:@"assetID=%@", assetID];
+    return operationID;
 }
 
-- (NSArray *)_operationParametersForRequest:(DFImageRequest *)request {
-    NSMutableArray *parameters = [NSMutableArray new];
-    // We ignore cache storage policy
-    [parameters addObject:[NSString stringWithFormat:@"target_size=%@", NSStringFromCGSize(request.targetSize)]];
-    [parameters addObject:[NSString stringWithFormat:@"content_mode=%i", (int)request.contentMode]];
-    [parameters addObject:[NSString stringWithFormat:@"network_access_allowed=%i", request.options.networkAccessAllowed]];
-    return [parameters copy];
+- (NSArray *)_keyPathForRequestParametersAffectingOperationID:(DFImageRequest *)request {
+    static NSArray *keyPaths;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        keyPaths = @[ @"targetSize",
+                      @"contentMode",
+                      @"options.networkAccessAllowed" ];
+    });
+    return keyPaths;
 }
 
 - (NSOperation<DFImageManagerOperation> *)imageManager:(id<DFImageManager>)manager createOperationForRequest:(DFImageRequest *)request previousOperation:(NSOperation<DFImageManagerOperation> *)previousOperation {
