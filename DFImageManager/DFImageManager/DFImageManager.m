@@ -20,7 +20,6 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "DFImageHandlerDictionary.h"
 #import "DFImageManager.h"
 #import "DFImageManagerDefines.h"
 #import "DFImageRequest.h"
@@ -29,7 +28,6 @@
 #import "DFImageRequestOptions.h"
 #import "DFImageResponse.h"
 #import <UIKit/UIKit.h>
-
 
 @interface _DFImageFetchHandler : NSObject
 
@@ -53,18 +51,60 @@
 }
 
 - (NSString *)description {
-    return [NSString stringWithFormat:@"<%@ %p> { request = %@, requestID = %@, completion = %@ }", [self class], self, _request, _requestID, _completion];
+    return [NSString stringWithFormat:@"<%@ %p> { request = %@, requestID = %@, completion = %@ }", [self class], self, self.request, self.requestID, self.completion];
 }
 
 @end
 
+
+
+
+
+@interface _DFRequestExecutionContext : NSObject
+
+@property (nonatomic, readonly) DFImageRequest *request;
+@property (nonatomic) NSOperation<DFImageManagerOperation> *currentOperation;
+@property (nonatomic, readonly) NSMutableDictionary *handlers;
+
+- (instancetype)initWithRequest:(DFImageRequest *)request;
+
+/*! Returns maximum queue priority from handlers.
+ */
+@property (nonatomic, readonly) NSOperationQueuePriority queuePriority;
+
+@end
+
+@implementation _DFRequestExecutionContext
+
+- (instancetype)initWithRequest:(DFImageRequest *)request {
+    if (self = [super init]) {
+        _request = request;
+        _handlers = [NSMutableDictionary new];
+    }
+    return self;
+}
+
+- (NSOperationQueuePriority)queuePriority {
+    DFImageRequestPriority __block maxPriority = DFImageRequestPriorityVeryLow;
+    [_handlers enumerateKeysAndObjectsUsingBlock:^(id key, _DFImageFetchHandler *handler, BOOL *stop) {
+        maxPriority = MAX(handler.request.options.priority, maxPriority);
+    }];
+    return (NSOperationQueuePriority)maxPriority;
+}
+
+- (NSString *)description {
+    return [NSString stringWithFormat:@"<%@ %p> { request = %@, currentOperation = %@, handlers = %@ }", [self class], self, self.request, self.currentOperation, self.handlers];
+}
+
+@end
+
+
 /*! Implementation details.
  - Each DFImageRequest+completion pair has it's own assigned DFImageRequestID
- - Multiple requests+completion pair might have the same assigned operationID
+ - Multiple requests+completion might be handled by the same _DFRequestExecutionContext 
  */
 @implementation DFImageManager {
-    DFImageHandlerDictionary *_handlers;
-    NSMutableDictionary *_operations;
+    NSMutableDictionary /* NSString *operationID : _DFRequestExecutionContext */ *_executionContexts;
     
     dispatch_queue_t _syncQueue;
 }
@@ -78,8 +118,7 @@
         _processor = processingManager;
         
         _syncQueue = dispatch_queue_create([[NSString stringWithFormat:@"%@-queue-%p", [self class], self] UTF8String], DISPATCH_QUEUE_SERIAL);
-        _handlers = [DFImageHandlerDictionary new];
-        _operations = [NSMutableDictionary new];
+        _executionContexts = [NSMutableDictionary new];
     }
     return self;
 }
@@ -104,6 +143,7 @@
 }
 
 - (void)_requestImageForRequest:(DFImageRequest *)request requestID:(DFImageRequestID *)requestID completion:(DFImageRequestCompletion)completion {
+    // TODO: Move this code + subscribe for image processing operation.
     NSString *assetUID = [_conf imageManager:self uniqueIDForAsset:request.asset];
     UIImage *image = [_processor processedImageForKey:assetUID targetSize:request.targetSize contentMode:request.contentMode];
     if (image != nil) {
@@ -112,13 +152,15 @@
     }
     
     _DFImageFetchHandler *handler = [[_DFImageFetchHandler alloc] initWithRequest:request requestID:requestID completion:completion];
-    // Subscribe handler for a given requestID.
-    [_handlers addHandler:handler forOperationID:requestID.operationID handlerID:requestID.handlerID];
     
-    // Find existing operation chain or start a new one.
-    NSOperation<DFImageManagerOperation> *operation = _operations[requestID.operationID];
-    if (!operation) {
+    _DFRequestExecutionContext *context = _executionContexts[requestID.operationID];
+    if (!context) {
+        context = [[_DFRequestExecutionContext alloc] initWithRequest:request];
+        context.handlers[requestID.handlerID] = handler;
+        _executionContexts[requestID.operationID] = context;
         [self _requestImageForRequest:request operationID:requestID.operationID previousOperation:nil];
+    } else {
+        context.handlers[requestID.handlerID] = handler;
     }
 }
 
@@ -133,17 +175,20 @@
         [operation setCompletionBlock:^{
             [weakSelf _didCompleteOperation:weakOp request:request operationID:operationID];
         }];
-        NSArray *handlers = [_handlers handlersForOperationID:operationID];
-        operation.queuePriority = [DFImageManager _queuePriorityForHandlers:handlers];
-        _operations[operationID] = operation;
+        
+        _DFRequestExecutionContext *context = _executionContexts[operationID];
+        operation.queuePriority = context.queuePriority;
+        context.currentOperation = operation;
+        
         [_conf imageManager:self enqueueOperation:operation];
     }
 }
 
 - (void)_didCompleteOperation:(NSOperation<DFImageManagerOperation> *)operation request:(DFImageRequest *)request operationID:(NSString *)operationID {
     dispatch_async(_syncQueue, ^{
-        if (_operations[operationID] == operation) {
-            [_operations removeObjectForKey:operationID];
+        _DFRequestExecutionContext *context = _executionContexts[operationID];
+        if (context.currentOperation == operation) {
+            context.currentOperation = nil; // TODO: Do we really need to do this?
             [self _requestImageForRequest:request operationID:operationID previousOperation:operation];
         }
     });
@@ -153,8 +198,9 @@
     UIImage *image = response.image;
     NSDictionary *info = [self _infoFromResponse:response];
     
-    NSArray *handlers = [_handlers handlersForOperationID:operationID];
-    [_handlers removeAllHandlersForOperationID:operationID];
+    _DFRequestExecutionContext *context = _executionContexts[operationID];
+    NSArray *handlers = [context.handlers allValues];
+    [_executionContexts removeObjectForKey:operationID];
     
     for (_DFImageFetchHandler *handler in handlers) {
         DFImageRequest *request = handler.request;
@@ -217,21 +263,21 @@
 }
 
 - (void)_cancelRequestWithID:(DFImageRequestID *)requestID {
-    [_handlers removeHandlerForOperationID:requestID.operationID handlerID:requestID.handlerID];
-    NSOperation<DFImageManagerOperation> *operation = _operations[requestID.operationID];
+    _DFRequestExecutionContext *context = _executionContexts[requestID.operationID];
+    [context.handlers removeObjectForKey:requestID.handlerID];
+    NSOperation<DFImageManagerOperation> *operation = context.currentOperation;
     if (!operation) {
         return;
     }
-    NSArray *remainingHandlers = [_handlers handlersForOperationID:requestID.operationID];
-    BOOL cancel = remainingHandlers.count == 0;
+    BOOL cancel = context.handlers.count == 0;
     if (cancel && [_conf respondsToSelector:@selector(imageManager:shouldCancelOperation:)]) {
         cancel = [_conf imageManager:self shouldCancelOperation:operation];
     }
     if (cancel) {
         [operation cancel];
-        [_operations removeObjectForKey:requestID.operationID];
+        [_executionContexts removeObjectForKey:requestID.operationID];
     } else {
-        operation.queuePriority = [DFImageManager _queuePriorityForHandlers:remainingHandlers];
+        operation.queuePriority = context.queuePriority;
     }
 }
 
@@ -248,12 +294,12 @@
 - (void)setPriority:(DFImageRequestPriority)priority forRequestWithID:(DFImageRequestID *)requestID {
     if (requestID != nil) {
         dispatch_async(_syncQueue, ^{
-            _DFImageFetchHandler *handler = [_handlers handlerForOperationID:requestID.operationID handlerID:requestID.handlerID];
+            _DFRequestExecutionContext *context = _executionContexts[requestID.operationID];
+            _DFImageFetchHandler *handler = context.handlers[requestID.handlerID];
             if (handler.request.options.priority != priority) {
                 handler.request.options.priority = priority;
-                NSOperation<DFImageManagerOperation> *operation = _operations[requestID.operationID];
-                NSArray *handlers = [_handlers handlersForOperationID:requestID.operationID];
-                operation.queuePriority = [DFImageManager _queuePriorityForHandlers:handlers];;
+                NSOperation<DFImageManagerOperation> *operation = context.currentOperation;
+                operation.queuePriority = context.queuePriority;
             }
         });
     }
@@ -274,7 +320,8 @@
     for (DFImageRequest *request in requests) {
         request.options.priority = DFImageRequestPriorityLow;
         DFImageRequestID *requestID = [self _preheatingIDForRequest:request];
-        _DFImageFetchHandler *handler = [_handlers handlerForOperationID:requestID.operationID handlerID:requestID.handlerID];
+        _DFRequestExecutionContext *context = _executionContexts[requestID.operationID];
+        _DFImageFetchHandler *handler = context.handlers[requestID.handlerID];
         if (!handler) {
             [self _requestImageForRequest:request requestID:requestID completion:nil];
         }
@@ -305,10 +352,9 @@
 
 - (void)stopPreheatingImageForAllAssets {
     dispatch_async(_syncQueue, ^{
-        NSDictionary *handlers = [_handlers allHandlers];
-        [handlers enumerateKeysAndObjectsUsingBlock:^(NSString *operationID, NSDictionary *handlersForOperation, BOOL *stop) {
+        [_executionContexts enumerateKeysAndObjectsUsingBlock:^(NSString *operationID, _DFRequestExecutionContext *context, BOOL *stop) {
             NSMutableArray *operationIDs = [NSMutableArray new];
-            [handlersForOperation enumerateKeysAndObjectsUsingBlock:^(NSString *handlerID, _DFImageFetchHandler *handler, BOOL *stop) {
+            [context.handlers enumerateKeysAndObjectsUsingBlock:^(NSString *handlerID, _DFImageFetchHandler *handler, BOOL *stop) {
                 if ([handlerID isEqualToString:@"preheat"]) {
                     [operationIDs addObject:[DFImageRequestID requestIDWithImageManager:self operationID:operationID handlerID:handlerID]];
                 }
