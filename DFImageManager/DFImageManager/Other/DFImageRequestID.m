@@ -26,7 +26,7 @@
 
 @interface DFImageRequestID ()
 
-@property (nonatomic, weak, readonly) id<DFImageManager> imageManager;
+@property (nonatomic, weak, readonly) id<DFCoreImageManager> imageManager;
 @property (nonatomic, readonly) NSString *operationID;
 @property (nonatomic, readonly) NSString *handlerID;
 
@@ -34,7 +34,7 @@
 
 @implementation DFImageRequestID
 
-- (instancetype)initWithImageManager:(id<DFImageManager>)imageManager {
+- (instancetype)initWithImageManager:(id<DFCoreImageManager>)imageManager {
     if (self = [super init]) {
         _imageManager = imageManager;
     }
