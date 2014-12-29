@@ -35,7 +35,7 @@
 - (instancetype)init {
     if (self = [super init]) {
         _queueForAssets = [NSOperationQueue new];
-        _queueForAssets.maxConcurrentOperationCount = 4;
+        _queueForAssets.maxConcurrentOperationCount = 2;
     }
     return self;
 }
