@@ -34,6 +34,7 @@
 
 - (instancetype)initWithCache:(NSCache *)cache {
     if (self = [super init]) {
+        _allowsImageProcessing = YES;
         _cache = cache;
         _queue = dispatch_queue_create("DFImageProcessingManager:Queue", DISPATCH_QUEUE_SERIAL);
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_didReceiveMemoryWarning:) name:UIApplicationDidReceiveMemoryWarningNotification object:nil];
@@ -69,16 +70,18 @@
 }
 
 - (void)_processImageForKey:(NSString *)key image:(UIImage *)image targetSize:(CGSize)size contentMode:(DFImageContentMode)contentMode completion:(void (^)(UIImage *))completion {
-    UIImage *processedImage;
-    switch (contentMode) {
-        case DFImageContentModeAspectFit:
-            processedImage = [DFImageUtilities decompressedImageWithImage:image aspectFitPixelSize:size];
-            break;
-        case DFImageContentModeAspectFill:
-            processedImage = [DFImageUtilities decompressedImageWithImage:image aspectFillPixelSize:size];
-            break;
-        default:
-            break;
+    UIImage *processedImage = image;
+    if (self.allowsImageProcessing) {
+        switch (contentMode) {
+            case DFImageContentModeAspectFit:
+                processedImage = [DFImageUtilities decompressedImageWithImage:image aspectFitPixelSize:size];
+                break;
+            case DFImageContentModeAspectFill:
+                processedImage = [DFImageUtilities decompressedImageWithImage:image aspectFillPixelSize:size];
+                break;
+            default:
+                break;
+        }
     }
     if (key != nil && processedImage != nil) {
         NSString *cacheKey = [self _cacheKeyWithKey:key targetSize:size contentMode:contentMode];
