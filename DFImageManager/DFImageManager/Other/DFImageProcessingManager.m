@@ -85,7 +85,8 @@
     }
     if (key != nil && processedImage != nil) {
         NSString *cacheKey = [self _cacheKeyWithKey:key targetSize:size contentMode:contentMode];
-        [_cache setObject:processedImage forKey:cacheKey];
+        NSInteger cost = [self _costForImage:processedImage];
+        [_cache setObject:processedImage forKey:cacheKey cost:cost];
     }
     dispatch_async(dispatch_get_main_queue(), ^{
         if (completion) {
