@@ -34,8 +34,4 @@
 
 @property (nonatomic, readonly) NSCache *cache;
 
-/*! Disable if you need to retain only caching capabilities of processing manager.
- */
-@property (nonatomic) BOOL allowsImageProcessing;
-
 @end
