@@ -24,7 +24,7 @@
     [super setUp];
 
     id<DFImageManagerConfiguration> configuration = [[DFNetworkImageManagerConfiguration alloc] initWithCache:nil];
-    _imageManager = [[DFImageManager alloc] initWithConfiguration:configuration imageProcessingManager:nil];
+    _imageManager = [[DFImageManager alloc] initWithConfiguration:configuration imageProcessor:nil cache:nil];
 }
 
 - (void)tearDown {

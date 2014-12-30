@@ -21,6 +21,7 @@
 // THE SOFTWARE.
 
 #import "DFImageProcessingManager.h"
+#import "DFImageRequest.h"
 #import "DFImageUtilities.h"
 
 
@@ -52,41 +53,27 @@
     [self.cache removeAllObjects];
 }
 
-#pragma mark - <DFImageProcessingManager>
+#pragma mark - <DFImageProcessing>
 
-- (UIImage *)processedImageForKey:(NSString *)key targetSize:(CGSize)size contentMode:(DFImageContentMode)contentMode {
-    if (key != nil) {
-        NSString *cacheKey = [self _cacheKeyWithKey:key targetSize:size contentMode:contentMode];
-        return [_cache objectForKey:cacheKey];
-    } else {
-        return nil;
-    }
-}
-
-- (void)processImageForKey:(NSString *)key image:(UIImage *)image targetSize:(CGSize)size contentMode:(DFImageContentMode)contentMode completion:(void (^)(UIImage *))completion {
+- (void)processImage:(UIImage *)image forRequest:(DFImageRequest *)request completion:(void (^)(UIImage *))completion {
     dispatch_async(_queue, ^{
-        [self _processImageForKey:key image:image targetSize:size contentMode:contentMode completion:completion];
+        [self _processImage:image forRequest:request completion:completion];
     });
 }
 
-- (void)_processImageForKey:(NSString *)key image:(UIImage *)image targetSize:(CGSize)size contentMode:(DFImageContentMode)contentMode completion:(void (^)(UIImage *))completion {
+- (void)_processImage:(UIImage *)image forRequest:(DFImageRequest *)request completion:(void (^)(UIImage *))completion {
     UIImage *processedImage = image;
     if (self.allowsImageProcessing) {
-        switch (contentMode) {
+        switch (request.contentMode) {
             case DFImageContentModeAspectFit:
-                processedImage = [DFImageUtilities decompressedImageWithImage:image aspectFitPixelSize:size];
+                processedImage = [DFImageUtilities decompressedImageWithImage:image aspectFitPixelSize:request.targetSize];
                 break;
             case DFImageContentModeAspectFill:
-                processedImage = [DFImageUtilities decompressedImageWithImage:image aspectFillPixelSize:size];
+                processedImage = [DFImageUtilities decompressedImageWithImage:image aspectFillPixelSize:request.targetSize];
                 break;
             default:
                 break;
         }
-    }
-    if (key != nil && processedImage != nil) {
-        NSString *cacheKey = [self _cacheKeyWithKey:key targetSize:size contentMode:contentMode];
-        NSInteger cost = [self _costForImage:processedImage];
-        [_cache setObject:processedImage forKey:cacheKey cost:cost];
     }
     dispatch_async(dispatch_get_main_queue(), ^{
         if (completion) {
@@ -95,10 +82,29 @@
     });
 }
 
+#pragma mark - <DFImageCaching>
+
+- (UIImage *)cachedImageForAssetID:(NSString *)assetID request:(DFImageRequest *)request {
+    if (assetID != nil) {
+        NSString *cacheKey = [self _cacheKeyForAssetID:assetID request:request];
+        return [_cache objectForKey:cacheKey];
+    } else {
+        return nil;
+    }
+}
+
+- (void)storeImage:(UIImage *)image forAssetID:(NSString *)assetID request:(DFImageRequest *)request {
+    if (image != nil && assetID != nil) {
+        NSString *cacheKey = [self _cacheKeyForAssetID:assetID request:request];
+        NSInteger cost = [self _costForImage:image];
+        [_cache setObject:image forKey:cacheKey cost:cost];
+    }
+}
+
 #pragma mark -
 
-- (NSString *)_cacheKeyWithKey:(NSString *)key targetSize:(CGSize)targerSize contentMode:(DFImageContentMode)contentMode {
-    return [NSString stringWithFormat:@"%@,%@,%i", key, NSStringFromCGSize(targerSize), (int)contentMode];
+- (NSString *)_cacheKeyForAssetID:(NSString *)assetID request:(DFImageRequest *)request {
+    return [NSString stringWithFormat:@"%@,%@,%i", assetID, NSStringFromCGSize(request.targetSize), (int)request.contentMode];
 }
 
 - (NSInteger)_costForImage:(UIImage *)image {

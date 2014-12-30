@@ -33,7 +33,8 @@
 #import "DFCompositeImageManager.h"
 #import "DFProxyImageManager.h"
 
-#import "DFImageProcessingManagerProtocol.h"
+#import "DFImageProcessingProtocol.h"
+#import "DFImageCachingProtocol.h"
 #import "DFImageProcessingManager.h"
 
 #import "DFImageRequest.h"

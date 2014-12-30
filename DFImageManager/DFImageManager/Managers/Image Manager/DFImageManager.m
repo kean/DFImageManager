@@ -107,12 +107,13 @@
 }
 
 @synthesize configuration = _conf;
-@synthesize imageProcessingManager = _processor;
+@synthesize imageProcessor = _processor;
 
-- (instancetype)initWithConfiguration:(id<DFImageManagerConfiguration>)configuration imageProcessingManager:(id<DFImageProcessingManager>)processingManager {
+- (instancetype)initWithConfiguration:(id<DFImageManagerConfiguration>)configuration imageProcessor:(id<DFImageProcessing>)imageProcessor cache:(id<DFImageCaching>)cache {
     if (self = [super init]) {
         _conf = configuration;
-        _processor = processingManager;
+        _processor = imageProcessor;
+        _cache = cache;
         
         _syncQueue = dispatch_queue_create([[NSString stringWithFormat:@"%@-queue-%p", [self class], self] UTF8String], DISPATCH_QUEUE_SERIAL);
         _executionContexts = [NSMutableDictionary new];
@@ -141,13 +142,16 @@
 
 - (void)_requestImageForRequest:(DFImageRequest *)request requestID:(DFImageRequestID *)requestID completion:(DFImageRequestCompletion)completion {
     // TODO: Move this code + subscribe for image processing operation.
-    NSString *assetUID = [_conf imageManager:self uniqueIDForAsset:request.asset];
-    UIImage *image = [_processor processedImageForKey:assetUID targetSize:request.targetSize contentMode:request.contentMode];
-    if (image != nil) {
-        [self _completeRequestWithImage:image info:@{ DFImageInfoResultIsFromMemoryCacheKey : @YES } requestID:requestID completion:completion];
-        return;
-    }
     
+    if (_cache != nil) {
+        NSString *asssetID = [_conf imageManager:self uniqueIDForAsset:request.asset];
+        UIImage *image = [_cache cachedImageForAssetID:asssetID request:request];
+        if (image != nil) {
+            [self _completeRequestWithImage:image info:@{ DFImageInfoResultIsFromMemoryCacheKey : @YES } requestID:requestID completion:completion];
+            return;
+        }
+    }
+
     _DFImageFetchHandler *handler = [[_DFImageFetchHandler alloc] initWithRequest:request requestID:requestID completion:completion];
     
     _DFRequestExecutionContext *context = _executionContexts[requestID.operationID];
@@ -203,13 +207,15 @@
         DFImageRequest *request = handler.request;
         DFImageRequestID *requestID = handler.requestID;
         DFImageRequestCompletion completion = handler.completion;
-        
+                
+        NSString *assetID = [_conf imageManager:self uniqueIDForAsset:request.asset];
         if (_processor != nil && image != nil) {
-            NSString *assetID = [_conf imageManager:self uniqueIDForAsset:request.asset];
-            [_processor processImageForKey:assetID image:image targetSize:request.targetSize contentMode:request.contentMode completion:^(UIImage *image) {
+            [_processor processImage:image forRequest:request completion:^(UIImage *image) {
+                [_cache storeImage:image forAssetID:assetID request:request];
                 [self _completeRequestWithImage:image info:info requestID:requestID completion:completion];
             }];
         } else {
+            [_cache storeImage:image forAssetID:assetID request:request];
             [self _completeRequestWithImage:image info:info requestID:requestID completion:completion];
         }
     }

@@ -20,22 +20,13 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "DFImageCachingProtocol.h"
-#import "DFImageProcessingProtocol.h"
+#import "DFImageManagerDefines.h"
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
-/*! Processes and caches images retrieved by different image managers.
- */
-@interface DFImageProcessingManager : NSObject <DFImageProcessing, DFImageCaching>
 
-- (instancetype)initWithCache:(NSCache *)cache NS_DESIGNATED_INITIALIZER;
-- (instancetype)init;
+@protocol DFImageProcessing <NSObject>
 
-@property (nonatomic, readonly) NSCache *cache;
-
-/*! Disable if you need to retain only caching capabilities of processing manager.
- */
-@property (nonatomic) BOOL allowsImageProcessing;
+- (void)processImage:(UIImage *)image forRequest:(DFImageRequest *)request completion:(void (^)(UIImage *image))completion;
 
 @end

@@ -20,16 +20,15 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "DFImageManagerDefines.h"
 #import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
+
+@class DFImageRequest;
 
 
-@protocol DFImageProcessingManager <NSObject>
+@protocol DFImageCaching <NSObject>
 
-/*! Returns cached image for a given key and options.
- @param targetSize The target size in pixels of image to be returned. 
- */
-- (UIImage *)processedImageForKey:(NSString *)key targetSize:(CGSize)size contentMode:(DFImageContentMode)contentMode;
-- (void)processImageForKey:(NSString *)key image:(UIImage *)image targetSize:(CGSize)size contentMode:(DFImageContentMode)contentMode completion:(void (^)(UIImage *image))completion;
+- (UIImage *)cachedImageForAssetID:(NSString *)assetID request:(DFImageRequest *)request;
+- (void)storeImage:(UIImage *)image forAssetID:(NSString *)assetID request:(DFImageRequest *)request;
 
 @end
