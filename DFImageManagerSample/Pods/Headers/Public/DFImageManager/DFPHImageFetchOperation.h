@@ -1,1 +1,1 @@
-../../../../../DFImageManager/DFImageManager/Managers/Photos Kit Image Manager/DFPHImageFetchOperation.h
+../../../../../DFImageManager/DFImageManager/Configurations/Photos Kit Configuration/DFPHImageFetchOperation.h

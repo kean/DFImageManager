@@ -67,7 +67,7 @@ static NSString * const reuseIdentifier = @"Cell";
 }
 
 - (void)_configureImageManager {
-    DFImageProcessingManager *imageProcessingManager = [DFImageProcessingManager new];
+    DFImageProcessingManager *imageProcessor = [DFImageProcessingManager new];
     
     // We don't want memory cache, because we use caching image processing manager.
     DFCache *cache = [[DFCache alloc] initWithName:[[NSUUID UUID] UUIDString] memoryCache:nil];
@@ -75,7 +75,7 @@ static NSString * const reuseIdentifier = @"Cell";
     _cache = cache;
     
     DFNetworkImageManagerConfiguration *networkImageManagerConfiguration = [[DFNetworkImageManagerConfiguration alloc] initWithCache:cache];
-    DFImageManager *networkImageManager = [[DFImageManager alloc] initWithConfiguration:networkImageManagerConfiguration imageProcessingManager:imageProcessingManager];
+    DFImageManager *networkImageManager = [[DFImageManager alloc] initWithConfiguration:networkImageManagerConfiguration imageProcessor:imageProcessor cache:imageProcessor];
     
     DFCompositeImageManager *compositeImageManager = [[DFCompositeImageManager alloc] initWithImageManagers:@[networkImageManager]];
     DFProxyImageManager *proxyImageManager = [[DFProxyImageManager alloc] initWithImageManager:compositeImageManager];
@@ -121,7 +121,7 @@ static NSString * const reuseIdentifier = @"Cell";
     SDFFlickrPhoto *photo = _photos[indexPath.row];
     if (self.shouldUseCompositeImageRequests ){
         // We specifically resize placeholder to make it even smaller
-        DFImageRequest *requestWithSmallURL = [[DFImageRequest alloc] initWithAsset:photo.photoURLSmall targetSize:CGSizeMake(50.f, 50.f) contentMode:DFImageContentModeAspectFit options:nil];
+        DFImageRequest *requestWithSmallURL = [[DFImageRequest alloc] initWithAsset:photo.photoURLSmall targetSize:DFImageManagerMaximumSize contentMode:DFImageContentModeAspectFit options:nil];
 
         DFImageRequest *requestWithBigURL = [[DFImageRequest alloc] initWithAsset:photo.photoURLBig targetSize:imageView.targetSize contentMode:imageView.contentMode options:nil];
         

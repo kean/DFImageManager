@@ -1,1 +1,1 @@
-../../../../../DFImageManager/DFImageManager/Managers/Photos Kit Image Manager/DFPHImageManagerConfiguration.h
+../../../../../DFImageManager/DFImageManager/Configurations/Photos Kit Configuration/DFPHImageManagerConfiguration.h

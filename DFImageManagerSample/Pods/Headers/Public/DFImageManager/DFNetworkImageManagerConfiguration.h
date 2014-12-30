@@ -1,1 +1,1 @@
-../../../../../DFImageManager/DFImageManager/Managers/Network Image Manager/DFNetworkImageManagerConfiguration.h
+../../../../../DFImageManager/DFImageManager/Configurations/Network Configuration/DFNetworkImageManagerConfiguration.h

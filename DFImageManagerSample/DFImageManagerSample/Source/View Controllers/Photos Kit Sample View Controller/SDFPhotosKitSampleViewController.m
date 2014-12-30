@@ -59,10 +59,9 @@ static NSString * const reuseIdentifier = @"Cell";
 
 - (void)_configureImageManager {
     DFImageProcessingManager *processingManager = [DFImageProcessingManager new];
-    processingManager.allowsImageProcessing = NO;
     
     DFPHImageManagerConfiguration *configuration = [DFPHImageManagerConfiguration new];
-    DFImageManager *imageManager = [[DFImageManager alloc] initWithConfiguration:configuration imageProcessingManager:processingManager];
+    DFImageManager *imageManager = [[DFImageManager alloc] initWithConfiguration:configuration imageProcessor:nil cache:processingManager];
     
     DFCompositeImageManager *compositeImageManager = [[DFCompositeImageManager alloc] initWithImageManagers:@[imageManager]];
     

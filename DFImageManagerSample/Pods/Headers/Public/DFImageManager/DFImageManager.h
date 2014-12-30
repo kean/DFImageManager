@@ -1,1 +1,1 @@
-../../../../../DFImageManager/DFImageManager/DFImageManager.h
+../../../../../DFImageManager/DFImageManager/Managers/Image Manager/DFImageManager.h

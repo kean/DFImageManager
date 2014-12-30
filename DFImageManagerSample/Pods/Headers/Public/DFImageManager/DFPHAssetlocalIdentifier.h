@@ -1,1 +1,1 @@
-../../../../../DFImageManager/DFImageManager/Managers/Photos Kit Image Manager/DFPHAssetlocalIdentifier.h
+../../../../../DFImageManager/DFImageManager/Configurations/Photos Kit Configuration/DFPHAssetlocalIdentifier.h
