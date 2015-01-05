@@ -189,7 +189,6 @@
     dispatch_async(_syncQueue, ^{
         _DFRequestExecutionContext *context = _executionContexts[operationID];
         if (context.currentOperation == operation) {
-            context.currentOperation = nil; // TODO: Do we really need to do this?
             [self _requestImageForRequest:request operationID:operationID previousOperation:operation];
         }
     });
@@ -267,16 +266,14 @@
 
 - (void)_cancelRequestWithID:(DFImageRequestID *)requestID {
     _DFRequestExecutionContext *context = _executionContexts[requestID.operationID];
-    [context.handlers removeObjectForKey:requestID.handlerID];
-    NSOperation<DFImageManagerOperation> *operation = context.currentOperation;
-    if (!operation) {
-        return;
-    }
-    if (context.handlers.count == 0) {
-        [operation cancel];
-        [_executionContexts removeObjectForKey:requestID.operationID];
-    } else {
-        operation.queuePriority = context.queuePriority;
+    if (context != nil) {
+        [context.handlers removeObjectForKey:requestID.handlerID];
+        if (context.handlers.count == 0) {
+            [context.currentOperation cancel];
+            [_executionContexts removeObjectForKey:requestID.operationID];
+        } else {
+            context.currentOperation.queuePriority = context.queuePriority;
+        }
     }
 }
 
