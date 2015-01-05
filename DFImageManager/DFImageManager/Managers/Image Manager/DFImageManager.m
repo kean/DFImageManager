@@ -279,14 +279,6 @@
 
 #pragma mark Priorities
 
-+ (NSOperationQueuePriority)_queuePriorityForHandlers:(NSArray *)handlers {
-    DFImageRequestPriority maxPriority = DFImageRequestPriorityVeryLow;
-    for (_DFImageFetchHandler *handler in handlers) {
-        maxPriority = MAX(handler.request.options.priority, maxPriority);
-    }
-    return (NSOperationQueuePriority)maxPriority;
-}
-
 - (void)setPriority:(DFImageRequestPriority)priority forRequestWithID:(DFImageRequestID *)requestID {
     if (requestID != nil) {
         dispatch_async(_syncQueue, ^{
