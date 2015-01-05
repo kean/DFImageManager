@@ -159,46 +159,41 @@
         context = [[_DFRequestExecutionContext alloc] initWithRequest:request];
         context.handlers[requestID.handlerID] = handler;
         _executionContexts[requestID.operationID] = context;
-        [self _requestImageForRequest:request operationID:requestID.operationID previousOperation:nil];
+        [self _requestImageForContext:context operationID:requestID.operationID previousOperation:nil];
     } else {
         context.handlers[requestID.handlerID] = handler;
     }
 }
 
-- (void)_requestImageForRequest:(DFImageRequest *)request operationID:(NSString *)operationID previousOperation:(NSOperation<DFImageManagerOperation> *)previousOperation {
-    NSOperation<DFImageManagerOperation> *operation = [_conf imageManager:self createOperationForRequest:request previousOperation:previousOperation];
+- (void)_requestImageForContext:(_DFRequestExecutionContext *)context operationID:(NSString *)operationID previousOperation:(NSOperation<DFImageManagerOperation> *)previousOperation {
+    NSOperation<DFImageManagerOperation> *operation = [_conf imageManager:self createOperationForRequest:context.request previousOperation:previousOperation];
     if (!operation) { // No more work required.
         DFImageResponse *response = [previousOperation imageFetchResponse];
-        [self _didCompleteAllOperationsForID:operationID response:response];
+        [self _didCompleteAllOperationsForContext:context operationID:operationID response:response];
     } else {
         DFImageManager *__weak weakSelf = self;
         NSOperation<DFImageManagerOperation> *__weak weakOp = operation;
         [operation setCompletionBlock:^{
-            [weakSelf _didCompleteOperation:weakOp request:request operationID:operationID];
+            [weakSelf _didCompleteOperation:weakOp context:context operationID:operationID];
         }];
-        
-        _DFRequestExecutionContext *context = _executionContexts[operationID];
         operation.queuePriority = context.queuePriority;
         context.currentOperation = operation;
-        
         [_conf imageManager:self enqueueOperation:operation];
     }
 }
 
-- (void)_didCompleteOperation:(NSOperation<DFImageManagerOperation> *)operation request:(DFImageRequest *)request operationID:(NSString *)operationID {
+- (void)_didCompleteOperation:(NSOperation<DFImageManagerOperation> *)operation context:(_DFRequestExecutionContext *)context operationID:(NSString *)operationID {
     dispatch_async(_syncQueue, ^{
-        _DFRequestExecutionContext *context = _executionContexts[operationID];
-        if (context.currentOperation == operation) {
-            [self _requestImageForRequest:request operationID:operationID previousOperation:operation];
+        if (_executionContexts[operationID] == context) {
+            [self _requestImageForContext:context operationID:operationID previousOperation:operation];
         }
     });
 }
 
-- (void)_didCompleteAllOperationsForID:(NSString *)operationID response:(DFImageResponse *)response {
+- (void)_didCompleteAllOperationsForContext:(_DFRequestExecutionContext *)context operationID:(NSString *)operationID response:(DFImageResponse *)response {
     UIImage *image = response.image;
     NSDictionary *info = [self _infoFromResponse:response];
     
-    _DFRequestExecutionContext *context = _executionContexts[operationID];
     NSArray *handlers = [context.handlers allValues];
     [_executionContexts removeObjectForKey:operationID];
     
