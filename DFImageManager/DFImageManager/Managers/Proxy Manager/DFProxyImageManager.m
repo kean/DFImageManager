@@ -23,8 +23,16 @@
 #import "DFImageManagerBlockValueTransformer.h"
 #import "DFProxyImageManager.h"
 
+#define _DF_TRANSFORMED_REQUEST(request) \
+({ \
+    DFImageRequest *transformedRequest = request; \
+    if (_transformer != nil) { \
+        transformedRequest = [request copy]; \
+        transformedRequest.asset = [_transformer transformedAsset:request.asset]; \
+    } \
+    transformedRequest; \
+})
 
-#define _DF_TRANSFORMED_ASSET(asset) _transformer ? [_transformer transformedAsset:asset] : asset
 
 @implementation DFProxyImageManager
 
@@ -51,15 +59,11 @@
 #pragma mark - <DFCoreImageManager>
 
 - (BOOL)canHandleRequest:(DFImageRequest *)request {
-    request = [request copy];
-    request.asset = _DF_TRANSFORMED_ASSET(request.asset);
-    return [_manager canHandleRequest:request];
+    return [_manager canHandleRequest:_DF_TRANSFORMED_REQUEST(request)];
 }
 
 - (DFImageRequestID *)requestImageForRequest:(DFImageRequest *)request completion:(void (^)(UIImage *, NSDictionary *))completion {
-    request = [request copy];
-    request.asset = _DF_TRANSFORMED_ASSET(request.asset);
-    return [_manager requestImageForRequest:request completion:completion];
+    return [_manager requestImageForRequest:_DF_TRANSFORMED_REQUEST(request) completion:completion];
 }
 
 - (void)startPreheatingImagesForRequests:(NSArray *)requests {
@@ -73,9 +77,7 @@
 - (NSArray *)_transformedRequests:(NSArray *)requests {
     NSMutableArray *transformedRequests = [NSMutableArray new];
     for (DFImageRequest *request in requests) {
-        DFImageRequest *transformedRequest = [request copy];
-        transformedRequest.asset = _DF_TRANSFORMED_ASSET(request.asset);
-        [transformedRequests addObject:transformedRequest];
+        [transformedRequests addObject:_DF_TRANSFORMED_REQUEST(request)];
     }
     return [transformedRequests copy];
 }
