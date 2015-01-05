@@ -23,8 +23,8 @@
 #import "DFImageManagerDefines.h"
 
 NSString *const DFImageInfoRequestIDKey = @"DFImageInfoRequestIDKey";
-NSString *const DFImageInfoSourceKey = @"DFImageInfoSourceKey";
 NSString *const DFImageInfoErrorKey = @"DFImageInfoErrorKey";
+NSString *const DFImageInfoCancelledKey = @"DFImageInfoCancelledKey";
 NSString *const DFImageInfoDataKey = @"DFImageInfoDataKey";
 NSString *const DFImageInfoResultIsFromMemoryCacheKey = @"DFImageInfoResultIsFromMemoryCacheKey";
 

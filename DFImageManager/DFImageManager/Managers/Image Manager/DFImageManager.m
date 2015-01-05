@@ -272,11 +272,7 @@
     if (!operation) {
         return;
     }
-    BOOL cancel = context.handlers.count == 0;
-    if (cancel && [_conf respondsToSelector:@selector(imageManager:shouldCancelOperation:)]) {
-        cancel = [_conf imageManager:self shouldCancelOperation:operation];
-    }
-    if (cancel) {
+    if (context.handlers.count == 0) {
         [operation cancel];
         [_executionContexts removeObjectForKey:requestID.operationID];
     } else {

@@ -37,12 +37,6 @@
 
 - (instancetype)initWithRequest:(NSURLRequest *)request NS_DESIGNATED_INITIALIZER;
 
-- (void)didStart;
-- (void)finish;
-- (void)didFinish;
-
-- (void)startConnection:(NSURLConnection *)connection;
-
 @end
 
 

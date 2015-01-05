@@ -49,27 +49,26 @@
 
 - (void)start {
     @synchronized(self) {
-        if ([self isCancelled]) {
+        if (self.isCancelled) {
             [self finish];
             return;
         }
         self.executing = YES;
+        [self _startExecutiong];
     }
-    [self didStart];
 }
 
-- (void)didStart {
-    _connection = [[NSURLConnection alloc] initWithRequest:_request delegate:self startImmediately:NO];
-    if (!_connection) {
+- (void)_startExecutiong {
+    NSURLConnection *connection = [[NSURLConnection alloc] initWithRequest:_request delegate:self startImmediately:NO];
+    if (!connection) {
         [self finish];
         return;
     }
-    [self startConnection:_connection];
-}
-
-- (void)startConnection:(NSURLConnection *)connection {
-    [connection scheduleInRunLoop:[NSRunLoop mainRunLoop] forMode:self.runLoopMode];
-    [connection start];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        _connection = connection;
+        [connection scheduleInRunLoop:[NSRunLoop mainRunLoop] forMode:self.runLoopMode];
+        [connection start];
+    });
 }
 
 - (void)finish {
@@ -78,12 +77,26 @@
             self.executing = NO;
         }
         self.finished = YES;
-        [self didFinish];
     }
 }
 
-- (void)didFinish {
-    // do nothing
+- (void)cancel {
+    @synchronized(self) {
+        if (!self.isCancelled) {
+            [super cancel];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if ([self _isConnectionExecuting]) {
+                    [_connection cancel];
+                    _connection = nil;
+                    [self finish];
+                }
+            });
+        }
+    }
+}
+
+- (BOOL)_isConnectionExecuting {
+    return _connection != nil;
 }
 
 #pragma mark - <NSURLConnectionDelegate>
@@ -102,11 +115,16 @@
 }
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection {
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        @autoreleasepool {
-            [self _deserializeResponse];
-        }
-    });
+    _connection = nil;
+    if (self.isCancelled) {
+        [self finish];
+    } else {
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            @autoreleasepool {
+                [self _deserializeResponse];
+            }
+        });
+    }
 }
 
 - (void)_deserializeResponse {
@@ -122,6 +140,7 @@
 }
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
+    _connection = nil;
     _error = error;
     [self finish];
 }

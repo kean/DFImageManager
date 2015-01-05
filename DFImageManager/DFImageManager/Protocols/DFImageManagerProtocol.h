@@ -33,6 +33,8 @@
 
 - (DFImageRequestID *)requestImageForRequest:(DFImageRequest *)request completion:(void (^)(UIImage *image, NSDictionary *info))completion;
 
+/*! Advices the image manager that the request should be cancelled. This method doesn't force the request to be cancelled.
+ */
 - (void)cancelRequestWithID:(DFImageRequestID *)requestID;
 
 // TODO: Make optional if possible
@@ -59,7 +61,7 @@
  @param targetSize The target size in pixels of image to be returned.
  @param contentMode An option for how to fit the image to the aspect ratio of the requested size. For details, see DFImageContentMode.
  @param options Options specifying how image manager should handle the request.
- @param completion A block to be called when image loading is complete, providing the requested image or information about the status of the request.
+ @param completion A block to be called when loading is complete, providing the requested image and information about the status of the request.
  */
 - (DFImageRequestID *)requestImageForAsset:(id)asset targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options completion:(void (^)(UIImage *image, NSDictionary *info))completion;
 

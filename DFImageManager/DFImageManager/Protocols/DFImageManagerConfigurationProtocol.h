@@ -47,8 +47,6 @@
 
 @optional
 
-- (BOOL)imageManager:(id<DFImageManager>)manager shouldCancelOperation:(NSOperation<DFImageManagerOperation> *)operation;
-
 - (void)imageManager:(id<DFImageManager>)manager didEncounterError:(NSError *)error;
 
 @end
