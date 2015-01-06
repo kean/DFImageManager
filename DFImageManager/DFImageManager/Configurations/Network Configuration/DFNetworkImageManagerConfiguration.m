@@ -61,7 +61,7 @@
     return (NSString *)asset;
 }
 
-- (NSArray *)keyPathForRequestParametersAffectingOperationID:(DFImageRequest *)request {
+- (NSArray *)keyPathForRequestParametersAffectingExecutionContextID:(DFImageRequest *)request {
     static NSArray *_keyPaths;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{

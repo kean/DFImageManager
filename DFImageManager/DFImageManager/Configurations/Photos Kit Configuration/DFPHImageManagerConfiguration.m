@@ -60,16 +60,16 @@
 - (NSString *)imageManager:(id<DFImageManager>)manager executionContextIDForRequest:(DFImageRequest *)request {
     NSString *assetID = [self imageManager:manager uniqueIDForAsset:request.asset];
     
-    NSMutableString *operationID = [[NSMutableString alloc] initWithString:@"requestID?"];
-    NSArray *keyPaths = [self _keyPathForRequestParametersAffectingOperationID:request];
+    NSMutableString *ECID = [[NSMutableString alloc] initWithString:@"requestID?"];
+    NSArray *keyPaths = [self _keyPathForRequestParametersAffectingExecutionContextID:request];
     for (NSString *keyPath in keyPaths) {
-        [operationID appendFormat:@"%@=%@&", keyPath, [request valueForKeyPath:keyPath]];
+        [ECID appendFormat:@"%@=%@&", keyPath, [request valueForKeyPath:keyPath]];
     }
-    [operationID appendFormat:@"assetID=%@", assetID];
-    return operationID;
+    [ECID appendFormat:@"assetID=%@", assetID];
+    return ECID;
 }
 
-- (NSArray *)_keyPathForRequestParametersAffectingOperationID:(DFImageRequest *)request {
+- (NSArray *)_keyPathForRequestParametersAffectingExecutionContextID:(DFImageRequest *)request {
     static NSArray *keyPaths;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{

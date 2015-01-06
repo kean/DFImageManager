@@ -35,7 +35,7 @@
 
 - (NSString *)imageManager:(id<DFImageManager>)manager uniqueIDForAsset:(id)asset;
 
-/*! Creates operationID for request so that existing operations could be reused for new handlers.
+/*! Creates execution context ID for request so that existing operations could be reused for new handlers.
  */
 - (NSString *)imageManager:(id<DFImageManager>)manager executionContextIDForRequest:(DFImageRequest *)request;
 
