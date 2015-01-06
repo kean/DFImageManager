@@ -45,7 +45,7 @@ NSString *const DFImageManagerCacheStoreOperationType = @"DFImageManagerCacheSto
     return nil;
 }
 
-- (NSString *)imageManager:(id<DFImageManager>)manager operationIDForRequest:(DFImageRequest *)request {
+- (NSString *)imageManager:(id<DFImageManager>)manager executionContextIDForRequest:(DFImageRequest *)request {
     NSString *assetID = [self imageManager:manager uniqueIDForAsset:request.asset];
     
     NSMutableString *operationID = [[NSMutableString alloc] initWithString:@"requestID?"];

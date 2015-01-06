@@ -121,7 +121,7 @@ static NSString * const reuseIdentifier = @"Cell";
     }
     
     PHFetchResult *result = _assets[indexPath.section];
-    PHAsset *asset = [result objectAtIndex:indexPath.item];
+    PHAsset *asset = result[indexPath.item];
     [imageView setImageWithAsset:asset];
     
     return cell;

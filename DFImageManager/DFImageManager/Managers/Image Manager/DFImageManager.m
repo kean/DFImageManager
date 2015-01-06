@@ -29,17 +29,20 @@
 #import "DFImageResponse.h"
 #import <UIKit/UIKit.h>
 
-@interface _DFImageFetchHandler : NSObject
+static NSString *const _kPreheatHandlerID = @"_df_preheat";
+
+
+@interface _DFRequestHandler : NSObject
 
 @property (nonatomic, readonly) DFImageRequest *request;
 @property (nonatomic, readonly) DFImageRequestID *requestID;
-@property (nonatomic, readonly) DFImageRequestCompletion completion;
+@property (nonatomic, copy, readonly) DFImageRequestCompletion completion;
 
 - (instancetype)initWithRequest:(DFImageRequest *)request requestID:(DFImageRequestID *)requestID completion:(DFImageRequestCompletion)completion NS_DESIGNATED_INITIALIZER;
 
 @end
 
-@implementation _DFImageFetchHandler
+@implementation _DFRequestHandler
 
 - (instancetype)initWithRequest:(DFImageRequest *)request requestID:(DFImageRequestID *)requestID completion:(DFImageRequestCompletion)completion {
     if (self = [super init]) {
@@ -51,7 +54,7 @@
 }
 
 - (NSString *)description {
-    return [NSString stringWithFormat:@"<%@ %p> { request = %@, requestID = %@, completion = %@ }", [self class], self, self.request, self.requestID, self.completion];
+    return [NSString stringWithFormat:@"<%@ %p> { request = %@, requestID = %@ }", [self class], self, self.request, self.requestID];
 }
 
 @end
@@ -59,11 +62,14 @@
 
 @interface _DFRequestExecutionContext : NSObject
 
+@property (nonatomic, readonly) NSString *ECID;
 @property (nonatomic, readonly) DFImageRequest *request;
-@property (nonatomic) NSOperation<DFImageManagerOperation> *currentOperation;
 @property (nonatomic, readonly) NSMutableDictionary *handlers;
 
-- (instancetype)initWithRequest:(DFImageRequest *)request;
+@property (nonatomic) NSOperation<DFImageManagerOperation> *currentOperation;
+@property (nonatomicg) DFImageResponse *response;
+
+- (instancetype)initWithECID:(NSString *)ECID request:(DFImageRequest *)request NS_DESIGNATED_INITIALIZER;
 
 /*! Returns maximum queue priority from handlers.
  */
@@ -73,8 +79,9 @@
 
 @implementation _DFRequestExecutionContext
 
-- (instancetype)initWithRequest:(DFImageRequest *)request {
+- (instancetype)initWithECID:(NSString *)ECID request:(DFImageRequest *)request {
     if (self = [super init]) {
+        _ECID = ECID;
         _request = request;
         _handlers = [NSMutableDictionary new];
     }
@@ -83,7 +90,7 @@
 
 - (NSOperationQueuePriority)queuePriority {
     DFImageRequestPriority __block maxPriority = DFImageRequestPriorityVeryLow;
-    [_handlers enumerateKeysAndObjectsUsingBlock:^(id key, _DFImageFetchHandler *handler, BOOL *stop) {
+    [_handlers enumerateKeysAndObjectsUsingBlock:^(id key, _DFRequestHandler *handler, BOOL *stop) {
         maxPriority = MAX(handler.request.options.priority, maxPriority);
     }];
     return (NSOperationQueuePriority)maxPriority;
@@ -97,11 +104,11 @@
 
 
 /*! Implementation details.
- - Each DFImageRequest+completion pair has it's own assigned DFImageRequestID
- - Multiple requests+completion might be handled by the same _DFRequestExecutionContext 
+ - Each request+completion pair has it's own assigned DFImageRequestID
+ - Multiple request+completion pairs might be handled by the same execution context (_DFRequestExecutionContext)
  */
 @implementation DFImageManager {
-    NSMutableDictionary /* NSString *operationID : _DFRequestExecutionContext */ *_executionContexts;
+    NSMutableDictionary /* NSString *ECID : _DFRequestExecutionContext */ *_executionContexts;
     
     dispatch_queue_t _syncQueue;
 }
@@ -133,48 +140,49 @@
     request = [request copy];
     DFImageRequestID *requestID = [[DFImageRequestID alloc] initWithImageManager:self]; // Represents requestID future.
     dispatch_async(_syncQueue, ^{
-        NSString *operationID = [_conf imageManager:self operationIDForRequest:request];
-        [requestID setOperationID:operationID handlerID:[[NSUUID UUID] UUIDString]];
+        NSString *ECID = [_conf imageManager:self executionContextIDForRequest:request];
+        [requestID setECID:ECID handlerID:[[NSUUID UUID] UUIDString]];
         [self _requestImageForRequest:request requestID:requestID completion:completion];
     });
     return requestID;
 }
 
 - (void)_requestImageForRequest:(DFImageRequest *)request requestID:(DFImageRequestID *)requestID completion:(DFImageRequestCompletion)completion {
-    // TODO: Move this code + subscribe for image processing operation.
+    _DFRequestHandler *handler = [[_DFRequestHandler alloc] initWithRequest:request requestID:requestID completion:completion];
     
     if (_cache != nil) {
-        NSString *asssetID = [_conf imageManager:self uniqueIDForAsset:request.asset];
-        UIImage *image = [_cache cachedImageForAssetID:asssetID request:request];
+        NSString *assetID = [_conf imageManager:self uniqueIDForAsset:request.asset];
+        UIImage *image = [_cache cachedImageForAssetID:assetID request:request];
         if (image != nil) {
-            [self _completeRequestWithImage:image info:@{ DFImageInfoResultIsFromMemoryCacheKey : @YES } requestID:requestID completion:completion];
+            [self _completeRequestWithImage:image info:@{ DFImageInfoResultIsFromMemoryCacheKey : @YES } handler:handler];
             return;
         }
     }
-
-    _DFImageFetchHandler *handler = [[_DFImageFetchHandler alloc] initWithRequest:request requestID:requestID completion:completion];
     
-    _DFRequestExecutionContext *context = _executionContexts[requestID.operationID];
+    _DFRequestExecutionContext *context = _executionContexts[requestID.ECID];
     if (!context) {
-        context = [[_DFRequestExecutionContext alloc] initWithRequest:request];
+        context = [[_DFRequestExecutionContext alloc] initWithECID:requestID.ECID request:request];
         context.handlers[requestID.handlerID] = handler;
-        _executionContexts[requestID.operationID] = context;
-        [self _requestImageForContext:context operationID:requestID.operationID previousOperation:nil];
+        _executionContexts[requestID.ECID] = context;
+        [self _requestImageForContext:context previousOperation:nil];
     } else {
         context.handlers[requestID.handlerID] = handler;
+        if (context.response != nil) {
+            [self _processResponseForContext:context handler:handler];
+        }
     }
 }
 
-- (void)_requestImageForContext:(_DFRequestExecutionContext *)context operationID:(NSString *)operationID previousOperation:(NSOperation<DFImageManagerOperation> *)previousOperation {
+- (void)_requestImageForContext:(_DFRequestExecutionContext *)context previousOperation:(NSOperation<DFImageManagerOperation> *)previousOperation {
     NSOperation<DFImageManagerOperation> *operation = [_conf imageManager:self createOperationForRequest:context.request previousOperation:previousOperation];
     if (!operation) { // No more work required.
         DFImageResponse *response = [previousOperation imageFetchResponse];
-        [self _didCompleteAllOperationsForContext:context operationID:operationID response:response];
+        [self _didCompleteAllOperationsForContext:context response:response];
     } else {
         DFImageManager *__weak weakSelf = self;
         NSOperation<DFImageManagerOperation> *__weak weakOp = operation;
         [operation setCompletionBlock:^{
-            [weakSelf _didCompleteOperation:weakOp context:context operationID:operationID];
+            [weakSelf _didCompleteOperation:weakOp context:context];
         }];
         operation.queuePriority = context.queuePriority;
         context.currentOperation = operation;
@@ -182,50 +190,59 @@
     }
 }
 
-- (void)_didCompleteOperation:(NSOperation<DFImageManagerOperation> *)operation context:(_DFRequestExecutionContext *)context operationID:(NSString *)operationID {
+- (void)_didCompleteOperation:(NSOperation<DFImageManagerOperation> *)operation context:(_DFRequestExecutionContext *)context {
     dispatch_async(_syncQueue, ^{
-        if (_executionContexts[operationID] == context) {
-            [self _requestImageForContext:context operationID:operationID previousOperation:operation];
+        // Check if execution hasn't been cancelled.
+        if (_executionContexts[context.ECID] == context) {
+            [self _requestImageForContext:context previousOperation:operation];
         }
     });
 }
 
-- (void)_didCompleteAllOperationsForContext:(_DFRequestExecutionContext *)context operationID:(NSString *)operationID response:(DFImageResponse *)response {
-    UIImage *image = response.image;
-    NSDictionary *info = [self _infoFromResponse:response];
-    
-    NSArray *handlers = [context.handlers allValues];
-    [_executionContexts removeObjectForKey:operationID];
-    
-    for (_DFImageFetchHandler *handler in handlers) {
-        DFImageRequest *request = handler.request;
-        DFImageRequestID *requestID = handler.requestID;
-        DFImageRequestCompletion completion = handler.completion;
-                
-        NSString *assetID = [_conf imageManager:self uniqueIDForAsset:request.asset];
-        if (_processor != nil && image != nil) {
-            [_processor processImage:image forRequest:request completion:^(UIImage *image) {
-                [_cache storeImage:image forAssetID:assetID request:request];
-                [self _completeRequestWithImage:image info:info requestID:requestID completion:completion];
-            }];
-        } else {
-            [_cache storeImage:image forAssetID:assetID request:request];
-            [self _completeRequestWithImage:image info:info requestID:requestID completion:completion];
-        }
+- (void)_didCompleteAllOperationsForContext:(_DFRequestExecutionContext *)context response:(DFImageResponse *)response {
+    context.response = response;
+    NSAssert(context.handlers.count > 0, @"Invalid context");
+    for (_DFRequestHandler *handler in [context.handlers allValues]) {
+        [self _processResponseForContext:context handler:handler];
     }
-    
     if (response.error != nil) {
-        [self _didEncounterError:response.error];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if ([_conf respondsToSelector:@selector(imageManager:didEncounterError:)]) {
+                [_conf imageManager:self didEncounterError:response.error];
+            }
+        });
     }
 }
 
-- (void)_completeRequestWithImage:(UIImage *)image info:(NSDictionary *)info requestID:(DFImageRequestID *)requestID completion:(DFImageRequestCompletion)completion {
-    if (completion != nil) {
-        NSMutableDictionary *mutableInfo = [NSMutableDictionary dictionaryWithDictionary:info];
-        mutableInfo[DFImageInfoRequestIDKey] = requestID;
-        dispatch_async(dispatch_get_main_queue(), ^{
-            completion(image, mutableInfo);
+- (void)_processResponseForContext:(_DFRequestExecutionContext *)context handler:(_DFRequestHandler *)handler {
+    UIImage *image = context.response.image;
+    NSDictionary *info = [self _infoFromResponse:context.response];
+    [self _processImage:image forHandler:handler completion:^(UIImage *image) {
+        dispatch_async(_syncQueue, ^{
+            [context.handlers removeObjectForKey:handler.requestID.handlerID];
+            if (context.handlers.count == 0) {
+                [_executionContexts removeObjectForKey:context.ECID];
+            }
+            [self _completeRequestWithImage:image info:info handler:handler];
         });
+    }];
+}
+
+- (void)_processImage:(UIImage *)input forHandler:(_DFRequestHandler *)handler completion:(void (^)(UIImage *image))completion {
+    NSString *assetID = [_conf imageManager:self uniqueIDForAsset:handler.request.asset];
+    if (_processor != nil && input != nil) {
+        UIImage *image = [_cache cachedImageForAssetID:assetID request:handler.request];
+        if (image != nil) {
+            completion(image);
+        } else {
+            [_processor processImage:input forRequest:handler.request completion:^(UIImage *image) {
+                [_cache storeImage:image forAssetID:assetID request:handler.request];
+                completion(image);
+            }];
+        }
+    } else {
+        [_cache storeImage:input forAssetID:assetID request:handler.request];
+        completion(input);
     }
 }
 
@@ -241,10 +258,12 @@
     return [info copy];
 }
 
-- (void)_didEncounterError:(NSError *)error {
+- (void)_completeRequestWithImage:(UIImage *)image info:(NSDictionary *)info handler:(_DFRequestHandler *)handler {
+    NSMutableDictionary *mutableInfo = [NSMutableDictionary dictionaryWithDictionary:info];
+    mutableInfo[DFImageInfoRequestIDKey] = handler.requestID;
     dispatch_async(dispatch_get_main_queue(), ^{
-        if ([_conf respondsToSelector:@selector(imageManager:didEncounterError:)]) {
-            [_conf imageManager:self didEncounterError:error];
+        if (handler.completion != nil) {
+            handler.completion(image, mutableInfo);
         }
     });
 }
@@ -260,12 +279,12 @@
 }
 
 - (void)_cancelRequestWithID:(DFImageRequestID *)requestID {
-    _DFRequestExecutionContext *context = _executionContexts[requestID.operationID];
+    _DFRequestExecutionContext *context = _executionContexts[requestID.ECID];
     if (context != nil) {
         [context.handlers removeObjectForKey:requestID.handlerID];
         if (context.handlers.count == 0) {
             [context.currentOperation cancel];
-            [_executionContexts removeObjectForKey:requestID.operationID];
+            [_executionContexts removeObjectForKey:requestID.ECID];
         } else {
             context.currentOperation.queuePriority = context.queuePriority;
         }
@@ -277,8 +296,8 @@
 - (void)setPriority:(DFImageRequestPriority)priority forRequestWithID:(DFImageRequestID *)requestID {
     if (requestID != nil) {
         dispatch_async(_syncQueue, ^{
-            _DFRequestExecutionContext *context = _executionContexts[requestID.operationID];
-            _DFImageFetchHandler *handler = context.handlers[requestID.handlerID];
+            _DFRequestExecutionContext *context = _executionContexts[requestID.ECID];
+            _DFRequestHandler *handler = context.handlers[requestID.handlerID];
             if (handler.request.options.priority != priority) {
                 handler.request.options.priority = priority;
                 NSOperation<DFImageManagerOperation> *operation = context.currentOperation;
@@ -303,8 +322,8 @@
     for (DFImageRequest *request in requests) {
         request.options.priority = DFImageRequestPriorityLow;
         DFImageRequestID *requestID = [self _preheatingIDForRequest:request];
-        _DFRequestExecutionContext *context = _executionContexts[requestID.operationID];
-        _DFImageFetchHandler *handler = context.handlers[requestID.handlerID];
+        _DFRequestExecutionContext *context = _executionContexts[requestID.ECID];
+        _DFRequestHandler *handler = context.handlers[requestID.handlerID];
         if (!handler) {
             [self _requestImageForRequest:request requestID:requestID completion:nil];
         }
@@ -329,20 +348,20 @@
 }
 
 - (DFImageRequestID *)_preheatingIDForRequest:(DFImageRequest *)request {
-    NSString *operationID = [_conf imageManager:self operationIDForRequest:request];
-    return [DFImageRequestID requestIDWithImageManager:self operationID:operationID handlerID:@"preheat"];
+    NSString *ECID = [_conf imageManager:self executionContextIDForRequest:request];
+    return [DFImageRequestID requestIDWithImageManager:self ECID:ECID handlerID:_kPreheatHandlerID];
 }
 
 - (void)stopPreheatingImageForAllAssets {
     dispatch_async(_syncQueue, ^{
-        [_executionContexts enumerateKeysAndObjectsUsingBlock:^(NSString *operationID, _DFRequestExecutionContext *context, BOOL *stop) {
-            NSMutableArray *operationIDs = [NSMutableArray new];
-            [context.handlers enumerateKeysAndObjectsUsingBlock:^(NSString *handlerID, _DFImageFetchHandler *handler, BOOL *stop) {
-                if ([handlerID isEqualToString:@"preheat"]) {
-                    [operationIDs addObject:[DFImageRequestID requestIDWithImageManager:self operationID:operationID handlerID:handlerID]];
+        [_executionContexts enumerateKeysAndObjectsUsingBlock:^(NSString *ECID, _DFRequestExecutionContext *context, BOOL *stop) {
+            NSMutableArray *requestIDs = [NSMutableArray new];
+            [context.handlers enumerateKeysAndObjectsUsingBlock:^(NSString *handlerID, _DFRequestHandler *handler, BOOL *stop) {
+                if ([handlerID isEqualToString:_kPreheatHandlerID]) {
+                    [requestIDs addObject:[DFImageRequestID requestIDWithImageManager:self ECID:ECID handlerID:handlerID]];
                 }
             }];
-            for (DFImageRequestID *requestID in operationIDs) {
+            for (DFImageRequestID *requestID in requestIDs) {
                 [self _cancelRequestWithID:requestID];
             }
         }];

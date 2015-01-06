@@ -28,13 +28,16 @@
 /*! Image manager that originated request ID.
  */
 @property (nonatomic, weak, readonly) id<DFCoreImageManager> imageManager;
-@property (nonatomic, readonly) NSString *operationID;
+
+/*! Execution context ID.
+ */
+@property (nonatomic, readonly) NSString *ECID;
 @property (nonatomic, readonly) NSString *handlerID;
 
 - (instancetype)initWithImageManager:(id<DFCoreImageManager>)imageManager;
 
-- (void)setOperationID:(NSString *)operationID handlerID:(NSString *)handlerID;
+- (void)setECID:(NSString *)ECID handlerID:(NSString *)handlerID;
 
-+ (DFImageRequestID *)requestIDWithImageManager:(id<DFCoreImageManager>)imageManager operationID:(NSString *)operationID handlerID:(NSString *)handlerID;
++ (DFImageRequestID *)requestIDWithImageManager:(id<DFCoreImageManager>)imageManager ECID:(NSString *)ECID handlerID:(NSString *)handlerID;
 
 @end

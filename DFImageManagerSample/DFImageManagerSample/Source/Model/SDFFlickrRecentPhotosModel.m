@@ -20,7 +20,7 @@
     NSInteger _currentPage;
 }
 
-- (id)init {
+- (instancetype)init {
     if (self = [super init]) {
         _photos = [NSMutableArray new];
         _currentPage = 1;

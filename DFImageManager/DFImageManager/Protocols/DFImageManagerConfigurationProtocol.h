@@ -37,7 +37,7 @@
 
 /*! Creates operationID for request so that existing operations could be reused for new handlers.
  */
-- (NSString *)imageManager:(id<DFImageManager>)manager operationIDForRequest:(DFImageRequest *)request;
+- (NSString *)imageManager:(id<DFImageManager>)manager executionContextIDForRequest:(DFImageRequest *)request;
 
 /*! Return nil if no work is required.
  */
