@@ -45,3 +45,10 @@
 + (void)setSharedManager:(id<DFImageManager>)manager;
 
 @end
+
+
+@interface DFImageManager (DefaultManager)
+
++ (id<DFImageManager>)defaultManager;
+
+@end

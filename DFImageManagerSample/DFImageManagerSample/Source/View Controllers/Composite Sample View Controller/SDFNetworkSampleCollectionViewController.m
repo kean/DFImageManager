@@ -31,6 +31,7 @@ static NSString * const reuseIdentifier = @"Cell";
 - (void)dealloc {
     [_cache removeAllObjects];
     [DFImageManager setSharedManager:nil];
+    [DFImageManager setSharedManager:[DFImageManager defaultManager]];
 }
 
 - (instancetype)init {

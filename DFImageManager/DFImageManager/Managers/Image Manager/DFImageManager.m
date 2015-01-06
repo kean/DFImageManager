@@ -116,6 +116,10 @@ static NSString *const _kPreheatHandlerID = @"_df_preheat";
 @synthesize configuration = _conf;
 @synthesize imageProcessor = _processor;
 
++ (void)initialize {
+    [self setSharedManager:[self defaultManager]];
+}
+
 - (instancetype)initWithConfiguration:(id<DFImageManagerConfiguration>)configuration imageProcessor:(id<DFImageProcessing>)imageProcessor cache:(id<DFImageCaching>)cache {
     if (self = [super init]) {
         _conf = configuration;
