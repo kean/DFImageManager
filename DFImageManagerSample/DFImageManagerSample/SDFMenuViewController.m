@@ -36,17 +36,24 @@
 @interface SDFMenuItem : NSObject
 
 @property (nonatomic) NSString *title;
+@property (nonatomic) NSString *subtitle;
 @property (nonatomic, copy) void (^action)(void);
 
 + (instancetype)itemWithTitle:(NSString *)title action:(void (^)(void))action;
++ (instancetype)itemWithTitle:(NSString *)title subtitle:(NSString *)subtitle action:(void (^)(void))action;
 
 @end
 
 @implementation SDFMenuItem
 
 + (instancetype)itemWithTitle:(NSString *)title action:(void (^)(void))action {
+    return [self itemWithTitle:title subtitle:@"TODO: Add description" action:action];
+}
+
++ (instancetype)itemWithTitle:(NSString *)title subtitle:(NSString *)subtitle action:(void (^)(void))action {
     SDFMenuItem *item = [SDFMenuItem new];
     item.title = title;
+    item.subtitle = subtitle;
     item.action = action;
     return item;
 }
@@ -90,6 +97,9 @@
     
     [sections addObject:({
         NSMutableArray *items = [NSMutableArray new];
+        [items addObject:[SDFMenuItem itemWithTitle:@"Preheating Demo" subtitle:@"Preheating with complex collection view layout"  action:^{
+            // TODO: Open demo
+        }]];
         [items addObject:[SDFMenuItem itemWithTitle:@"Composite Request Demo" action:^{
             SDFNetworkSampleCollectionViewController *controller = [SDFNetworkSampleCollectionViewController new];
             controller.shouldUseCompositeImageRequests = YES;
@@ -121,9 +131,8 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"reuseID" forIndexPath:indexPath];
     SDFMenuItem *item = [self _itemAtIndexPath:indexPath];
-    NSString *title = item.title;
-    cell.textLabel.text = title;
-    cell.detailTextLabel.text = @"TODO: Describe demo in few words";
+    cell.textLabel.text = item.title;
+    cell.detailTextLabel.text = item.subtitle;
     return cell;
 }
 
