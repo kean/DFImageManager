@@ -11,48 +11,132 @@
 #import "SDFPhotosKitSampleViewController.h"
 
 
+@interface SDFMenuSection : NSObject
+
+@property (nonatomic) NSString *title;
+@property (nonatomic) NSArray *items;
+
++ (instancetype)sectionWithTitle:(NSString *)title items:(NSArray *)items;
+
+@end
+
+@implementation SDFMenuSection
+
++ (instancetype)sectionWithTitle:(NSString *)title items:(NSArray *)items {
+    SDFMenuSection *section = [SDFMenuSection new];
+    section.title = title;
+    section.items = items;
+    return section;
+}
+
+@end
+
+
+
+@interface SDFMenuItem : NSObject
+
+@property (nonatomic) NSString *title;
+@property (nonatomic, copy) void (^action)(void);
+
++ (instancetype)itemWithTitle:(NSString *)title action:(void (^)(void))action;
+
+@end
+
+@implementation SDFMenuItem
+
++ (instancetype)itemWithTitle:(NSString *)title action:(void (^)(void))action {
+    SDFMenuItem *item = [SDFMenuItem new];
+    item.title = title;
+    item.action = action;
+    return item;
+}
+
+@end
+
+
 @interface SDFMenuViewController ()
 
 @end
 
-@implementation SDFMenuViewController
+@implementation SDFMenuViewController {
+    NSArray /* SDFSection */ *_sections;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view, typically from a nib.
+    
+    NSMutableArray *sections = [NSMutableArray new];
+    
+    [sections addObject:({
+        NSMutableArray *items = [NSMutableArray new];
+        [items addObject:[SDFMenuItem itemWithTitle:@"Demo" action:^{
+            // TODO: Open main demo.
+        }]];
+        [SDFMenuSection sectionWithTitle:@"Main" items:items];
+    })];
+    
+    [sections addObject:({
+        NSMutableArray *items = [NSMutableArray new];
+        [items addObject:[SDFMenuItem itemWithTitle:@"Network Demo" action:^{
+            UIViewController *controller = [SDFNetworkSampleCollectionViewController new];
+            controller.title = @"Network Demo";
+            [self.navigationController pushViewController:controller animated:YES];
+        }]];
+        [items addObject:[SDFMenuItem itemWithTitle:@"Photos Kit Demo" action:^{
+            [self.navigationController pushViewController:[SDFPhotosKitSampleViewController new] animated:YES];
+        }]];
+        [SDFMenuSection sectionWithTitle:@"Image Managers" items:items];
+    })];
+    
+    [sections addObject:({
+        NSMutableArray *items = [NSMutableArray new];
+        [items addObject:[SDFMenuItem itemWithTitle:@"Composite Request Demo" action:^{
+            SDFNetworkSampleCollectionViewController *controller = [SDFNetworkSampleCollectionViewController new];
+            controller.shouldUseCompositeImageRequests = YES;
+            controller.numberOfItemsPerRow = 2;
+            [self.navigationController pushViewController:controller animated:YES];
+        }]];
+        [SDFMenuSection sectionWithTitle:@"Other" items:items];
+    })];
+    
+    _sections = [sections copy];
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+#pragma mark - <UITableViewDataSource>
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return _sections.count;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 3;
+    SDFMenuSection *menuSection = _sections[section];
+    return menuSection.items.count;
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+    SDFMenuSection *menuSection = _sections[section];
+    return menuSection.title;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"reuseID" forIndexPath:indexPath];
-    NSString *title;
-    NSInteger row = indexPath.row;
-    if (row == 0) title = @"Network Sample";
-    if (row == 1) title = @"Photos Kit Sample";
-    if (row == 2) title = @"Composite Image Request";
+    SDFMenuItem *item = [self _itemAtIndexPath:indexPath];
+    NSString *title = item.title;
     cell.textLabel.text = title;
+    cell.detailTextLabel.text = @"TODO: Describe demo in few words";
     return cell;
 }
 
+- (SDFMenuItem *)_itemAtIndexPath:(NSIndexPath *)indexPath {
+    SDFMenuSection *section = _sections[indexPath.section];
+    return section.items[indexPath.row];
+}
+
+#pragma mark - <UITableViewDelegate>
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.row == 0) {
-        [self.navigationController pushViewController:[SDFNetworkSampleCollectionViewController new] animated:YES];
-    } else if (indexPath.row == 1) {
-        [self.navigationController pushViewController:[SDFPhotosKitSampleViewController new] animated:YES];
-    } else if (indexPath.row == 2) {
-        SDFNetworkSampleCollectionViewController *controller = [SDFNetworkSampleCollectionViewController new];
-        controller.shouldUseCompositeImageRequests = YES;
-        controller.numberOfItemsPerRow = 2;
-        [self.navigationController pushViewController:controller animated:YES];
-    }
+    SDFMenuItem *item = [self _itemAtIndexPath:indexPath];
+    item.action();
 }
 
 @end
