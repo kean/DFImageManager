@@ -45,7 +45,6 @@ static NSString * const reuseIdentifier = @"Cell";
 - (instancetype)initWithCollectionViewLayout:(UICollectionViewLayout *)layout {
     if (self = [super initWithCollectionViewLayout:layout]) {
         _numberOfItemsPerRow = 4;
-        _allowsCompositeImageRequests = NO;
         _allowsPreheating = NO;
     }
     return self;
@@ -130,16 +129,7 @@ static NSString * const reuseIdentifier = @"Cell";
     }
     
     SDFFlickrPhoto *photo = _photos[indexPath.row];
-    if (self.allowsCompositeImageRequests ){
-        DFImageRequest *requestWithSmallURL = [[DFImageRequest alloc] initWithAsset:photo.photoURLSmall targetSize:DFImageManagerMaximumSize contentMode:DFImageContentModeAspectFit options:nil];
-        
-        CGSize targetSize = [self _imageTargetSize];
-        DFImageRequest *requestWithBigURL = [[DFImageRequest alloc] initWithAsset:photo.photoURLBig targetSize:targetSize contentMode:DFImageContentModeAspectFill options:nil];
-        
-        [imageView setImagesWithRequests:@[ requestWithSmallURL, requestWithBigURL] ];
-    } else {
-        [imageView setImageWithAsset:photo.photoURL];
-    }
+    [imageView setImageWithAsset:photo.photoURL];
     
     return cell;
 }

@@ -10,7 +10,6 @@
 
 @interface SDFNetworkSampleCollectionViewController : UICollectionViewController
 
-@property (nonatomic) BOOL allowsCompositeImageRequests;
 @property (nonatomic) BOOL allowsPreheating;
 @property (nonatomic) NSInteger numberOfItemsPerRow;
 

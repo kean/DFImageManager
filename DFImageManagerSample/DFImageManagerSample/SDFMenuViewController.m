@@ -6,6 +6,7 @@
 //  Copyright (c) 2014 Alexander Grebenyuk. All rights reserved.
 //
 
+#import "SDFCompositeRequestDemoViewController.h"
 #import "SDFMainDemoViewController.h"
 #import "SDFMenuViewController.h"
 #import "SDFNetworkSampleCollectionViewController.h"
@@ -103,10 +104,9 @@
         [items addObject:[SDFMenuItem itemWithTitle:@"Preheating Demo" subtitle:@"Preheating with complex collection view layout"  action:^{
             // TODO: Open demo
         }]];
-        [items addObject:[SDFMenuItem itemWithTitle:@"Composite Request Demo" action:^{
-            SDFNetworkSampleCollectionViewController *controller = [SDFNetworkSampleCollectionViewController new];
-            controller.allowsCompositeImageRequests = YES;
-            controller.numberOfItemsPerRow = 2;
+        [items addObject:[SDFMenuItem itemWithTitle:@"Composite Request Demo" subtitle:@"Request both thumbnail and fullscreen image" action:^{
+            SDFCompositeRequestDemoViewController *controller = [SDFCompositeRequestDemoViewController new];
+            controller.title = @"Composite Request Demo";
             [self.navigationController pushViewController:controller animated:YES];
         }]];
         [SDFMenuSection sectionWithTitle:@"Other" items:items];
