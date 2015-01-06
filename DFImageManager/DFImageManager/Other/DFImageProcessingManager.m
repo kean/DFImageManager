@@ -44,7 +44,7 @@
 
 - (instancetype)init {
     NSCache *cache = [NSCache new];
-    cache.totalCostLimit = 1024 * 1024 * 70; // 70 Mb
+    cache.totalCostLimit = [NSCache df_recommendedTotalCostLimit];
     return [self initWithCache:cache];
 }
 
@@ -108,6 +108,22 @@
     CGImageRef imageRef = image.CGImage;
     NSUInteger bitsPerPixel = CGImageGetBitsPerPixel(imageRef);
     return (CGImageGetWidth(imageRef) * CGImageGetHeight(imageRef) * bitsPerPixel) / 8; // Return number of bytes in image bitmap.
+}
+
+@end
+
+
+@implementation NSCache (DFImageProcessingManager)
+
++ (NSUInteger)df_recommendedTotalCostLimit {
+    static NSUInteger recommendedSize;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        NSProcessInfo *info = [NSProcessInfo processInfo];
+        recommendedSize = info.physicalMemory * 0.12;
+        recommendedSize = MAX(1024 * 1024 * 50 /* 50 Mb */, recommendedSize);
+    });
+    return recommendedSize;
 }
 
 @end

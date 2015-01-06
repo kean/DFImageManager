@@ -35,3 +35,10 @@
 @property (nonatomic, readonly) NSCache *cache;
 
 @end
+
+
+@interface NSCache (DFImageProcessingManager)
+
++ (NSUInteger)df_recommendedTotalCostLimit;
+
+@end
