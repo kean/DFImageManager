@@ -102,7 +102,7 @@
         }]];
         [items addObject:[SDFMenuItem itemWithTitle:@"Composite Request Demo" action:^{
             SDFNetworkSampleCollectionViewController *controller = [SDFNetworkSampleCollectionViewController new];
-            controller.shouldUseCompositeImageRequests = YES;
+            controller.allowsCompositeImageRequests = YES;
             controller.numberOfItemsPerRow = 2;
             [self.navigationController pushViewController:controller animated:YES];
         }]];

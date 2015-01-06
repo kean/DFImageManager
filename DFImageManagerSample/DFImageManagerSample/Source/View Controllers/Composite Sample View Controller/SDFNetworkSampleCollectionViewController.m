@@ -14,7 +14,10 @@
 #import <DFCache/DFCache.h>
 
 
-@interface SDFNetworkSampleCollectionViewController () <SDFFlickrRecentPhotosModelDelegate>
+@interface SDFNetworkSampleCollectionViewController ()
+
+<DFCollectionViewPreheatingControllerDelegate,
+SDFFlickrRecentPhotosModelDelegate>
 
 @end
 
@@ -23,6 +26,7 @@
     NSMutableArray *_photos;
     SDFFlickrRecentPhotosModel *_model;
     
+    DFCollectionViewPreheatingController *_preheatingController;
     DFCache *_cache;
 }
 
@@ -30,7 +34,6 @@ static NSString * const reuseIdentifier = @"Cell";
 
 - (void)dealloc {
     [_cache removeAllObjects];
-    [DFImageManager setSharedManager:nil];
     [DFImageManager setSharedManager:[DFImageManager defaultManager]];
 }
 
@@ -41,7 +44,8 @@ static NSString * const reuseIdentifier = @"Cell";
 - (instancetype)initWithCollectionViewLayout:(UICollectionViewLayout *)layout {
     if (self = [super initWithCollectionViewLayout:layout]) {
         _numberOfItemsPerRow = 4;
-        _shouldUseCompositeImageRequests = NO;
+        _allowsCompositeImageRequests = NO;
+        _allowsPreheating = NO;
     }
     return self;
 }
@@ -78,19 +82,29 @@ static NSString * const reuseIdentifier = @"Cell";
     DFNetworkImageManagerConfiguration *networkImageManagerConfiguration = [[DFNetworkImageManagerConfiguration alloc] initWithCache:cache];
     DFImageManager *networkImageManager = [[DFImageManager alloc] initWithConfiguration:networkImageManagerConfiguration imageProcessor:imageProcessor cache:imageProcessor];
     
-    DFCompositeImageManager *compositeImageManager = [[DFCompositeImageManager alloc] initWithImageManagers:@[networkImageManager]];
-    DFProxyImageManager *proxyImageManager = [[DFProxyImageManager alloc] initWithImageManager:compositeImageManager];
-    [proxyImageManager setValueTransformerWithBlock:^id(id asset) {
-      //  NSLog(@"starting/cancelling asset request = %@", asset);
-        return asset;
-    }];
+    [DFImageManager setSharedManager:networkImageManager];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
     
-    [DFImageManager setSharedManager:proxyImageManager];
+    if (self.allowsPreheating) {
+        _preheatingController = [[DFCollectionViewPreheatingController alloc] initWithCollectionView:self.collectionView];
+        _preheatingController.delegate = self;
+        [_preheatingController updatePreheatRect];
+    }
+}
+
+- (void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
+    
+    [_preheatingController resetPreheatRect];
+    _preheatingController = nil;
 }
 
 - (void)viewDidLayoutSubviews {
     [super viewDidLayoutSubviews];
- 
+    
     UICollectionViewFlowLayout *layout = (id)self.collectionViewLayout;
     layout.minimumLineSpacing = 2.f;
     layout.minimumInteritemSpacing = 2.f;
@@ -110,7 +124,7 @@ static NSString * const reuseIdentifier = @"Cell";
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifier forIndexPath:indexPath];
-
+    
     DFImageView *imageView = (id)[cell viewWithTag:15];
     if (!imageView) {
         imageView = [[DFImageView alloc] initWithFrame:cell.bounds];
@@ -120,11 +134,11 @@ static NSString * const reuseIdentifier = @"Cell";
     }
     
     SDFFlickrPhoto *photo = _photos[indexPath.row];
-    if (self.shouldUseCompositeImageRequests ){
-        // We specifically resize placeholder to make it even smaller
+    if (self.allowsCompositeImageRequests ){
         DFImageRequest *requestWithSmallURL = [[DFImageRequest alloc] initWithAsset:photo.photoURLSmall targetSize:DFImageManagerMaximumSize contentMode:DFImageContentModeAspectFit options:nil];
-
-        DFImageRequest *requestWithBigURL = [[DFImageRequest alloc] initWithAsset:photo.photoURLBig targetSize:imageView.targetSize contentMode:imageView.contentMode options:nil];
+        
+        CGSize targetSize = [self _imageTargetSize];
+        DFImageRequest *requestWithBigURL = [[DFImageRequest alloc] initWithAsset:photo.photoURLBig targetSize:targetSize contentMode:DFImageContentModeAspectFill options:nil];
         
         [imageView setImagesWithRequests:@[ requestWithSmallURL, requestWithBigURL] ];
     } else {
@@ -132,6 +146,33 @@ static NSString * const reuseIdentifier = @"Cell";
     }
     
     return cell;
+}
+
+- (CGSize)_imageTargetSize {
+    CGSize size = ((UICollectionViewFlowLayout *)self.collectionViewLayout).itemSize;
+    CGFloat scale = [UIScreen mainScreen].scale;
+    return CGSizeMake(size.width * scale, size.height * scale);
+}
+
+#pragma mark - <DFCollectionViewPreheatingControllerDelegate>
+
+- (void)collectionViewPreheatingController:(DFCollectionViewPreheatingController *)controller didUpdatePreheatRectWithAddedIndexPaths:(NSArray *)addedIndexPaths removedIndexPaths:(NSArray *)removedIndexPaths {
+    CGSize targetSize = [self _imageTargetSize];
+    
+    NSArray *addedAssets = [self _imageAssetsAtIndexPaths:addedIndexPaths];
+    
+    [[DFImageManager sharedManager] startPreheatingImageForAssets:addedAssets targetSize:targetSize contentMode:DFImageContentModeAspectFill options:nil];
+    NSArray *removedAssets = [self _imageAssetsAtIndexPaths:removedIndexPaths];
+    [[DFImageManager sharedManager] stopPreheatingImagesForAssets:removedAssets targetSize:targetSize contentMode:DFImageContentModeAspectFill options:nil];
+}
+
+- (NSArray *)_imageAssetsAtIndexPaths:(NSArray *)indexPaths {
+    NSMutableArray *assets = [NSMutableArray new];
+    for (NSIndexPath *indexPath in indexPaths) {
+        SDFFlickrPhoto *photo = _photos[indexPath.row];
+        [assets addObject:photo.photoURL];
+    }
+    return assets;
 }
 
 #pragma mark - <SDFFlickrRecentPhotosModelDelegate>
