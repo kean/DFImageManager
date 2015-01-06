@@ -133,7 +133,7 @@
     DFImageViewAnimation animation = DFImageViewAnimationNone;
     if (self.animation != DFImageViewAnimationNone) {
         if (self.imageView.image != nil) {
-            animation = DFImageViewAnimationCrossDissolve;
+            animation = DFImageViewAnimationNone;
         } else {
             animation = fromMemory ? DFImageViewAnimationNone : _animation;
         }
@@ -229,7 +229,7 @@
         }
             break;
         case DFImageViewAnimationCrossDissolve: {
-            [UIView transitionWithView:self
+            [UIView transitionWithView:self.imageView
                               duration:0.2f
                                options:UIViewAnimationOptionTransitionCrossDissolve
                             animations:nil

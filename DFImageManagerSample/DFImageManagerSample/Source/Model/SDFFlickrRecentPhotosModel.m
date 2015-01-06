@@ -45,29 +45,30 @@
 }
 
 - (void)_loadFlickrPhotosForPage:(NSUInteger)page completion:(void (^)(NSArray *photos, NSUInteger page))completion {
+    SDFFlickrRecentPhotosModel *__weak weakSelf = self;
     NSString *urlString = [NSString stringWithFormat:@"https://api.flickr.com/services/rest/?api_key=a292d5f86afcbab8b0b8161ecee51184&format=json&method=flickr.photos.getRecent&nojsoncallback=1&page=%i", (int)page];
     NSURL *url = [NSURL URLWithString:urlString];
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            if ( ! error) {
-                NSMutableArray *photos = [NSMutableArray new];
-                NSError *parseError;
-                id JSON = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:&parseError];
-                if (!parseError) {
-                    NSArray *responsePhotos = [JSON valueForKeyPath:@"photos.photo"];
-                    for (id photoJSON in responsePhotos) {
-                        SDFFlickrPhoto *photo = [[SDFFlickrPhoto alloc] initWithJSON:photoJSON];
-                        [photos addObject:photo];
-                    }
-                    if (completion) {
-                        completion(photos, page);
-                    }
+        if (!error) {
+            NSMutableArray *photos = [NSMutableArray new];
+            NSError *parseError;
+            id JSON = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:&parseError];
+            if (!parseError) {
+                NSArray *responsePhotos = [JSON valueForKeyPath:@"photos.photo"];
+                for (id photoJSON in responsePhotos) {
+                    SDFFlickrPhoto *photo = [[SDFFlickrPhoto alloc] initWithJSON:photoJSON];
+                    [photos addObject:photo];
                 }
-            } else {
-                [self _loadFlickrPhotosForPage:page completion:completion];
+                if (completion) {
+                    completion(photos, page);
+                }
             }
-        });
+        } else {
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                [weakSelf _loadFlickrPhotosForPage:page completion:completion];
+            });
+        }
     }];
     
 }
