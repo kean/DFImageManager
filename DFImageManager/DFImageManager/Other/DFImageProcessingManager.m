@@ -120,8 +120,8 @@
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         NSProcessInfo *info = [NSProcessInfo processInfo];
-        recommendedSize = info.physicalMemory * 0.12;
-        recommendedSize = MAX(1024 * 1024 * 50 /* 50 Mb */, recommendedSize);
+        CGFloat ratio = info.physicalMemory <= (1024 * 1024 * 512 /* 512 Mb */) ? 0.12 : 0.20;
+        recommendedSize = MAX(1024 * 1024 * 50 /* 50 Mb */, info.physicalMemory * ratio);
     });
     return recommendedSize;
 }
