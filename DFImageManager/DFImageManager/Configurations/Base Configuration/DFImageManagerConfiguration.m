@@ -80,7 +80,7 @@ NSString *const DFImageManagerCacheStoreOperationType = @"DFImageManagerCacheSto
     }
     
     else if ([previousOperationType isEqualToString:DFImageManagerCacheLookupOperationType]) {
-        DFImageResponse *response = [previousOperation imageFetchResponse];
+        DFImageResponse *response = [previousOperation imageResponse];
         if (!response.image) {
             nextOperation =  [self createImageFetchOperationForRequest:request];
         }

@@ -28,7 +28,7 @@
     DFImageResponse *_imageReponse;
 }
 
-- (DFImageResponse *)imageFetchResponse {
+- (DFImageResponse *)imageResponse {
     if (!_imageReponse) {
         DFMutableImageResponse *response = [DFMutableImageResponse new];
         response.image = self.responseObject;

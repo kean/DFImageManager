@@ -95,7 +95,7 @@
 }
 
 - (NSOperation *)createCacheStoreOperationForRequest:(DFImageRequest *)request previousOperation:(NSOperation<DFImageManagerOperation> *)previousOperation {
-    DFImageResponse *response = [previousOperation imageFetchResponse];
+    DFImageResponse *response = [previousOperation imageResponse];
     if (self.cache != nil) {
         return [[DFImageCacheStoreOperation alloc] initWithAsset:request.asset options:request.options response:response cache:self.cache];
     } else {

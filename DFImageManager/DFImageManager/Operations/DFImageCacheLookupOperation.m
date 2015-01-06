@@ -94,7 +94,7 @@
 
 #pragma mark - <DFImageManagerOperation>
 
-- (DFImageResponse *)imageFetchResponse {
+- (DFImageResponse *)imageResponse {
     return _response;
 }
 

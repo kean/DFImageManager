@@ -29,6 +29,6 @@
 
 /*! Should be available on operation completion.
  */
-- (DFImageResponse *)imageFetchResponse;
+- (DFImageResponse *)imageResponse;
 
 @end

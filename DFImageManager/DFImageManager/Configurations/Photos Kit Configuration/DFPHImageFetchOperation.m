@@ -126,7 +126,7 @@
 
 #pragma mark - <DFImageManagerConfiguration>
 
-- (DFImageResponse *)imageFetchResponse {
+- (DFImageResponse *)imageResponse {
     return _response;
 }
 
