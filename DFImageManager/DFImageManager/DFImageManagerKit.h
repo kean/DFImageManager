@@ -56,4 +56,6 @@
 
 #import "DFImageView.h"
 
+#import "DFCollectionViewPreheatingController.h"
+
 #import "DFImageUtilities.h"

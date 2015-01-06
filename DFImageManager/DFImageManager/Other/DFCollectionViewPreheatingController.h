@@ -20,35 +20,39 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "DFImageCachingProtocol.h"
-#import "DFImageManagerConfigurationProtocol.h"
-#import "DFImageManagerProtocol.h"
-#import "DFImageProcessingProtocol.h"
 #import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
+
+@class DFCollectionViewPreheatingController;
 
 
-@interface DFImageManager : NSObject <DFImageManager>
+@protocol DFCollectionViewPreheatingControllerDelegate <NSObject>
 
-@property (nonatomic, readonly) id<DFImageManagerConfiguration> configuration;
-@property (nonatomic, readonly) id<DFImageProcessing> imageProcessor;
-@property (nonatomic, readonly) id<DFImageCaching> cache;
-
-/*! Designated initializer.
- @param cache Memory cache for storing processed (or original if image processor is nil) images. Might be nil.
- @note It's a good idea to implement <DFImageProcessing> and <DFImageCaching> in that same object.
- */
-- (instancetype)initWithConfiguration:(id<DFImageManagerConfiguration>)configuration imageProcessor:(id<DFImageProcessing>)imageProcessor cache:(id<DFImageCaching>)cache NS_DESIGNATED_INITIALIZER;
-
-// Dependency injectors.
-
-+ (id<DFImageManager>)sharedManager;
-+ (void)setSharedManager:(id<DFImageManager>)manager;
+- (void)collectionViewPreheatingController:(DFCollectionViewPreheatingController *)controller didUpdatePreheatRectWithAddedIndexPaths:(NSArray *)addedIndexPaths removedIndexPaths:(NSArray *)removedIndexPaths;
 
 @end
 
 
-@interface DFImageManager (DefaultManager)
+@interface DFCollectionViewPreheatingController : NSObject
 
-+ (id<DFImageManager>)defaultManager;
+@property (nonatomic, readonly) UICollectionView *collectionView;
+
+@property (nonatomic, weak) id<DFCollectionViewPreheatingControllerDelegate> delegate;
+
+/*! The proportion of the collection view bounds (either width or height depending on the scroll direction) that is used as a preheat window. Default value is 2.0.
+ */
+@property (nonatomic) CGFloat preheatRectRatio;
+
+/*! How far the user need to scroll from the current preheat rect to revalidate it. Default value is 0.33.
+ */
+@property (nonatomic) CGFloat preheatRectRevalidationRatio;
+
+@property (nonatomic, readonly) CGRect preheatRect;
+@property (nonatomic, readonly) NSSet *preheatIndexPaths;
+
+- (instancetype)initWithCollectionView:(UICollectionView *)collectionView;
+
+- (void)resetPreheatRect;
+- (void)updatePreheatRect;
 
 @end
