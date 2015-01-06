@@ -6,12 +6,13 @@
 //  Copyright (c) 2014 Alexander Grebenyuk. All rights reserved.
 //
 
-#import "SDFNetworkSampleCollectionViewController.h"
 #import "SDFFlickrPhoto.h"
 #import "SDFFlickrRecentPhotosModel.h"
-#import <DFProxyImageManager.h>
-#import <DFImageManager/DFImageManagerKit.h>
+#import "SDFNetworkSampleCollectionViewController.h"
+#import "UIViewController+SDFImageManager.h"
 #import <DFCache/DFCache.h>
+#import <DFImageManager/DFImageManagerKit.h>
+#import <DFProxyImageManager.h>
 
 
 @interface SDFNetworkSampleCollectionViewController ()
@@ -55,12 +56,7 @@ static NSString * const reuseIdentifier = @"Cell";
     
     [self.collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:reuseIdentifier];
     
-    _activityIndicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
-    _activityIndicatorView.translatesAutoresizingMaskIntoConstraints = NO;
-    [_activityIndicatorView startAnimating];
-    [self.view addSubview:_activityIndicatorView];
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:_activityIndicatorView attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeCenterX multiplier:1.f constant:0.f]];
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:_activityIndicatorView attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeCenterY multiplier:1.f constant:0.f]];
+    _activityIndicatorView = [self showActivityIndicatorView];
     
     [self _configureImageManager];
     
@@ -181,6 +177,9 @@ static NSString * const reuseIdentifier = @"Cell";
     [_activityIndicatorView removeFromSuperview];
     [_photos addObjectsFromArray:photos];
     [self.collectionView reloadData];
+    if (page == 0) {
+        [_preheatingController updatePreheatRect];
+    }
 }
 
 @end

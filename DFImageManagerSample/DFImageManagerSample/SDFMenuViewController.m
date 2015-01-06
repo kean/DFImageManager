@@ -6,6 +6,7 @@
 //  Copyright (c) 2014 Alexander Grebenyuk. All rights reserved.
 //
 
+#import "SDFMainDemoViewController.h"
 #import "SDFMenuViewController.h"
 #import "SDFNetworkSampleCollectionViewController.h"
 #import "SDFPhotosKitSampleViewController.h"
@@ -47,7 +48,7 @@
 @implementation SDFMenuItem
 
 + (instancetype)itemWithTitle:(NSString *)title action:(void (^)(void))action {
-    return [self itemWithTitle:title subtitle:@"TODO: Add description" action:action];
+    return [self itemWithTitle:title subtitle:nil action:action];
 }
 
 + (instancetype)itemWithTitle:(NSString *)title subtitle:(NSString *)subtitle action:(void (^)(void))action {
@@ -76,8 +77,10 @@
     
     [sections addObject:({
         NSMutableArray *items = [NSMutableArray new];
-        [items addObject:[SDFMenuItem itemWithTitle:@"Demo" action:^{
-            // TODO: Open main demo.
+        [items addObject:[SDFMenuItem itemWithTitle:@"Zero Config Demo" subtitle:@"Showcases most of image manager features" action:^{
+            SDFMainDemoViewController *controller = [SDFMainDemoViewController new];
+            controller.title = @"Demo";
+            [self.navigationController pushViewController:controller animated:YES];
         }]];
         [SDFMenuSection sectionWithTitle:@"Main" items:items];
     })];

@@ -23,7 +23,7 @@
 - (instancetype)init {
     if (self = [super init]) {
         _photos = [NSMutableArray new];
-        _currentPage = 1;
+        _currentPage = 0;
     }
     return self;
 }
@@ -46,7 +46,7 @@
 
 - (void)_loadFlickrPhotosForPage:(NSUInteger)page completion:(void (^)(NSArray *photos, NSUInteger page))completion {
     SDFFlickrRecentPhotosModel *__weak weakSelf = self;
-    NSString *urlString = [NSString stringWithFormat:@"https://api.flickr.com/services/rest/?api_key=a292d5f86afcbab8b0b8161ecee51184&format=json&method=flickr.photos.getRecent&nojsoncallback=1&page=%i", (int)page];
+    NSString *urlString = [NSString stringWithFormat:@"https://api.flickr.com/services/rest/?api_key=a292d5f86afcbab8b0b8161ecee51184&format=json&method=flickr.photos.getRecent&nojsoncallback=1&page=%i", (int)(page+1)];
     NSURL *url = [NSURL URLWithString:urlString];
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
