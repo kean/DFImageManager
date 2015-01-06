@@ -25,7 +25,6 @@
 NSString *const DFImageInfoRequestIDKey = @"DFImageInfoRequestIDKey";
 NSString *const DFImageInfoErrorKey = @"DFImageInfoErrorKey";
 NSString *const DFImageInfoCancelledKey = @"DFImageInfoCancelledKey";
-NSString *const DFImageInfoDataKey = @"DFImageInfoDataKey";
 NSString *const DFImageInfoResultIsFromMemoryCacheKey = @"DFImageInfoResultIsFromMemoryCacheKey";
 
 NSString *const DFImageErrorDomain = @"DFImageErrorDomain";

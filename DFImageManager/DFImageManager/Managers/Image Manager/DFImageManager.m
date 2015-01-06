@@ -248,9 +248,6 @@ static NSString *const _kPreheatHandlerID = @"_df_preheat";
     if (response.error != nil) {
         info[DFImageInfoErrorKey] = response.error;
     }
-    if (response.data != nil) {
-        info[DFImageInfoDataKey] = response.data;
-    }
     [info addEntriesFromDictionary:response.userInfo];
     return [info copy];
 }
