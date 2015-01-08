@@ -6,6 +6,7 @@
 //  Copyright (c) 2014 Alexander Grebenyuk. All rights reserved.
 //
 
+#import "SDFAssetsLibraryDemoViewController.h"
 #import "SDFCompositeRequestDemoViewController.h"
 #import "SDFFilesystemDemoViewController.h"
 #import "SDFMainDemoViewController.h"
@@ -101,6 +102,11 @@
         }]];
         [items addObject:[SDFMenuItem itemWithTitle:@"Photos Kit Demo" action:^{
             [self.navigationController pushViewController:[SDFPhotosKitSampleViewController new] animated:YES];
+        }]];
+        [items addObject:[SDFMenuItem itemWithTitle:@"ALAssetsLibrary Demo" action:^{
+            SDFAssetsLibraryDemoViewController *controller = [SDFAssetsLibraryDemoViewController new];
+            controller.title = @"ALAssetsLibrary Demo";
+            [self.navigationController pushViewController:controller animated:YES];
         }]];
         [SDFMenuSection sectionWithTitle:@"Image Managers" items:items];
     })];

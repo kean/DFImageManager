@@ -88,7 +88,14 @@
 
 - (NSOperation<DFImageManagerOperation> *)imageManager:(id<DFImageManager>)manager createOperationForRequest:(DFImageRequest *)request previousOperation:(NSOperation<DFImageManagerOperation> *)previousOperation {
     if (!previousOperation) {
-        return [[DFAssetsLibraryImageFetchOperation alloc] init];
+        DFAssetsLibraryImageFetchOperation *operation;
+        if ([request.asset isKindOfClass:[ALAsset class]]) {
+            operation = [[DFAssetsLibraryImageFetchOperation alloc] initWithAsset:request.asset];
+        } else {
+            operation = [[DFAssetsLibraryImageFetchOperation alloc] initWithAssetURL:request.asset];
+        }
+        operation.imageSize = [self _assetImageSizeForRequest:request];
+        return operation;
     }
     return nil;
 }

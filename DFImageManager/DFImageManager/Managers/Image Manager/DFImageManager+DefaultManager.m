@@ -20,12 +20,13 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+#import "DFAssetsLibraryImageManagerConfiguration.h"
 #import "DFCompositeImageManager.h"
 #import "DFImageManager.h"
 #import "DFImageProcessingManager.h"
-#import "DFURLImageManagerConfiguration.h"
 #import "DFPHImageManagerConfiguration.h"
 #import "DFProxyImageManager.h"
+#import "DFURLImageManagerConfiguration.h"
 #import <DFCache/DFCache.h>
 
 
@@ -54,7 +55,6 @@
         [[DFImageManager alloc] initWithConfiguration:URLImageManagerConfiguration imageProcessor:imageProcessor cache:imageProcessor];
     });
     
-
     DFImageManager *photosKitImageManager = ({
         DFPHImageManagerConfiguration *configuration = [DFPHImageManagerConfiguration new];
         
@@ -62,7 +62,14 @@
         [[DFImageManager alloc] initWithConfiguration:configuration imageProcessor:nil cache:imageProcessor];
     });
     
-    DFCompositeImageManager *compositeImageManager = [[DFCompositeImageManager alloc] initWithImageManagers:@[ URLImageManager, photosKitImageManager ]];
+    DFImageManager *assetsLibraryImageManager = ({
+        DFAssetsLibraryImageManagerConfiguration *configuration = [DFAssetsLibraryImageManagerConfiguration new];
+        
+        // We do need both image decompression and caching.
+        [[DFImageManager alloc] initWithConfiguration:configuration imageProcessor:imageProcessor cache:imageProcessor];
+    });
+    
+    DFCompositeImageManager *compositeImageManager = [[DFCompositeImageManager alloc] initWithImageManagers:@[ URLImageManager, photosKitImageManager, assetsLibraryImageManager ]];
 
     return compositeImageManager;
 }

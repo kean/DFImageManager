@@ -10,6 +10,7 @@
 #import <DFImageManager/DFImageManagerKit.h>
 #import <Photos/Photos.h>
 
+
 static NSString * const reuseIdentifier = @"Cell";
 
 @implementation SDFPhotosKitSampleViewController {
@@ -21,16 +22,10 @@ static NSString * const reuseIdentifier = @"Cell";
     return [self initWithCollectionViewLayout:[UICollectionViewFlowLayout new]];
 }
 
-- (void)dealloc {
-    [DFImageManager setSharedManager:[DFImageManager defaultManager]];
-}
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     
     [self.collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:reuseIdentifier];
-    
-    [self _configureImageManager];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -59,17 +54,6 @@ static NSString * const reuseIdentifier = @"Cell";
         default:
             break;
     }
-}
-
-- (void)_configureImageManager {
-    DFImageProcessingManager *processingManager = [DFImageProcessingManager new];
-    
-    DFPHImageManagerConfiguration *configuration = [DFPHImageManagerConfiguration new];
-    DFImageManager *imageManager = [[DFImageManager alloc] initWithConfiguration:configuration imageProcessor:nil cache:processingManager];
-    
-    DFCompositeImageManager *compositeImageManager = [[DFCompositeImageManager alloc] initWithImageManagers:@[imageManager]];
-    
-    [DFImageManager setSharedManager:compositeImageManager];
 }
 
 - (void)_loadAssets {
