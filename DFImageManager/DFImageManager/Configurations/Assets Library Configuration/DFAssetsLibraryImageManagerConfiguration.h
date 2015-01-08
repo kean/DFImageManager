@@ -20,21 +20,10 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "DFImageManagerConfiguration.h"
+#import "DFImageManagerConfigurationProtocol.h"
 #import <Foundation/Foundation.h>
 
-@class DFCache;
 
-
-/*! Image manager configuration that supports NSURL and uses NSURLConnection to fetch images.
- @note Supported URL schemes: http:, https:, ftp:, file:
- */
-@interface DFURLImageManagerConfiguration : DFImageManagerConfiguration
-
-@property (nonatomic, readonly) DFCache *cache;
-
-- (instancetype)initWithCache:(DFCache *)cache NS_DESIGNATED_INITIALIZER;
-
-+ (NSSet *)supportedSchemes;
+@interface DFAssetsLibraryImageManagerConfiguration : NSObject <DFImageManagerConfiguration>
 
 @end

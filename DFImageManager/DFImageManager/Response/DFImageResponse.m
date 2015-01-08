@@ -42,6 +42,14 @@
     return self;
 }
 
+- (instancetype)initWithImage:(UIImage *)image {
+    return [self initWithImage:image error:nil];
+}
+
+- (instancetype)initWithError:(NSError *)error {
+    return [self initWithImage:nil error:error];
+}
+
 - (instancetype)initWithResponse:(DFImageResponse *)response {
     if (self = [super init]) {
         _image = response.image;
@@ -61,7 +69,7 @@
 }
 
 + (instancetype)emptyResponse {
-    return [[DFImageResponse alloc] initWithImage:nil error:nil];
+    return [DFImageResponse new];
 }
 
 @end

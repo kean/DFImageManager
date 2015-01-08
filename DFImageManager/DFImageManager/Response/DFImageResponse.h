@@ -30,7 +30,8 @@
 @property (nonatomic, readonly) NSData *data;
 @property (nonatomic, readonly) NSDictionary *userInfo;
 
-- (instancetype)initWithImage:(UIImage *)image error:(NSError *)error;
+- (instancetype)initWithImage:(UIImage *)image;
+- (instancetype)initWithError:(NSError *)error;
 
 + (instancetype)emptyResponse;
 

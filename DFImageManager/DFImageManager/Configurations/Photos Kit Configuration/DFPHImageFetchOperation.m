@@ -115,16 +115,7 @@
     }
 }
 
-- (void)cancel {
-    @synchronized(self) {
-        if ([self isCancelled]) {
-            return;
-        }
-        [super cancel];
-    }
-}
-
-#pragma mark - <DFImageManagerConfiguration>
+#pragma mark - <DFImageManagerOperation>
 
 - (DFImageResponse *)imageResponse {
     return _response;

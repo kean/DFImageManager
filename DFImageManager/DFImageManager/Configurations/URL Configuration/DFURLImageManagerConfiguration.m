@@ -54,7 +54,22 @@
 #pragma mark - <DFImageManagerConfiguration>
 
 - (BOOL)imageManager:(id<DFImageManager>)manager canHandleRequest:(DFImageRequest *)request {
-    return [request.asset isKindOfClass:[NSURL class]];
+    if ([request.asset isKindOfClass:[NSURL class]]) {
+        NSURL *URL = request.asset;
+        if ([[[self class] supportedSchemes] containsObject:URL.scheme]) {
+            return YES;
+        }
+    }
+    return NO;
+}
+
++ (NSSet *)supportedSchemes {
+    static NSSet *schemes;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        schemes = [NSSet setWithObjects:@"http", @"https", @"ftp", @"file", nil];
+    });
+    return schemes;
 }
 
 - (NSString *)imageManager:(id<DFImageManager>)manager uniqueIDForAsset:(id)asset {

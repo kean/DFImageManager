@@ -36,10 +36,11 @@
 #pragma mark - Smoke Tests
 
 - (void)testThatImageManagerWorks {
-    NSURL *imageURL = [NSURL URLWithString:@"test://imagemanager.com/image.jpg"];
+    NSURL *imageURL = [NSURL URLWithString:@"http://imagemanager.com/image.jpg"];
     [TDFTesting stubRequestWithURL:imageURL];
     
     XCTestExpectation *expectation = [self expectationWithDescription:@"image_fetched"];
+    XCTAssertTrue([_imageManager canHandleRequest:[[DFImageRequest alloc] initWithAsset:imageURL]]);
     
     [_imageManager requestImageForAsset:imageURL targetSize:DFImageManagerMaximumSize contentMode:DFImageContentModeDefault options:nil completion:^(UIImage *image, NSDictionary *info) {
         XCTAssertNotNil(image);
@@ -50,7 +51,7 @@
 }
 
 - (void)testThatImageManagerHandlesErrors {
-    NSURL *imageURL = [NSURL URLWithString:@"test://imagemanager.com/image.jpg"];
+    NSURL *imageURL = [NSURL URLWithString:@"http://imagemanager.com/image.jpg"];
     
     [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
         return [request.URL isEqual:imageURL];
@@ -59,6 +60,8 @@
     }];
     
     XCTestExpectation *expectation = [self expectationWithDescription:@"fetch_failed"];
+    
+    XCTAssertTrue([_imageManager canHandleRequest:[[DFImageRequest alloc] initWithAsset:imageURL]]);
     
     [_imageManager requestImageForAsset:imageURL targetSize:DFImageManagerMaximumSize contentMode:DFImageContentModeDefault options:nil completion:^(UIImage *image, NSDictionary *info) {
         NSError *error = info[DFImageInfoErrorKey];

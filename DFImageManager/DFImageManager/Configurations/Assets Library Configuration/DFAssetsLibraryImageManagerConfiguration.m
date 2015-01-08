@@ -20,22 +20,22 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "DFImageRequest.h"
-#import "DFImageRequestOptions.h"
-#import "DFPHAssetlocalIdentifier.h"
-#import "DFPHImageFetchOperation.h"
-#import "DFPHImageManagerConfiguration.h"
-#import <Photos/Photos.h>
+#import "DFAssetsLibraryImageFetchOperation.h"
+#import "DFAssetsLibraryImageManagerConfiguration.h"
+#import "DFAssetsLibraryUtilities.h"
+#import <AssetsLibrary/AssetsLibrary.h>
 
 
-@implementation DFPHImageManagerConfiguration {
+@implementation DFAssetsLibraryImageManagerConfiguration {
     NSOperationQueue *_queue;
+    BOOL _isIpad;
 }
 
 - (instancetype)init {
     if (self = [super init]) {
         _queue = [NSOperationQueue new];
         _queue.maxConcurrentOperationCount = 2;
+        _isIpad = [[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad;
     }
     return self;
 }
@@ -44,44 +44,51 @@
 
 - (BOOL)imageManager:(id<DFImageManager>)manager canHandleRequest:(DFImageRequest *)request {
     id asset = request.asset;
-    return [asset isKindOfClass:[PHAsset class]] || [asset isKindOfClass:[DFPHAssetlocalIdentifier class]];
+    if ([asset isKindOfClass:[ALAsset class]]) {
+        return YES;
+    }
+    if ([asset isKindOfClass:[NSURL class]]) {
+        NSURL *URL = asset;
+        if ([URL.scheme isEqualToString:@"assets-library"]) {
+            return YES;
+        }
+    }
+    return NO;
 }
 
 - (NSString *)imageManager:(id<DFImageManager>)manager uniqueIDForAsset:(id)asset {
-    if ([asset isKindOfClass:[PHAsset class]]) {
-        return [((PHAsset *)asset) localIdentifier];
-    } else if ([asset isKindOfClass:[DFPHAssetlocalIdentifier class]]) {
-        return [((DFPHAssetlocalIdentifier *)asset) identifier];
+    if ([asset isKindOfClass:[ALAsset class]]) {
+        return [((ALAsset *)asset).defaultRepresentation.url absoluteString];
+    } else if ([asset isKindOfClass:[NSURL class]]) {
+        return [((NSURL *)asset) absoluteString];
     }
     return nil;
 }
 
 - (NSString *)imageManager:(id<DFImageManager>)manager executionContextIDForRequest:(DFImageRequest *)request {
     NSString *assetUID = [self imageManager:manager uniqueIDForAsset:request.asset];
-    
+    DFALAssetImageSize imageSize = [self _assetImageSizeForRequest:request];
     NSMutableString *ECID = [[NSMutableString alloc] initWithString:@"requestID?"];
-    NSArray *keyPaths = [self _keyPathForRequestParametersAffectingExecutionContextID:request];
-    for (NSString *keyPath in keyPaths) {
-        [ECID appendFormat:@"%@=%@&", keyPath, [request valueForKeyPath:keyPath]];
-    }
+    [ECID appendFormat:@"imageSize=%i", (int)imageSize];
     [ECID appendFormat:@"assetID=%@", assetUID];
-    return ECID;
+    return assetUID;
 }
 
-- (NSArray *)_keyPathForRequestParametersAffectingExecutionContextID:(DFImageRequest *)request {
-    static NSArray *keyPaths;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        keyPaths = @[ @"targetSize",
-                      @"contentMode",
-                      @"options.networkAccessAllowed" ];
-    });
-    return keyPaths;
+- (DFALAssetImageSize)_assetImageSizeForRequest:(DFImageRequest *)request {
+    // TODO: Improve decision making here.
+    CGFloat thumbnailSide = _isIpad ? 125.f : 75.f;
+    thumbnailSide *= 1.2f;
+    if (request.targetSize.width <= thumbnailSide &&
+        request.targetSize.height <= thumbnailSide) {
+        return DFALAssetImageSizeThumbnail;
+    } else {
+        return DFALAssetImageSizeFullscreen;
+    }
 }
 
 - (NSOperation<DFImageManagerOperation> *)imageManager:(id<DFImageManager>)manager createOperationForRequest:(DFImageRequest *)request previousOperation:(NSOperation<DFImageManagerOperation> *)previousOperation {
     if (!previousOperation) {
-        return [[DFPHImageFetchOperation alloc] initWithRequest:request];
+        return [[DFAssetsLibraryImageFetchOperation alloc] init];
     }
     return nil;
 }
