@@ -42,7 +42,7 @@
 #import "DFImageRequestOptions.h"
 #import "DFImageResponse.h"
 
-#import "DFNetworkImageManagerConfiguration.h"
+#import "DFURLImageManagerConfiguration.h"
 
 #import "DFPHImageManagerConfiguration.h"
 #import "DFPHImageFetchOperation.h"

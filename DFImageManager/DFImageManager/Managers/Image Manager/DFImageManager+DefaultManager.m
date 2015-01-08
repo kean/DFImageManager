@@ -23,7 +23,7 @@
 #import "DFCompositeImageManager.h"
 #import "DFImageManager.h"
 #import "DFImageProcessingManager.h"
-#import "DFNetworkImageManagerConfiguration.h"
+#import "DFURLImageManagerConfiguration.h"
 #import "DFPHImageManagerConfiguration.h"
 #import "DFProxyImageManager.h"
 #import <DFCache/DFCache.h>
@@ -43,15 +43,15 @@
 + (id<DFImageManager>)_createDefaultManager {
     DFImageProcessingManager *imageProcessor = [DFImageProcessingManager new];
     
-    DFImageManager *networkImageManager = ({
+    DFImageManager *URLImageManager = ({
         // Initialize DFCache without memory cache because DFImageManager has a higher level memory cache (see <DFImageCaching>.
         DFCache *cache = [[DFCache alloc] initWithName:[[NSUUID UUID] UUIDString] memoryCache:nil];
         
         // Disable image decompression because DFImageManager has builtin image decompression (see <DFImageProcessing>)
         [cache setAllowsImageDecompression:NO];
         
-        DFNetworkImageManagerConfiguration *networkImageManagerConfiguration = [[DFNetworkImageManagerConfiguration alloc] initWithCache:cache];
-        [[DFImageManager alloc] initWithConfiguration:networkImageManagerConfiguration imageProcessor:imageProcessor cache:imageProcessor];
+        DFURLImageManagerConfiguration *URLImageManagerConfiguration = [[DFURLImageManagerConfiguration alloc] initWithCache:cache];
+        [[DFImageManager alloc] initWithConfiguration:URLImageManagerConfiguration imageProcessor:imageProcessor cache:imageProcessor];
     });
     
 
@@ -62,7 +62,7 @@
         [[DFImageManager alloc] initWithConfiguration:configuration imageProcessor:nil cache:imageProcessor];
     });
     
-    DFCompositeImageManager *compositeImageManager = [[DFCompositeImageManager alloc] initWithImageManagers:@[ networkImageManager, photosKitImageManager ]];
+    DFCompositeImageManager *compositeImageManager = [[DFCompositeImageManager alloc] initWithImageManagers:@[ URLImageManager, photosKitImageManager ]];
 
     return compositeImageManager;
 }

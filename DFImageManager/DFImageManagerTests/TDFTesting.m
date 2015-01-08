@@ -15,17 +15,21 @@
     return [[UIImage alloc] initWithData:[self _testImageData] scale:[UIScreen mainScreen].scale];
 }
 
-+ (NSData *)_testImageData {
++ (NSURL *)testImageURL {
     NSBundle *bundle = [NSBundle bundleForClass:[self class]];
     NSString *path = [bundle pathForResource:@"Image" ofType:@"jpg"];
-    return [NSData dataWithContentsOfFile:path];
+    return [NSURL fileURLWithPath:path];
 }
 
-+ (void)stubRequestWithURL:(NSString *)imageURL {
++ (NSData *)_testImageData {
+    return [NSData dataWithContentsOfURL:[self testImageURL]];
+}
+
++ (void)stubRequestWithURL:(NSURL *)imageURL {
     UIImage *testImage = [TDFTesting testImage];
     NSData *data = UIImageJPEGRepresentation(testImage, 1.0);
     [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
-        return [request.URL.absoluteString isEqualToString:imageURL];
+        return [request.URL isEqual:imageURL];
     } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
         return [[OHHTTPStubsResponse alloc] initWithData:data statusCode:200 headers:nil];
     }];

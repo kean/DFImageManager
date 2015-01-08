@@ -12,7 +12,8 @@
 
 @interface TDFTesting : NSObject
 
++ (NSURL *)testImageURL;
 + (UIImage *)testImage;
-+ (void)stubRequestWithURL:(NSString *)imageURL;
++ (void)stubRequestWithURL:(NSURL *)imageURL;
 
 @end

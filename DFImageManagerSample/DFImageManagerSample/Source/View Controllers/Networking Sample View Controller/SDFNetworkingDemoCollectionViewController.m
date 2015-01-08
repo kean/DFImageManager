@@ -93,10 +93,10 @@ static NSString * const reuseIdentifier = @"Cell";
     [cache setAllowsImageDecompression:NO];
     _cache = cache;
     
-    DFNetworkImageManagerConfiguration *networkImageManagerConfiguration = [[DFNetworkImageManagerConfiguration alloc] initWithCache:cache];
-    DFImageManager *networkImageManager = [[DFImageManager alloc] initWithConfiguration:networkImageManagerConfiguration imageProcessor:imageProcessor cache:imageProcessor];
+    DFURLImageManagerConfiguration *URLImageManagerConfiguration = [[DFURLImageManagerConfiguration alloc] initWithCache:cache];
+    DFImageManager *URLImageManager = [[DFImageManager alloc] initWithConfiguration:URLImageManagerConfiguration imageProcessor:imageProcessor cache:imageProcessor];
     
-    [DFImageManager setSharedManager:networkImageManager];
+    [DFImageManager setSharedManager:URLImageManager];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -157,7 +157,7 @@ static NSString * const reuseIdentifier = @"Cell";
     }
     
     SDFFlickrPhoto *photo = _photos[indexPath.row];
-    [imageView setImageWithAsset:photo.photoURL targetSize:[self _imageTargetSize] contentMode:DFImageContentModeAspectFill options:nil];
+    [imageView setImageWithAsset:[NSURL URLWithString:photo.photoURL] targetSize:[self _imageTargetSize] contentMode:DFImageContentModeAspectFill options:nil];
     
     return cell;
 }
@@ -203,7 +203,7 @@ static NSString * const reuseIdentifier = @"Cell";
     NSMutableArray *assets = [NSMutableArray new];
     for (NSIndexPath *indexPath in indexPaths) {
         SDFFlickrPhoto *photo = _photos[indexPath.row];
-        [assets addObject:photo.photoURL];
+        [assets addObject:[NSURL URLWithString:photo.photoURL]];
     }
     return assets;
 }

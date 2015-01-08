@@ -26,7 +26,10 @@
 @class DFCache;
 
 
-@interface DFNetworkImageManagerConfiguration : DFImageManagerConfiguration
+/*! Image manager configuration that supports NSURL and uses NSURLConnection to fetch images.
+ @note Supported NSURL schemes: http:, https:, ftp:, file:
+ */
+@interface DFURLImageManagerConfiguration : DFImageManagerConfiguration
 
 @property (nonatomic, readonly) DFCache *cache;
 

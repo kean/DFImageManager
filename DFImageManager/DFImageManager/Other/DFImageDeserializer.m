@@ -26,12 +26,15 @@
 
 @implementation DFImageDeserializer
 
-- (BOOL)isValidResponse:(NSHTTPURLResponse *)response error:(NSError *__autoreleasing *)error {
-    if (response.statusCode != 200) {
-        if (error) {
-            *error = [NSError errorWithDomain:NSURLErrorDomain code:response.statusCode userInfo:nil];
+- (BOOL)isValidResponse:(NSURLResponse *)response error:(NSError *__autoreleasing *)error {
+    if ([response isKindOfClass:[NSHTTPURLResponse class]]) {
+        NSHTTPURLResponse *HTTPResponse = (NSHTTPURLResponse *)response;
+        if (HTTPResponse.statusCode != 200) {
+            if (error) {
+                *error = [NSError errorWithDomain:NSURLErrorDomain code:HTTPResponse.statusCode userInfo:nil];
+            }
+            return NO;
         }
-        return NO;
     }
     return YES;
 }
