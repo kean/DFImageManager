@@ -158,7 +158,7 @@ static NSString *const _kPreheatHandlerID = @"_df_preheat";
         NSString *assetID = [_conf imageManager:self uniqueIDForAsset:request.asset];
         UIImage *image = [_cache cachedImageForAssetID:assetID request:request];
         if (image != nil) {
-            [self _didCompleteRequestWithImage:image info:@{ DFImageInfoResultIsFromMemoryCacheKey : @YES } handler:handler];
+            [self _didCompleteRequestWithImage:image info:nil handler:handler];
             return;
         }
     }

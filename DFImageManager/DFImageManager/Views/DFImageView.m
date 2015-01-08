@@ -115,10 +115,11 @@
     }
     
     DFImageView *__weak weakSelf = self;
+    NSTimeInterval startTime = CACurrentMediaTime();
     _request = [[DFCompositeImageRequest alloc] initWithRequests:requests handler:^(UIImage *image, NSDictionary *info, BOOL isLastRequest) {
         NSError *error = info[DFImageInfoErrorKey];
         if (image != nil) {
-            [weakSelf requestDidFinishWithImage:image info:info];
+            [weakSelf requestDidFinishWithImage:image info:info elapsedTime:CACurrentMediaTime() - startTime];
         } else if (!self.imageView.image){
             [weakSelf requestDidFailWithError:error info:info];
         } else {
@@ -128,14 +129,14 @@
     [_request start];
 }
 
-- (void)requestDidFinishWithImage:(UIImage *)image info:(NSDictionary *)info {
-    BOOL fromMemory = [info[DFImageInfoResultIsFromMemoryCacheKey] boolValue];
+- (void)requestDidFinishWithImage:(UIImage *)image info:(NSDictionary *)info elapsedTime:(NSTimeInterval)elapsedTime {
+    BOOL isFastResponse = (elapsedTime * 1000.0) < 33.2; // Elapsed time is lower then 32 ms.
     DFImageViewAnimation animation = DFImageViewAnimationNone;
     if (self.animation != DFImageViewAnimationNone) {
         if (self.imageView.image != nil) {
             animation = DFImageViewAnimationNone;
         } else {
-            animation = fromMemory ? DFImageViewAnimationNone : _animation;
+            animation = isFastResponse ? DFImageViewAnimationNone : _animation;
         }
     }
     [self _df_setImage:image withAnimation:animation];

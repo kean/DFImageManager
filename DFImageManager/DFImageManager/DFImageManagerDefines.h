@@ -29,10 +29,6 @@ typedef void (^DFImageRequestCompletion)(UIImage *image, NSDictionary *info);
 extern NSString *const DFImageInfoRequestIDKey;
 extern NSString *const DFImageInfoErrorKey;
 
-/*! Boolean value indicating whether the image was returned from memory cache. (NSNumber)
- */
-extern NSString *const DFImageInfoResultIsFromMemoryCacheKey;
-
 
 /* Size to pass when requesting the largest image for asset available (contentMode will be ignored).
  */

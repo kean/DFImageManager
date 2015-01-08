@@ -50,8 +50,8 @@
         _options = options;
         _cache = cache;
         [self setCacheKeyForAsset:^NSString *(id asset, DFImageRequestOptions *options) {
-            if ([asset isKindOfClass:[NSString class]]) {
-                return asset;
+            if ([asset isKindOfClass:[NSURL class]]) {
+                return [((NSURL *)asset) absoluteString];
             } else {
                 return nil;
             }
