@@ -28,11 +28,18 @@
 
 @protocol DFCollectionViewPreheatingControllerDelegate <NSObject>
 
+/*! Tells the delegate that the preheat window changed significantly.
+ @param addedIndexPaths Index paths for items added to the preheat window. Index paths are sorted so that the items closest to the previous preheat window are in the beginning of the array; no matter whether user is scrolling forward of backward.
+ @param removedIndexPaths Index paths for items there were removed from the preheat window.
+ */
 - (void)collectionViewPreheatingController:(DFCollectionViewPreheatingController *)controller didUpdatePreheatRectWithAddedIndexPaths:(NSArray *)addedIndexPaths removedIndexPaths:(NSArray *)removedIndexPaths;
 
 @end
 
 
+/*! Detects changes in collection view content offset and updates preheat window. The preheat window is a rect inside the collection view content which is bigger than the viewport of the collection view. Provides delegate with index paths for added and removed cells when the preheat window changes significantly.
+ @note Supports UICollectionViewFlowLayout and it's subclasses with either vertical or horizontal scroll direction.
+ */
 @interface DFCollectionViewPreheatingController : NSObject
 
 @property (nonatomic, readonly) UICollectionView *collectionView;
@@ -52,7 +59,12 @@
 
 - (instancetype)initWithCollectionView:(UICollectionView *)collectionView;
 
+/*! Resets preheat rect and calls delegate with removed index paths.
+ */
 - (void)resetPreheatRect;
+
+/*! Updates current preheat rect and all items contained in it.
+ */
 - (void)updatePreheatRect;
 
 @end

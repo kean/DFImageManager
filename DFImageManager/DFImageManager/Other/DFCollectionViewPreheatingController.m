@@ -24,145 +24,104 @@
 
 
 @implementation DFCollectionViewPreheatingController {
-   NSMutableSet *_preheatIndexPaths;
+    NSMutableSet *_preheatIndexPaths;
 }
 
 - (void)dealloc {
-   [_collectionView removeObserver:self forKeyPath:@"contentOffset"];
+    [_collectionView removeObserver:self forKeyPath:@"contentOffset"];
 }
 
 - (instancetype)initWithCollectionView:(UICollectionView *)collectionView {
-   if (self = [super init]) {
-      NSParameterAssert(collectionView);
-      _collectionView = collectionView;
-      [_collectionView addObserver:self forKeyPath:@"contentOffset" options:kNilOptions context:NULL];
-      
-      _preheatIndexPaths = [NSMutableSet new];
-      _preheatRect = CGRectZero;
-      _preheatRectRatio = 2.f;
-      _preheatRectRevalidationRatio = 0.33f;
-   }
-   return self;
+    if (self = [super init]) {
+        NSParameterAssert(collectionView);
+        _collectionView = collectionView;
+        [_collectionView addObserver:self forKeyPath:@"contentOffset" options:kNilOptions context:NULL];
+        
+        _preheatIndexPaths = [NSMutableSet new];
+        _preheatRect = CGRectZero;
+        _preheatRectRatio = 2.f;
+        _preheatRectRevalidationRatio = 0.33f;
+    }
+    return self;
 }
 
 - (void)resetPreheatRect {
-   [self.delegate collectionViewPreheatingController:self didUpdatePreheatRectWithAddedIndexPaths:nil removedIndexPaths:[_preheatIndexPaths allObjects]];
-   [_preheatIndexPaths removeAllObjects];
-   _preheatRect = CGRectZero;
+    [self.delegate collectionViewPreheatingController:self didUpdatePreheatRectWithAddedIndexPaths:nil removedIndexPaths:[_preheatIndexPaths allObjects]];
+    [self _resetPreheatRect];
 }
 
 - (void)updatePreheatRect {
-   [self _updatePreheatRect];
+    [self _resetPreheatRect];
+    [self _updatePreheatRect];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-   if (object == self.collectionView) {
-      [self _updatePreheatRect];
-   } else {
-      [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
-   }
+    if (object == self.collectionView) {
+        [self _updatePreheatRect];
+    } else {
+        [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
+    }
 }
 
-static inline CGFloat _SMPointDistance(CGPoint point0, CGPoint point1) {
-   CGFloat dx = point1.x - point0.x;
-   CGFloat dy = point1.y - point0.y;
-   return sqrt(dx * dx + dy * dy);
+- (void)_resetPreheatRect {
+    [_preheatIndexPaths removeAllObjects];
+    _preheatRect = CGRectZero;
 }
 
 - (void)_updatePreheatRect {
-   // UIScrollView bounds works differently from UIView bounds. It adds the contentOffset to the rect.
-   CGRect preheatRect = self.collectionView.bounds;
-   CGFloat inset = preheatRect.size.height - preheatRect.size.height * _preheatRectRatio;
-   preheatRect = CGRectInset(preheatRect, 0.f, inset / 2.f);
-   
-   // If scrolled by a "reasonable" amount...
-   CGFloat delta = ABS(CGRectGetMidY(preheatRect) - CGRectGetMidY(_preheatRect));
-   if (delta > CGRectGetHeight(self.collectionView.bounds) * _preheatRectRevalidationRatio) {
-      
-      NSMutableDictionary *allAttributes = [NSMutableDictionary new];
-      NSMutableSet *addedIndexPaths = [NSMutableSet new];
-      NSMutableSet *removedIndexPaths = [NSMutableSet new];
-      [self computeDifferenceBetweenRect:_preheatRect andRect:preheatRect removedHandler:^(CGRect removedRect) {
-         NSDictionary *attributes = [self _indexPathsForElementsInRect:removedRect];
-         [removedIndexPaths addObjectsFromArray:[attributes allKeys]];
-         [allAttributes addEntriesFromDictionary:attributes];
-      } addedHandler:^(CGRect addedRect) {
-         NSDictionary *attributes = [self _indexPathsForElementsInRect:addedRect];
-         [addedIndexPaths addObjectsFromArray:[attributes allKeys]];
-         [allAttributes addEntriesFromDictionary:attributes];
-      }];
-      
-      // Get rid of all the duplicates.
-      [addedIndexPaths minusSet:_preheatIndexPaths];
-      [removedIndexPaths intersectSet:_preheatIndexPaths];
-      
-      [_preheatIndexPaths unionSet:addedIndexPaths];
-      [_preheatIndexPaths minusSet:removedIndexPaths];
-      
-      // Sort added index paths
-      CGPoint preheatCenter = CGPointMake(CGRectGetMidX(preheatRect), CGRectGetMidY(preheatRect));
-      NSArray *sortedAddedIndexPaths = [[addedIndexPaths allObjects] sortedArrayUsingComparator:^NSComparisonResult(NSIndexPath *obj1, NSIndexPath *obj2) {
-         UICollectionViewLayoutAttributes *attr1 = allAttributes[obj1];
-         UICollectionViewLayoutAttributes *attr2 = allAttributes[obj2];
-         CGPoint point1 = CGPointMake(CGRectGetMidX(attr1.frame), CGRectGetMidY(attr1.frame));
-         CGPoint point2 = CGPointMake(CGRectGetMidX(attr2.frame), CGRectGetMidY(attr2.frame));
-         CGFloat distance1 = _SMPointDistance(point1, preheatCenter);
-         CGFloat distance2 = _SMPointDistance(point2, preheatCenter);
-         if (distance1 > distance2) {
-            return NSOrderedDescending;
-         } else if (distance1 < distance2) {
-            return NSOrderedAscending;
-         }
-         return NSOrderedSame;
-      }];
-      
-      _preheatRect = preheatRect;
-      
-      [self.delegate collectionViewPreheatingController:self didUpdatePreheatRectWithAddedIndexPaths:sortedAddedIndexPaths removedIndexPaths:[removedIndexPaths allObjects]];
-   }
+    NSAssert([self.collectionView.collectionViewLayout isKindOfClass:[UICollectionViewFlowLayout class]], @"Not suported collection view layout");
+    BOOL isVertical = ((UICollectionViewFlowLayout *)self.collectionView.collectionViewLayout).scrollDirection == UICollectionViewScrollDirectionVertical;
+    
+    // UIScrollView bounds works differently from UIView bounds. It adds the contentOffset to the rect.
+    CGRect preheatRect = self.collectionView.bounds;
+    CGFloat delta;
+    BOOL isScrolledByReasonableAmount;
+    
+    if (isVertical) {
+        CGFloat inset = preheatRect.size.height - preheatRect.size.height * _preheatRectRatio;
+        preheatRect = CGRectInset(preheatRect, 0.f, inset / 2.f);
+        delta = CGRectGetMidY(preheatRect) - CGRectGetMidY(_preheatRect);
+        isScrolledByReasonableAmount = fabsf(delta) > CGRectGetHeight(self.collectionView.bounds) * _preheatRectRevalidationRatio;
+    } else {
+        CGFloat inset = preheatRect.size.width - preheatRect.size.width * _preheatRectRatio;
+        preheatRect = CGRectInset(preheatRect, inset / 2.f, 0.f);
+        delta = CGRectGetMidX(preheatRect) - CGRectGetMidX(_preheatRect);
+        isScrolledByReasonableAmount = fabsf(delta) > CGRectGetWidth(self.collectionView.bounds) * _preheatRectRevalidationRatio;
+    }
+    
+    if (isScrolledByReasonableAmount || CGRectEqualToRect(_preheatRect, CGRectZero)) {
+        NSMutableSet *newIndexPaths = [NSMutableSet new];
+        newIndexPaths = [NSMutableSet setWithArray:[self _indexPathsForElementsInRect:preheatRect]];
+        
+        NSMutableSet *oldIndexPaths = [NSMutableSet setWithSet:self.preheatIndexPaths];
+        
+        NSMutableSet *addedIndexPaths = [newIndexPaths mutableCopy];
+        [addedIndexPaths minusSet:oldIndexPaths];
+        
+        NSMutableSet *removedIndexPaths = [oldIndexPaths mutableCopy];
+        [removedIndexPaths minusSet:newIndexPaths];
+        
+        _preheatIndexPaths = newIndexPaths;
+
+        // Sort added index paths.
+        BOOL ascending = delta > 0.f || CGRectEqualToRect(_preheatRect, CGRectZero);
+        NSArray *sortedAddedIndexPaths = [[addedIndexPaths allObjects] sortedArrayUsingDescriptors:@[ [NSSortDescriptor sortDescriptorWithKey:@"section" ascending:ascending], [NSSortDescriptor sortDescriptorWithKey:@"item" ascending:ascending] ]];
+        
+        _preheatRect = preheatRect;
+        
+        [self.delegate collectionViewPreheatingController:self didUpdatePreheatRectWithAddedIndexPaths:sortedAddedIndexPaths removedIndexPaths:[removedIndexPaths allObjects]];
+    }
 }
 
-- (NSDictionary *)_indexPathsForElementsInRect:(CGRect)rect {
-   NSArray *allLayoutAttributes = [self.collectionView.collectionViewLayout layoutAttributesForElementsInRect:rect];
-   if (allLayoutAttributes.count == 0) {
-      return nil;
-   }
-   NSMutableDictionary *attributes = [NSMutableDictionary dictionaryWithCapacity:allLayoutAttributes.count];
-   for (UICollectionViewLayoutAttributes *layoutAttributes in allLayoutAttributes) {
-      if (layoutAttributes.representedElementCategory == UICollectionElementCategoryCell) {
-         NSIndexPath *indexPath = layoutAttributes.indexPath;
-         attributes[indexPath] = layoutAttributes;
-      }
-   }
-   return attributes;
-}
-
-- (void)computeDifferenceBetweenRect:(CGRect)oldRect andRect:(CGRect)newRect removedHandler:(void (^)(CGRect removedRect))removedHandler addedHandler:(void (^)(CGRect addedRect))addedHandler {
-   if (CGRectIntersectsRect(newRect, oldRect)) {
-      CGFloat oldMaxY = CGRectGetMaxY(oldRect);
-      CGFloat oldMinY = CGRectGetMinY(oldRect);
-      CGFloat newMaxY = CGRectGetMaxY(newRect);
-      CGFloat newMinY = CGRectGetMinY(newRect);
-      if (newMaxY > oldMaxY) {
-         CGRect rectToAdd = CGRectMake(newRect.origin.x, oldMaxY, newRect.size.width, (newMaxY - oldMaxY));
-         addedHandler(rectToAdd);
-      }
-      if (oldMinY > newMinY) {
-         CGRect rectToAdd = CGRectMake(newRect.origin.x, newMinY, newRect.size.width, (oldMinY - newMinY));
-         addedHandler(rectToAdd);
-      }
-      if (newMaxY < oldMaxY) {
-         CGRect rectToRemove = CGRectMake(newRect.origin.x, newMaxY, newRect.size.width, (oldMaxY - newMaxY));
-         removedHandler(rectToRemove);
-      }
-      if (oldMinY < newMinY) {
-         CGRect rectToRemove = CGRectMake(newRect.origin.x, oldMinY, newRect.size.width, (newMinY - oldMinY));
-         removedHandler(rectToRemove);
-      }
-   } else {
-      addedHandler(newRect);
-      removedHandler(oldRect);
-   }
+- (NSArray *)_indexPathsForElementsInRect:(CGRect)rect {
+    NSArray *allLayoutAttributes = [self.collectionView.collectionViewLayout layoutAttributesForElementsInRect:rect];
+    NSMutableArray *indexPaths = [NSMutableArray new];
+    for (UICollectionViewLayoutAttributes *attributes in allLayoutAttributes) {
+        if (attributes.representedElementCategory == UICollectionElementCategoryCell) {
+            [indexPaths addObject:attributes.indexPath];
+        }
+    }
+    return indexPaths;
 }
 
 @end

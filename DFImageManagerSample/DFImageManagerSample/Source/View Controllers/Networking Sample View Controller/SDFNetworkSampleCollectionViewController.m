@@ -45,7 +45,7 @@ static NSString * const reuseIdentifier = @"Cell";
 - (instancetype)initWithCollectionViewLayout:(UICollectionViewLayout *)layout {
     if (self = [super initWithCollectionViewLayout:layout]) {
         _numberOfItemsPerRow = 4;
-        _allowsPreheating = NO;
+        _allowsPreheating = YES;
     }
     return self;
 }
@@ -93,6 +93,7 @@ static NSString * const reuseIdentifier = @"Cell";
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
     
+    // Resets preheat rect and stop preheating images via delegate call.git 
     [_preheatingController resetPreheatRect];
     _preheatingController = nil;
 }
@@ -105,6 +106,7 @@ static NSString * const reuseIdentifier = @"Cell";
     layout.minimumInteritemSpacing = 2.f;
     CGFloat side = (self.collectionView.bounds.size.width - (self.numberOfItemsPerRow - 1) * 2.0) / self.numberOfItemsPerRow;
     layout.itemSize = CGSizeMake(side, side);
+ //   layout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
 }
 
 #pragma mark - <UICollectionViewDataSource>
@@ -129,7 +131,7 @@ static NSString * const reuseIdentifier = @"Cell";
     }
     
     SDFFlickrPhoto *photo = _photos[indexPath.row];
-    [imageView setImageWithAsset:photo.photoURL];
+    [imageView setImageWithAsset:photo.photoURL targetSize:[self _imageTargetSize] contentMode:DFImageContentModeAspectFill options:nil];
     
     return cell;
 }
