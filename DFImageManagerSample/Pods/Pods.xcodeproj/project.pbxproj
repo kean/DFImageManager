@@ -10,64 +10,7 @@
 	<string>46</string>
 	<key>objects</key>
 	<dict>
-		<key>0068348B4E2E804CD446D597</key>
-		<dict>
-			<key>fileRef</key>
-			<string>EFFE06F225840E132D2ABD45</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>016B8396D5A7A1C56A534476</key>
-		<dict>
-			<key>buildConfigurations</key>
-			<array>
-				<string>3AEAC086B3F7A139B8BDD64F</string>
-				<string>8A09740B964EADB9A6F37F6E</string>
-			</array>
-			<key>defaultConfigurationIsVisible</key>
-			<string>0</string>
-			<key>defaultConfigurationName</key>
-			<string>Release</string>
-			<key>isa</key>
-			<string>XCConfigurationList</string>
-		</dict>
-		<key>016E194096705C90C26E6339</key>
-		<dict>
-			<key>fileRef</key>
-			<string>7171953E6DB38418282B85E8</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>01BB38D93409BEABEE3A4685</key>
-		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>name</key>
-			<string>DFImageRequest.m</string>
-			<key>path</key>
-			<string>DFImageManager/DFImageManager/Request/DFImageRequest.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>03FF272591973ACF505B274B</key>
-		<dict>
-			<key>fileRef</key>
-			<string>4094127E8AF171E3DA5A265E</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>06B49C60F48D2B0253023CA6</key>
-		<dict>
-			<key>fileRef</key>
-			<string>FB34599F1FA25D9E9BE3494B</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>06BF4B59D859B8044CE73913</key>
+		<key>023E56DE3F6609150B5D8209</key>
 		<dict>
 			<key>includeInIndex</key>
 			<string>1</string>
@@ -76,63 +19,20 @@
 			<key>lastKnownFileType</key>
 			<string>sourcecode.c.h</string>
 			<key>name</key>
-			<string>DFImageDeserializer.h</string>
+			<string>DFCache+DFExtensions.h</string>
 			<key>path</key>
-			<string>DFImageManager/DFImageManager/Other/DFImageDeserializer.h</string>
+			<string>DFCache/DFCache+DFExtensions.h</string>
 			<key>sourceTree</key>
 			<string>&lt;group&gt;</string>
 		</dict>
-		<key>0873BFB55AA393A9604AC524</key>
-		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>name</key>
-			<string>DFImageRequestOptions.h</string>
-			<key>path</key>
-			<string>DFImageManager/DFImageManager/Request/DFImageRequestOptions.h</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>094B03A21E74299C8340B683</key>
+		<key>024C8BC9BC7446EFEAA0B5D1</key>
 		<dict>
 			<key>fileRef</key>
-			<string>1E387EA203A1F6728357A559</string>
+			<string>6EF382CBC3F46DCFD9C6556F</string>
 			<key>isa</key>
 			<string>PBXBuildFile</string>
 		</dict>
-		<key>0A406896376D90B15D68D263</key>
-		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>path</key>
-			<string>Pods-DFCache-prefix.pch</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>0AFCDE76CE01704EF26B6BD0</key>
-		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>name</key>
-			<string>DFImageManagerBlockValueTransformer.m</string>
-			<key>path</key>
-			<string>DFImageManager/DFImageManager/Other/DFImageManagerBlockValueTransformer.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>0B41E11A646712E4B57CBD05</key>
+		<key>02EFC161068ADDDD1DBABEB2</key>
 		<dict>
 			<key>includeInIndex</key>
 			<string>1</string>
@@ -147,72 +47,27 @@
 			<key>sourceTree</key>
 			<string>&lt;group&gt;</string>
 		</dict>
-		<key>0F29959C4F3EC85C9892A926</key>
+		<key>0391869CB481B2F4DF5E2434</key>
 		<dict>
-			<key>children</key>
-			<array>
-				<string>543021E02E7D3F42595411DC</string>
-				<string>A835CDF0B1367E56B93446E6</string>
-				<string>9D26B668324593F4171A2CD5</string>
-				<string>A20E386FCC2A2595ED3F9EA8</string>
-				<string>4BDE179F8F055A2FB508CEB5</string>
-				<string>AFD97250A41AD74FE51EE89C</string>
-				<string>B18C7D3843EE279C05BFBC9E</string>
-			</array>
+			<key>fileRef</key>
+			<string>81EE1DDEE47F74FE1EEA8FDF</string>
 			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>name</key>
-			<string>Pods</string>
-			<key>path</key>
-			<string>Target Support Files/Pods</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
+			<string>PBXBuildFile</string>
 		</dict>
-		<key>10F3378A81CEA31726F5A496</key>
+		<key>04D7E48CA75EC356F3812D56</key>
 		<dict>
 			<key>includeInIndex</key>
 			<string>1</string>
 			<key>isa</key>
 			<string>PBXFileReference</string>
 			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>name</key>
-			<string>DFImageManager.m</string>
+			<string>text.xcconfig</string>
 			<key>path</key>
-			<string>DFImageManager/DFImageManager/Managers/Image Manager/DFImageManager.m</string>
+			<string>Pods-DFImageManager.xcconfig</string>
 			<key>sourceTree</key>
 			<string>&lt;group&gt;</string>
 		</dict>
-		<key>1136141D22037DECEF24594A</key>
-		<dict>
-			<key>fileRef</key>
-			<string>D6ACAE659963663B448FE294</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>115F3B9EB420BB07C50616F2</key>
-		<dict>
-			<key>fileRef</key>
-			<string>409ACC0141CFBB44EE1C01D3</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>11F9AD70A0EC9AEE7DAEE396</key>
-		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>name</key>
-			<string>DFValueTransformer.m</string>
-			<key>path</key>
-			<string>DFCache/Value Transforming/DFValueTransformer.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>15926C73AA07D5D90FC9E0AE</key>
+		<key>056AD2F5386F3DBF407F3028</key>
 		<dict>
 			<key>includeInIndex</key>
 			<string>1</string>
@@ -220,17 +75,289 @@
 			<string>PBXFileReference</string>
 			<key>lastKnownFileType</key>
 			<string>sourcecode.c.h</string>
+			<key>name</key>
+			<string>DFCacheTimer.h</string>
 			<key>path</key>
-			<string>Pods-DFImageManager-prefix.pch</string>
+			<string>DFCache/Private/DFCacheTimer.h</string>
 			<key>sourceTree</key>
 			<string>&lt;group&gt;</string>
 		</dict>
-		<key>15C1A1082A9BF2B0321D4A44</key>
+		<key>083D1A68CA5243696189E801</key>
+		<dict>
+			<key>fileRef</key>
+			<string>FCA8E56603A7568A4DB32432</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>0CDA48B3F600E57F4C0FEA1E</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>text.plist.xml</string>
+			<key>path</key>
+			<string>Pods-acknowledgements.plist</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>0CDF69046C66F069247F96AF</key>
+		<dict>
+			<key>fileRef</key>
+			<string>992B0EB1AEBF010751F5E82B</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>107EED3BBA3CBBE2AECACC2B</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>name</key>
+			<string>DFURLImageManagerConfiguration.h</string>
+			<key>path</key>
+			<string>DFImageManager/DFImageManager/Configurations/URL Configuration/DFURLImageManagerConfiguration.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>10A1BAB37421F1B78F18DF54</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>name</key>
+			<string>DFImageManagerOperationProtocol.h</string>
+			<key>path</key>
+			<string>DFImageManager/DFImageManager/Protocols/DFImageManagerOperationProtocol.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>117BB379C7B8F348B134AD2C</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>name</key>
+			<string>DFPHImageFetchOperation.m</string>
+			<key>path</key>
+			<string>DFImageManager/DFImageManager/Configurations/Photos Kit Configuration/DFPHImageFetchOperation.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>11B39E1F9D38E50EB05E089A</key>
+		<dict>
+			<key>fileRef</key>
+			<string>7C3465625FC1EF2982723F53</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>11E2C7191DA70F16DF8BE0FE</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>text.xcconfig</string>
+			<key>path</key>
+			<string>Pods-DFCache-Private.xcconfig</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>1312A84AA6622BAE2F5CC706</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>AF450EFA8572A1728C9F41BA</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>name</key>
+			<string>Pods</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>16886744491D078CEE6F34D9</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>name</key>
+			<string>DFAssetsLibraryImageFetchOperation.h</string>
+			<key>path</key>
+			<string>DFImageManager/DFImageManager/Configurations/Assets Library Configuration/DFAssetsLibraryImageFetchOperation.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>18405878F53858D0D16DEB17</key>
+		<dict>
+			<key>fileRef</key>
+			<string>B445769F4A929E997C12101C</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>18D615BB47854765C872EFED</key>
+		<dict>
+			<key>fileRef</key>
+			<string>2AA9D9E06785874EF4F696FA</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>194C3E32BA64E21C3B3F9F20</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>name</key>
+			<string>DFImageDeserializer.m</string>
+			<key>path</key>
+			<string>DFImageManager/DFImageManager/Other/DFImageDeserializer.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>1B0054381AD5380CD538A9F3</key>
+		<dict>
+			<key>baseConfigurationReference</key>
+			<string>94A26BFDA504C2ECEF3C087E</string>
+			<key>buildSettings</key>
+			<dict>
+				<key>ALWAYS_SEARCH_USER_PATHS</key>
+				<string>NO</string>
+				<key>COPY_PHASE_STRIP</key>
+				<string>YES</string>
+				<key>DSTROOT</key>
+				<string>/tmp/xcodeproj.dst</string>
+				<key>GCC_PRECOMPILE_PREFIX_HEADER</key>
+				<string>YES</string>
+				<key>INSTALL_PATH</key>
+				<string>$(BUILT_PRODUCTS_DIR)</string>
+				<key>IPHONEOS_DEPLOYMENT_TARGET</key>
+				<string>6.0</string>
+				<key>OTHER_CFLAGS</key>
+				<array>
+					<string>-DNS_BLOCK_ASSERTIONS=1</string>
+					<string>$(inherited)</string>
+				</array>
+				<key>OTHER_CPLUSPLUSFLAGS</key>
+				<array>
+					<string>-DNS_BLOCK_ASSERTIONS=1</string>
+					<string>$(inherited)</string>
+				</array>
+				<key>OTHER_LDFLAGS</key>
+				<string></string>
+				<key>OTHER_LIBTOOLFLAGS</key>
+				<string></string>
+				<key>PRODUCT_NAME</key>
+				<string>$(TARGET_NAME)</string>
+				<key>PUBLIC_HEADERS_FOLDER_PATH</key>
+				<string>$(TARGET_NAME)</string>
+				<key>SDKROOT</key>
+				<string>iphoneos</string>
+				<key>SKIP_INSTALL</key>
+				<string>YES</string>
+				<key>VALIDATE_PRODUCT</key>
+				<string>YES</string>
+			</dict>
+			<key>isa</key>
+			<string>XCBuildConfiguration</string>
+			<key>name</key>
+			<string>Release</string>
+		</dict>
+		<key>1C8712EAB760814DA866D69D</key>
+		<dict>
+			<key>fileRef</key>
+			<string>B905925F360DB1E4110BC866</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>1C8AE09A90DA796798E19317</key>
+		<dict>
+			<key>fileRef</key>
+			<string>3C64CF25DEDA3C770FBA324B</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>1CE89A8FFB2BC46FFC9C2BF3</key>
+		<dict>
+			<key>fileRef</key>
+			<string>E04ABE5FBE155F2623E9A3AA</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>1D77D1D5733DA3FA142D0817</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>name</key>
+			<string>DFImageCacheLookupOperation.h</string>
+			<key>path</key>
+			<string>DFImageManager/DFImageManager/Operations/DFImageCacheLookupOperation.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>1F223894C12C98B273C041EE</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>name</key>
+			<string>DFImageRequestID.h</string>
+			<key>path</key>
+			<string>DFImageManager/DFImageManager/Other/DFImageRequestID.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>1FD71DAA97A0F7D28657E139</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>name</key>
+			<string>DFImageManagerBlockValueTransformer.m</string>
+			<key>path</key>
+			<string>DFImageManager/DFImageManager/Other/DFImageManagerBlockValueTransformer.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>20DFDB14B89F260312E84E3B</key>
+		<dict>
+			<key>fileRef</key>
+			<string>33A63DC668996D38FBBB2827</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>21731D163E326C003D6273D2</key>
 		<dict>
 			<key>buildConfigurations</key>
 			<array>
-				<string>A62011A3F13C5A1840BA324F</string>
-				<string>E191FA766FE34DDBA8255290</string>
+				<string>7CD1E764F4B6E414B1C3610D</string>
+				<string>6A82B1812B7DF7A36C37238A</string>
 			</array>
 			<key>defaultConfigurationIsVisible</key>
 			<string>0</string>
@@ -239,135 +366,28 @@
 			<key>isa</key>
 			<string>XCConfigurationList</string>
 		</dict>
-		<key>1823B6B419009DE2CBD78389</key>
-		<dict>
-			<key>buildActionMask</key>
-			<string>2147483647</string>
-			<key>files</key>
-			<array>
-				<string>DF1F82411E76AD80C43A019E</string>
-				<string>9C9EE4B53AE80B19A81ECE61</string>
-				<string>1136141D22037DECEF24594A</string>
-				<string>094B03A21E74299C8340B683</string>
-				<string>799E5E3095C5EC05CCAB68F7</string>
-				<string>DFF8F0B1D26B259F9D714D3E</string>
-				<string>CBFD032956735BEDBE4AFD5B</string>
-				<string>F5CDAE8BCE8D0BCFD7A19300</string>
-				<string>D3651352F060C97F7D006F88</string>
-				<string>85D809F2FC781FDD10902F3E</string>
-				<string>D4F1E0476434C074F240F1C9</string>
-			</array>
-			<key>isa</key>
-			<string>PBXSourcesBuildPhase</string>
-			<key>runOnlyForDeploymentPostprocessing</key>
-			<string>0</string>
-		</dict>
-		<key>18543686BFED847EAB97CDFA</key>
+		<key>21922DEE0C794860CF140206</key>
 		<dict>
 			<key>fileRef</key>
-			<string>2B729173A932CFB07EA7869D</string>
+			<string>79207F7D7FE3AF684BE545FF</string>
 			<key>isa</key>
 			<string>PBXBuildFile</string>
 		</dict>
-		<key>1913C489A864926FEED38A10</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>0F29959C4F3EC85C9892A926</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>name</key>
-			<string>Targets Support Files</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>1A76B64C7A93502FDD8777FE</key>
-		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>name</key>
-			<string>DFValueTransformerFactory.m</string>
-			<key>path</key>
-			<string>DFCache/Value Transforming/DFValueTransformerFactory.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>1CE2207C5E5DAD2816184DC1</key>
+		<key>21DD678F6A56BD9739AA9452</key>
 		<dict>
 			<key>fileRef</key>
-			<string>0AFCDE76CE01704EF26B6BD0</string>
+			<string>2ADA8D7DE9219A3384CC9021</string>
 			<key>isa</key>
 			<string>PBXBuildFile</string>
 		</dict>
-		<key>1E387EA203A1F6728357A559</key>
-		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>name</key>
-			<string>DFCachePrivate.m</string>
-			<key>path</key>
-			<string>DFCache/Private/DFCachePrivate.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>1E3BE38CB03ABF937D05E741</key>
+		<key>233D70638B3E6DE3057498A8</key>
 		<dict>
 			<key>fileRef</key>
-			<string>77010047C228442C0A87E8E0</string>
+			<string>63C2B5362123B541B9AD437D</string>
 			<key>isa</key>
 			<string>PBXBuildFile</string>
 		</dict>
-		<key>1E81613451BFF10BA1719DD0</key>
-		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>name</key>
-			<string>DFURLImageManagerConfiguration.m</string>
-			<key>path</key>
-			<string>DFImageManager/DFImageManager/Configurations/URL Configuration/DFURLImageManagerConfiguration.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>1FA81FCA1A247338310548EA</key>
-		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>path</key>
-			<string>Pods-DFCache-dummy.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>2149AC10E47997E0E15B9052</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>5D3BC11D5784DE1B343C0354</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>name</key>
-			<string>Development Pods</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>21B0D6CB9E8EC5932D983B08</key>
+		<key>24A360591F827163C4CE8B7B</key>
 		<dict>
 			<key>includeInIndex</key>
 			<string>1</string>
@@ -376,34 +396,697 @@
 			<key>lastKnownFileType</key>
 			<string>sourcecode.c.h</string>
 			<key>name</key>
-			<string>DFFileStorage.h</string>
+			<string>DFPHImageManagerConfiguration.h</string>
 			<key>path</key>
-			<string>DFCache/Key-Value File Storage/DFFileStorage.h</string>
+			<string>DFImageManager/DFImageManager/Configurations/Photos Kit Configuration/DFPHImageManagerConfiguration.h</string>
 			<key>sourceTree</key>
 			<string>&lt;group&gt;</string>
 		</dict>
-		<key>270688909EB84D834A1FFA76</key>
+		<key>25870BB72439C8A26849B2F5</key>
 		<dict>
 			<key>fileRef</key>
-			<string>E45F79402DDE0DA4AB7C3287</string>
+			<string>A1870E25DD59C09651CC3342</string>
 			<key>isa</key>
 			<string>PBXBuildFile</string>
 		</dict>
-		<key>28FD9994EF2A30152E481A52</key>
+		<key>25A16DCA21DB5B2227FC2911</key>
 		<dict>
 			<key>fileRef</key>
-			<string>4E36C534B6269CD9DCF0F853</string>
+			<string>3AC8B782626FC66A4CAC0357</string>
 			<key>isa</key>
 			<string>PBXBuildFile</string>
 		</dict>
-		<key>2B44192237C74601D39D68D5</key>
+		<key>274E77D3A491453B739C3472</key>
 		<dict>
 			<key>fileRef</key>
-			<string>FE37F1EF4D3D82500B6C52C5</string>
+			<string>830063237AD64A039A4894CB</string>
 			<key>isa</key>
 			<string>PBXBuildFile</string>
 		</dict>
-		<key>2B729173A932CFB07EA7869D</key>
+		<key>27D806AA8E0A4633BA53F36A</key>
+		<dict>
+			<key>fileRef</key>
+			<string>1FD71DAA97A0F7D28657E139</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>2AA9D9E06785874EF4F696FA</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>name</key>
+			<string>DFAssetsLibraryImageFetchOperation.m</string>
+			<key>path</key>
+			<string>DFImageManager/DFImageManager/Configurations/Assets Library Configuration/DFAssetsLibraryImageFetchOperation.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>2ADA8D7DE9219A3384CC9021</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>wrapper.framework</string>
+			<key>name</key>
+			<string>Foundation.framework</string>
+			<key>path</key>
+			<string>Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS7.1.sdk/System/Library/Frameworks/Foundation.framework</string>
+			<key>sourceTree</key>
+			<string>DEVELOPER_DIR</string>
+		</dict>
+		<key>2B5D2BA24AA3E471D08E4F05</key>
+		<dict>
+			<key>buildConfigurationList</key>
+			<string>21731D163E326C003D6273D2</string>
+			<key>buildPhases</key>
+			<array>
+				<string>CE78C6934A58DE6311CF8A3B</string>
+				<string>B333A5436FC1465EAB90313B</string>
+				<string>4253F9CD6B8A348D349E3CA4</string>
+			</array>
+			<key>buildRules</key>
+			<array/>
+			<key>dependencies</key>
+			<array>
+				<string>CEEAD02BAD62F667544742DF</string>
+			</array>
+			<key>isa</key>
+			<string>PBXNativeTarget</string>
+			<key>name</key>
+			<string>Pods-DFImageManager</string>
+			<key>productName</key>
+			<string>Pods-DFImageManager</string>
+			<key>productReference</key>
+			<string>F423101EF859BC14DF03B76F</string>
+			<key>productType</key>
+			<string>com.apple.product-type.library.static</string>
+		</dict>
+		<key>2B890817F4EC8555AC8E798C</key>
+		<dict>
+			<key>fileRef</key>
+			<string>8DBBB82C00932D46FCDD271B</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>2BF5256F0590C56135A6A268</key>
+		<dict>
+			<key>fileRef</key>
+			<string>02EFC161068ADDDD1DBABEB2</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>2D6D88C740F0AB04303A74D3</key>
+		<dict>
+			<key>fileRef</key>
+			<string>107EED3BBA3CBBE2AECACC2B</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>2DA0AC7806BC22FBED22DD4D</key>
+		<dict>
+			<key>fileRef</key>
+			<string>418E72B3AC68ED3C67E10063</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>2F04B174B3583F19742EF23D</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>931F165107D1C4023A1B9171</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>name</key>
+			<string>Targets Support Files</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>3017E2D5219FDB8DADE7D7AE</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>name</key>
+			<string>DFProxyImageManager.m</string>
+			<key>path</key>
+			<string>DFImageManager/DFImageManager/Managers/Proxy Manager/DFProxyImageManager.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>33A63DC668996D38FBBB2827</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>name</key>
+			<string>DFImageManagerProtocol.h</string>
+			<key>path</key>
+			<string>DFImageManager/DFImageManager/Protocols/DFImageManagerProtocol.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>345D6284377E194D2511B9F0</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>name</key>
+			<string>DFPHImageFetchOperation.h</string>
+			<key>path</key>
+			<string>DFImageManager/DFImageManager/Configurations/Photos Kit Configuration/DFPHImageFetchOperation.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>3583A8EE93B1AF4158C941CB</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>A4DE3C6F4181B99D93C2B30E</string>
+				<string>11E2C7191DA70F16DF8BE0FE</string>
+				<string>DC43B6E5413A26153B99B81A</string>
+				<string>67DB58845B1D5F94AEB6C501</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>name</key>
+			<string>Support Files</string>
+			<key>path</key>
+			<string>../Target Support Files/Pods-DFCache</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>363F42FBA80ACBC6CCE6E199</key>
+		<dict>
+			<key>fileRef</key>
+			<string>BB8424609CC0C8E93EE52807</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>3A3900C424ED777B16BC997F</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>name</key>
+			<string>DFPHImageManagerConfiguration.m</string>
+			<key>path</key>
+			<string>DFImageManager/DFImageManager/Configurations/Photos Kit Configuration/DFPHImageManagerConfiguration.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>3AC8B782626FC66A4CAC0357</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>name</key>
+			<string>DFValueTransformer.h</string>
+			<key>path</key>
+			<string>DFCache/Value Transforming/DFValueTransformer.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>3B9BD7A90C682381B53DE924</key>
+		<dict>
+			<key>fileRef</key>
+			<string>1D77D1D5733DA3FA142D0817</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>3C64CF25DEDA3C770FBA324B</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>name</key>
+			<string>DFURLResponseDeserializing.h</string>
+			<key>path</key>
+			<string>DFImageManager/DFImageManager/Networking/DFURLResponseDeserializing.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>3D4369E4814A7F692757F0CE</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>name</key>
+			<string>DFImageManagerKit.h</string>
+			<key>path</key>
+			<string>DFImageManager/DFImageManager/DFImageManagerKit.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>3FF466A1C9922066E5B1826B</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>name</key>
+			<string>DFImageManagerDefines.m</string>
+			<key>path</key>
+			<string>DFImageManager/DFImageManager/DFImageManagerDefines.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>40D3C39EE9266F901CDEA3C1</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>CEC7B1526D6CCEE3C05E9217</string>
+				<string>56501BA4567F0C9FAE6FC535</string>
+				<string>A71F15C1CBD76F86D6D6C5C4</string>
+				<string>1312A84AA6622BAE2F5CC706</string>
+				<string>81842FCB25D309E300EBDA94</string>
+				<string>2F04B174B3583F19742EF23D</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>418E72B3AC68ED3C67E10063</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>name</key>
+			<string>DFImageRequest.m</string>
+			<key>path</key>
+			<string>DFImageManager/DFImageManager/Request/DFImageRequest.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>4253F9CD6B8A348D349E3CA4</key>
+		<dict>
+			<key>buildActionMask</key>
+			<string>2147483647</string>
+			<key>files</key>
+			<array>
+				<string>E2524D8C641427AF075973F4</string>
+				<string>DB083123FD362584B6F7C5C0</string>
+				<string>D1C8688A4425AEA9EFAD09A2</string>
+				<string>A75DEE30D01FE06BD8A5430B</string>
+				<string>A855AED71D1B6549D07D353C</string>
+				<string>9DD9E18D683172E41B8780D7</string>
+				<string>540CC3FAFB2BB76051F25B50</string>
+				<string>3B9BD7A90C682381B53DE924</string>
+				<string>11B39E1F9D38E50EB05E089A</string>
+				<string>832D85B287022583E7753BC1</string>
+				<string>274E77D3A491453B739C3472</string>
+				<string>5FC94F2BABEA51B7286CBBB8</string>
+				<string>363F42FBA80ACBC6CCE6E199</string>
+				<string>F47F4A4EACD72F5E3F45D7E3</string>
+				<string>B4238A5CAB5B8DC1FBE115B9</string>
+				<string>7BDA50D3491D53AD169BD99B</string>
+				<string>A1FFD83E91CB5BB91CB92B25</string>
+				<string>EDC152B8ABA806E25F03D053</string>
+				<string>A4D43D62C0317592DC7B491B</string>
+				<string>20DFDB14B89F260312E84E3B</string>
+				<string>B12259993CA626AE2E1BDC4C</string>
+				<string>9298CE0D192BE4D6217DFE02</string>
+				<string>E002BF5EEB6915DA283DB437</string>
+				<string>0CDF69046C66F069247F96AF</string>
+				<string>97FE50CED8A0E52D1D1E7E49</string>
+				<string>AC542C3F59600B5799914FBE</string>
+				<string>18405878F53858D0D16DEB17</string>
+				<string>D94A4A035F3F200DC6CB3FB5</string>
+				<string>BCB17AB7C6D521FC76A9F42C</string>
+				<string>DBE2867A2E0AB7071928A85E</string>
+				<string>0391869CB481B2F4DF5E2434</string>
+				<string>B70743ECA97EC9D85E9F3E90</string>
+				<string>CA40EDF349975842067BD95C</string>
+				<string>083D1A68CA5243696189E801</string>
+				<string>97BB21DB90B4A0770A5C6DC2</string>
+				<string>2D6D88C740F0AB04303A74D3</string>
+				<string>1C8AE09A90DA796798E19317</string>
+			</array>
+			<key>isa</key>
+			<string>PBXHeadersBuildPhase</string>
+			<key>runOnlyForDeploymentPostprocessing</key>
+			<string>0</string>
+		</dict>
+		<key>426D5F795D276E5E7A5A09AA</key>
+		<dict>
+			<key>fileRef</key>
+			<string>F2CC9C112D2470D4A3902609</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>4382FB007B2008EC99BFF429</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>name</key>
+			<string>DFURLConnectionOperation.h</string>
+			<key>path</key>
+			<string>DFImageManager/DFImageManager/Networking/DFURLConnectionOperation.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>4396136929E499A32A2C13D6</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>name</key>
+			<string>DFImageUtilities.m</string>
+			<key>path</key>
+			<string>DFImageManager/DFImageManager/Other/DFImageUtilities.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>44ECC86868B44E4092920F9C</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>name</key>
+			<string>DFImageFetchConnectionOperation.m</string>
+			<key>path</key>
+			<string>DFImageManager/DFImageManager/Operations/DFImageFetchConnectionOperation.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>453E19BA36C5AD96E43B7A0E</key>
+		<dict>
+			<key>fileRef</key>
+			<string>A88826BB1C72C19BBC06B836</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>4612B3C6E84FCDFBBED2C2E7</key>
+		<dict>
+			<key>fileRef</key>
+			<string>D095EB35534031DB6A984DE1</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>467BCCF405C792B081B0D4AB</key>
+		<dict>
+			<key>fileRef</key>
+			<string>9639C9184F76CB5D7BC4886E</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>4BD2A3AEA362F7B3C36E818F</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXTargetDependency</string>
+			<key>name</key>
+			<string>Pods-DFCache</string>
+			<key>target</key>
+			<string>A637BC15AB3C3585B63F2051</string>
+			<key>targetProxy</key>
+			<string>64AE30C9AC671A38197925DA</string>
+		</dict>
+		<key>4D41B6EFD2C253467532C67D</key>
+		<dict>
+			<key>fileRef</key>
+			<string>ADECFDEC55E4CC5E179095D4</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>4D47A46BF79D9A9BAA734B73</key>
+		<dict>
+			<key>fileRef</key>
+			<string>EA0F0DF2BE9CA53D48C03FF0</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>4E47C355FED1A9F80DBE746D</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>name</key>
+			<string>DFValueTransformerFactory.h</string>
+			<key>path</key>
+			<string>DFCache/Value Transforming/DFValueTransformerFactory.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>4EAF0F6F931A965311EF27AF</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>name</key>
+			<string>DFImageManagerConfiguration.m</string>
+			<key>path</key>
+			<string>DFImageManager/DFImageManager/Configurations/Base Configuration/DFImageManagerConfiguration.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>50E5066FA0588793F4B51E53</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>name</key>
+			<string>DFImageView.h</string>
+			<key>path</key>
+			<string>DFImageManager/DFImageManager/Views/DFImageView.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>540CC3FAFB2BB76051F25B50</key>
+		<dict>
+			<key>fileRef</key>
+			<string>E18DD45312AA7FFF92838789</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>54FC0D5AFCD4011994A44F23</key>
+		<dict>
+			<key>fileRef</key>
+			<string>747ED8D268421DDAE8BFBC2E</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>56501BA4567F0C9FAE6FC535</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>5D7DDA089A7AF577BD0DCEE8</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>name</key>
+			<string>Development Pods</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>5A90C7AA06CA5C07C46BDD7E</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>name</key>
+			<string>NSURL+DFExtendedFileAttributes.m</string>
+			<key>path</key>
+			<string>DFCache/Extended File Attributes/NSURL+DFExtendedFileAttributes.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>5D7DDA089A7AF577BD0DCEE8</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>F0C1522681D8A0923CFD684A</string>
+				<string>914750F535DC9957AA629DFD</string>
+				<string>16886744491D078CEE6F34D9</string>
+				<string>2AA9D9E06785874EF4F696FA</string>
+				<string>76E1A3347C3D0C72A969722C</string>
+				<string>B5761BA1ECCFCB98FA5A5029</string>
+				<string>BFBC164EC1114822589DF6FD</string>
+				<string>78AED60A480B69DE111F68B0</string>
+				<string>B905925F360DB1E4110BC866</string>
+				<string>F5C5DE36AD9543302C13F4DF</string>
+				<string>9639C9184F76CB5D7BC4886E</string>
+				<string>E18DD45312AA7FFF92838789</string>
+				<string>ADECFDEC55E4CC5E179095D4</string>
+				<string>1D77D1D5733DA3FA142D0817</string>
+				<string>79207F7D7FE3AF684BE545FF</string>
+				<string>7C3465625FC1EF2982723F53</string>
+				<string>F2CC9C112D2470D4A3902609</string>
+				<string>94C7DE8B935F3E5392CC1616</string>
+				<string>830063237AD64A039A4894CB</string>
+				<string>194C3E32BA64E21C3B3F9F20</string>
+				<string>6369C8B443851388D262974A</string>
+				<string>44ECC86868B44E4092920F9C</string>
+				<string>BB8424609CC0C8E93EE52807</string>
+				<string>90E8371A06DB96CD8164E6BF</string>
+				<string>CCF5948E8D0FF96FE7836906</string>
+				<string>B52F9443DB4AD16C55BD1EC7</string>
+				<string>1FD71DAA97A0F7D28657E139</string>
+				<string>829A539C474E678EE4F0512C</string>
+				<string>4EAF0F6F931A965311EF27AF</string>
+				<string>A65F14EA938CAD1848EF5745</string>
+				<string>E8C60B7309D5C85C588740BC</string>
+				<string>3FF466A1C9922066E5B1826B</string>
+				<string>3D4369E4814A7F692757F0CE</string>
+				<string>10A1BAB37421F1B78F18DF54</string>
+				<string>33A63DC668996D38FBBB2827</string>
+				<string>E4C57BA5BF9532CE0303970C</string>
+				<string>7A6DB5A9517176C4D71C97E9</string>
+				<string>D095EB35534031DB6A984DE1</string>
+				<string>5D8C979A79B44189FC72801B</string>
+				<string>992B0EB1AEBF010751F5E82B</string>
+				<string>418E72B3AC68ED3C67E10063</string>
+				<string>1F223894C12C98B273C041EE</string>
+				<string>7036B357D1A36F1C1364A7EC</string>
+				<string>A6A0D6C905C55B4FEA0566FB</string>
+				<string>B445769F4A929E997C12101C</string>
+				<string>8BB18D3C7C4AB7A19910363D</string>
+				<string>F406F8FF52042DB4F16F4A8C</string>
+				<string>7A6FA7DC42EEA40B12B6D410</string>
+				<string>7C619D51B348A6A825E60B70</string>
+				<string>4396136929E499A32A2C13D6</string>
+				<string>50E5066FA0588793F4B51E53</string>
+				<string>7EB004BD24349E567B3D482C</string>
+				<string>81EE1DDEE47F74FE1EEA8FDF</string>
+				<string>8DBBB82C00932D46FCDD271B</string>
+				<string>345D6284377E194D2511B9F0</string>
+				<string>117BB379C7B8F348B134AD2C</string>
+				<string>24A360591F827163C4CE8B7B</string>
+				<string>3A3900C424ED777B16BC997F</string>
+				<string>FCA8E56603A7568A4DB32432</string>
+				<string>3017E2D5219FDB8DADE7D7AE</string>
+				<string>4382FB007B2008EC99BFF429</string>
+				<string>747ED8D268421DDAE8BFBC2E</string>
+				<string>107EED3BBA3CBBE2AECACC2B</string>
+				<string>A1870E25DD59C09651CC3342</string>
+				<string>3C64CF25DEDA3C770FBA324B</string>
+				<string>A95C416223BAD756558A58E1</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>name</key>
+			<string>DFImageManager</string>
+			<key>path</key>
+			<string>../..</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>5D8C979A79B44189FC72801B</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>name</key>
+			<string>DFImageProcessingProtocol.h</string>
+			<key>path</key>
+			<string>DFImageManager/DFImageManager/Protocols/DFImageProcessingProtocol.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>5FC94F2BABEA51B7286CBBB8</key>
+		<dict>
+			<key>fileRef</key>
+			<string>6369C8B443851388D262974A</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>60014FE012E328A5F60BDEAD</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>text.xcconfig</string>
+			<key>path</key>
+			<string>Pods.debug.xcconfig</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>61BC77AC0B9C784742410B4D</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>path</key>
+			<string>Pods-environment.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>6369C8B443851388D262974A</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>name</key>
+			<string>DFImageFetchConnectionOperation.h</string>
+			<key>path</key>
+			<string>DFImageManager/DFImageManager/Operations/DFImageFetchConnectionOperation.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>63C2B5362123B541B9AD437D</key>
 		<dict>
 			<key>includeInIndex</key>
 			<string>1</string>
@@ -418,19 +1101,224 @@
 			<key>sourceTree</key>
 			<string>&lt;group&gt;</string>
 		</dict>
-		<key>2BEA3B96A59E583932746BDC</key>
+		<key>64620BE8FDF15EF861863E54</key>
 		<dict>
 			<key>fileRef</key>
-			<string>F24C7239F43FCF61DF05A569</string>
+			<string>B74093B30085C1019C1918D9</string>
 			<key>isa</key>
 			<string>PBXBuildFile</string>
 		</dict>
-		<key>2C0C46AEC50CD6C2B157A7E6</key>
+		<key>64AE30C9AC671A38197925DA</key>
+		<dict>
+			<key>containerPortal</key>
+			<string>ADC056FF288DD2CC134E9A23</string>
+			<key>isa</key>
+			<string>PBXContainerItemProxy</string>
+			<key>proxyType</key>
+			<string>1</string>
+			<key>remoteGlobalIDString</key>
+			<string>A637BC15AB3C3585B63F2051</string>
+			<key>remoteInfo</key>
+			<string>Pods-DFCache</string>
+		</dict>
+		<key>66FBAEE591DD7A3D7922484D</key>
+		<dict>
+			<key>fileRef</key>
+			<string>69FC6E8B5348371C2E94C120</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>67B5B3825BA37D3F7664CB59</key>
+		<dict>
+			<key>fileRef</key>
+			<string>056AD2F5386F3DBF407F3028</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>67DB58845B1D5F94AEB6C501</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>path</key>
+			<string>Pods-DFCache-prefix.pch</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>67F0F98B2E1FFFCF16179347</key>
+		<dict>
+			<key>fileRef</key>
+			<string>CB79B51BC07579B852063920</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>68552F0BCD3DB727EEE136D0</key>
+		<dict>
+			<key>fileRef</key>
+			<string>2ADA8D7DE9219A3384CC9021</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>69AF13178C46C43CFD883CE4</key>
+		<dict>
+			<key>fileRef</key>
+			<string>7EB004BD24349E567B3D482C</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>69FC6E8B5348371C2E94C120</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>path</key>
+			<string>Pods-DFImageManager-dummy.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>6A82B1812B7DF7A36C37238A</key>
+		<dict>
+			<key>baseConfigurationReference</key>
+			<string>B8CC041130279C9F87961CA6</string>
+			<key>buildSettings</key>
+			<dict>
+				<key>ALWAYS_SEARCH_USER_PATHS</key>
+				<string>NO</string>
+				<key>COPY_PHASE_STRIP</key>
+				<string>YES</string>
+				<key>DSTROOT</key>
+				<string>/tmp/xcodeproj.dst</string>
+				<key>GCC_PRECOMPILE_PREFIX_HEADER</key>
+				<string>YES</string>
+				<key>GCC_PREFIX_HEADER</key>
+				<string>Target Support Files/Pods-DFImageManager/Pods-DFImageManager-prefix.pch</string>
+				<key>INSTALL_PATH</key>
+				<string>$(BUILT_PRODUCTS_DIR)</string>
+				<key>IPHONEOS_DEPLOYMENT_TARGET</key>
+				<string>6.0</string>
+				<key>OTHER_CFLAGS</key>
+				<array>
+					<string>-DNS_BLOCK_ASSERTIONS=1</string>
+					<string>$(inherited)</string>
+				</array>
+				<key>OTHER_CPLUSPLUSFLAGS</key>
+				<array>
+					<string>-DNS_BLOCK_ASSERTIONS=1</string>
+					<string>$(inherited)</string>
+				</array>
+				<key>OTHER_LDFLAGS</key>
+				<string></string>
+				<key>OTHER_LIBTOOLFLAGS</key>
+				<string></string>
+				<key>PRODUCT_NAME</key>
+				<string>$(TARGET_NAME)</string>
+				<key>PUBLIC_HEADERS_FOLDER_PATH</key>
+				<string>$(TARGET_NAME)</string>
+				<key>SDKROOT</key>
+				<string>iphoneos</string>
+				<key>SKIP_INSTALL</key>
+				<string>YES</string>
+				<key>VALIDATE_PRODUCT</key>
+				<string>YES</string>
+			</dict>
+			<key>isa</key>
+			<string>XCBuildConfiguration</string>
+			<key>name</key>
+			<string>Release</string>
+		</dict>
+		<key>6EA3A9419BEA135FBF8DE629</key>
+		<dict>
+			<key>fileRef</key>
+			<string>CA73187036EBD49EB22E015B</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>6EF382CBC3F46DCFD9C6556F</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>name</key>
+			<string>DFFileStorage.h</string>
+			<key>path</key>
+			<string>DFCache/Key-Value File Storage/DFFileStorage.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>7036B357D1A36F1C1364A7EC</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>name</key>
+			<string>DFImageRequestID.m</string>
+			<key>path</key>
+			<string>DFImageManager/DFImageManager/Other/DFImageRequestID.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>704C9A63FC9B5434C103E131</key>
+		<dict>
+			<key>fileRef</key>
+			<string>B5761BA1ECCFCB98FA5A5029</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>72E0BB0D2EA43F557855DD2A</key>
+		<dict>
+			<key>fileRef</key>
+			<string>023E56DE3F6609150B5D8209</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>747ED8D268421DDAE8BFBC2E</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>name</key>
+			<string>DFURLConnectionOperation.m</string>
+			<key>path</key>
+			<string>DFImageManager/DFImageManager/Networking/DFURLConnectionOperation.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>76E1A3347C3D0C72A969722C</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>name</key>
+			<string>DFAssetsLibraryImageManagerConfiguration.h</string>
+			<key>path</key>
+			<string>DFImageManager/DFImageManager/Configurations/Assets Library Configuration/DFAssetsLibraryImageManagerConfiguration.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>77D031AE7F04F1F53EC830A2</key>
 		<dict>
 			<key>buildConfigurations</key>
 			<array>
-				<string>E200146905E8702227BACDAC</string>
-				<string>DD18D46242CF48CC0D7151AF</string>
+				<string>A085AC72D24F0C2C33DF4123</string>
+				<string>D3634E38C19604EB7AD64FE2</string>
 			</array>
 			<key>defaultConfigurationIsVisible</key>
 			<string>0</string>
@@ -439,7 +1327,7 @@
 			<key>isa</key>
 			<string>XCConfigurationList</string>
 		</dict>
-		<key>339A29C9B1CFF015B84C5F3D</key>
+		<key>78AED60A480B69DE111F68B0</key>
 		<dict>
 			<key>includeInIndex</key>
 			<string>1</string>
@@ -448,13 +1336,35 @@
 			<key>lastKnownFileType</key>
 			<string>sourcecode.c.h</string>
 			<key>name</key>
-			<string>DFImageManagerBlockValueTransformer.h</string>
+			<string>DFCollectionViewPreheatingController.h</string>
 			<key>path</key>
-			<string>DFImageManager/DFImageManager/Other/DFImageManagerBlockValueTransformer.h</string>
+			<string>DFImageManager/DFImageManager/Other/DFCollectionViewPreheatingController.h</string>
 			<key>sourceTree</key>
 			<string>&lt;group&gt;</string>
 		</dict>
-		<key>3521F14F5A3650E4FF34A9DD</key>
+		<key>79207F7D7FE3AF684BE545FF</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>name</key>
+			<string>DFImageCacheLookupOperation.m</string>
+			<key>path</key>
+			<string>DFImageManager/DFImageManager/Operations/DFImageCacheLookupOperation.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>797180D67A6631E325D3EB50</key>
+		<dict>
+			<key>fileRef</key>
+			<string>4396136929E499A32A2C13D6</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>7A6DB5A9517176C4D71C97E9</key>
 		<dict>
 			<key>includeInIndex</key>
 			<string>1</string>
@@ -463,76 +1373,453 @@
 			<key>lastKnownFileType</key>
 			<string>sourcecode.c.h</string>
 			<key>name</key>
-			<string>DFImageManagerValueTransformerProtocol.h</string>
+			<string>DFImageProcessingManager.h</string>
 			<key>path</key>
-			<string>DFImageManager/DFImageManager/Protocols/DFImageManagerValueTransformerProtocol.h</string>
+			<string>DFImageManager/DFImageManager/Other/DFImageProcessingManager.h</string>
 			<key>sourceTree</key>
 			<string>&lt;group&gt;</string>
 		</dict>
-		<key>354CAC1EF9CB186BA2135A0C</key>
+		<key>7A6FA7DC42EEA40B12B6D410</key>
 		<dict>
 			<key>includeInIndex</key>
 			<string>1</string>
 			<key>isa</key>
 			<string>PBXFileReference</string>
 			<key>lastKnownFileType</key>
-			<string>text</string>
+			<string>sourcecode.c.objc</string>
 			<key>name</key>
-			<string>Podfile</string>
+			<string>DFImageResponse.m</string>
 			<key>path</key>
-			<string>../Podfile</string>
+			<string>DFImageManager/DFImageManager/Response/DFImageResponse.m</string>
 			<key>sourceTree</key>
-			<string>SOURCE_ROOT</string>
-			<key>xcLanguageSpecificationIdentifier</key>
-			<string>xcode.lang.ruby</string>
+			<string>&lt;group&gt;</string>
 		</dict>
-		<key>3664E8F2A5CF512477FEB4C8</key>
+		<key>7B2818C32D599199DA08EA2D</key>
 		<dict>
 			<key>fileRef</key>
-			<string>C91CF38B68BA89F39B378E88</string>
+			<string>914750F535DC9957AA629DFD</string>
 			<key>isa</key>
 			<string>PBXBuildFile</string>
 		</dict>
-		<key>3709AEB93EDD8782847EEA92</key>
+		<key>7BDA50D3491D53AD169BD99B</key>
 		<dict>
 			<key>fileRef</key>
-			<string>672A6AEE142EBB464473B543</string>
+			<string>A65F14EA938CAD1848EF5745</string>
 			<key>isa</key>
 			<string>PBXBuildFile</string>
 		</dict>
-		<key>3722CDEB383C1CC33B4BEB6C</key>
+		<key>7C3465625FC1EF2982723F53</key>
 		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
 			<key>isa</key>
-			<string>PBXTargetDependency</string>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
 			<key>name</key>
-			<string>Pods-DFCache</string>
-			<key>target</key>
-			<string>6E1E328D80AF7DDC70F26759</string>
-			<key>targetProxy</key>
-			<string>605AA8CB491E9C6F1F898797</string>
+			<string>DFImageCacheStoreOperation.h</string>
+			<key>path</key>
+			<string>DFImageManager/DFImageManager/Operations/DFImageCacheStoreOperation.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
 		</dict>
-		<key>37EA37307A6C4C135D3267C9</key>
+		<key>7C619D51B348A6A825E60B70</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>name</key>
+			<string>DFImageUtilities.h</string>
+			<key>path</key>
+			<string>DFImageManager/DFImageManager/Other/DFImageUtilities.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>7CD1E764F4B6E414B1C3610D</key>
+		<dict>
+			<key>baseConfigurationReference</key>
+			<string>B8CC041130279C9F87961CA6</string>
+			<key>buildSettings</key>
+			<dict>
+				<key>ALWAYS_SEARCH_USER_PATHS</key>
+				<string>NO</string>
+				<key>COPY_PHASE_STRIP</key>
+				<string>NO</string>
+				<key>DSTROOT</key>
+				<string>/tmp/xcodeproj.dst</string>
+				<key>GCC_DYNAMIC_NO_PIC</key>
+				<string>NO</string>
+				<key>GCC_OPTIMIZATION_LEVEL</key>
+				<string>0</string>
+				<key>GCC_PRECOMPILE_PREFIX_HEADER</key>
+				<string>YES</string>
+				<key>GCC_PREFIX_HEADER</key>
+				<string>Target Support Files/Pods-DFImageManager/Pods-DFImageManager-prefix.pch</string>
+				<key>GCC_PREPROCESSOR_DEFINITIONS</key>
+				<array>
+					<string>DEBUG=1</string>
+					<string>$(inherited)</string>
+				</array>
+				<key>GCC_SYMBOLS_PRIVATE_EXTERN</key>
+				<string>NO</string>
+				<key>INSTALL_PATH</key>
+				<string>$(BUILT_PRODUCTS_DIR)</string>
+				<key>IPHONEOS_DEPLOYMENT_TARGET</key>
+				<string>6.0</string>
+				<key>OTHER_LDFLAGS</key>
+				<string></string>
+				<key>OTHER_LIBTOOLFLAGS</key>
+				<string></string>
+				<key>PRODUCT_NAME</key>
+				<string>$(TARGET_NAME)</string>
+				<key>PUBLIC_HEADERS_FOLDER_PATH</key>
+				<string>$(TARGET_NAME)</string>
+				<key>SDKROOT</key>
+				<string>iphoneos</string>
+				<key>SKIP_INSTALL</key>
+				<string>YES</string>
+			</dict>
+			<key>isa</key>
+			<string>XCBuildConfiguration</string>
+			<key>name</key>
+			<string>Debug</string>
+		</dict>
+		<key>7EB004BD24349E567B3D482C</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>name</key>
+			<string>DFImageView.m</string>
+			<key>path</key>
+			<string>DFImageManager/DFImageManager/Views/DFImageView.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>8089A3D653313759FFA43AE9</key>
+		<dict>
+			<key>buildActionMask</key>
+			<string>2147483647</string>
+			<key>files</key>
+			<array>
+				<string>21DD678F6A56BD9739AA9452</string>
+			</array>
+			<key>isa</key>
+			<string>PBXFrameworksBuildPhase</string>
+			<key>runOnlyForDeploymentPostprocessing</key>
+			<string>0</string>
+		</dict>
+		<key>8102AB1BB8A7A01D124FC83E</key>
 		<dict>
 			<key>fileRef</key>
-			<string>A629B02E52D4DDF97E19D5D4</string>
+			<string>90E8371A06DB96CD8164E6BF</string>
 			<key>isa</key>
 			<string>PBXBuildFile</string>
 		</dict>
-		<key>39CD69B4A7D2DC2224867058</key>
+		<key>81842FCB25D309E300EBDA94</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>F478F1F7BF1D8CA97C834F49</string>
+				<string>BF3542514D6DF74370B4D353</string>
+				<string>F423101EF859BC14DF03B76F</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>name</key>
+			<string>Products</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>81EE1DDEE47F74FE1EEA8FDF</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>name</key>
+			<string>DFPHAssetlocalIdentifier.h</string>
+			<key>path</key>
+			<string>DFImageManager/DFImageManager/Configurations/Photos Kit Configuration/DFPHAssetlocalIdentifier.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>829A539C474E678EE4F0512C</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>name</key>
+			<string>DFImageManagerConfiguration.h</string>
+			<key>path</key>
+			<string>DFImageManager/DFImageManager/Configurations/Base Configuration/DFImageManagerConfiguration.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>830063237AD64A039A4894CB</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>name</key>
+			<string>DFImageDeserializer.h</string>
+			<key>path</key>
+			<string>DFImageManager/DFImageManager/Other/DFImageDeserializer.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>832D85B287022583E7753BC1</key>
 		<dict>
 			<key>fileRef</key>
-			<string>A1F8D86E07069BD7A3E262AF</string>
+			<string>94C7DE8B935F3E5392CC1616</string>
 			<key>isa</key>
 			<string>PBXBuildFile</string>
 		</dict>
-		<key>39DBB79D7D513F4DAF295571</key>
+		<key>888FFFC51D8E9F9543741D53</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>name</key>
+			<string>DFDiskCache.m</string>
+			<key>path</key>
+			<string>DFCache/DFDiskCache.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>89FE4706BC8262D4B03CF1A1</key>
 		<dict>
 			<key>fileRef</key>
-			<string>82D9B95254312290ADCD72BE</string>
+			<string>5A90C7AA06CA5C07C46BDD7E</string>
 			<key>isa</key>
 			<string>PBXBuildFile</string>
 		</dict>
-		<key>3AEAC086B3F7A139B8BDD64F</key>
+		<key>8BB18D3C7C4AB7A19910363D</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>name</key>
+			<string>DFImageRequestOptions.m</string>
+			<key>path</key>
+			<string>DFImageManager/DFImageManager/Request/DFImageRequestOptions.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>8DBBB82C00932D46FCDD271B</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>name</key>
+			<string>DFPHAssetlocalIdentifier.m</string>
+			<key>path</key>
+			<string>DFImageManager/DFImageManager/Configurations/Photos Kit Configuration/DFPHAssetlocalIdentifier.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>8E6516196A0A30107ECB8ABF</key>
+		<dict>
+			<key>fileRef</key>
+			<string>DC43B6E5413A26153B99B81A</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>90E8371A06DB96CD8164E6BF</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>name</key>
+			<string>DFImageManager.m</string>
+			<key>path</key>
+			<string>DFImageManager/DFImageManager/Managers/Image Manager/DFImageManager.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>914750F535DC9957AA629DFD</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>name</key>
+			<string>ALAssetsLibrary+DFImageManager.m</string>
+			<key>path</key>
+			<string>DFImageManager/DFImageManager/Configurations/Assets Library Configuration/ALAssetsLibrary+DFImageManager.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>9298CE0D192BE4D6217DFE02</key>
+		<dict>
+			<key>fileRef</key>
+			<string>7A6DB5A9517176C4D71C97E9</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>931F165107D1C4023A1B9171</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>F4D96B6FE8DF120BEE6BF2A4</string>
+				<string>0CDA48B3F600E57F4C0FEA1E</string>
+				<string>F1CC63B989DCB297B4D62688</string>
+				<string>61BC77AC0B9C784742410B4D</string>
+				<string>F120F37C386B188CA5941DB2</string>
+				<string>60014FE012E328A5F60BDEAD</string>
+				<string>94A26BFDA504C2ECEF3C087E</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>name</key>
+			<string>Pods</string>
+			<key>path</key>
+			<string>Target Support Files/Pods</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>94A26BFDA504C2ECEF3C087E</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>text.xcconfig</string>
+			<key>path</key>
+			<string>Pods.release.xcconfig</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>94C7DE8B935F3E5392CC1616</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>name</key>
+			<string>DFImageCachingProtocol.h</string>
+			<key>path</key>
+			<string>DFImageManager/DFImageManager/Protocols/DFImageCachingProtocol.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>9510C2029B31190457C66BF2</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>path</key>
+			<string>Pods-DFImageManager-prefix.pch</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>9639C9184F76CB5D7BC4886E</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>name</key>
+			<string>DFCompositeImageManager.m</string>
+			<key>path</key>
+			<string>DFImageManager/DFImageManager/Managers/Composite Manager/DFCompositeImageManager.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>9672D41E66607E549C374409</key>
+		<dict>
+			<key>fileRef</key>
+			<string>CCF5948E8D0FF96FE7836906</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>97BB21DB90B4A0770A5C6DC2</key>
+		<dict>
+			<key>fileRef</key>
+			<string>4382FB007B2008EC99BFF429</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>97FE50CED8A0E52D1D1E7E49</key>
+		<dict>
+			<key>fileRef</key>
+			<string>A6A0D6C905C55B4FEA0566FB</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>992B0EB1AEBF010751F5E82B</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>name</key>
+			<string>DFImageRequest.h</string>
+			<key>path</key>
+			<string>DFImageManager/DFImageManager/Request/DFImageRequest.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>99C457FD78A74420B944E18A</key>
+		<dict>
+			<key>buildConfigurations</key>
+			<array>
+				<string>E5B49B8FAAC69D0F57E4B058</string>
+				<string>FA68D325DCBB26EAD3053F33</string>
+			</array>
+			<key>defaultConfigurationIsVisible</key>
+			<string>0</string>
+			<key>defaultConfigurationName</key>
+			<string>Release</string>
+			<key>isa</key>
+			<string>XCConfigurationList</string>
+		</dict>
+		<key>9DD9E18D683172E41B8780D7</key>
+		<dict>
+			<key>fileRef</key>
+			<string>F5C5DE36AD9543302C13F4DF</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>A085AC72D24F0C2C33DF4123</key>
 		<dict>
 			<key>buildSettings</key>
 			<dict>
@@ -599,36 +1886,7 @@
 			<key>name</key>
 			<string>Debug</string>
 		</dict>
-		<key>3F9F66E7FB094D4F1437E132</key>
-		<dict>
-			<key>fileRef</key>
-			<string>A26AC68BC91C7D9F6663C552</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>408B269192C62D86E64877BA</key>
-		<dict>
-			<key>fileRef</key>
-			<string>6CB3ECB3CA62320D4E6BDC9D</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>4094127E8AF171E3DA5A265E</key>
-		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>name</key>
-			<string>DFCompositeImageManager.h</string>
-			<key>path</key>
-			<string>DFImageManager/DFImageManager/Managers/Composite Manager/DFCompositeImageManager.h</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>409ACC0141CFBB44EE1C01D3</key>
+		<key>A1870E25DD59C09651CC3342</key>
 		<dict>
 			<key>includeInIndex</key>
 			<string>1</string>
@@ -637,28 +1895,92 @@
 			<key>lastKnownFileType</key>
 			<string>sourcecode.c.objc</string>
 			<key>name</key>
-			<string>DFPHAssetlocalIdentifier.m</string>
+			<string>DFURLImageManagerConfiguration.m</string>
 			<key>path</key>
-			<string>DFImageManager/DFImageManager/Configurations/Photos Kit Configuration/DFPHAssetlocalIdentifier.m</string>
+			<string>DFImageManager/DFImageManager/Configurations/URL Configuration/DFURLImageManagerConfiguration.m</string>
 			<key>sourceTree</key>
 			<string>&lt;group&gt;</string>
 		</dict>
-		<key>453F4EFC1477B1B65E22D94A</key>
+		<key>A1FFD83E91CB5BB91CB92B25</key>
+		<dict>
+			<key>fileRef</key>
+			<string>E8C60B7309D5C85C588740BC</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>A4D43D62C0317592DC7B491B</key>
+		<dict>
+			<key>fileRef</key>
+			<string>10A1BAB37421F1B78F18DF54</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>A4DE3C6F4181B99D93C2B30E</key>
 		<dict>
 			<key>includeInIndex</key>
 			<string>1</string>
 			<key>isa</key>
 			<string>PBXFileReference</string>
 			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>name</key>
-			<string>NSURL+DFExtendedFileAttributes.m</string>
+			<string>text.xcconfig</string>
 			<key>path</key>
-			<string>DFCache/Extended File Attributes/NSURL+DFExtendedFileAttributes.m</string>
+			<string>Pods-DFCache.xcconfig</string>
 			<key>sourceTree</key>
 			<string>&lt;group&gt;</string>
 		</dict>
-		<key>49FADE9251F975539182C83D</key>
+		<key>A5C4D3992F51D26AEA6CAEA3</key>
+		<dict>
+			<key>buildConfigurationList</key>
+			<string>DA9069DC25D6FAA578E4E455</string>
+			<key>buildPhases</key>
+			<array>
+				<string>D28F1431E8576D28B4865434</string>
+				<string>8089A3D653313759FFA43AE9</string>
+			</array>
+			<key>buildRules</key>
+			<array/>
+			<key>dependencies</key>
+			<array>
+				<string>4BD2A3AEA362F7B3C36E818F</string>
+				<string>BEC8D3BA079B023F199BF963</string>
+			</array>
+			<key>isa</key>
+			<string>PBXNativeTarget</string>
+			<key>name</key>
+			<string>Pods</string>
+			<key>productName</key>
+			<string>Pods</string>
+			<key>productReference</key>
+			<string>F478F1F7BF1D8CA97C834F49</string>
+			<key>productType</key>
+			<string>com.apple.product-type.library.static</string>
+		</dict>
+		<key>A637BC15AB3C3585B63F2051</key>
+		<dict>
+			<key>buildConfigurationList</key>
+			<string>99C457FD78A74420B944E18A</string>
+			<key>buildPhases</key>
+			<array>
+				<string>BCDCBCE43237B03256D4A725</string>
+				<string>F896F9798AAAF7E43EA09D4F</string>
+				<string>EEB73CEE43BD1DB66F8220AE</string>
+			</array>
+			<key>buildRules</key>
+			<array/>
+			<key>dependencies</key>
+			<array/>
+			<key>isa</key>
+			<string>PBXNativeTarget</string>
+			<key>name</key>
+			<string>Pods-DFCache</string>
+			<key>productName</key>
+			<string>Pods-DFCache</string>
+			<key>productReference</key>
+			<string>BF3542514D6DF74370B4D353</string>
+			<key>productType</key>
+			<string>com.apple.product-type.library.static</string>
+		</dict>
+		<key>A65F14EA938CAD1848EF5745</key>
 		<dict>
 			<key>includeInIndex</key>
 			<string>1</string>
@@ -667,26 +1989,140 @@
 			<key>lastKnownFileType</key>
 			<string>sourcecode.c.h</string>
 			<key>name</key>
-			<string>DFImageManagerKit.h</string>
+			<string>DFImageManagerConfigurationProtocol.h</string>
 			<key>path</key>
-			<string>DFImageManager/DFImageManager/DFImageManagerKit.h</string>
+			<string>DFImageManager/DFImageManager/Protocols/DFImageManagerConfigurationProtocol.h</string>
 			<key>sourceTree</key>
 			<string>&lt;group&gt;</string>
 		</dict>
-		<key>4BDE179F8F055A2FB508CEB5</key>
+		<key>A6A0D6C905C55B4FEA0566FB</key>
 		<dict>
 			<key>includeInIndex</key>
 			<string>1</string>
 			<key>isa</key>
 			<string>PBXFileReference</string>
 			<key>lastKnownFileType</key>
-			<string>text.script.sh</string>
+			<string>sourcecode.c.h</string>
+			<key>name</key>
+			<string>DFImageRequestID+Protected.h</string>
 			<key>path</key>
-			<string>Pods-resources.sh</string>
+			<string>DFImageManager/DFImageManager/Other/DFImageRequestID+Protected.h</string>
 			<key>sourceTree</key>
 			<string>&lt;group&gt;</string>
 		</dict>
-		<key>4C0DEC2317E20081C2CBA758</key>
+		<key>A71F15C1CBD76F86D6D6C5C4</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>E57D9958BCD997C69102CB40</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>name</key>
+			<string>Frameworks</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>A75DEE30D01FE06BD8A5430B</key>
+		<dict>
+			<key>fileRef</key>
+			<string>BFBC164EC1114822589DF6FD</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>A855AED71D1B6549D07D353C</key>
+		<dict>
+			<key>fileRef</key>
+			<string>78AED60A480B69DE111F68B0</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>A88826BB1C72C19BBC06B836</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>name</key>
+			<string>DFDiskCache.h</string>
+			<key>path</key>
+			<string>DFCache/DFDiskCache.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>A95C416223BAD756558A58E1</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>04D7E48CA75EC356F3812D56</string>
+				<string>B8CC041130279C9F87961CA6</string>
+				<string>69FC6E8B5348371C2E94C120</string>
+				<string>9510C2029B31190457C66BF2</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>name</key>
+			<string>Support Files</string>
+			<key>path</key>
+			<string>DFImageManagerSample/Pods/Target Support Files/Pods-DFImageManager</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>A987DDD6F33FDC2C5D1E1722</key>
+		<dict>
+			<key>fileRef</key>
+			<string>44ECC86868B44E4092920F9C</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>AC542C3F59600B5799914FBE</key>
+		<dict>
+			<key>fileRef</key>
+			<string>1F223894C12C98B273C041EE</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>ADC056FF288DD2CC134E9A23</key>
+		<dict>
+			<key>attributes</key>
+			<dict>
+				<key>LastUpgradeCheck</key>
+				<string>0510</string>
+			</dict>
+			<key>buildConfigurationList</key>
+			<string>77D031AE7F04F1F53EC830A2</string>
+			<key>compatibilityVersion</key>
+			<string>Xcode 3.2</string>
+			<key>developmentRegion</key>
+			<string>English</string>
+			<key>hasScannedForEncodings</key>
+			<string>0</string>
+			<key>isa</key>
+			<string>PBXProject</string>
+			<key>knownRegions</key>
+			<array>
+				<string>en</string>
+			</array>
+			<key>mainGroup</key>
+			<string>40D3C39EE9266F901CDEA3C1</string>
+			<key>productRefGroup</key>
+			<string>81842FCB25D309E300EBDA94</string>
+			<key>projectDirPath</key>
+			<string></string>
+			<key>projectReferences</key>
+			<array/>
+			<key>projectRoot</key>
+			<string></string>
+			<key>targets</key>
+			<array>
+				<string>A5C4D3992F51D26AEA6CAEA3</string>
+				<string>A637BC15AB3C3585B63F2051</string>
+				<string>2B5D2BA24AA3E471D08E4F05</string>
+			</array>
+		</dict>
+		<key>ADECFDEC55E4CC5E179095D4</key>
 		<dict>
 			<key>includeInIndex</key>
 			<string>1</string>
@@ -701,231 +2137,66 @@
 			<key>sourceTree</key>
 			<string>&lt;group&gt;</string>
 		</dict>
-		<key>4C1AFE6990F47336149EF7CA</key>
+		<key>AE147AC815F6BF93A02E271C</key>
 		<dict>
-			<key>explicitFileType</key>
-			<string>archive.ar</string>
-			<key>includeInIndex</key>
-			<string>0</string>
+			<key>fileRef</key>
+			<string>117BB379C7B8F348B134AD2C</string>
 			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>path</key>
-			<string>libPods-DFImageManager.a</string>
-			<key>sourceTree</key>
-			<string>BUILT_PRODUCTS_DIR</string>
+			<string>PBXBuildFile</string>
 		</dict>
-		<key>4E36C534B6269CD9DCF0F853</key>
-		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>name</key>
-			<string>DFPHImageFetchOperation.m</string>
-			<key>path</key>
-			<string>DFImageManager/DFImageManager/Configurations/Photos Kit Configuration/DFPHImageFetchOperation.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>4E996DA7B52853F798796513</key>
-		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>name</key>
-			<string>DFPHImageFetchOperation.h</string>
-			<key>path</key>
-			<string>DFImageManager/DFImageManager/Configurations/Photos Kit Configuration/DFPHImageFetchOperation.h</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>4FBBF391D18C1955A9A3EC3E</key>
-		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>name</key>
-			<string>DFURLConnectionOperation.h</string>
-			<key>path</key>
-			<string>DFImageManager/DFImageManager/Networking/DFURLConnectionOperation.h</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>51CAC4563CDDA195947AA29D</key>
+		<key>AF450EFA8572A1728C9F41BA</key>
 		<dict>
 			<key>children</key>
 			<array>
-				<string>7171953E6DB38418282B85E8</string>
+				<string>D38B2D6FA99632CC531C1F5F</string>
+				<string>E04ABE5FBE155F2623E9A3AA</string>
+				<string>023E56DE3F6609150B5D8209</string>
+				<string>BFA48D63925E2741DA2F1047</string>
+				<string>02EFC161068ADDDD1DBABEB2</string>
+				<string>B74093B30085C1019C1918D9</string>
+				<string>B38AF33545E92ED796179434</string>
+				<string>F9BB2A21D731E7C62791DB71</string>
+				<string>056AD2F5386F3DBF407F3028</string>
+				<string>CA73187036EBD49EB22E015B</string>
+				<string>A88826BB1C72C19BBC06B836</string>
+				<string>888FFFC51D8E9F9543741D53</string>
+				<string>6EF382CBC3F46DCFD9C6556F</string>
+				<string>EA0F0DF2BE9CA53D48C03FF0</string>
+				<string>3AC8B782626FC66A4CAC0357</string>
+				<string>E141265A77F2581455E809E7</string>
+				<string>4E47C355FED1A9F80DBE746D</string>
+				<string>CB79B51BC07579B852063920</string>
+				<string>63C2B5362123B541B9AD437D</string>
+				<string>5A90C7AA06CA5C07C46BDD7E</string>
+				<string>3583A8EE93B1AF4158C941CB</string>
 			</array>
 			<key>isa</key>
 			<string>PBXGroup</string>
 			<key>name</key>
-			<string>iOS</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>543021E02E7D3F42595411DC</key>
-		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>text</string>
+			<string>DFCache</string>
 			<key>path</key>
-			<string>Pods-acknowledgements.markdown</string>
+			<string>DFCache</string>
 			<key>sourceTree</key>
 			<string>&lt;group&gt;</string>
 		</dict>
-		<key>5573EC8A555E2BBB4B45A177</key>
-		<dict>
-			<key>buildActionMask</key>
-			<string>2147483647</string>
-			<key>files</key>
-			<array>
-				<string>AF556F13BB806E35450E5CF0</string>
-				<string>03FF272591973ACF505B274B</string>
-				<string>89B6AA76E40462C9EE59B5CA</string>
-				<string>AB95807509123CAB62EDB8FF</string>
-				<string>DBAE191C5FBD17BA92037FF9</string>
-				<string>7777D7CF7BEA4D5BED4CA798</string>
-				<string>9358393EAA5B1CCB85CB31E6</string>
-				<string>93D5DA892728886F982F1964</string>
-				<string>8DDE00AA0DA20F34F57F35D7</string>
-				<string>AD2D881ED487340AFBF1B973</string>
-				<string>6D207D37BC6D7E7E108A109A</string>
-				<string>572A7FDAAFB7BDBFFA8D7F82</string>
-				<string>06B49C60F48D2B0253023CA6</string>
-				<string>7F931796F71A37BC0BBEBC4B</string>
-				<string>39DBB79D7D513F4DAF295571</string>
-				<string>C95560129D7B229EB4042D21</string>
-				<string>722884E32740F00AB27D31AE</string>
-				<string>98AC261463D98DD6CF20DBFE</string>
-				<string>37EA37307A6C4C135D3267C9</string>
-				<string>E842A75CC39E1E77B8DB6411</string>
-				<string>A2FC6F036B31060717487D1D</string>
-				<string>1E3BE38CB03ABF937D05E741</string>
-				<string>888F16250630BC6B929C22BB</string>
-				<string>8F29A3827C7157B4E3BB0457</string>
-				<string>F0B3FD78AFDC39B94704453E</string>
-				<string>7398F2E42548B19361F934D9</string>
-				<string>9793CE9BF30C9BFCCF2E952B</string>
-				<string>94C3E6343AE725B8AC23A990</string>
-				<string>2BEA3B96A59E583932746BDC</string>
-				<string>8E65E42B462194B5E79BA584</string>
-				<string>A5E167F61CDF6F6017AA249B</string>
-				<string>EADEBAADA2EEAC77A430854A</string>
-				<string>39CD69B4A7D2DC2224867058</string>
-			</array>
-			<key>isa</key>
-			<string>PBXHeadersBuildPhase</string>
-			<key>runOnlyForDeploymentPostprocessing</key>
-			<string>0</string>
-		</dict>
-		<key>55E7A3412B7C425566983396</key>
-		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>name</key>
-			<string>DFImageCacheLookupOperation.h</string>
-			<key>path</key>
-			<string>DFImageManager/DFImageManager/Operations/DFImageCacheLookupOperation.h</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>572A7FDAAFB7BDBFFA8D7F82</key>
+		<key>B09A7A0582D202EA537E377A</key>
 		<dict>
 			<key>fileRef</key>
-			<string>EB6FB31529B90A8067041757</string>
+			<string>3FF466A1C9922066E5B1826B</string>
 			<key>isa</key>
 			<string>PBXBuildFile</string>
 		</dict>
-		<key>57397C8BCA67BFF15F31F49F</key>
-		<dict>
-			<key>baseConfigurationReference</key>
-			<string>6C6B457C2ECF9F5F7061BF3C</string>
-			<key>buildSettings</key>
-			<dict>
-				<key>ALWAYS_SEARCH_USER_PATHS</key>
-				<string>NO</string>
-				<key>COPY_PHASE_STRIP</key>
-				<string>YES</string>
-				<key>DSTROOT</key>
-				<string>/tmp/xcodeproj.dst</string>
-				<key>GCC_PRECOMPILE_PREFIX_HEADER</key>
-				<string>YES</string>
-				<key>GCC_PREFIX_HEADER</key>
-				<string>Target Support Files/Pods-DFCache/Pods-DFCache-prefix.pch</string>
-				<key>INSTALL_PATH</key>
-				<string>$(BUILT_PRODUCTS_DIR)</string>
-				<key>IPHONEOS_DEPLOYMENT_TARGET</key>
-				<string>6.0</string>
-				<key>OTHER_CFLAGS</key>
-				<array>
-					<string>-DNS_BLOCK_ASSERTIONS=1</string>
-					<string>$(inherited)</string>
-				</array>
-				<key>OTHER_CPLUSPLUSFLAGS</key>
-				<array>
-					<string>-DNS_BLOCK_ASSERTIONS=1</string>
-					<string>$(inherited)</string>
-				</array>
-				<key>OTHER_LDFLAGS</key>
-				<string></string>
-				<key>OTHER_LIBTOOLFLAGS</key>
-				<string></string>
-				<key>PRODUCT_NAME</key>
-				<string>$(TARGET_NAME)</string>
-				<key>PUBLIC_HEADERS_FOLDER_PATH</key>
-				<string>$(TARGET_NAME)</string>
-				<key>SDKROOT</key>
-				<string>iphoneos</string>
-				<key>SKIP_INSTALL</key>
-				<string>YES</string>
-				<key>VALIDATE_PRODUCT</key>
-				<string>YES</string>
-			</dict>
-			<key>isa</key>
-			<string>XCBuildConfiguration</string>
-			<key>name</key>
-			<string>Release</string>
-		</dict>
-		<key>5801AD34115B8BB25FC08A99</key>
+		<key>B12259993CA626AE2E1BDC4C</key>
 		<dict>
 			<key>fileRef</key>
-			<string>C8A79C55EE00CD3E3B622D6B</string>
+			<string>E4C57BA5BF9532CE0303970C</string>
 			<key>isa</key>
 			<string>PBXBuildFile</string>
 		</dict>
-		<key>585C4B426931345CFDFEC815</key>
-		<dict>
-			<key>explicitFileType</key>
-			<string>archive.ar</string>
-			<key>includeInIndex</key>
-			<string>0</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>path</key>
-			<string>libPods.a</string>
-			<key>sourceTree</key>
-			<string>BUILT_PRODUCTS_DIR</string>
-		</dict>
-		<key>598FB6E79475CC259DF5CED0</key>
+		<key>B1816D308AE592FB6ADCB336</key>
 		<dict>
 			<key>baseConfigurationReference</key>
-			<string>6C6B457C2ECF9F5F7061BF3C</string>
+			<string>60014FE012E328A5F60BDEAD</string>
 			<key>buildSettings</key>
 			<dict>
 				<key>ALWAYS_SEARCH_USER_PATHS</key>
@@ -940,8 +2211,6 @@
 				<string>0</string>
 				<key>GCC_PRECOMPILE_PREFIX_HEADER</key>
 				<string>YES</string>
-				<key>GCC_PREFIX_HEADER</key>
-				<string>Target Support Files/Pods-DFCache/Pods-DFCache-prefix.pch</string>
 				<key>GCC_PREPROCESSOR_DEFINITIONS</key>
 				<array>
 					<string>DEBUG=1</string>
@@ -971,176 +2240,27 @@
 			<key>name</key>
 			<string>Debug</string>
 		</dict>
-		<key>5B9940A403826FC806083EBA</key>
+		<key>B25833FF1CC4D53E3E0BA508</key>
 		<dict>
 			<key>fileRef</key>
-			<string>F7B4BA6DF158E77E066E1666</string>
+			<string>F1CC63B989DCB297B4D62688</string>
 			<key>isa</key>
 			<string>PBXBuildFile</string>
 		</dict>
-		<key>5BCA082EB2BA9FA99001404C</key>
-		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>name</key>
-			<string>DFCompositeImageRequest.h</string>
-			<key>path</key>
-			<string>DFImageManager/DFImageManager/Other/DFCompositeImageRequest.h</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>5C0B234622226FEF1EDA5E02</key>
-		<dict>
-			<key>fileRef</key>
-			<string>A2C3039CCA20296CEBFE2C2F</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>5D3BC11D5784DE1B343C0354</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>D5FC72B5CC6B798E4EF9C78A</string>
-				<string>889681A126E4CA161D3D80D5</string>
-				<string>4094127E8AF171E3DA5A265E</string>
-				<string>B5F105B1A5DAFDAC71C9E540</string>
-				<string>5BCA082EB2BA9FA99001404C</string>
-				<string>4C0DEC2317E20081C2CBA758</string>
-				<string>55E7A3412B7C425566983396</string>
-				<string>DAE8A6904529A84CB15324B2</string>
-				<string>9BA8A27E2406A416C0F4D4F4</string>
-				<string>A2C3039CCA20296CEBFE2C2F</string>
-				<string>EE9B77572C431DA719220DA3</string>
-				<string>06BF4B59D859B8044CE73913</string>
-				<string>F7B4BA6DF158E77E066E1666</string>
-				<string>9558AF7CBBCD7AEC4140783D</string>
-				<string>C91CF38B68BA89F39B378E88</string>
-				<string>CF6D07DA6BCF9A16BB6AFF11</string>
-				<string>10F3378A81CEA31726F5A496</string>
-				<string>922AAB6805370B42077C0696</string>
-				<string>339A29C9B1CFF015B84C5F3D</string>
-				<string>0AFCDE76CE01704EF26B6BD0</string>
-				<string>EEB40474C2AE3DFD4503308F</string>
-				<string>EFFE06F225840E132D2ABD45</string>
-				<string>EB6FB31529B90A8067041757</string>
-				<string>FB34599F1FA25D9E9BE3494B</string>
-				<string>B0C228854C6C059C7353FF82</string>
-				<string>49FADE9251F975539182C83D</string>
-				<string>82D9B95254312290ADCD72BE</string>
-				<string>88B9423D3E347DC768B3F025</string>
-				<string>3521F14F5A3650E4FF34A9DD</string>
-				<string>D94B10958A40AFA08E97E64C</string>
-				<string>E45F79402DDE0DA4AB7C3287</string>
-				<string>A629B02E52D4DDF97E19D5D4</string>
-				<string>6B7AA484C9BE6F1CF81BF0BB</string>
-				<string>01BB38D93409BEABEE3A4685</string>
-				<string>77010047C228442C0A87E8E0</string>
-				<string>84E01AF9749C31B5F533F0BE</string>
-				<string>C47040652A7B7F5D0BA37DB5</string>
-				<string>0873BFB55AA393A9604AC524</string>
-				<string>7CA5F10A9720E0A03F2F972A</string>
-				<string>7E26B35507FA5BEC48E7665E</string>
-				<string>A5C4DCC19BADAC9FC0053F0E</string>
-				<string>7CA3E9424C4E097631CECA7C</string>
-				<string>FE37F1EF4D3D82500B6C52C5</string>
-				<string>82DA2AEC1426BD59C1539C9C</string>
-				<string>EE73B828E50E2A66765F724F</string>
-				<string>F10F3F2E6F844C84CAFA4DAF</string>
-				<string>409ACC0141CFBB44EE1C01D3</string>
-				<string>4E996DA7B52853F798796513</string>
-				<string>4E36C534B6269CD9DCF0F853</string>
-				<string>F24C7239F43FCF61DF05A569</string>
-				<string>D6F901DA44F7D03C165A7C98</string>
-				<string>DE0CF23F327B6EB2CC5BAE5F</string>
-				<string>F135BD6490AA2F939D3A3362</string>
-				<string>4FBBF391D18C1955A9A3EC3E</string>
-				<string>9926CFAE58403C60DC5F48D8</string>
-				<string>FD1E89722714FC409570B865</string>
-				<string>1E81613451BFF10BA1719DD0</string>
-				<string>A1F8D86E07069BD7A3E262AF</string>
-				<string>6A21E737C68BF96023DEB6BC</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>name</key>
-			<string>DFImageManager</string>
-			<key>path</key>
-			<string>../..</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>5EA35899E013F0145A56FF56</key>
+		<key>B333A5436FC1465EAB90313B</key>
 		<dict>
 			<key>buildActionMask</key>
 			<string>2147483647</string>
 			<key>files</key>
 			<array>
-				<string>CF2BE677B9EF96E94DC582D8</string>
+				<string>B764C6F687E242D51344F1B9</string>
 			</array>
 			<key>isa</key>
 			<string>PBXFrameworksBuildPhase</string>
 			<key>runOnlyForDeploymentPostprocessing</key>
 			<string>0</string>
 		</dict>
-		<key>601AF1B4935D0D3056B3A84B</key>
-		<dict>
-			<key>containerPortal</key>
-			<string>E78644B7A44A3D6CA9A0A362</string>
-			<key>isa</key>
-			<string>PBXContainerItemProxy</string>
-			<key>proxyType</key>
-			<string>1</string>
-			<key>remoteGlobalIDString</key>
-			<string>ADB5B078E3AB32A8CE054DC4</string>
-			<key>remoteInfo</key>
-			<string>Pods-DFImageManager</string>
-		</dict>
-		<key>605AA8CB491E9C6F1F898797</key>
-		<dict>
-			<key>containerPortal</key>
-			<string>E78644B7A44A3D6CA9A0A362</string>
-			<key>isa</key>
-			<string>PBXContainerItemProxy</string>
-			<key>proxyType</key>
-			<string>1</string>
-			<key>remoteGlobalIDString</key>
-			<string>6E1E328D80AF7DDC70F26759</string>
-			<key>remoteInfo</key>
-			<string>Pods-DFCache</string>
-		</dict>
-		<key>60D7BF65E2EEBB5F52B5C186</key>
-		<dict>
-			<key>fileRef</key>
-			<string>B0C228854C6C059C7353FF82</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>618918BF7E2F3A77E7233D32</key>
-		<dict>
-			<key>fileRef</key>
-			<string>B5F105B1A5DAFDAC71C9E540</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>65269751063988C8AD51DF62</key>
-		<dict>
-			<key>buildConfigurations</key>
-			<array>
-				<string>598FB6E79475CC259DF5CED0</string>
-				<string>57397C8BCA67BFF15F31F49F</string>
-			</array>
-			<key>defaultConfigurationIsVisible</key>
-			<string>0</string>
-			<key>defaultConfigurationName</key>
-			<string>Release</string>
-			<key>isa</key>
-			<string>XCConfigurationList</string>
-		</dict>
-		<key>672A6AEE142EBB464473B543</key>
+		<key>B38AF33545E92ED796179434</key>
 		<dict>
 			<key>includeInIndex</key>
 			<string>1</string>
@@ -1149,31 +2269,20 @@
 			<key>lastKnownFileType</key>
 			<string>sourcecode.c.h</string>
 			<key>name</key>
-			<string>DFCacheTimer.h</string>
+			<string>DFCachePrivate.h</string>
 			<key>path</key>
-			<string>DFCache/Private/DFCacheTimer.h</string>
+			<string>DFCache/Private/DFCachePrivate.h</string>
 			<key>sourceTree</key>
 			<string>&lt;group&gt;</string>
 		</dict>
-		<key>6A21E737C68BF96023DEB6BC</key>
+		<key>B4238A5CAB5B8DC1FBE115B9</key>
 		<dict>
-			<key>children</key>
-			<array>
-				<string>7FFC633A547B3DA0005E8007</string>
-				<string>786C6D408B8104F532B89A7B</string>
-				<string>6CB3ECB3CA62320D4E6BDC9D</string>
-				<string>15926C73AA07D5D90FC9E0AE</string>
-			</array>
+			<key>fileRef</key>
+			<string>829A539C474E678EE4F0512C</string>
 			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>name</key>
-			<string>Support Files</string>
-			<key>path</key>
-			<string>DFImageManagerSample/Pods/Target Support Files/Pods-DFImageManager</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
+			<string>PBXBuildFile</string>
 		</dict>
-		<key>6B7AA484C9BE6F1CF81BF0BB</key>
+		<key>B445769F4A929E997C12101C</key>
 		<dict>
 			<key>includeInIndex</key>
 			<string>1</string>
@@ -1182,26 +2291,28 @@
 			<key>lastKnownFileType</key>
 			<string>sourcecode.c.h</string>
 			<key>name</key>
-			<string>DFImageRequest.h</string>
+			<string>DFImageRequestOptions.h</string>
 			<key>path</key>
-			<string>DFImageManager/DFImageManager/Request/DFImageRequest.h</string>
+			<string>DFImageManager/DFImageManager/Request/DFImageRequestOptions.h</string>
 			<key>sourceTree</key>
 			<string>&lt;group&gt;</string>
 		</dict>
-		<key>6C6B457C2ECF9F5F7061BF3C</key>
+		<key>B52F9443DB4AD16C55BD1EC7</key>
 		<dict>
 			<key>includeInIndex</key>
 			<string>1</string>
 			<key>isa</key>
 			<string>PBXFileReference</string>
 			<key>lastKnownFileType</key>
-			<string>text.xcconfig</string>
+			<string>sourcecode.c.h</string>
+			<key>name</key>
+			<string>DFImageManagerBlockValueTransformer.h</string>
 			<key>path</key>
-			<string>Pods-DFCache-Private.xcconfig</string>
+			<string>DFImageManager/DFImageManager/Other/DFImageManagerBlockValueTransformer.h</string>
 			<key>sourceTree</key>
 			<string>&lt;group&gt;</string>
 		</dict>
-		<key>6CB3ECB3CA62320D4E6BDC9D</key>
+		<key>B5761BA1ECCFCB98FA5A5029</key>
 		<dict>
 			<key>includeInIndex</key>
 			<string>1</string>
@@ -1209,136 +2320,43 @@
 			<string>PBXFileReference</string>
 			<key>lastKnownFileType</key>
 			<string>sourcecode.c.objc</string>
+			<key>name</key>
+			<string>DFAssetsLibraryImageManagerConfiguration.m</string>
 			<key>path</key>
-			<string>Pods-DFImageManager-dummy.m</string>
+			<string>DFImageManager/DFImageManager/Configurations/Assets Library Configuration/DFAssetsLibraryImageManagerConfiguration.m</string>
 			<key>sourceTree</key>
 			<string>&lt;group&gt;</string>
 		</dict>
-		<key>6D207D37BC6D7E7E108A109A</key>
+		<key>B70743ECA97EC9D85E9F3E90</key>
 		<dict>
 			<key>fileRef</key>
-			<string>EEB40474C2AE3DFD4503308F</string>
+			<string>345D6284377E194D2511B9F0</string>
 			<key>isa</key>
 			<string>PBXBuildFile</string>
 		</dict>
-		<key>6D8DBABA1105ED539864A7BE</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>51CAC4563CDDA195947AA29D</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>name</key>
-			<string>Frameworks</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>6E1E328D80AF7DDC70F26759</key>
-		<dict>
-			<key>buildConfigurationList</key>
-			<string>65269751063988C8AD51DF62</string>
-			<key>buildPhases</key>
-			<array>
-				<string>1823B6B419009DE2CBD78389</string>
-				<string>5EA35899E013F0145A56FF56</string>
-				<string>C797470C15B597F9628673C7</string>
-			</array>
-			<key>buildRules</key>
-			<array/>
-			<key>dependencies</key>
-			<array/>
-			<key>isa</key>
-			<string>PBXNativeTarget</string>
-			<key>name</key>
-			<string>Pods-DFCache</string>
-			<key>productName</key>
-			<string>Pods-DFCache</string>
-			<key>productReference</key>
-			<string>D143106153ED512E3767C012</string>
-			<key>productType</key>
-			<string>com.apple.product-type.library.static</string>
-		</dict>
-		<key>6E6DC658A385EB600E27D9B4</key>
-		<dict>
-			<key>fileRef</key>
-			<string>D6F901DA44F7D03C165A7C98</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>7171953E6DB38418282B85E8</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>wrapper.framework</string>
-			<key>name</key>
-			<string>Foundation.framework</string>
-			<key>path</key>
-			<string>Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS7.1.sdk/System/Library/Frameworks/Foundation.framework</string>
-			<key>sourceTree</key>
-			<string>DEVELOPER_DIR</string>
-		</dict>
-		<key>722884E32740F00AB27D31AE</key>
-		<dict>
-			<key>fileRef</key>
-			<string>3521F14F5A3650E4FF34A9DD</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>72BD81E7F89F992D42F1061B</key>
-		<dict>
-			<key>fileRef</key>
-			<string>889681A126E4CA161D3D80D5</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>7354FEAB847E0C1E5AAF25BC</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>354CAC1EF9CB186BA2135A0C</string>
-				<string>2149AC10E47997E0E15B9052</string>
-				<string>6D8DBABA1105ED539864A7BE</string>
-				<string>FD0DE1B2955B3DDEBE0E2320</string>
-				<string>A19E6E9E702662F05E2F3581</string>
-				<string>1913C489A864926FEED38A10</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>7398F2E42548B19361F934D9</key>
-		<dict>
-			<key>fileRef</key>
-			<string>82DA2AEC1426BD59C1539C9C</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>77010047C228442C0A87E8E0</key>
+		<key>B74093B30085C1019C1918D9</key>
 		<dict>
 			<key>includeInIndex</key>
 			<string>1</string>
 			<key>isa</key>
 			<string>PBXFileReference</string>
 			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
+			<string>sourcecode.c.objc</string>
 			<key>name</key>
-			<string>DFImageRequestID.h</string>
+			<string>DFCacheImageDecoder.m</string>
 			<key>path</key>
-			<string>DFImageManager/DFImageManager/Other/DFImageRequestID.h</string>
+			<string>DFCache/Image Decoder/DFCacheImageDecoder.m</string>
 			<key>sourceTree</key>
 			<string>&lt;group&gt;</string>
 		</dict>
-		<key>7777D7CF7BEA4D5BED4CA798</key>
+		<key>B764C6F687E242D51344F1B9</key>
 		<dict>
 			<key>fileRef</key>
-			<string>EE9B77572C431DA719220DA3</string>
+			<string>2ADA8D7DE9219A3384CC9021</string>
 			<key>isa</key>
 			<string>PBXBuildFile</string>
 		</dict>
-		<key>786C6D408B8104F532B89A7B</key>
+		<key>B8CC041130279C9F87961CA6</key>
 		<dict>
 			<key>includeInIndex</key>
 			<string>1</string>
@@ -1351,190 +2369,7 @@
 			<key>sourceTree</key>
 			<string>&lt;group&gt;</string>
 		</dict>
-		<key>799E5E3095C5EC05CCAB68F7</key>
-		<dict>
-			<key>fileRef</key>
-			<string>DECB02E59CAD90B3A599F5CB</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>79BA32A49E7DDAD82E5C6999</key>
-		<dict>
-			<key>buildActionMask</key>
-			<string>2147483647</string>
-			<key>files</key>
-			<array>
-				<string>DFAB4A28BC9525BE5E7A5D8E</string>
-			</array>
-			<key>isa</key>
-			<string>PBXFrameworksBuildPhase</string>
-			<key>runOnlyForDeploymentPostprocessing</key>
-			<string>0</string>
-		</dict>
-		<key>7BB14BC474DDB869F1C44100</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>CE71C3D996EF7691736408A1</string>
-				<string>6C6B457C2ECF9F5F7061BF3C</string>
-				<string>1FA81FCA1A247338310548EA</string>
-				<string>0A406896376D90B15D68D263</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>name</key>
-			<string>Support Files</string>
-			<key>path</key>
-			<string>../Target Support Files/Pods-DFCache</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>7C368BF6C5B4581B9A5DAE14</key>
-		<dict>
-			<key>fileRef</key>
-			<string>1E81613451BFF10BA1719DD0</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>7CA3E9424C4E097631CECA7C</key>
-		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>name</key>
-			<string>DFImageUtilities.h</string>
-			<key>path</key>
-			<string>DFImageManager/DFImageManager/Other/DFImageUtilities.h</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>7CA5F10A9720E0A03F2F972A</key>
-		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>name</key>
-			<string>DFImageRequestOptions.m</string>
-			<key>path</key>
-			<string>DFImageManager/DFImageManager/Request/DFImageRequestOptions.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>7E26B35507FA5BEC48E7665E</key>
-		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>name</key>
-			<string>DFImageResponse.h</string>
-			<key>path</key>
-			<string>DFImageManager/DFImageManager/Response/DFImageResponse.h</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>7F931796F71A37BC0BBEBC4B</key>
-		<dict>
-			<key>fileRef</key>
-			<string>49FADE9251F975539182C83D</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>7FFC633A547B3DA0005E8007</key>
-		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>text.xcconfig</string>
-			<key>path</key>
-			<string>Pods-DFImageManager.xcconfig</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>8239ED32AF70B6D5B90D216B</key>
-		<dict>
-			<key>fileRef</key>
-			<string>BAC1F09609D10EA531E11138</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>82D9B95254312290ADCD72BE</key>
-		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>name</key>
-			<string>DFImageManagerOperationProtocol.h</string>
-			<key>path</key>
-			<string>DFImageManager/DFImageManager/Protocols/DFImageManagerOperationProtocol.h</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>82DA2AEC1426BD59C1539C9C</key>
-		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>name</key>
-			<string>DFImageView.h</string>
-			<key>path</key>
-			<string>DFImageManager/DFImageManager/Views/DFImageView.h</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>84E01AF9749C31B5F533F0BE</key>
-		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>name</key>
-			<string>DFImageRequestID.m</string>
-			<key>path</key>
-			<string>DFImageManager/DFImageManager/Other/DFImageRequestID.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>85D809F2FC781FDD10902F3E</key>
-		<dict>
-			<key>fileRef</key>
-			<string>453F4EFC1477B1B65E22D94A</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>878759601ADE7A95D4DE1F75</key>
-		<dict>
-			<key>fileRef</key>
-			<string>9D26B668324593F4171A2CD5</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>888F16250630BC6B929C22BB</key>
-		<dict>
-			<key>fileRef</key>
-			<string>0873BFB55AA393A9604AC524</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>889681A126E4CA161D3D80D5</key>
+		<key>B905925F360DB1E4110BC866</key>
 		<dict>
 			<key>includeInIndex</key>
 			<string>1</string>
@@ -1549,7 +2384,14 @@
 			<key>sourceTree</key>
 			<string>&lt;group&gt;</string>
 		</dict>
-		<key>88B9423D3E347DC768B3F025</key>
+		<key>BB31FA13810BBD76A9CA40E2</key>
+		<dict>
+			<key>fileRef</key>
+			<string>D38B2D6FA99632CC531C1F5F</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>BB8424609CC0C8E93EE52807</key>
 		<dict>
 			<key>includeInIndex</key>
 			<string>1</string>
@@ -1558,20 +2400,280 @@
 			<key>lastKnownFileType</key>
 			<string>sourcecode.c.h</string>
 			<key>name</key>
-			<string>DFImageManagerProtocol.h</string>
+			<string>DFImageManager.h</string>
 			<key>path</key>
-			<string>DFImageManager/DFImageManager/Protocols/DFImageManagerProtocol.h</string>
+			<string>DFImageManager/DFImageManager/Managers/Image Manager/DFImageManager.h</string>
 			<key>sourceTree</key>
 			<string>&lt;group&gt;</string>
 		</dict>
-		<key>89B6AA76E40462C9EE59B5CA</key>
+		<key>BCB17AB7C6D521FC76A9F42C</key>
 		<dict>
 			<key>fileRef</key>
-			<string>5BCA082EB2BA9FA99001404C</string>
+			<string>7C619D51B348A6A825E60B70</string>
 			<key>isa</key>
 			<string>PBXBuildFile</string>
 		</dict>
-		<key>8A09740B964EADB9A6F37F6E</key>
+		<key>BCDCBCE43237B03256D4A725</key>
+		<dict>
+			<key>buildActionMask</key>
+			<string>2147483647</string>
+			<key>files</key>
+			<array>
+				<string>E862BBE557922AFAF9A31137</string>
+				<string>1CE89A8FFB2BC46FFC9C2BF3</string>
+				<string>64620BE8FDF15EF861863E54</string>
+				<string>EC801571F29B5FBCDF43EF15</string>
+				<string>6EA3A9419BEA135FBF8DE629</string>
+				<string>DD8530F85978A52494C34994</string>
+				<string>4D47A46BF79D9A9BAA734B73</string>
+				<string>DECFC22614218BED0DEE5067</string>
+				<string>67F0F98B2E1FFFCF16179347</string>
+				<string>89FE4706BC8262D4B03CF1A1</string>
+				<string>8E6516196A0A30107ECB8ABF</string>
+			</array>
+			<key>isa</key>
+			<string>PBXSourcesBuildPhase</string>
+			<key>runOnlyForDeploymentPostprocessing</key>
+			<string>0</string>
+		</dict>
+		<key>BEC8D3BA079B023F199BF963</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXTargetDependency</string>
+			<key>name</key>
+			<string>Pods-DFImageManager</string>
+			<key>target</key>
+			<string>2B5D2BA24AA3E471D08E4F05</string>
+			<key>targetProxy</key>
+			<string>F17FEB9BEDF07F8DD2EF4061</string>
+		</dict>
+		<key>BF3542514D6DF74370B4D353</key>
+		<dict>
+			<key>explicitFileType</key>
+			<string>archive.ar</string>
+			<key>includeInIndex</key>
+			<string>0</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>path</key>
+			<string>libPods-DFCache.a</string>
+			<key>sourceTree</key>
+			<string>BUILT_PRODUCTS_DIR</string>
+		</dict>
+		<key>BFA48D63925E2741DA2F1047</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>name</key>
+			<string>DFCache+DFExtensions.m</string>
+			<key>path</key>
+			<string>DFCache/DFCache+DFExtensions.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>BFBC164EC1114822589DF6FD</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>name</key>
+			<string>DFAssetsLibraryUtilities.h</string>
+			<key>path</key>
+			<string>DFImageManager/DFImageManager/Configurations/Assets Library Configuration/DFAssetsLibraryUtilities.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>C4B18D0C264E25C58651D8F3</key>
+		<dict>
+			<key>fileRef</key>
+			<string>4E47C355FED1A9F80DBE746D</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>C914BFF68A157B6058509189</key>
+		<dict>
+			<key>fileRef</key>
+			<string>3017E2D5219FDB8DADE7D7AE</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>CA40EDF349975842067BD95C</key>
+		<dict>
+			<key>fileRef</key>
+			<string>24A360591F827163C4CE8B7B</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>CA73187036EBD49EB22E015B</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>name</key>
+			<string>DFCacheTimer.m</string>
+			<key>path</key>
+			<string>DFCache/Private/DFCacheTimer.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>CB79B51BC07579B852063920</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>name</key>
+			<string>DFValueTransformerFactory.m</string>
+			<key>path</key>
+			<string>DFCache/Value Transforming/DFValueTransformerFactory.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>CCF5948E8D0FF96FE7836906</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>name</key>
+			<string>DFImageManager+DefaultManager.m</string>
+			<key>path</key>
+			<string>DFImageManager/DFImageManager/Managers/Image Manager/DFImageManager+DefaultManager.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>CE78C6934A58DE6311CF8A3B</key>
+		<dict>
+			<key>buildActionMask</key>
+			<string>2147483647</string>
+			<key>files</key>
+			<array>
+				<string>7B2818C32D599199DA08EA2D</string>
+				<string>18D615BB47854765C872EFED</string>
+				<string>704C9A63FC9B5434C103E131</string>
+				<string>1C8712EAB760814DA866D69D</string>
+				<string>467BCCF405C792B081B0D4AB</string>
+				<string>4D41B6EFD2C253467532C67D</string>
+				<string>21922DEE0C794860CF140206</string>
+				<string>426D5F795D276E5E7A5A09AA</string>
+				<string>EBC27260505FCF494F0C9FB4</string>
+				<string>A987DDD6F33FDC2C5D1E1722</string>
+				<string>9672D41E66607E549C374409</string>
+				<string>8102AB1BB8A7A01D124FC83E</string>
+				<string>27D806AA8E0A4633BA53F36A</string>
+				<string>FC67EED381664A6BA74BB6FB</string>
+				<string>B09A7A0582D202EA537E377A</string>
+				<string>4612B3C6E84FCDFBBED2C2E7</string>
+				<string>2DA0AC7806BC22FBED22DD4D</string>
+				<string>EA1FD430217E53E3B1B059FB</string>
+				<string>FC10380919CE63DFB19C81ED</string>
+				<string>D5CE79AE84DD9CCD926CA7D6</string>
+				<string>797180D67A6631E325D3EB50</string>
+				<string>69AF13178C46C43CFD883CE4</string>
+				<string>2B890817F4EC8555AC8E798C</string>
+				<string>AE147AC815F6BF93A02E271C</string>
+				<string>EFB1B5249C08454A97C26272</string>
+				<string>C914BFF68A157B6058509189</string>
+				<string>54FC0D5AFCD4011994A44F23</string>
+				<string>25870BB72439C8A26849B2F5</string>
+				<string>66FBAEE591DD7A3D7922484D</string>
+			</array>
+			<key>isa</key>
+			<string>PBXSourcesBuildPhase</string>
+			<key>runOnlyForDeploymentPostprocessing</key>
+			<string>0</string>
+		</dict>
+		<key>CEC7B1526D6CCEE3C05E9217</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>text</string>
+			<key>name</key>
+			<string>Podfile</string>
+			<key>path</key>
+			<string>../Podfile</string>
+			<key>sourceTree</key>
+			<string>SOURCE_ROOT</string>
+			<key>xcLanguageSpecificationIdentifier</key>
+			<string>xcode.lang.ruby</string>
+		</dict>
+		<key>CEEAD02BAD62F667544742DF</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXTargetDependency</string>
+			<key>name</key>
+			<string>Pods-DFCache</string>
+			<key>target</key>
+			<string>A637BC15AB3C3585B63F2051</string>
+			<key>targetProxy</key>
+			<string>CF4149336320280E0F74A29D</string>
+		</dict>
+		<key>CF4149336320280E0F74A29D</key>
+		<dict>
+			<key>containerPortal</key>
+			<string>ADC056FF288DD2CC134E9A23</string>
+			<key>isa</key>
+			<string>PBXContainerItemProxy</string>
+			<key>proxyType</key>
+			<string>1</string>
+			<key>remoteGlobalIDString</key>
+			<string>A637BC15AB3C3585B63F2051</string>
+			<key>remoteInfo</key>
+			<string>Pods-DFCache</string>
+		</dict>
+		<key>D095EB35534031DB6A984DE1</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>name</key>
+			<string>DFImageProcessingManager.m</string>
+			<key>path</key>
+			<string>DFImageManager/DFImageManager/Other/DFImageProcessingManager.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>D1C8688A4425AEA9EFAD09A2</key>
+		<dict>
+			<key>fileRef</key>
+			<string>76E1A3347C3D0C72A969722C</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>D28F1431E8576D28B4865434</key>
+		<dict>
+			<key>buildActionMask</key>
+			<string>2147483647</string>
+			<key>files</key>
+			<array>
+				<string>B25833FF1CC4D53E3E0BA508</string>
+			</array>
+			<key>isa</key>
+			<string>PBXSourcesBuildPhase</string>
+			<key>runOnlyForDeploymentPostprocessing</key>
+			<string>0</string>
+		</dict>
+		<key>D3634E38C19604EB7AD64FE2</key>
 		<dict>
 			<key>buildSettings</key>
 			<dict>
@@ -1633,584 +2735,7 @@
 			<key>name</key>
 			<string>Release</string>
 		</dict>
-		<key>8DDE00AA0DA20F34F57F35D7</key>
-		<dict>
-			<key>fileRef</key>
-			<string>CF6D07DA6BCF9A16BB6AFF11</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>8E18BECA8C634DE2F771A1A4</key>
-		<dict>
-			<key>fileRef</key>
-			<string>FC04F7F891173E04D9A5FFD1</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>8E65E42B462194B5E79BA584</key>
-		<dict>
-			<key>fileRef</key>
-			<string>DE0CF23F327B6EB2CC5BAE5F</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>8F29A3827C7157B4E3BB0457</key>
-		<dict>
-			<key>fileRef</key>
-			<string>7E26B35507FA5BEC48E7665E</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>922AAB6805370B42077C0696</key>
-		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>name</key>
-			<string>DFImageManager+DefaultManager.m</string>
-			<key>path</key>
-			<string>DFImageManager/DFImageManager/Managers/Image Manager/DFImageManager+DefaultManager.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>93554C8A12542DB79958663B</key>
-		<dict>
-			<key>buildActionMask</key>
-			<string>2147483647</string>
-			<key>files</key>
-			<array>
-				<string>72BD81E7F89F992D42F1061B</string>
-				<string>618918BF7E2F3A77E7233D32</string>
-				<string>E1DA9C7CE47BEE82566A7F0A</string>
-				<string>A520DB6D74669A2CF127E950</string>
-				<string>5C0B234622226FEF1EDA5E02</string>
-				<string>5B9940A403826FC806083EBA</string>
-				<string>3664E8F2A5CF512477FEB4C8</string>
-				<string>C0633A2176EEB7CA5877D75F</string>
-				<string>FEA914F2BDC76540E2DB6F38</string>
-				<string>1CE2207C5E5DAD2816184DC1</string>
-				<string>0068348B4E2E804CD446D597</string>
-				<string>60D7BF65E2EEBB5F52B5C186</string>
-				<string>270688909EB84D834A1FFA76</string>
-				<string>F1B1977F74D6D11C72136487</string>
-				<string>DD540333EFEDE2EA00CAE870</string>
-				<string>A829BEA94DBE28EB468DCC8B</string>
-				<string>C59EADEF5BF76C9175646904</string>
-				<string>2B44192237C74601D39D68D5</string>
-				<string>D24CDD7326A1718094F8553A</string>
-				<string>115F3B9EB420BB07C50616F2</string>
-				<string>28FD9994EF2A30152E481A52</string>
-				<string>6E6DC658A385EB600E27D9B4</string>
-				<string>A08D2FFC5EB1658B999F650B</string>
-				<string>FE0BFDBA19F701960CD1D325</string>
-				<string>7C368BF6C5B4581B9A5DAE14</string>
-				<string>408B269192C62D86E64877BA</string>
-			</array>
-			<key>isa</key>
-			<string>PBXSourcesBuildPhase</string>
-			<key>runOnlyForDeploymentPostprocessing</key>
-			<string>0</string>
-		</dict>
-		<key>9358393EAA5B1CCB85CB31E6</key>
-		<dict>
-			<key>fileRef</key>
-			<string>06BF4B59D859B8044CE73913</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>93D5DA892728886F982F1964</key>
-		<dict>
-			<key>fileRef</key>
-			<string>9558AF7CBBCD7AEC4140783D</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>94C3E6343AE725B8AC23A990</key>
-		<dict>
-			<key>fileRef</key>
-			<string>4E996DA7B52853F798796513</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>9558AF7CBBCD7AEC4140783D</key>
-		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>name</key>
-			<string>DFImageFetchConnectionOperation.h</string>
-			<key>path</key>
-			<string>DFImageManager/DFImageManager/Operations/DFImageFetchConnectionOperation.h</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>9793CE9BF30C9BFCCF2E952B</key>
-		<dict>
-			<key>fileRef</key>
-			<string>F10F3F2E6F844C84CAFA4DAF</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>98AC261463D98DD6CF20DBFE</key>
-		<dict>
-			<key>fileRef</key>
-			<string>D94B10958A40AFA08E97E64C</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>9926CFAE58403C60DC5F48D8</key>
-		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>name</key>
-			<string>DFURLConnectionOperation.m</string>
-			<key>path</key>
-			<string>DFImageManager/DFImageManager/Networking/DFURLConnectionOperation.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>9A3233FC20E4427DB5FF248E</key>
-		<dict>
-			<key>buildActionMask</key>
-			<string>2147483647</string>
-			<key>files</key>
-			<array>
-				<string>878759601ADE7A95D4DE1F75</string>
-			</array>
-			<key>isa</key>
-			<string>PBXSourcesBuildPhase</string>
-			<key>runOnlyForDeploymentPostprocessing</key>
-			<string>0</string>
-		</dict>
-		<key>9BA8A27E2406A416C0F4D4F4</key>
-		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>name</key>
-			<string>DFImageCacheStoreOperation.h</string>
-			<key>path</key>
-			<string>DFImageManager/DFImageManager/Operations/DFImageCacheStoreOperation.h</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>9C9EE4B53AE80B19A81ECE61</key>
-		<dict>
-			<key>fileRef</key>
-			<string>B52451E28B8E2C3A965DC677</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>9D26B668324593F4171A2CD5</key>
-		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>path</key>
-			<string>Pods-dummy.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>A08D2FFC5EB1658B999F650B</key>
-		<dict>
-			<key>fileRef</key>
-			<string>F135BD6490AA2F939D3A3362</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>A19E6E9E702662F05E2F3581</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>585C4B426931345CFDFEC815</string>
-				<string>D143106153ED512E3767C012</string>
-				<string>4C1AFE6990F47336149EF7CA</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>name</key>
-			<string>Products</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>A1F8D86E07069BD7A3E262AF</key>
-		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>name</key>
-			<string>DFURLResponseDeserializing.h</string>
-			<key>path</key>
-			<string>DFImageManager/DFImageManager/Networking/DFURLResponseDeserializing.h</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>A20E386FCC2A2595ED3F9EA8</key>
-		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>path</key>
-			<string>Pods-environment.h</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>A26AC68BC91C7D9F6663C552</key>
-		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>name</key>
-			<string>DFValueTransformerFactory.h</string>
-			<key>path</key>
-			<string>DFCache/Value Transforming/DFValueTransformerFactory.h</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>A2C3039CCA20296CEBFE2C2F</key>
-		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>name</key>
-			<string>DFImageCacheStoreOperation.m</string>
-			<key>path</key>
-			<string>DFImageManager/DFImageManager/Operations/DFImageCacheStoreOperation.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>A2FC6F036B31060717487D1D</key>
-		<dict>
-			<key>fileRef</key>
-			<string>C47040652A7B7F5D0BA37DB5</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>A520DB6D74669A2CF127E950</key>
-		<dict>
-			<key>fileRef</key>
-			<string>DAE8A6904529A84CB15324B2</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>A5C4DCC19BADAC9FC0053F0E</key>
-		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>name</key>
-			<string>DFImageResponse.m</string>
-			<key>path</key>
-			<string>DFImageManager/DFImageManager/Response/DFImageResponse.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>A5E167F61CDF6F6017AA249B</key>
-		<dict>
-			<key>fileRef</key>
-			<string>4FBBF391D18C1955A9A3EC3E</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>A62011A3F13C5A1840BA324F</key>
-		<dict>
-			<key>baseConfigurationReference</key>
-			<string>786C6D408B8104F532B89A7B</string>
-			<key>buildSettings</key>
-			<dict>
-				<key>ALWAYS_SEARCH_USER_PATHS</key>
-				<string>NO</string>
-				<key>COPY_PHASE_STRIP</key>
-				<string>NO</string>
-				<key>DSTROOT</key>
-				<string>/tmp/xcodeproj.dst</string>
-				<key>GCC_DYNAMIC_NO_PIC</key>
-				<string>NO</string>
-				<key>GCC_OPTIMIZATION_LEVEL</key>
-				<string>0</string>
-				<key>GCC_PRECOMPILE_PREFIX_HEADER</key>
-				<string>YES</string>
-				<key>GCC_PREFIX_HEADER</key>
-				<string>Target Support Files/Pods-DFImageManager/Pods-DFImageManager-prefix.pch</string>
-				<key>GCC_PREPROCESSOR_DEFINITIONS</key>
-				<array>
-					<string>DEBUG=1</string>
-					<string>$(inherited)</string>
-				</array>
-				<key>GCC_SYMBOLS_PRIVATE_EXTERN</key>
-				<string>NO</string>
-				<key>INSTALL_PATH</key>
-				<string>$(BUILT_PRODUCTS_DIR)</string>
-				<key>IPHONEOS_DEPLOYMENT_TARGET</key>
-				<string>6.0</string>
-				<key>OTHER_LDFLAGS</key>
-				<string></string>
-				<key>OTHER_LIBTOOLFLAGS</key>
-				<string></string>
-				<key>PRODUCT_NAME</key>
-				<string>$(TARGET_NAME)</string>
-				<key>PUBLIC_HEADERS_FOLDER_PATH</key>
-				<string>$(TARGET_NAME)</string>
-				<key>SDKROOT</key>
-				<string>iphoneos</string>
-				<key>SKIP_INSTALL</key>
-				<string>YES</string>
-			</dict>
-			<key>isa</key>
-			<string>XCBuildConfiguration</string>
-			<key>name</key>
-			<string>Debug</string>
-		</dict>
-		<key>A629B02E52D4DDF97E19D5D4</key>
-		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>name</key>
-			<string>DFImageProcessingProtocol.h</string>
-			<key>path</key>
-			<string>DFImageManager/DFImageManager/Protocols/DFImageProcessingProtocol.h</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>A829BEA94DBE28EB468DCC8B</key>
-		<dict>
-			<key>fileRef</key>
-			<string>7CA5F10A9720E0A03F2F972A</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>A835CDF0B1367E56B93446E6</key>
-		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>text.plist.xml</string>
-			<key>path</key>
-			<string>Pods-acknowledgements.plist</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>AB95807509123CAB62EDB8FF</key>
-		<dict>
-			<key>fileRef</key>
-			<string>55E7A3412B7C425566983396</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>AD2D881ED487340AFBF1B973</key>
-		<dict>
-			<key>fileRef</key>
-			<string>339A29C9B1CFF015B84C5F3D</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>ADB5B078E3AB32A8CE054DC4</key>
-		<dict>
-			<key>buildConfigurationList</key>
-			<string>15C1A1082A9BF2B0321D4A44</string>
-			<key>buildPhases</key>
-			<array>
-				<string>93554C8A12542DB79958663B</string>
-				<string>DEABF501D8082C46ADF1B59B</string>
-				<string>5573EC8A555E2BBB4B45A177</string>
-			</array>
-			<key>buildRules</key>
-			<array/>
-			<key>dependencies</key>
-			<array>
-				<string>F18A23313B1347623C2218F0</string>
-			</array>
-			<key>isa</key>
-			<string>PBXNativeTarget</string>
-			<key>name</key>
-			<string>Pods-DFImageManager</string>
-			<key>productName</key>
-			<string>Pods-DFImageManager</string>
-			<key>productReference</key>
-			<string>4C1AFE6990F47336149EF7CA</string>
-			<key>productType</key>
-			<string>com.apple.product-type.library.static</string>
-		</dict>
-		<key>AEBEB7550FE3205921518637</key>
-		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>name</key>
-			<string>DFCache+DFExtensions.h</string>
-			<key>path</key>
-			<string>DFCache/DFCache+DFExtensions.h</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>AEC253D149F87091B8C00690</key>
-		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>name</key>
-			<string>DFCache+DFExtensions.m</string>
-			<key>path</key>
-			<string>DFCache/DFCache+DFExtensions.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>AF556F13BB806E35450E5CF0</key>
-		<dict>
-			<key>fileRef</key>
-			<string>D5FC72B5CC6B798E4EF9C78A</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>AFD97250A41AD74FE51EE89C</key>
-		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>text.xcconfig</string>
-			<key>path</key>
-			<string>Pods.debug.xcconfig</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>B0C228854C6C059C7353FF82</key>
-		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>name</key>
-			<string>DFImageManagerDefines.m</string>
-			<key>path</key>
-			<string>DFImageManager/DFImageManager/DFImageManagerDefines.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>B18C7D3843EE279C05BFBC9E</key>
-		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>text.xcconfig</string>
-			<key>path</key>
-			<string>Pods.release.xcconfig</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>B20C997D21E656400A280B84</key>
-		<dict>
-			<key>fileRef</key>
-			<string>AEBEB7550FE3205921518637</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>B51C99CC24B174BACCF0304A</key>
-		<dict>
-			<key>buildConfigurationList</key>
-			<string>2C0C46AEC50CD6C2B157A7E6</string>
-			<key>buildPhases</key>
-			<array>
-				<string>9A3233FC20E4427DB5FF248E</string>
-				<string>79BA32A49E7DDAD82E5C6999</string>
-			</array>
-			<key>buildRules</key>
-			<array/>
-			<key>dependencies</key>
-			<array>
-				<string>3722CDEB383C1CC33B4BEB6C</string>
-				<string>F4597384CC92C4AE5F6FABCF</string>
-			</array>
-			<key>isa</key>
-			<string>PBXNativeTarget</string>
-			<key>name</key>
-			<string>Pods</string>
-			<key>productName</key>
-			<string>Pods</string>
-			<key>productReference</key>
-			<string>585C4B426931345CFDFEC815</string>
-			<key>productType</key>
-			<string>com.apple.product-type.library.static</string>
-		</dict>
-		<key>B52451E28B8E2C3A965DC677</key>
-		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>name</key>
-			<string>DFCache.m</string>
-			<key>path</key>
-			<string>DFCache/DFCache.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>B5F105B1A5DAFDAC71C9E540</key>
-		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>name</key>
-			<string>DFCompositeImageManager.m</string>
-			<key>path</key>
-			<string>DFImageManager/DFImageManager/Managers/Composite Manager/DFCompositeImageManager.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>BAC1F09609D10EA531E11138</key>
+		<key>D38B2D6FA99632CC531C1F5F</key>
 		<dict>
 			<key>includeInIndex</key>
 			<string>1</string>
@@ -2225,14 +2750,113 @@
 			<key>sourceTree</key>
 			<string>&lt;group&gt;</string>
 		</dict>
-		<key>C0633A2176EEB7CA5877D75F</key>
+		<key>D5CE79AE84DD9CCD926CA7D6</key>
 		<dict>
 			<key>fileRef</key>
-			<string>922AAB6805370B42077C0696</string>
+			<string>7A6FA7DC42EEA40B12B6D410</string>
 			<key>isa</key>
 			<string>PBXBuildFile</string>
 		</dict>
-		<key>C47040652A7B7F5D0BA37DB5</key>
+		<key>D94A4A035F3F200DC6CB3FB5</key>
+		<dict>
+			<key>fileRef</key>
+			<string>F406F8FF52042DB4F16F4A8C</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>DA9069DC25D6FAA578E4E455</key>
+		<dict>
+			<key>buildConfigurations</key>
+			<array>
+				<string>B1816D308AE592FB6ADCB336</string>
+				<string>1B0054381AD5380CD538A9F3</string>
+			</array>
+			<key>defaultConfigurationIsVisible</key>
+			<string>0</string>
+			<key>defaultConfigurationName</key>
+			<string>Release</string>
+			<key>isa</key>
+			<string>XCConfigurationList</string>
+		</dict>
+		<key>DB083123FD362584B6F7C5C0</key>
+		<dict>
+			<key>fileRef</key>
+			<string>16886744491D078CEE6F34D9</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>DBE2867A2E0AB7071928A85E</key>
+		<dict>
+			<key>fileRef</key>
+			<string>50E5066FA0588793F4B51E53</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>DC43B6E5413A26153B99B81A</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>path</key>
+			<string>Pods-DFCache-dummy.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>DD8530F85978A52494C34994</key>
+		<dict>
+			<key>fileRef</key>
+			<string>888FFFC51D8E9F9543741D53</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>DECFC22614218BED0DEE5067</key>
+		<dict>
+			<key>fileRef</key>
+			<string>E141265A77F2581455E809E7</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>E002BF5EEB6915DA283DB437</key>
+		<dict>
+			<key>fileRef</key>
+			<string>5D8C979A79B44189FC72801B</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>E04ABE5FBE155F2623E9A3AA</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>name</key>
+			<string>DFCache.m</string>
+			<key>path</key>
+			<string>DFCache/DFCache.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>E141265A77F2581455E809E7</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>name</key>
+			<string>DFValueTransformer.m</string>
+			<key>path</key>
+			<string>DFCache/Value Transforming/DFValueTransformer.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>E18DD45312AA7FFF92838789</key>
 		<dict>
 			<key>includeInIndex</key>
 			<string>1</string>
@@ -2241,453 +2865,58 @@
 			<key>lastKnownFileType</key>
 			<string>sourcecode.c.h</string>
 			<key>name</key>
-			<string>DFImageRequestID+Protected.h</string>
+			<string>DFCompositeImageRequest.h</string>
 			<key>path</key>
-			<string>DFImageManager/DFImageManager/Other/DFImageRequestID+Protected.h</string>
+			<string>DFImageManager/DFImageManager/Other/DFCompositeImageRequest.h</string>
 			<key>sourceTree</key>
 			<string>&lt;group&gt;</string>
 		</dict>
-		<key>C59EADEF5BF76C9175646904</key>
+		<key>E2524D8C641427AF075973F4</key>
 		<dict>
 			<key>fileRef</key>
-			<string>A5C4DCC19BADAC9FC0053F0E</string>
+			<string>F0C1522681D8A0923CFD684A</string>
 			<key>isa</key>
 			<string>PBXBuildFile</string>
 		</dict>
-		<key>C797470C15B597F9628673C7</key>
+		<key>E2CF11043178D07B273EC711</key>
 		<dict>
-			<key>buildActionMask</key>
-			<string>2147483647</string>
-			<key>files</key>
+			<key>fileRef</key>
+			<string>B38AF33545E92ED796179434</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>E4C57BA5BF9532CE0303970C</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>name</key>
+			<string>DFImageManagerValueTransformerProtocol.h</string>
+			<key>path</key>
+			<string>DFImageManager/DFImageManager/Protocols/DFImageManagerValueTransformerProtocol.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>E57D9958BCD997C69102CB40</key>
+		<dict>
+			<key>children</key>
 			<array>
-				<string>B20C997D21E656400A280B84</string>
-				<string>8239ED32AF70B6D5B90D216B</string>
-				<string>EE52BCD0B5AF3D8FC54921EF</string>
-				<string>F4F65968F8BD8F1A3B6890C8</string>
-				<string>3709AEB93EDD8782847EEA92</string>
-				<string>8E18BECA8C634DE2F771A1A4</string>
-				<string>C8E13AAB56A918E5FF0E7737</string>
-				<string>5801AD34115B8BB25FC08A99</string>
-				<string>3F9F66E7FB094D4F1437E132</string>
-				<string>18543686BFED847EAB97CDFA</string>
+				<string>2ADA8D7DE9219A3384CC9021</string>
 			</array>
 			<key>isa</key>
-			<string>PBXHeadersBuildPhase</string>
-			<key>runOnlyForDeploymentPostprocessing</key>
-			<string>0</string>
-		</dict>
-		<key>C7F1E3E2656F9776A6D7AEDB</key>
-		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
+			<string>PBXGroup</string>
 			<key>name</key>
-			<string>DFFileStorage.m</string>
-			<key>path</key>
-			<string>DFCache/Key-Value File Storage/DFFileStorage.m</string>
+			<string>iOS</string>
 			<key>sourceTree</key>
 			<string>&lt;group&gt;</string>
 		</dict>
-		<key>C8A79C55EE00CD3E3B622D6B</key>
-		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>name</key>
-			<string>DFValueTransformer.h</string>
-			<key>path</key>
-			<string>DFCache/Value Transforming/DFValueTransformer.h</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>C8E13AAB56A918E5FF0E7737</key>
-		<dict>
-			<key>fileRef</key>
-			<string>21B0D6CB9E8EC5932D983B08</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>C91CF38B68BA89F39B378E88</key>
-		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>name</key>
-			<string>DFImageFetchConnectionOperation.m</string>
-			<key>path</key>
-			<string>DFImageManager/DFImageManager/Operations/DFImageFetchConnectionOperation.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>C95560129D7B229EB4042D21</key>
-		<dict>
-			<key>fileRef</key>
-			<string>88B9423D3E347DC768B3F025</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>CBFD032956735BEDBE4AFD5B</key>
-		<dict>
-			<key>fileRef</key>
-			<string>C7F1E3E2656F9776A6D7AEDB</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>CE71C3D996EF7691736408A1</key>
-		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>text.xcconfig</string>
-			<key>path</key>
-			<string>Pods-DFCache.xcconfig</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>CF2BE677B9EF96E94DC582D8</key>
-		<dict>
-			<key>fileRef</key>
-			<string>7171953E6DB38418282B85E8</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>CF6D07DA6BCF9A16BB6AFF11</key>
-		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>name</key>
-			<string>DFImageManager.h</string>
-			<key>path</key>
-			<string>DFImageManager/DFImageManager/Managers/Image Manager/DFImageManager.h</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>D143106153ED512E3767C012</key>
-		<dict>
-			<key>explicitFileType</key>
-			<string>archive.ar</string>
-			<key>includeInIndex</key>
-			<string>0</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>path</key>
-			<string>libPods-DFCache.a</string>
-			<key>sourceTree</key>
-			<string>BUILT_PRODUCTS_DIR</string>
-		</dict>
-		<key>D24CDD7326A1718094F8553A</key>
-		<dict>
-			<key>fileRef</key>
-			<string>EE73B828E50E2A66765F724F</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>D3651352F060C97F7D006F88</key>
-		<dict>
-			<key>fileRef</key>
-			<string>1A76B64C7A93502FDD8777FE</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>D4F1E0476434C074F240F1C9</key>
-		<dict>
-			<key>fileRef</key>
-			<string>1FA81FCA1A247338310548EA</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>D5FC72B5CC6B798E4EF9C78A</key>
-		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>name</key>
-			<string>DFCollectionViewPreheatingController.h</string>
-			<key>path</key>
-			<string>DFImageManager/DFImageManager/Other/DFCollectionViewPreheatingController.h</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>D60F733B50C4C4C083307369</key>
-		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>name</key>
-			<string>DFCachePrivate.h</string>
-			<key>path</key>
-			<string>DFCache/Private/DFCachePrivate.h</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>D6ACAE659963663B448FE294</key>
-		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>name</key>
-			<string>DFCacheImageDecoder.m</string>
-			<key>path</key>
-			<string>DFCache/Image Decoder/DFCacheImageDecoder.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>D6F901DA44F7D03C165A7C98</key>
-		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>name</key>
-			<string>DFPHImageManagerConfiguration.m</string>
-			<key>path</key>
-			<string>DFImageManager/DFImageManager/Configurations/Photos Kit Configuration/DFPHImageManagerConfiguration.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>D94B10958A40AFA08E97E64C</key>
-		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>name</key>
-			<string>DFImageProcessingManager.h</string>
-			<key>path</key>
-			<string>DFImageManager/DFImageManager/Other/DFImageProcessingManager.h</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>DAE8A6904529A84CB15324B2</key>
-		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>name</key>
-			<string>DFImageCacheLookupOperation.m</string>
-			<key>path</key>
-			<string>DFImageManager/DFImageManager/Operations/DFImageCacheLookupOperation.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>DBAE191C5FBD17BA92037FF9</key>
-		<dict>
-			<key>fileRef</key>
-			<string>9BA8A27E2406A416C0F4D4F4</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>DD18D46242CF48CC0D7151AF</key>
+		<key>E5B49B8FAAC69D0F57E4B058</key>
 		<dict>
 			<key>baseConfigurationReference</key>
-			<string>B18C7D3843EE279C05BFBC9E</string>
-			<key>buildSettings</key>
-			<dict>
-				<key>ALWAYS_SEARCH_USER_PATHS</key>
-				<string>NO</string>
-				<key>COPY_PHASE_STRIP</key>
-				<string>YES</string>
-				<key>DSTROOT</key>
-				<string>/tmp/xcodeproj.dst</string>
-				<key>GCC_PRECOMPILE_PREFIX_HEADER</key>
-				<string>YES</string>
-				<key>INSTALL_PATH</key>
-				<string>$(BUILT_PRODUCTS_DIR)</string>
-				<key>IPHONEOS_DEPLOYMENT_TARGET</key>
-				<string>6.0</string>
-				<key>OTHER_CFLAGS</key>
-				<array>
-					<string>-DNS_BLOCK_ASSERTIONS=1</string>
-					<string>$(inherited)</string>
-				</array>
-				<key>OTHER_CPLUSPLUSFLAGS</key>
-				<array>
-					<string>-DNS_BLOCK_ASSERTIONS=1</string>
-					<string>$(inherited)</string>
-				</array>
-				<key>OTHER_LDFLAGS</key>
-				<string></string>
-				<key>OTHER_LIBTOOLFLAGS</key>
-				<string></string>
-				<key>PRODUCT_NAME</key>
-				<string>$(TARGET_NAME)</string>
-				<key>PUBLIC_HEADERS_FOLDER_PATH</key>
-				<string>$(TARGET_NAME)</string>
-				<key>SDKROOT</key>
-				<string>iphoneos</string>
-				<key>SKIP_INSTALL</key>
-				<string>YES</string>
-				<key>VALIDATE_PRODUCT</key>
-				<string>YES</string>
-			</dict>
-			<key>isa</key>
-			<string>XCBuildConfiguration</string>
-			<key>name</key>
-			<string>Release</string>
-		</dict>
-		<key>DD540333EFEDE2EA00CAE870</key>
-		<dict>
-			<key>fileRef</key>
-			<string>84E01AF9749C31B5F533F0BE</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>DE0CF23F327B6EB2CC5BAE5F</key>
-		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>name</key>
-			<string>DFProxyImageManager.h</string>
-			<key>path</key>
-			<string>DFImageManager/DFImageManager/Managers/Proxy Manager/DFProxyImageManager.h</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>DEABF501D8082C46ADF1B59B</key>
-		<dict>
-			<key>buildActionMask</key>
-			<string>2147483647</string>
-			<key>files</key>
-			<array>
-				<string>016E194096705C90C26E6339</string>
-			</array>
-			<key>isa</key>
-			<string>PBXFrameworksBuildPhase</string>
-			<key>runOnlyForDeploymentPostprocessing</key>
-			<string>0</string>
-		</dict>
-		<key>DECB02E59CAD90B3A599F5CB</key>
-		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>name</key>
-			<string>DFCacheTimer.m</string>
-			<key>path</key>
-			<string>DFCache/Private/DFCacheTimer.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>DF1F82411E76AD80C43A019E</key>
-		<dict>
-			<key>fileRef</key>
-			<string>AEC253D149F87091B8C00690</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>DFAB4A28BC9525BE5E7A5D8E</key>
-		<dict>
-			<key>fileRef</key>
-			<string>7171953E6DB38418282B85E8</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>DFF8F0B1D26B259F9D714D3E</key>
-		<dict>
-			<key>fileRef</key>
-			<string>EA2F37FD3DC6A27841CD7B04</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>E191FA766FE34DDBA8255290</key>
-		<dict>
-			<key>baseConfigurationReference</key>
-			<string>786C6D408B8104F532B89A7B</string>
-			<key>buildSettings</key>
-			<dict>
-				<key>ALWAYS_SEARCH_USER_PATHS</key>
-				<string>NO</string>
-				<key>COPY_PHASE_STRIP</key>
-				<string>YES</string>
-				<key>DSTROOT</key>
-				<string>/tmp/xcodeproj.dst</string>
-				<key>GCC_PRECOMPILE_PREFIX_HEADER</key>
-				<string>YES</string>
-				<key>GCC_PREFIX_HEADER</key>
-				<string>Target Support Files/Pods-DFImageManager/Pods-DFImageManager-prefix.pch</string>
-				<key>INSTALL_PATH</key>
-				<string>$(BUILT_PRODUCTS_DIR)</string>
-				<key>IPHONEOS_DEPLOYMENT_TARGET</key>
-				<string>6.0</string>
-				<key>OTHER_CFLAGS</key>
-				<array>
-					<string>-DNS_BLOCK_ASSERTIONS=1</string>
-					<string>$(inherited)</string>
-				</array>
-				<key>OTHER_CPLUSPLUSFLAGS</key>
-				<array>
-					<string>-DNS_BLOCK_ASSERTIONS=1</string>
-					<string>$(inherited)</string>
-				</array>
-				<key>OTHER_LDFLAGS</key>
-				<string></string>
-				<key>OTHER_LIBTOOLFLAGS</key>
-				<string></string>
-				<key>PRODUCT_NAME</key>
-				<string>$(TARGET_NAME)</string>
-				<key>PUBLIC_HEADERS_FOLDER_PATH</key>
-				<string>$(TARGET_NAME)</string>
-				<key>SDKROOT</key>
-				<string>iphoneos</string>
-				<key>SKIP_INSTALL</key>
-				<string>YES</string>
-				<key>VALIDATE_PRODUCT</key>
-				<string>YES</string>
-			</dict>
-			<key>isa</key>
-			<string>XCBuildConfiguration</string>
-			<key>name</key>
-			<string>Release</string>
-		</dict>
-		<key>E1DA9C7CE47BEE82566A7F0A</key>
-		<dict>
-			<key>fileRef</key>
-			<string>4C0DEC2317E20081C2CBA758</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>E200146905E8702227BACDAC</key>
-		<dict>
-			<key>baseConfigurationReference</key>
-			<string>AFD97250A41AD74FE51EE89C</string>
+			<string>11E2C7191DA70F16DF8BE0FE</string>
 			<key>buildSettings</key>
 			<dict>
 				<key>ALWAYS_SEARCH_USER_PATHS</key>
@@ -2702,6 +2931,8 @@
 				<string>0</string>
 				<key>GCC_PRECOMPILE_PREFIX_HEADER</key>
 				<string>YES</string>
+				<key>GCC_PREFIX_HEADER</key>
+				<string>Target Support Files/Pods-DFCache/Pods-DFCache-prefix.pch</string>
 				<key>GCC_PREPROCESSOR_DEFINITIONS</key>
 				<array>
 					<string>DEBUG=1</string>
@@ -2731,329 +2962,14 @@
 			<key>name</key>
 			<string>Debug</string>
 		</dict>
-		<key>E31BFB1A5E6BF729D5C2774F</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>BAC1F09609D10EA531E11138</string>
-				<string>B52451E28B8E2C3A965DC677</string>
-				<string>AEBEB7550FE3205921518637</string>
-				<string>AEC253D149F87091B8C00690</string>
-				<string>0B41E11A646712E4B57CBD05</string>
-				<string>D6ACAE659963663B448FE294</string>
-				<string>D60F733B50C4C4C083307369</string>
-				<string>1E387EA203A1F6728357A559</string>
-				<string>672A6AEE142EBB464473B543</string>
-				<string>DECB02E59CAD90B3A599F5CB</string>
-				<string>FC04F7F891173E04D9A5FFD1</string>
-				<string>EA2F37FD3DC6A27841CD7B04</string>
-				<string>21B0D6CB9E8EC5932D983B08</string>
-				<string>C7F1E3E2656F9776A6D7AEDB</string>
-				<string>C8A79C55EE00CD3E3B622D6B</string>
-				<string>11F9AD70A0EC9AEE7DAEE396</string>
-				<string>A26AC68BC91C7D9F6663C552</string>
-				<string>1A76B64C7A93502FDD8777FE</string>
-				<string>2B729173A932CFB07EA7869D</string>
-				<string>453F4EFC1477B1B65E22D94A</string>
-				<string>7BB14BC474DDB869F1C44100</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>name</key>
-			<string>DFCache</string>
-			<key>path</key>
-			<string>DFCache</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>E45F79402DDE0DA4AB7C3287</key>
-		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>name</key>
-			<string>DFImageProcessingManager.m</string>
-			<key>path</key>
-			<string>DFImageManager/DFImageManager/Other/DFImageProcessingManager.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>E78644B7A44A3D6CA9A0A362</key>
-		<dict>
-			<key>attributes</key>
-			<dict>
-				<key>LastUpgradeCheck</key>
-				<string>0510</string>
-			</dict>
-			<key>buildConfigurationList</key>
-			<string>016B8396D5A7A1C56A534476</string>
-			<key>compatibilityVersion</key>
-			<string>Xcode 3.2</string>
-			<key>developmentRegion</key>
-			<string>English</string>
-			<key>hasScannedForEncodings</key>
-			<string>0</string>
-			<key>isa</key>
-			<string>PBXProject</string>
-			<key>knownRegions</key>
-			<array>
-				<string>en</string>
-			</array>
-			<key>mainGroup</key>
-			<string>7354FEAB847E0C1E5AAF25BC</string>
-			<key>productRefGroup</key>
-			<string>A19E6E9E702662F05E2F3581</string>
-			<key>projectDirPath</key>
-			<string></string>
-			<key>projectReferences</key>
-			<array/>
-			<key>projectRoot</key>
-			<string></string>
-			<key>targets</key>
-			<array>
-				<string>B51C99CC24B174BACCF0304A</string>
-				<string>6E1E328D80AF7DDC70F26759</string>
-				<string>ADB5B078E3AB32A8CE054DC4</string>
-			</array>
-		</dict>
-		<key>E842A75CC39E1E77B8DB6411</key>
+		<key>E862BBE557922AFAF9A31137</key>
 		<dict>
 			<key>fileRef</key>
-			<string>6B7AA484C9BE6F1CF81BF0BB</string>
+			<string>BFA48D63925E2741DA2F1047</string>
 			<key>isa</key>
 			<string>PBXBuildFile</string>
 		</dict>
-		<key>EA2F37FD3DC6A27841CD7B04</key>
-		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>name</key>
-			<string>DFDiskCache.m</string>
-			<key>path</key>
-			<string>DFCache/DFDiskCache.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>EADEBAADA2EEAC77A430854A</key>
-		<dict>
-			<key>fileRef</key>
-			<string>FD1E89722714FC409570B865</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>EB6FB31529B90A8067041757</key>
-		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>name</key>
-			<string>DFImageManagerConfigurationProtocol.h</string>
-			<key>path</key>
-			<string>DFImageManager/DFImageManager/Protocols/DFImageManagerConfigurationProtocol.h</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>EE52BCD0B5AF3D8FC54921EF</key>
-		<dict>
-			<key>fileRef</key>
-			<string>0B41E11A646712E4B57CBD05</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>EE73B828E50E2A66765F724F</key>
-		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>name</key>
-			<string>DFImageView.m</string>
-			<key>path</key>
-			<string>DFImageManager/DFImageManager/Views/DFImageView.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>EE9B77572C431DA719220DA3</key>
-		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>name</key>
-			<string>DFImageCachingProtocol.h</string>
-			<key>path</key>
-			<string>DFImageManager/DFImageManager/Protocols/DFImageCachingProtocol.h</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>EEB40474C2AE3DFD4503308F</key>
-		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>name</key>
-			<string>DFImageManagerConfiguration.h</string>
-			<key>path</key>
-			<string>DFImageManager/DFImageManager/Configurations/Base Configuration/DFImageManagerConfiguration.h</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>EEFF712F09574EA0CC415483</key>
-		<dict>
-			<key>containerPortal</key>
-			<string>E78644B7A44A3D6CA9A0A362</string>
-			<key>isa</key>
-			<string>PBXContainerItemProxy</string>
-			<key>proxyType</key>
-			<string>1</string>
-			<key>remoteGlobalIDString</key>
-			<string>6E1E328D80AF7DDC70F26759</string>
-			<key>remoteInfo</key>
-			<string>Pods-DFCache</string>
-		</dict>
-		<key>EFFE06F225840E132D2ABD45</key>
-		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>name</key>
-			<string>DFImageManagerConfiguration.m</string>
-			<key>path</key>
-			<string>DFImageManager/DFImageManager/Configurations/Base Configuration/DFImageManagerConfiguration.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>F0B3FD78AFDC39B94704453E</key>
-		<dict>
-			<key>fileRef</key>
-			<string>7CA3E9424C4E097631CECA7C</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>F10F3F2E6F844C84CAFA4DAF</key>
-		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>name</key>
-			<string>DFPHAssetlocalIdentifier.h</string>
-			<key>path</key>
-			<string>DFImageManager/DFImageManager/Configurations/Photos Kit Configuration/DFPHAssetlocalIdentifier.h</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>F135BD6490AA2F939D3A3362</key>
-		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>name</key>
-			<string>DFProxyImageManager.m</string>
-			<key>path</key>
-			<string>DFImageManager/DFImageManager/Managers/Proxy Manager/DFProxyImageManager.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>F18A23313B1347623C2218F0</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXTargetDependency</string>
-			<key>name</key>
-			<string>Pods-DFCache</string>
-			<key>target</key>
-			<string>6E1E328D80AF7DDC70F26759</string>
-			<key>targetProxy</key>
-			<string>EEFF712F09574EA0CC415483</string>
-		</dict>
-		<key>F1B1977F74D6D11C72136487</key>
-		<dict>
-			<key>fileRef</key>
-			<string>01BB38D93409BEABEE3A4685</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>F24C7239F43FCF61DF05A569</key>
-		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>name</key>
-			<string>DFPHImageManagerConfiguration.h</string>
-			<key>path</key>
-			<string>DFImageManager/DFImageManager/Configurations/Photos Kit Configuration/DFPHImageManagerConfiguration.h</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>F4597384CC92C4AE5F6FABCF</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXTargetDependency</string>
-			<key>name</key>
-			<string>Pods-DFImageManager</string>
-			<key>target</key>
-			<string>ADB5B078E3AB32A8CE054DC4</string>
-			<key>targetProxy</key>
-			<string>601AF1B4935D0D3056B3A84B</string>
-		</dict>
-		<key>F4F65968F8BD8F1A3B6890C8</key>
-		<dict>
-			<key>fileRef</key>
-			<string>D60F733B50C4C4C083307369</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>F5CDAE8BCE8D0BCFD7A19300</key>
-		<dict>
-			<key>fileRef</key>
-			<string>11F9AD70A0EC9AEE7DAEE396</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>F7B4BA6DF158E77E066E1666</key>
-		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>name</key>
-			<string>DFImageDeserializer.m</string>
-			<key>path</key>
-			<string>DFImageManager/DFImageManager/Other/DFImageDeserializer.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>FB34599F1FA25D9E9BE3494B</key>
+		<key>E8C60B7309D5C85C588740BC</key>
 		<dict>
 			<key>includeInIndex</key>
 			<string>1</string>
@@ -3068,57 +2984,7 @@
 			<key>sourceTree</key>
 			<string>&lt;group&gt;</string>
 		</dict>
-		<key>FC04F7F891173E04D9A5FFD1</key>
-		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>name</key>
-			<string>DFDiskCache.h</string>
-			<key>path</key>
-			<string>DFCache/DFDiskCache.h</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>FD0DE1B2955B3DDEBE0E2320</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>E31BFB1A5E6BF729D5C2774F</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>name</key>
-			<string>Pods</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>FD1E89722714FC409570B865</key>
-		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>name</key>
-			<string>DFURLImageManagerConfiguration.h</string>
-			<key>path</key>
-			<string>DFImageManager/DFImageManager/Configurations/URL Configuration/DFURLImageManagerConfiguration.h</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>FE0BFDBA19F701960CD1D325</key>
-		<dict>
-			<key>fileRef</key>
-			<string>9926CFAE58403C60DC5F48D8</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>FE37F1EF4D3D82500B6C52C5</key>
+		<key>EA0F0DF2BE9CA53D48C03FF0</key>
 		<dict>
 			<key>includeInIndex</key>
 			<string>1</string>
@@ -3127,21 +2993,323 @@
 			<key>lastKnownFileType</key>
 			<string>sourcecode.c.objc</string>
 			<key>name</key>
-			<string>DFImageUtilities.m</string>
+			<string>DFFileStorage.m</string>
 			<key>path</key>
-			<string>DFImageManager/DFImageManager/Other/DFImageUtilities.m</string>
+			<string>DFCache/Key-Value File Storage/DFFileStorage.m</string>
 			<key>sourceTree</key>
 			<string>&lt;group&gt;</string>
 		</dict>
-		<key>FEA914F2BDC76540E2DB6F38</key>
+		<key>EA1FD430217E53E3B1B059FB</key>
 		<dict>
 			<key>fileRef</key>
-			<string>10F3378A81CEA31726F5A496</string>
+			<string>7036B357D1A36F1C1364A7EC</string>
 			<key>isa</key>
 			<string>PBXBuildFile</string>
 		</dict>
+		<key>EBC27260505FCF494F0C9FB4</key>
+		<dict>
+			<key>fileRef</key>
+			<string>194C3E32BA64E21C3B3F9F20</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>EC801571F29B5FBCDF43EF15</key>
+		<dict>
+			<key>fileRef</key>
+			<string>F9BB2A21D731E7C62791DB71</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>EDC152B8ABA806E25F03D053</key>
+		<dict>
+			<key>fileRef</key>
+			<string>3D4369E4814A7F692757F0CE</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>EEB73CEE43BD1DB66F8220AE</key>
+		<dict>
+			<key>buildActionMask</key>
+			<string>2147483647</string>
+			<key>files</key>
+			<array>
+				<string>72E0BB0D2EA43F557855DD2A</string>
+				<string>BB31FA13810BBD76A9CA40E2</string>
+				<string>2BF5256F0590C56135A6A268</string>
+				<string>E2CF11043178D07B273EC711</string>
+				<string>67B5B3825BA37D3F7664CB59</string>
+				<string>453E19BA36C5AD96E43B7A0E</string>
+				<string>024C8BC9BC7446EFEAA0B5D1</string>
+				<string>25A16DCA21DB5B2227FC2911</string>
+				<string>C4B18D0C264E25C58651D8F3</string>
+				<string>233D70638B3E6DE3057498A8</string>
+			</array>
+			<key>isa</key>
+			<string>PBXHeadersBuildPhase</string>
+			<key>runOnlyForDeploymentPostprocessing</key>
+			<string>0</string>
+		</dict>
+		<key>EFB1B5249C08454A97C26272</key>
+		<dict>
+			<key>fileRef</key>
+			<string>3A3900C424ED777B16BC997F</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>F0C1522681D8A0923CFD684A</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>name</key>
+			<string>ALAssetsLibrary+DFImageManager.h</string>
+			<key>path</key>
+			<string>DFImageManager/DFImageManager/Configurations/Assets Library Configuration/ALAssetsLibrary+DFImageManager.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>F120F37C386B188CA5941DB2</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>text.script.sh</string>
+			<key>path</key>
+			<string>Pods-resources.sh</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>F17FEB9BEDF07F8DD2EF4061</key>
+		<dict>
+			<key>containerPortal</key>
+			<string>ADC056FF288DD2CC134E9A23</string>
+			<key>isa</key>
+			<string>PBXContainerItemProxy</string>
+			<key>proxyType</key>
+			<string>1</string>
+			<key>remoteGlobalIDString</key>
+			<string>2B5D2BA24AA3E471D08E4F05</string>
+			<key>remoteInfo</key>
+			<string>Pods-DFImageManager</string>
+		</dict>
+		<key>F1CC63B989DCB297B4D62688</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>path</key>
+			<string>Pods-dummy.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>F2CC9C112D2470D4A3902609</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>name</key>
+			<string>DFImageCacheStoreOperation.m</string>
+			<key>path</key>
+			<string>DFImageManager/DFImageManager/Operations/DFImageCacheStoreOperation.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>F406F8FF52042DB4F16F4A8C</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>name</key>
+			<string>DFImageResponse.h</string>
+			<key>path</key>
+			<string>DFImageManager/DFImageManager/Response/DFImageResponse.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>F423101EF859BC14DF03B76F</key>
+		<dict>
+			<key>explicitFileType</key>
+			<string>archive.ar</string>
+			<key>includeInIndex</key>
+			<string>0</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>path</key>
+			<string>libPods-DFImageManager.a</string>
+			<key>sourceTree</key>
+			<string>BUILT_PRODUCTS_DIR</string>
+		</dict>
+		<key>F478F1F7BF1D8CA97C834F49</key>
+		<dict>
+			<key>explicitFileType</key>
+			<string>archive.ar</string>
+			<key>includeInIndex</key>
+			<string>0</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>path</key>
+			<string>libPods.a</string>
+			<key>sourceTree</key>
+			<string>BUILT_PRODUCTS_DIR</string>
+		</dict>
+		<key>F47F4A4EACD72F5E3F45D7E3</key>
+		<dict>
+			<key>fileRef</key>
+			<string>B52F9443DB4AD16C55BD1EC7</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>F4D96B6FE8DF120BEE6BF2A4</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>text</string>
+			<key>path</key>
+			<string>Pods-acknowledgements.markdown</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>F5C5DE36AD9543302C13F4DF</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>name</key>
+			<string>DFCompositeImageManager.h</string>
+			<key>path</key>
+			<string>DFImageManager/DFImageManager/Managers/Composite Manager/DFCompositeImageManager.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>F896F9798AAAF7E43EA09D4F</key>
+		<dict>
+			<key>buildActionMask</key>
+			<string>2147483647</string>
+			<key>files</key>
+			<array>
+				<string>68552F0BCD3DB727EEE136D0</string>
+			</array>
+			<key>isa</key>
+			<string>PBXFrameworksBuildPhase</string>
+			<key>runOnlyForDeploymentPostprocessing</key>
+			<string>0</string>
+		</dict>
+		<key>F9BB2A21D731E7C62791DB71</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>name</key>
+			<string>DFCachePrivate.m</string>
+			<key>path</key>
+			<string>DFCache/Private/DFCachePrivate.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>FA68D325DCBB26EAD3053F33</key>
+		<dict>
+			<key>baseConfigurationReference</key>
+			<string>11E2C7191DA70F16DF8BE0FE</string>
+			<key>buildSettings</key>
+			<dict>
+				<key>ALWAYS_SEARCH_USER_PATHS</key>
+				<string>NO</string>
+				<key>COPY_PHASE_STRIP</key>
+				<string>YES</string>
+				<key>DSTROOT</key>
+				<string>/tmp/xcodeproj.dst</string>
+				<key>GCC_PRECOMPILE_PREFIX_HEADER</key>
+				<string>YES</string>
+				<key>GCC_PREFIX_HEADER</key>
+				<string>Target Support Files/Pods-DFCache/Pods-DFCache-prefix.pch</string>
+				<key>INSTALL_PATH</key>
+				<string>$(BUILT_PRODUCTS_DIR)</string>
+				<key>IPHONEOS_DEPLOYMENT_TARGET</key>
+				<string>6.0</string>
+				<key>OTHER_CFLAGS</key>
+				<array>
+					<string>-DNS_BLOCK_ASSERTIONS=1</string>
+					<string>$(inherited)</string>
+				</array>
+				<key>OTHER_CPLUSPLUSFLAGS</key>
+				<array>
+					<string>-DNS_BLOCK_ASSERTIONS=1</string>
+					<string>$(inherited)</string>
+				</array>
+				<key>OTHER_LDFLAGS</key>
+				<string></string>
+				<key>OTHER_LIBTOOLFLAGS</key>
+				<string></string>
+				<key>PRODUCT_NAME</key>
+				<string>$(TARGET_NAME)</string>
+				<key>PUBLIC_HEADERS_FOLDER_PATH</key>
+				<string>$(TARGET_NAME)</string>
+				<key>SDKROOT</key>
+				<string>iphoneos</string>
+				<key>SKIP_INSTALL</key>
+				<string>YES</string>
+				<key>VALIDATE_PRODUCT</key>
+				<string>YES</string>
+			</dict>
+			<key>isa</key>
+			<string>XCBuildConfiguration</string>
+			<key>name</key>
+			<string>Release</string>
+		</dict>
+		<key>FC10380919CE63DFB19C81ED</key>
+		<dict>
+			<key>fileRef</key>
+			<string>8BB18D3C7C4AB7A19910363D</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>FC67EED381664A6BA74BB6FB</key>
+		<dict>
+			<key>fileRef</key>
+			<string>4EAF0F6F931A965311EF27AF</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>FCA8E56603A7568A4DB32432</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>name</key>
+			<string>DFProxyImageManager.h</string>
+			<key>path</key>
+			<string>DFImageManager/DFImageManager/Managers/Proxy Manager/DFProxyImageManager.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
 	</dict>
 	<key>rootObject</key>
-	<string>E78644B7A44A3D6CA9A0A362</string>
+	<string>ADC056FF288DD2CC134E9A23</string>
 </dict>
 </plist>
