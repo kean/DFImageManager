@@ -12,6 +12,14 @@
 		0C48E4B51A5BD0EF00CD2497 /* SDFMainDemoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C48E4B41A5BD0EF00CD2497 /* SDFMainDemoViewController.m */; };
 		0C48E4BD1A5BD6D800CD2497 /* SDFNetworkingDemoCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C48E4BC1A5BD6D800CD2497 /* SDFNetworkingDemoCollectionViewController.m */; };
 		0C48E4C11A5BD6FB00CD2497 /* SDFCompositeRequestDemoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C48E4C01A5BD6FB00CD2497 /* SDFCompositeRequestDemoViewController.m */; };
+		0C97D6BE1A5E51BE0014D8AD /* SDFFilesystemDemoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C97D6BD1A5E51BE0014D8AD /* SDFFilesystemDemoViewController.m */; };
+		0C97D6C21A5E51E80014D8AD /* SDFBaseCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C97D6C11A5E51E80014D8AD /* SDFBaseCollectionViewController.m */; };
+		0C97D6D61A5E56A50014D8AD /* 10669363.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0C97D6D01A5E56A50014D8AD /* 10669363.jpg */; };
+		0C97D6D71A5E56A50014D8AD /* 10849093.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0C97D6D11A5E56A50014D8AD /* 10849093.jpg */; };
+		0C97D6D81A5E56A50014D8AD /* 10861057.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0C97D6D21A5E56A50014D8AD /* 10861057.jpg */; };
+		0C97D6D91A5E56A50014D8AD /* 10872981.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0C97D6D31A5E56A50014D8AD /* 10872981.jpg */; };
+		0C97D6DA1A5E56A50014D8AD /* 10915709.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0C97D6D41A5E56A50014D8AD /* 10915709.jpg */; };
+		0C97D6DB1A5E56A50014D8AD /* 10926234.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0C97D6D51A5E56A50014D8AD /* 10926234.jpg */; };
 		0CF593491A4948C4007C5B56 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CF593481A4948C4007C5B56 /* main.m */; };
 		0CF5934C1A4948C4007C5B56 /* SDFAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CF5934B1A4948C4007C5B56 /* SDFAppDelegate.m */; };
 		0CF5934F1A4948C4007C5B56 /* SDFMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CF5934E1A4948C4007C5B56 /* SDFMenuViewController.m */; };
@@ -45,6 +53,16 @@
 		0C48E4BC1A5BD6D800CD2497 /* SDFNetworkingDemoCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDFNetworkingDemoCollectionViewController.m; sourceTree = "<group>"; };
 		0C48E4BF1A5BD6FB00CD2497 /* SDFCompositeRequestDemoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDFCompositeRequestDemoViewController.h; sourceTree = "<group>"; };
 		0C48E4C01A5BD6FB00CD2497 /* SDFCompositeRequestDemoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDFCompositeRequestDemoViewController.m; sourceTree = "<group>"; };
+		0C97D6BC1A5E51BE0014D8AD /* SDFFilesystemDemoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDFFilesystemDemoViewController.h; sourceTree = "<group>"; };
+		0C97D6BD1A5E51BE0014D8AD /* SDFFilesystemDemoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDFFilesystemDemoViewController.m; sourceTree = "<group>"; };
+		0C97D6C01A5E51E80014D8AD /* SDFBaseCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDFBaseCollectionViewController.h; sourceTree = "<group>"; };
+		0C97D6C11A5E51E80014D8AD /* SDFBaseCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDFBaseCollectionViewController.m; sourceTree = "<group>"; };
+		0C97D6D01A5E56A50014D8AD /* 10669363.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = 10669363.jpg; path = ../../../../../../Desktop/sample/sample2/10669363.jpg; sourceTree = "<group>"; };
+		0C97D6D11A5E56A50014D8AD /* 10849093.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = 10849093.jpg; path = ../../../../../../Desktop/sample/sample2/10849093.jpg; sourceTree = "<group>"; };
+		0C97D6D21A5E56A50014D8AD /* 10861057.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = 10861057.jpg; path = ../../../../../../Desktop/sample/sample2/10861057.jpg; sourceTree = "<group>"; };
+		0C97D6D31A5E56A50014D8AD /* 10872981.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = 10872981.jpg; path = ../../../../../../Desktop/sample/sample2/10872981.jpg; sourceTree = "<group>"; };
+		0C97D6D41A5E56A50014D8AD /* 10915709.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = 10915709.jpg; path = ../../../../../../Desktop/sample/sample2/10915709.jpg; sourceTree = "<group>"; };
+		0C97D6D51A5E56A50014D8AD /* 10926234.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = 10926234.jpg; path = ../../../../../../Desktop/sample/sample2/10926234.jpg; sourceTree = "<group>"; };
 		0CF593431A4948C4007C5B56 /* DFImageManagerSample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DFImageManagerSample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0CF593471A4948C4007C5B56 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0CF593481A4948C4007C5B56 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -131,10 +149,43 @@
 			path = "Composite Request Demo View Controller";
 			sourceTree = "<group>";
 		};
+		0C97D6BB1A5E51AB0014D8AD /* Filesystem Demo View Controller */ = {
+			isa = PBXGroup;
+			children = (
+				0C97D6BC1A5E51BE0014D8AD /* SDFFilesystemDemoViewController.h */,
+				0C97D6BD1A5E51BE0014D8AD /* SDFFilesystemDemoViewController.m */,
+			);
+			path = "Filesystem Demo View Controller";
+			sourceTree = "<group>";
+		};
+		0C97D6BF1A5E51DE0014D8AD /* Collection View Controller */ = {
+			isa = PBXGroup;
+			children = (
+				0C97D6C01A5E51E80014D8AD /* SDFBaseCollectionViewController.h */,
+				0C97D6C11A5E51E80014D8AD /* SDFBaseCollectionViewController.m */,
+			);
+			path = "Collection View Controller";
+			sourceTree = "<group>";
+		};
+		0C97D6C31A5E52D30014D8AD /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				0C97D6D01A5E56A50014D8AD /* 10669363.jpg */,
+				0C97D6D11A5E56A50014D8AD /* 10849093.jpg */,
+				0C97D6D21A5E56A50014D8AD /* 10861057.jpg */,
+				0C97D6D31A5E56A50014D8AD /* 10872981.jpg */,
+				0C97D6D41A5E56A50014D8AD /* 10915709.jpg */,
+				0C97D6D51A5E56A50014D8AD /* 10926234.jpg */,
+			);
+			name = Resources;
+			path = DFImageManagerSample/Resources;
+			sourceTree = "<group>";
+		};
 		0CF5933A1A4948C4007C5B56 = {
 			isa = PBXGroup;
 			children = (
 				0CF593451A4948C4007C5B56 /* DFImageManagerSample */,
+				0C97D6C31A5E52D30014D8AD /* Resources */,
 				0CF5935F1A4948C4007C5B56 /* DFImageManagerSampleTests */,
 				0CF593441A4948C4007C5B56 /* Products */,
 				4CAB15144955994726BDEEC5 /* Pods */,
@@ -208,8 +259,10 @@
 			children = (
 				0C48E4B21A5BD0E400CD2497 /* Main Demo View Controller */,
 				0C48E4BA1A5BD6D800CD2497 /* Networking Sample View Controller */,
+				0C97D6BB1A5E51AB0014D8AD /* Filesystem Demo View Controller */,
 				0C3304B41A4A6C72001808F3 /* Photos Kit Sample View Controller */,
 				0C48E4BE1A5BD6E600CD2497 /* Composite Request Demo View Controller */,
+				0C97D6BF1A5E51DE0014D8AD /* Collection View Controller */,
 			);
 			path = "View Controllers";
 			sourceTree = "<group>";
@@ -325,9 +378,15 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0C97D6DB1A5E56A50014D8AD /* 10926234.jpg in Resources */,
 				0CF593521A4948C4007C5B56 /* Main.storyboard in Resources */,
+				0C97D6D61A5E56A50014D8AD /* 10669363.jpg in Resources */,
+				0C97D6D71A5E56A50014D8AD /* 10849093.jpg in Resources */,
+				0C97D6DA1A5E56A50014D8AD /* 10915709.jpg in Resources */,
 				0CF593571A4948C4007C5B56 /* LaunchScreen.xib in Resources */,
 				0CF593541A4948C4007C5B56 /* Images.xcassets in Resources */,
+				0C97D6D91A5E56A50014D8AD /* 10872981.jpg in Resources */,
+				0C97D6D81A5E56A50014D8AD /* 10861057.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -379,6 +438,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				0C48E4B11A5BD06000CD2497 /* UIViewController+SDFImageManager.m in Sources */,
+				0C97D6C21A5E51E80014D8AD /* SDFBaseCollectionViewController.m in Sources */,
+				0C97D6BE1A5E51BE0014D8AD /* SDFFilesystemDemoViewController.m in Sources */,
 				0CF5937C1A494CEB007C5B56 /* SDFFlickrPhoto.m in Sources */,
 				0C3304B71A4A6CDB001808F3 /* SDFPhotosKitSampleViewController.m in Sources */,
 				0C48E4BD1A5BD6D800CD2497 /* SDFNetworkingDemoCollectionViewController.m in Sources */,

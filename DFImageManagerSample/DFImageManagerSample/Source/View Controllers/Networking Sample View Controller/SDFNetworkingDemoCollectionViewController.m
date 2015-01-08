@@ -41,13 +41,8 @@ static NSString * const reuseIdentifier = @"Cell";
     [DFImageManager setSharedManager:[DFImageManager defaultManager]];
 }
 
-- (instancetype)init {
-    return [self initWithCollectionViewLayout:[UICollectionViewFlowLayout new]];
-}
-
 - (instancetype)initWithCollectionViewLayout:(UICollectionViewLayout *)layout {
     if (self = [super initWithCollectionViewLayout:layout]) {
-        _numberOfItemsPerRow = 4;
         _allowsPreheating = YES;
         _displaysPreheatingDetails = NO;
     }
@@ -56,6 +51,8 @@ static NSString * const reuseIdentifier = @"Cell";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    self.collectionView.alwaysBounceVertical = NO;
     
     [self.collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:reuseIdentifier];
     
@@ -86,6 +83,8 @@ static NSString * const reuseIdentifier = @"Cell";
 }
 
 - (void)_configureImageManager {
+    // TODO: Use default image manager.
+    
     DFImageProcessingManager *imageProcessor = [DFImageProcessingManager new];
     
     // We don't want memory cache, because we use caching image processing manager.
@@ -115,16 +114,6 @@ static NSString * const reuseIdentifier = @"Cell";
     // Resets preheat rect and stop preheating images via delegate call.
     [_preheatingController resetPreheatRect];
     _preheatingController = nil;
-}
-
-- (void)viewDidLayoutSubviews {
-    [super viewDidLayoutSubviews];
-    
-    UICollectionViewFlowLayout *layout = (id)self.collectionViewLayout;
-    layout.minimumLineSpacing = 2.f;
-    layout.minimumInteritemSpacing = 2.f;
-    CGFloat side = (self.collectionView.bounds.size.width - (self.numberOfItemsPerRow - 1) * 2.0) / self.numberOfItemsPerRow;
-    layout.itemSize = CGSizeMake(side, side);
 }
 
 #pragma mark - Actions

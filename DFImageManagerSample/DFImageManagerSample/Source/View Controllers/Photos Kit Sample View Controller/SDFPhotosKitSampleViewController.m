@@ -22,7 +22,7 @@ static NSString * const reuseIdentifier = @"Cell";
 }
 
 - (void)dealloc {
-    [DFImageManager setSharedManager:nil];
+    [DFImageManager setSharedManager:[DFImageManager defaultManager]];
 }
 
 - (void)viewDidLoad {
@@ -31,6 +31,10 @@ static NSString * const reuseIdentifier = @"Cell";
     [self.collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:reuseIdentifier];
     
     [self _configureImageManager];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
     
     PHAuthorizationStatus authorizationStatus = [PHPhotoLibrary authorizationStatus];
     switch (authorizationStatus) {

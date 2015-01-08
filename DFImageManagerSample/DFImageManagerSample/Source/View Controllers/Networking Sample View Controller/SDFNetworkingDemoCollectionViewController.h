@@ -6,9 +6,10 @@
 //  Copyright (c) 2014 Alexander Grebenyuk. All rights reserved.
 //
 
+#import "SDFBaseCollectionViewController.h"
 #import <UIKit/UIKit.h>
 
-@interface SDFNetworkingDemoCollectionViewController : UICollectionViewController
+@interface SDFNetworkingDemoCollectionViewController : SDFBaseCollectionViewController
 
 @property (nonatomic) BOOL allowsPreheating;
 @property (nonatomic) BOOL displaysPreheatingDetails;

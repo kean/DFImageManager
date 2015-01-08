@@ -7,6 +7,7 @@
 //
 
 #import "SDFCompositeRequestDemoViewController.h"
+#import "SDFFilesystemDemoViewController.h"
 #import "SDFMainDemoViewController.h"
 #import "SDFMenuViewController.h"
 #import "SDFNetworkingDemoCollectionViewController.h"
@@ -91,6 +92,11 @@
         [items addObject:[SDFMenuItem itemWithTitle:@"Networking Demo" action:^{
             UIViewController *controller = [SDFNetworkingDemoCollectionViewController new];
             controller.title = @"Networking Demo";
+            [self.navigationController pushViewController:controller animated:YES];
+        }]];
+        [items addObject:[SDFMenuItem itemWithTitle:@"Filesystem Demo" action:^{
+            SDFFilesystemDemoViewController *controller = [SDFFilesystemDemoViewController new];
+            controller.title = @"Filesystem Demo";
             [self.navigationController pushViewController:controller animated:YES];
         }]];
         [items addObject:[SDFMenuItem itemWithTitle:@"Photos Kit Demo" action:^{

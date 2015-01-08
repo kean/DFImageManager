@@ -27,8 +27,8 @@ static NSString * const reuseIdentifier = @"Cell";
     SDFFlickrRecentPhotosModel *_model;
 }
 
-- (instancetype)init {
-    return [self initWithCollectionViewLayout:[UICollectionViewFlowLayout new]];
+- (NSInteger)numberOfItemsPerRow {
+    return 1;
 }
 
 - (void)viewDidLoad {
@@ -43,16 +43,6 @@ static NSString * const reuseIdentifier = @"Cell";
     _model = [SDFFlickrRecentPhotosModel new];
     _model.delegate = self;
     [_model poll];
-}
-
-- (void)viewDidLayoutSubviews {
-    [super viewDidLayoutSubviews];
-    
-    UICollectionViewFlowLayout *layout = (id)self.collectionViewLayout;
-    layout.minimumLineSpacing = 2.f;
-    layout.minimumInteritemSpacing = 2.f;
-    CGFloat side = self.collectionView.bounds.size.width;
-    layout.itemSize = CGSizeMake(side, side);
 }
 
 #pragma mark - <UICollectionViewDataSource>
