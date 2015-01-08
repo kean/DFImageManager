@@ -8,9 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SDFNetworkSampleCollectionViewController : UICollectionViewController
+@interface SDFNetworkingDemoCollectionViewController : UICollectionViewController
 
 @property (nonatomic) BOOL allowsPreheating;
+@property (nonatomic) BOOL displaysPreheatingDetails;
 @property (nonatomic) NSInteger numberOfItemsPerRow;
 
 @end

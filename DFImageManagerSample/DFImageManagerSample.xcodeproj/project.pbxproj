@@ -10,7 +10,7 @@
 		0C3304B71A4A6CDB001808F3 /* SDFPhotosKitSampleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C3304B61A4A6CDB001808F3 /* SDFPhotosKitSampleViewController.m */; };
 		0C48E4B11A5BD06000CD2497 /* UIViewController+SDFImageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C48E4B01A5BD06000CD2497 /* UIViewController+SDFImageManager.m */; };
 		0C48E4B51A5BD0EF00CD2497 /* SDFMainDemoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C48E4B41A5BD0EF00CD2497 /* SDFMainDemoViewController.m */; };
-		0C48E4BD1A5BD6D800CD2497 /* SDFNetworkSampleCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C48E4BC1A5BD6D800CD2497 /* SDFNetworkSampleCollectionViewController.m */; };
+		0C48E4BD1A5BD6D800CD2497 /* SDFNetworkingDemoCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C48E4BC1A5BD6D800CD2497 /* SDFNetworkingDemoCollectionViewController.m */; };
 		0C48E4C11A5BD6FB00CD2497 /* SDFCompositeRequestDemoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C48E4C01A5BD6FB00CD2497 /* SDFCompositeRequestDemoViewController.m */; };
 		0CF593491A4948C4007C5B56 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CF593481A4948C4007C5B56 /* main.m */; };
 		0CF5934C1A4948C4007C5B56 /* SDFAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CF5934B1A4948C4007C5B56 /* SDFAppDelegate.m */; };
@@ -41,8 +41,8 @@
 		0C48E4B01A5BD06000CD2497 /* UIViewController+SDFImageManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+SDFImageManager.m"; sourceTree = "<group>"; };
 		0C48E4B31A5BD0EF00CD2497 /* SDFMainDemoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDFMainDemoViewController.h; sourceTree = "<group>"; };
 		0C48E4B41A5BD0EF00CD2497 /* SDFMainDemoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDFMainDemoViewController.m; sourceTree = "<group>"; };
-		0C48E4BB1A5BD6D800CD2497 /* SDFNetworkSampleCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDFNetworkSampleCollectionViewController.h; sourceTree = "<group>"; };
-		0C48E4BC1A5BD6D800CD2497 /* SDFNetworkSampleCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDFNetworkSampleCollectionViewController.m; sourceTree = "<group>"; };
+		0C48E4BB1A5BD6D800CD2497 /* SDFNetworkingDemoCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDFNetworkingDemoCollectionViewController.h; sourceTree = "<group>"; };
+		0C48E4BC1A5BD6D800CD2497 /* SDFNetworkingDemoCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDFNetworkingDemoCollectionViewController.m; sourceTree = "<group>"; };
 		0C48E4BF1A5BD6FB00CD2497 /* SDFCompositeRequestDemoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDFCompositeRequestDemoViewController.h; sourceTree = "<group>"; };
 		0C48E4C01A5BD6FB00CD2497 /* SDFCompositeRequestDemoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDFCompositeRequestDemoViewController.m; sourceTree = "<group>"; };
 		0CF593431A4948C4007C5B56 /* DFImageManagerSample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DFImageManagerSample.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -116,8 +116,8 @@
 		0C48E4BA1A5BD6D800CD2497 /* Networking Sample View Controller */ = {
 			isa = PBXGroup;
 			children = (
-				0C48E4BB1A5BD6D800CD2497 /* SDFNetworkSampleCollectionViewController.h */,
-				0C48E4BC1A5BD6D800CD2497 /* SDFNetworkSampleCollectionViewController.m */,
+				0C48E4BB1A5BD6D800CD2497 /* SDFNetworkingDemoCollectionViewController.h */,
+				0C48E4BC1A5BD6D800CD2497 /* SDFNetworkingDemoCollectionViewController.m */,
 			);
 			path = "Networking Sample View Controller";
 			sourceTree = "<group>";
@@ -381,7 +381,7 @@
 				0C48E4B11A5BD06000CD2497 /* UIViewController+SDFImageManager.m in Sources */,
 				0CF5937C1A494CEB007C5B56 /* SDFFlickrPhoto.m in Sources */,
 				0C3304B71A4A6CDB001808F3 /* SDFPhotosKitSampleViewController.m in Sources */,
-				0C48E4BD1A5BD6D800CD2497 /* SDFNetworkSampleCollectionViewController.m in Sources */,
+				0C48E4BD1A5BD6D800CD2497 /* SDFNetworkingDemoCollectionViewController.m in Sources */,
 				0CF5937D1A494CEB007C5B56 /* SDFFlickrRecentPhotosModel.m in Sources */,
 				0CF5934F1A4948C4007C5B56 /* SDFMenuViewController.m in Sources */,
 				0C48E4B51A5BD0EF00CD2497 /* SDFMainDemoViewController.m in Sources */,

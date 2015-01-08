@@ -9,7 +9,7 @@
 #import "SDFCompositeRequestDemoViewController.h"
 #import "SDFMainDemoViewController.h"
 #import "SDFMenuViewController.h"
-#import "SDFNetworkSampleCollectionViewController.h"
+#import "SDFNetworkingDemoCollectionViewController.h"
 #import "SDFPhotosKitSampleViewController.h"
 
 
@@ -88,9 +88,9 @@
     
     [sections addObject:({
         NSMutableArray *items = [NSMutableArray new];
-        [items addObject:[SDFMenuItem itemWithTitle:@"Network Demo" action:^{
-            UIViewController *controller = [SDFNetworkSampleCollectionViewController new];
-            controller.title = @"Network Demo";
+        [items addObject:[SDFMenuItem itemWithTitle:@"Networking Demo" action:^{
+            UIViewController *controller = [SDFNetworkingDemoCollectionViewController new];
+            controller.title = @"Networking Demo";
             [self.navigationController pushViewController:controller animated:YES];
         }]];
         [items addObject:[SDFMenuItem itemWithTitle:@"Photos Kit Demo" action:^{
@@ -101,8 +101,13 @@
     
     [sections addObject:({
         NSMutableArray *items = [NSMutableArray new];
-        [items addObject:[SDFMenuItem itemWithTitle:@"Preheating Demo" subtitle:@"Preheating with complex collection view layout"  action:^{
-            // TODO: Open demo
+        [items addObject:[SDFMenuItem itemWithTitle:@"Preheating Demo" subtitle:@"Preheat images close to viewport"  action:^{
+            SDFNetworkingDemoCollectionViewController *controller = [SDFNetworkingDemoCollectionViewController new];
+            controller.allowsPreheating = YES;
+            controller.numberOfItemsPerRow = 3;
+            controller.displaysPreheatingDetails = YES;
+            controller.title = @"Preheating Demo";
+            [self.navigationController pushViewController:controller animated:YES];
         }]];
         [items addObject:[SDFMenuItem itemWithTitle:@"Composite Request Demo" subtitle:@"Request both thumbnail and fullscreen image" action:^{
             SDFCompositeRequestDemoViewController *controller = [SDFCompositeRequestDemoViewController new];

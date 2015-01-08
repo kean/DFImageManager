@@ -8,27 +8,30 @@
 
 #import "SDFFlickrPhoto.h"
 #import "SDFFlickrRecentPhotosModel.h"
-#import "SDFNetworkSampleCollectionViewController.h"
+#import "SDFNetworkingDemoCollectionViewController.h"
 #import "UIViewController+SDFImageManager.h"
 #import <DFCache/DFCache.h>
 #import <DFImageManager/DFImageManagerKit.h>
 #import <DFProxyImageManager.h>
 
 
-@interface SDFNetworkSampleCollectionViewController ()
+@interface SDFNetworkingDemoCollectionViewController ()
 
 <DFCollectionViewPreheatingControllerDelegate,
 SDFFlickrRecentPhotosModelDelegate>
 
 @end
 
-@implementation SDFNetworkSampleCollectionViewController {
+@implementation SDFNetworkingDemoCollectionViewController {
     UIActivityIndicatorView *_activityIndicatorView;
     NSMutableArray *_photos;
     SDFFlickrRecentPhotosModel *_model;
     
     DFCollectionViewPreheatingController *_preheatingController;
     DFCache *_cache;
+    
+    // Debug
+    UILabel *_detailsLabel;
 }
 
 static NSString * const reuseIdentifier = @"Cell";
@@ -46,6 +49,7 @@ static NSString * const reuseIdentifier = @"Cell";
     if (self = [super initWithCollectionViewLayout:layout]) {
         _numberOfItemsPerRow = 4;
         _allowsPreheating = YES;
+        _displaysPreheatingDetails = NO;
     }
     return self;
 }
@@ -64,6 +68,21 @@ static NSString * const reuseIdentifier = @"Cell";
     _model = [SDFFlickrRecentPhotosModel new];
     _model.delegate = self;
     [_model poll];
+    
+    if (self.displaysPreheatingDetails) {
+        [self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:@"Change direction" style:UIBarButtonItemStyleBordered target:self action:@selector(_buttonChangeScrollDirectionPressed:)]];
+        
+        _detailsLabel = [UILabel new];
+        _detailsLabel.backgroundColor = [UIColor colorWithWhite:0.f alpha:0.6];
+        _detailsLabel.font = [UIFont fontWithName:@"Courier" size:12.f];
+        _detailsLabel.textColor = [UIColor whiteColor];
+        _detailsLabel.textAlignment = NSTextAlignmentCenter;
+        _detailsLabel.translatesAutoresizingMaskIntoConstraints = NO;
+        NSDictionary *views = NSDictionaryOfVariableBindings(_detailsLabel);
+        [self.view addSubview:_detailsLabel];
+        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[_detailsLabel]|" options:kNilOptions metrics:nil views:views]];
+        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_detailsLabel(==40)]|" options:NSLayoutFormatAlignAllBottom metrics:nil views:views]];
+    }
 }
 
 - (void)_configureImageManager {
@@ -93,7 +112,7 @@ static NSString * const reuseIdentifier = @"Cell";
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
     
-    // Resets preheat rect and stop preheating images via delegate call.git 
+    // Resets preheat rect and stop preheating images via delegate call.
     [_preheatingController resetPreheatRect];
     _preheatingController = nil;
 }
@@ -106,7 +125,14 @@ static NSString * const reuseIdentifier = @"Cell";
     layout.minimumInteritemSpacing = 2.f;
     CGFloat side = (self.collectionView.bounds.size.width - (self.numberOfItemsPerRow - 1) * 2.0) / self.numberOfItemsPerRow;
     layout.itemSize = CGSizeMake(side, side);
- //   layout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
+}
+
+#pragma mark - Actions
+
+- (void)_buttonChangeScrollDirectionPressed:(UIButton *)button {
+    UICollectionViewFlowLayout *layout = (id)self.collectionViewLayout;
+    layout.scrollDirection = (layout.scrollDirection == UICollectionViewScrollDirectionHorizontal) ? UICollectionViewScrollDirectionVertical : UICollectionViewScrollDirectionHorizontal;
+    [_preheatingController updatePreheatRect];
 }
 
 #pragma mark - <UICollectionViewDataSource>
@@ -152,6 +178,25 @@ static NSString * const reuseIdentifier = @"Cell";
     [[DFImageManager sharedManager] startPreheatingImageForAssets:addedAssets targetSize:targetSize contentMode:DFImageContentModeAspectFill options:nil];
     NSArray *removedAssets = [self _imageAssetsAtIndexPaths:removedIndexPaths];
     [[DFImageManager sharedManager] stopPreheatingImagesForAssets:removedAssets targetSize:targetSize contentMode:DFImageContentModeAspectFill options:nil];
+    
+    if (self.displaysPreheatingDetails) {
+        _detailsLabel.text = [NSString stringWithFormat:@"Preheat window: %@", NSStringFromCGRect(controller.preheatRect)];
+        [self _logAddedIndexPaths:addedIndexPaths removeIndexPaths:removedIndexPaths];
+    }
+}
+
+- (void)_logAddedIndexPaths:(NSArray *)addedIndexPaths removeIndexPaths:(NSArray *)removeIndexPaths {
+    NSMutableArray *added = [NSMutableArray new];
+    for (NSIndexPath *indexPath in addedIndexPaths) {
+        [added addObject:[NSString stringWithFormat:@"(%i,%i)", (int)indexPath.section, (int)indexPath.item]];
+    }
+    
+    NSMutableArray *removed = [NSMutableArray new];
+    for (NSIndexPath *indexPath in removeIndexPaths) {
+        [removed addObject:[NSString stringWithFormat:@"(%i,%i)", (int)indexPath.section, (int)indexPath.item]];
+    }
+    
+    NSLog(@"Did change preheat window. %@", @{ @"removed items" : [removed componentsJoinedByString:@" "], @"added items" : [added componentsJoinedByString:@" "] });
 }
 
 - (NSArray *)_imageAssetsAtIndexPaths:(NSArray *)indexPaths {
