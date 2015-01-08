@@ -27,7 +27,7 @@
 
 
 /*! Image manager configuration that supports NSURL and uses NSURLConnection to fetch images.
- @note Supported NSURL schemes: http:, https:, ftp:, file:
+ @note Supported URL schemes: http:, https:, ftp:, file:
  */
 @interface DFURLImageManagerConfiguration : DFImageManagerConfiguration
 
