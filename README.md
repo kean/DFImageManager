@@ -1,5 +1,5 @@
 # DFImageManager
-DFImageManager is a modern framework for managing (fetching, caching, decompressing, preheating and more) images from various sources. You'll find it instantly familiar if you've ever used Photos Kit image manager.
+DFImageManager is a modern framework for managing (fetching, caching, decompressing, preheating and more) images from various sources.
 
 ### Supported assets and assets identifiers
 - NSURL with schemes http:, https:, ftp:, file:
@@ -15,6 +15,7 @@ DFImageManager is a modern framework for managing (fetching, caching, decompress
 - Automatic preheating of images that are close to the viewport
 
 ## Getting Started
+- [Download DFImageManager](https://github.com/kean/DFImageManager/releases) and play with [demo project](https://github.com/kean/DFImageManager/tree/master/DFImageManagerSample) 
 
 ## Requirements
 iOS 6
@@ -25,10 +26,6 @@ iOS 6
 platform :ios, '6.0'
 pod 'DFImageManager'
 ```
-
-## Classes
-
-## Contributing
 
 ## Contacts
 [Alexander Grebenyuk](https://github.com/kean)
