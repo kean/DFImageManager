@@ -90,8 +90,7 @@
     }
     
     if (isScrolledByReasonableAmount || CGRectEqualToRect(_preheatRect, CGRectZero)) {
-        NSMutableSet *newIndexPaths = [NSMutableSet new];
-        newIndexPaths = [NSMutableSet setWithArray:[self _indexPathsForElementsInRect:preheatRect]];
+        NSMutableSet *newIndexPaths = [NSMutableSet setWithArray:[self _indexPathsForElementsInRect:preheatRect]];
         
         NSMutableSet *oldIndexPaths = [NSMutableSet setWithSet:self.preheatIndexPaths];
         

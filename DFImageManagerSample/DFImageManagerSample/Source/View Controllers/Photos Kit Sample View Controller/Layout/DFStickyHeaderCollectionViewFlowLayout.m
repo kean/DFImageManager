@@ -23,15 +23,15 @@
    
    [allItems enumerateObjectsUsingBlock:^(UICollectionViewLayoutAttributes *attributes, NSUInteger idx, BOOL *stop) {
       if ([[attributes representedElementKind] isEqualToString:UICollectionElementKindSectionHeader]) {
-         [headers setObject:attributes forKey:@(attributes.indexPath.section)];
+         headers[@(attributes.indexPath.section)] = attributes;
       } else if ([[attributes representedElementKind] isEqualToString:UICollectionElementKindSectionFooter]) {
          // Not implemeneted
       } else {
-         UICollectionViewLayoutAttributes *currentAttribute = [lastCells objectForKey:@(attributes.indexPath.section)];
+         UICollectionViewLayoutAttributes *currentAttribute = lastCells[@(attributes.indexPath.section)];
          
          // Get the bottom most cell of that section
          if ( ! currentAttribute || attributes.indexPath.row > currentAttribute.indexPath.row) {
-            [lastCells setObject:attributes forKey:@(attributes.indexPath.section)];
+            lastCells[@(attributes.indexPath.section)] = attributes;
          }
       }
       

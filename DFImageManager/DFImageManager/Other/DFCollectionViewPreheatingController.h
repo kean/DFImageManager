@@ -57,7 +57,7 @@
 @property (nonatomic, readonly) CGRect preheatRect;
 @property (nonatomic, readonly) NSSet *preheatIndexPaths;
 
-- (instancetype)initWithCollectionView:(UICollectionView *)collectionView;
+- (instancetype)initWithCollectionView:(UICollectionView *)collectionView NS_DESIGNATED_INITIALIZER;
 
 /*! Resets preheat rect and calls delegate with removed index paths.
  */
