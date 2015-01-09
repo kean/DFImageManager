@@ -77,6 +77,7 @@
 - (DFALAssetImageSize)_assetImageSizeForRequest:(DFImageRequest *)request {
     // TODO: Improve decision making here.
     CGFloat thumbnailSide = _isIpad ? 125.f : 75.f;
+    thumbnailSide *= [UIScreen mainScreen].scale;
     thumbnailSide *= 1.2f;
     if (request.targetSize.width <= thumbnailSide &&
         request.targetSize.height <= thumbnailSide) {
