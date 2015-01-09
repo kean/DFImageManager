@@ -58,7 +58,7 @@
 }
 
 + (UIImage *)imageWithImage:(UIImage *)image scaledToSize:(CGSize)boundsSize {
-    CGSize roundedSize = CGSizeMake(floorf(boundsSize.width), floorf(boundsSize.height));
+    CGSize roundedSize = CGSizeMake(floor(boundsSize.width), floor(boundsSize.height));
     UIGraphicsBeginImageContextWithOptions(roundedSize, NO, 0.0);
     [image drawInRect:CGRectMake(0, 0, roundedSize.width, roundedSize.height)];
     UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
@@ -98,10 +98,10 @@
     }
     
     CGSize imagePixelSize = DFImageBitmapPixelSize(image);
-    CGRect imageCropRect = CGRectMake(floorf(cropRect.origin.x * imagePixelSize.width),
-                                      floorf(cropRect.origin.y * imagePixelSize.height),
-                                      floorf(cropRect.size.width * imagePixelSize.width),
-                                      floorf(cropRect.size.height * imagePixelSize.height));
+    CGRect imageCropRect = CGRectMake(floor(cropRect.origin.x * imagePixelSize.width),
+                                      floor(cropRect.origin.y * imagePixelSize.height),
+                                      floor(cropRect.size.width * imagePixelSize.width),
+                                      floor(cropRect.size.height * imagePixelSize.height));
     
     CGImageRef croppedImageRef = CGImageCreateWithImageInRect(image.CGImage, imageCropRect);
     UIImage *croppedImage = [UIImage imageWithCGImage:croppedImageRef scale:image.scale orientation:image.imageOrientation];
@@ -166,8 +166,8 @@
     
     // It calculates the bytes-per-row based on the bitsPerComponent and width arguments.
     CGContextRef context = CGBitmapContextCreate(NULL,
-                                                 imageSize.width,
-                                                 imageSize.height,
+                                                 (size_t)imageSize.width,
+                                                 (size_t)imageSize.height,
                                                  CGImageGetBitsPerComponent(imageRef),
                                                  0,
                                                  colorSpace,

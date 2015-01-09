@@ -66,7 +66,7 @@
 #pragma mark - Operation
 
 - (void)start {
-    if ([self isCancelled]) {
+    if (self.isCancelled) {
         [self finish];
         return;
     }
@@ -106,7 +106,7 @@
 
 - (void)_didReceiveAsset:(ALAsset *)asset {
     _asset = asset;
-    if ([self isCancelled]) {
+    if (self.isCancelled) {
         [self finish];
         return;
     }

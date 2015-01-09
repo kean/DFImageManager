@@ -75,21 +75,21 @@
     // UIScrollView bounds works differently from UIView bounds. It adds the contentOffset to the rect.
     CGRect preheatRect = self.collectionView.bounds;
     CGFloat delta;
-    BOOL isScrolledByReasonableAmount;
+    BOOL isScrolledSignificantly;
     
     if (isVertical) {
         CGFloat inset = preheatRect.size.height - preheatRect.size.height * _preheatRectRatio;
         preheatRect = CGRectInset(preheatRect, 0.f, inset / 2.f);
         delta = CGRectGetMidY(preheatRect) - CGRectGetMidY(_preheatRect);
-        isScrolledByReasonableAmount = fabsf(delta) > CGRectGetHeight(self.collectionView.bounds) * _preheatRectRevalidationRatio;
+        isScrolledSignificantly = fabs(delta) > CGRectGetHeight(self.collectionView.bounds) * _preheatRectRevalidationRatio;
     } else {
         CGFloat inset = preheatRect.size.width - preheatRect.size.width * _preheatRectRatio;
         preheatRect = CGRectInset(preheatRect, inset / 2.f, 0.f);
         delta = CGRectGetMidX(preheatRect) - CGRectGetMidX(_preheatRect);
-        isScrolledByReasonableAmount = fabsf(delta) > CGRectGetWidth(self.collectionView.bounds) * _preheatRectRevalidationRatio;
+        isScrolledSignificantly = fabs(delta) > CGRectGetWidth(self.collectionView.bounds) * _preheatRectRevalidationRatio;
     }
     
-    if (isScrolledByReasonableAmount || CGRectEqualToRect(_preheatRect, CGRectZero)) {
+    if (isScrolledSignificantly || CGRectEqualToRect(_preheatRect, CGRectZero)) {
         NSMutableSet *newIndexPaths = [NSMutableSet setWithArray:[self _indexPathsForElementsInRect:preheatRect]];
         
         NSMutableSet *oldIndexPaths = [NSMutableSet setWithSet:self.preheatIndexPaths];

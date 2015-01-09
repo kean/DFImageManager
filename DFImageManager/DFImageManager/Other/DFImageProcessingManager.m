@@ -93,7 +93,7 @@
 - (void)storeImage:(UIImage *)image forAssetID:(NSString *)assetID request:(DFImageRequest *)request {
     if (image != nil && assetID != nil) {
         NSString *cacheKey = [self _cacheKeyForAssetID:assetID request:request];
-        NSInteger cost = [self _costForImage:image];
+        NSUInteger cost = [self _costForImage:image];
         [_cache setObject:image forKey:cacheKey cost:cost];
     }
 }
@@ -104,7 +104,7 @@
     return [NSString stringWithFormat:@"%@,%@,%i", assetID, NSStringFromCGSize(request.targetSize), (int)request.contentMode];
 }
 
-- (NSInteger)_costForImage:(UIImage *)image {
+- (NSUInteger)_costForImage:(UIImage *)image {
     CGImageRef imageRef = image.CGImage;
     NSUInteger bitsPerPixel = CGImageGetBitsPerPixel(imageRef);
     return (CGImageGetWidth(imageRef) * CGImageGetHeight(imageRef) * bitsPerPixel) / 8; // Return number of bytes in image bitmap.
@@ -121,7 +121,7 @@
     dispatch_once(&onceToken, ^{
         NSProcessInfo *info = [NSProcessInfo processInfo];
         CGFloat ratio = info.physicalMemory <= (1024 * 1024 * 512 /* 512 Mb */) ? 0.12 : 0.20;
-        recommendedSize = MAX(1024 * 1024 * 50 /* 50 Mb */, info.physicalMemory * ratio);
+        recommendedSize = (NSUInteger)MAX(1024 * 1024 * 50 /* 50 Mb */, info.physicalMemory * ratio);
     });
     return recommendedSize;
 }

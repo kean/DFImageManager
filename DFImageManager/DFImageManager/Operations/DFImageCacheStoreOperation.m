@@ -52,7 +52,7 @@
 }
 
 - (void)start {
-    if ([self isCancelled]) {
+    if (self.isCancelled) {
         [self finish];
         return;
     }

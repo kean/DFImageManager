@@ -171,7 +171,9 @@
 }
 
 - (void)requestDidFailWithError:(NSError *)error info:(NSDictionary *)info {
-    self.failureImageView.hidden = NO;
+    if (self.imageView.image != nil) {
+        self.failureImageView.hidden = NO;
+    }
 }
 
 #pragma mark - Reuse
@@ -207,9 +209,9 @@
     [self _df_setImage:image withAnimation:DFImageViewAnimationNone];
 }
 
-- (void)_df_setImage:(UIImage *)image withAnimation:(DFImageViewAnimation)animation {
+- (void)_df_setImage:(UIImage *)image withAnimation:(DFImageViewAnimation)animationType {
     self.imageView.image = image;
-    switch (animation) {
+    switch (animationType) {
         case DFImageViewAnimationNone:
             _backgroundView.alpha = 0.f;
             break;

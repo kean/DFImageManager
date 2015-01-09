@@ -217,8 +217,7 @@ static NSString *const _kPreheatHandlerID = @"_df_preheat";
 }
 
 - (void)_processResponseForContext:(_DFRequestExecutionContext *)context handler:(_DFRequestHandler *)handler {
-    UIImage *image = context.response.image;
-    [self _processImage:image forHandler:handler completion:^(UIImage *image) {
+    [self _processImage:context.response.image forHandler:handler completion:^(UIImage *image) {
         dispatch_async(_syncQueue, ^{
             [context.handlers removeObjectForKey:handler.requestID.handlerID];
             if (context.handlers.count == 0) {
@@ -232,9 +231,9 @@ static NSString *const _kPreheatHandlerID = @"_df_preheat";
 - (void)_processImage:(UIImage *)input forHandler:(_DFRequestHandler *)handler completion:(void (^)(UIImage *image))completion {
     NSString *assetID = [_conf imageManager:self uniqueIDForAsset:handler.request.asset];
     if (_processor != nil && input != nil) {
-        UIImage *image = [_cache cachedImageForAssetID:assetID request:handler.request];
-        if (image != nil) {
-            completion(image);
+        UIImage *cachedImage = [_cache cachedImageForAssetID:assetID request:handler.request];
+        if (cachedImage != nil) {
+            completion(cachedImage);
         } else {
             [_processor processImage:input forRequest:handler.request completion:^(UIImage *image) {
                 [_cache storeImage:image forAssetID:assetID request:handler.request];
@@ -354,7 +353,7 @@ static NSString *const _kPreheatHandlerID = @"_df_preheat";
     dispatch_async(_syncQueue, ^{
         [_executionContexts enumerateKeysAndObjectsUsingBlock:^(NSString *ECID, _DFRequestExecutionContext *context, BOOL *stop) {
             NSMutableArray *requestIDs = [NSMutableArray new];
-            [context.handlers enumerateKeysAndObjectsUsingBlock:^(NSString *handlerID, _DFRequestHandler *handler, BOOL *stop) {
+            [context.handlers enumerateKeysAndObjectsUsingBlock:^(NSString *handlerID, _DFRequestHandler *handler, BOOL *stop_inner) {
                 if ([handlerID isEqualToString:_kPreheatHandlerID]) {
                     [requestIDs addObject:[DFImageRequestID requestIDWithImageManager:self ECID:ECID handlerID:handlerID]];
                 }

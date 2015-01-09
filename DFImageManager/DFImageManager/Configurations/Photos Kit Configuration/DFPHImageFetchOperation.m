@@ -63,16 +63,19 @@
 }
 
 - (void)start {
-    @synchronized(self) {
-        if ([self isCancelled]) {
-            [self finish];
-            return;
-        }
-        self.executing = YES;
+    if (self.isCancelled) {
+        [self finish];
+        return;
     }
+    self.executing = YES;
     
     if (!_asset) {
         _asset = [[PHAsset fetchAssetsWithLocalIdentifiers:@[_assetLocalIdentifier.identifier] options:nil] firstObject];
+    }
+    
+    if (self.isCancelled) {
+        [self finish];
+        return;
     }
     
     PHImageRequestOptions *options = [PHImageRequestOptions new];
@@ -85,7 +88,7 @@
     DFPHImageFetchOperation *__weak weakSelf = self;
     [[PHImageManager defaultManager] requestImageForAsset:_asset targetSize:_targetSize contentMode:contentMode options:options resultHandler:^(UIImage *result, NSDictionary *info) {
         result = result ? [UIImage imageWithCGImage:result.CGImage scale:[UIScreen mainScreen].scale orientation:result.imageOrientation] : nil;
-        [weakSelf _didFetchImage:result];
+        [weakSelf _didFetchImage:result info:info];
     }];
 }
 
@@ -97,7 +100,7 @@
     }
 }
 
-- (void)_didFetchImage:(UIImage *)result {
+- (void)_didFetchImage:(UIImage *)result info:(NSDictionary *)info {
     DFMutableImageResponse *response = [DFMutableImageResponse new];
     response.image = result;
     _response = [response copy];
@@ -107,12 +110,10 @@
 #pragma mark - Operation
 
 - (void)finish {
-    @synchronized(self) {
-        if (_executing) {
-            self.executing = NO;
-        }
-        self.finished = YES;
+    if (_executing) {
+        self.executing = NO;
     }
+    self.finished = YES;
 }
 
 #pragma mark - <DFImageManagerOperation>
