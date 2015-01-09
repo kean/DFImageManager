@@ -25,6 +25,8 @@
     [super viewDidLoad];
     
     self.collectionView.alwaysBounceVertical = YES;
+    self.view.backgroundColor = [UIColor whiteColor];
+    self.collectionView.backgroundColor = [UIColor whiteColor];
 }
 
 - (void)viewWillAppear:(BOOL)animated {

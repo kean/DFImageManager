@@ -35,7 +35,7 @@ static NSString * const reuseIdentifier = @"Cell";
     
     [self.collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:reuseIdentifier];
     
-    _activityIndicatorView = [self showActivityIndicatorView];
+    _activityIndicatorView = [self df_showActivityIndicatorView];
     
     _photos = [NSMutableArray new];
     

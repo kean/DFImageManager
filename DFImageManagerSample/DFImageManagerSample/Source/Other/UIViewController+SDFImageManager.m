@@ -10,7 +10,7 @@
 
 @implementation UIViewController (SDFImageManager)
 
-- (UIActivityIndicatorView *)showActivityIndicatorView {
+- (UIActivityIndicatorView *)df_showActivityIndicatorView {
     UIActivityIndicatorView *indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
     indicator.translatesAutoresizingMaskIntoConstraints = NO;
     [indicator startAnimating];

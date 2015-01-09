@@ -12,7 +12,8 @@
 #import "SDFMainDemoViewController.h"
 #import "SDFMenuViewController.h"
 #import "SDFNetworkingDemoCollectionViewController.h"
-#import "SDFPhotosKitSampleViewController.h"
+#import "SDFPhotosKitDemoViewController.h"
+#import <Photos/Photos.h>
 
 
 @interface SDFMenuSection : NSObject
@@ -95,17 +96,24 @@
             controller.title = @"Networking Demo";
             [self.navigationController pushViewController:controller animated:YES];
         }]];
-        [items addObject:[SDFMenuItem itemWithTitle:@"Filesystem Demo" action:^{
-            SDFFilesystemDemoViewController *controller = [SDFFilesystemDemoViewController new];
-            controller.title = @"Filesystem Demo";
-            [self.navigationController pushViewController:controller animated:YES];
-        }]];
         [items addObject:[SDFMenuItem itemWithTitle:@"Photos Kit Demo" action:^{
-            [self.navigationController pushViewController:[SDFPhotosKitSampleViewController new] animated:YES];
+            if ([PHPhotoLibrary class] != nil) {
+                SDFPhotosKitDemoViewController *controller =[SDFPhotosKitDemoViewController new];
+                controller.title = @"Photos Kit Demo";
+                [self.navigationController pushViewController:controller animated:YES];
+            } else {
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Photos Kit is only available starting with iOS 8" message:nil delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+                [alert show];
+            }
         }]];
         [items addObject:[SDFMenuItem itemWithTitle:@"ALAssetsLibrary Demo" action:^{
             SDFAssetsLibraryDemoViewController *controller = [SDFAssetsLibraryDemoViewController new];
             controller.title = @"ALAssetsLibrary Demo";
+            [self.navigationController pushViewController:controller animated:YES];
+        }]];
+        [items addObject:[SDFMenuItem itemWithTitle:@"Filesystem Demo" action:^{
+            SDFFilesystemDemoViewController *controller = [SDFFilesystemDemoViewController new];
+            controller.title = @"Filesystem Demo";
             [self.navigationController pushViewController:controller animated:YES];
         }]];
         [SDFMenuSection sectionWithTitle:@"Image Managers" items:items];

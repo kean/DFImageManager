@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SDFPhotosKitSampleViewController : UICollectionViewController
+@interface SDFPhotosKitDemoViewController : UICollectionViewController
 
 @end

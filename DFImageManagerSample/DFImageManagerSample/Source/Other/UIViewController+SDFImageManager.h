@@ -10,6 +10,6 @@
 
 @interface UIViewController (SDFImageManager)
 
-- (UIActivityIndicatorView *)showActivityIndicatorView;
+- (UIActivityIndicatorView *)df_showActivityIndicatorView;
 
 @end
