@@ -21,6 +21,7 @@
 // THE SOFTWARE.
 
 #import "DFImageCacheStoreOperation.h"
+#import "DFImageRequest.h"
 #import "DFImageRequestOptions.h"
 #import "DFImageResponse.h"
 #import <DFCache/DFCache.h>
@@ -34,59 +35,47 @@
 @end
 
 @implementation DFImageCacheStoreOperation {
-    id _asset;
-    DFImageRequestOptions *_options;
-    DFImageResponse *_response;
     DFCache *_cache;
 }
 
 @synthesize executing = _executing;
 @synthesize finished = _finished;
 
-- (instancetype)initWithAsset:(id)asset options:(DFImageRequestOptions *)options response:(id)response cache:(DFCache *)cache {
+- (instancetype)initWithAssetID:(NSString *)assetID request:(DFImageRequest *)request response:(DFImageResponse *)response cache:(DFCache *)cache {
     if (self = [super init]) {
-        _asset = asset;
+        _assetID = assetID;
+        _request = request;
         _response = response;
-        _options = options;
         _cache = cache;
-        [self setCacheKeyForAsset:^NSString *(id asset, DFImageRequestOptions *options) {
-            if ([asset isKindOfClass:[NSURL class]]) {
-                return [((NSURL *)asset) absoluteString];
-            } else {
-                return nil;
-            }
-        }];
     }
     return self;
 }
 
 - (void)start {
-    @synchronized(self) {
-        if ([self isCancelled]) {
-            [self finish];
-            return;
-        }
-        self.executing = YES;
+    if ([self isCancelled]) {
+        [self finish];
+        return;
     }
-    
-    if (_response) {
-        [self storeImageForResponse:_response asset:_asset options:_options];
-    }
+    self.executing = YES;
+    [self _storeImage];
     [self finish];
 }
 
-- (void)storeImageForResponse:(DFImageResponse *)response asset:(id)asset options:(DFImageRequestOptions *)options {
-    NSURLResponse *URLResponse = response.userInfo[@"url_response"];
-    if (URLResponse && URLResponse.expectedContentLength != response.data.length) {
+- (void)_storeImage {
+    // TODO: Remove need to test url_response!!
+    NSURLResponse *URLResponse = self.response.userInfo[@"url_response"];
+    if (URLResponse != nil && URLResponse.expectedContentLength != self.response.data.length) {
         return;
     }
-    NSString *cacheKey = self.cacheKeyForAsset ? self.cacheKeyForAsset(_asset, _options) : nil;
+    NSString *cacheKey = self.assetID;
+    DFImageRequestOptions *options = self.request.options;
+    
     switch (options.cacheStoragePolicy) {
         case DFImageCacheStorageAllowed:
-            [_cache storeObject:response.image forKey:cacheKey data:response.data];
+            [_cache storeObject:self.response.image forKey:cacheKey data:self.response.data];
             break;
         case DFImageCacheStorageAllowedInMemoryOnly:
-            [_cache setObject:response.image forKey:cacheKey];
+            [_cache setObject:self.response.image forKey:cacheKey];
             break;
         default:
             break;
@@ -96,21 +85,10 @@
 #pragma mark - Operation
 
 - (void)finish {
-    @synchronized(self) {
-        if (_executing) {
-            self.executing = NO;
-        }
-        self.finished = YES;
+    if (_executing) {
+        self.executing = NO;
     }
-}
-
-- (void)cancel {
-    @synchronized(self) {
-        if (self.isCancelled) {
-            return;
-        }
-        [super cancel];
-    }
+    self.finished = YES;
 }
 
 - (void)setFinished:(BOOL)finished {

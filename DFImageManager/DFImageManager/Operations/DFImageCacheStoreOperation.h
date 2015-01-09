@@ -23,14 +23,16 @@
 #import <Foundation/Foundation.h>
 
 @class DFCache;
-@class DFImageRequestOptions;
+@class DFImageRequest;
 @class DFImageResponse;
 
 
 @interface DFImageCacheStoreOperation : NSOperation
 
-@property (nonatomic, copy) NSString* (^cacheKeyForAsset)(id asset, DFImageRequestOptions *options);
+@property (nonatomic, readonly) NSString *assetID;
+@property (nonatomic, readonly) DFImageRequest *request;
+@property (nonatomic, readonly) DFImageResponse *response;
 
-- (instancetype)initWithAsset:(id)asset options:(DFImageRequestOptions *)options response:(DFImageResponse *)response cache:(DFCache *)cache NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithAssetID:(NSString *)assetID request:(DFImageRequest *)request response:(DFImageResponse *)response cache:(DFCache *)cache NS_DESIGNATED_INITIALIZER;
 
 @end

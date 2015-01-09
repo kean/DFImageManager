@@ -22,6 +22,7 @@
 
 #import "DFImageCacheLookupOperation.h"
 #import "DFImageManagerDefines.h"
+#import "DFImageRequest.h"
 #import "DFImageRequestOptions.h"
 #import "DFImageResponse.h"
 #import <DFCache/DFCache.h>
@@ -39,40 +40,31 @@
 @synthesize executing = _executing;
 @synthesize finished = _finished;
 
-- (instancetype)initWithAsset:(id)asset options:(DFImageRequestOptions *)options cache:(DFCache *)cache {
+- (instancetype)initWithAssetID:(NSString *)assetID request:(DFImageRequest *)request cache:(DFCache *)cache {
     if (self = [super init]) {
-        _asset = asset;
-        _options = options;
+        _assetID = assetID;
+        _request = request;
         _cache = cache;
-        [self setCacheKeyForAsset:^NSString *(id asset, DFImageRequestOptions *options) {
-            if ([asset isKindOfClass:[NSURL class]]) {
-                return [((NSURL *)asset) absoluteString];
-            } else {
-                return nil;
-            }
-        }];
     }
     return self;
 }
 
 - (void)start {
-    @synchronized(self) {
-        if ([self isCancelled]) {
-            [self finish];
-            return;
-        }
-        self.executing = YES;
+    if ([self isCancelled]) {
+        [self finish];
+        return;
     }
+    self.executing = YES;
     
-    NSString *cacheKey = self.cacheKeyForAsset ? self.cacheKeyForAsset(_asset, _options) : nil;
+    NSString *cacheKey = self.assetID;
     
-    DFImageCacheStoragePolicy policy = _options.cacheStoragePolicy;
+    DFImageCacheStoragePolicy policy = self.request.options.cacheStoragePolicy;
     
     // Memory cache lookup.
     if (policy == DFImageCacheStorageAllowed ||
         policy == DFImageCacheStorageAllowedInMemoryOnly) {
         UIImage *image = [self.cache.memoryCache objectForKey:cacheKey];
-        if (image) {
+        if (image != nil) {
             _response = [[DFImageResponse alloc] initWithImage:image];
             [self finish];
             return;
@@ -82,7 +74,7 @@
     // Disk cache lookup.
     if (policy == DFImageCacheStorageAllowed) {
         UIImage *image = [self.cache cachedObjectForKey:cacheKey];
-        if (image) {
+        if (image != nil) {
             _response = [[DFImageResponse alloc] initWithImage:image];
             [self finish];
             return;
@@ -101,21 +93,10 @@
 #pragma mark - Operation
 
 - (void)finish {
-    @synchronized(self) {
-        if (_executing) {
-            self.executing = NO;
-        }
-        self.finished = YES;
+    if (_executing) {
+        self.executing = NO;
     }
-}
-
-- (void)cancel {
-    @synchronized(self) {
-        if (self.isCancelled) {
-            return;
-        }
-        [super cancel];
-    }
+    self.finished = YES;
 }
 
 - (void)setFinished:(BOOL)finished {
