@@ -35,10 +35,16 @@ static inline NSString *_DFLocalizedPeriodString(NSDate *startDate, NSDate *endD
 
 static NSString * const reuseIdentifier = @"Cell";
 
+
+@interface SDFPhotosKitDemoViewController () <DFCollectionViewPreheatingControllerDelegate>
+
+@end
+
 @implementation SDFPhotosKitDemoViewController {
     PHFetchResult *_moments;
     NSArray * /* PHFetchResult */ _assets;
     UIActivityIndicatorView *_indicator;
+    DFCollectionViewPreheatingController *_preheatingController;
 }
 
 - (instancetype)init {
@@ -82,6 +88,40 @@ static NSString * const reuseIdentifier = @"Cell";
     }
 }
 
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
+    _preheatingController = [[DFCollectionViewPreheatingController alloc] initWithCollectionView:self.collectionView];
+    _preheatingController.delegate = self;
+    [_preheatingController updatePreheatRect];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    
+    [self.navigationController.navigationBar setBarStyle:UIBarStyleDefault];
+}
+
+- (void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
+    
+    // Resets preheat rect and stop preheating images via delegate call.
+    [_preheatingController resetPreheatRect];
+    _preheatingController = nil;
+}
+
+- (void)viewDidLayoutSubviews {
+    [super viewDidLayoutSubviews];
+    
+    UICollectionViewFlowLayout *layout = (id)self.collectionViewLayout;
+    layout.minimumLineSpacing = 2.f;
+    layout.minimumInteritemSpacing = 2.f;
+    CGFloat side = (self.collectionView.bounds.size.width - 3.0 * 2.0) / 4.0;
+    layout.itemSize = CGSizeMake(side, side);
+    
+    layout.sectionInset = UIEdgeInsetsMake(0.f, 0.f, 14.f, 0.f);
+}
+
 - (void)_loadAssets {
     _indicator = [self df_showActivityIndicatorView];
     
@@ -105,6 +145,8 @@ static NSString * const reuseIdentifier = @"Cell";
             NSInteger item = [self collectionView:self.collectionView numberOfItemsInSection:section] - 1;
             NSIndexPath *lastIndexPath = [NSIndexPath indexPathForItem:item inSection:section];
             [self.collectionView scrollToItemAtIndexPath:lastIndexPath atScrollPosition:UICollectionViewScrollPositionBottom animated:NO];
+            
+            [_preheatingController updatePreheatRect];
         });
     });
 }
@@ -112,24 +154,6 @@ static NSString * const reuseIdentifier = @"Cell";
 - (void)_showErrorMessageForDeniedPhotoLibraryAccess {
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Photo library access denied." message:nil delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
     [alert show];
-}
-
-- (void)viewWillDisappear:(BOOL)animated {
-    [super viewWillDisappear:animated];
-    
-    [self.navigationController.navigationBar setBarStyle:UIBarStyleDefault];
-}
-
-- (void)viewDidLayoutSubviews {
-    [super viewDidLayoutSubviews];
-    
-    UICollectionViewFlowLayout *layout = (id)self.collectionViewLayout;
-    layout.minimumLineSpacing = 2.f;
-    layout.minimumInteritemSpacing = 2.f;
-    CGFloat side = (self.collectionView.bounds.size.width - 3.0 * 2.0) / 4.0;
-    layout.itemSize = CGSizeMake(side, side);
-    
-    layout.sectionInset = UIEdgeInsetsMake(0.f, 0.f, 14.f, 0.f);
 }
 
 #pragma mark - <UICollectionViewDataSource>
@@ -157,9 +181,15 @@ static NSString * const reuseIdentifier = @"Cell";
     
     PHFetchResult *result = _assets[indexPath.section];
     PHAsset *asset = result[indexPath.item];
-    [imageView setImageWithAsset:asset];
+    [imageView setImageWithAsset:asset targetSize:[self _imageTargetSize] contentMode:DFImageContentModeAspectFill options:nil];
 
     return cell;
+}
+
+- (CGSize)_imageTargetSize {
+    CGSize size = ((UICollectionViewFlowLayout *)self.collectionViewLayout).itemSize;
+    CGFloat scale = [UIScreen mainScreen].scale;
+    return CGSizeMake(size.width * scale, size.height * scale);
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section {
@@ -200,6 +230,28 @@ static NSString * const reuseIdentifier = @"Cell";
     }
     
     return header;
+}
+
+#pragma mark - <DFCollectionViewPreheatingControllerDelegate>
+
+- (void)collectionViewPreheatingController:(DFCollectionViewPreheatingController *)controller didUpdatePreheatRectWithAddedIndexPaths:(NSArray *)addedIndexPaths removedIndexPaths:(NSArray *)removedIndexPaths {
+    CGSize targetSize = [self _imageTargetSize];
+    
+    NSArray *addedAssets = [self _imageAssetsAtIndexPaths:addedIndexPaths];
+    
+    [[DFImageManager sharedManager] startPreheatingImageForAssets:addedAssets targetSize:targetSize contentMode:DFImageContentModeAspectFill options:nil];
+    NSArray *removedAssets = [self _imageAssetsAtIndexPaths:removedIndexPaths];
+    [[DFImageManager sharedManager] stopPreheatingImagesForAssets:removedAssets targetSize:targetSize contentMode:DFImageContentModeAspectFill options:nil];
+}
+
+- (NSArray *)_imageAssetsAtIndexPaths:(NSArray *)indexPaths {
+    NSMutableArray *assets = [NSMutableArray new];
+    for (NSIndexPath *indexPath in indexPaths) {
+        PHFetchResult *result = _assets[indexPath.section];
+        PHAsset *asset = result[indexPath.row];
+        [assets addObject:asset];
+    }
+    return assets;
 }
 
 @end
