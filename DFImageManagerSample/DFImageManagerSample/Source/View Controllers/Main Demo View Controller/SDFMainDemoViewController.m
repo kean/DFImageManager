@@ -33,6 +33,8 @@ static NSString * const reuseIdentifier = @"Cell";
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    self.numberOfItemsPerRow = 3;
+    
     [self.collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:reuseIdentifier];
     
     _activityIndicatorView = [self df_showActivityIndicatorView];
@@ -42,16 +44,6 @@ static NSString * const reuseIdentifier = @"Cell";
     _model = [SDFFlickrRecentPhotosModel new];
     _model.delegate = self;
     [_model poll];
-}
-
-- (void)viewDidLayoutSubviews {
-    [super viewDidLayoutSubviews];
-    
-    UICollectionViewFlowLayout *layout = (id)self.collectionViewLayout;
-    layout.minimumLineSpacing = 2.f;
-    layout.minimumInteritemSpacing = 2.f;
-    CGFloat side = (self.collectionView.bounds.size.width - 3 * 2.0) / 4;
-    layout.itemSize = CGSizeMake(side, side);
 }
 
 #pragma mark - <UICollectionViewDataSource>
@@ -87,6 +79,12 @@ static NSString * const reuseIdentifier = @"Cell";
     [_activityIndicatorView removeFromSuperview];
     [_photos addObjectsFromArray:photos];
     [self.collectionView reloadData];
+    if (page == 0) {
+        self.collectionView.alpha = 0.f;
+        [UIView animateWithDuration:0.25f animations:^{
+            self.collectionView.alpha = 1.f;
+        }];
+    }
 }
 
 @end
