@@ -79,8 +79,7 @@
     static NSArray *_keyPathsForNetworking;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        _keyPathsForNetworking = @[ @"options.cacheStoragePolicy",
-                                    @"options.networkAccessAllowed" ];
+        _keyPathsForNetworking = @[ @"options.networkAccessAllowed" ];
         
     });
     return [self _isFilesystemRequest:request] ? nil : _keyPathsForNetworking;

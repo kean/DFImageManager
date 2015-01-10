@@ -35,12 +35,6 @@ extern NSString *const DFImageInfoErrorKey;
 extern CGSize const DFImageManagerMaximumSize;
 
 
-typedef NS_ENUM(NSInteger, DFImageCacheStoragePolicy) {
-    DFImageCacheStorageAllowed,
-    DFImageCacheStorageAllowedInMemoryOnly,
-    DFImageCacheStorageNotAllowed
-};
-
 typedef NS_ENUM(NSInteger, DFImageContentMode) {
     DFImageContentModeAspectFill = 0,
     DFImageContentModeAspectFit = 1,

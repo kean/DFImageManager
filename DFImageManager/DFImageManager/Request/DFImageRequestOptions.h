@@ -25,10 +25,6 @@
 
 @interface DFImageRequestOptions : NSObject <NSCopying>
 
-/*! @note Will probably change in future versions. For now just make sure that you use the same storage policy for the same URL.
- */
-@property (nonatomic) DFImageCacheStoragePolicy cacheStoragePolicy;
-
 /*! Fetch request priority. Translates to NSOperationQueuePriority.
  */
 @property (nonatomic) DFImageRequestPriority priority;

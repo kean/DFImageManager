@@ -68,18 +68,14 @@ static char _operationTypeToken;
     
     NSString *previousOperationType = objc_getAssociatedObject(previousOperation, &_operationTypeToken);
     
-    DFImageRequestOptions *options = request.options;
-    
     NSString *nextOperationType;
     
     if (!previousOperation) {
-        if (options.cacheStoragePolicy != DFImageCacheStorageNotAllowed) {
-            nextOperation = [self createCacheLookupOperationForRequest:request];
-            nextOperationType = DFImageCacheLookupOperationType;
-        }
+        nextOperation = [self createCacheLookupOperationForRequest:request];
+        nextOperationType = DFImageCacheLookupOperationType;
         
         // cache lookup operation wasn't created
-        if (!nextOperation && options.networkAccessAllowed) {
+        if (!nextOperation) {
             nextOperation = [self createImageFetchOperationForRequest:request];
             nextOperationType = DFImageFetchOperationType;
         }
@@ -95,11 +91,9 @@ static char _operationTypeToken;
     
     else if ([previousOperationType isEqualToString:DFImageFetchOperationType]) {
         // start cache store operation
-        if (options.cacheStoragePolicy != DFImageCacheStorageNotAllowed) {
-            NSOperation *cacheStoreOperation = [self createCacheStoreOperationForRequest:request previousOperation:previousOperation];
-            [self _enqueueOperation:cacheStoreOperation];
-            return nil; // we don't wont DFImageManager to see this operation
-        }
+        NSOperation *cacheStoreOperation = [self createCacheStoreOperationForRequest:request previousOperation:previousOperation];
+        [self _enqueueOperation:cacheStoreOperation];
+        return nil; // we don't wont DFImageManager to see this operation
     }
     
     if (nextOperationType != nil && nextOperation != nil) {
