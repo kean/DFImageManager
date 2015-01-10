@@ -20,14 +20,14 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "DFImageCachingProtocol.h"
-#import "DFImageProcessingProtocol.h"
+#import "DFImageCacheProtocol.h"
+#import "DFImageProcessorProtocol.h"
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
 /*! Processes and caches images retrieved by different image managers.
  */
-@interface DFImageProcessingManager : NSObject <DFImageProcessing, DFImageCaching>
+@interface DFImageProcessingManager : NSObject <DFImageProcessor, DFImageCache>
 
 - (instancetype)initWithCache:(NSCache *)cache NS_DESIGNATED_INITIALIZER;
 - (instancetype)init;

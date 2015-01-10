@@ -79,7 +79,7 @@
     });
 }
 
-#pragma mark - <DFImageCaching>
+#pragma mark - <DFImageCache>
 
 - (UIImage *)cachedImageForAssetID:(NSString *)assetID request:(DFImageRequest *)request {
     if (assetID != nil) {

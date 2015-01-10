@@ -117,7 +117,7 @@ static NSString *const _kPreheatHandlerID = @"_df_preheat";
     [self setSharedManager:[self defaultManager]];
 }
 
-- (instancetype)initWithImageFetcher:(id<DFImageFetcher>)fetcher processor:(id<DFImageProcessing>)processor cache:(id<DFImageCaching>)cache {
+- (instancetype)initWithImageFetcher:(id<DFImageFetcher>)fetcher processor:(id<DFImageProcessor>)processor cache:(id<DFImageCache>)cache {
     if (self = [super init]) {
         _fetcher = fetcher;
         _processor = processor;

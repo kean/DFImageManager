@@ -26,8 +26,8 @@
 
 #import "DFImageManagerProtocol.h"
 #import "DFImageFetcherProtocol.h"
-#import "DFImageProcessingProtocol.h"
-#import "DFImageCachingProtocol.h"
+#import "DFImageProcessorProtocol.h"
+#import "DFImageCacheProtocol.h"
 #import "DFImageManagerOperationProtocol.h"
 
 #import "DFImageManager.h"

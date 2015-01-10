@@ -45,7 +45,7 @@
     DFImageProcessingManager *imageProcessor = [DFImageProcessingManager new];
     
     DFImageManager *URLImageManager = ({
-        // Initialize DFCache without memory cache because DFImageManager has a higher level memory cache (see <DFImageCaching>.
+        // Initialize DFCache without memory cache because DFImageManager has a higher level memory cache (see <DFImageCache>.
         DFCache *cache = [[DFCache alloc] initWithName:[[NSUUID UUID] UUIDString] memoryCache:nil];
         
         // Disable image decompression because DFImageManager has builtin image decompression (see <DFImageProcessing>)

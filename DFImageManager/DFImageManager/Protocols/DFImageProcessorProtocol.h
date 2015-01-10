@@ -25,7 +25,7 @@
 #import <UIKit/UIKit.h>
 
 
-@protocol DFImageProcessing <NSObject>
+@protocol DFImageProcessor <NSObject>
 
 - (void)processImage:(UIImage *)image forRequest:(DFImageRequest *)request completion:(void (^)(UIImage *image))completion;
 
