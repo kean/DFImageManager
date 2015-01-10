@@ -20,19 +20,15 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+#import "DFImageManagerOperationProtocol.h"
 #import <Foundation/Foundation.h>
 
-@class DFCache;
-@class DFImageRequest;
-@class DFImageResponse;
 
+@interface DFImageURLCacheLookupOperation : NSOperation <DFImageManagerOperation>
 
-@interface DFImageCacheStoreOperation : NSOperation
+@property (nonatomic, readonly) NSURLRequest *request;
+@property (nonatomic, readonly) NSURLCache *cache;
 
-@property (nonatomic, readonly) NSString *assetID;
-@property (nonatomic, readonly) DFImageRequest *request;
-@property (nonatomic, readonly) DFImageResponse *response;
-
-- (instancetype)initWithAssetID:(NSString *)assetID request:(DFImageRequest *)request response:(DFImageResponse *)response cache:(DFCache *)cache NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithRequest:(NSURLRequest *)request cache:(NSURLCache *)cache NS_DESIGNATED_INITIALIZER;
 
 @end

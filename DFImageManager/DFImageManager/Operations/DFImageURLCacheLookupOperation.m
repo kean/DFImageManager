@@ -20,31 +20,28 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "DFImageCacheLookupOperation.h"
-#import "DFImageManagerDefines.h"
-#import "DFImageRequest.h"
-#import "DFImageRequestOptions.h"
+#import "DFImageURLCacheLookupOperation.h"
 #import "DFImageResponse.h"
-#import <DFCache/DFCache.h>
 
 
-@interface DFImageCacheLookupOperation ()
+@interface DFImageURLCacheLookupOperation ()
 
 @property (nonatomic, getter = isExecuting) BOOL executing;
 @property (nonatomic, getter = isFinished) BOOL finished;
 
 @end
 
-@implementation DFImageCacheLookupOperation
+@implementation DFImageURLCacheLookupOperation {
+    DFImageResponse *_response;
+}
 
 @synthesize executing = _executing;
 @synthesize finished = _finished;
 
-- (instancetype)initWithAssetID:(NSString *)assetID request:(DFImageRequest *)request cache:(DFCache *)cache {
+- (instancetype)initWithRequest:(NSURLRequest *)request cache:(NSURLCache *)cache {
     if (self = [super init]) {
-        _assetID = assetID;
-        _request = request;
-        _cache = cache;
+        _request =request;
+        _cache =cache;
     }
     return self;
 }
@@ -56,31 +53,12 @@
     }
     self.executing = YES;
     
-    NSString *cacheKey = self.assetID;
-    
-    DFImageCacheStoragePolicy policy = self.request.options.cacheStoragePolicy;
-    
-    // Memory cache lookup.
-    if (policy == DFImageCacheStorageAllowed ||
-        policy == DFImageCacheStorageAllowedInMemoryOnly) {
-        UIImage *image = [self.cache.memoryCache objectForKey:cacheKey];
-        if (image != nil) {
-            _response = [[DFImageResponse alloc] initWithImage:image];
-            [self finish];
-            return;
-        }
+    NSCachedURLResponse *response = [self.cache cachedResponseForRequest:self.request];
+    UIImage *image;
+    if (response != nil) {
+        image = [[UIImage alloc] initWithData:response.data];
     }
-    
-    // Disk cache lookup.
-    if (policy == DFImageCacheStorageAllowed) {
-        UIImage *image = [self.cache cachedObjectForKey:cacheKey];
-        if (image != nil) {
-            _response = [[DFImageResponse alloc] initWithImage:image];
-            [self finish];
-            return;
-        }
-    }
-    
+    _response = [[DFImageResponse alloc] initWithImage:image];
     [self finish];
 }
 

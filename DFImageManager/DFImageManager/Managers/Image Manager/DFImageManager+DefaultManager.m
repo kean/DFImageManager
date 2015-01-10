@@ -45,13 +45,14 @@
     DFImageProcessingManager *imageProcessor = [DFImageProcessingManager new];
     
     DFImageManager *URLImageManager = ({
-        // Initialize DFCache without memory cache because DFImageManager has a higher level memory cache (see <DFImageCache>.
-        DFCache *cache = [[DFCache alloc] initWithName:[[NSUUID UUID] UUIDString] memoryCache:nil];
+        // Initialize NSURLCache without memory cache because DFImageManager has a higher level memory cache (see <DFImageCache>.
+        NSURLCache *cache = [[NSURLCache alloc] initWithMemoryCapacity:0 diskCapacity:1024 * 1024 * 100 diskPath:@"com.github.kean.default_image_cache"];
         
-        // Disable image decompression because DFImageManager has builtin image decompression (see <DFImageProcessing>)
-        [cache setAllowsImageDecompression:NO];
+        NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
+        configuration.URLCache = cache;
+        NSURLSession *session = [NSURLSession sessionWithConfiguration:configuration];
         
-        DFURLImageFetcher *fetcher = [[DFURLImageFetcher alloc] initWithCache:cache];
+        DFURLImageFetcher *fetcher = [[DFURLImageFetcher alloc] initWithSession:session];
         [[DFImageManager alloc] initWithImageFetcher:fetcher processor:imageProcessor cache:imageProcessor];
     });
     

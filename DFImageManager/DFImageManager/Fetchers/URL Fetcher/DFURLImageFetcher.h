@@ -23,17 +23,15 @@
 #import "DFCachingImageFetcher.h"
 #import <Foundation/Foundation.h>
 
-@class DFCache;
-
 
 /*! Image fetcher that supports NSURL and is implemented on top of Cocoa URL loading system.
  @note Supported URL schemes: http:, https:, ftp:, file:
  */
 @interface DFURLImageFetcher : DFCachingImageFetcher
 
-@property (nonatomic, readonly) DFCache *cache;
+@property (nonatomic, readonly) NSURLSession *session;
 
-- (instancetype)initWithCache:(DFCache *)cache NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithSession:(NSURLSession *)session;
 
 + (NSSet *)supportedSchemes;
 

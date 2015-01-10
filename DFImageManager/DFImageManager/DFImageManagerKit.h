@@ -49,7 +49,7 @@
 #import "DFPhotosKitImageFetchOperation.h"
 #import "DFPHAssetlocalIdentifier.h"
 
-#import "DFImageCacheLookupOperation.h"
+#import "DFImageURLCacheLookupOperation.h"
 #import "DFImageCacheStoreOperation.h"
 #import "DFImageFetchConnectionOperation.h"
 #import "DFURLConnectionOperation.h"

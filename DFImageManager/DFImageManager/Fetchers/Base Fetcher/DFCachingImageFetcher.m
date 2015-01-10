@@ -102,7 +102,9 @@ static char _operationTypeToken;
         }
     }
     
-    objc_setAssociatedObject(nextOperation, &_operationTypeToken, nextOperationType, OBJC_ASSOCIATION_COPY);
+    if (nextOperationType != nil && nextOperation != nil) {
+        objc_setAssociatedObject(nextOperation, &_operationTypeToken, nextOperationType, OBJC_ASSOCIATION_COPY);
+    }
     return nextOperation;
 }
 

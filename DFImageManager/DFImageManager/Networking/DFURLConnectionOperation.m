@@ -31,16 +31,17 @@
 @end
 
 @implementation DFURLConnectionOperation {
-    NSMutableData *_data;
+    NSURLSessionDataTask *_task;
+    NSData *_data;
 }
 
 @synthesize executing = _executing;
 @synthesize finished = _finished;
 
-- (instancetype)initWithRequest:(NSURLRequest *)request {
+- (instancetype)initWithRequest:(NSURLRequest *)request session:(NSURLSession *)session {
     if (self = [super init]) {
         _request = request;
-        _runLoopMode = NSRunLoopCommonModes;
+        _session = session;
     }
     return self;
 }
@@ -59,64 +60,23 @@
 }
 
 - (void)_startExecutiong {
-    NSURLConnection *connection = [[NSURLConnection alloc] initWithRequest:_request delegate:self startImmediately:NO];
-    if (!connection) {
+    DFURLConnectionOperation *__weak weakSelf = self;
+    _task = [self.session dataTaskWithRequest:self.request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+        [weakSelf _didFinishWithData:data response:response error:error];
+    }];
+    if (_task != nil) {
+        [_task resume];
+    } else {
         [self finish];
-        return;
-    }
-    dispatch_async(dispatch_get_main_queue(), ^{
-        _connection = connection;
-        [connection scheduleInRunLoop:[NSRunLoop mainRunLoop] forMode:self.runLoopMode];
-        [connection start];
-    });
-}
-
-- (void)finish {
-    @synchronized(self) {
-        if (_executing) {
-            self.executing = NO;
-        }
-        self.finished = YES;
     }
 }
 
-- (void)cancel {
-    @synchronized(self) {
-        if (!self.isCancelled) {
-            [super cancel];
-            dispatch_async(dispatch_get_main_queue(), ^{
-                if ([self _isConnectionExecuting]) {
-                    [_connection cancel];
-                    _connection = nil;
-                    [self finish];
-                }
-            });
-        }
-    }
-}
-
-- (BOOL)_isConnectionExecuting {
-    return _connection != nil;
-}
-
-#pragma mark - <NSURLConnectionDelegate>
-
-- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
+- (void)_didFinishWithData:(NSData *)data response:(NSURLResponse *)response error:(NSError *)error {
+    _data = data;
     _response = response;
-    _data = [NSMutableData data];
-}
-
-- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
-    [_data appendData:data];
-}
-
-- (NSCachedURLResponse *)connection:(NSURLConnection *)connection willCacheResponse:(NSCachedURLResponse *)cachedResponse {
-    return nil;
-}
-
-- (void)connectionDidFinishLoading:(NSURLConnection *)connection {
-    _connection = nil;
-    if (self.isCancelled) {
+    _error = error;
+    
+    if (error != nil || self.isCancelled) {
         [self finish];
     } else {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
@@ -139,10 +99,22 @@
     [self finish];
 }
 
-- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
-    _connection = nil;
-    _error = error;
-    [self finish];
+- (void)finish {
+    @synchronized(self) {
+        if (_executing) {
+            self.executing = NO;
+        }
+        self.finished = YES;
+    }
+}
+
+- (void)cancel {
+    @synchronized(self) {
+        if (!self.isCancelled) {
+            [super cancel];
+            [_task cancel];
+        }
+    }
 }
 
 #pragma mark - KVO

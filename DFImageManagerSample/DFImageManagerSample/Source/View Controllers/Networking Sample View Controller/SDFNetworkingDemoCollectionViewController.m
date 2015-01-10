@@ -87,13 +87,15 @@ static NSString * const reuseIdentifier = @"Cell";
     
     DFImageProcessingManager *imageProcessor = [DFImageProcessingManager new];
     
-    // We don't want memory cache, because we use caching image processing manager.
-    DFCache *cache = [[DFCache alloc] initWithName:[[NSUUID UUID] UUIDString] memoryCache:nil];
-    [cache setAllowsImageDecompression:NO];
-    _cache = cache;
+    // Initialize NSURLCache without memory cache because DFImageManager has a higher level memory cache (see <DFImageCache>.
+    NSURLCache *cache = [[NSURLCache alloc] initWithMemoryCapacity:0 diskCapacity:1024 * 1024 * 100 diskPath:@"com.github.kean.default_image_cache"];
     
-    DFURLImageFetcher *URLImageFetcher = [[DFURLImageFetcher alloc] initWithCache:cache];
-    DFImageManager *URLImageManager = [[DFImageManager alloc] initWithImageFetcher:URLImageFetcher processor:imageProcessor cache:imageProcessor];
+    NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
+    configuration.URLCache = cache;
+    NSURLSession *session = [NSURLSession sessionWithConfiguration:configuration];
+    
+    DFURLImageFetcher *fetcher = [[DFURLImageFetcher alloc] initWithSession:session];
+    DFImageManager *URLImageManager = [[DFImageManager alloc] initWithImageFetcher:fetcher processor:imageProcessor cache:imageProcessor];
     
     [DFImageManager setSharedManager:URLImageManager];
 }

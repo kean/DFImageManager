@@ -23,19 +23,18 @@
 #import "DFURLResponseDeserializing.h"
 
 
-@interface DFURLConnectionOperation : NSOperation <NSURLConnectionDataDelegate>
+@interface DFURLConnectionOperation : NSOperation
 
 @property (nonatomic) id<DFURLResponseDeserializing> deserializer;
-@property (nonatomic) NSURLRequest *request;
-@property (nonatomic) NSString *runLoopMode;
+@property (nonatomic, readonly) NSURLSession *session;
+@property (nonatomic, readonly) NSURLRequest *request;
 
-@property (nonatomic, readonly) NSURLConnection *connection;
 @property (nonatomic, readonly) NSURLResponse *response;
 @property (nonatomic, readonly) NSData *data;
 @property (nonatomic, readonly) id responseObject;
 @property (nonatomic, readonly) NSError *error;
 
-- (instancetype)initWithRequest:(NSURLRequest *)request NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithRequest:(NSURLRequest *)request session:(NSURLSession *)session NS_DESIGNATED_INITIALIZER;
 
 @end
 

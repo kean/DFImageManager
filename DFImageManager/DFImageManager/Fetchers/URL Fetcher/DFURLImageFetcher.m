@@ -20,8 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "DFImageCacheLookupOperation.h"
-#import "DFImageCacheStoreOperation.h"
+#import "DFImageURLCacheLookupOperation.h"
 #import "DFImageDeserializer.h"
 #import "DFImageFetchConnectionOperation.h"
 #import "DFImageRequest.h"
@@ -30,20 +29,20 @@
 #import "DFURLImageFetcher.h"
 #import "DFURLConnectionOperation.h"
 #import "DFURLResponseDeserializing.h"
-#import <DFCache/DFCache.h>
 
 
 @implementation DFURLImageFetcher {
-    NSOperationQueue *_queueForFilesystem;
+    NSOperationQueue *_queueForCache;
     NSOperationQueue *_queueForNetwork;
 }
 
-- (instancetype)initWithCache:(DFCache *)cache {
+- (instancetype)initWithSession:(NSURLSession *)session {
     if (self = [super init]) {
-        _cache = cache;
+        NSParameterAssert(session);
+        _session = session;
         
-        _queueForFilesystem = [NSOperationQueue new];
-        _queueForFilesystem.maxConcurrentOperationCount = 1;
+        _queueForCache = [NSOperationQueue new];
+        _queueForCache.maxConcurrentOperationCount = 1;
         
         _queueForNetwork = [NSOperationQueue new];
         _queueForNetwork.maxConcurrentOperationCount = 2;
@@ -81,7 +80,7 @@
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         _keyPathsForNetworking = @[ @"options.cacheStoragePolicy",
-                       @"options.networkAccessAllowed" ];
+                                    @"options.networkAccessAllowed" ];
         
     });
     return [self _isFilesystemRequest:request] ? nil : _keyPathsForNetworking;
@@ -90,48 +89,33 @@
 #pragma mark - Subclassing Hooks
 
 - (NSOperation<DFImageManagerOperation> *)createCacheLookupOperationForRequest:(DFImageRequest *)request {
-    if (self.cache != nil && ![self _isFilesystemRequest:request]) {
-        NSString *assetID = [self uniqueIDForAsset:request.asset];
-        return [[DFImageCacheLookupOperation alloc] initWithAssetID:assetID request:request cache:self.cache];
-    } else {
-        return nil;
+    if (self.session.configuration.URLCache != nil &&
+        ![self _isFilesystemRequest:request]) {
+        NSMutableURLRequest *URLRequest = [[NSMutableURLRequest alloc] initWithURL:request.asset];
+        return [[DFImageURLCacheLookupOperation alloc] initWithRequest:URLRequest cache:self.session.configuration.URLCache];
     }
+    return nil;
 }
 
 - (NSOperation<DFImageManagerOperation> *)createImageFetchOperationForRequest:(DFImageRequest *)request {
     if (request.options.networkAccessAllowed || [self _isFilesystemRequest:request]) {
         NSMutableURLRequest *URLRequest = [[NSMutableURLRequest alloc] initWithURL:request.asset cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:30.f];
-        DFImageFetchConnectionOperation *operation = [[DFImageFetchConnectionOperation alloc] initWithRequest:URLRequest];
+        DFImageFetchConnectionOperation *operation = [[DFImageFetchConnectionOperation alloc] initWithRequest:URLRequest session:self.session];
         operation.deserializer = [DFImageDeserializer new];
         return operation;
-    } else {
-        return nil;
     }
-}
-
-- (NSOperation *)createCacheStoreOperationForRequest:(DFImageRequest *)request previousOperation:(NSOperation<DFImageManagerOperation> *)previousOperation {
-    DFImageResponse *response = [previousOperation imageResponse];
-    if (self.cache != nil && ![self _isFilesystemRequest:request]) {
-        NSString *assetID = [self uniqueIDForAsset:request.asset];
-        return [[DFImageCacheStoreOperation alloc] initWithAssetID:assetID request:request response:response cache:self.cache];
-    } else {
-        return nil;
-    }
+    return nil;
 }
 
 - (NSOperationQueue *)operationQueueForOperation:(NSOperation *)operation {
-    if (!operation) {
-        return nil;
-    }
-    if ([operation isKindOfClass:[DFImageCacheLookupOperation class]] ||
-        [operation isKindOfClass:[DFImageCacheStoreOperation class]]) {
-        return _queueForFilesystem;
+    if ([operation isKindOfClass:[DFImageURLCacheLookupOperation class]]) {
+        return _queueForCache;
     } else {
         return _queueForNetwork;
     }
 }
 
-#pragma mark - 
+#pragma mark -
 
 - (BOOL)_isFilesystemRequest:(DFImageRequest *)request {
     return [((NSURL *)request.asset) isFileURL];
