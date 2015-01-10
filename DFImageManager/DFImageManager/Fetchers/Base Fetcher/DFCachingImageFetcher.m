@@ -25,12 +25,14 @@
 #import "DFImageRequest.h"
 #import "DFImageRequestOptions.h"
 #import "DFImageResponse.h"
+#import <objc/runtime.h>
 
 
-NSString *const DFImageCacheLookupOperationType = @"DFImageCacheLookupOperationType";
-NSString *const DFImageFetchOperationType = @"DFImageFetchOperationType";
-NSString *const DFImageCacheStoreOperationType = @"DFImageCacheStoreOperationType";
+static NSString *const DFImageCacheLookupOperationType = @"DFImageCacheLookupOperationType";
+static NSString *const DFImageFetchOperationType = @"DFImageFetchOperationType";
 
+
+static char _operationTypeToken;
 
 @implementation DFCachingImageFetcher
 
@@ -64,18 +66,22 @@ NSString *const DFImageCacheStoreOperationType = @"DFImageCacheStoreOperationTyp
 - (NSOperation<DFImageManagerOperation> *)createOperationForRequest:(DFImageRequest *)request previousOperation:(NSOperation<DFImageManagerOperation> *)previousOperation {
     NSOperation<DFImageManagerOperation> *nextOperation;
     
-    NSString *previousOperationType = previousOperation ? [self operationTypeForOperation:previousOperation] : nil;
+    NSString *previousOperationType = objc_getAssociatedObject(previousOperation, &_operationTypeToken);
     
     DFImageRequestOptions *options = request.options;
+    
+    NSString *nextOperationType;
     
     if (!previousOperation) {
         if (options.cacheStoragePolicy != DFImageCacheStorageNotAllowed) {
             nextOperation = [self createCacheLookupOperationForRequest:request];
+            nextOperationType = DFImageCacheLookupOperationType;
         }
         
         // cache lookup operation wasn't created
         if (!nextOperation && options.networkAccessAllowed) {
             nextOperation = [self createImageFetchOperationForRequest:request];
+            nextOperationType = DFImageFetchOperationType;
         }
     }
     
@@ -83,6 +89,7 @@ NSString *const DFImageCacheStoreOperationType = @"DFImageCacheStoreOperationTyp
         DFImageResponse *response = [previousOperation imageResponse];
         if (!response.image) {
             nextOperation =  [self createImageFetchOperationForRequest:request];
+            nextOperationType = DFImageFetchOperationType;
         }
     }
     
@@ -95,6 +102,7 @@ NSString *const DFImageCacheStoreOperationType = @"DFImageCacheStoreOperationTyp
         }
     }
     
+    objc_setAssociatedObject(nextOperation, &_operationTypeToken, nextOperationType, OBJC_ASSOCIATION_COPY);
     return nextOperation;
 }
 
@@ -107,10 +115,6 @@ NSString *const DFImageCacheStoreOperationType = @"DFImageCacheStoreOperationTyp
 }
 
 - (NSOperation *)createCacheStoreOperationForRequest:(DFImageRequest *)request previousOperation:(NSOperation<DFImageManagerOperation> *)previousOperation {
-    return nil;
-}
-
-- (NSString *)operationTypeForOperation:(NSOperation *)operation {
     return nil;
 }
 

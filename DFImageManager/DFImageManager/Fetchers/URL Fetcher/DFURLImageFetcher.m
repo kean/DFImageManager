@@ -123,24 +123,11 @@
     if (!operation) {
         return nil;
     }
-    NSString *operationType = [self operationTypeForOperation:operation];
-    if ([operationType isEqualToString:DFImageCacheLookupOperationType] || [operationType isEqualToString:DFImageCacheStoreOperationType]) {
+    if ([operation isKindOfClass:[DFImageCacheLookupOperation class]] ||
+        [operation isKindOfClass:[DFImageCacheStoreOperation class]]) {
         return _queueForFilesystem;
-    } else if ([operationType isEqualToString:DFImageFetchOperationType]) {
-        return _queueForNetwork;
-    }
-    return nil;
-}
-
-- (NSString *)operationTypeForOperation:(NSOperation *)operation {
-    if ([operation isKindOfClass:[DFImageCacheLookupOperation class]]) {
-        return DFImageCacheLookupOperationType;
-    } else if ([operation isKindOfClass:[DFImageFetchConnectionOperation class]]) {
-        return DFImageFetchOperationType;
-    } else  if ([operation isKindOfClass:[DFImageCacheStoreOperation class]]){
-        return DFImageCacheStoreOperationType;
     } else {
-        return nil;
+        return _queueForNetwork;
     }
 }
 
