@@ -26,9 +26,9 @@
 @class DFImageRequest;
 
 
-extern NSString *const DFImageManagerCacheLookupOperationType;
-extern NSString *const DFImageManagerImageFetchOperationType;
-extern NSString *const DFImageManagerCacheStoreOperationType;
+extern NSString *const DFImageCacheLookupOperationType;
+extern NSString *const DFImageFetchOperationType;
+extern NSString *const DFImageCacheStoreOperationType;
 
 /*! Base image fetcher that implements <DFImageFetcher> protocol and defines a specific operations flow (cache lookup ~> fetch ~> cache store). 
  */
@@ -39,7 +39,7 @@ extern NSString *const DFImageManagerCacheStoreOperationType;
 
 @interface DFCachingImageFetcher (SubclassingHooks)
 
-- (NSArray *)keyPathForRequestParametersAffectingExecutionContextID:(DFImageRequest *)request;
+- (NSArray *)keyPathsAffectingExecutionContextIDForRequest:(DFImageRequest *)request;
 
 // factory methods
 

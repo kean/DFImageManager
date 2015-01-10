@@ -27,9 +27,9 @@
 #import "DFImageResponse.h"
 
 
-NSString *const DFImageManagerCacheLookupOperationType = @"DFImageManagerCacheLookupOperationType";
-NSString *const DFImageManagerImageFetchOperationType = @"DFImageManagerImageFetchOperationType";
-NSString *const DFImageManagerCacheStoreOperationType = @"DFImageManagerCacheStoreOperationType";
+NSString *const DFImageCacheLookupOperationType = @"DFImageCacheLookupOperationType";
+NSString *const DFImageFetchOperationType = @"DFImageFetchOperationType";
+NSString *const DFImageCacheStoreOperationType = @"DFImageCacheStoreOperationType";
 
 
 @implementation DFCachingImageFetcher
@@ -49,7 +49,7 @@ NSString *const DFImageManagerCacheStoreOperationType = @"DFImageManagerCacheSto
     NSString *assetID = [self uniqueIDForAsset:request.asset];
     
     NSMutableString *ECID = [[NSMutableString alloc] initWithString:@"requestID?"];
-    NSArray *keyPaths = [self keyPathForRequestParametersAffectingExecutionContextID:request];
+    NSArray *keyPaths = [self keyPathsAffectingExecutionContextIDForRequest:request];
     for (NSString *keyPath in keyPaths) {
         [ECID appendFormat:@"%@=%@&", keyPath, [request valueForKeyPath:keyPath]];
     }
@@ -57,7 +57,7 @@ NSString *const DFImageManagerCacheStoreOperationType = @"DFImageManagerCacheSto
     return ECID;
 }
 
-- (NSArray *)keyPathForRequestParametersAffectingExecutionContextID:(DFImageRequest *)request {
+- (NSArray *)keyPathsAffectingExecutionContextIDForRequest:(DFImageRequest *)request {
     return @[];
 }
 
@@ -79,14 +79,14 @@ NSString *const DFImageManagerCacheStoreOperationType = @"DFImageManagerCacheSto
         }
     }
     
-    else if ([previousOperationType isEqualToString:DFImageManagerCacheLookupOperationType]) {
+    else if ([previousOperationType isEqualToString:DFImageCacheLookupOperationType]) {
         DFImageResponse *response = [previousOperation imageResponse];
         if (!response.image) {
             nextOperation =  [self createImageFetchOperationForRequest:request];
         }
     }
     
-    else if ([previousOperationType isEqualToString:DFImageManagerImageFetchOperationType]) {
+    else if ([previousOperationType isEqualToString:DFImageFetchOperationType]) {
         // start cache store operation
         if (options.cacheStoragePolicy != DFImageCacheStorageNotAllowed) {
             NSOperation *cacheStoreOperation = [self createCacheStoreOperationForRequest:request previousOperation:previousOperation];

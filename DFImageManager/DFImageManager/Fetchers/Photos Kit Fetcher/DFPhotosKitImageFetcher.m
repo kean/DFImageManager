@@ -60,7 +60,7 @@
     NSString *assetUID = [self uniqueIDForAsset:request.asset];
     
     NSMutableString *ECID = [[NSMutableString alloc] initWithString:@"requestID?"];
-    NSArray *keyPaths = [self _keyPathForRequestParametersAffectingExecutionContextID:request];
+    NSArray *keyPaths = [self _keyPathsAffectingExecutionContextIDForRequest:request];
     for (NSString *keyPath in keyPaths) {
         [ECID appendFormat:@"%@=%@&", keyPath, [request valueForKeyPath:keyPath]];
     }
@@ -68,7 +68,7 @@
     return ECID;
 }
 
-- (NSArray *)_keyPathForRequestParametersAffectingExecutionContextID:(DFImageRequest *)request {
+- (NSArray *)_keyPathsAffectingExecutionContextIDForRequest:(DFImageRequest *)request {
     static NSArray *keyPaths;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{

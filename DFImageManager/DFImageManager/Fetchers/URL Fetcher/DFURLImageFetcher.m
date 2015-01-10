@@ -76,7 +76,7 @@
     return [((NSURL *)asset) absoluteString];
 }
 
-- (NSArray *)keyPathForRequestParametersAffectingExecutionContextID:(DFImageRequest *)request {
+- (NSArray *)keyPathsAffectingExecutionContextIDForRequest:(DFImageRequest *)request {
     static NSArray *_keyPathsForNetworking;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
@@ -124,9 +124,9 @@
         return nil;
     }
     NSString *operationType = [self operationTypeForOperation:operation];
-    if ([operationType isEqualToString:DFImageManagerCacheLookupOperationType] || [operationType isEqualToString:DFImageManagerCacheStoreOperationType]) {
+    if ([operationType isEqualToString:DFImageCacheLookupOperationType] || [operationType isEqualToString:DFImageCacheStoreOperationType]) {
         return _queueForFilesystem;
-    } else if ([operationType isEqualToString:DFImageManagerImageFetchOperationType]) {
+    } else if ([operationType isEqualToString:DFImageFetchOperationType]) {
         return _queueForNetwork;
     }
     return nil;
@@ -134,11 +134,11 @@
 
 - (NSString *)operationTypeForOperation:(NSOperation *)operation {
     if ([operation isKindOfClass:[DFImageCacheLookupOperation class]]) {
-        return DFImageManagerCacheLookupOperationType;
+        return DFImageCacheLookupOperationType;
     } else if ([operation isKindOfClass:[DFImageFetchConnectionOperation class]]) {
-        return DFImageManagerImageFetchOperationType;
+        return DFImageFetchOperationType;
     } else  if ([operation isKindOfClass:[DFImageCacheStoreOperation class]]){
-        return DFImageManagerCacheStoreOperationType;
+        return DFImageCacheStoreOperationType;
     } else {
         return nil;
     }
