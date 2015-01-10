@@ -40,8 +40,8 @@
 
 - (instancetype)initWithRequest:(NSURLRequest *)request cache:(NSURLCache *)cache {
     if (self = [super init]) {
-        _request =request;
-        _cache =cache;
+        _request = request;
+        _cache = cache;
     }
     return self;
 }
@@ -56,7 +56,7 @@
     NSCachedURLResponse *response = [self.cache cachedResponseForRequest:self.request];
     UIImage *image;
     if (response != nil) {
-        image = [[UIImage alloc] initWithData:response.data];
+        image = [[UIImage alloc] initWithData:response.data scale:[UIScreen mainScreen].scale];
     }
     _response = [[DFImageResponse alloc] initWithImage:image];
     [self finish];
