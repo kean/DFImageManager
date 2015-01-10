@@ -32,15 +32,14 @@
 
 @implementation DFURLConnectionOperation {
     NSURLSessionDataTask *_task;
-    NSData *_data;
 }
 
 @synthesize executing = _executing;
 @synthesize finished = _finished;
 
-- (instancetype)initWithRequest:(NSURLRequest *)request session:(NSURLSession *)session {
+- (instancetype)initWithURL:(NSURL *)URL session:(NSURLSession *)session {
     if (self = [super init]) {
-        _request = request;
+        _URL = URL;
         _session = session;
     }
     return self;
@@ -61,7 +60,7 @@
 
 - (void)_startExecutiong {
     DFURLConnectionOperation *__weak weakSelf = self;
-    _task = [self.session dataTaskWithRequest:self.request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+    _task = [self.session dataTaskWithURL:self.URL completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
         [weakSelf _didFinishWithData:data response:response error:error];
     }];
     if (_task != nil) {

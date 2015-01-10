@@ -90,7 +90,7 @@
 - (NSOperation<DFImageManagerOperation> *)createCacheLookupOperationForRequest:(DFImageRequest *)request {
     if (self.session.configuration.URLCache != nil &&
         ![self _isFilesystemRequest:request]) {
-        NSMutableURLRequest *URLRequest = [[NSMutableURLRequest alloc] initWithURL:request.asset];
+        NSURLRequest *URLRequest = [[NSURLRequest alloc] initWithURL:request.asset];
         return [[DFImageURLCacheLookupOperation alloc] initWithRequest:URLRequest cache:self.session.configuration.URLCache];
     }
     return nil;
@@ -98,8 +98,7 @@
 
 - (NSOperation<DFImageManagerOperation> *)createImageFetchOperationForRequest:(DFImageRequest *)request {
     if (request.options.networkAccessAllowed || [self _isFilesystemRequest:request]) {
-        NSMutableURLRequest *URLRequest = [[NSMutableURLRequest alloc] initWithURL:request.asset cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:30.f];
-        DFImageFetchConnectionOperation *operation = [[DFImageFetchConnectionOperation alloc] initWithRequest:URLRequest session:self.session];
+        DFImageFetchConnectionOperation *operation = [[DFImageFetchConnectionOperation alloc] initWithURL:request.asset session:self.session];
         operation.deserializer = [DFImageDeserializer new];
         return operation;
     }

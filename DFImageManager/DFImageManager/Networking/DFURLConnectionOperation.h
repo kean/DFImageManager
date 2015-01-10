@@ -26,15 +26,15 @@
 @interface DFURLConnectionOperation : NSOperation
 
 @property (nonatomic) id<DFURLResponseDeserializing> deserializer;
+@property (nonatomic, readonly) NSURL *URL;
 @property (nonatomic, readonly) NSURLSession *session;
-@property (nonatomic, readonly) NSURLRequest *request;
 
 @property (nonatomic, readonly) NSURLResponse *response;
 @property (nonatomic, readonly) NSData *data;
 @property (nonatomic, readonly) id responseObject;
 @property (nonatomic, readonly) NSError *error;
 
-- (instancetype)initWithRequest:(NSURLRequest *)request session:(NSURLSession *)session NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithURL:(NSURL *)URL session:(NSURLSession *)session NS_DESIGNATED_INITIALIZER;
 
 @end
 
