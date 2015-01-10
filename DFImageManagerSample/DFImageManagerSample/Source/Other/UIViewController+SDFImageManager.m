@@ -11,7 +11,7 @@
 @implementation UIViewController (SDFImageManager)
 
 - (UIActivityIndicatorView *)df_showActivityIndicatorView {
-    UIActivityIndicatorView *indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+    UIActivityIndicatorView *indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     indicator.translatesAutoresizingMaskIntoConstraints = NO;
     [indicator startAnimating];
     [self.view addSubview:indicator];

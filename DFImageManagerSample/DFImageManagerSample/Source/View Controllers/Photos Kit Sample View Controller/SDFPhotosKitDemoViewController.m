@@ -124,6 +124,7 @@ static NSString * const reuseIdentifier = @"Cell";
 
 - (void)_loadAssets {
     _indicator = [self df_showActivityIndicatorView];
+    _indicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhite;
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         PHFetchResult *moments = [PHAssetCollection fetchMomentsWithOptions:nil];

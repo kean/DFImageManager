@@ -206,6 +206,10 @@ static NSString * const reuseIdentifier = @"Cell";
     [_photos addObjectsFromArray:photos];
     [self.collectionView reloadData];
     if (page == 0) {
+        self.collectionView.alpha = 0.0;
+        [UIView animateWithDuration:0.2f animations:^{
+            self.collectionView.alpha = 1.0;
+        }];
         [_preheatingController updatePreheatRect];
     }
 }
