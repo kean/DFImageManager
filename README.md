@@ -10,8 +10,10 @@ DFImageManager is a modern framework for managing (fetching, caching, decompress
 
 ## Features
 - Completely asynchronous and thread safe. Performance-critical subsystems run entirely on the background threads
-- Image decompression and resizing which results in a great performance, lack of missaligned images and low memory footprint
+- Centralized image decompression and resizing which results in a great performance, lack of missaligned images and low memory footprint
 - Memory caching that carefully manages system resources to keep as many images as possible while preventing memory warnings
+- Persistent cache is implemented using NSURLCache. HTTP cache control will be available in future versions.
+- Networking based on NSURLSession
 - Automatic preheating of images that are close to the viewport
 
 ## Getting Started
