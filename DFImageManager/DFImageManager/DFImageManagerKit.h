@@ -22,30 +22,31 @@
 
 #import <Foundation/Foundation.h>
 
-#import "DFImageManagerProtocol.h"
-#import "DFImageManagerConfigurationProtocol.h"
-#import "DFImageManagerOperationProtocol.h"
-
 #import "DFImageManagerDefines.h"
-#import "DFImageManager.h"
-#import "DFImageManagerConfiguration.h"
 
-#import "DFCompositeImageManager.h"
-#import "DFProxyImageManager.h"
-
+#import "DFImageManagerProtocol.h"
+#import "DFImageFetcherProtocol.h"
 #import "DFImageProcessingProtocol.h"
 #import "DFImageCachingProtocol.h"
-#import "DFImageProcessingManager.h"
+#import "DFImageManagerOperationProtocol.h"
+
+#import "DFImageManager.h"
+#import "DFCompositeImageManager.h"
+#import "DFProxyImageManager.h"
 
 #import "DFImageRequest.h"
 #import "DFImageRequestID.h"
 #import "DFImageRequestOptions.h"
 #import "DFImageResponse.h"
 
-#import "DFURLImageManagerConfiguration.h"
+#import "DFImageProcessingManager.h"
 
-#import "DFPHImageManagerConfiguration.h"
-#import "DFPHImageFetchOperation.h"
+#import "DFCachingImageFetcher.h"
+
+#import "DFURLImageFetcher.h"
+
+#import "DFPhotosKitImageFetcher.h"
+#import "DFPhotosKitImageFetchOperation.h"
 #import "DFPHAssetlocalIdentifier.h"
 
 #import "DFImageCacheLookupOperation.h"

@@ -21,7 +21,7 @@
 // THE SOFTWARE.
 
 #import "DFImageCachingProtocol.h"
-#import "DFImageManagerConfigurationProtocol.h"
+#import "DFImageFetcherProtocol.h"
 #import "DFImageManagerProtocol.h"
 #import "DFImageProcessingProtocol.h"
 #import <Foundation/Foundation.h>
@@ -29,15 +29,15 @@
 
 @interface DFImageManager : NSObject <DFImageManager>
 
-@property (nonatomic, readonly) id<DFImageManagerConfiguration> configuration;
-@property (nonatomic, readonly) id<DFImageProcessing> imageProcessor;
+@property (nonatomic, readonly) id<DFImageFetcher> fetcher;
+@property (nonatomic, readonly) id<DFImageProcessing> processor;
 @property (nonatomic, readonly) id<DFImageCaching> cache;
 
 /*! Designated initializer.
  @param cache Memory cache for storing processed (or original if image processor is nil) images. Might be nil.
  @note It's a good idea to implement <DFImageProcessing> and <DFImageCaching> in that same object.
  */
-- (instancetype)initWithConfiguration:(id<DFImageManagerConfiguration>)configuration imageProcessor:(id<DFImageProcessing>)imageProcessor cache:(id<DFImageCaching>)cache NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithImageFetcher:(id<DFImageFetcher>)fetcher processor:(id<DFImageProcessing>)processor cache:(id<DFImageCaching>)cache NS_DESIGNATED_INITIALIZER;
 
 // Dependency injectors.
 

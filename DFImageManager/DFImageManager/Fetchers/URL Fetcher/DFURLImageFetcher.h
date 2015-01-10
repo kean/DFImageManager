@@ -20,37 +20,21 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "DFImageManagerConfigurationProtocol.h"
+#import "DFCachingImageFetcher.h"
 #import <Foundation/Foundation.h>
 
-@class DFImageRequest;
+@class DFCache;
 
 
-extern NSString *const DFImageManagerCacheLookupOperationType;
-extern NSString *const DFImageManagerImageFetchOperationType;
-extern NSString *const DFImageManagerCacheStoreOperationType;
-
-/*! Base image manager configuration that implements <DFImageManagerConfiguration> protocol with specific operations flow (cache lookup ~> fetch ~> cache store). 
+/*! Image fetcher that supports NSURL and is implemented on top of Cocoa URL loading system.
+ @note Supported URL schemes: http:, https:, ftp:, file:
  */
-@interface DFImageManagerConfiguration : NSObject <DFImageManagerConfiguration>
+@interface DFURLImageFetcher : DFCachingImageFetcher
 
-@end
+@property (nonatomic, readonly) DFCache *cache;
 
+- (instancetype)initWithCache:(DFCache *)cache NS_DESIGNATED_INITIALIZER;
 
-@interface DFImageManagerConfiguration (SubclassingHooks)
-
-- (NSArray *)keyPathForRequestParametersAffectingExecutionContextID:(DFImageRequest *)request;
-
-// factory methods
-
-- (NSOperation<DFImageManagerOperation> *)createCacheLookupOperationForRequest:(DFImageRequest *)request;
-- (NSOperation<DFImageManagerOperation> *)createImageFetchOperationForRequest:(DFImageRequest *)request;
-- (NSOperation *)createCacheStoreOperationForRequest:(DFImageRequest *)request previousOperation:(NSOperation<DFImageManagerOperation> *)previousOperation;
-
-// other
-
-- (NSString *)operationTypeForOperation:(NSOperation *)operation;
-
-- (NSOperationQueue *)operationQueueForOperation:(NSOperation *)operation;
++ (NSSet *)supportedSchemes;
 
 @end

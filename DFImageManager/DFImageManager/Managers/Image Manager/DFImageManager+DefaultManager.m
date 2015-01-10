@@ -20,13 +20,13 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "DFAssetsLibraryImageManagerConfiguration.h"
+#import "DFAssetsLibraryImageFetcher.h"
 #import "DFCompositeImageManager.h"
 #import "DFImageManager.h"
 #import "DFImageProcessingManager.h"
-#import "DFPHImageManagerConfiguration.h"
+#import "DFPhotosKitImageFetcher.h"
 #import "DFProxyImageManager.h"
-#import "DFURLImageManagerConfiguration.h"
+#import "DFURLImageFetcher.h"
 #import <DFCache/DFCache.h>
 
 
@@ -51,22 +51,22 @@
         // Disable image decompression because DFImageManager has builtin image decompression (see <DFImageProcessing>)
         [cache setAllowsImageDecompression:NO];
         
-        DFURLImageManagerConfiguration *URLImageManagerConfiguration = [[DFURLImageManagerConfiguration alloc] initWithCache:cache];
-        [[DFImageManager alloc] initWithConfiguration:URLImageManagerConfiguration imageProcessor:imageProcessor cache:imageProcessor];
+        DFURLImageFetcher *fetcher = [[DFURLImageFetcher alloc] initWithCache:cache];
+        [[DFImageManager alloc] initWithImageFetcher:fetcher processor:imageProcessor cache:imageProcessor];
     });
     
     DFImageManager *photosKitImageManager = ({
-        DFPHImageManagerConfiguration *configuration = [DFPHImageManagerConfiguration new];
+        DFPhotosKitImageFetcher *fetcher = [DFPhotosKitImageFetcher new];
         
         // We don't need image decompression, because PHImageManager does it for us.
-        [[DFImageManager alloc] initWithConfiguration:configuration imageProcessor:nil cache:imageProcessor];
+        [[DFImageManager alloc] initWithImageFetcher:fetcher processor:nil cache:imageProcessor];
     });
     
     DFImageManager *assetsLibraryImageManager = ({
-        DFAssetsLibraryImageManagerConfiguration *configuration = [DFAssetsLibraryImageManagerConfiguration new];
+        DFAssetsLibraryImageFetcher *fetcher = [DFAssetsLibraryImageFetcher new];
         
         // We do need both image decompression and caching.
-        [[DFImageManager alloc] initWithConfiguration:configuration imageProcessor:imageProcessor cache:imageProcessor];
+        [[DFImageManager alloc] initWithImageFetcher:fetcher processor:imageProcessor cache:imageProcessor];
     });
     
     DFCompositeImageManager *compositeImageManager = [[DFCompositeImageManager alloc] initWithImageManagers:@[ URLImageManager, photosKitImageManager, assetsLibraryImageManager ]];

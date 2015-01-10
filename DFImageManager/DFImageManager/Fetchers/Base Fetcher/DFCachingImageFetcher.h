@@ -20,33 +20,37 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "DFImageManagerOperationProtocol.h"
-#import "DFImageManagerProtocol.h"
+#import "DFImageFetcherProtocol.h"
+#import <Foundation/Foundation.h>
 
 @class DFImageRequest;
-@class DFImageRequestOptions;
 
 
-/*! Factory for multiple image provider components.
+extern NSString *const DFImageManagerCacheLookupOperationType;
+extern NSString *const DFImageManagerImageFetchOperationType;
+extern NSString *const DFImageManagerCacheStoreOperationType;
+
+/*! Base image fetcher that implements <DFImageFetcher> protocol and defines a specific operations flow (cache lookup ~> fetch ~> cache store). 
  */
-@protocol DFImageManagerConfiguration <NSObject>
+@interface DFCachingImageFetcher : NSObject <DFImageFetcher>
 
-- (BOOL)imageManager:(id<DFImageManager>)manager canHandleRequest:(DFImageRequest *)request;
+@end
 
-- (NSString *)imageManager:(id<DFImageManager>)manager uniqueIDForAsset:(id)asset;
 
-/*! Creates execution context ID for request so that existing operations could be reused for new handlers.
- */
-- (NSString *)imageManager:(id<DFImageManager>)manager executionContextIDForRequest:(DFImageRequest *)request;
+@interface DFCachingImageFetcher (SubclassingHooks)
 
-/*! Return nil if no work is required.
- */
-- (NSOperation<DFImageManagerOperation> *)imageManager:(id<DFImageManager>)manager createOperationForRequest:(DFImageRequest *)request previousOperation:(NSOperation<DFImageManagerOperation> *)previousOperation;
+- (NSArray *)keyPathForRequestParametersAffectingExecutionContextID:(DFImageRequest *)request;
 
-- (void)imageManager:(id<DFImageManager>)manager enqueueOperation:(NSOperation<DFImageManagerOperation> *)operation;
+// factory methods
 
-@optional
+- (NSOperation<DFImageManagerOperation> *)createCacheLookupOperationForRequest:(DFImageRequest *)request;
+- (NSOperation<DFImageManagerOperation> *)createImageFetchOperationForRequest:(DFImageRequest *)request;
+- (NSOperation *)createCacheStoreOperationForRequest:(DFImageRequest *)request previousOperation:(NSOperation<DFImageManagerOperation> *)previousOperation;
 
-- (void)imageManager:(id<DFImageManager>)manager didEncounterError:(NSError *)error;
+// other
+
+- (NSString *)operationTypeForOperation:(NSOperation *)operation;
+
+- (NSOperationQueue *)operationQueueForOperation:(NSOperation *)operation;
 
 @end

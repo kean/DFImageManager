@@ -24,18 +24,18 @@
 #import "DFImageRequestOptions.h"
 #import "DFImageResponse.h"
 #import "DFPHAssetlocalIdentifier.h"
-#import "DFPHImageFetchOperation.h"
+#import "DFPhotosKitImageFetchOperation.h"
 #import <Photos/Photos.h>
 
 
-@interface DFPHImageFetchOperation ()
+@interface DFPhotosKitImageFetchOperation ()
 
 @property (nonatomic, getter = isExecuting) BOOL executing;
 @property (nonatomic, getter = isFinished) BOOL finished;
 
 @end
 
-@implementation DFPHImageFetchOperation {
+@implementation DFPhotosKitImageFetchOperation {
     PHAsset *_asset;
     DFPHAssetlocalIdentifier *_assetLocalIdentifier;
     CGSize _targetSize;
@@ -85,7 +85,7 @@
     
     PHImageContentMode contentMode = [self _PHContentModeForDFContentMode:_contentMode];
     
-    DFPHImageFetchOperation *__weak weakSelf = self;
+    DFPhotosKitImageFetchOperation *__weak weakSelf = self;
     [[PHImageManager defaultManager] requestImageForAsset:_asset targetSize:_targetSize contentMode:contentMode options:options resultHandler:^(UIImage *result, NSDictionary *info) {
         result = result ? [UIImage imageWithCGImage:result.CGImage scale:[UIScreen mainScreen].scale orientation:result.imageOrientation] : nil;
         [weakSelf _didFetchImage:result info:info];

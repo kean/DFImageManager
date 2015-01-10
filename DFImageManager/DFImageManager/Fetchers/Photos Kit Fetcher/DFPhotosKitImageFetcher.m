@@ -23,12 +23,12 @@
 #import "DFImageRequest.h"
 #import "DFImageRequestOptions.h"
 #import "DFPHAssetlocalIdentifier.h"
-#import "DFPHImageFetchOperation.h"
-#import "DFPHImageManagerConfiguration.h"
+#import "DFPhotosKitImageFetchOperation.h"
+#import "DFPhotosKitImageFetcher.h"
 #import <Photos/Photos.h>
 
 
-@implementation DFPHImageManagerConfiguration {
+@implementation DFPhotosKitImageFetcher {
     NSOperationQueue *_queue;
 }
 
@@ -40,7 +40,7 @@
     return self;
 }
 
-#pragma mark - <DFImageManagerConfiguration>
+#pragma mark - <DFImageFetcher>
 
 - (BOOL)imageManager:(id<DFImageManager>)manager canHandleRequest:(DFImageRequest *)request {
     id asset = request.asset;
@@ -81,7 +81,7 @@
 
 - (NSOperation<DFImageManagerOperation> *)imageManager:(id<DFImageManager>)manager createOperationForRequest:(DFImageRequest *)request previousOperation:(NSOperation<DFImageManagerOperation> *)previousOperation {
     if (!previousOperation) {
-        return [[DFPHImageFetchOperation alloc] initWithRequest:request];
+        return [[DFPhotosKitImageFetchOperation alloc] initWithRequest:request];
     }
     return nil;
 }

@@ -21,12 +21,12 @@
 // THE SOFTWARE.
 
 #import "DFAssetsLibraryImageFetchOperation.h"
-#import "DFAssetsLibraryImageManagerConfiguration.h"
+#import "DFAssetsLibraryImageFetcher.h"
 #import "DFAssetsLibraryUtilities.h"
 #import <AssetsLibrary/AssetsLibrary.h>
 
 
-@implementation DFAssetsLibraryImageManagerConfiguration {
+@implementation DFAssetsLibraryImageFetcher {
     NSOperationQueue *_queue;
     BOOL _isIpad;
 }
@@ -40,7 +40,7 @@
     return self;
 }
 
-#pragma mark - <DFImageManagerConfiguration>
+#pragma mark - <DFImageFetcher>
 
 - (BOOL)imageManager:(id<DFImageManager>)manager canHandleRequest:(DFImageRequest *)request {
     id asset = request.asset;

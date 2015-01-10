@@ -27,14 +27,14 @@
 #import "DFImageRequest.h"
 #import "DFImageRequestOptions.h"
 #import "DFImageResponse.h"
-#import "DFURLImageManagerConfiguration.h"
+#import "DFURLImageFetcher.h"
 #import "DFURLConnectionOperation.h"
 #import "DFURLResponseDeserializing.h"
 #import <DFCache/DFCache.h>
 
 
-@implementation DFURLImageManagerConfiguration {
-    NSOperationQueue *_queueForCache;
+@implementation DFURLImageFetcher {
+    NSOperationQueue *_queueForFilesystem;
     NSOperationQueue *_queueForNetwork;
 }
 
@@ -42,8 +42,8 @@
     if (self = [super init]) {
         _cache = cache;
         
-        _queueForCache = [NSOperationQueue new];
-        _queueForCache.maxConcurrentOperationCount = 1;
+        _queueForFilesystem = [NSOperationQueue new];
+        _queueForFilesystem.maxConcurrentOperationCount = 1;
         
         _queueForNetwork = [NSOperationQueue new];
         _queueForNetwork.maxConcurrentOperationCount = 2;
@@ -51,7 +51,7 @@
     return self;
 }
 
-#pragma mark - <DFImageManagerConfiguration>
+#pragma mark - <DFImageFetcher>
 
 - (BOOL)imageManager:(id<DFImageManager>)manager canHandleRequest:(DFImageRequest *)request {
     if ([request.asset isKindOfClass:[NSURL class]]) {
@@ -125,7 +125,7 @@
     }
     NSString *operationType = [self operationTypeForOperation:operation];
     if ([operationType isEqualToString:DFImageManagerCacheLookupOperationType] || [operationType isEqualToString:DFImageManagerCacheStoreOperationType]) {
-        return _queueForCache;
+        return _queueForFilesystem;
     } else if ([operationType isEqualToString:DFImageManagerImageFetchOperationType]) {
         return _queueForNetwork;
     }

@@ -23,8 +23,8 @@
 - (void)setUp {
     [super setUp];
 
-    id<DFImageManagerConfiguration> configuration = [[DFURLImageManagerConfiguration alloc] initWithCache:nil];
-    _imageManager = [[DFImageManager alloc] initWithConfiguration:configuration imageProcessor:nil cache:nil];
+    id<DFImageFetcher> fetcher = [[DFURLImageFetcher alloc] initWithCache:nil];
+    _imageManager = [[DFImageManager alloc] initWithImageFetcher:fetcher processor:nil cache:nil];
 }
 
 - (void)tearDown {
@@ -72,9 +72,9 @@
     [self waitForExpectationsWithTimeout:3.0 handler:nil];
 }
 
-#pragma mark - DFURLImageManagerConfiguration
+#pragma mark - DFURLImageFetcher
 
-- (void)testThatConfigurationSupportsFileSystemURL {
+- (void)testThatURLFetcherSupportsFileSystemURL {
     NSURL *fileURL = [TDFTesting testImageURL];
     
     XCTestExpectation *expectation = [self expectationWithDescription:@"fetch_failed"];

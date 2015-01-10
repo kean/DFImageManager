@@ -21,7 +21,7 @@
 // THE SOFTWARE.
 
 #import "DFImageManager.h"
-#import "DFImageManagerConfiguration.h"
+#import "DFCachingImageFetcher.h"
 #import "DFImageRequest.h"
 #import "DFImageRequestOptions.h"
 #import "DFImageResponse.h"
@@ -32,9 +32,9 @@ NSString *const DFImageManagerImageFetchOperationType = @"DFImageManagerImageFet
 NSString *const DFImageManagerCacheStoreOperationType = @"DFImageManagerCacheStoreOperationType";
 
 
-@implementation DFImageManagerConfiguration
+@implementation DFCachingImageFetcher
 
-#pragma mark - <DFImageManagerConfiguration>
+#pragma mark - <DFImageFetcher>
 
 - (BOOL)imageManager:(id<DFImageManager>)manager canHandleRequest:(DFImageRequest *)request {
     return NO;

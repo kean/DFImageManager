@@ -20,18 +20,9 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "DFImageManagerDefines.h"
-#import "DFImageManagerOperationProtocol.h"
-#import <Foundation/Foundation.h>
-
-@class DFImageRequest;
-@class DFImageRequestOptions;
-@class DFPHAssetlocalIdentifier;
-@class PHAsset;
+#import "DFImageFetcherProtocol.h"
 
 
-@interface DFPHImageFetchOperation : NSOperation <DFImageManagerOperation>
-
-- (instancetype)initWithRequest:(DFImageRequest *)request NS_DESIGNATED_INITIALIZER;
+@interface DFPhotosKitImageFetcher : NSObject <DFImageFetcher>
 
 @end
