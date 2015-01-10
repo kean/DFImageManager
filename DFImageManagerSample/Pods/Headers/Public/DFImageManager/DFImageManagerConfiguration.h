@@ -1,1 +1,0 @@
-../../../../../DFImageManager/DFImageManager/Configurations/Base Configuration/DFImageManagerConfiguration.h

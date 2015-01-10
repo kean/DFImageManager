@@ -1,1 +1,0 @@
-../../../../../DFImageManager/DFImageManager/Protocols/DFImageManagerConfigurationProtocol.h

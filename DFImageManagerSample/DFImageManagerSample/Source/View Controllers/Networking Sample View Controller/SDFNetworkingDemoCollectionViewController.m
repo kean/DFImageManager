@@ -92,8 +92,8 @@ static NSString * const reuseIdentifier = @"Cell";
     [cache setAllowsImageDecompression:NO];
     _cache = cache;
     
-    DFURLImageManagerConfiguration *URLImageManagerConfiguration = [[DFURLImageManagerConfiguration alloc] initWithCache:cache];
-    DFImageManager *URLImageManager = [[DFImageManager alloc] initWithConfiguration:URLImageManagerConfiguration imageProcessor:imageProcessor cache:imageProcessor];
+    DFURLImageFetcher *URLImageFetcher = [[DFURLImageFetcher alloc] initWithCache:cache];
+    DFImageManager *URLImageManager = [[DFImageManager alloc] initWithImageFetcher:URLImageFetcher processor:imageProcessor cache:imageProcessor];
     
     [DFImageManager setSharedManager:URLImageManager];
 }
