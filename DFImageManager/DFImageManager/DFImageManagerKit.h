@@ -50,7 +50,6 @@
 #import "DFPHAssetlocalIdentifier.h"
 
 #import "DFImageURLCacheLookupOperation.h"
-#import "DFImageCacheStoreOperation.h"
 #import "DFImageFetchConnectionOperation.h"
 #import "DFURLConnectionOperation.h"
 #import "DFURLResponseDeserializing.h"

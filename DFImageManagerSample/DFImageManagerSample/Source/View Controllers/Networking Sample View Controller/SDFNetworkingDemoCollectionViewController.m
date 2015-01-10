@@ -10,7 +10,6 @@
 #import "SDFFlickrRecentPhotosModel.h"
 #import "SDFNetworkingDemoCollectionViewController.h"
 #import "UIViewController+SDFImageManager.h"
-#import <DFCache/DFCache.h>
 #import <DFImageManager/DFImageManagerKit.h>
 #import <DFProxyImageManager.h>
 
@@ -26,9 +25,9 @@ SDFFlickrRecentPhotosModelDelegate>
     UIActivityIndicatorView *_activityIndicatorView;
     NSMutableArray *_photos;
     SDFFlickrRecentPhotosModel *_model;
+    NSURLCache *_cache;
     
     DFCollectionViewPreheatingController *_preheatingController;
-    DFCache *_cache;
     
     // Debug
     UILabel *_detailsLabel;
@@ -37,7 +36,7 @@ SDFFlickrRecentPhotosModelDelegate>
 static NSString * const reuseIdentifier = @"Cell";
 
 - (void)dealloc {
-    [_cache removeAllObjects];
+    [_cache removeAllCachedResponses];
     [DFImageManager setSharedManager:[DFImageManager defaultManager]];
 }
 
@@ -88,7 +87,8 @@ static NSString * const reuseIdentifier = @"Cell";
     DFImageProcessingManager *imageProcessor = [DFImageProcessingManager new];
     
     // Initialize NSURLCache without memory cache because DFImageManager has a higher level memory cache (see <DFImageCache>.
-    NSURLCache *cache = [[NSURLCache alloc] initWithMemoryCapacity:0 diskCapacity:1024 * 1024 * 100 diskPath:@"com.github.kean.default_image_cache"];
+    NSURLCache *cache = [[NSURLCache alloc] initWithMemoryCapacity:0 diskCapacity:1024 * 1024 * 100 diskPath:[[NSUUID UUID] UUIDString]];
+    _cache = cache;
     
     NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
     configuration.URLCache = cache;

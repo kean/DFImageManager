@@ -27,7 +27,6 @@
 #import "DFPhotosKitImageFetcher.h"
 #import "DFProxyImageManager.h"
 #import "DFURLImageFetcher.h"
-#import <DFCache/DFCache.h>
 
 
 @implementation DFImageManager (DefaultManager)
