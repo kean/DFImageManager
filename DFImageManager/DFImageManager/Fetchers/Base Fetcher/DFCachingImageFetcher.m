@@ -36,17 +36,17 @@ NSString *const DFImageManagerCacheStoreOperationType = @"DFImageManagerCacheSto
 
 #pragma mark - <DFImageFetcher>
 
-- (BOOL)imageManager:(id<DFImageManager>)manager canHandleRequest:(DFImageRequest *)request {
+- (BOOL)canHandleRequest:(DFImageRequest *)request {
     return NO;
 }
 
-- (NSString *)imageManager:(id<DFImageManager>)manager uniqueIDForAsset:(id)asset {
+- (NSString *)uniqueIDForAsset:(id)asset {
     [NSException raise:NSInvalidArgumentException format:@"Abstract method called %@", NSStringFromSelector(_cmd)];
     return nil;
 }
 
-- (NSString *)imageManager:(id<DFImageManager>)manager executionContextIDForRequest:(DFImageRequest *)request {
-    NSString *assetID = [self imageManager:manager uniqueIDForAsset:request.asset];
+- (NSString *)executionContextIDForRequest:(DFImageRequest *)request {
+    NSString *assetID = [self uniqueIDForAsset:request.asset];
     
     NSMutableString *ECID = [[NSMutableString alloc] initWithString:@"requestID?"];
     NSArray *keyPaths = [self keyPathForRequestParametersAffectingExecutionContextID:request];
@@ -61,7 +61,7 @@ NSString *const DFImageManagerCacheStoreOperationType = @"DFImageManagerCacheSto
     return @[];
 }
 
-- (NSOperation<DFImageManagerOperation> *)imageManager:(id<DFImageManager>)manager createOperationForRequest:(DFImageRequest *)request previousOperation:(NSOperation<DFImageManagerOperation> *)previousOperation {
+- (NSOperation<DFImageManagerOperation> *)createOperationForRequest:(DFImageRequest *)request previousOperation:(NSOperation<DFImageManagerOperation> *)previousOperation {
     NSOperation<DFImageManagerOperation> *nextOperation;
     
     NSString *previousOperationType = previousOperation ? [self operationTypeForOperation:previousOperation] : nil;
@@ -114,7 +114,7 @@ NSString *const DFImageManagerCacheStoreOperationType = @"DFImageManagerCacheSto
     return nil;
 }
 
-- (void)imageManager:(id<DFImageManager>)manager enqueueOperation:(NSOperation<DFImageManagerOperation> *)operation {
+- (void)enqueueOperation:(NSOperation<DFImageManagerOperation> *)operation {
     [self _enqueueOperation:operation];
 }
 

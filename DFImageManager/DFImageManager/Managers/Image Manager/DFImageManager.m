@@ -132,7 +132,7 @@ static NSString *const _kPreheatHandlerID = @"_df_preheat";
 #pragma mark - <DFCoreImageManager>
 
 - (BOOL)canHandleRequest:(DFImageRequest *)request {
-    return [_fetcher imageManager:self canHandleRequest:request];
+    return [_fetcher canHandleRequest:request];
 }
 
 #pragma mark Fetching
@@ -141,7 +141,7 @@ static NSString *const _kPreheatHandlerID = @"_df_preheat";
     request = [request copy];
     DFImageRequestID *requestID = [[DFImageRequestID alloc] initWithImageManager:self]; // Represents requestID future.
     dispatch_async(_syncQueue, ^{
-        NSString *ECID = [_fetcher imageManager:self executionContextIDForRequest:request];
+        NSString *ECID = [_fetcher executionContextIDForRequest:request];
         [requestID setECID:ECID handlerID:[[NSUUID UUID] UUIDString]];
         [self _requestImageForRequest:request requestID:requestID completion:completion];
     });
@@ -152,7 +152,7 @@ static NSString *const _kPreheatHandlerID = @"_df_preheat";
     _DFRequestHandler *handler = [[_DFRequestHandler alloc] initWithRequest:request requestID:requestID completion:completion];
     
     if (_cache != nil) {
-        NSString *assetID = [_fetcher imageManager:self uniqueIDForAsset:request.asset];
+        NSString *assetID = [_fetcher uniqueIDForAsset:request.asset];
         UIImage *image = [_cache cachedImageForAssetID:assetID request:request];
         if (image != nil) {
             [self _didCompleteRequestWithImage:image info:nil handler:handler];
@@ -175,7 +175,7 @@ static NSString *const _kPreheatHandlerID = @"_df_preheat";
 }
 
 - (void)_requestImageForContext:(_DFRequestExecutionContext *)context previousOperation:(NSOperation<DFImageManagerOperation> *)previousOperation {
-    NSOperation<DFImageManagerOperation> *operation = [_fetcher imageManager:self createOperationForRequest:context.request previousOperation:previousOperation];
+    NSOperation<DFImageManagerOperation> *operation = [_fetcher createOperationForRequest:context.request previousOperation:previousOperation];
     if (!operation) { // No more work required.
         context.response = [previousOperation imageResponse];
         [self _didCompleteAllOperationsForContext:context];
@@ -187,7 +187,7 @@ static NSString *const _kPreheatHandlerID = @"_df_preheat";
         }];
         operation.queuePriority = context.queuePriority;
         context.currentOperation = operation;
-        [_fetcher imageManager:self enqueueOperation:operation];
+        [_fetcher enqueueOperation:operation];
     }
 }
 
@@ -226,7 +226,7 @@ static NSString *const _kPreheatHandlerID = @"_df_preheat";
 }
 
 - (void)_processImage:(UIImage *)input forHandler:(_DFRequestHandler *)handler completion:(void (^)(UIImage *image))completion {
-    NSString *assetID = [_fetcher imageManager:self uniqueIDForAsset:handler.request.asset];
+    NSString *assetID = [_fetcher uniqueIDForAsset:handler.request.asset];
     if (_processor != nil && input != nil) {
         UIImage *cachedImage = [_cache cachedImageForAssetID:assetID request:handler.request];
         if (cachedImage != nil) {
@@ -342,7 +342,7 @@ static NSString *const _kPreheatHandlerID = @"_df_preheat";
 }
 
 - (DFImageRequestID *)_preheatingIDForRequest:(DFImageRequest *)request {
-    NSString *ECID = [_fetcher imageManager:self executionContextIDForRequest:request];
+    NSString *ECID = [_fetcher executionContextIDForRequest:request];
     return [DFImageRequestID requestIDWithImageManager:self ECID:ECID handlerID:_kPreheatHandlerID];
 }
 

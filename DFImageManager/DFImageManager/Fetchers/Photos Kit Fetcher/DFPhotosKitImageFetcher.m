@@ -42,12 +42,12 @@
 
 #pragma mark - <DFImageFetcher>
 
-- (BOOL)imageManager:(id<DFImageManager>)manager canHandleRequest:(DFImageRequest *)request {
+- (BOOL)canHandleRequest:(DFImageRequest *)request {
     id asset = request.asset;
     return [asset isKindOfClass:[PHAsset class]] || [asset isKindOfClass:[DFPHAssetlocalIdentifier class]];
 }
 
-- (NSString *)imageManager:(id<DFImageManager>)manager uniqueIDForAsset:(id)asset {
+- (NSString *)uniqueIDForAsset:(id)asset {
     if ([asset isKindOfClass:[PHAsset class]]) {
         return [((PHAsset *)asset) localIdentifier];
     } else if ([asset isKindOfClass:[DFPHAssetlocalIdentifier class]]) {
@@ -56,8 +56,8 @@
     return nil;
 }
 
-- (NSString *)imageManager:(id<DFImageManager>)manager executionContextIDForRequest:(DFImageRequest *)request {
-    NSString *assetUID = [self imageManager:manager uniqueIDForAsset:request.asset];
+- (NSString *)executionContextIDForRequest:(DFImageRequest *)request {
+    NSString *assetUID = [self uniqueIDForAsset:request.asset];
     
     NSMutableString *ECID = [[NSMutableString alloc] initWithString:@"requestID?"];
     NSArray *keyPaths = [self _keyPathForRequestParametersAffectingExecutionContextID:request];
@@ -79,14 +79,14 @@
     return keyPaths;
 }
 
-- (NSOperation<DFImageManagerOperation> *)imageManager:(id<DFImageManager>)manager createOperationForRequest:(DFImageRequest *)request previousOperation:(NSOperation<DFImageManagerOperation> *)previousOperation {
+- (NSOperation<DFImageManagerOperation> *)createOperationForRequest:(DFImageRequest *)request previousOperation:(NSOperation<DFImageManagerOperation> *)previousOperation {
     if (!previousOperation) {
         return [[DFPhotosKitImageFetchOperation alloc] initWithRequest:request];
     }
     return nil;
 }
 
-- (void)imageManager:(id<DFImageManager>)manager enqueueOperation:(NSOperation<DFImageManagerOperation> *)operation {
+- (void)enqueueOperation:(NSOperation<DFImageManagerOperation> *)operation {
     [_queue addOperation:operation];
 }
 

@@ -53,7 +53,7 @@
 
 #pragma mark - <DFImageFetcher>
 
-- (BOOL)imageManager:(id<DFImageManager>)manager canHandleRequest:(DFImageRequest *)request {
+- (BOOL)canHandleRequest:(DFImageRequest *)request {
     if ([request.asset isKindOfClass:[NSURL class]]) {
         NSURL *URL = request.asset;
         if ([[[self class] supportedSchemes] containsObject:URL.scheme]) {
@@ -72,7 +72,7 @@
     return schemes;
 }
 
-- (NSString *)imageManager:(id<DFImageManager>)manager uniqueIDForAsset:(id)asset {
+- (NSString *)uniqueIDForAsset:(id)asset {
     return [((NSURL *)asset) absoluteString];
 }
 
@@ -91,7 +91,7 @@
 
 - (NSOperation<DFImageManagerOperation> *)createCacheLookupOperationForRequest:(DFImageRequest *)request {
     if (self.cache != nil && ![self _isFilesystemRequest:request]) {
-        NSString *assetID = [self imageManager:nil uniqueIDForAsset:request.asset];
+        NSString *assetID = [self uniqueIDForAsset:request.asset];
         return [[DFImageCacheLookupOperation alloc] initWithAssetID:assetID request:request cache:self.cache];
     } else {
         return nil;
@@ -112,7 +112,7 @@
 - (NSOperation *)createCacheStoreOperationForRequest:(DFImageRequest *)request previousOperation:(NSOperation<DFImageManagerOperation> *)previousOperation {
     DFImageResponse *response = [previousOperation imageResponse];
     if (self.cache != nil && ![self _isFilesystemRequest:request]) {
-        NSString *assetID = [self imageManager:nil uniqueIDForAsset:request.asset];
+        NSString *assetID = [self uniqueIDForAsset:request.asset];
         return [[DFImageCacheStoreOperation alloc] initWithAssetID:assetID request:request response:response cache:self.cache];
     } else {
         return nil;

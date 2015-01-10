@@ -42,7 +42,7 @@
 
 #pragma mark - <DFImageFetcher>
 
-- (BOOL)imageManager:(id<DFImageManager>)manager canHandleRequest:(DFImageRequest *)request {
+- (BOOL)canHandleRequest:(DFImageRequest *)request {
     id asset = request.asset;
     if ([asset isKindOfClass:[ALAsset class]]) {
         return YES;
@@ -56,7 +56,7 @@
     return NO;
 }
 
-- (NSString *)imageManager:(id<DFImageManager>)manager uniqueIDForAsset:(id)asset {
+- (NSString *)uniqueIDForAsset:(id)asset {
     if ([asset isKindOfClass:[ALAsset class]]) {
         return [((ALAsset *)asset).defaultRepresentation.url absoluteString];
     } else if ([asset isKindOfClass:[NSURL class]]) {
@@ -65,8 +65,8 @@
     return nil;
 }
 
-- (NSString *)imageManager:(id<DFImageManager>)manager executionContextIDForRequest:(DFImageRequest *)request {
-    NSString *assetUID = [self imageManager:manager uniqueIDForAsset:request.asset];
+- (NSString *)executionContextIDForRequest:(DFImageRequest *)request {
+    NSString *assetUID = [self uniqueIDForAsset:request.asset];
     DFALAssetImageSize imageSize = [self _assetImageSizeForRequest:request];
     NSMutableString *ECID = [[NSMutableString alloc] initWithString:@"requestID?"];
     [ECID appendFormat:@"imageSize=%i", (int)imageSize];
@@ -87,7 +87,7 @@
     }
 }
 
-- (NSOperation<DFImageManagerOperation> *)imageManager:(id<DFImageManager>)manager createOperationForRequest:(DFImageRequest *)request previousOperation:(NSOperation<DFImageManagerOperation> *)previousOperation {
+- (NSOperation<DFImageManagerOperation> *)createOperationForRequest:(DFImageRequest *)request previousOperation:(NSOperation<DFImageManagerOperation> *)previousOperation {
     if (!previousOperation) {
         DFAssetsLibraryImageFetchOperation *operation;
         if ([request.asset isKindOfClass:[ALAsset class]]) {
@@ -101,7 +101,7 @@
     return nil;
 }
 
-- (void)imageManager:(id<DFImageManager>)manager enqueueOperation:(NSOperation<DFImageManagerOperation> *)operation {
+- (void)enqueueOperation:(NSOperation<DFImageManagerOperation> *)operation {
     [_queue addOperation:operation];
 }
 

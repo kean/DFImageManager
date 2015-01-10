@@ -31,19 +31,19 @@
  */
 @protocol DFImageFetcher <NSObject>
 
-- (BOOL)imageManager:(id<DFImageManager>)manager canHandleRequest:(DFImageRequest *)request;
+- (BOOL)canHandleRequest:(DFImageRequest *)request;
 
-- (NSString *)imageManager:(id<DFImageManager>)manager uniqueIDForAsset:(id)asset;
+- (NSString *)uniqueIDForAsset:(id)asset;
 
 /*! Creates execution context ID for request so that existing operations could be reused for new handlers.
  */
-- (NSString *)imageManager:(id<DFImageManager>)manager executionContextIDForRequest:(DFImageRequest *)request;
+- (NSString *)executionContextIDForRequest:(DFImageRequest *)request;
 
 /*! Return nil if no work is required.
  */
-- (NSOperation<DFImageManagerOperation> *)imageManager:(id<DFImageManager>)manager createOperationForRequest:(DFImageRequest *)request previousOperation:(NSOperation<DFImageManagerOperation> *)previousOperation;
+- (NSOperation<DFImageManagerOperation> *)createOperationForRequest:(DFImageRequest *)request previousOperation:(NSOperation<DFImageManagerOperation> *)previousOperation;
 
-- (void)imageManager:(id<DFImageManager>)manager enqueueOperation:(NSOperation<DFImageManagerOperation> *)operation;
+- (void)enqueueOperation:(NSOperation<DFImageManagerOperation> *)operation;
 
 @optional
 
