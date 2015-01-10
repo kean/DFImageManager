@@ -1,12 +1,9 @@
-platform :ios, "6.0"
+platform :ios, "7.0"
 
 xcodeproj "DFImageManager/DFImageManager.xcodeproj"
 workspace "DFImageManager.xcworkspace"
+link_with "DFImageManagerTests"
 
 source "https://github.com/CocoaPods/Specs.git"
 
-pod "DFCache", "~> 3.0"
-
-target :DFImageManagerTests do
-    pod "OHHTTPStubs"
-end
+pod "OHHTTPStubs"

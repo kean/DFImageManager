@@ -1,830 +1,2187 @@
-// !$*UTF8*$!
-{
-	archiveVersion = 1;
-	classes = {
-	};
-	objectVersion = 46;
-	objects = {
-
-/* Begin PBXBuildFile section */
-		0C227D361A5236FD00DA6299 /* DFImageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C227D351A5236FD00DA6299 /* DFImageManager.m */; };
-		0C22BD921A4CDCA100AF48E0 /* DFCompositeImageRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C22BD911A4CDCA100AF48E0 /* DFCompositeImageRequest.m */; };
-		0C2BD4D11A03A2EA00412BE3 /* DFImageManagerDefines.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C2BD4D01A03A2EA00412BE3 /* DFImageManagerDefines.m */; };
-		0C2BD4E71A03A3B200412BE3 /* DFImageDeserializer.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C2BD4D61A03A3B200412BE3 /* DFImageDeserializer.m */; };
-		0C2BD4E91A03A3B200412BE3 /* DFImageRequestID.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C2BD4DB1A03A3B200412BE3 /* DFImageRequestID.m */; };
-		0C2BD4EA1A03A3B200412BE3 /* DFImageRequestOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C2BD4E21A03A3B200412BE3 /* DFImageRequestOptions.m */; };
-		0C2BD4EB1A03A3B200412BE3 /* DFImageResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C2BD4E51A03A3B200412BE3 /* DFImageResponse.m */; };
-		0C2BD4FA1A03A66000412BE3 /* DFURLConnectionOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C2BD4F81A03A66000412BE3 /* DFURLConnectionOperation.m */; };
-		0C48E4A91A5BBDF400CD2497 /* DFImageManager+DefaultManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C48E4A81A5BBDF400CD2497 /* DFImageManager+DefaultManager.m */; };
-		0C48E4AC1A5BC13000CD2497 /* DFCollectionViewPreheatingController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C48E4AB1A5BC13000CD2497 /* DFCollectionViewPreheatingController.m */; };
-		0C5C25AF1A146B7A006C5791 /* DFImageFetchConnectionOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C5C25AE1A146B7A006C5791 /* DFImageFetchConnectionOperation.m */; };
-		0C7476A21A4E6EA6004FE2EE /* TDFTesting.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C7476A11A4E6EA6004FE2EE /* TDFTesting.m */; };
-		0C7476A31A4E6EAF004FE2EE /* libDFImageManager.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0C2BD4B81A03A28000412BE3 /* libDFImageManager.a */; };
-		0C7476A71A4E6EC0004FE2EE /* TDFImageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C7476A61A4E6EC0004FE2EE /* TDFImageManager.m */; };
-		0C7476A91A4E6EE4004FE2EE /* Image.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0C7476A81A4E6EE4004FE2EE /* Image.jpg */; };
-		0C8573B31A121CAD00067EA4 /* DFImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C8573B21A121CAD00067EA4 /* DFImageView.m */; };
-		0CA07D801A4BD08900B16F38 /* DFCompositeImageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CA07D7F1A4BD08900B16F38 /* DFCompositeImageManager.m */; };
-		0CA07D841A4BD1AF00B16F38 /* DFImageManagerBlockValueTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CA07D831A4BD1AF00B16F38 /* DFImageManagerBlockValueTransformer.m */; };
-		0CA07D8B1A4C13B200B16F38 /* DFProxyImageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CA07D8A1A4C13B200B16F38 /* DFProxyImageManager.m */; };
-		0CA129481A4A3CB500FB4688 /* DFImageProcessingManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CA129471A4A3CB500FB4688 /* DFImageProcessingManager.m */; };
-		0CA1294C1A4A46BA00FB4688 /* DFImageUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CA1294B1A4A46BA00FB4688 /* DFImageUtilities.m */; };
-		0CA129631A4A591200FB4688 /* DFImageRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CA129621A4A591200FB4688 /* DFImageRequest.m */; };
-		0CAF725C1A0B93E30057419A /* DFImageURLCacheLookupOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CAF725B1A0B93E30057419A /* DFImageURLCacheLookupOperation.m */; };
-		0CD8A96C1A60AF6100B16BD1 /* ALAssetsLibrary+DFImageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD8A9591A60AF6100B16BD1 /* ALAssetsLibrary+DFImageManager.m */; };
-		0CD8A96D1A60AF6100B16BD1 /* DFAssetsLibraryImageFetchOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD8A95B1A60AF6100B16BD1 /* DFAssetsLibraryImageFetchOperation.m */; };
-		0CD8A96E1A60AF6100B16BD1 /* DFAssetsLibraryImageFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD8A95D1A60AF6100B16BD1 /* DFAssetsLibraryImageFetcher.m */; };
-		0CD8A96F1A60AF6100B16BD1 /* DFCachingImageFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD8A9611A60AF6100B16BD1 /* DFCachingImageFetcher.m */; };
-		0CD8A9701A60AF6100B16BD1 /* DFPHAssetlocalIdentifier.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD8A9641A60AF6100B16BD1 /* DFPHAssetlocalIdentifier.m */; };
-		0CD8A9711A60AF6100B16BD1 /* DFPhotosKitImageFetchOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD8A9661A60AF6100B16BD1 /* DFPhotosKitImageFetchOperation.m */; };
-		0CD8A9721A60AF6100B16BD1 /* DFPhotosKitImageFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD8A9681A60AF6100B16BD1 /* DFPhotosKitImageFetcher.m */; };
-		0CD8A9731A60AF6100B16BD1 /* DFURLImageFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD8A96B1A60AF6100B16BD1 /* DFURLImageFetcher.m */; };
-		759916756D11680DBEF1CEA9 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D00E60156B6ED9152E7865EE /* libPods.a */; };
-		D5B5778D11F3E03C0BAF5A84 /* libPods-DFImageManagerTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 474B3B2A4B60166EEC189790 /* libPods-DFImageManagerTests.a */; };
-/* End PBXBuildFile section */
-
-/* Begin PBXContainerItemProxy section */
-		0C7476A41A4E6EB5004FE2EE /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 0C2BD4B01A03A28000412BE3 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 0C2BD4B71A03A28000412BE3;
-			remoteInfo = DFImageManager;
-		};
-/* End PBXContainerItemProxy section */
-
-/* Begin PBXCopyFilesBuildPhase section */
-		0C2BD4B61A03A28000412BE3 /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "include/$(PRODUCT_NAME)";
-			dstSubfolderSpec = 16;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
-
-/* Begin PBXFileReference section */
-		035B7C0D28050FFB6069B45A /* Pods-DFImageManagerTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DFImageManagerTests.release.xcconfig"; path = "../Pods/Target Support Files/Pods-DFImageManagerTests/Pods-DFImageManagerTests.release.xcconfig"; sourceTree = "<group>"; };
-		0C227D341A5236FD00DA6299 /* DFImageManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFImageManager.h; sourceTree = "<group>"; };
-		0C227D351A5236FD00DA6299 /* DFImageManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFImageManager.m; sourceTree = "<group>"; };
-		0C227D4A1A52387A00DA6299 /* DFImageCacheProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFImageCacheProtocol.h; sourceTree = "<group>"; };
-		0C22BD901A4CDCA100AF48E0 /* DFCompositeImageRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFCompositeImageRequest.h; sourceTree = "<group>"; };
-		0C22BD911A4CDCA100AF48E0 /* DFCompositeImageRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFCompositeImageRequest.m; sourceTree = "<group>"; };
-		0C2BD4B81A03A28000412BE3 /* libDFImageManager.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libDFImageManager.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		0C2BD4C31A03A28000412BE3 /* DFImageManagerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DFImageManagerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		0C2BD4C61A03A28000412BE3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		0C2BD4CF1A03A2EA00412BE3 /* DFImageManagerDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFImageManagerDefines.h; sourceTree = "<group>"; };
-		0C2BD4D01A03A2EA00412BE3 /* DFImageManagerDefines.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFImageManagerDefines.m; sourceTree = "<group>"; };
-		0C2BD4D51A03A3B200412BE3 /* DFImageDeserializer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFImageDeserializer.h; sourceTree = "<group>"; };
-		0C2BD4D61A03A3B200412BE3 /* DFImageDeserializer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFImageDeserializer.m; sourceTree = "<group>"; };
-		0C2BD4D91A03A3B200412BE3 /* DFImageRequestID+Protected.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "DFImageRequestID+Protected.h"; sourceTree = "<group>"; };
-		0C2BD4DA1A03A3B200412BE3 /* DFImageRequestID.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFImageRequestID.h; sourceTree = "<group>"; };
-		0C2BD4DB1A03A3B200412BE3 /* DFImageRequestID.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFImageRequestID.m; sourceTree = "<group>"; };
-		0C2BD4DE1A03A3B200412BE3 /* DFImageFetcherProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFImageFetcherProtocol.h; sourceTree = "<group>"; };
-		0C2BD4DF1A03A3B200412BE3 /* DFImageManagerProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFImageManagerProtocol.h; sourceTree = "<group>"; };
-		0C2BD4E11A03A3B200412BE3 /* DFImageRequestOptions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFImageRequestOptions.h; sourceTree = "<group>"; };
-		0C2BD4E21A03A3B200412BE3 /* DFImageRequestOptions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFImageRequestOptions.m; sourceTree = "<group>"; };
-		0C2BD4E41A03A3B200412BE3 /* DFImageResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFImageResponse.h; sourceTree = "<group>"; };
-		0C2BD4E51A03A3B200412BE3 /* DFImageResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFImageResponse.m; sourceTree = "<group>"; };
-		0C2BD4F71A03A66000412BE3 /* DFURLConnectionOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFURLConnectionOperation.h; sourceTree = "<group>"; };
-		0C2BD4F81A03A66000412BE3 /* DFURLConnectionOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFURLConnectionOperation.m; sourceTree = "<group>"; };
-		0C2BD4F91A03A66000412BE3 /* DFURLResponseDeserializing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFURLResponseDeserializing.h; sourceTree = "<group>"; };
-		0C2BD4FB1A03AEB800412BE3 /* DFImageManagerOperationProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFImageManagerOperationProtocol.h; sourceTree = "<group>"; };
-		0C2BD52B1A03B15300412BE3 /* DFImageManagerKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFImageManagerKit.h; sourceTree = "<group>"; };
-		0C48E4A81A5BBDF400CD2497 /* DFImageManager+DefaultManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "DFImageManager+DefaultManager.m"; sourceTree = "<group>"; };
-		0C48E4AA1A5BC13000CD2497 /* DFCollectionViewPreheatingController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFCollectionViewPreheatingController.h; sourceTree = "<group>"; };
-		0C48E4AB1A5BC13000CD2497 /* DFCollectionViewPreheatingController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFCollectionViewPreheatingController.m; sourceTree = "<group>"; };
-		0C5C25AD1A146B7A006C5791 /* DFImageFetchConnectionOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFImageFetchConnectionOperation.h; sourceTree = "<group>"; };
-		0C5C25AE1A146B7A006C5791 /* DFImageFetchConnectionOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFImageFetchConnectionOperation.m; sourceTree = "<group>"; };
-		0C7476A01A4E6EA6004FE2EE /* TDFTesting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDFTesting.h; sourceTree = "<group>"; };
-		0C7476A11A4E6EA6004FE2EE /* TDFTesting.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDFTesting.m; sourceTree = "<group>"; };
-		0C7476A61A4E6EC0004FE2EE /* TDFImageManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDFImageManager.m; sourceTree = "<group>"; };
-		0C7476A81A4E6EE4004FE2EE /* Image.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Image.jpg; sourceTree = "<group>"; };
-		0C8573B11A121CAD00067EA4 /* DFImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFImageView.h; sourceTree = "<group>"; };
-		0C8573B21A121CAD00067EA4 /* DFImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFImageView.m; sourceTree = "<group>"; };
-		0CA07D7E1A4BD08900B16F38 /* DFCompositeImageManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFCompositeImageManager.h; sourceTree = "<group>"; };
-		0CA07D7F1A4BD08900B16F38 /* DFCompositeImageManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFCompositeImageManager.m; sourceTree = "<group>"; };
-		0CA07D811A4BD0CC00B16F38 /* DFImageManagerValueTransformerProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFImageManagerValueTransformerProtocol.h; sourceTree = "<group>"; };
-		0CA07D821A4BD1AF00B16F38 /* DFImageManagerBlockValueTransformer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFImageManagerBlockValueTransformer.h; sourceTree = "<group>"; };
-		0CA07D831A4BD1AF00B16F38 /* DFImageManagerBlockValueTransformer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFImageManagerBlockValueTransformer.m; sourceTree = "<group>"; };
-		0CA07D891A4C13B200B16F38 /* DFProxyImageManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFProxyImageManager.h; sourceTree = "<group>"; };
-		0CA07D8A1A4C13B200B16F38 /* DFProxyImageManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFProxyImageManager.m; sourceTree = "<group>"; };
-		0CA129461A4A3CB500FB4688 /* DFImageProcessingManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFImageProcessingManager.h; sourceTree = "<group>"; };
-		0CA129471A4A3CB500FB4688 /* DFImageProcessingManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFImageProcessingManager.m; sourceTree = "<group>"; };
-		0CA129491A4A3F3200FB4688 /* DFImageProcessorProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFImageProcessorProtocol.h; sourceTree = "<group>"; };
-		0CA1294A1A4A46BA00FB4688 /* DFImageUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFImageUtilities.h; sourceTree = "<group>"; };
-		0CA1294B1A4A46BA00FB4688 /* DFImageUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFImageUtilities.m; sourceTree = "<group>"; };
-		0CA129611A4A591200FB4688 /* DFImageRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFImageRequest.h; sourceTree = "<group>"; };
-		0CA129621A4A591200FB4688 /* DFImageRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFImageRequest.m; sourceTree = "<group>"; };
-		0CAF725A1A0B93E30057419A /* DFImageURLCacheLookupOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFImageURLCacheLookupOperation.h; sourceTree = "<group>"; };
-		0CAF725B1A0B93E30057419A /* DFImageURLCacheLookupOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFImageURLCacheLookupOperation.m; sourceTree = "<group>"; };
-		0CD8A9581A60AF6100B16BD1 /* ALAssetsLibrary+DFImageManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ALAssetsLibrary+DFImageManager.h"; sourceTree = "<group>"; };
-		0CD8A9591A60AF6100B16BD1 /* ALAssetsLibrary+DFImageManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ALAssetsLibrary+DFImageManager.m"; sourceTree = "<group>"; };
-		0CD8A95A1A60AF6100B16BD1 /* DFAssetsLibraryImageFetchOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFAssetsLibraryImageFetchOperation.h; sourceTree = "<group>"; };
-		0CD8A95B1A60AF6100B16BD1 /* DFAssetsLibraryImageFetchOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFAssetsLibraryImageFetchOperation.m; sourceTree = "<group>"; };
-		0CD8A95C1A60AF6100B16BD1 /* DFAssetsLibraryImageFetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFAssetsLibraryImageFetcher.h; sourceTree = "<group>"; };
-		0CD8A95D1A60AF6100B16BD1 /* DFAssetsLibraryImageFetcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFAssetsLibraryImageFetcher.m; sourceTree = "<group>"; };
-		0CD8A95E1A60AF6100B16BD1 /* DFAssetsLibraryUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFAssetsLibraryUtilities.h; sourceTree = "<group>"; };
-		0CD8A9601A60AF6100B16BD1 /* DFCachingImageFetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFCachingImageFetcher.h; sourceTree = "<group>"; };
-		0CD8A9611A60AF6100B16BD1 /* DFCachingImageFetcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFCachingImageFetcher.m; sourceTree = "<group>"; };
-		0CD8A9631A60AF6100B16BD1 /* DFPHAssetlocalIdentifier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFPHAssetlocalIdentifier.h; sourceTree = "<group>"; };
-		0CD8A9641A60AF6100B16BD1 /* DFPHAssetlocalIdentifier.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFPHAssetlocalIdentifier.m; sourceTree = "<group>"; };
-		0CD8A9651A60AF6100B16BD1 /* DFPhotosKitImageFetchOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFPhotosKitImageFetchOperation.h; sourceTree = "<group>"; };
-		0CD8A9661A60AF6100B16BD1 /* DFPhotosKitImageFetchOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFPhotosKitImageFetchOperation.m; sourceTree = "<group>"; };
-		0CD8A9671A60AF6100B16BD1 /* DFPhotosKitImageFetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFPhotosKitImageFetcher.h; sourceTree = "<group>"; };
-		0CD8A9681A60AF6100B16BD1 /* DFPhotosKitImageFetcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFPhotosKitImageFetcher.m; sourceTree = "<group>"; };
-		0CD8A96A1A60AF6100B16BD1 /* DFURLImageFetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFURLImageFetcher.h; sourceTree = "<group>"; };
-		0CD8A96B1A60AF6100B16BD1 /* DFURLImageFetcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFURLImageFetcher.m; sourceTree = "<group>"; };
-		440E992BEB531A6CE7B52C0F /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "../Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
-		474B3B2A4B60166EEC189790 /* libPods-DFImageManagerTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-DFImageManagerTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		9CD33F4B636DE31D168E5274 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "../Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
-		A4D2C3C33B6EF8B3B92153CA /* Pods-DFImageManagerTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DFImageManagerTests.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-DFImageManagerTests/Pods-DFImageManagerTests.debug.xcconfig"; sourceTree = "<group>"; };
-		D00E60156B6ED9152E7865EE /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
-/* End PBXFileReference section */
-
-/* Begin PBXFrameworksBuildPhase section */
-		0C2BD4B51A03A28000412BE3 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				759916756D11680DBEF1CEA9 /* libPods.a in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		0C2BD4C01A03A28000412BE3 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				0C7476A31A4E6EAF004FE2EE /* libDFImageManager.a in Frameworks */,
-				D5B5778D11F3E03C0BAF5A84 /* libPods-DFImageManagerTests.a in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXFrameworksBuildPhase section */
-
-/* Begin PBXGroup section */
-		0C227D331A5236FD00DA6299 /* Image Manager */ = {
-			isa = PBXGroup;
-			children = (
-				0C227D341A5236FD00DA6299 /* DFImageManager.h */,
-				0C227D351A5236FD00DA6299 /* DFImageManager.m */,
-				0C48E4A81A5BBDF400CD2497 /* DFImageManager+DefaultManager.m */,
-			);
-			path = "Image Manager";
-			sourceTree = "<group>";
-		};
-		0C2BD4AF1A03A28000412BE3 = {
-			isa = PBXGroup;
-			children = (
-				0C2BD4BA1A03A28000412BE3 /* DFImageManager */,
-				0C2BD4C41A03A28000412BE3 /* DFImageManagerTests */,
-				0C2BD4B91A03A28000412BE3 /* Products */,
-				35F03DD90A82A54BF071AD5B /* Pods */,
-				696562A56BA5751D9A244F06 /* Frameworks */,
-			);
-			sourceTree = "<group>";
-		};
-		0C2BD4B91A03A28000412BE3 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				0C2BD4B81A03A28000412BE3 /* libDFImageManager.a */,
-				0C2BD4C31A03A28000412BE3 /* DFImageManagerTests.xctest */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		0C2BD4BA1A03A28000412BE3 /* DFImageManager */ = {
-			isa = PBXGroup;
-			children = (
-				0C2BD52B1A03B15300412BE3 /* DFImageManagerKit.h */,
-				0C2BD4CF1A03A2EA00412BE3 /* DFImageManagerDefines.h */,
-				0C2BD4D01A03A2EA00412BE3 /* DFImageManagerDefines.m */,
-				0C77A4391A4944E100538A36 /* Managers */,
-				0CD8A9391A60AF4300B16BD1 /* Fetchers */,
-				0CAF72591A0B93D80057419A /* Operations */,
-				0C2BD4D21A03A3B200412BE3 /* Other */,
-				0C2BD4DC1A03A3B200412BE3 /* Protocols */,
-				0C2BD4E01A03A3B200412BE3 /* Request */,
-				0C2BD4E31A03A3B200412BE3 /* Response */,
-				0C2BD4F61A03A66000412BE3 /* Networking */,
-				0C8573B01A121C9C00067EA4 /* Views */,
-			);
-			path = DFImageManager;
-			sourceTree = "<group>";
-		};
-		0C2BD4C41A03A28000412BE3 /* DFImageManagerTests */ = {
-			isa = PBXGroup;
-			children = (
-				0C74769E1A4E6E95004FE2EE /* Tests */,
-				0C74769F1A4E6E9B004FE2EE /* Resources */,
-				0C2BD4C51A03A28000412BE3 /* Supporting Files */,
-				0C7476A01A4E6EA6004FE2EE /* TDFTesting.h */,
-				0C7476A11A4E6EA6004FE2EE /* TDFTesting.m */,
-			);
-			path = DFImageManagerTests;
-			sourceTree = "<group>";
-		};
-		0C2BD4C51A03A28000412BE3 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				0C2BD4C61A03A28000412BE3 /* Info.plist */,
-			);
-			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		0C2BD4D21A03A3B200412BE3 /* Other */ = {
-			isa = PBXGroup;
-			children = (
-				0C48E4AA1A5BC13000CD2497 /* DFCollectionViewPreheatingController.h */,
-				0C48E4AB1A5BC13000CD2497 /* DFCollectionViewPreheatingController.m */,
-				0C2BD4D51A03A3B200412BE3 /* DFImageDeserializer.h */,
-				0C2BD4D61A03A3B200412BE3 /* DFImageDeserializer.m */,
-				0C2BD4D91A03A3B200412BE3 /* DFImageRequestID+Protected.h */,
-				0C2BD4DA1A03A3B200412BE3 /* DFImageRequestID.h */,
-				0C2BD4DB1A03A3B200412BE3 /* DFImageRequestID.m */,
-				0CA129461A4A3CB500FB4688 /* DFImageProcessingManager.h */,
-				0CA129471A4A3CB500FB4688 /* DFImageProcessingManager.m */,
-				0CA1294A1A4A46BA00FB4688 /* DFImageUtilities.h */,
-				0CA1294B1A4A46BA00FB4688 /* DFImageUtilities.m */,
-				0CA07D821A4BD1AF00B16F38 /* DFImageManagerBlockValueTransformer.h */,
-				0CA07D831A4BD1AF00B16F38 /* DFImageManagerBlockValueTransformer.m */,
-				0C22BD901A4CDCA100AF48E0 /* DFCompositeImageRequest.h */,
-				0C22BD911A4CDCA100AF48E0 /* DFCompositeImageRequest.m */,
-			);
-			path = Other;
-			sourceTree = "<group>";
-		};
-		0C2BD4DC1A03A3B200412BE3 /* Protocols */ = {
-			isa = PBXGroup;
-			children = (
-				0C2BD4DF1A03A3B200412BE3 /* DFImageManagerProtocol.h */,
-				0C2BD4DE1A03A3B200412BE3 /* DFImageFetcherProtocol.h */,
-				0C2BD4FB1A03AEB800412BE3 /* DFImageManagerOperationProtocol.h */,
-				0CA129491A4A3F3200FB4688 /* DFImageProcessorProtocol.h */,
-				0CA07D811A4BD0CC00B16F38 /* DFImageManagerValueTransformerProtocol.h */,
-				0C227D4A1A52387A00DA6299 /* DFImageCacheProtocol.h */,
-			);
-			path = Protocols;
-			sourceTree = "<group>";
-		};
-		0C2BD4E01A03A3B200412BE3 /* Request */ = {
-			isa = PBXGroup;
-			children = (
-				0C2BD4E11A03A3B200412BE3 /* DFImageRequestOptions.h */,
-				0C2BD4E21A03A3B200412BE3 /* DFImageRequestOptions.m */,
-				0CA129611A4A591200FB4688 /* DFImageRequest.h */,
-				0CA129621A4A591200FB4688 /* DFImageRequest.m */,
-			);
-			path = Request;
-			sourceTree = "<group>";
-		};
-		0C2BD4E31A03A3B200412BE3 /* Response */ = {
-			isa = PBXGroup;
-			children = (
-				0C2BD4E41A03A3B200412BE3 /* DFImageResponse.h */,
-				0C2BD4E51A03A3B200412BE3 /* DFImageResponse.m */,
-			);
-			path = Response;
-			sourceTree = "<group>";
-		};
-		0C2BD4F61A03A66000412BE3 /* Networking */ = {
-			isa = PBXGroup;
-			children = (
-				0C2BD4F71A03A66000412BE3 /* DFURLConnectionOperation.h */,
-				0C2BD4F81A03A66000412BE3 /* DFURLConnectionOperation.m */,
-				0C2BD4F91A03A66000412BE3 /* DFURLResponseDeserializing.h */,
-			);
-			path = Networking;
-			sourceTree = "<group>";
-		};
-		0C74769E1A4E6E95004FE2EE /* Tests */ = {
-			isa = PBXGroup;
-			children = (
-				0C7476A61A4E6EC0004FE2EE /* TDFImageManager.m */,
-			);
-			path = Tests;
-			sourceTree = "<group>";
-		};
-		0C74769F1A4E6E9B004FE2EE /* Resources */ = {
-			isa = PBXGroup;
-			children = (
-				0C7476A81A4E6EE4004FE2EE /* Image.jpg */,
-			);
-			path = Resources;
-			sourceTree = "<group>";
-		};
-		0C77A4391A4944E100538A36 /* Managers */ = {
-			isa = PBXGroup;
-			children = (
-				0C227D331A5236FD00DA6299 /* Image Manager */,
-				0CA07D7D1A4BD08900B16F38 /* Composite Manager */,
-				0CA07D881A4C13A600B16F38 /* Proxy Manager */,
-			);
-			path = Managers;
-			sourceTree = "<group>";
-		};
-		0C8573B01A121C9C00067EA4 /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				0C8573B11A121CAD00067EA4 /* DFImageView.h */,
-				0C8573B21A121CAD00067EA4 /* DFImageView.m */,
-			);
-			path = Views;
-			sourceTree = "<group>";
-		};
-		0CA07D7D1A4BD08900B16F38 /* Composite Manager */ = {
-			isa = PBXGroup;
-			children = (
-				0CA07D7E1A4BD08900B16F38 /* DFCompositeImageManager.h */,
-				0CA07D7F1A4BD08900B16F38 /* DFCompositeImageManager.m */,
-			);
-			path = "Composite Manager";
-			sourceTree = "<group>";
-		};
-		0CA07D881A4C13A600B16F38 /* Proxy Manager */ = {
-			isa = PBXGroup;
-			children = (
-				0CA07D891A4C13B200B16F38 /* DFProxyImageManager.h */,
-				0CA07D8A1A4C13B200B16F38 /* DFProxyImageManager.m */,
-			);
-			path = "Proxy Manager";
-			sourceTree = "<group>";
-		};
-		0CAF72591A0B93D80057419A /* Operations */ = {
-			isa = PBXGroup;
-			children = (
-				0CAF725A1A0B93E30057419A /* DFImageURLCacheLookupOperation.h */,
-				0CAF725B1A0B93E30057419A /* DFImageURLCacheLookupOperation.m */,
-				0C5C25AD1A146B7A006C5791 /* DFImageFetchConnectionOperation.h */,
-				0C5C25AE1A146B7A006C5791 /* DFImageFetchConnectionOperation.m */,
-			);
-			path = Operations;
-			sourceTree = "<group>";
-		};
-		0CD8A9391A60AF4300B16BD1 /* Fetchers */ = {
-			isa = PBXGroup;
-			children = (
-				0CD8A9571A60AF6100B16BD1 /* Assets Library Fetcher */,
-				0CD8A95F1A60AF6100B16BD1 /* Base Fetcher */,
-				0CD8A9621A60AF6100B16BD1 /* Photos Kit Fetcher */,
-				0CD8A9691A60AF6100B16BD1 /* URL Fetcher */,
-			);
-			path = Fetchers;
-			sourceTree = "<group>";
-		};
-		0CD8A9571A60AF6100B16BD1 /* Assets Library Fetcher */ = {
-			isa = PBXGroup;
-			children = (
-				0CD8A9581A60AF6100B16BD1 /* ALAssetsLibrary+DFImageManager.h */,
-				0CD8A9591A60AF6100B16BD1 /* ALAssetsLibrary+DFImageManager.m */,
-				0CD8A95A1A60AF6100B16BD1 /* DFAssetsLibraryImageFetchOperation.h */,
-				0CD8A95B1A60AF6100B16BD1 /* DFAssetsLibraryImageFetchOperation.m */,
-				0CD8A95C1A60AF6100B16BD1 /* DFAssetsLibraryImageFetcher.h */,
-				0CD8A95D1A60AF6100B16BD1 /* DFAssetsLibraryImageFetcher.m */,
-				0CD8A95E1A60AF6100B16BD1 /* DFAssetsLibraryUtilities.h */,
-			);
-			path = "Assets Library Fetcher";
-			sourceTree = "<group>";
-		};
-		0CD8A95F1A60AF6100B16BD1 /* Base Fetcher */ = {
-			isa = PBXGroup;
-			children = (
-				0CD8A9601A60AF6100B16BD1 /* DFCachingImageFetcher.h */,
-				0CD8A9611A60AF6100B16BD1 /* DFCachingImageFetcher.m */,
-			);
-			path = "Base Fetcher";
-			sourceTree = "<group>";
-		};
-		0CD8A9621A60AF6100B16BD1 /* Photos Kit Fetcher */ = {
-			isa = PBXGroup;
-			children = (
-				0CD8A9631A60AF6100B16BD1 /* DFPHAssetlocalIdentifier.h */,
-				0CD8A9641A60AF6100B16BD1 /* DFPHAssetlocalIdentifier.m */,
-				0CD8A9651A60AF6100B16BD1 /* DFPhotosKitImageFetchOperation.h */,
-				0CD8A9661A60AF6100B16BD1 /* DFPhotosKitImageFetchOperation.m */,
-				0CD8A9671A60AF6100B16BD1 /* DFPhotosKitImageFetcher.h */,
-				0CD8A9681A60AF6100B16BD1 /* DFPhotosKitImageFetcher.m */,
-			);
-			path = "Photos Kit Fetcher";
-			sourceTree = "<group>";
-		};
-		0CD8A9691A60AF6100B16BD1 /* URL Fetcher */ = {
-			isa = PBXGroup;
-			children = (
-				0CD8A96A1A60AF6100B16BD1 /* DFURLImageFetcher.h */,
-				0CD8A96B1A60AF6100B16BD1 /* DFURLImageFetcher.m */,
-			);
-			path = "URL Fetcher";
-			sourceTree = "<group>";
-		};
-		35F03DD90A82A54BF071AD5B /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				440E992BEB531A6CE7B52C0F /* Pods.debug.xcconfig */,
-				9CD33F4B636DE31D168E5274 /* Pods.release.xcconfig */,
-				A4D2C3C33B6EF8B3B92153CA /* Pods-DFImageManagerTests.debug.xcconfig */,
-				035B7C0D28050FFB6069B45A /* Pods-DFImageManagerTests.release.xcconfig */,
-			);
-			name = Pods;
-			sourceTree = "<group>";
-		};
-		696562A56BA5751D9A244F06 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				D00E60156B6ED9152E7865EE /* libPods.a */,
-				474B3B2A4B60166EEC189790 /* libPods-DFImageManagerTests.a */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
-/* End PBXGroup section */
-
-/* Begin PBXNativeTarget section */
-		0C2BD4B71A03A28000412BE3 /* DFImageManager */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 0C2BD4C91A03A28000412BE3 /* Build configuration list for PBXNativeTarget "DFImageManager" */;
-			buildPhases = (
-				D7A40990BDF6589534DE0EF5 /* Check Pods Manifest.lock */,
-				0C2BD4B41A03A28000412BE3 /* Sources */,
-				0C2BD4B51A03A28000412BE3 /* Frameworks */,
-				0C2BD4B61A03A28000412BE3 /* CopyFiles */,
-				B478EE6CF60EA845DA9889CF /* Copy Pods Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = DFImageManager;
-			productName = DFImageManager;
-			productReference = 0C2BD4B81A03A28000412BE3 /* libDFImageManager.a */;
-			productType = "com.apple.product-type.library.static";
-		};
-		0C2BD4C21A03A28000412BE3 /* DFImageManagerTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 0C2BD4CC1A03A28000412BE3 /* Build configuration list for PBXNativeTarget "DFImageManagerTests" */;
-			buildPhases = (
-				23032368A4DB2757B19D20D0 /* Check Pods Manifest.lock */,
-				0C2BD4BF1A03A28000412BE3 /* Sources */,
-				0C2BD4C01A03A28000412BE3 /* Frameworks */,
-				0C2BD4C11A03A28000412BE3 /* Resources */,
-				CE1F8389756D0BF9DA73F279 /* Copy Pods Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				0C7476A51A4E6EB5004FE2EE /* PBXTargetDependency */,
-			);
-			name = DFImageManagerTests;
-			productName = DFImageManagerTests;
-			productReference = 0C2BD4C31A03A28000412BE3 /* DFImageManagerTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
-/* End PBXNativeTarget section */
-
-/* Begin PBXProject section */
-		0C2BD4B01A03A28000412BE3 /* Project object */ = {
-			isa = PBXProject;
-			attributes = {
-				LastUpgradeCheck = 0600;
-				ORGANIZATIONNAME = "Alexander Grebenyuk";
-				TargetAttributes = {
-					0C2BD4B71A03A28000412BE3 = {
-						CreatedOnToolsVersion = 6.0.1;
-					};
-					0C2BD4C21A03A28000412BE3 = {
-						CreatedOnToolsVersion = 6.0.1;
-					};
-				};
-			};
-			buildConfigurationList = 0C2BD4B31A03A28000412BE3 /* Build configuration list for PBXProject "DFImageManager" */;
-			compatibilityVersion = "Xcode 3.2";
-			developmentRegion = English;
-			hasScannedForEncodings = 0;
-			knownRegions = (
-				en,
-			);
-			mainGroup = 0C2BD4AF1A03A28000412BE3;
-			productRefGroup = 0C2BD4B91A03A28000412BE3 /* Products */;
-			projectDirPath = "";
-			projectRoot = "";
-			targets = (
-				0C2BD4B71A03A28000412BE3 /* DFImageManager */,
-				0C2BD4C21A03A28000412BE3 /* DFImageManagerTests */,
-			);
-		};
-/* End PBXProject section */
-
-/* Begin PBXResourcesBuildPhase section */
-		0C2BD4C11A03A28000412BE3 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				0C7476A91A4E6EE4004FE2EE /* Image.jpg in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		23032368A4DB2757B19D20D0 /* Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Check Pods Manifest.lock";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
-			showEnvVarsInLog = 0;
-		};
-		B478EE6CF60EA845DA9889CF /* Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/../Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		CE1F8389756D0BF9DA73F279 /* Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/../Pods/Target Support Files/Pods-DFImageManagerTests/Pods-DFImageManagerTests-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		D7A40990BDF6589534DE0EF5 /* Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Check Pods Manifest.lock";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
-			showEnvVarsInLog = 0;
-		};
-/* End PBXShellScriptBuildPhase section */
-
-/* Begin PBXSourcesBuildPhase section */
-		0C2BD4B41A03A28000412BE3 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				0CD8A96E1A60AF6100B16BD1 /* DFAssetsLibraryImageFetcher.m in Sources */,
-				0C2BD4E91A03A3B200412BE3 /* DFImageRequestID.m in Sources */,
-				0C2BD4FA1A03A66000412BE3 /* DFURLConnectionOperation.m in Sources */,
-				0CA07D841A4BD1AF00B16F38 /* DFImageManagerBlockValueTransformer.m in Sources */,
-				0C48E4AC1A5BC13000CD2497 /* DFCollectionViewPreheatingController.m in Sources */,
-				0CA1294C1A4A46BA00FB4688 /* DFImageUtilities.m in Sources */,
-				0CD8A9721A60AF6100B16BD1 /* DFPhotosKitImageFetcher.m in Sources */,
-				0C2BD4D11A03A2EA00412BE3 /* DFImageManagerDefines.m in Sources */,
-				0CA07D801A4BD08900B16F38 /* DFCompositeImageManager.m in Sources */,
-				0CD8A9701A60AF6100B16BD1 /* DFPHAssetlocalIdentifier.m in Sources */,
-				0CD8A96F1A60AF6100B16BD1 /* DFCachingImageFetcher.m in Sources */,
-				0CAF725C1A0B93E30057419A /* DFImageURLCacheLookupOperation.m in Sources */,
-				0C2BD4E71A03A3B200412BE3 /* DFImageDeserializer.m in Sources */,
-				0CA07D8B1A4C13B200B16F38 /* DFProxyImageManager.m in Sources */,
-				0CA129481A4A3CB500FB4688 /* DFImageProcessingManager.m in Sources */,
-				0C48E4A91A5BBDF400CD2497 /* DFImageManager+DefaultManager.m in Sources */,
-				0C5C25AF1A146B7A006C5791 /* DFImageFetchConnectionOperation.m in Sources */,
-				0CD8A9711A60AF6100B16BD1 /* DFPhotosKitImageFetchOperation.m in Sources */,
-				0C227D361A5236FD00DA6299 /* DFImageManager.m in Sources */,
-				0CA129631A4A591200FB4688 /* DFImageRequest.m in Sources */,
-				0C22BD921A4CDCA100AF48E0 /* DFCompositeImageRequest.m in Sources */,
-				0C8573B31A121CAD00067EA4 /* DFImageView.m in Sources */,
-				0CD8A96C1A60AF6100B16BD1 /* ALAssetsLibrary+DFImageManager.m in Sources */,
-				0CD8A9731A60AF6100B16BD1 /* DFURLImageFetcher.m in Sources */,
-				0C2BD4EB1A03A3B200412BE3 /* DFImageResponse.m in Sources */,
-				0C2BD4EA1A03A3B200412BE3 /* DFImageRequestOptions.m in Sources */,
-				0CD8A96D1A60AF6100B16BD1 /* DFAssetsLibraryImageFetchOperation.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		0C2BD4BF1A03A28000412BE3 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				0C7476A71A4E6EC0004FE2EE /* TDFImageManager.m in Sources */,
-				0C7476A21A4E6EA6004FE2EE /* TDFTesting.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		0C7476A51A4E6EB5004FE2EE /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 0C2BD4B71A03A28000412BE3 /* DFImageManager */;
-			targetProxy = 0C7476A41A4E6EB5004FE2EE /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
-
-/* Begin XCBuildConfiguration section */
-		0C2BD4C71A03A28000412BE3 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				COPY_PHASE_STRIP = NO;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				MTL_ENABLE_DEBUG_INFO = YES;
-				ONLY_ACTIVE_ARCH = YES;
-				SDKROOT = iphoneos;
-			};
-			name = Debug;
-		};
-		0C2BD4C81A03A28000412BE3 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				COPY_PHASE_STRIP = YES;
-				ENABLE_NS_ASSERTIONS = NO;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				MTL_ENABLE_DEBUG_INFO = NO;
-				SDKROOT = iphoneos;
-				VALIDATE_PRODUCT = YES;
-			};
-			name = Release;
-		};
-		0C2BD4CA1A03A28000412BE3 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 440E992BEB531A6CE7B52C0F /* Pods.debug.xcconfig */;
-			buildSettings = {
-				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
-				CLANG_WARN_IMPLICIT_SIGN_CONVERSION = YES;
-				CLANG_WARN_OBJC_IMPLICIT_ATOMIC_PROPERTIES = YES;
-				CLANG_WARN_SUSPICIOUS_IMPLICIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_MISSING_FIELD_INITIALIZERS = YES;
-				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
-				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
-				GCC_WARN_FOUR_CHARACTER_CONSTANTS = YES;
-				GCC_WARN_INITIALIZER_NOT_FULLY_BRACKETED = YES;
-				GCC_WARN_MULTIPLE_DEFINITION_TYPES_FOR_SELECTOR = YES;
-				GCC_WARN_SHADOW = YES;
-				GCC_WARN_STRICT_SELECTOR_MATCH = YES;
-				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
-			};
-			name = Debug;
-		};
-		0C2BD4CB1A03A28000412BE3 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 9CD33F4B636DE31D168E5274 /* Pods.release.xcconfig */;
-			buildSettings = {
-				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
-				CLANG_WARN_IMPLICIT_SIGN_CONVERSION = YES;
-				CLANG_WARN_OBJC_IMPLICIT_ATOMIC_PROPERTIES = YES;
-				CLANG_WARN_SUSPICIOUS_IMPLICIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_MISSING_FIELD_INITIALIZERS = YES;
-				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
-				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
-				GCC_WARN_FOUR_CHARACTER_CONSTANTS = YES;
-				GCC_WARN_INITIALIZER_NOT_FULLY_BRACKETED = YES;
-				GCC_WARN_MULTIPLE_DEFINITION_TYPES_FOR_SELECTOR = YES;
-				GCC_WARN_SHADOW = YES;
-				GCC_WARN_STRICT_SELECTOR_MATCH = YES;
-				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
-			};
-			name = Release;
-		};
-		0C2BD4CD1A03A28000412BE3 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = A4D2C3C33B6EF8B3B92153CA /* Pods-DFImageManagerTests.debug.xcconfig */;
-			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-				);
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				INFOPLIST_FILE = DFImageManagerTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-			};
-			name = Debug;
-		};
-		0C2BD4CE1A03A28000412BE3 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 035B7C0D28050FFB6069B45A /* Pods-DFImageManagerTests.release.xcconfig */;
-			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-				);
-				INFOPLIST_FILE = DFImageManagerTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-			};
-			name = Release;
-		};
-/* End XCBuildConfiguration section */
-
-/* Begin XCConfigurationList section */
-		0C2BD4B31A03A28000412BE3 /* Build configuration list for PBXProject "DFImageManager" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				0C2BD4C71A03A28000412BE3 /* Debug */,
-				0C2BD4C81A03A28000412BE3 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		0C2BD4C91A03A28000412BE3 /* Build configuration list for PBXNativeTarget "DFImageManager" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				0C2BD4CA1A03A28000412BE3 /* Debug */,
-				0C2BD4CB1A03A28000412BE3 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		0C2BD4CC1A03A28000412BE3 /* Build configuration list for PBXNativeTarget "DFImageManagerTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				0C2BD4CD1A03A28000412BE3 /* Debug */,
-				0C2BD4CE1A03A28000412BE3 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-/* End XCConfigurationList section */
-	};
-	rootObject = 0C2BD4B01A03A28000412BE3 /* Project object */;
-}
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>archiveVersion</key>
+	<string>1</string>
+	<key>classes</key>
+	<dict/>
+	<key>objectVersion</key>
+	<string>46</string>
+	<key>objects</key>
+	<dict>
+		<key>08231C32293CC0B246EA8D13</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>text.xcconfig</string>
+			<key>name</key>
+			<string>Pods.release.xcconfig</string>
+			<key>path</key>
+			<string>../Pods/Target Support Files/Pods/Pods.release.xcconfig</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>0C227D331A5236FD00DA6299</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>0C227D341A5236FD00DA6299</string>
+				<string>0C227D351A5236FD00DA6299</string>
+				<string>0C48E4A81A5BBDF400CD2497</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>path</key>
+			<string>Image Manager</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>0C227D341A5236FD00DA6299</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>path</key>
+			<string>DFImageManager.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>0C227D351A5236FD00DA6299</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>path</key>
+			<string>DFImageManager.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>0C227D361A5236FD00DA6299</key>
+		<dict>
+			<key>fileRef</key>
+			<string>0C227D351A5236FD00DA6299</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>0C227D4A1A52387A00DA6299</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>path</key>
+			<string>DFImageCacheProtocol.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>0C22BD901A4CDCA100AF48E0</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>path</key>
+			<string>DFCompositeImageRequest.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>0C22BD911A4CDCA100AF48E0</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>path</key>
+			<string>DFCompositeImageRequest.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>0C22BD921A4CDCA100AF48E0</key>
+		<dict>
+			<key>fileRef</key>
+			<string>0C22BD911A4CDCA100AF48E0</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>0C2BD4AF1A03A28000412BE3</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>0C2BD4BA1A03A28000412BE3</string>
+				<string>0C2BD4C41A03A28000412BE3</string>
+				<string>0C2BD4B91A03A28000412BE3</string>
+				<string>696562A56BA5751D9A244F06</string>
+				<string>789713635CD477B90979E448</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>0C2BD4B01A03A28000412BE3</key>
+		<dict>
+			<key>attributes</key>
+			<dict>
+				<key>LastUpgradeCheck</key>
+				<string>0600</string>
+				<key>ORGANIZATIONNAME</key>
+				<string>Alexander Grebenyuk</string>
+				<key>TargetAttributes</key>
+				<dict>
+					<key>0C2BD4B71A03A28000412BE3</key>
+					<dict>
+						<key>CreatedOnToolsVersion</key>
+						<string>6.0.1</string>
+					</dict>
+					<key>0C2BD4C21A03A28000412BE3</key>
+					<dict>
+						<key>CreatedOnToolsVersion</key>
+						<string>6.0.1</string>
+					</dict>
+				</dict>
+			</dict>
+			<key>buildConfigurationList</key>
+			<string>0C2BD4B31A03A28000412BE3</string>
+			<key>compatibilityVersion</key>
+			<string>Xcode 3.2</string>
+			<key>developmentRegion</key>
+			<string>English</string>
+			<key>hasScannedForEncodings</key>
+			<string>0</string>
+			<key>isa</key>
+			<string>PBXProject</string>
+			<key>knownRegions</key>
+			<array>
+				<string>en</string>
+			</array>
+			<key>mainGroup</key>
+			<string>0C2BD4AF1A03A28000412BE3</string>
+			<key>productRefGroup</key>
+			<string>0C2BD4B91A03A28000412BE3</string>
+			<key>projectDirPath</key>
+			<string></string>
+			<key>projectReferences</key>
+			<array/>
+			<key>projectRoot</key>
+			<string></string>
+			<key>targets</key>
+			<array>
+				<string>0C2BD4B71A03A28000412BE3</string>
+				<string>0C2BD4C21A03A28000412BE3</string>
+			</array>
+		</dict>
+		<key>0C2BD4B31A03A28000412BE3</key>
+		<dict>
+			<key>buildConfigurations</key>
+			<array>
+				<string>0C2BD4C71A03A28000412BE3</string>
+				<string>0C2BD4C81A03A28000412BE3</string>
+			</array>
+			<key>defaultConfigurationIsVisible</key>
+			<string>0</string>
+			<key>defaultConfigurationName</key>
+			<string>Release</string>
+			<key>isa</key>
+			<string>XCConfigurationList</string>
+		</dict>
+		<key>0C2BD4B41A03A28000412BE3</key>
+		<dict>
+			<key>buildActionMask</key>
+			<string>2147483647</string>
+			<key>files</key>
+			<array>
+				<string>0CD8A96E1A60AF6100B16BD1</string>
+				<string>0C2BD4E91A03A3B200412BE3</string>
+				<string>0C2BD4FA1A03A66000412BE3</string>
+				<string>0CA07D841A4BD1AF00B16F38</string>
+				<string>0C48E4AC1A5BC13000CD2497</string>
+				<string>0CA1294C1A4A46BA00FB4688</string>
+				<string>0CD8A9721A60AF6100B16BD1</string>
+				<string>0C2BD4D11A03A2EA00412BE3</string>
+				<string>0CA07D801A4BD08900B16F38</string>
+				<string>0CD8A9701A60AF6100B16BD1</string>
+				<string>0CD8A96F1A60AF6100B16BD1</string>
+				<string>0CAF725C1A0B93E30057419A</string>
+				<string>0C2BD4E71A03A3B200412BE3</string>
+				<string>0CA07D8B1A4C13B200B16F38</string>
+				<string>0CA129481A4A3CB500FB4688</string>
+				<string>0C48E4A91A5BBDF400CD2497</string>
+				<string>0C5C25AF1A146B7A006C5791</string>
+				<string>0CD8A9711A60AF6100B16BD1</string>
+				<string>0C227D361A5236FD00DA6299</string>
+				<string>0CA129631A4A591200FB4688</string>
+				<string>0C22BD921A4CDCA100AF48E0</string>
+				<string>0C8573B31A121CAD00067EA4</string>
+				<string>0CD8A96C1A60AF6100B16BD1</string>
+				<string>0CD8A9731A60AF6100B16BD1</string>
+				<string>0C2BD4EB1A03A3B200412BE3</string>
+				<string>0C2BD4EA1A03A3B200412BE3</string>
+				<string>0CD8A96D1A60AF6100B16BD1</string>
+			</array>
+			<key>isa</key>
+			<string>PBXSourcesBuildPhase</string>
+			<key>runOnlyForDeploymentPostprocessing</key>
+			<string>0</string>
+		</dict>
+		<key>0C2BD4B51A03A28000412BE3</key>
+		<dict>
+			<key>buildActionMask</key>
+			<string>2147483647</string>
+			<key>files</key>
+			<array/>
+			<key>isa</key>
+			<string>PBXFrameworksBuildPhase</string>
+			<key>runOnlyForDeploymentPostprocessing</key>
+			<string>0</string>
+		</dict>
+		<key>0C2BD4B61A03A28000412BE3</key>
+		<dict>
+			<key>buildActionMask</key>
+			<string>2147483647</string>
+			<key>dstPath</key>
+			<string>include/$(PRODUCT_NAME)</string>
+			<key>dstSubfolderSpec</key>
+			<string>16</string>
+			<key>files</key>
+			<array/>
+			<key>isa</key>
+			<string>PBXCopyFilesBuildPhase</string>
+			<key>runOnlyForDeploymentPostprocessing</key>
+			<string>0</string>
+		</dict>
+		<key>0C2BD4B71A03A28000412BE3</key>
+		<dict>
+			<key>buildConfigurationList</key>
+			<string>0C2BD4C91A03A28000412BE3</string>
+			<key>buildPhases</key>
+			<array>
+				<string>0C2BD4B41A03A28000412BE3</string>
+				<string>0C2BD4B51A03A28000412BE3</string>
+				<string>0C2BD4B61A03A28000412BE3</string>
+			</array>
+			<key>buildRules</key>
+			<array/>
+			<key>dependencies</key>
+			<array/>
+			<key>isa</key>
+			<string>PBXNativeTarget</string>
+			<key>name</key>
+			<string>DFImageManager</string>
+			<key>productName</key>
+			<string>DFImageManager</string>
+			<key>productReference</key>
+			<string>0C2BD4B81A03A28000412BE3</string>
+			<key>productType</key>
+			<string>com.apple.product-type.library.static</string>
+		</dict>
+		<key>0C2BD4B81A03A28000412BE3</key>
+		<dict>
+			<key>explicitFileType</key>
+			<string>archive.ar</string>
+			<key>includeInIndex</key>
+			<string>0</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>path</key>
+			<string>libDFImageManager.a</string>
+			<key>sourceTree</key>
+			<string>BUILT_PRODUCTS_DIR</string>
+		</dict>
+		<key>0C2BD4B91A03A28000412BE3</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>0C2BD4B81A03A28000412BE3</string>
+				<string>0C2BD4C31A03A28000412BE3</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>name</key>
+			<string>Products</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>0C2BD4BA1A03A28000412BE3</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>0C2BD52B1A03B15300412BE3</string>
+				<string>0C2BD4CF1A03A2EA00412BE3</string>
+				<string>0C2BD4D01A03A2EA00412BE3</string>
+				<string>0C77A4391A4944E100538A36</string>
+				<string>0CD8A9391A60AF4300B16BD1</string>
+				<string>0CAF72591A0B93D80057419A</string>
+				<string>0C2BD4D21A03A3B200412BE3</string>
+				<string>0C2BD4DC1A03A3B200412BE3</string>
+				<string>0C2BD4E01A03A3B200412BE3</string>
+				<string>0C2BD4E31A03A3B200412BE3</string>
+				<string>0C2BD4F61A03A66000412BE3</string>
+				<string>0C8573B01A121C9C00067EA4</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>path</key>
+			<string>DFImageManager</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>0C2BD4BF1A03A28000412BE3</key>
+		<dict>
+			<key>buildActionMask</key>
+			<string>2147483647</string>
+			<key>files</key>
+			<array>
+				<string>0C7476A71A4E6EC0004FE2EE</string>
+				<string>0C7476A21A4E6EA6004FE2EE</string>
+			</array>
+			<key>isa</key>
+			<string>PBXSourcesBuildPhase</string>
+			<key>runOnlyForDeploymentPostprocessing</key>
+			<string>0</string>
+		</dict>
+		<key>0C2BD4C01A03A28000412BE3</key>
+		<dict>
+			<key>buildActionMask</key>
+			<string>2147483647</string>
+			<key>files</key>
+			<array>
+				<string>0C7476A31A4E6EAF004FE2EE</string>
+				<string>E3F8DD56F2B8E4BA2BD17E25</string>
+			</array>
+			<key>isa</key>
+			<string>PBXFrameworksBuildPhase</string>
+			<key>runOnlyForDeploymentPostprocessing</key>
+			<string>0</string>
+		</dict>
+		<key>0C2BD4C11A03A28000412BE3</key>
+		<dict>
+			<key>buildActionMask</key>
+			<string>2147483647</string>
+			<key>files</key>
+			<array>
+				<string>0C7476A91A4E6EE4004FE2EE</string>
+			</array>
+			<key>isa</key>
+			<string>PBXResourcesBuildPhase</string>
+			<key>runOnlyForDeploymentPostprocessing</key>
+			<string>0</string>
+		</dict>
+		<key>0C2BD4C21A03A28000412BE3</key>
+		<dict>
+			<key>buildConfigurationList</key>
+			<string>0C2BD4CC1A03A28000412BE3</string>
+			<key>buildPhases</key>
+			<array>
+				<string>C73AE51EE51AB92544DA81D4</string>
+				<string>0C2BD4BF1A03A28000412BE3</string>
+				<string>0C2BD4C01A03A28000412BE3</string>
+				<string>0C2BD4C11A03A28000412BE3</string>
+				<string>32CC873EE6018D0521E16ED4</string>
+			</array>
+			<key>buildRules</key>
+			<array/>
+			<key>dependencies</key>
+			<array>
+				<string>0C7476A51A4E6EB5004FE2EE</string>
+			</array>
+			<key>isa</key>
+			<string>PBXNativeTarget</string>
+			<key>name</key>
+			<string>DFImageManagerTests</string>
+			<key>productName</key>
+			<string>DFImageManagerTests</string>
+			<key>productReference</key>
+			<string>0C2BD4C31A03A28000412BE3</string>
+			<key>productType</key>
+			<string>com.apple.product-type.bundle.unit-test</string>
+		</dict>
+		<key>0C2BD4C31A03A28000412BE3</key>
+		<dict>
+			<key>explicitFileType</key>
+			<string>wrapper.cfbundle</string>
+			<key>includeInIndex</key>
+			<string>0</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>path</key>
+			<string>DFImageManagerTests.xctest</string>
+			<key>sourceTree</key>
+			<string>BUILT_PRODUCTS_DIR</string>
+		</dict>
+		<key>0C2BD4C41A03A28000412BE3</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>0C74769E1A4E6E95004FE2EE</string>
+				<string>0C74769F1A4E6E9B004FE2EE</string>
+				<string>0C2BD4C51A03A28000412BE3</string>
+				<string>0C7476A01A4E6EA6004FE2EE</string>
+				<string>0C7476A11A4E6EA6004FE2EE</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>path</key>
+			<string>DFImageManagerTests</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>0C2BD4C51A03A28000412BE3</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>0C2BD4C61A03A28000412BE3</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>name</key>
+			<string>Supporting Files</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>0C2BD4C61A03A28000412BE3</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>text.plist.xml</string>
+			<key>path</key>
+			<string>Info.plist</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>0C2BD4C71A03A28000412BE3</key>
+		<dict>
+			<key>buildSettings</key>
+			<dict>
+				<key>ALWAYS_SEARCH_USER_PATHS</key>
+				<string>NO</string>
+				<key>CLANG_CXX_LANGUAGE_STANDARD</key>
+				<string>gnu++0x</string>
+				<key>CLANG_CXX_LIBRARY</key>
+				<string>libc++</string>
+				<key>CLANG_ENABLE_MODULES</key>
+				<string>YES</string>
+				<key>CLANG_ENABLE_OBJC_ARC</key>
+				<string>YES</string>
+				<key>CLANG_WARN_BOOL_CONVERSION</key>
+				<string>YES</string>
+				<key>CLANG_WARN_CONSTANT_CONVERSION</key>
+				<string>YES</string>
+				<key>CLANG_WARN_DIRECT_OBJC_ISA_USAGE</key>
+				<string>YES_ERROR</string>
+				<key>CLANG_WARN_EMPTY_BODY</key>
+				<string>YES</string>
+				<key>CLANG_WARN_ENUM_CONVERSION</key>
+				<string>YES</string>
+				<key>CLANG_WARN_INT_CONVERSION</key>
+				<string>YES</string>
+				<key>CLANG_WARN_OBJC_ROOT_CLASS</key>
+				<string>YES_ERROR</string>
+				<key>CLANG_WARN_UNREACHABLE_CODE</key>
+				<string>YES</string>
+				<key>CLANG_WARN__DUPLICATE_METHOD_MATCH</key>
+				<string>YES</string>
+				<key>COPY_PHASE_STRIP</key>
+				<string>NO</string>
+				<key>ENABLE_STRICT_OBJC_MSGSEND</key>
+				<string>YES</string>
+				<key>GCC_C_LANGUAGE_STANDARD</key>
+				<string>gnu99</string>
+				<key>GCC_DYNAMIC_NO_PIC</key>
+				<string>NO</string>
+				<key>GCC_OPTIMIZATION_LEVEL</key>
+				<string>0</string>
+				<key>GCC_PREPROCESSOR_DEFINITIONS</key>
+				<array>
+					<string>DEBUG=1</string>
+					<string>$(inherited)</string>
+				</array>
+				<key>GCC_SYMBOLS_PRIVATE_EXTERN</key>
+				<string>NO</string>
+				<key>GCC_WARN_64_TO_32_BIT_CONVERSION</key>
+				<string>YES</string>
+				<key>GCC_WARN_ABOUT_RETURN_TYPE</key>
+				<string>YES_ERROR</string>
+				<key>GCC_WARN_UNDECLARED_SELECTOR</key>
+				<string>YES</string>
+				<key>GCC_WARN_UNINITIALIZED_AUTOS</key>
+				<string>YES_AGGRESSIVE</string>
+				<key>GCC_WARN_UNUSED_FUNCTION</key>
+				<string>YES</string>
+				<key>GCC_WARN_UNUSED_VARIABLE</key>
+				<string>YES</string>
+				<key>IPHONEOS_DEPLOYMENT_TARGET</key>
+				<string>7.0</string>
+				<key>MTL_ENABLE_DEBUG_INFO</key>
+				<string>YES</string>
+				<key>ONLY_ACTIVE_ARCH</key>
+				<string>YES</string>
+				<key>SDKROOT</key>
+				<string>iphoneos</string>
+			</dict>
+			<key>isa</key>
+			<string>XCBuildConfiguration</string>
+			<key>name</key>
+			<string>Debug</string>
+		</dict>
+		<key>0C2BD4C81A03A28000412BE3</key>
+		<dict>
+			<key>buildSettings</key>
+			<dict>
+				<key>ALWAYS_SEARCH_USER_PATHS</key>
+				<string>NO</string>
+				<key>CLANG_CXX_LANGUAGE_STANDARD</key>
+				<string>gnu++0x</string>
+				<key>CLANG_CXX_LIBRARY</key>
+				<string>libc++</string>
+				<key>CLANG_ENABLE_MODULES</key>
+				<string>YES</string>
+				<key>CLANG_ENABLE_OBJC_ARC</key>
+				<string>YES</string>
+				<key>CLANG_WARN_BOOL_CONVERSION</key>
+				<string>YES</string>
+				<key>CLANG_WARN_CONSTANT_CONVERSION</key>
+				<string>YES</string>
+				<key>CLANG_WARN_DIRECT_OBJC_ISA_USAGE</key>
+				<string>YES_ERROR</string>
+				<key>CLANG_WARN_EMPTY_BODY</key>
+				<string>YES</string>
+				<key>CLANG_WARN_ENUM_CONVERSION</key>
+				<string>YES</string>
+				<key>CLANG_WARN_INT_CONVERSION</key>
+				<string>YES</string>
+				<key>CLANG_WARN_OBJC_ROOT_CLASS</key>
+				<string>YES_ERROR</string>
+				<key>CLANG_WARN_UNREACHABLE_CODE</key>
+				<string>YES</string>
+				<key>CLANG_WARN__DUPLICATE_METHOD_MATCH</key>
+				<string>YES</string>
+				<key>COPY_PHASE_STRIP</key>
+				<string>YES</string>
+				<key>ENABLE_NS_ASSERTIONS</key>
+				<string>NO</string>
+				<key>ENABLE_STRICT_OBJC_MSGSEND</key>
+				<string>YES</string>
+				<key>GCC_C_LANGUAGE_STANDARD</key>
+				<string>gnu99</string>
+				<key>GCC_WARN_64_TO_32_BIT_CONVERSION</key>
+				<string>YES</string>
+				<key>GCC_WARN_ABOUT_RETURN_TYPE</key>
+				<string>YES_ERROR</string>
+				<key>GCC_WARN_UNDECLARED_SELECTOR</key>
+				<string>YES</string>
+				<key>GCC_WARN_UNINITIALIZED_AUTOS</key>
+				<string>YES_AGGRESSIVE</string>
+				<key>GCC_WARN_UNUSED_FUNCTION</key>
+				<string>YES</string>
+				<key>GCC_WARN_UNUSED_VARIABLE</key>
+				<string>YES</string>
+				<key>IPHONEOS_DEPLOYMENT_TARGET</key>
+				<string>7.0</string>
+				<key>MTL_ENABLE_DEBUG_INFO</key>
+				<string>NO</string>
+				<key>SDKROOT</key>
+				<string>iphoneos</string>
+				<key>VALIDATE_PRODUCT</key>
+				<string>YES</string>
+			</dict>
+			<key>isa</key>
+			<string>XCBuildConfiguration</string>
+			<key>name</key>
+			<string>Release</string>
+		</dict>
+		<key>0C2BD4C91A03A28000412BE3</key>
+		<dict>
+			<key>buildConfigurations</key>
+			<array>
+				<string>0C2BD4CA1A03A28000412BE3</string>
+				<string>0C2BD4CB1A03A28000412BE3</string>
+			</array>
+			<key>defaultConfigurationIsVisible</key>
+			<string>0</string>
+			<key>defaultConfigurationName</key>
+			<string>Release</string>
+			<key>isa</key>
+			<string>XCConfigurationList</string>
+		</dict>
+		<key>0C2BD4CA1A03A28000412BE3</key>
+		<dict>
+			<key>buildSettings</key>
+			<dict>
+				<key>CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS</key>
+				<string>YES</string>
+				<key>CLANG_WARN_IMPLICIT_SIGN_CONVERSION</key>
+				<string>YES</string>
+				<key>CLANG_WARN_OBJC_IMPLICIT_ATOMIC_PROPERTIES</key>
+				<string>YES</string>
+				<key>CLANG_WARN_SUSPICIOUS_IMPLICIT_CONVERSION</key>
+				<string>YES</string>
+				<key>GCC_WARN_ABOUT_MISSING_FIELD_INITIALIZERS</key>
+				<string>YES</string>
+				<key>GCC_WARN_ABOUT_MISSING_NEWLINE</key>
+				<string>YES</string>
+				<key>GCC_WARN_ABOUT_MISSING_PROTOTYPES</key>
+				<string>YES</string>
+				<key>GCC_WARN_FOUR_CHARACTER_CONSTANTS</key>
+				<string>YES</string>
+				<key>GCC_WARN_INITIALIZER_NOT_FULLY_BRACKETED</key>
+				<string>YES</string>
+				<key>GCC_WARN_MULTIPLE_DEFINITION_TYPES_FOR_SELECTOR</key>
+				<string>YES</string>
+				<key>GCC_WARN_SHADOW</key>
+				<string>YES</string>
+				<key>GCC_WARN_STRICT_SELECTOR_MATCH</key>
+				<string>YES</string>
+				<key>OTHER_LDFLAGS</key>
+				<string>-ObjC</string>
+				<key>PRODUCT_NAME</key>
+				<string>$(TARGET_NAME)</string>
+				<key>SKIP_INSTALL</key>
+				<string>YES</string>
+			</dict>
+			<key>isa</key>
+			<string>XCBuildConfiguration</string>
+			<key>name</key>
+			<string>Debug</string>
+		</dict>
+		<key>0C2BD4CB1A03A28000412BE3</key>
+		<dict>
+			<key>buildSettings</key>
+			<dict>
+				<key>CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS</key>
+				<string>YES</string>
+				<key>CLANG_WARN_IMPLICIT_SIGN_CONVERSION</key>
+				<string>YES</string>
+				<key>CLANG_WARN_OBJC_IMPLICIT_ATOMIC_PROPERTIES</key>
+				<string>YES</string>
+				<key>CLANG_WARN_SUSPICIOUS_IMPLICIT_CONVERSION</key>
+				<string>YES</string>
+				<key>GCC_WARN_ABOUT_MISSING_FIELD_INITIALIZERS</key>
+				<string>YES</string>
+				<key>GCC_WARN_ABOUT_MISSING_NEWLINE</key>
+				<string>YES</string>
+				<key>GCC_WARN_ABOUT_MISSING_PROTOTYPES</key>
+				<string>YES</string>
+				<key>GCC_WARN_FOUR_CHARACTER_CONSTANTS</key>
+				<string>YES</string>
+				<key>GCC_WARN_INITIALIZER_NOT_FULLY_BRACKETED</key>
+				<string>YES</string>
+				<key>GCC_WARN_MULTIPLE_DEFINITION_TYPES_FOR_SELECTOR</key>
+				<string>YES</string>
+				<key>GCC_WARN_SHADOW</key>
+				<string>YES</string>
+				<key>GCC_WARN_STRICT_SELECTOR_MATCH</key>
+				<string>YES</string>
+				<key>OTHER_LDFLAGS</key>
+				<string>-ObjC</string>
+				<key>PRODUCT_NAME</key>
+				<string>$(TARGET_NAME)</string>
+				<key>SKIP_INSTALL</key>
+				<string>YES</string>
+			</dict>
+			<key>isa</key>
+			<string>XCBuildConfiguration</string>
+			<key>name</key>
+			<string>Release</string>
+		</dict>
+		<key>0C2BD4CC1A03A28000412BE3</key>
+		<dict>
+			<key>buildConfigurations</key>
+			<array>
+				<string>0C2BD4CD1A03A28000412BE3</string>
+				<string>0C2BD4CE1A03A28000412BE3</string>
+			</array>
+			<key>defaultConfigurationIsVisible</key>
+			<string>0</string>
+			<key>defaultConfigurationName</key>
+			<string>Release</string>
+			<key>isa</key>
+			<string>XCConfigurationList</string>
+		</dict>
+		<key>0C2BD4CD1A03A28000412BE3</key>
+		<dict>
+			<key>baseConfigurationReference</key>
+			<string>D39726C7936014ADA2B50F72</string>
+			<key>buildSettings</key>
+			<dict>
+				<key>FRAMEWORK_SEARCH_PATHS</key>
+				<array>
+					<string>$(SDKROOT)/Developer/Library/Frameworks</string>
+					<string>$(inherited)</string>
+				</array>
+				<key>GCC_PREPROCESSOR_DEFINITIONS</key>
+				<array>
+					<string>DEBUG=1</string>
+					<string>$(inherited)</string>
+				</array>
+				<key>INFOPLIST_FILE</key>
+				<string>DFImageManagerTests/Info.plist</string>
+				<key>LD_RUNPATH_SEARCH_PATHS</key>
+				<string>$(inherited) @executable_path/Frameworks @loader_path/Frameworks</string>
+				<key>PRODUCT_NAME</key>
+				<string>$(TARGET_NAME)</string>
+			</dict>
+			<key>isa</key>
+			<string>XCBuildConfiguration</string>
+			<key>name</key>
+			<string>Debug</string>
+		</dict>
+		<key>0C2BD4CE1A03A28000412BE3</key>
+		<dict>
+			<key>baseConfigurationReference</key>
+			<string>08231C32293CC0B246EA8D13</string>
+			<key>buildSettings</key>
+			<dict>
+				<key>FRAMEWORK_SEARCH_PATHS</key>
+				<array>
+					<string>$(SDKROOT)/Developer/Library/Frameworks</string>
+					<string>$(inherited)</string>
+				</array>
+				<key>INFOPLIST_FILE</key>
+				<string>DFImageManagerTests/Info.plist</string>
+				<key>LD_RUNPATH_SEARCH_PATHS</key>
+				<string>$(inherited) @executable_path/Frameworks @loader_path/Frameworks</string>
+				<key>PRODUCT_NAME</key>
+				<string>$(TARGET_NAME)</string>
+			</dict>
+			<key>isa</key>
+			<string>XCBuildConfiguration</string>
+			<key>name</key>
+			<string>Release</string>
+		</dict>
+		<key>0C2BD4CF1A03A2EA00412BE3</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>path</key>
+			<string>DFImageManagerDefines.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>0C2BD4D01A03A2EA00412BE3</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>path</key>
+			<string>DFImageManagerDefines.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>0C2BD4D11A03A2EA00412BE3</key>
+		<dict>
+			<key>fileRef</key>
+			<string>0C2BD4D01A03A2EA00412BE3</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>0C2BD4D21A03A3B200412BE3</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>0C48E4AA1A5BC13000CD2497</string>
+				<string>0C48E4AB1A5BC13000CD2497</string>
+				<string>0C2BD4D51A03A3B200412BE3</string>
+				<string>0C2BD4D61A03A3B200412BE3</string>
+				<string>0C2BD4D91A03A3B200412BE3</string>
+				<string>0C2BD4DA1A03A3B200412BE3</string>
+				<string>0C2BD4DB1A03A3B200412BE3</string>
+				<string>0CA129461A4A3CB500FB4688</string>
+				<string>0CA129471A4A3CB500FB4688</string>
+				<string>0CA1294A1A4A46BA00FB4688</string>
+				<string>0CA1294B1A4A46BA00FB4688</string>
+				<string>0CA07D821A4BD1AF00B16F38</string>
+				<string>0CA07D831A4BD1AF00B16F38</string>
+				<string>0C22BD901A4CDCA100AF48E0</string>
+				<string>0C22BD911A4CDCA100AF48E0</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>path</key>
+			<string>Other</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>0C2BD4D51A03A3B200412BE3</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>path</key>
+			<string>DFImageDeserializer.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>0C2BD4D61A03A3B200412BE3</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>path</key>
+			<string>DFImageDeserializer.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>0C2BD4D91A03A3B200412BE3</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>path</key>
+			<string>DFImageRequestID+Protected.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>0C2BD4DA1A03A3B200412BE3</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>path</key>
+			<string>DFImageRequestID.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>0C2BD4DB1A03A3B200412BE3</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>path</key>
+			<string>DFImageRequestID.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>0C2BD4DC1A03A3B200412BE3</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>0C2BD4DF1A03A3B200412BE3</string>
+				<string>0C2BD4DE1A03A3B200412BE3</string>
+				<string>0C2BD4FB1A03AEB800412BE3</string>
+				<string>0CA129491A4A3F3200FB4688</string>
+				<string>0CA07D811A4BD0CC00B16F38</string>
+				<string>0C227D4A1A52387A00DA6299</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>path</key>
+			<string>Protocols</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>0C2BD4DE1A03A3B200412BE3</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>path</key>
+			<string>DFImageFetcherProtocol.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>0C2BD4DF1A03A3B200412BE3</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>path</key>
+			<string>DFImageManagerProtocol.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>0C2BD4E01A03A3B200412BE3</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>0C2BD4E11A03A3B200412BE3</string>
+				<string>0C2BD4E21A03A3B200412BE3</string>
+				<string>0CA129611A4A591200FB4688</string>
+				<string>0CA129621A4A591200FB4688</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>path</key>
+			<string>Request</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>0C2BD4E11A03A3B200412BE3</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>path</key>
+			<string>DFImageRequestOptions.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>0C2BD4E21A03A3B200412BE3</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>path</key>
+			<string>DFImageRequestOptions.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>0C2BD4E31A03A3B200412BE3</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>0C2BD4E41A03A3B200412BE3</string>
+				<string>0C2BD4E51A03A3B200412BE3</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>path</key>
+			<string>Response</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>0C2BD4E41A03A3B200412BE3</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>path</key>
+			<string>DFImageResponse.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>0C2BD4E51A03A3B200412BE3</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>path</key>
+			<string>DFImageResponse.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>0C2BD4E71A03A3B200412BE3</key>
+		<dict>
+			<key>fileRef</key>
+			<string>0C2BD4D61A03A3B200412BE3</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>0C2BD4E91A03A3B200412BE3</key>
+		<dict>
+			<key>fileRef</key>
+			<string>0C2BD4DB1A03A3B200412BE3</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>0C2BD4EA1A03A3B200412BE3</key>
+		<dict>
+			<key>fileRef</key>
+			<string>0C2BD4E21A03A3B200412BE3</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>0C2BD4EB1A03A3B200412BE3</key>
+		<dict>
+			<key>fileRef</key>
+			<string>0C2BD4E51A03A3B200412BE3</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>0C2BD4F61A03A66000412BE3</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>0C2BD4F71A03A66000412BE3</string>
+				<string>0C2BD4F81A03A66000412BE3</string>
+				<string>0C2BD4F91A03A66000412BE3</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>path</key>
+			<string>Networking</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>0C2BD4F71A03A66000412BE3</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>path</key>
+			<string>DFURLConnectionOperation.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>0C2BD4F81A03A66000412BE3</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>path</key>
+			<string>DFURLConnectionOperation.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>0C2BD4F91A03A66000412BE3</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>path</key>
+			<string>DFURLResponseDeserializing.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>0C2BD4FA1A03A66000412BE3</key>
+		<dict>
+			<key>fileRef</key>
+			<string>0C2BD4F81A03A66000412BE3</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>0C2BD4FB1A03AEB800412BE3</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>path</key>
+			<string>DFImageManagerOperationProtocol.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>0C2BD52B1A03B15300412BE3</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>path</key>
+			<string>DFImageManagerKit.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>0C48E4A81A5BBDF400CD2497</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>path</key>
+			<string>DFImageManager+DefaultManager.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>0C48E4A91A5BBDF400CD2497</key>
+		<dict>
+			<key>fileRef</key>
+			<string>0C48E4A81A5BBDF400CD2497</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>0C48E4AA1A5BC13000CD2497</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>path</key>
+			<string>DFCollectionViewPreheatingController.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>0C48E4AB1A5BC13000CD2497</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>path</key>
+			<string>DFCollectionViewPreheatingController.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>0C48E4AC1A5BC13000CD2497</key>
+		<dict>
+			<key>fileRef</key>
+			<string>0C48E4AB1A5BC13000CD2497</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>0C5C25AD1A146B7A006C5791</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>path</key>
+			<string>DFImageFetchConnectionOperation.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>0C5C25AE1A146B7A006C5791</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>path</key>
+			<string>DFImageFetchConnectionOperation.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>0C5C25AF1A146B7A006C5791</key>
+		<dict>
+			<key>fileRef</key>
+			<string>0C5C25AE1A146B7A006C5791</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>0C74769E1A4E6E95004FE2EE</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>0C7476A61A4E6EC0004FE2EE</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>path</key>
+			<string>Tests</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>0C74769F1A4E6E9B004FE2EE</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>0C7476A81A4E6EE4004FE2EE</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>path</key>
+			<string>Resources</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>0C7476A01A4E6EA6004FE2EE</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>path</key>
+			<string>TDFTesting.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>0C7476A11A4E6EA6004FE2EE</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>path</key>
+			<string>TDFTesting.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>0C7476A21A4E6EA6004FE2EE</key>
+		<dict>
+			<key>fileRef</key>
+			<string>0C7476A11A4E6EA6004FE2EE</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>0C7476A31A4E6EAF004FE2EE</key>
+		<dict>
+			<key>fileRef</key>
+			<string>0C2BD4B81A03A28000412BE3</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>0C7476A41A4E6EB5004FE2EE</key>
+		<dict>
+			<key>containerPortal</key>
+			<string>0C2BD4B01A03A28000412BE3</string>
+			<key>isa</key>
+			<string>PBXContainerItemProxy</string>
+			<key>proxyType</key>
+			<string>1</string>
+			<key>remoteGlobalIDString</key>
+			<string>0C2BD4B71A03A28000412BE3</string>
+			<key>remoteInfo</key>
+			<string>DFImageManager</string>
+		</dict>
+		<key>0C7476A51A4E6EB5004FE2EE</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXTargetDependency</string>
+			<key>target</key>
+			<string>0C2BD4B71A03A28000412BE3</string>
+			<key>targetProxy</key>
+			<string>0C7476A41A4E6EB5004FE2EE</string>
+		</dict>
+		<key>0C7476A61A4E6EC0004FE2EE</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>path</key>
+			<string>TDFImageManager.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>0C7476A71A4E6EC0004FE2EE</key>
+		<dict>
+			<key>fileRef</key>
+			<string>0C7476A61A4E6EC0004FE2EE</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>0C7476A81A4E6EE4004FE2EE</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>image.jpeg</string>
+			<key>path</key>
+			<string>Image.jpg</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>0C7476A91A4E6EE4004FE2EE</key>
+		<dict>
+			<key>fileRef</key>
+			<string>0C7476A81A4E6EE4004FE2EE</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>0C77A4391A4944E100538A36</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>0C227D331A5236FD00DA6299</string>
+				<string>0CA07D7D1A4BD08900B16F38</string>
+				<string>0CA07D881A4C13A600B16F38</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>path</key>
+			<string>Managers</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>0C8573B01A121C9C00067EA4</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>0C8573B11A121CAD00067EA4</string>
+				<string>0C8573B21A121CAD00067EA4</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>path</key>
+			<string>Views</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>0C8573B11A121CAD00067EA4</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>path</key>
+			<string>DFImageView.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>0C8573B21A121CAD00067EA4</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>path</key>
+			<string>DFImageView.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>0C8573B31A121CAD00067EA4</key>
+		<dict>
+			<key>fileRef</key>
+			<string>0C8573B21A121CAD00067EA4</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>0CA07D7D1A4BD08900B16F38</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>0CA07D7E1A4BD08900B16F38</string>
+				<string>0CA07D7F1A4BD08900B16F38</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>path</key>
+			<string>Composite Manager</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>0CA07D7E1A4BD08900B16F38</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>path</key>
+			<string>DFCompositeImageManager.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>0CA07D7F1A4BD08900B16F38</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>path</key>
+			<string>DFCompositeImageManager.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>0CA07D801A4BD08900B16F38</key>
+		<dict>
+			<key>fileRef</key>
+			<string>0CA07D7F1A4BD08900B16F38</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>0CA07D811A4BD0CC00B16F38</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>path</key>
+			<string>DFImageManagerValueTransformerProtocol.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>0CA07D821A4BD1AF00B16F38</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>path</key>
+			<string>DFImageManagerBlockValueTransformer.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>0CA07D831A4BD1AF00B16F38</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>path</key>
+			<string>DFImageManagerBlockValueTransformer.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>0CA07D841A4BD1AF00B16F38</key>
+		<dict>
+			<key>fileRef</key>
+			<string>0CA07D831A4BD1AF00B16F38</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>0CA07D881A4C13A600B16F38</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>0CA07D891A4C13B200B16F38</string>
+				<string>0CA07D8A1A4C13B200B16F38</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>path</key>
+			<string>Proxy Manager</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>0CA07D891A4C13B200B16F38</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>path</key>
+			<string>DFProxyImageManager.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>0CA07D8A1A4C13B200B16F38</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>path</key>
+			<string>DFProxyImageManager.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>0CA07D8B1A4C13B200B16F38</key>
+		<dict>
+			<key>fileRef</key>
+			<string>0CA07D8A1A4C13B200B16F38</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>0CA129461A4A3CB500FB4688</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>path</key>
+			<string>DFImageProcessingManager.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>0CA129471A4A3CB500FB4688</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>path</key>
+			<string>DFImageProcessingManager.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>0CA129481A4A3CB500FB4688</key>
+		<dict>
+			<key>fileRef</key>
+			<string>0CA129471A4A3CB500FB4688</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>0CA129491A4A3F3200FB4688</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>path</key>
+			<string>DFImageProcessorProtocol.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>0CA1294A1A4A46BA00FB4688</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>path</key>
+			<string>DFImageUtilities.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>0CA1294B1A4A46BA00FB4688</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>path</key>
+			<string>DFImageUtilities.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>0CA1294C1A4A46BA00FB4688</key>
+		<dict>
+			<key>fileRef</key>
+			<string>0CA1294B1A4A46BA00FB4688</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>0CA129611A4A591200FB4688</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>path</key>
+			<string>DFImageRequest.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>0CA129621A4A591200FB4688</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>path</key>
+			<string>DFImageRequest.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>0CA129631A4A591200FB4688</key>
+		<dict>
+			<key>fileRef</key>
+			<string>0CA129621A4A591200FB4688</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>0CAF72591A0B93D80057419A</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>0CAF725A1A0B93E30057419A</string>
+				<string>0CAF725B1A0B93E30057419A</string>
+				<string>0C5C25AD1A146B7A006C5791</string>
+				<string>0C5C25AE1A146B7A006C5791</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>path</key>
+			<string>Operations</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>0CAF725A1A0B93E30057419A</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>path</key>
+			<string>DFImageURLCacheLookupOperation.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>0CAF725B1A0B93E30057419A</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>path</key>
+			<string>DFImageURLCacheLookupOperation.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>0CAF725C1A0B93E30057419A</key>
+		<dict>
+			<key>fileRef</key>
+			<string>0CAF725B1A0B93E30057419A</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>0CD8A9391A60AF4300B16BD1</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>0CD8A9571A60AF6100B16BD1</string>
+				<string>0CD8A95F1A60AF6100B16BD1</string>
+				<string>0CD8A9621A60AF6100B16BD1</string>
+				<string>0CD8A9691A60AF6100B16BD1</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>path</key>
+			<string>Fetchers</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>0CD8A9571A60AF6100B16BD1</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>0CD8A9581A60AF6100B16BD1</string>
+				<string>0CD8A9591A60AF6100B16BD1</string>
+				<string>0CD8A95A1A60AF6100B16BD1</string>
+				<string>0CD8A95B1A60AF6100B16BD1</string>
+				<string>0CD8A95C1A60AF6100B16BD1</string>
+				<string>0CD8A95D1A60AF6100B16BD1</string>
+				<string>0CD8A95E1A60AF6100B16BD1</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>path</key>
+			<string>Assets Library Fetcher</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>0CD8A9581A60AF6100B16BD1</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>path</key>
+			<string>ALAssetsLibrary+DFImageManager.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>0CD8A9591A60AF6100B16BD1</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>path</key>
+			<string>ALAssetsLibrary+DFImageManager.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>0CD8A95A1A60AF6100B16BD1</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>path</key>
+			<string>DFAssetsLibraryImageFetchOperation.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>0CD8A95B1A60AF6100B16BD1</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>path</key>
+			<string>DFAssetsLibraryImageFetchOperation.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>0CD8A95C1A60AF6100B16BD1</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>path</key>
+			<string>DFAssetsLibraryImageFetcher.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>0CD8A95D1A60AF6100B16BD1</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>path</key>
+			<string>DFAssetsLibraryImageFetcher.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>0CD8A95E1A60AF6100B16BD1</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>path</key>
+			<string>DFAssetsLibraryUtilities.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>0CD8A95F1A60AF6100B16BD1</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>0CD8A9601A60AF6100B16BD1</string>
+				<string>0CD8A9611A60AF6100B16BD1</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>path</key>
+			<string>Base Fetcher</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>0CD8A9601A60AF6100B16BD1</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>path</key>
+			<string>DFCachingImageFetcher.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>0CD8A9611A60AF6100B16BD1</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>path</key>
+			<string>DFCachingImageFetcher.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>0CD8A9621A60AF6100B16BD1</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>0CD8A9631A60AF6100B16BD1</string>
+				<string>0CD8A9641A60AF6100B16BD1</string>
+				<string>0CD8A9651A60AF6100B16BD1</string>
+				<string>0CD8A9661A60AF6100B16BD1</string>
+				<string>0CD8A9671A60AF6100B16BD1</string>
+				<string>0CD8A9681A60AF6100B16BD1</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>path</key>
+			<string>Photos Kit Fetcher</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>0CD8A9631A60AF6100B16BD1</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>path</key>
+			<string>DFPHAssetlocalIdentifier.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>0CD8A9641A60AF6100B16BD1</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>path</key>
+			<string>DFPHAssetlocalIdentifier.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>0CD8A9651A60AF6100B16BD1</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>path</key>
+			<string>DFPhotosKitImageFetchOperation.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>0CD8A9661A60AF6100B16BD1</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>path</key>
+			<string>DFPhotosKitImageFetchOperation.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>0CD8A9671A60AF6100B16BD1</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>path</key>
+			<string>DFPhotosKitImageFetcher.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>0CD8A9681A60AF6100B16BD1</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>path</key>
+			<string>DFPhotosKitImageFetcher.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>0CD8A9691A60AF6100B16BD1</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>0CD8A96A1A60AF6100B16BD1</string>
+				<string>0CD8A96B1A60AF6100B16BD1</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>path</key>
+			<string>URL Fetcher</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>0CD8A96A1A60AF6100B16BD1</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>path</key>
+			<string>DFURLImageFetcher.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>0CD8A96B1A60AF6100B16BD1</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>path</key>
+			<string>DFURLImageFetcher.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>0CD8A96C1A60AF6100B16BD1</key>
+		<dict>
+			<key>fileRef</key>
+			<string>0CD8A9591A60AF6100B16BD1</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>0CD8A96D1A60AF6100B16BD1</key>
+		<dict>
+			<key>fileRef</key>
+			<string>0CD8A95B1A60AF6100B16BD1</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>0CD8A96E1A60AF6100B16BD1</key>
+		<dict>
+			<key>fileRef</key>
+			<string>0CD8A95D1A60AF6100B16BD1</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>0CD8A96F1A60AF6100B16BD1</key>
+		<dict>
+			<key>fileRef</key>
+			<string>0CD8A9611A60AF6100B16BD1</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>0CD8A9701A60AF6100B16BD1</key>
+		<dict>
+			<key>fileRef</key>
+			<string>0CD8A9641A60AF6100B16BD1</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>0CD8A9711A60AF6100B16BD1</key>
+		<dict>
+			<key>fileRef</key>
+			<string>0CD8A9661A60AF6100B16BD1</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>0CD8A9721A60AF6100B16BD1</key>
+		<dict>
+			<key>fileRef</key>
+			<string>0CD8A9681A60AF6100B16BD1</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>0CD8A9731A60AF6100B16BD1</key>
+		<dict>
+			<key>fileRef</key>
+			<string>0CD8A96B1A60AF6100B16BD1</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>32CC873EE6018D0521E16ED4</key>
+		<dict>
+			<key>buildActionMask</key>
+			<string>2147483647</string>
+			<key>files</key>
+			<array/>
+			<key>inputPaths</key>
+			<array/>
+			<key>isa</key>
+			<string>PBXShellScriptBuildPhase</string>
+			<key>name</key>
+			<string>Copy Pods Resources</string>
+			<key>outputPaths</key>
+			<array/>
+			<key>runOnlyForDeploymentPostprocessing</key>
+			<string>0</string>
+			<key>shellPath</key>
+			<string>/bin/sh</string>
+			<key>shellScript</key>
+			<string>"${SRCROOT}/../Pods/Target Support Files/Pods/Pods-resources.sh"
+</string>
+			<key>showEnvVarsInLog</key>
+			<string>0</string>
+		</dict>
+		<key>696562A56BA5751D9A244F06</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>FE905C97593137A3540CA56B</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>name</key>
+			<string>Frameworks</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>789713635CD477B90979E448</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>D39726C7936014ADA2B50F72</string>
+				<string>08231C32293CC0B246EA8D13</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>name</key>
+			<string>Pods</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>C73AE51EE51AB92544DA81D4</key>
+		<dict>
+			<key>buildActionMask</key>
+			<string>2147483647</string>
+			<key>files</key>
+			<array/>
+			<key>inputPaths</key>
+			<array/>
+			<key>isa</key>
+			<string>PBXShellScriptBuildPhase</string>
+			<key>name</key>
+			<string>Check Pods Manifest.lock</string>
+			<key>outputPaths</key>
+			<array/>
+			<key>runOnlyForDeploymentPostprocessing</key>
+			<string>0</string>
+			<key>shellPath</key>
+			<string>/bin/sh</string>
+			<key>shellScript</key>
+			<string>diff "${PODS_ROOT}/../Podfile.lock" "${PODS_ROOT}/Manifest.lock" &gt; /dev/null
+if [[ $? != 0 ]] ; then
+    cat &lt;&lt; EOM
+error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.
+EOM
+    exit 1
+fi
+</string>
+			<key>showEnvVarsInLog</key>
+			<string>0</string>
+		</dict>
+		<key>D39726C7936014ADA2B50F72</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>text.xcconfig</string>
+			<key>name</key>
+			<string>Pods.debug.xcconfig</string>
+			<key>path</key>
+			<string>../Pods/Target Support Files/Pods/Pods.debug.xcconfig</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>E3F8DD56F2B8E4BA2BD17E25</key>
+		<dict>
+			<key>fileRef</key>
+			<string>FE905C97593137A3540CA56B</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>FE905C97593137A3540CA56B</key>
+		<dict>
+			<key>explicitFileType</key>
+			<string>archive.ar</string>
+			<key>includeInIndex</key>
+			<string>0</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>path</key>
+			<string>libPods.a</string>
+			<key>sourceTree</key>
+			<string>BUILT_PRODUCTS_DIR</string>
+		</dict>
+	</dict>
+	<key>rootObject</key>
+	<string>0C2BD4B01A03A28000412BE3</string>
+</dict>
+</plist>

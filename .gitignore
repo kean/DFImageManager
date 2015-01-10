@@ -26,4 +26,6 @@ DerivedData
 #
 # Pods/
 
+Pods/
+Podfile.lock
 Samples/DFImageManagerSample/Pods
