@@ -18,7 +18,7 @@ DFImageManager is a modern framework for managing (fetching, caching, decompress
 
 ## Getting Started
 - [Download DFImageManager](https://github.com/kean/DFImageManager/releases) and play with [demo project](https://github.com/kean/DFImageManager/tree/master/DFImageManagerSample)
-- Read [Wiki](https://github.com/kean/DFImageManager/wiki)
+- Read guides on [Wiki](https://github.com/kean/DFImageManager/wiki)
 
 ## Requirements
 iOS 7
