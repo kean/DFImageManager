@@ -24,11 +24,19 @@
 
 #import "DFImageManagerDefines.h"
 
+#import "DFImageAssetProtocol.h"
 #import "DFImageManagerProtocol.h"
 #import "DFImageFetcherProtocol.h"
 #import "DFImageProcessorProtocol.h"
 #import "DFImageCacheProtocol.h"
 #import "DFImageManagerOperationProtocol.h"
+
+
+#import "NSURL+DFImageAsset.h"
+#import "PHAsset+DFImageAsset.h"
+#import "ALAsset+DFImageAsset.h"
+#import "DFPHAssetlocalIdentifier+DFImageAsset.h"
+
 
 #import "DFImageManager.h"
 #import "DFCompositeImageManager.h"
@@ -39,7 +47,9 @@
 #import "DFImageRequestOptions.h"
 #import "DFImageResponse.h"
 
+
 #import "DFImageProcessingManager.h"
+
 
 #import "DFCachingImageFetcher.h"
 
@@ -53,6 +63,7 @@
 #import "DFImageFetchConnectionOperation.h"
 #import "DFURLConnectionOperation.h"
 #import "DFURLResponseDeserializing.h"
+
 
 #import "DFImageView.h"
 

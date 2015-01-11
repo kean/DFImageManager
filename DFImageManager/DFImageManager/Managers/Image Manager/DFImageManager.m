@@ -152,7 +152,7 @@ static NSString *const _kPreheatHandlerID = @"_df_preheat";
     _DFRequestHandler *handler = [[_DFRequestHandler alloc] initWithRequest:request requestID:requestID completion:completion];
     
     if (_cache != nil) {
-        NSString *assetID = [_fetcher uniqueIDForAsset:request.asset];
+        NSString *assetID = [request.asset uniqueImageAssetIdentifier];
         UIImage *image = [_cache cachedImageForAssetID:assetID request:request];
         if (image != nil) {
             [self _didCompleteRequestWithImage:image info:nil handler:handler];
@@ -226,7 +226,7 @@ static NSString *const _kPreheatHandlerID = @"_df_preheat";
 }
 
 - (void)_processImage:(UIImage *)input forHandler:(_DFRequestHandler *)handler completion:(void (^)(UIImage *image))completion {
-    NSString *assetID = [_fetcher uniqueIDForAsset:handler.request.asset];
+    NSString *assetID = [handler.request.asset uniqueImageAssetIdentifier];
     if (_processor != nil && input != nil) {
         UIImage *cachedImage = [_cache cachedImageForAssetID:assetID request:handler.request];
         if (cachedImage != nil) {
@@ -346,7 +346,7 @@ static NSString *const _kPreheatHandlerID = @"_df_preheat";
     return [DFImageRequestID requestIDWithImageManager:self ECID:ECID handlerID:_kPreheatHandlerID];
 }
 
-- (void)stopPreheatingImageForAllRequests {
+- (void)stopPreheatingImagesForAllRequests {
     dispatch_async(_syncQueue, ^{
         [_executionContexts enumerateKeysAndObjectsUsingBlock:^(NSString *ECID, _DFRequestExecutionContext *context, BOOL *stop) {
             NSMutableArray *requestIDs = [NSMutableArray new];

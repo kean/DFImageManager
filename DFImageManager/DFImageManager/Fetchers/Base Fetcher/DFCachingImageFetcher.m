@@ -42,14 +42,8 @@ static char _operationTypeToken;
     return NO;
 }
 
-- (NSString *)uniqueIDForAsset:(id)asset {
-    [NSException raise:NSInvalidArgumentException format:@"Abstract method called %@", NSStringFromSelector(_cmd)];
-    return nil;
-}
-
 - (NSString *)executionContextIDForRequest:(DFImageRequest *)request {
-    NSString *assetID = [self uniqueIDForAsset:request.asset];
-    
+    NSString *assetID = [request.asset uniqueImageAssetIdentifier];
     NSMutableString *ECID = [[NSMutableString alloc] initWithString:@"requestID?"];
     NSArray *keyPaths = [self keyPathsAffectingExecutionContextIDForRequest:request];
     for (NSString *keyPath in keyPaths) {

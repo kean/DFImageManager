@@ -20,31 +20,10 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "DFImageManagerOperationProtocol.h"
-#import "DFImageManagerProtocol.h"
-
-@class DFImageRequest;
-@class DFImageRequestOptions;
+#import "DFImageAssetProtocol.h"
+#import <Foundation/Foundation.h>
 
 
-/*! Factory for multiple image provider components.
- */
-@protocol DFImageFetcher <NSObject>
-
-- (BOOL)canHandleRequest:(DFImageRequest *)request;
-
-/*! Creates execution context ID for request so that existing operations could be reused for new handlers.
- */
-- (NSString *)executionContextIDForRequest:(DFImageRequest *)request;
-
-/*! Return nil if no work is required.
- */
-- (NSOperation<DFImageManagerOperation> *)createOperationForRequest:(DFImageRequest *)request previousOperation:(NSOperation<DFImageManagerOperation> *)previousOperation;
-
-- (void)enqueueOperation:(NSOperation<DFImageManagerOperation> *)operation;
-
-@optional
-
-- (void)imageManager:(id<DFImageManager>)manager didEncounterError:(NSError *)error;
+@interface NSURL (DFImageAsset) <DFImageAsset>
 
 @end

@@ -20,31 +20,13 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "DFImageManagerOperationProtocol.h"
-#import "DFImageManagerProtocol.h"
+#import <Foundation/Foundation.h>
 
-@class DFImageRequest;
-@class DFImageRequestOptions;
-
-
-/*! Factory for multiple image provider components.
+/*! Represents an image asset that can be retrieved by the image manager. It can be just an image URL (NSURL) or something more complex like PHAsset.
+ @discussion Consider adapting this protocol in a category if you want to use system classes without subclassing them. For more info read https://developer.apple.com/legacy/library/documentation/Cocoa/Conceptual/ObjectiveC/Chapters/ocProtocols.html#//apple_ref/doc/uid/TP30001163-CH15-SW3
  */
-@protocol DFImageFetcher <NSObject>
+@protocol DFImageAsset <NSObject>
 
-- (BOOL)canHandleRequest:(DFImageRequest *)request;
-
-/*! Creates execution context ID for request so that existing operations could be reused for new handlers.
- */
-- (NSString *)executionContextIDForRequest:(DFImageRequest *)request;
-
-/*! Return nil if no work is required.
- */
-- (NSOperation<DFImageManagerOperation> *)createOperationForRequest:(DFImageRequest *)request previousOperation:(NSOperation<DFImageManagerOperation> *)previousOperation;
-
-- (void)enqueueOperation:(NSOperation<DFImageManagerOperation> *)operation;
-
-@optional
-
-- (void)imageManager:(id<DFImageManager>)manager didEncounterError:(NSError *)error;
+- (NSString *)uniqueImageAssetIdentifier;
 
 @end

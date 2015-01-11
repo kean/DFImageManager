@@ -20,15 +20,16 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "DFImageURLCacheLookupOperation.h"
 #import "DFImageDeserializer.h"
 #import "DFImageFetchConnectionOperation.h"
 #import "DFImageRequest.h"
 #import "DFImageRequestOptions.h"
 #import "DFImageResponse.h"
-#import "DFURLImageFetcher.h"
+#import "DFImageURLCacheLookupOperation.h"
 #import "DFURLConnectionOperation.h"
+#import "DFURLImageFetcher.h"
 #import "DFURLResponseDeserializing.h"
+#import "NSURL+DFImageAsset.h"
 
 
 @implementation DFURLImageFetcher {
@@ -54,7 +55,7 @@
 
 - (BOOL)canHandleRequest:(DFImageRequest *)request {
     if ([request.asset isKindOfClass:[NSURL class]]) {
-        NSURL *URL = request.asset;
+        NSURL *URL = (NSURL *)request.asset;
         if ([[[self class] supportedSchemes] containsObject:URL.scheme]) {
             return YES;
         }
@@ -69,10 +70,6 @@
         schemes = [NSSet setWithObjects:@"http", @"https", @"ftp", @"file", nil];
     });
     return schemes;
-}
-
-- (NSString *)uniqueIDForAsset:(id)asset {
-    return [((NSURL *)asset) absoluteString];
 }
 
 - (NSArray *)keyPathsAffectingExecutionContextIDForRequest:(DFImageRequest *)request {
@@ -90,7 +87,7 @@
 - (NSOperation<DFImageManagerOperation> *)createCacheLookupOperationForRequest:(DFImageRequest *)request {
     if (self.session.configuration.URLCache != nil &&
         ![self _isFilesystemRequest:request]) {
-        NSURLRequest *URLRequest = [[NSURLRequest alloc] initWithURL:request.asset];
+        NSURLRequest *URLRequest = [[NSURLRequest alloc] initWithURL:(NSURL *)request.asset];
         return [[DFImageURLCacheLookupOperation alloc] initWithRequest:URLRequest cache:self.session.configuration.URLCache];
     }
     return nil;
@@ -98,7 +95,7 @@
 
 - (NSOperation<DFImageManagerOperation> *)createImageFetchOperationForRequest:(DFImageRequest *)request {
     if (request.options.networkAccessAllowed || [self _isFilesystemRequest:request]) {
-        DFImageFetchConnectionOperation *operation = [[DFImageFetchConnectionOperation alloc] initWithURL:request.asset session:self.session];
+        DFImageFetchConnectionOperation *operation = [[DFImageFetchConnectionOperation alloc] initWithURL:(NSURL *)request.asset session:self.session];
         operation.deserializer = [DFImageDeserializer new];
         return operation;
     }

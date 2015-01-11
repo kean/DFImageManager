@@ -98,7 +98,7 @@
 
 - (NSArray *)_requestsForAssets:(NSArray *)assets targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options {
     NSMutableArray *requests = [NSMutableArray new];
-    for (id asset in assets) {
+    for (id<DFImageAsset> asset in assets) {
         [requests addObject:[[DFImageRequest alloc] initWithAsset:asset targetSize:targetSize contentMode:contentMode options:options]];
     }
     return [requests copy];

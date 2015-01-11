@@ -20,12 +20,14 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+#import "DFImageAssetProtocol.h"
 #import "DFImageRequest.h"
 #import "DFImageRequestOptions.h"
 
+
 @implementation DFImageRequest
 
-- (instancetype)initWithAsset:(id)asset targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options {
+- (instancetype)initWithAsset:(id<DFImageAsset>)asset targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options {
     if (self = [super init]) {
         _asset = asset;
         _targetSize = targetSize;
@@ -35,7 +37,7 @@
     return self;
 }
 
-- (instancetype)initWithAsset:(id)asset {
+- (instancetype)initWithAsset:(id<DFImageAsset>)asset {
     return [self initWithAsset:asset targetSize:DFImageManagerMaximumSize contentMode:DFImageContentModeDefault options:nil];
 }
 

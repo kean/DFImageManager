@@ -56,22 +56,13 @@
     return NO;
 }
 
-- (NSString *)uniqueIDForAsset:(id)asset {
-    if ([asset isKindOfClass:[ALAsset class]]) {
-        return [((ALAsset *)asset).defaultRepresentation.url absoluteString];
-    } else if ([asset isKindOfClass:[NSURL class]]) {
-        return [((NSURL *)asset) absoluteString];
-    }
-    return nil;
-}
-
 - (NSString *)executionContextIDForRequest:(DFImageRequest *)request {
-    NSString *assetUID = [self uniqueIDForAsset:request.asset];
+    NSString *assetID = [request.asset uniqueImageAssetIdentifier];
     DFALAssetImageSize imageSize = [self _assetImageSizeForRequest:request];
     NSMutableString *ECID = [[NSMutableString alloc] initWithString:@"requestID?"];
     [ECID appendFormat:@"imageSize=%i", (int)imageSize];
-    [ECID appendFormat:@"assetID=%@", assetUID];
-    return assetUID;
+    [ECID appendFormat:@"assetID=%@", assetID];
+    return assetID;
 }
 
 - (DFALAssetImageSize)_assetImageSizeForRequest:(DFImageRequest *)request {

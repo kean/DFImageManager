@@ -20,6 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+#import "DFImageAssetProtocol.h"
 #import "DFImageRequest.h"
 #import "DFImageRequestOptions.h"
 #import "DFImageResponse.h"
@@ -51,9 +52,9 @@
 - (instancetype)initWithRequest:(DFImageRequest *)request {
     if (self = [super init]) {
         if ([request.asset isKindOfClass:[PHAsset class]]) {
-            _asset = request.asset;
+            _asset = (PHAsset *)request.asset;
         } else {
-            _assetLocalIdentifier = request.asset;
+            _assetLocalIdentifier = (DFPHAssetlocalIdentifier *)request.asset;
         }
         _targetSize = request.targetSize;
         _contentMode = request.contentMode;

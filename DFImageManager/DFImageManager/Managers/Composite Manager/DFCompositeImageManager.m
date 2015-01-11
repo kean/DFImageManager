@@ -91,9 +91,9 @@
     }
 }
 
-- (void)stopPreheatingImageForAllRequests {
+- (void)stopPreheatingImagesForAllRequests {
     for (id<DFCoreImageManager> manager in _managers) {
-        [manager stopPreheatingImageForAllRequests];
+        [manager stopPreheatingImagesForAllRequests];
     }
 }
 
