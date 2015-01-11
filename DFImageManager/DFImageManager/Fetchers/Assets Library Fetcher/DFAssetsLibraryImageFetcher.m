@@ -82,9 +82,9 @@
     if (!previousOperation) {
         DFAssetsLibraryImageFetchOperation *operation;
         if ([request.asset isKindOfClass:[ALAsset class]]) {
-            operation = [[DFAssetsLibraryImageFetchOperation alloc] initWithAsset:request.asset];
+            operation = [[DFAssetsLibraryImageFetchOperation alloc] initWithAsset:(ALAsset *)request.asset];
         } else {
-            operation = [[DFAssetsLibraryImageFetchOperation alloc] initWithAssetURL:request.asset];
+            operation = [[DFAssetsLibraryImageFetchOperation alloc] initWithAssetURL:(NSURL *)request.asset];
         }
         operation.imageSize = [self _assetImageSizeForRequest:request];
         return operation;

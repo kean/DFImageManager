@@ -28,7 +28,7 @@
 
 @protocol DFImageCache <NSObject>
 
-- (UIImage *)cachedImageForAssetID:(NSString *)assetID request:(DFImageRequest *)request;
-- (void)storeImage:(UIImage *)image forAssetID:(NSString *)assetID request:(DFImageRequest *)request;
+- (UIImage *)cachedImageForRequest:(DFImageRequest *)request;
+- (void)storeImage:(UIImage *)image forRequest:(DFImageRequest *)request;
 
 @end

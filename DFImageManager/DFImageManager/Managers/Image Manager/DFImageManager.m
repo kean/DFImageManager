@@ -152,8 +152,7 @@ static NSString *const _kPreheatHandlerID = @"_df_preheat";
     _DFRequestHandler *handler = [[_DFRequestHandler alloc] initWithRequest:request requestID:requestID completion:completion];
     
     if (_cache != nil) {
-        NSString *assetID = [request.asset uniqueImageAssetIdentifier];
-        UIImage *image = [_cache cachedImageForAssetID:assetID request:request];
+        UIImage *image = [_cache cachedImageForRequest:request];
         if (image != nil) {
             [self _didCompleteRequestWithImage:image info:nil handler:handler];
             return;
@@ -226,19 +225,18 @@ static NSString *const _kPreheatHandlerID = @"_df_preheat";
 }
 
 - (void)_processImage:(UIImage *)input forHandler:(_DFRequestHandler *)handler completion:(void (^)(UIImage *image))completion {
-    NSString *assetID = [handler.request.asset uniqueImageAssetIdentifier];
     if (_processor != nil && input != nil) {
-        UIImage *cachedImage = [_cache cachedImageForAssetID:assetID request:handler.request];
+        UIImage *cachedImage = [_cache cachedImageForRequest:handler.request];
         if (cachedImage != nil) {
             completion(cachedImage);
         } else {
             [_processor processImage:input forRequest:handler.request completion:^(UIImage *image) {
-                [_cache storeImage:image forAssetID:assetID request:handler.request];
+                [_cache storeImage:image forRequest:handler.request];
                 completion(image);
             }];
         }
     } else {
-        [_cache storeImage:input forAssetID:assetID request:handler.request];
+        [_cache storeImage:input forRequest:handler.request];
         completion(input);
     }
 }

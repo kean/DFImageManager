@@ -20,6 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+#import "DFImageAssetProtocol.h"
 #import "DFImageProcessingManager.h"
 #import "DFImageRequest.h"
 #import "DFImageUtilities.h"
@@ -81,7 +82,8 @@
 
 #pragma mark - <DFImageCache>
 
-- (UIImage *)cachedImageForAssetID:(NSString *)assetID request:(DFImageRequest *)request {
+- (UIImage *)cachedImageForRequest:(DFImageRequest *)request {
+    NSString *assetID = [request.asset uniqueImageAssetIdentifier];
     if (assetID != nil) {
         NSString *cacheKey = [self _cacheKeyForAssetID:assetID request:request];
         return [_cache objectForKey:cacheKey];
@@ -90,11 +92,14 @@
     }
 }
 
-- (void)storeImage:(UIImage *)image forAssetID:(NSString *)assetID request:(DFImageRequest *)request {
-    if (image != nil && assetID != nil) {
-        NSString *cacheKey = [self _cacheKeyForAssetID:assetID request:request];
-        NSUInteger cost = [self _costForImage:image];
-        [_cache setObject:image forKey:cacheKey cost:cost];
+- (void)storeImage:(UIImage *)image forRequest:(DFImageRequest *)request {
+    if (image != nil) {
+        NSString *assetID = [request.asset uniqueImageAssetIdentifier];
+        if (assetID != nil) {
+            NSString *cacheKey = [self _cacheKeyForAssetID:assetID request:request];
+            NSUInteger cost = [self _costForImage:image];
+            [_cache setObject:image forKey:cacheKey cost:cost];
+        }
     }
 }
 
