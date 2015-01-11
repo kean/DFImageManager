@@ -57,7 +57,7 @@
     _animation = DFImageViewAnimationFade;
     _contentMode = DFImageContentModeDefault;
     _managesRequestPriorities = YES;
-    _placeholderColor = [UIColor colorWithRed:225.0/255.0 green:225.0/255.0 blue:225.0/255.0 alpha:1.f];
+    _placeholderColor = [UIColor colorWithWhite:235.f/255.f alpha:1.f];
     self.clipsToBounds = YES;
     
     _imageView = ({
