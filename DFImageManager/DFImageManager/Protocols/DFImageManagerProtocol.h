@@ -45,7 +45,7 @@
 /*! Cancels all image preheating operations.
  @note Do not cancel operations that were started as a preheat operations but than were assigned 'real' handlers.
  */
-- (void)stopPreheatingImageForAllAssets;
+- (void)stopPreheatingImageForAllRequests;
 
 @end
 

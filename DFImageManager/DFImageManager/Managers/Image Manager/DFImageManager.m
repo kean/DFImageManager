@@ -346,7 +346,7 @@ static NSString *const _kPreheatHandlerID = @"_df_preheat";
     return [DFImageRequestID requestIDWithImageManager:self ECID:ECID handlerID:_kPreheatHandlerID];
 }
 
-- (void)stopPreheatingImageForAllAssets {
+- (void)stopPreheatingImageForAllRequests {
     dispatch_async(_syncQueue, ^{
         [_executionContexts enumerateKeysAndObjectsUsingBlock:^(NSString *ECID, _DFRequestExecutionContext *context, BOOL *stop) {
             NSMutableArray *requestIDs = [NSMutableArray new];
