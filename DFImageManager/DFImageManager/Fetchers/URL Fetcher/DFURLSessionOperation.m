@@ -53,6 +53,9 @@
     _task = [self.session dataTaskWithURL:self.URL completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
         [weakSelf _didFinishWithData:data response:response error:error];
     }];
+    if ([_task respondsToSelector:@selector(setPriority:)]) {
+        _task.priority = [DFURLSessionOperation _taskPriorityForQueuePriority:self.queuePriority];
+    }
     if (_task != nil) {
         [_task resume];
     } else {
@@ -100,6 +103,23 @@
             [super cancel];
             [_task cancel];
         }
+    }
+}
+
+- (void)setQueuePriority:(NSOperationQueuePriority)queuePriority {
+    [super setQueuePriority:queuePriority];
+    if ([_task respondsToSelector:@selector(setPriority:)]) {
+        _task.priority = [DFURLSessionOperation _taskPriorityForQueuePriority:queuePriority];
+    }
+}
+
++ (float)_taskPriorityForQueuePriority:(NSOperationQueuePriority)queuePriority {
+    switch (queuePriority) {
+        case NSOperationQueuePriorityVeryHigh: return 0.9;
+        case NSOperationQueuePriorityHigh: return 0.7;
+        case NSOperationQueuePriorityNormal: return 0.5;
+        case NSOperationQueuePriorityLow: return 0.3;
+        case NSOperationQueuePriorityVeryLow: return 0.1;
     }
 }
 
