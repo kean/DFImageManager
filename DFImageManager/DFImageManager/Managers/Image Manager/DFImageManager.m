@@ -179,26 +179,23 @@ static NSString *const _kPreheatHandlerID = @"_df_preheat";
     DFImageRequest *request = handler.request;
     DFImageRequestID *requestID = handler.requestID;
     
-    // TODO: Too complicated and error-prone, fix it.
-    if (_cache != nil) {
-        UIImage *image = [_cache cachedImageForRequest:request];
-        if (image != nil) {
-            [self _didCompleteRequestWithImage:image info:nil handler:handler];
-            return;
-        }
-    }
-    
     _DFRequestExecutionContext *context = _executionContexts[requestID.ECID];
-    if (!context) {
+    BOOL hasExistingContext = context != nil;
+    if (!hasExistingContext) {
         context = [[_DFRequestExecutionContext alloc] initWithECID:requestID.ECID request:request];
-        context.handlers[requestID.handlerID] = handler;
         _executionContexts[requestID.ECID] = context;
+    }
+    context.handlers[requestID.handlerID] = handler;
+    
+    UIImage *image = [_cache cachedImageForRequest:request];
+    if (image != nil) {
+        [self _didReceiveProcessedImage:image forHandler:handler context:context];
+    } else if (!hasExistingContext) {
         [self _requestImageForContext:context];
+    } else if (context.response != nil) {
+        [self _processResponseForContext:context handler:handler];
     } else {
-        context.handlers[requestID.handlerID] = handler;
-        if (context.response != nil) {
-            [self _processResponseForContext:context handler:handler];
-        }
+        // Wait until context receives requested image.
     }
 }
 
@@ -244,21 +241,9 @@ static NSString *const _kPreheatHandlerID = @"_df_preheat";
 - (void)_processResponseForContext:(_DFRequestExecutionContext *)context handler:(_DFRequestHandler *)handler {
     [self _processImage:context.response.image forHandler:handler completion:^(UIImage *image) {
         dispatch_async(_syncQueue, ^{
-            [context.handlers removeObjectForKey:handler.requestID.handlerID];
-            if ([handler isKindOfClass:[_DFPreheatingHandler class]]) {
-                [_preheatingHandlers removeObject:handler];
-            }
-            if (context.handlers.count == 0) {
-                [self _removeExecutionContextForECID:context.ECID];
-            }
-            [self _didCompleteRequestWithImage:image info:[self _infoFromResponse:context.response] handler:handler];
+            [self _didReceiveProcessedImage:image forHandler:handler context:context];
         });
     }];
-}
-
-- (void)_removeExecutionContextForECID:(NSString *)ECID {
-    [_executionContexts removeObjectForKey:ECID];
-    [self _startExecutingPreheatingRequestsIfNecessary];
 }
 
 - (void)_processImage:(UIImage *)input forHandler:(_DFRequestHandler *)handler completion:(void (^)(UIImage *image))completion {
@@ -278,6 +263,28 @@ static NSString *const _kPreheatHandlerID = @"_df_preheat";
     }
 }
 
+- (void)_didReceiveProcessedImage:(UIImage *)image forHandler:(_DFRequestHandler *)handler context:(_DFRequestExecutionContext *)context {
+    [context.handlers removeObjectForKey:handler.requestID.handlerID];
+    if ([handler isKindOfClass:[_DFPreheatingHandler class]]) {
+        [_preheatingHandlers removeObject:handler];
+    }
+    if (context.handlers.count == 0) {
+        [self _removeExecutionContextForECID:context.ECID];
+    }
+    NSMutableDictionary *mutableInfo = [NSMutableDictionary dictionaryWithDictionary:[self _infoFromResponse:context.response]];
+    mutableInfo[DFImageInfoRequestIDKey] = handler.requestID;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if (handler.completion != nil) {
+            handler.completion(image, mutableInfo);
+        }
+    });
+}
+
+- (void)_removeExecutionContextForECID:(NSString *)ECID {
+    [_executionContexts removeObjectForKey:ECID];
+    [self _startExecutingPreheatingRequestsIfNecessary];
+}
+
 - (NSDictionary *)_infoFromResponse:(DFImageResponse *)response {
     NSMutableDictionary *info = [NSMutableDictionary new];
     if (response.error != nil) {
@@ -285,16 +292,6 @@ static NSString *const _kPreheatHandlerID = @"_df_preheat";
     }
     [info addEntriesFromDictionary:response.userInfo];
     return [info copy];
-}
-
-- (void)_didCompleteRequestWithImage:(UIImage *)image info:(NSDictionary *)info handler:(_DFRequestHandler *)handler {
-    NSMutableDictionary *mutableInfo = [NSMutableDictionary dictionaryWithDictionary:info];
-    mutableInfo[DFImageInfoRequestIDKey] = handler.requestID;
-    dispatch_async(dispatch_get_main_queue(), ^{
-        if (handler.completion != nil) {
-            handler.completion(image, mutableInfo);
-        }
-    });
 }
 
 #pragma mark Cancel
@@ -385,19 +382,6 @@ static NSString *const _kPreheatHandlerID = @"_df_preheat";
             [self _cancelRequestWithID:handler.requestID];
         }
         [_preheatingHandlers removeAllObjects];
-        /*
-         [_executionContexts enumerateKeysAndObjectsUsingBlock:^(NSString *ECID, _DFRequestExecutionContext *context, BOOL *stop) {
-         NSMutableArray *requestIDs = [NSMutableArray new];
-         [context.handlers enumerateKeysAndObjectsUsingBlock:^(NSString *handlerID, _DFRequestHandler *handler, BOOL *stop_inner) {
-         if ([handler isKindOfClass:[_DFPreheatingHandler class]]) {
-         [requestIDs addObject:[DFImageRequestID requestIDWithImageManager:self ECID:ECID handlerID:handlerID]];
-         }
-         }];
-         for (DFImageRequestID *requestID in requestIDs) {
-         [self _cancelRequestWithID:requestID];
-         }
-         }];
-         */
     });
 }
 
@@ -405,7 +389,6 @@ static NSString *const _kPreheatHandlerID = @"_df_preheat";
     if (_executionContexts.count == 0) {
         _DFPreheatingHandler *handler = [_preheatingHandlers firstObject];
         if (handler != nil) {
-            NSLog(@"start executing preaheat for handler %@", handler);
             [self _requestImageForHandler:handler];
         }
     }
