@@ -48,3 +48,15 @@
 - (void)imageManager:(id<DFImageManager>)manager didEncounterError:(NSError *)error;
 
 @end
+
+
+static inline NSString *
+DFExecutionContextIDForRequest(DFImageRequest *request, NSArray *keyPathsAffectingExecutionContextID) {
+    NSString *assetID = [request.asset uniqueImageAssetIdentifier];
+    NSMutableString *ECID = [[NSMutableString alloc] initWithString:@"requestID?"];
+    for (NSString *keyPath in keyPathsAffectingExecutionContextID) {
+        [ECID appendFormat:@"%@=%@&", keyPath, [request valueForKeyPath:keyPath]];
+    }
+    [ECID appendFormat:@"assetID=%@", assetID];
+    return ECID;
+}

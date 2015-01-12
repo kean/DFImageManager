@@ -227,17 +227,10 @@
 }
 
 - (NSString *)executionContextIDForRequest:(DFImageRequest *)request {
-    NSString *assetID = [request.asset uniqueImageAssetIdentifier];
-    NSMutableString *ECID = [[NSMutableString alloc] initWithString:@"requestID?"];
-    NSArray *keyPaths = [self keyPathsAffectingExecutionContextIDForRequest:request];
-    for (NSString *keyPath in keyPaths) {
-        [ECID appendFormat:@"%@=%@&", keyPath, [request valueForKeyPath:keyPath]];
-    }
-    [ECID appendFormat:@"assetID=%@", assetID];
-    return ECID;
+    return DFExecutionContextIDForRequest(request, [self _keyPathsAffectingExecutionContextIDForRequest:request]);
 }
 
-- (NSArray *)keyPathsAffectingExecutionContextIDForRequest:(DFImageRequest *)request {
+- (NSArray *)_keyPathsAffectingExecutionContextIDForRequest:(DFImageRequest *)request {
     static NSArray *_keyPathsForNetworking;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
