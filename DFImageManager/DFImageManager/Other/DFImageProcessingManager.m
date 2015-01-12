@@ -87,9 +87,8 @@
     if (assetID != nil) {
         NSString *cacheKey = [self _cacheKeyForAssetID:assetID request:request];
         return [_cache objectForKey:cacheKey];
-    } else {
-        return nil;
     }
+    return nil;
 }
 
 - (void)storeImage:(UIImage *)image forRequest:(DFImageRequest *)request {

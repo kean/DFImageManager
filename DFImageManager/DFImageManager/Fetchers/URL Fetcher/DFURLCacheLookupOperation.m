@@ -24,19 +24,9 @@
 #import "DFImageResponse.h"
 
 
-@interface DFURLCacheLookupOperation ()
-
-@property (nonatomic, getter = isExecuting) BOOL executing;
-@property (nonatomic, getter = isFinished) BOOL finished;
-
-@end
-
 @implementation DFURLCacheLookupOperation {
     DFImageResponse *_response;
 }
-
-@synthesize executing = _executing;
-@synthesize finished = _finished;
 
 - (instancetype)initWithRequest:(NSURLRequest *)request cache:(NSURLCache *)cache {
     if (self = [super init]) {
@@ -46,47 +36,19 @@
     return self;
 }
 
-- (void)start {
-    if (self.isCancelled) {
-        [self finish];
-        return;
-    }
-    self.executing = YES;
-    
+- (void)main {
     NSCachedURLResponse *response = [self.cache cachedResponseForRequest:self.request];
     UIImage *image;
     if (response != nil) {
         image = [[UIImage alloc] initWithData:response.data scale:[UIScreen mainScreen].scale];
     }
     _response = [[DFImageResponse alloc] initWithImage:image];
-    [self finish];
 }
 
 #pragma mark - <DFImageManagerOperation>
 
 - (DFImageResponse *)imageResponse {
     return _response;
-}
-
-#pragma mark - Operation
-
-- (void)finish {
-    if (_executing) {
-        self.executing = NO;
-    }
-    self.finished = YES;
-}
-
-- (void)setFinished:(BOOL)finished {
-    [self willChangeValueForKey:@"isFinished"];
-    _finished = finished;
-    [self didChangeValueForKey:@"isFinished"];
-}
-
-- (void)setExecuting:(BOOL)executing {
-    [self willChangeValueForKey:@"isExecuting"];
-    _executing = executing;
-    [self didChangeValueForKey:@"isExecuting"];
 }
 
 @end
