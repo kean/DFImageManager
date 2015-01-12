@@ -39,6 +39,7 @@
 
 @interface NSCache (DFImageProcessingManager)
 
++ (NSCache *)df_sharedImageCache;
 + (NSUInteger)df_recommendedTotalCostLimit;
 
 @end

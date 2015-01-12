@@ -119,6 +119,16 @@
 
 @implementation NSCache (DFImageProcessingManager)
 
++ (NSCache *)df_sharedImageCache {
+    static NSCache *cache;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        cache = [NSCache new];
+        cache.totalCostLimit = [self df_recommendedTotalCostLimit];
+    });
+    return cache;
+}
+
 + (NSUInteger)df_recommendedTotalCostLimit {
     static NSUInteger recommendedSize;
     static dispatch_once_t onceToken;
