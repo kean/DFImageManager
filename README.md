@@ -1,12 +1,10 @@
 # DFImageManager
 DFImageManager is a modern framework for managing (fetching, caching, decompressing, preheating and more) images from various sources.
 
-### Supported assets and assets identifiers
+### Supported assets and asset identifiers
 - NSURL with schemes http:, https:, ftp:, file:
-- PHAsset
-- PHAsset local identifier
-- ALAsset
-- NSURL with scheme assets-library:
+- PHAsset and NSURL with scheme com.github.kean.photos-kit:
+- ALAsset and NSURL with scheme assets-library:
 
 ## Features
 - Completely asynchronous and thread safe. Performance-critical subsystems run entirely on the background threads
