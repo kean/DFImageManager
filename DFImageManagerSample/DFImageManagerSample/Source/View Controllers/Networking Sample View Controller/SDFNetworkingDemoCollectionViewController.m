@@ -84,7 +84,7 @@ static NSString * const reuseIdentifier = @"Cell";
 - (void)_configureImageManager {
     // TODO: Use default image manager.
     
-    DFImageProcessingManager *imageProcessor = [DFImageProcessingManager new];
+    DFImageProcessingManager *processor = [DFImageProcessingManager new];
     
     // Initialize NSURLCache without memory cache because DFImageManager has a higher level memory cache (see <DFImageCache>.
     NSURLCache *cache = [[NSURLCache alloc] initWithMemoryCapacity:0 diskCapacity:1024 * 1024 * 100 diskPath:[[NSUUID UUID] UUIDString]];
@@ -96,7 +96,7 @@ static NSString * const reuseIdentifier = @"Cell";
     NSURLSession *session = [NSURLSession sessionWithConfiguration:configuration];
     
     DFURLImageFetcher *fetcher = [[DFURLImageFetcher alloc] initWithSession:session];
-    DFImageManager *URLImageManager = [[DFImageManager alloc] initWithImageFetcher:fetcher processor:imageProcessor cache:imageProcessor];
+    DFImageManager *URLImageManager = [[DFImageManager alloc] initWithConfiguration:[DFImageManagerConfiguration configurationWithFetcher:fetcher processor:processor cache:processor]];
     
     [DFImageManager setSharedManager:URLImageManager];
 }

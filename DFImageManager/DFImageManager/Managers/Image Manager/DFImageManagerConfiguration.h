@@ -36,6 +36,10 @@
  */
 @property (nonatomic) id<DFImageCache> cache;
 
+/*! Maximum number of preheating requests that are allowed to execute concurrently.
+ */
+@property (nonatomic) NSUInteger maximumConcurrentPreheatingRequests;
+
 - (instancetype)initWithFetcher:(id<DFImageFetcher>)fetcher NS_DESIGNATED_INITIALIZER;
 
 + (instancetype)configurationWithFetcher:(id<DFImageFetcher>)fetcher;

@@ -137,7 +137,7 @@ static NSString *const _kPreheatHandlerID = @"_df_preheat";
     id<DFImageCache> _cache;
     
     NSMutableDictionary /* NSString *ECID : _DFRequestExecutionContext */ *_executionContexts;
-    NSMutableOrderedSet /* _DFPreheatingHandler */ *_preheatingHandlers;
+    NSMutableOrderedSet /* _DFPreheatingHandler */ *_prendingPreheatingHandlers;
     
     dispatch_queue_t _syncQueue;
 }
@@ -159,7 +159,7 @@ static NSString *const _kPreheatHandlerID = @"_df_preheat";
         
         _syncQueue = dispatch_queue_create([[NSString stringWithFormat:@"%@-queue-%p", [self class], self] UTF8String], DISPATCH_QUEUE_SERIAL);
         _executionContexts = [NSMutableDictionary new];
-        _preheatingHandlers = [NSMutableOrderedSet new];
+        _prendingPreheatingHandlers = [NSMutableOrderedSet new];
     }
     return self;
 }
@@ -274,9 +274,6 @@ static NSString *const _kPreheatHandlerID = @"_df_preheat";
 
 - (void)_didReceiveProcessedImage:(UIImage *)image forHandler:(_DFRequestHandler *)handler context:(_DFRequestExecutionContext *)context {
     [context.handlers removeObjectForKey:handler.requestID.handlerID];
-    if ([handler isKindOfClass:[_DFPreheatingHandler class]]) {
-        [_preheatingHandlers removeObject:handler];
-    }
     if (context.handlers.count == 0) {
         [self _removeExecutionContextForECID:context.ECID];
     }
@@ -357,7 +354,7 @@ static NSString *const _kPreheatHandlerID = @"_df_preheat";
     for (DFImageRequest *request in requests) {
         DFImageRequestID *requestID = [self _preheatingIDForRequest:request];
         _DFPreheatingHandler *handler = [[_DFPreheatingHandler alloc] initWithRequest:request requestID:requestID completion:nil];
-        [_preheatingHandlers addObject:handler];
+        [_prendingPreheatingHandlers addObject:handler];
         [self _startExecutingPreheatingRequestsIfNecessary];
     }
 }
@@ -375,7 +372,7 @@ static NSString *const _kPreheatHandlerID = @"_df_preheat";
     for (DFImageRequest *request in requests) {
         DFImageRequestID *requestID = [self _preheatingIDForRequest:request];
         _DFPreheatingHandler *handler = [[_DFPreheatingHandler alloc] initWithRequest:request requestID:requestID completion:nil];
-        [_preheatingHandlers removeObject:handler];
+        [_prendingPreheatingHandlers removeObject:handler];
         [self _cancelRequestWithID:requestID];
     }
 }
@@ -387,17 +384,18 @@ static NSString *const _kPreheatHandlerID = @"_df_preheat";
 
 - (void)stopPreheatingImagesForAllRequests {
     dispatch_async(_syncQueue, ^{
-        for (_DFPreheatingHandler *handler in _preheatingHandlers) {
+        for (_DFPreheatingHandler *handler in _prendingPreheatingHandlers) {
             [self _cancelRequestWithID:handler.requestID];
         }
-        [_preheatingHandlers removeAllObjects];
+        [_prendingPreheatingHandlers removeAllObjects];
     });
 }
 
 - (void)_startExecutingPreheatingRequestsIfNecessary {
-    if (_executionContexts.count == 0) {
-        _DFPreheatingHandler *handler = [_preheatingHandlers firstObject];
+    if (_executionContexts.count < _conf.maximumConcurrentPreheatingRequests) {
+        _DFPreheatingHandler *handler = [_prendingPreheatingHandlers firstObject];
         if (handler != nil) {
+            [_prendingPreheatingHandlers removeObject:handler];
             [self _requestImageForHandler:handler];
         }
     }

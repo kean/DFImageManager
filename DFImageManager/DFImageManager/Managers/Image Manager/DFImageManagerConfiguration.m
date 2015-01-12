@@ -29,6 +29,7 @@
     if (self = [super init]) {
         NSParameterAssert(fetcher);
         _fetcher = fetcher;
+        _maximumConcurrentPreheatingRequests = 1;
     }
     return self;
 }
