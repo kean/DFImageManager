@@ -24,14 +24,14 @@
 #import "DFImageRequest.h"
 #import "DFImageRequestOptions.h"
 #import "DFImageResponse.h"
-#import "DFPHAssetlocalIdentifier.h"
 #import "DFPhotosKitImageFetchOperation.h"
+#import "NSURL+DFPhotosKit.h"
 #import <Photos/Photos.h>
 
 
 @implementation DFPhotosKitImageFetchOperation {
     PHAsset *_asset;
-    DFPHAssetlocalIdentifier *_assetLocalIdentifier;
+    NSURL *_assetURL;
     CGSize _targetSize;
     DFImageContentMode _contentMode;
     DFImageRequestOptions *_options;
@@ -43,8 +43,8 @@
     if (self = [super init]) {
         if ([request.asset isKindOfClass:[PHAsset class]]) {
             _asset = (PHAsset *)request.asset;
-        } else {
-            _assetLocalIdentifier = (DFPHAssetlocalIdentifier *)request.asset;
+        } else if ([request.asset isKindOfClass:[NSURL class]]) {
+            _assetURL = (NSURL *)request.asset;
         }
         _targetSize = request.targetSize;
         _contentMode = request.contentMode;
@@ -61,8 +61,13 @@
         return;
     }
     
-    if (!_asset) {
-        _asset = [[PHAsset fetchAssetsWithLocalIdentifiers:@[_assetLocalIdentifier.identifier] options:nil] firstObject];
+    if (!_asset && _assetURL != nil) {
+        NSURLComponents *components = [NSURLComponents componentsWithURL:_assetURL resolvingAgainstBaseURL:NO];
+        NSURLQueryItem *queryItem = [[components.queryItems filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"name=%@", @"local_identifier"]] firstObject];
+        NSString *localIdentifier = queryItem.value;
+        if (localIdentifier != nil) {
+            _asset = [[PHAsset fetchAssetsWithLocalIdentifiers:@[localIdentifier] options:nil] firstObject];
+        }
     }
     
     if (self.isCancelled) {

@@ -25,11 +25,11 @@
 @class PHAsset;
 
 
-@interface DFPHAssetlocalIdentifier : NSObject
+static NSString *const DFPhotosKitURLScheme = @"com.github.kean.photos-kit";
 
-@property (nonatomic, readonly) NSString *identifier;
+@interface NSURL (DFPhotosKit)
 
-- (instancetype)initWithIdentifier:(NSString *)identifier NS_DESIGNATED_INITIALIZER;
-+ (instancetype)localIdentifierForAsset:(PHAsset *)asset;
++ (NSURL *)df_assetURLWithAssetLocalIdentifier:(NSString *)localIdentifier;
++ (NSURL *)df_assetURLWithAsset:(PHAsset *)asset;
 
 @end

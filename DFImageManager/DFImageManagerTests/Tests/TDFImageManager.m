@@ -9,6 +9,7 @@
 #import "DFImageManagerKit.h"
 #import "TDFTesting.h"
 #import <OHHTTPStubs/OHHTTPStubs.h>
+#import "NSURL+DFPhotosKit.h"
 #import <XCTest/XCTest.h>
 
 

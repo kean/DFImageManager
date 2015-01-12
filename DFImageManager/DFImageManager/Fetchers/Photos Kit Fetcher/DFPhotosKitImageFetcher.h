@@ -21,6 +21,8 @@
 // THE SOFTWARE.
 
 #import "DFImageFetcherProtocol.h"
+#import "NSURL+DFImageAsset.h"
+#import "NSURL+DFPhotosKit.h"
 
 
 @interface DFPhotosKitImageFetcher : NSObject <DFImageFetcher>

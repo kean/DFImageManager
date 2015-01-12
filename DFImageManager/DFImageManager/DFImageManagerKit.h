@@ -35,7 +35,6 @@
 #import "NSURL+DFImageAsset.h"
 #import "PHAsset+DFImageAsset.h"
 #import "ALAsset+DFImageAsset.h"
-#import "DFPHAssetlocalIdentifier+DFImageAsset.h"
 
 
 #import "DFImageManager.h"
@@ -58,8 +57,8 @@
 
 
 #import "DFPhotosKitImageFetcher.h"
+#import "NSURL+DFPhotosKit.h"
 #import "DFPhotosKitImageFetchOperation.h"
-#import "DFPHAssetlocalIdentifier.h"
 
 
 #import "DFAssetsLibraryImageFetcher.h"

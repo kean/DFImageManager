@@ -20,13 +20,23 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "DFPHAssetlocalIdentifier+DFImageAsset.h"
+#import "NSURL+DFPhotosKit.h"
+#import <Photos/Photos.h>
 
 
-@implementation DFPHAssetlocalIdentifier (DFImageAsset)
+@implementation NSURL (DFPhotosKit)
 
-- (NSString *)uniqueImageAssetIdentifier {
-    return self.identifier;
++ (NSURL *)df_assetURLWithAssetLocalIdentifier:(NSString *)localIdentifier {
+    NSURLComponents *components = [NSURLComponents new];
+    components.scheme = DFPhotosKitURLScheme;
+    components.host = @"photos";
+    components.path = [NSString stringWithFormat:@"/asset"];
+    components.queryItems = @[ [NSURLQueryItem queryItemWithName:@"local_identifier" value:localIdentifier] ];
+    return [components URL];
+}
+
++ (NSURL *)df_assetURLWithAsset:(PHAsset *)asset {
+    return [self df_assetURLWithAssetLocalIdentifier:asset.localIdentifier];
 }
 
 @end

@@ -22,7 +22,6 @@
 
 #import "DFImageRequest.h"
 #import "DFImageRequestOptions.h"
-#import "DFPHAssetlocalIdentifier.h"
 #import "DFPhotosKitImageFetchOperation.h"
 #import "DFPhotosKitImageFetcher.h"
 #import <Photos/Photos.h>
@@ -44,7 +43,16 @@
 
 - (BOOL)canHandleRequest:(DFImageRequest *)request {
     id asset = request.asset;
-    return [asset isKindOfClass:[PHAsset class]] || [asset isKindOfClass:[DFPHAssetlocalIdentifier class]];
+    if ([asset isKindOfClass:[PHAsset class]]) {
+        return YES;
+    }
+    if ([asset isKindOfClass:[NSURL class]]) {
+        NSURL *URL = asset;
+        if ([URL.scheme isEqualToString:DFPhotosKitURLScheme]) {
+            return YES;
+        }
+    }
+    return NO;
 }
 
 - (NSString *)executionContextIDForRequest:(DFImageRequest *)request {
