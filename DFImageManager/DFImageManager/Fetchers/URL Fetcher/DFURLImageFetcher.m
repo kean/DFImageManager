@@ -68,10 +68,10 @@
 
 - (void)start {
     @synchronized(self) {
-        [super start];
         if (self.isCancelled) {
             [self finish];
         } else {
+            [super start];
             [self _startCacheLookup];
         }
     }
