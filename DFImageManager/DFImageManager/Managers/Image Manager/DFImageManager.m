@@ -97,7 +97,7 @@ static NSString *const _kPreheatHandlerID = @"_df_preheat";
 }
 
 - (NSString *)description {
-    return [NSString stringWithFormat:@"<%@ %p> { request = %@, currentOperation = %@, handlers = %@ }", [self class], self, self.request, self.operation, self.handlers];
+    return [NSString stringWithFormat:@"<%@ %p> { request = %@, operation = %@, handlers = %@ }", [self class], self, self.request, self.operation, self.handlers];
 }
 
 @end
