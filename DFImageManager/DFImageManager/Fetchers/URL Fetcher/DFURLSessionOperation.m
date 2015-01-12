@@ -23,19 +23,9 @@
 #import "DFURLSessionOperation.h"
 
 
-@interface DFURLSessionOperation ()
-
-@property (nonatomic, getter = isExecuting) BOOL executing;
-@property (nonatomic, getter = isFinished) BOOL finished;
-
-@end
-
 @implementation DFURLSessionOperation {
     NSURLSessionDataTask *_task;
 }
-
-@synthesize executing = _executing;
-@synthesize finished = _finished;
 
 - (instancetype)initWithURL:(NSURL *)URL session:(NSURLSession *)session {
     if (self = [super init]) {
@@ -49,16 +39,16 @@
 
 - (void)start {
     @synchronized(self) {
+        [super start];
         if (self.isCancelled) {
             [self finish];
-            return;
+        } else {
+            [self _startDataTask];
         }
-        self.executing = YES;
-        [self _startExecutiong];
     }
 }
 
-- (void)_startExecutiong {
+- (void)_startDataTask {
     DFURLSessionOperation *__weak weakSelf = self;
     _task = [self.session dataTaskWithURL:self.URL completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
         [weakSelf _didFinishWithData:data response:response error:error];
@@ -100,10 +90,7 @@
 
 - (void)finish {
     @synchronized(self) {
-        if (_executing) {
-            self.executing = NO;
-        }
-        self.finished = YES;
+        [super finish];
     }
 }
 
@@ -114,20 +101,6 @@
             [_task cancel];
         }
     }
-}
-
-#pragma mark - KVO
-
-- (void)setFinished:(BOOL)finished {
-    [self willChangeValueForKey:@"isFinished"];
-    _finished = finished;
-    [self didChangeValueForKey:@"isFinished"];
-}
-
-- (void)setExecuting:(BOOL)executing {
-    [self willChangeValueForKey:@"isExecuting"];
-    _executing = executing;
-    [self didChangeValueForKey:@"isExecuting"];
 }
 
 @end

@@ -20,10 +20,11 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+#import "DFOperation.h"
 #import "DFURLResponseDeserializing.h"
 
 
-@interface DFURLSessionOperation : NSOperation
+@interface DFURLSessionOperation : DFOperation
 
 @property (nonatomic) id<DFURLResponseDeserializing> deserializer;
 @property (nonatomic, readonly) NSURL *URL;
