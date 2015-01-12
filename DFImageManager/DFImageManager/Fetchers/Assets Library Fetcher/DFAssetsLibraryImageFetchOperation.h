@@ -22,12 +22,13 @@
 
 #import "DFAssetsLibraryUtilities.h"
 #import "DFImageManagerOperationProtocol.h"
+#import "DFOperation.h"
 #import <Foundation/Foundation.h>
 
 @class ALAsset;
 
 
-@interface DFAssetsLibraryImageFetchOperation : NSOperation <DFImageManagerOperation>
+@interface DFAssetsLibraryImageFetchOperation : DFOperation <DFImageManagerOperation>
 
 @property (nonatomic) DFALAssetImageSize imageSize;
 

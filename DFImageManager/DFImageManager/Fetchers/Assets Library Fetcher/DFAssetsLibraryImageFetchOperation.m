@@ -26,21 +26,11 @@
 #import <AssetsLibrary/AssetsLibrary.h>
 
 
-@interface DFAssetsLibraryImageFetchOperation ()
-
-@property (nonatomic, getter = isExecuting) BOOL executing;
-@property (nonatomic, getter = isFinished) BOOL finished;
-
-@end
-
 @implementation DFAssetsLibraryImageFetchOperation {
     ALAsset *_asset;
     NSURL *_assetURL;
     DFImageResponse *_response;
 }
-
-@synthesize executing = _executing;
-@synthesize finished = _finished;
 
 - (instancetype)init {
     if (self = [super init]) {
@@ -66,21 +56,21 @@
 #pragma mark - Operation
 
 - (void)start {
+    [super start];
+    
     if (self.isCancelled) {
         [self finish];
-        return;
-    }
-    self.executing = YES;
-    
-    DFAssetsLibraryImageFetchOperation *__weak weakSelf = self;
-    if (!_asset) {
-        [[ALAssetsLibrary sharedLibrary] assetForURL:_assetURL resultBlock:^(ALAsset *asset) {
-            [weakSelf _didReceiveAsset:asset];
-        } failureBlock:^(NSError *error) {
-            [weakSelf _didFailWithError:error];
-        }];
     } else {
-        [self _startFetching];
+        DFAssetsLibraryImageFetchOperation *__weak weakSelf = self;
+        if (!_asset) {
+            [[ALAssetsLibrary sharedLibrary] assetForURL:_assetURL resultBlock:^(ALAsset *asset) {
+                [weakSelf _didReceiveAsset:asset];
+            } failureBlock:^(NSError *error) {
+                [weakSelf _didFailWithError:error];
+            }];
+        } else {
+            [self _startFetching];
+        }
     }
 }
 
@@ -118,31 +108,10 @@
     [self finish];
 }
 
-- (void)finish {
-    if (_executing) {
-        self.executing = NO;
-    }
-    self.finished = YES;
-}
-
 #pragma mark - <DFImageManagerOperation>
 
 - (DFImageResponse *)imageResponse {
     return _response;
-}
-
-#pragma mark - KVO
-
-- (void)setFinished:(BOOL)finished {
-    [self willChangeValueForKey:@"isFinished"];
-    _finished = finished;
-    [self didChangeValueForKey:@"isFinished"];
-}
-
-- (void)setExecuting:(BOOL)executing {
-    [self willChangeValueForKey:@"isExecuting"];
-    _executing = executing;
-    [self didChangeValueForKey:@"isExecuting"];
 }
 
 @end
