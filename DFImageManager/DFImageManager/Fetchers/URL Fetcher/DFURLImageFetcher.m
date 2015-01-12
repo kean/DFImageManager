@@ -25,7 +25,6 @@
 #import "DFImageRequestOptions.h"
 #import "DFImageResponse.h"
 #import "DFOperation.h"
-#import "DFURLCacheLookupOperation.h"
 #import "DFURLImageFetcher.h"
 #import "DFURLResponseDeserializing.h"
 #import "DFURLSessionOperation.h"
