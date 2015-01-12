@@ -39,7 +39,7 @@
         
         _preheatIndexPaths = [NSMutableSet new];
         _preheatRect = CGRectZero;
-        _preheatRectRatio = 2.f;
+        _preheatRectRatio = 1.8f;
         _preheatRectRevalidationRatio = 0.33f;
     }
     return self;

@@ -55,106 +55,25 @@
 @end
 
 
-@interface _DFURLImageFetcherOperation : DFOperation <DFImageManagerOperation>
-
-@property (nonatomic, readonly) DFImageRequest *request;
-@property (nonatomic, weak, readonly) DFURLImageFetcher *fetcher;
-
-- (instancetype)initWithRequest:(DFImageRequest *)request fetcher:(DFURLImageFetcher *)fetcher;
+@interface _DFURLImageFetcherOperation : DFURLSessionOperation <DFImageManagerOperation>
 
 @end
-
-
 
 @implementation _DFURLImageFetcherOperation {
     DFImageResponse *_response;
     NSOperation *_currentOperation;
 }
 
-- (instancetype)initWithRequest:(DFImageRequest *)request fetcher:(DFURLImageFetcher *)fetcher {
-    if (self = [super init]) {
-        _request = request;
-        _fetcher = fetcher;
-    }
-    return self;
-}
-
-#pragma mark - Operation
-
-- (void)start {
-    @synchronized(self) {
-        if (self.isCancelled) {
-            [self finish];
-        } else {
-            [super start];
-            [self _startFetching];
-        }
-    }
-}
-
-- (void)_cacheLookupOperationDidComplete:(DFURLCacheLookupOperation *)operation {
-    DFImageResponse *cachedResponse = [operation imageResponse];
-    if (cachedResponse.image != nil) {
-        _response = cachedResponse;
-        [self finish];
-    } else {
-        [self _startFetching];
-    }
-}
-
-- (void)_startFetching  {
-    if (self.isCancelled) {
-        _response = [DFImageResponse emptyResponse];
-        [self finish];
-    } else {
-        DFImageRequest *request = self.request;
-        if (request.options.networkAccessAllowed || [request _isFileRequest]) {
-            DFURLSessionOperation *operation = [[DFURLSessionOperation alloc] initWithURL:(NSURL *)request.asset session:self.fetcher.session];
-            operation.deserializer = [DFImageDeserializer new];
-            _DFURLImageFetcherOperation *__weak weakSelf = self;
-            DFURLSessionOperation *__weak weakOp = operation;
-            [operation setCompletionBlock:^{
-                @synchronized(self) {
-                    [weakSelf _imageFetchOperationDidComplete:weakOp];
-                }
-            }];
-            operation.queuePriority = self.queuePriority;
-            [self.fetcher.queueForNetwork addOperation:operation];
-            _currentOperation = operation;
-        } else {
-            _response = [DFImageResponse emptyResponse];
-            [self finish];
-        }
-    }
-}
-
-- (void)_imageFetchOperationDidComplete:(DFURLSessionOperation *)operation {
+- (void)finish {
     DFMutableImageResponse *response = [DFMutableImageResponse new];
-    response.image = operation.responseObject;
-    response.error = operation.error;
-    if (operation.responseObject != nil) {
-        response.data = operation.data;
+    response.image = self.responseObject;
+    response.error = self.error;
+    if (self.responseObject != nil) {
+        response.data = self.data;
     }
     _response = [response copy];
-    [self finish];
+    [super finish];
 }
-
-
-- (void)cancel {
-    @synchronized(self) {
-        if (!self.isCancelled) {
-            [super cancel];
-            [_currentOperation cancel];
-        }
-    }
-}
-
-- (void)setQueuePriority:(NSOperationQueuePriority)queuePriority {
-    [super setQueuePriority:queuePriority];
-    _currentOperation.queuePriority = queuePriority;
-}
-
-#pragma mark - <DFImageManagerOperation>
 
 - (DFImageResponse *)imageResponse {
     return _response;
@@ -215,7 +134,8 @@
 }
 
 - (NSOperation<DFImageManagerOperation> *)createOperationForRequest:(DFImageRequest *)request {
-    _DFURLImageFetcherOperation *operation = [[_DFURLImageFetcherOperation alloc] initWithRequest:request fetcher:self];
+    _DFURLImageFetcherOperation *operation = [[_DFURLImageFetcherOperation alloc] initWithURL:(NSURL *)request.asset session:self.session];
+    operation.deserializer = [DFImageDeserializer new];
     return operation;
 }
 
