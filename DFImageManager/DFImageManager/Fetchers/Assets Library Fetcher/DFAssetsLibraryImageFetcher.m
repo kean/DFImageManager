@@ -78,18 +78,15 @@
     }
 }
 
-- (NSOperation<DFImageManagerOperation> *)createOperationForRequest:(DFImageRequest *)request previousOperation:(NSOperation<DFImageManagerOperation> *)previousOperation {
-    if (!previousOperation) {
-        DFAssetsLibraryImageFetchOperation *operation;
-        if ([request.asset isKindOfClass:[ALAsset class]]) {
-            operation = [[DFAssetsLibraryImageFetchOperation alloc] initWithAsset:(ALAsset *)request.asset];
-        } else {
-            operation = [[DFAssetsLibraryImageFetchOperation alloc] initWithAssetURL:(NSURL *)request.asset];
-        }
-        operation.imageSize = [self _assetImageSizeForRequest:request];
-        return operation;
+- (NSOperation<DFImageManagerOperation> *)createOperationForRequest:(DFImageRequest *)request  {
+    DFAssetsLibraryImageFetchOperation *operation;
+    if ([request.asset isKindOfClass:[ALAsset class]]) {
+        operation = [[DFAssetsLibraryImageFetchOperation alloc] initWithAsset:(ALAsset *)request.asset];
+    } else {
+        operation = [[DFAssetsLibraryImageFetchOperation alloc] initWithAssetURL:(NSURL *)request.asset];
     }
-    return nil;
+    operation.imageSize = [self _assetImageSizeForRequest:request];
+    return operation;
 }
 
 - (void)enqueueOperation:(NSOperation<DFImageManagerOperation> *)operation {

@@ -20,17 +20,17 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "DFURLConnectionOperation.h"
+#import "DFURLSessionOperation.h"
 
 
-@interface DFURLConnectionOperation ()
+@interface DFURLSessionOperation ()
 
 @property (nonatomic, getter = isExecuting) BOOL executing;
 @property (nonatomic, getter = isFinished) BOOL finished;
 
 @end
 
-@implementation DFURLConnectionOperation {
+@implementation DFURLSessionOperation {
     NSURLSessionDataTask *_task;
 }
 
@@ -59,7 +59,7 @@
 }
 
 - (void)_startExecutiong {
-    DFURLConnectionOperation *__weak weakSelf = self;
+    DFURLSessionOperation *__weak weakSelf = self;
     _task = [self.session dataTaskWithURL:self.URL completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
         [weakSelf _didFinishWithData:data response:response error:error];
     }];
@@ -133,7 +133,7 @@
 @end
 
 
-@implementation DFURLConnectionOperation (HTTP)
+@implementation DFURLSessionOperation (HTTP)
 
 - (NSHTTPURLResponse *)HTTPResponse {
     return [self.response isKindOfClass:[NSHTTPURLResponse class]] ? (id)self.response : nil;

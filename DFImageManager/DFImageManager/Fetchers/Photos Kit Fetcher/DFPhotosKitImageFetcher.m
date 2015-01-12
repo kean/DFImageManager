@@ -69,11 +69,8 @@
     return keyPaths;
 }
 
-- (NSOperation<DFImageManagerOperation> *)createOperationForRequest:(DFImageRequest *)request previousOperation:(NSOperation<DFImageManagerOperation> *)previousOperation {
-    if (!previousOperation) {
-        return [[DFPhotosKitImageFetchOperation alloc] initWithRequest:request];
-    }
-    return nil;
+- (NSOperation<DFImageManagerOperation> *)createOperationForRequest:(DFImageRequest *)request {
+    return [[DFPhotosKitImageFetchOperation alloc] initWithRequest:request];
 }
 
 - (void)enqueueOperation:(NSOperation<DFImageManagerOperation> *)operation {

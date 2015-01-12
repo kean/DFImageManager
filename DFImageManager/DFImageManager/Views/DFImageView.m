@@ -115,7 +115,7 @@
     
     if (self.managesRequestPriorities) {
         for (DFImageRequest *request in requests) {
-            request.options.priority = (self.window == nil) ? DFImageRequestPriorityNormal : DFImageRequestPriorityVeryHigh;
+            request.options.priority = (self.window == nil) ? DFImageRequestPriorityLow : DFImageRequestPriorityHigh;
         }
     }
     

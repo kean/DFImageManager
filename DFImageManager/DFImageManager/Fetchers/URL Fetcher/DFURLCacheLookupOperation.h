@@ -20,10 +20,15 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "DFURLConnectionOperation.h"
 #import "DFImageManagerOperationProtocol.h"
+#import <Foundation/Foundation.h>
 
 
-@interface DFImageFetchConnectionOperation : DFURLConnectionOperation <DFImageManagerOperation>
+@interface DFURLCacheLookupOperation : NSOperation <DFImageManagerOperation>
+
+@property (nonatomic, readonly) NSURLRequest *request;
+@property (nonatomic, readonly) NSURLCache *cache;
+
+- (instancetype)initWithRequest:(NSURLRequest *)request cache:(NSURLCache *)cache NS_DESIGNATED_INITIALIZER;
 
 @end

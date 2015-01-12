@@ -23,7 +23,7 @@
 #import "DFURLResponseDeserializing.h"
 
 
-@interface DFURLConnectionOperation : NSOperation
+@interface DFURLSessionOperation : NSOperation
 
 @property (nonatomic) id<DFURLResponseDeserializing> deserializer;
 @property (nonatomic, readonly) NSURL *URL;
@@ -39,7 +39,7 @@
 @end
 
 
-@interface DFURLConnectionOperation (HTTP)
+@interface DFURLSessionOperation (HTTP)
 
 @property (nonatomic, readonly) NSHTTPURLResponse *HTTPResponse;
 

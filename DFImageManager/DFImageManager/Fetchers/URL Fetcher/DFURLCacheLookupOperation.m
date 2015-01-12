@@ -20,18 +20,18 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "DFImageURLCacheLookupOperation.h"
+#import "DFURLCacheLookupOperation.h"
 #import "DFImageResponse.h"
 
 
-@interface DFImageURLCacheLookupOperation ()
+@interface DFURLCacheLookupOperation ()
 
 @property (nonatomic, getter = isExecuting) BOOL executing;
 @property (nonatomic, getter = isFinished) BOOL finished;
 
 @end
 
-@implementation DFImageURLCacheLookupOperation {
+@implementation DFURLCacheLookupOperation {
     DFImageResponse *_response;
 }
 

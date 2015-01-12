@@ -20,28 +20,44 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "DFImageFetcherProtocol.h"
-#import <Foundation/Foundation.h>
+#import "DFOperation.h"
 
-@class DFImageRequest;
 
-/*! Defines a specific operations flow (cache lookup ~> fetch ~> cache store).
- */
-@interface DFCachingImageFetcher : NSObject <DFImageFetcher>
+@interface DFOperation ()
+
+@property (nonatomic, getter = isExecuting) BOOL executing;
+@property (nonatomic, getter = isFinished) BOOL finished;
 
 @end
 
 
-@interface DFCachingImageFetcher (SubclassingHooks)
+@implementation DFOperation
 
-- (NSArray *)keyPathsAffectingExecutionContextIDForRequest:(DFImageRequest *)request;
+@synthesize executing = _executing;
+@synthesize finished = _finished;
 
-// factory methods
+- (void)start {
+    self.executing = YES;
+}
 
-- (NSOperation<DFImageManagerOperation> *)createCacheLookupOperationForRequest:(DFImageRequest *)request;
-- (NSOperation<DFImageManagerOperation> *)createImageFetchOperationForRequest:(DFImageRequest *)request;
-- (NSOperation *)createCacheStoreOperationForRequest:(DFImageRequest *)request previousOperation:(NSOperation<DFImageManagerOperation> *)previousOperation;
+- (void)finish {
+    if (_executing) {
+        self.executing = NO;
+    }
+    self.finished = YES;
+}
 
-- (NSOperationQueue *)operationQueueForOperation:(NSOperation *)operation;
+- (void)setFinished:(BOOL)finished {
+    [self willChangeValueForKey:@"isFinished"];
+    _finished = finished;
+    [self didChangeValueForKey:@"isFinished"];
+}
+
+- (void)setExecuting:(BOOL)executing {
+    [self willChangeValueForKey:@"isExecuting"];
+    _executing = executing;
+    [self didChangeValueForKey:@"isExecuting"];
+}
+
 
 @end

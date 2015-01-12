@@ -66,7 +66,7 @@ static NSString *const _kPreheatHandlerID = @"_df_preheat";
 @property (nonatomic, readonly) DFImageRequest *request;
 @property (nonatomic, readonly) NSMutableDictionary *handlers;
 
-@property (nonatomic, weak) NSOperation<DFImageManagerOperation> *currentOperation;
+@property (nonatomic, weak) NSOperation<DFImageManagerOperation> *operation;
 @property (nonatomic) DFImageResponse *response;
 
 - (instancetype)initWithECID:(NSString *)ECID request:(DFImageRequest *)request NS_DESIGNATED_INITIALIZER;
@@ -97,7 +97,7 @@ static NSString *const _kPreheatHandlerID = @"_df_preheat";
 }
 
 - (NSString *)description {
-    return [NSString stringWithFormat:@"<%@ %p> { request = %@, currentOperation = %@, handlers = %@ }", [self class], self, self.request, self.currentOperation, self.handlers];
+    return [NSString stringWithFormat:@"<%@ %p> { request = %@, currentOperation = %@, handlers = %@ }", [self class], self, self.request, self.operation, self.handlers];
 }
 
 @end
@@ -164,7 +164,7 @@ static NSString *const _kPreheatHandlerID = @"_df_preheat";
         context = [[_DFRequestExecutionContext alloc] initWithECID:requestID.ECID request:request];
         context.handlers[requestID.handlerID] = handler;
         _executionContexts[requestID.ECID] = context;
-        [self _requestImageForContext:context previousOperation:nil];
+        [self _requestImageForContext:context];
     } else {
         context.handlers[requestID.handlerID] = handler;
         if (context.response != nil) {
@@ -173,32 +173,32 @@ static NSString *const _kPreheatHandlerID = @"_df_preheat";
     }
 }
 
-- (void)_requestImageForContext:(_DFRequestExecutionContext *)context previousOperation:(NSOperation<DFImageManagerOperation> *)previousOperation {
-    NSOperation<DFImageManagerOperation> *operation = [_fetcher createOperationForRequest:context.request previousOperation:previousOperation];
-    if (!operation) { // No more work required.
-        context.response = [previousOperation imageResponse];
-        [self _didCompleteAllOperationsForContext:context];
-    } else {
+- (void)_requestImageForContext:(_DFRequestExecutionContext *)context {
+    NSOperation<DFImageManagerOperation> *operation = [_fetcher createOperationForRequest:context.request];
+    if (operation != nil) {
         DFImageManager *__weak weakSelf = self;
         NSOperation<DFImageManagerOperation> *__weak weakOp = operation;
         [operation setCompletionBlock:^{
             [weakSelf _didCompleteOperation:weakOp context:context];
         }];
         operation.queuePriority = context.queuePriority;
-        context.currentOperation = operation;
+        context.operation = operation;
         [_fetcher enqueueOperation:operation];
+    } else {
+        [self _didCompleteRequestForContext:context];
     }
 }
 
 - (void)_didCompleteOperation:(NSOperation<DFImageManagerOperation> *)operation context:(_DFRequestExecutionContext *)context {
     dispatch_async(_syncQueue, ^{
-        if (_executionContexts[context.ECID] == context) { // not cancelled
-            [self _requestImageForContext:context previousOperation:operation];
+        if (_executionContexts[context.ECID] == context) { // context not cancelled
+            context.response = [operation imageResponse];
+            [self _didCompleteRequestForContext:context];
         }
     });
 }
 
-- (void)_didCompleteAllOperationsForContext:(_DFRequestExecutionContext *)context {
+- (void)_didCompleteRequestForContext:(_DFRequestExecutionContext *)context {
     NSAssert(context.handlers.count > 0, @"Invalid context");
     for (_DFRequestHandler *handler in [context.handlers allValues]) {
         [self _processResponseForContext:context handler:handler];
@@ -275,10 +275,10 @@ static NSString *const _kPreheatHandlerID = @"_df_preheat";
     if (context != nil) {
         [context.handlers removeObjectForKey:requestID.handlerID];
         if (context.handlers.count == 0) {
-            [context.currentOperation cancel];
+            [context.operation cancel];
             [_executionContexts removeObjectForKey:requestID.ECID];
         } else {
-            context.currentOperation.queuePriority = context.queuePriority;
+            context.operation.queuePriority = context.queuePriority;
         }
     }
 }
@@ -292,7 +292,7 @@ static NSString *const _kPreheatHandlerID = @"_df_preheat";
             _DFRequestHandler *handler = context.handlers[requestID.handlerID];
             if (handler.request.options.priority != priority) {
                 handler.request.options.priority = priority;
-                NSOperation<DFImageManagerOperation> *operation = context.currentOperation;
+                NSOperation<DFImageManagerOperation> *operation = context.operation;
                 operation.queuePriority = context.queuePriority;
             }
         });

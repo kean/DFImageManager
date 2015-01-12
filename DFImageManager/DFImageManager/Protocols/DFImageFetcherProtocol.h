@@ -39,7 +39,7 @@
 
 /*! Return nil if no work is required.
  */
-- (NSOperation<DFImageManagerOperation> *)createOperationForRequest:(DFImageRequest *)request previousOperation:(NSOperation<DFImageManagerOperation> *)previousOperation;
+- (NSOperation<DFImageManagerOperation> *)createOperationForRequest:(DFImageRequest *)request;
 
 - (void)enqueueOperation:(NSOperation<DFImageManagerOperation> *)operation;
 

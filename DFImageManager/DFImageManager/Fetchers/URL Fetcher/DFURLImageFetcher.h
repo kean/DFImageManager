@@ -20,14 +20,14 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "DFCachingImageFetcher.h"
+#import "DFImageFetcherProtocol.h"
 #import <Foundation/Foundation.h>
 
 
 /*! Image fetcher that supports NSURL and is implemented on top of Cocoa URL loading system.
  @note Supported URL schemes: http:, https:, ftp:, file:
  */
-@interface DFURLImageFetcher : DFCachingImageFetcher
+@interface DFURLImageFetcher : NSObject <DFImageFetcher>
 
 @property (nonatomic, readonly) NSURLSession *session;
 

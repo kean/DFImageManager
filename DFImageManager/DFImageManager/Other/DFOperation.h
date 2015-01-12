@@ -20,28 +20,12 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "DFImageFetchConnectionOperation.h"
-#import "DFImageResponse.h"
+#import <Foundation/Foundation.h>
 
 
-@implementation DFImageFetchConnectionOperation {
-    DFImageResponse *_imageReponse;
-}
+@interface DFOperation : NSOperation
 
-- (DFImageResponse *)imageResponse {
-    if (!_imageReponse) {
-        DFMutableImageResponse *response = [DFMutableImageResponse new];
-        response.image = self.responseObject;
-        response.error = self.error;
-        if (self.responseObject) {
-            response.data = self.data;
-        }
-        if (self.response) {
-            response.userInfo = @{ @"url_response" : self.response };
-        }
-        _imageReponse = [response copy];
-    }
-    return _imageReponse;
-}
+- (void)start;
+- (void)finish;
 
 @end
