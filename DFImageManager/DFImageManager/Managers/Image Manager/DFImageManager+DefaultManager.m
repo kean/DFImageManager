@@ -41,7 +41,7 @@
 }
 
 + (id<DFImageManager>)_createDefaultManager {
-    DFImageProcessingManager *imageProcessor = [DFImageProcessingManager new];
+    DFImageProcessingManager *processor = [DFImageProcessingManager new];
     
     DFImageManager *URLImageManager = ({
         // Initialize NSURLCache without memory cache because DFImageManager has a higher level memory cache (see <DFImageCache>.
@@ -53,21 +53,21 @@
         NSURLSession *session = [NSURLSession sessionWithConfiguration:configuration];
         
         DFURLImageFetcher *fetcher = [[DFURLImageFetcher alloc] initWithSession:session];
-        [[DFImageManager alloc] initWithImageFetcher:fetcher processor:imageProcessor cache:imageProcessor];
+        [[DFImageManager alloc] initWithConfiguration:[DFImageManagerConfiguration configurationWithFetcher:fetcher processor:processor cache:processor]];
     });
     
     DFImageManager *photosKitImageManager = ({
         DFPhotosKitImageFetcher *fetcher = [DFPhotosKitImageFetcher new];
         
         // We don't need image decompression, because PHImageManager does it for us.
-        [[DFImageManager alloc] initWithImageFetcher:fetcher processor:nil cache:imageProcessor];
+        [[DFImageManager alloc] initWithConfiguration:[DFImageManagerConfiguration configurationWithFetcher:fetcher processor:nil cache:processor]];
     });
     
     DFImageManager *assetsLibraryImageManager = ({
         DFAssetsLibraryImageFetcher *fetcher = [DFAssetsLibraryImageFetcher new];
         
         // We do need both image decompression and caching.
-        [[DFImageManager alloc] initWithImageFetcher:fetcher processor:imageProcessor cache:imageProcessor];
+        [[DFImageManager alloc] initWithConfiguration:[DFImageManagerConfiguration configurationWithFetcher:fetcher processor:processor cache:processor]];
     });
     
     DFCompositeImageManager *compositeImageManager = [[DFCompositeImageManager alloc] initWithImageManagers:@[ URLImageManager, photosKitImageManager, assetsLibraryImageManager ]];

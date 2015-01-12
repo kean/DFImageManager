@@ -30,7 +30,7 @@
     NSURLSession *session = [NSURLSession sessionWithConfiguration:configuration];
     
     id<DFImageFetcher> fetcher = [[DFURLImageFetcher alloc] initWithSession:session];
-    _imageManager = [[DFImageManager alloc] initWithImageFetcher:fetcher processor:nil cache:nil];
+    _imageManager = [[DFImageManager alloc] initWithConfiguration:[[DFImageManagerConfiguration alloc] initWithFetcher:fetcher]];
 }
 
 - (void)tearDown {

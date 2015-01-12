@@ -20,30 +20,35 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "DFImageCacheProtocol.h"
-#import "DFImageFetcherProtocol.h"
 #import "DFImageManagerConfiguration.h"
-#import "DFImageManagerProtocol.h"
-#import "DFImageProcessorProtocol.h"
-#import <Foundation/Foundation.h>
 
 
-@interface DFImageManager : NSObject <DFImageManager>
+@implementation DFImageManagerConfiguration
 
-@property (nonatomic, readonly) DFImageManagerConfiguration *configuration;
+- (instancetype)initWithFetcher:(id<DFImageFetcher>)fetcher {
+    if (self = [super init]) {
+        NSParameterAssert(fetcher);
+        _fetcher = fetcher;
+    }
+    return self;
+}
 
-- (instancetype)initWithConfiguration:(DFImageManagerConfiguration *)configuration NS_DESIGNATED_INITIALIZER;
++ (instancetype)configurationWithFetcher:(id<DFImageFetcher>)fetcher {
+    return [[DFImageManagerConfiguration alloc] initWithFetcher:fetcher];
+}
 
-// Dependency injectors.
++ (instancetype)configurationWithFetcher:(id<DFImageFetcher>)fetcher processor:(id<DFImageProcessor>)processor cache:(id<DFImageCache>)cache {
+    DFImageManagerConfiguration *conf = [self configurationWithFetcher:fetcher];
+    conf.processor = processor;
+    conf.cache = cache;
+    return conf;
+}
 
-+ (id<DFImageManager>)sharedManager;
-+ (void)setSharedManager:(id<DFImageManager>)manager;
-
-@end
-
-
-@interface DFImageManager (DefaultManager)
-
-+ (id<DFImageManager>)defaultManager;
+- (id)copyWithZone:(NSZone *)zone {
+    DFImageManagerConfiguration *copy = [[DFImageManagerConfiguration alloc] initWithFetcher:self.fetcher];
+    copy.processor = self.processor;
+    copy.cache = self.cache;
+    return copy;
+}
 
 @end

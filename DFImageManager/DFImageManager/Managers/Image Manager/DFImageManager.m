@@ -132,21 +132,30 @@ static NSString *const _kPreheatHandlerID = @"_df_preheat";
  - Multiple request+completion pairs might be handled by the same execution context (_DFRequestExecutionContext)
  */
 @implementation DFImageManager {
+    id<DFImageFetcher> _fetcher;
+    id<DFImageProcessor> _processor;
+    id<DFImageCache> _cache;
+    
     NSMutableDictionary /* NSString *ECID : _DFRequestExecutionContext */ *_executionContexts;
     NSMutableOrderedSet /* _DFPreheatingHandler */ *_preheatingHandlers;
     
     dispatch_queue_t _syncQueue;
 }
 
+@synthesize configuration = _conf;
+
 + (void)initialize {
     [self setSharedManager:[self defaultManager]];
 }
 
-- (instancetype)initWithImageFetcher:(id<DFImageFetcher>)fetcher processor:(id<DFImageProcessor>)processor cache:(id<DFImageCache>)cache {
+- (instancetype)initWithConfiguration:(DFImageManagerConfiguration *)configuration {
     if (self = [super init]) {
-        _fetcher = fetcher;
-        _processor = processor;
-        _cache = cache;
+        NSParameterAssert(configuration);
+        _conf = [configuration copy];
+        
+        _fetcher = _conf.fetcher;
+        _processor = _conf.processor;
+        _cache = _conf.cache;
         
         _syncQueue = dispatch_queue_create([[NSString stringWithFormat:@"%@-queue-%p", [self class], self] UTF8String], DISPATCH_QUEUE_SERIAL);
         _executionContexts = [NSMutableDictionary new];

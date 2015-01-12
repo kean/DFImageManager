@@ -37,6 +37,7 @@
 #import "ALAsset+DFImageAsset.h"
 
 
+#import "DFImageManagerConfiguration.h"
 #import "DFImageManager.h"
 #import "DFCompositeImageManager.h"
 #import "DFProxyImageManager.h"
