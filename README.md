@@ -12,7 +12,7 @@ DFImageManager is a modern framework for managing (fetching, caching, decompress
 - Memory caching that carefully manages system resources to keep as many images as possible while preventing memory warnings
 - Persistent cache is implemented using NSURLCache. HTTP cache control will be available in future versions.
 - Networking based on NSURLSession
-- Automatic preheating of images that are close to the viewport
+- [Automatic preheating](https://github.com/kean/DFImageManager/wiki/Image-Preheating-Guide) of images that are close to the viewport
 
 ## Getting Started
 - [Download DFImageManager](https://github.com/kean/DFImageManager/releases) and play with [demo project](https://github.com/kean/DFImageManager/tree/master/DFImageManagerSample)
