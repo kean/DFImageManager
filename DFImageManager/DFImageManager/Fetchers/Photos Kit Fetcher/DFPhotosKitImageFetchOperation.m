@@ -29,13 +29,6 @@
 #import <Photos/Photos.h>
 
 
-@interface DFPhotosKitImageFetchOperation ()
-
-@property (nonatomic, getter = isExecuting) BOOL executing;
-@property (nonatomic, getter = isFinished) BOOL finished;
-
-@end
-
 @implementation DFPhotosKitImageFetchOperation {
     PHAsset *_asset;
     DFPHAssetlocalIdentifier *_assetLocalIdentifier;
@@ -45,9 +38,6 @@
     
     DFImageResponse *_response;
 }
-
-@synthesize executing = _executing;
-@synthesize finished = _finished;
 
 - (instancetype)initWithRequest:(DFImageRequest *)request {
     if (self = [super init]) {
@@ -64,11 +54,12 @@
 }
 
 - (void)start {
+    [super start];
+    
     if (self.isCancelled) {
         [self finish];
         return;
     }
-    self.executing = YES;
     
     if (!_asset) {
         _asset = [[PHAsset fetchAssetsWithLocalIdentifiers:@[_assetLocalIdentifier.identifier] options:nil] firstObject];
@@ -108,33 +99,10 @@
     [self finish];
 }
 
-#pragma mark - Operation
-
-- (void)finish {
-    if (_executing) {
-        self.executing = NO;
-    }
-    self.finished = YES;
-}
-
 #pragma mark - <DFImageManagerOperation>
 
 - (DFImageResponse *)imageResponse {
     return _response;
-}
-
-#pragma mark - KVO
-
-- (void)setFinished:(BOOL)finished {
-    [self willChangeValueForKey:@"isFinished"];
-    _finished = finished;
-    [self didChangeValueForKey:@"isFinished"];
-}
-
-- (void)setExecuting:(BOOL)executing {
-    [self willChangeValueForKey:@"isExecuting"];
-    _executing = executing;
-    [self didChangeValueForKey:@"isExecuting"];
 }
 
 @end

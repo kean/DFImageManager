@@ -22,6 +22,7 @@
 
 #import "DFImageManagerDefines.h"
 #import "DFImageManagerOperationProtocol.h"
+#import "DFOperation.h"
 #import <Foundation/Foundation.h>
 
 @class DFImageRequest;
@@ -30,7 +31,7 @@
 @class PHAsset;
 
 
-@interface DFPhotosKitImageFetchOperation : NSOperation <DFImageManagerOperation>
+@interface DFPhotosKitImageFetchOperation : DFOperation <DFImageManagerOperation>
 
 - (instancetype)initWithRequest:(DFImageRequest *)request NS_DESIGNATED_INITIALIZER;
 
