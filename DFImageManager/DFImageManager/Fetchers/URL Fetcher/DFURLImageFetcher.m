@@ -87,30 +87,9 @@
             [self finish];
         } else {
             [super start];
-            [self _startCacheLookup];
+            [self _startFetching];
         }
     }
-}
-
-- (void)_startCacheLookup {
-    NSURLCache *cache = self.fetcher.session.configuration.URLCache;
-    if (cache != nil && ![self.request _isFileRequest]) {
-        NSURLRequest *URLRequest = [[NSURLRequest alloc] initWithURL:(NSURL *)self.request.asset];
-        DFURLCacheLookupOperation *operation =  [[DFURLCacheLookupOperation alloc] initWithRequest:URLRequest cache:cache];
-        _DFURLImageFetcherOperation *__weak weakSelf = self;
-        DFURLCacheLookupOperation *__weak weakOp = operation;
-        [operation setCompletionBlock:^{
-            @synchronized(self) {
-                [weakSelf _cacheLookupOperationDidComplete:weakOp];
-            }
-        }];
-        operation.queuePriority = self.queuePriority;
-        [self.fetcher.queueForCache addOperation:operation];
-        _currentOperation = operation;
-    } else {
-        [self _startFetching];
-    }
-    
 }
 
 - (void)_cacheLookupOperationDidComplete:(DFURLCacheLookupOperation *)operation {
@@ -194,13 +173,8 @@
         NSParameterAssert(session);
         _session = session;
         
+        // We don't need to limit concurrent operations for NSURLSession. For more info see https://github.com/kean/DFImageManager/wiki/Image-Caching-Guide
         _queue = [NSOperationQueue new];
-        
-        _queueForCache = [NSOperationQueue new];
-        _queueForCache.maxConcurrentOperationCount = 1;
-        
-        _queueForNetwork = [NSOperationQueue new];
-        _queueForNetwork.maxConcurrentOperationCount = 2;
     }
     return self;
 }
