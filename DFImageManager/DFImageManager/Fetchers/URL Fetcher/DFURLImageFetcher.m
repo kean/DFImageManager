@@ -32,6 +32,21 @@
 #import "NSURL+DFImageAsset.h"
 
 
+@interface DFImageRequest (DFURLImageFetcher)
+
+- (BOOL)_isFileRequest;
+
+@end
+
+@implementation DFImageRequest (DFURLImageFetcher)
+
+- (BOOL)_isFileRequest {
+    return [((NSURL *)self.asset) isFileURL];
+}
+
+@end
+
+
 @interface DFURLImageFetcher ()
 
 @property (nonatomic, readonly) NSOperationQueue *queueForCache;
@@ -79,7 +94,7 @@
 
 - (void)_startCacheLookup {
     NSURLCache *cache = self.fetcher.session.configuration.URLCache;
-    if (cache != nil && ![self _isFilesystemRequest:self.request]) {
+    if (cache != nil && ![self.request _isFileRequest]) {
         NSURLRequest *URLRequest = [[NSURLRequest alloc] initWithURL:(NSURL *)self.request.asset];
         DFURLCacheLookupOperation *operation =  [[DFURLCacheLookupOperation alloc] initWithRequest:URLRequest cache:cache];
         _DFURLImageFetcherOperation *__weak weakSelf = self;
@@ -114,7 +129,7 @@
         [self finish];
     } else {
         DFImageRequest *request = self.request;
-        if (request.options.networkAccessAllowed || [self _isFilesystemRequest:request]) {
+        if (request.options.networkAccessAllowed || [request _isFileRequest]) {
             DFURLSessionOperation *operation = [[DFURLSessionOperation alloc] initWithURL:(NSURL *)request.asset session:self.fetcher.session];
             operation.deserializer = [DFImageDeserializer new];
             _DFURLImageFetcherOperation *__weak weakSelf = self;
@@ -164,12 +179,6 @@
 
 - (DFImageResponse *)imageResponse {
     return _response;
-}
-
-#pragma mark -
-
-- (BOOL)_isFilesystemRequest:(DFImageRequest *)request {
-    return [((NSURL *)request.asset) isFileURL];
 }
 
 @end
@@ -235,7 +244,7 @@
         _keyPathsForNetworking = @[ @"options.networkAccessAllowed" ];
         
     });
-    return [self _isFilesystemRequest:request] ? nil : _keyPathsForNetworking;
+    return [request _isFileRequest] ? nil : _keyPathsForNetworking;
 }
 
 - (NSOperation<DFImageManagerOperation> *)createOperationForRequest:(DFImageRequest *)request {
@@ -245,12 +254,6 @@
 
 - (void)enqueueOperation:(NSOperation<DFImageManagerOperation> *)operation {
     [_queue addOperation:operation];
-}
-
-#pragma mark -
-
-- (BOOL)_isFilesystemRequest:(DFImageRequest *)request {
-    return [((NSURL *)request.asset) isFileURL];
 }
 
 @end

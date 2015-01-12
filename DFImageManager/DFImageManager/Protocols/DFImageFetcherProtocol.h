@@ -22,8 +22,8 @@
 
 #import "DFImageManagerOperationProtocol.h"
 #import "DFImageManagerProtocol.h"
+#import "DFImageRequest.h"
 
-@class DFImageRequest;
 @class DFImageRequestOptions;
 
 
