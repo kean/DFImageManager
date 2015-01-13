@@ -43,9 +43,6 @@
 
 - (void)enqueueOperation:(NSOperation<DFImageManagerOperation> *)operation;
 
-@optional
-
-- (void)imageManager:(id<DFImageManager>)manager didEncounterError:(NSError *)error;
 
 @end
 

@@ -57,7 +57,7 @@
         _data = response.data;
         _userInfo = response.userInfo;
     }
-    return response;
+    return self;
 }
 
 - (id)copyWithZone:(NSZone *)zone {
