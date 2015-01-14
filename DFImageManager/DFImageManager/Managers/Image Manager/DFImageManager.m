@@ -270,6 +270,7 @@ static NSString *const _kPreheatHandlerID = @"_df_preheat";
     /*! Only contains not cancelled tasks. */
     NSMutableDictionary /* NSString *ECID : DFImageManagerTask */ *_tasks;
     dispatch_queue_t _syncQueue;
+    BOOL _needsToExecutePreheatRequests;
 }
 
 @synthesize configuration = _conf;
@@ -326,7 +327,21 @@ static NSString *const _kPreheatHandlerID = @"_df_preheat";
     if (!task.isExecuting && !task.isPreheating) {
         [task resume];
     } else {
-        [self _executePreheatingTasksIfNecesary];
+        [self _setNeedsExecutePreheatingTasks];
+    }
+}
+
+- (void)_setNeedsExecutePreheatingTasks {
+    if (!_needsToExecutePreheatRequests) {
+        _needsToExecutePreheatRequests = YES;
+        /*! Delays serves double purpose:
+         - Image manager won't start executing preheating requests in case you'are about to add normal (non-preheating) right after adding preheating onces.
+         - Image manager won't execute relatively -_executePreheatingTasksIfNecesary methon too often.
+         */
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.05 * NSEC_PER_SEC)), _syncQueue, ^{
+            [self _executePreheatingTasksIfNecesary];
+            _needsToExecutePreheatRequests = NO;
+        });
     }
 }
 
@@ -349,6 +364,7 @@ static NSString *const _kPreheatHandlerID = @"_df_preheat";
                 if (executingTaskCount >= _conf.maximumConcurrentPreheatingRequests) {
                     break;
                 }
+                NSLog(@"preaheat %@", [task class]);
                 executingTaskCount++;
                 [task resume];
             }
@@ -358,7 +374,7 @@ static NSString *const _kPreheatHandlerID = @"_df_preheat";
 
 - (void)_removeTaskForECID:(NSString *)ECID {
     [_tasks removeObjectForKey:ECID];
-    [self _executePreheatingTasksIfNecesary];
+    [self _setNeedsExecutePreheatingTasks];
 }
 
 #pragma mark - <_DFImageManagerTaskDelegate>
