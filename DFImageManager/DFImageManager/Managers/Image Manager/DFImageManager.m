@@ -364,7 +364,6 @@ static NSString *const _kPreheatHandlerID = @"_df_preheat";
                 if (executingTaskCount >= _conf.maximumConcurrentPreheatingRequests) {
                     break;
                 }
-                NSLog(@"preaheat %@", [task class]);
                 executingTaskCount++;
                 [task resume];
             }

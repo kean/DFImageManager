@@ -31,7 +31,7 @@
 
 @property (nonatomic, readonly) NSURLSession *session;
 
-- (instancetype)initWithSession:(NSURLSession *)session;
+- (instancetype)initWithSession:(NSURLSession *)session NS_DESIGNATED_INITIALIZER;
 
 + (NSSet *)supportedSchemes;
 
