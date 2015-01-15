@@ -29,8 +29,6 @@
 #import "DFImageResponse.h"
 #import <UIKit/UIKit.h>
 
-static NSString *const _kPreheatHandlerID = @"_df_preheat";
-
 
 #pragma mark - _DFImageRequestHandler -
 
@@ -62,6 +60,18 @@ static NSString *const _kPreheatHandlerID = @"_df_preheat";
 @end
 
 
+
+#pragma mark - _DFImageRequestPreheatHandler -
+
+@interface _DFImageRequestPreheatHandler : _DFImageRequestHandler
+
+@end
+
+@implementation _DFImageRequestPreheatHandler
+
+@end
+
+
 #pragma mark - _DFImageManagerTask -
 
 @class _DFImageManagerTask;
@@ -84,7 +94,7 @@ static NSString *const _kPreheatHandlerID = @"_df_preheat";
  */
 @interface _DFImageManagerTask : NSObject
 
-@property (nonatomic, readonly) NSString *taskID;
+@property (nonatomic, readonly) NSUUID *taskID;
 @property (nonatomic, readonly) DFImageRequest *request;
 @property (nonatomic, readonly) NSDictionary *handlers;
 
@@ -101,14 +111,14 @@ static NSString *const _kPreheatHandlerID = @"_df_preheat";
 @property (nonatomic) id<DFImageProcessor> processor;
 @property (nonatomic) id<DFImageCache> cache;
 
-- (instancetype)initWithTaskID:(NSString *)taskID request:(DFImageRequest *)request NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithTaskID:(NSUUID *)taskID request:(DFImageRequest *)request NS_DESIGNATED_INITIALIZER;
 
 - (void)resume;
 - (void)cancel;
 - (void)updatePriority;
 
 - (void)addHandler:(_DFImageRequestHandler *)handler;
-- (void)removeHandlerForID:(NSString *)handlerID;
+- (void)removeHandlerForID:(NSUUID *)handlerID;
 
 @end
 
@@ -118,7 +128,7 @@ static NSString *const _kPreheatHandlerID = @"_df_preheat";
     NSOperation<DFImageManagerOperation> *__weak _operation;
 }
 
-- (instancetype)initWithTaskID:(NSString *)taskID request:(DFImageRequest *)request {
+- (instancetype)initWithTaskID:(NSUUID *)taskID request:(DFImageRequest *)request {
     if (self = [super init]) {
         _taskID = taskID;
         _request = request;
@@ -162,7 +172,7 @@ static NSString *const _kPreheatHandlerID = @"_df_preheat";
     }
 }
 
-- (void)removeHandlerForID:(NSString *)handlerID {
+- (void)removeHandlerForID:(NSUUID *)handlerID {
     [_handlers removeObjectForKey:handlerID];
 }
 
@@ -240,8 +250,8 @@ static NSString *const _kPreheatHandlerID = @"_df_preheat";
 }
 
 - (BOOL)isPreheating {
-    for (NSString *handlerID in [self.handlers allKeys]) {
-        if (![handlerID isEqualToString:_kPreheatHandlerID]) {
+    for (_DFImageRequestHandler *handler in self.handlers.allValues) {
+        if (![handler isKindOfClass:[_DFImageRequestPreheatHandler class]]) {
             return NO;
         }
     }
@@ -352,15 +362,17 @@ static NSString *const _kPreheatHandlerID = @"_df_preheat";
     request = [request copy];
     DFImageRequestID *requestID = [[DFImageRequestID alloc] initWithImageManager:self]; // Represents requestID future.
     dispatch_async(_syncQueue, ^{
-        NSString *taskID = [self _existingTaskIDForRequest:request] ?: [[NSUUID UUID] UUIDString];
-        [requestID setTaskID:taskID handlerID:[[NSUUID UUID] UUIDString]];
-        [self _requestImageForRequest:request requestID:requestID completion:completion];
+        NSUUID *taskID = [self _existingTaskIDForRequest:request] ?: [NSUUID UUID];
+        [requestID setTaskID:taskID handlerID:[NSUUID UUID]];
+        _DFImageRequestHandler *handler = [[_DFImageRequestHandler alloc] initWithRequest:request requestID:requestID completion:completion];
+        [self _requestImageForHandler:handler];
     });
     return requestID;
 }
 
-- (void)_requestImageForRequest:(DFImageRequest *)request requestID:(DFImageRequestID *)requestID completion:(DFImageRequestCompletion)completion {
-    _DFImageRequestHandler *handler = [[_DFImageRequestHandler alloc] initWithRequest:request requestID:requestID completion:completion];
+- (void)_requestImageForHandler:(_DFImageRequestHandler *)handler {
+    DFImageRequest *request = handler.request;
+    DFImageRequestID *requestID = handler.requestID;
     
     _DFImageManagerTask *task = _tasks[requestID.taskID];
     if (!task) {
@@ -423,12 +435,12 @@ static NSString *const _kPreheatHandlerID = @"_df_preheat";
     }
 }
 
-- (NSString *)_existingTaskIDForRequest:(DFImageRequest *)request {
+- (NSUUID *)_existingTaskIDForRequest:(DFImageRequest *)request {
     _DFImageRequestKey *key = [_DFImageRequestKey keyWithRequest:request fetcher:_conf.fetcher];
     return _taskIDs[key];
 }
 
-- (void)_setTaskID:(NSString *)taskID forRequest:(DFImageRequest *)request {
+- (void)_setTaskID:(NSUUID *)taskID forRequest:(DFImageRequest *)request {
     _DFImageRequestKey *key = [_DFImageRequestKey keyWithRequest:request fetcher:_conf.fetcher];
     _taskIDs[key] = taskID;
 }
@@ -526,11 +538,13 @@ static NSString *const _kPreheatHandlerID = @"_df_preheat";
 
 - (void)_startPreheatingImageForRequests:(NSArray *)requests {
     for (DFImageRequest *request in requests) {
-        DFImageRequestID *requestID = [self _preheatingIDForRequest:request];
-        _DFImageManagerTask *task = _tasks[requestID.taskID];
-        _DFImageRequestHandler *handler = task.handlers[requestID.handlerID];
-        if (!handler) {
-            [self _requestImageForRequest:request requestID:requestID completion:nil];
+        NSUUID *taskID = [self _existingTaskIDForRequest:request];
+        _DFImageManagerTask *task = _tasks[taskID];
+        if (!task || !task.isPreheating) {
+            DFImageRequestID *requestID = [[DFImageRequestID alloc] initWithImageManager:self];
+            [requestID setTaskID:taskID ?: [NSUUID UUID] handlerID:[NSUUID UUID]];
+            _DFImageRequestPreheatHandler *handler = [[_DFImageRequestPreheatHandler alloc] initWithRequest:request requestID:requestID completion:nil];
+            [self _requestImageForHandler:handler];
         }
     }
 }
@@ -546,30 +560,30 @@ static NSString *const _kPreheatHandlerID = @"_df_preheat";
 
 - (void)_stopPreheatingImagesForRequests:(NSArray *)requests {
     for (DFImageRequest *request in requests) {
-        DFImageRequestID *requestID = [self _preheatingIDForRequest:request];
-        [self _cancelRequestWithID:requestID];
+        NSUUID *taskID = [self _existingTaskIDForRequest:request];
+        _DFImageManagerTask *task = _tasks[taskID];
+        [self _cancelPreheatingRequestsForTask:task];
     }
-}
-
-- (DFImageRequestID *)_preheatingIDForRequest:(DFImageRequest *)request {
-    NSString *taskID = [self _existingTaskIDForRequest:request] ?: [[NSUUID UUID] UUIDString];
-    return [DFImageRequestID requestIDWithImageManager:self taskID:taskID handlerID:_kPreheatHandlerID];
 }
 
 - (void)stopPreheatingImagesForAllRequests {
     dispatch_async(_syncQueue, ^{
-        [_tasks enumerateKeysAndObjectsUsingBlock:^(NSString *taskID, _DFImageManagerTask *task, BOOL *stop) {
-            NSMutableArray *requestIDs = [NSMutableArray new];
-            [task.handlers enumerateKeysAndObjectsUsingBlock:^(NSString *handlerID, _DFImageRequestHandler *handler, BOOL *stop_inner) {
-                if ([handlerID isEqualToString:_kPreheatHandlerID]) {
-                    [requestIDs addObject:[DFImageRequestID requestIDWithImageManager:self taskID:taskID handlerID:handlerID]];
-                }
-            }];
-            for (DFImageRequestID *requestID in requestIDs) {
-                [self _cancelRequestWithID:requestID];
-            }
+        [_tasks enumerateKeysAndObjectsUsingBlock:^(id key, _DFImageManagerTask *task, BOOL *stop) {
+            [self _cancelPreheatingRequestsForTask:task];
         }];
     });
+}
+
+- (void)_cancelPreheatingRequestsForTask:(_DFImageManagerTask *)task {
+    NSMutableArray *requestIDs = [NSMutableArray new];
+    [task.handlers enumerateKeysAndObjectsUsingBlock:^(id key, _DFImageRequestHandler *handler, BOOL *stop) {
+        if ([handler isKindOfClass:[_DFImageRequestPreheatHandler class]]) {
+            [requestIDs addObject:handler.requestID];
+        }
+    }];
+    for (DFImageRequestID *requestID in requestIDs) {
+        [self _cancelRequestWithID:requestID];
+    }
 }
 
 #pragma mark - <DFImageManager>

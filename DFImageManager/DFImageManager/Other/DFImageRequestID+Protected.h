@@ -29,13 +29,11 @@
  */
 @property (nonatomic, weak, readonly) id<DFCoreImageManager> imageManager;
 
-@property (nonatomic, readonly) NSString *taskID;
-@property (nonatomic, readonly) NSString *handlerID;
+@property (nonatomic, readonly) NSUUID *taskID;
+@property (nonatomic, readonly) NSUUID *handlerID;
 
 - (instancetype)initWithImageManager:(id<DFCoreImageManager>)imageManager;
 
-- (void)setTaskID:(NSString *)taskID handlerID:(NSString *)handlerID;
-
-+ (DFImageRequestID *)requestIDWithImageManager:(id<DFCoreImageManager>)imageManager taskID:(NSString *)taskID handlerID:(NSString *)handlerID;
+- (void)setTaskID:(NSUUID *)taskID handlerID:(NSUUID *)handlerID;
 
 @end
