@@ -56,13 +56,16 @@
     return NO;
 }
 
-- (NSString *)executionContextIDForRequest:(DFImageRequest *)request {
-    NSString *assetID = [request.asset uniqueImageAssetIdentifier];
-    DFALAssetImageSize imageSize = [self _assetImageSizeForRequest:request];
-    NSMutableString *ECID = [[NSMutableString alloc] initWithString:@"requestID?"];
-    [ECID appendFormat:@"imageSize=%i", (int)imageSize];
-    [ECID appendFormat:@"assetID=%@", assetID];
-    return assetID;
+- (BOOL)isRequestEquivalent:(DFImageRequest *)request1 toRequest:(DFImageRequest *)request2 {
+    if (request1 == request2) {
+        return YES;
+    }
+    if (![request1.asset.uniqueImageAssetIdentifier isEqualToString:request2.asset.uniqueImageAssetIdentifier]) {
+        return NO;
+    }
+    DFALAssetImageSize imageSize1 = [self _assetImageSizeForRequest:request1];
+    DFALAssetImageSize imageSize2 = [self _assetImageSizeForRequest:request2];
+    return imageSize1 == imageSize2;
 }
 
 - (DFALAssetImageSize)_assetImageSizeForRequest:(DFImageRequest *)request {

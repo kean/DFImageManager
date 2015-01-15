@@ -118,18 +118,14 @@
     return schemes;
 }
 
-- (NSString *)executionContextIDForRequest:(DFImageRequest *)request {
-    return DFExecutionContextIDForRequest(request, [self _keyPathsAffectingExecutionContextIDForRequest:request]);
-}
-
-- (NSArray *)_keyPathsAffectingExecutionContextIDForRequest:(DFImageRequest *)request {
-    static NSArray *_keyPathsForNetworking;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        _keyPathsForNetworking = @[ @"options.networkAccessAllowed" ];
-        
-    });
-    return [request _isFileRequest] ? nil : _keyPathsForNetworking;
+- (BOOL)isRequestEquivalent:(DFImageRequest *)request1 toRequest:(DFImageRequest *)request2 {
+    if (request1 == request2) {
+        return YES;
+    }
+    if (![request1.asset.uniqueImageAssetIdentifier isEqualToString:request2.asset.uniqueImageAssetIdentifier]) {
+        return NO;
+    }
+    return [request1 _isFileRequest] ? YES : request1.options.networkAccessAllowed == request2.options.networkAccessAllowed;
 }
 
 - (NSOperation<DFImageManagerOperation> *)createOperationForRequest:(DFImageRequest *)request {

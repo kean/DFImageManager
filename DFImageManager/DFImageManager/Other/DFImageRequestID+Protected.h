@@ -29,15 +29,13 @@
  */
 @property (nonatomic, weak, readonly) id<DFCoreImageManager> imageManager;
 
-/*! Execution context ID.
- */
-@property (nonatomic, readonly) NSString *ECID;
+@property (nonatomic, readonly) NSString *taskID;
 @property (nonatomic, readonly) NSString *handlerID;
 
 - (instancetype)initWithImageManager:(id<DFCoreImageManager>)imageManager;
 
-- (void)setECID:(NSString *)ECID handlerID:(NSString *)handlerID;
+- (void)setTaskID:(NSString *)taskID handlerID:(NSString *)handlerID;
 
-+ (DFImageRequestID *)requestIDWithImageManager:(id<DFCoreImageManager>)imageManager ECID:(NSString *)ECID handlerID:(NSString *)handlerID;
++ (DFImageRequestID *)requestIDWithImageManager:(id<DFCoreImageManager>)imageManager taskID:(NSString *)taskID handlerID:(NSString *)handlerID;
 
 @end

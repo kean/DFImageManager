@@ -27,7 +27,7 @@
 @interface DFImageRequestID ()
 
 @property (nonatomic, weak, readonly) id<DFCoreImageManager> imageManager;
-@property (nonatomic, readonly) NSString *ECID;
+@property (nonatomic, readonly) NSString *taskID;
 @property (nonatomic, readonly) NSString *handlerID;
 
 @end
@@ -41,18 +41,18 @@
     return self;
 }
 
-+ (DFImageRequestID *)requestIDWithImageManager:(id<DFImageManager>)imageManager ECID:(NSString *)ECID handlerID:(NSString *)handlerID {
++ (DFImageRequestID *)requestIDWithImageManager:(id<DFImageManager>)imageManager taskID:(NSString *)taskID handlerID:(NSString *)handlerID {
     DFImageRequestID *requestID = [[DFImageRequestID alloc] initWithImageManager:imageManager];
-    [requestID setECID:ECID handlerID:handlerID];
+    [requestID setTaskID:taskID handlerID:handlerID];
     return requestID;
 }
 
-- (void)setECID:(NSString *)ECID handlerID:(NSString *)handlerID {
-    if (_ECID != nil ||
+- (void)setTaskID:(NSString *)taskID handlerID:(NSString *)handlerID {
+    if (_taskID != nil ||
         _handlerID != nil) {
         [NSException raise:NSInternalInconsistencyException format:@"Attempting to rewrite image request state"];
     }
-    _ECID = ECID;
+    _taskID = taskID;
     _handlerID = handlerID;
 }
 
@@ -65,7 +65,7 @@
 }
 
 - (NSString *)description {
-    return [NSString stringWithFormat:@"<%@ %p> { imageManager = %@, ECID = %@, handlerID = %@ }", [self class], self, self.imageManager, self.ECID, self.handlerID];
+    return [NSString stringWithFormat:@"<%@ %p> { imageManager = %@, taskID = %@, handlerID = %@ }", [self class], self, self.imageManager, self.taskID, self.handlerID];
 }
 
 @end

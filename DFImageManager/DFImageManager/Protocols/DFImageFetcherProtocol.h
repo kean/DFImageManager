@@ -31,11 +31,13 @@
  */
 @protocol DFImageFetcher <NSObject>
 
+/*! A concrete image fetcher implementation should inspect the given request and determine whether or not the implementation can handle the request.
+ */
 - (BOOL)canHandleRequest:(DFImageRequest *)request;
 
-/*! Creates execution context ID for request so that existing operations could be reused for new handlers.
+/*! Compares two requests for equivalence with regard to fetching the image. Requests should be consitered equivalent for fetching purposes if image fetcher can handle both requests by the same operation.
  */
-- (NSString *)executionContextIDForRequest:(DFImageRequest *)request;
+- (BOOL)isRequestEquivalent:(DFImageRequest *)request1 toRequest:(DFImageRequest *)request2;
 
 /*! Return nil if no work is required.
  */
@@ -45,15 +47,3 @@
 
 
 @end
-
-
-static inline NSString *
-DFExecutionContextIDForRequest(DFImageRequest *request, NSArray *keyPathsAffectingExecutionContextID) {
-    NSString *assetID = [request.asset uniqueImageAssetIdentifier];
-    NSMutableString *ECID = [[NSMutableString alloc] initWithString:@"requestID?"];
-    for (NSString *keyPath in keyPathsAffectingExecutionContextID) {
-        [ECID appendFormat:@"%@=%@&", keyPath, [request valueForKeyPath:keyPath]];
-    }
-    [ECID appendFormat:@"assetID=%@", assetID];
-    return ECID;
-}

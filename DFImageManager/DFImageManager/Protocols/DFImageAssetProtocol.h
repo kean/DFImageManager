@@ -27,6 +27,6 @@
  */
 @protocol DFImageAsset <NSObject>
 
-- (NSString *)uniqueImageAssetIdentifier;
+@property (nonatomic, readonly) NSString *uniqueImageAssetIdentifier;
 
 @end
