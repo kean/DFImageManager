@@ -268,6 +268,7 @@
 #pragma mark - _DFImageRequestKey -
 
 /*! Make it possible to use DFImageRequest as a key while comparing it via <DFImageFetcher> methods.
+ @note It could be implemented using CFDictionary and CFDictionaryKeyCallBacks, but the solution that uses _DFImageRequestKey is cleaner.
  */
 @interface _DFImageRequestKey : NSObject <NSCopying>
 
@@ -312,6 +313,12 @@
 
 @end
 
+#define DFImageRequestKeyCreate(request) _DFImageRequestKeyCreate(request, _conf.fetcher)
+
+static inline _DFImageRequestKey *
+_DFImageRequestKeyCreate(DFImageRequest *request, id<DFImageFetcher> fetcher) {
+    return [[_DFImageRequestKey alloc] initWithRequest:request fetcher:fetcher];
+}
 
 
 #pragma mark - DFImageManager -
@@ -362,7 +369,7 @@
     request = [request copy];
     DFImageRequestID *requestID = [[DFImageRequestID alloc] initWithImageManager:self]; // Represents requestID future.
     dispatch_async(_syncQueue, ^{
-        NSUUID *taskID = [self _existingTaskIDForRequest:request] ?: [NSUUID UUID];
+        NSUUID *taskID = _taskIDs[DFImageRequestKeyCreate(request)] ?: [NSUUID UUID];
         [requestID setTaskID:taskID handlerID:[NSUUID UUID]];
         _DFImageRequestHandler *handler = [[_DFImageRequestHandler alloc] initWithRequest:request requestID:requestID completion:completion];
         [self _requestImageForHandler:handler];
@@ -382,7 +389,7 @@
         task.cache = _conf.cache;
         task.delegate = self;
         _tasks[requestID.taskID] = task;
-        [self _setTaskID:task.taskID forRequest:request];
+        _taskIDs[DFImageRequestKeyCreate(request)] = task.taskID;
     }
     [task addHandler:handler];
     
@@ -435,19 +442,8 @@
     }
 }
 
-- (NSUUID *)_existingTaskIDForRequest:(DFImageRequest *)request {
-    _DFImageRequestKey *key = [_DFImageRequestKey keyWithRequest:request fetcher:_conf.fetcher];
-    return _taskIDs[key];
-}
-
-- (void)_setTaskID:(NSUUID *)taskID forRequest:(DFImageRequest *)request {
-    _DFImageRequestKey *key = [_DFImageRequestKey keyWithRequest:request fetcher:_conf.fetcher];
-    _taskIDs[key] = taskID;
-}
-
 - (void)_removeTask:(_DFImageManagerTask *)task {
-    _DFImageRequestKey *key = [_DFImageRequestKey keyWithRequest:task.request fetcher:_conf.fetcher];
-    [_taskIDs removeObjectForKey:key];
+    [_taskIDs removeObjectForKey:DFImageRequestKeyCreate(task.request)];
     [_tasks removeObjectForKey:task.taskID];
     [self _setNeedsExecutePreheatingTasks];
 }
@@ -538,7 +534,7 @@
 
 - (void)_startPreheatingImageForRequests:(NSArray *)requests {
     for (DFImageRequest *request in requests) {
-        NSUUID *taskID = [self _existingTaskIDForRequest:request];
+        NSUUID *taskID = _taskIDs[DFImageRequestKeyCreate(request)];
         _DFImageManagerTask *task = _tasks[taskID];
         if (!task || !task.isPreheating) {
             DFImageRequestID *requestID = [[DFImageRequestID alloc] initWithImageManager:self];
@@ -560,7 +556,7 @@
 
 - (void)_stopPreheatingImagesForRequests:(NSArray *)requests {
     for (DFImageRequest *request in requests) {
-        NSUUID *taskID = [self _existingTaskIDForRequest:request];
+        NSUUID *taskID = _taskIDs[DFImageRequestKeyCreate(request)];
         _DFImageManagerTask *task = _tasks[taskID];
         [self _cancelPreheatingRequestsForTask:task];
     }
