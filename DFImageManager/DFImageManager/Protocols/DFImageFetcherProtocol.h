@@ -35,7 +35,7 @@
  */
 - (BOOL)canHandleRequest:(DFImageRequest *)request;
 
-/*! Compares two requests for equivalence with regard to fetching the image. Requests should be consitered equivalent for fetching purposes if image fetcher can handle both requests by the same operation.
+/*! Compares two requests for equivalence with regard to fetching the image. Requests should be consitered equivalent if image fetcher can handle both requests by the same operation.
  */
 - (BOOL)isRequestEquivalent:(DFImageRequest *)request1 toRequest:(DFImageRequest *)request2;
 

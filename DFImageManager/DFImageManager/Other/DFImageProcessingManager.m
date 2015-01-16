@@ -26,9 +26,7 @@
 #import "DFImageUtilities.h"
 
 
-@implementation DFImageProcessingManager {
-    dispatch_queue_t _queue;
-}
+@implementation DFImageProcessingManager
 
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
@@ -37,7 +35,6 @@
 - (instancetype)initWithCache:(NSCache *)cache {
     if (self = [super init]) {
         _cache = cache;
-        _queue = dispatch_queue_create("DFImageProcessingManager:Queue", DISPATCH_QUEUE_SERIAL);
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_didReceiveMemoryWarning:) name:UIApplicationDidReceiveMemoryWarningNotification object:nil];
     }
     return self;
@@ -55,13 +52,15 @@
 
 #pragma mark - <DFImageProcessing>
 
-- (void)processImage:(UIImage *)image forRequest:(DFImageRequest *)request completion:(void (^)(UIImage *))completion {
-    dispatch_async(_queue, ^{
-        [self _processImage:image forRequest:request completion:completion];
-    });
+- (BOOL)isRequestEquivalent:(DFImageRequest *)request1 toRequest:(DFImageRequest *)request2 {
+    if (request1 == request2) {
+        return YES;
+    }
+    return (CGSizeEqualToSize(request1.targetSize, request2.targetSize) &&
+            request1.contentMode == request2.contentMode);
 }
 
-- (void)_processImage:(UIImage *)image forRequest:(DFImageRequest *)request completion:(void (^)(UIImage *))completion {
+- (UIImage *)processedImage:(UIImage *)image forRequest:(DFImageRequest *)request {
     UIImage *processedImage = image;
     switch (request.contentMode) {
         case DFImageContentModeAspectFit:
@@ -73,11 +72,7 @@
         default:
             break;
     }
-    dispatch_async(dispatch_get_main_queue(), ^{
-        if (completion) {
-            completion(processedImage);
-        }
-    });
+    return processedImage;
 }
 
 #pragma mark - <DFImageCache>

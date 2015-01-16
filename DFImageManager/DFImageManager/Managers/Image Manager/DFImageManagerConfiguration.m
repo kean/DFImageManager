@@ -29,6 +29,8 @@
     if (self = [super init]) {
         NSParameterAssert(fetcher);
         _fetcher = fetcher;
+        _processingQueue = [NSOperationQueue new];
+        _processingQueue.maxConcurrentOperationCount = 2;
         _maximumConcurrentPreheatingRequests = 2;
     }
     return self;

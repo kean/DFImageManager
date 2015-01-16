@@ -96,7 +96,7 @@
 
 @property (nonatomic, readonly) NSUUID *taskID;
 @property (nonatomic, readonly) DFImageRequest *request;
-@property (nonatomic, readonly) NSDictionary *handlers;
+@property (nonatomic, readonly) NSDictionary /* NSUUID *handlerID : _DFImageRequestHandler */ *handlers;
 
 @property (nonatomic, readonly) BOOL isExecuting;
 @property (nonatomic, readonly) BOOL isCancelled;
@@ -108,6 +108,7 @@
 @property (nonatomic, weak) id<_DFImageManagerTaskDelegate> delegate;
 
 @property (nonatomic) id<DFImageFetcher> fetcher;
+@property (nonatomic) NSOperationQueue *processingQueue;
 @property (nonatomic) id<DFImageProcessor> processor;
 @property (nonatomic) id<DFImageCache> cache;
 
@@ -125,7 +126,7 @@
 @implementation _DFImageManagerTask {
     NSMutableDictionary *_handlers;
     DFImageResponse *_response;
-    NSOperation<DFImageManagerOperation> *__weak _operation;
+    NSOperation<DFImageManagerOperation> *__weak _fetchOperation;
 }
 
 - (instancetype)initWithTaskID:(NSUUID *)taskID request:(DFImageRequest *)request {
@@ -186,7 +187,7 @@
         [weakSelf _didFetchImageWithOperation:weakOp];
     }];
     operation.queuePriority = self._queuePriority;
-    _operation = operation;
+    _fetchOperation = operation;
     [_fetcher enqueueOperation:operation];
 }
 
@@ -216,10 +217,12 @@
         if (cachedImage != nil) {
             completion(cachedImage);
         } else {
-            [_processor processImage:input forRequest:handler.request completion:^(UIImage *image) {
-                [_cache storeImage:image forRequest:handler.request];
-                completion(image);
+            NSBlockOperation *operation = [NSBlockOperation blockOperationWithBlock:^{
+                UIImage *processedImage = [_processor processedImage:input forRequest:handler.request];
+                [_cache storeImage:processedImage forRequest:handler.request];
+                completion(processedImage);
             }];
+            [_processingQueue addOperation:operation];
         }
     } else {
         [_cache storeImage:input forRequest:handler.request];
@@ -233,12 +236,12 @@
 
 - (void)cancel {
     _isCancelled = YES;
-    [_operation cancel];
+    [_fetchOperation cancel];
     self.delegate = nil;
 }
 
 - (void)updatePriority {
-    _operation.queuePriority = self._queuePriority;
+    _fetchOperation.queuePriority = self._queuePriority;
 }
 
 - (NSOperationQueuePriority)_queuePriority {
@@ -386,6 +389,7 @@ _DFImageRequestKeyCreate(DFImageRequest *request, id<DFImageFetcher> fetcher) {
         task = [[_DFImageManagerTask alloc] initWithTaskID:requestID.taskID request:request];
         task.fetcher = _conf.fetcher;
         task.processor = _conf.processor;
+        task.processingQueue = _conf.processingQueue;
         task.cache = _conf.cache;
         task.delegate = self;
         _tasks[requestID.taskID] = task;

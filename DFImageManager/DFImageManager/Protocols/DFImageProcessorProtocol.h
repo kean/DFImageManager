@@ -25,8 +25,17 @@
 #import <UIKit/UIKit.h>
 
 
+/*! Processes fetched images. Might include image decompression, resizing and anything else.
+ @note Implementations should not cache processed images and leave it to classes conforming <DFImageCache> protocol. However, the same class may implement both protocols.
+ */
 @protocol DFImageProcessor <NSObject>
 
-- (void)processImage:(UIImage *)image forRequest:(DFImageRequest *)request completion:(void (^)(UIImage *image))completion;
+/*! Compares two requests for equivalence with regard to processing the image. Requests should be considered equivalent if image processor will produce the same result for both requests when given the same original image.
+ */
+- (BOOL)isRequestEquivalent:(DFImageRequest *)request1 toRequest:(DFImageRequest *)request2;
+
+/*! Returns processed image for a given request.
+ */
+- (UIImage *)processedImage:(UIImage *)image forRequest:(DFImageRequest *)request;
 
 @end

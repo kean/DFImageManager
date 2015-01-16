@@ -31,6 +31,10 @@
 @property (nonatomic, readonly) id<DFImageFetcher> fetcher;
 @property (nonatomic) id<DFImageProcessor> processor;
 
+/*! Operation queue, that is used for executing image processing operations (see <DFImageProcessor> protocol).
+ */
+@property (nonatomic) NSOperationQueue *processingQueue;
+
 /*! Memory cache that stores processed images.
   @note It's a good idea to implement <DFImageProcessing> and <DFImageCache> in that same object.
  */
