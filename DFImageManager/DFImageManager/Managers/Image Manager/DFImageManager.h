@@ -28,7 +28,7 @@
 #import <Foundation/Foundation.h>
 
 
-@interface DFImageManager : NSObject <DFImageManager, DFImageManagerConvenience>
+@interface DFImageManager : NSObject <DFImageManager>
 
 @property (nonatomic, readonly) DFImageManagerConfiguration *configuration;
 
@@ -45,5 +45,10 @@
 @interface DFImageManager (DefaultManager)
 
 + (id<DFImageManager, DFImageManagerConvenience>)defaultManager;
+
+@end
+
+
+@interface DFImageManager (Convenience) <DFImageManagerConvenience>
 
 @end

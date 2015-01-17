@@ -586,7 +586,30 @@ _DFImageRequestKeyCreate(DFImageRequest *request, id<DFImageFetcher> fetcher) {
     }
 }
 
-#pragma mark - <DFImageManager>
+#pragma mark - Dependency Injectors
+
+static id<DFImageManager, DFImageManagerConvenience> _sharedManager;
+
++ (id<DFImageManager, DFImageManagerConvenience>)sharedManager {
+    @synchronized(self) {
+        return _sharedManager;
+    }
+}
+
++ (void)setSharedManager:(id<DFImageManager, DFImageManagerConvenience>)manager {
+    @synchronized(self) {
+        _sharedManager = manager;
+    }
+}
+
+@end
+
+
+#pragma mark - DFImageManager (Convenience) -
+
+@implementation DFImageManager (Convenience)
+
+#pragma mark - <DFImageManagerConvenience>
 
 - (DFImageRequestID *)requestImageForAsset:(id)asset targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options completion:(void (^)(UIImage *, NSDictionary *))completion {
     return [self requestImageForRequest:[[DFImageRequest alloc] initWithAsset:asset targetSize:targetSize contentMode:contentMode options:options] completion:completion];
@@ -606,22 +629,6 @@ _DFImageRequestKeyCreate(DFImageRequest *request, id<DFImageFetcher> fetcher) {
         [requests addObject:[[DFImageRequest alloc] initWithAsset:asset targetSize:targetSize contentMode:contentMode options:options]];
     }
     return [requests copy];
-}
-
-#pragma mark - Dependency Injectors
-
-static id<DFImageManager, DFImageManagerConvenience> _sharedManager;
-
-+ (id<DFImageManager, DFImageManagerConvenience>)sharedManager {
-    @synchronized(self) {
-        return _sharedManager;
-    }
-}
-
-+ (void)setSharedManager:(id<DFImageManager, DFImageManagerConvenience>)manager {
-    @synchronized(self) {
-        _sharedManager = manager;
-    }
 }
 
 @end
