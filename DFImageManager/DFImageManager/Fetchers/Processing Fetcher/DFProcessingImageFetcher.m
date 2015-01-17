@@ -79,7 +79,10 @@
     if (request1 == request2) {
         return YES;
     }
-    return [_processor isRequestEquivalent:request1 toRequest:request2];
+    if (![[request1.asset uniqueImageAssetIdentifier] isEqualToString:[request2.asset uniqueImageAssetIdentifier]]) {
+        return YES;
+    }
+    return [_processor isProcessingForRequestEquivalent:request1 toRequest:request2];
 }
 
 - (NSOperation<DFImageManagerOperation> *)createOperationForRequest:(DFImageRequest *)request {

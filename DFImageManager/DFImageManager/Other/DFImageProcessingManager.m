@@ -52,7 +52,7 @@
 
 #pragma mark - <DFImageProcessing>
 
-- (BOOL)isRequestEquivalent:(DFImageRequest *)request1 toRequest:(DFImageRequest *)request2 {
+- (BOOL)isProcessingForRequestEquivalent:(DFImageRequest *)request1 toRequest:(DFImageRequest *)request2 {
     if (request1 == request2) {
         return YES;
     }

@@ -30,9 +30,10 @@
  */
 @protocol DFImageProcessor <NSObject>
 
-/*! Compares two requests for equivalence with regard to processing the image. Requests should be considered equivalent if image processor will produce the same result for both requests when given the same original image.
+/*! Compares two requests for equivalence with regard to processing the image. Requests should be considered equivalent if image processor will produce the same result for both requests when given the same input image. 
+ @warning Implementation should not inspect an asset object of the request!
  */
-- (BOOL)isRequestEquivalent:(DFImageRequest *)request1 toRequest:(DFImageRequest *)request2;
+- (BOOL)isProcessingForRequestEquivalent:(DFImageRequest *)request1 toRequest:(DFImageRequest *)request2;
 
 /*! Returns processed image for a given request.
  */
