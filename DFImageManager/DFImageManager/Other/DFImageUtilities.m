@@ -58,7 +58,7 @@
 }
 
 + (UIImage *)imageWithImage:(UIImage *)image scaledToSize:(CGSize)boundsSize {
-    CGSize roundedSize = CGSizeMake(floor(boundsSize.width), floor(boundsSize.height));
+    CGSize roundedSize = CGSizeMake((CGFloat)floor(boundsSize.width), (CGFloat)floor(boundsSize.height));
     UIGraphicsBeginImageContextWithOptions(roundedSize, NO, 0.0);
     [image drawInRect:CGRectMake(0, 0, roundedSize.width, roundedSize.height)];
     UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
@@ -77,19 +77,19 @@
         case UIImageOrientationLeft:
         case UIImageOrientationLeftMirrored:
             cropRect.origin.y = inputCropRect.origin.x;
-            cropRect.origin.x = 1.0 - inputCropRect.origin.y - inputCropRect.size.height;
+            cropRect.origin.x = 1.f - inputCropRect.origin.y - inputCropRect.size.height;
             cropRect.size.width = inputCropRect.size.height;
             cropRect.size.height = inputCropRect.size.width;
             break;
         case UIImageOrientationDown:
         case UIImageOrientationDownMirrored:
-            cropRect.origin.x = 1.0 - inputCropRect.origin.x - inputCropRect.size.width;
-            cropRect.origin.y = 1.0 - inputCropRect.origin.y - inputCropRect.size.height;
+            cropRect.origin.x = 1.f - inputCropRect.origin.x - inputCropRect.size.width;
+            cropRect.origin.y = 1.f - inputCropRect.origin.y - inputCropRect.size.height;
             break;
         case UIImageOrientationRight:
         case UIImageOrientationRightMirrored:
             cropRect.origin.x = inputCropRect.origin.y;
-            cropRect.origin.y = 1.0 - inputCropRect.origin.x - inputCropRect.size.width;
+            cropRect.origin.y = 1.f - inputCropRect.origin.x - inputCropRect.size.width;
             cropRect.size.width = inputCropRect.size.height;
             cropRect.size.height = inputCropRect.size.width;
             break;
@@ -98,10 +98,10 @@
     }
     
     CGSize imagePixelSize = DFImageBitmapPixelSize(image);
-    CGRect imageCropRect = CGRectMake(floor(cropRect.origin.x * imagePixelSize.width),
-                                      floor(cropRect.origin.y * imagePixelSize.height),
-                                      floor(cropRect.size.width * imagePixelSize.width),
-                                      floor(cropRect.size.height * imagePixelSize.height));
+    CGRect imageCropRect = CGRectMake((CGFloat)floor(cropRect.origin.x * imagePixelSize.width),
+                                      (CGFloat)floor(cropRect.origin.y * imagePixelSize.height),
+                                      (CGFloat)floor(cropRect.size.width * imagePixelSize.width),
+                                      (CGFloat)floor(cropRect.size.height * imagePixelSize.height));
     
     CGImageRef croppedImageRef = CGImageCreateWithImageInRect(image.CGImage, imageCropRect);
     UIImage *croppedImage = [UIImage imageWithCGImage:croppedImageRef scale:image.scale orientation:image.imageOrientation];
