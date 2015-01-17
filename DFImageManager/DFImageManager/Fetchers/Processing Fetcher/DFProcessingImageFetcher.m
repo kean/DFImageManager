@@ -20,34 +20,9 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "DFProcessingImageManager.h"
+#import "DFProcessingImageFetcher.h"
 #import "DFImageResponse.h"
 
-
-
-#pragma mark - DFProcessingInput -
-
-@implementation DFProcessingInput {
-    NSString *_identifier;
-}
-
-- (instancetype)initWithImage:(UIImage *)image identifier:(NSString *)identifier {
-    if (self = [super init]) {
-        _image = image;
-        _identifier = identifier;
-    }
-    return self;
-}
-
-- (NSString *)uniqueImageAssetIdentifier {
-    return _identifier;
-}
-
-@end
-
-
-
-#pragma mark - _DFImageProcessingOperation -
 
 @interface _DFImageProcessingOperation : NSOperation <DFImageManagerOperation>
 
@@ -83,16 +58,7 @@
 @end
 
 
-
-#pragma mark - _DFImageProcessingFetcher -
-
-@interface _DFImageProcessingFetcher : NSObject <DFImageFetcher>
-
-- (instancetype)initWithProcessor:(id<DFImageProcessor>)processor qeueu:(NSOperationQueue *)queue;
-
-@end
-
-@implementation _DFImageProcessingFetcher {
+@implementation DFProcessingImageFetcher {
     id<DFImageProcessor> _processor;
     NSOperationQueue *_queue;
 }
@@ -123,19 +89,6 @@
 
 - (void)enqueueOperation:(NSOperation<DFImageManagerOperation> *)operation {
     [_queue addOperation:operation];
-}
-
-@end
-
-
-
-#pragma mark - DFImageProcessingManager -
-
-@implementation DFProcessingImageManager
-
-- (instancetype)initWithProcessor:(id<DFImageProcessor>)processor queue:(NSOperationQueue *)queue {
-    _DFImageProcessingFetcher *fetcher = [[_DFImageProcessingFetcher alloc] initWithProcessor:processor qeueu:queue];
-    return [self initWithConfiguration:[DFImageManagerConfiguration configurationWithFetcher:fetcher]];
 }
 
 @end

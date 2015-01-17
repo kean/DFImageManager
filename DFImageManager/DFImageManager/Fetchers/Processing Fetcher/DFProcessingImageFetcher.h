@@ -20,24 +20,16 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "DFImageAssetProtocol.h"
-#import "DFImageManager.h"
+#import "DFImageFetcherProtocol.h"
+#import "DFImageProcessorProtocol.h"
+#import "DFProcessingInput.h"
 #import <Foundation/Foundation.h>
 
 
-/*! Uses existing DFImageManager infrastructure to provide clients with the ability to easily reuse and cancel processing operations. Processing manager is initialized with a <DFImageProcessor> and an operation queue which are then wrapped into a class that implements <DFImageFetcher> protocol.
+/*! Supports requests with a DFProcessingInput asset class.
  */
-@interface DFProcessingImageManager : DFImageManager
+@interface DFProcessingImageFetcher : NSObject <DFImageFetcher>
 
-- (instancetype)initWithProcessor:(id<DFImageProcessor>)processor queue:(NSOperationQueue *)queue;
-
-@end
-
-
-@interface DFProcessingInput : NSObject <DFImageAsset>
-
-@property (nonatomic, readonly) UIImage *image;
-
-- (instancetype)initWithImage:(UIImage *)image identifier:(NSString *)identifier;
+- (instancetype)initWithProcessor:(id<DFImageProcessor>)processor qeueu:(NSOperationQueue *)queue;
 
 @end

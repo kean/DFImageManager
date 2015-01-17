@@ -27,7 +27,7 @@
 #import "DFImageRequestID.h"
 #import "DFImageRequestOptions.h"
 #import "DFImageResponse.h"
-#import "DFProcessingImageManager.h"
+#import "DFProcessingImageFetcher.h"
 #import <UIKit/UIKit.h>
 
 
@@ -109,7 +109,7 @@
 @property (nonatomic, weak) id<_DFImageManagerTaskDelegate> delegate;
 
 @property (nonatomic) id<DFImageFetcher> fetcher;
-@property (nonatomic) DFProcessingImageManager *processingManager;
+@property (nonatomic) id<DFImageManagerCore> processingManager;
 @property (nonatomic) id<DFImageCache> cache;
 
 - (instancetype)initWithTaskID:(NSUUID *)taskID request:(DFImageRequest *)request NS_DESIGNATED_INITIALIZER;
@@ -344,7 +344,10 @@ _DFImageRequestKeyCreate(DFImageRequest *request, id<DFImageFetcher> fetcher) {
     NSMutableDictionary /* _DFImageRequestKey * : NSString *taskID */ *_taskIDs;
     dispatch_queue_t _syncQueue;
     BOOL _needsToExecutePreheatRequests;
-    DFProcessingImageManager *_processingManager;
+    
+    /*! Read more about processing manager it initWithConfiguration: method.
+     */
+    id<DFImageManagerCore> _processingManager;
 }
 
 @synthesize configuration = _conf;
@@ -369,7 +372,9 @@ _DFImageRequestKeyCreate(DFImageRequest *request, id<DFImageFetcher> fetcher) {
              
              The solution is quite simple and elegant: use an instance of DFImageManager to manage processing operations and implement image processing using <DFImageFetcher> protocol. That's exactly what DFProcessingImageManager does (and it has a simple initiliazer that takes <DFImageProcessor> and operation queue as a parameters). So DFImageManager uses instances of DFImageManager class in it's own implementation.
              */
-            _processingManager = [[DFProcessingImageManager alloc] initWithProcessor:configuration.processor queue:configuration.processingQueue];
+            
+            DFProcessingImageFetcher *processingFetcher = [[DFProcessingImageFetcher alloc] initWithProcessor:configuration.processor qeueu:configuration.processingQueue];
+            _processingManager = [[DFImageManager alloc] initWithConfiguration:[DFImageManagerConfiguration configurationWithFetcher:processingFetcher]];
         }
     }
     return self;
