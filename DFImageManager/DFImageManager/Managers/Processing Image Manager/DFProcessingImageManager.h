@@ -20,29 +20,24 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "DFImageManagerOperationProtocol.h"
-#import "DFImageManagerProtocol.h"
-#import "DFImageRequest.h"
-
-@class DFImageRequestOptions;
+#import "DFImageAssetProtocol.h"
+#import "DFImageManager.h"
+#import <Foundation/Foundation.h>
 
 
-/*! Factory for multiple image provider components.
+/*! Uses existing DFImageManager infrastructure to provide clients with the ability to easily reuse and cancel processing operations. Processing manager is initialized with a <DFImageProcessor> and an operation queue which are then wrapped into a class that implements <DFImageFetcher> protocol.
  */
-@protocol DFImageFetcher <NSObject>
+@interface DFProcessingImageManager : DFImageManager
 
-/*! A concrete image fetcher implementation should inspect the given request and determine whether or not the implementation can handle the request.
- */
-- (BOOL)canHandleRequest:(DFImageRequest *)request;
+- (instancetype)initWithProcessor:(id<DFImageProcessor>)processor queue:(NSOperationQueue *)queue;
 
-/*! Compares two requests for equivalence with regard to fetching the image. Requests should be consitered equivalent if image fetcher can handle both requests by the same operation.
- */
-- (BOOL)isRequestEquivalent:(DFImageRequest *)request1 toRequest:(DFImageRequest *)request2;
+@end
 
-/*! Return nil if no work is required.
- */
-- (NSOperation<DFImageManagerOperation> *)createOperationForRequest:(DFImageRequest *)request;
 
-- (void)enqueueOperation:(NSOperation<DFImageManagerOperation> *)operation;
+@interface DFProcessingInput : NSObject <DFImageAsset>
+
+@property (nonatomic, readonly) UIImage *image;
+
+- (instancetype)initWithImage:(UIImage *)image identifier:(NSString *)identifier;
 
 @end

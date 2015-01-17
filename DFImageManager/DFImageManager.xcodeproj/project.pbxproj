@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0C0C1AA81A6A335C0071D738 /* DFProcessingImageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C0C1AA71A6A335C0071D738 /* DFProcessingImageManager.m */; };
 		0C227D361A5236FD00DA6299 /* DFImageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C227D351A5236FD00DA6299 /* DFImageManager.m */; };
 		0C22BD921A4CDCA100AF48E0 /* DFCompositeImageRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C22BD911A4CDCA100AF48E0 /* DFCompositeImageRequest.m */; };
 		0C2BD4D11A03A2EA00412BE3 /* DFImageManagerDefines.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C2BD4D01A03A2EA00412BE3 /* DFImageManagerDefines.m */; };
@@ -67,6 +68,8 @@
 
 /* Begin PBXFileReference section */
 		08231C32293CC0B246EA8D13 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "../Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
+		0C0C1AA61A6A335C0071D738 /* DFProcessingImageManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFProcessingImageManager.h; sourceTree = "<group>"; };
+		0C0C1AA71A6A335C0071D738 /* DFProcessingImageManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFProcessingImageManager.m; sourceTree = "<group>"; };
 		0C227D341A5236FD00DA6299 /* DFImageManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFImageManager.h; sourceTree = "<group>"; };
 		0C227D351A5236FD00DA6299 /* DFImageManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFImageManager.m; sourceTree = "<group>"; };
 		0C227D4A1A52387A00DA6299 /* DFImageCacheProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFImageCacheProtocol.h; sourceTree = "<group>"; };
@@ -166,6 +169,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0C0C1AA51A6A335C0071D738 /* Processing Image Manager */ = {
+			isa = PBXGroup;
+			children = (
+				0C0C1AA61A6A335C0071D738 /* DFProcessingImageManager.h */,
+				0C0C1AA71A6A335C0071D738 /* DFProcessingImageManager.m */,
+			);
+			path = "Processing Image Manager";
+			sourceTree = "<group>";
+		};
 		0C227D331A5236FD00DA6299 /* Image Manager */ = {
 			isa = PBXGroup;
 			children = (
@@ -315,6 +327,7 @@
 			children = (
 				0C227D331A5236FD00DA6299 /* Image Manager */,
 				0CA07D7D1A4BD08900B16F38 /* Composite Manager */,
+				0C0C1AA51A6A335C0071D738 /* Processing Image Manager */,
 				0CA07D881A4C13A600B16F38 /* Proxy Manager */,
 			);
 			path = Managers;
@@ -578,6 +591,7 @@
 				0C2BD4EB1A03A3B200412BE3 /* DFImageResponse.m in Sources */,
 				0C2BD4EA1A03A3B200412BE3 /* DFImageRequestOptions.m in Sources */,
 				0C4B9BF11A63E2280042C680 /* DFImageManagerConfiguration.m in Sources */,
+				0C0C1AA81A6A335C0071D738 /* DFProcessingImageManager.m in Sources */,
 				0CD8A96D1A60AF6100B16BD1 /* DFAssetsLibraryImageFetchOperation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

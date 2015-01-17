@@ -27,6 +27,7 @@
 #import "DFImageRequestID.h"
 #import "DFImageRequestOptions.h"
 #import "DFImageResponse.h"
+#import "DFProcessingImageManager.h"
 #import <UIKit/UIKit.h>
 
 
@@ -72,6 +73,7 @@
 @end
 
 
+
 #pragma mark - _DFImageManagerTask -
 
 @class _DFImageManagerTask;
@@ -87,7 +89,6 @@
 - (void)task:(_DFImageManagerTask *)task didProcessResponse:(DFImageResponse *)response forHandler:(_DFImageManagerHandler *)handler;
 
 @end
-
 
 /*! Implements the entire flow of retrieving, processing and caching images. Requires synchronization from the user of the class.
  @note Not thread safe.
@@ -108,8 +109,7 @@
 @property (nonatomic, weak) id<_DFImageManagerTaskDelegate> delegate;
 
 @property (nonatomic) id<DFImageFetcher> fetcher;
-@property (nonatomic) NSOperationQueue *processingQueue;
-@property (nonatomic) id<DFImageProcessor> processor;
+@property (nonatomic) DFProcessingImageManager *processingManager;
 @property (nonatomic) id<DFImageCache> cache;
 
 - (instancetype)initWithTaskID:(NSUUID *)taskID request:(DFImageRequest *)request NS_DESIGNATED_INITIALIZER;
@@ -212,17 +212,21 @@
 }
 
 - (void)_processImage:(UIImage *)input forHandler:(_DFImageManagerHandler *)handler completion:(void (^)(UIImage *image))completion {
-    if (_processor != nil && input != nil) {
+    if (self.processingManager != nil && input != nil) {
         UIImage *cachedImage = [_cache cachedImageForRequest:handler.request];
         if (cachedImage != nil) {
             completion(cachedImage);
         } else {
-            NSBlockOperation *operation = [NSBlockOperation blockOperationWithBlock:^{
-                UIImage *processedImage = [_processor processedImage:input forRequest:handler.request];
+            DFImageRequest *request = [handler.request copy];
+            request.asset = [[DFProcessingInput alloc] initWithImage:input identifier:[self.taskID UUIDString]];
+            DFImageRequestID *requestID = [_processingManager requestImageForRequest:request completion:^(UIImage *image, NSDictionary *info) {
+                UIImage *processedImage = image;
                 [_cache storeImage:processedImage forRequest:handler.request];
                 completion(processedImage);
             }];
-            [_processingQueue addOperation:operation];
+            if (requestID) {
+                // TODO: Store requestID to be able to cancel processing requests.
+            }
         }
     } else {
         [_cache storeImage:input forRequest:handler.request];
@@ -340,6 +344,7 @@ _DFImageRequestKeyCreate(DFImageRequest *request, id<DFImageFetcher> fetcher) {
     NSMutableDictionary /* _DFImageRequestKey * : NSString *taskID */ *_taskIDs;
     dispatch_queue_t _syncQueue;
     BOOL _needsToExecutePreheatRequests;
+    DFProcessingImageManager *_processingManager;
 }
 
 @synthesize configuration = _conf;
@@ -356,6 +361,16 @@ _DFImageRequestKeyCreate(DFImageRequest *request, id<DFImageFetcher> fetcher) {
         _syncQueue = dispatch_queue_create([[NSString stringWithFormat:@"%@-queue-%p", [self class], self] UTF8String], DISPATCH_QUEUE_SERIAL);
         _tasks = [NSMutableDictionary new];
         _taskIDs = [NSMutableDictionary new];
+        
+        if (configuration.processor) {
+            /*! DFImageManager implementation gurantees that it will create a single operation for multiple image requests that are considered equivalent by <DFImageFetcher>. It does so by creating _DFImageManagerTask per request and assigning multiple handlers to the task.
+             
+             But, those handlers might have different image processing options like target size and content mode (or they might be the same, which is common when preheating is used). So DFImageManager also needs to gurantee that the same processing operations are executed exactly once for the handlers with the same processing options. We don't want to resize and decompress original image twice, because those are very CPU intensive operations. DFImageManager also needs to keep track of those operations and be able to cancel them. Those requirements seems very familiar - that's exactly what DFImageManager does  for the initial image requests handled by <DFImageFetcher>!
+             
+             The solution is quite simple and elegant: use an instance of DFImageManager to manage processing operations and implement image processing using <DFImageFetcher> protocol. That's exactly what DFProcessingImageManager does (and it has a simple initiliazer that takes <DFImageProcessor> and operation queue as a parameters). So DFImageManager uses instances of DFImageManager class in it's own implementation.
+             */
+            _processingManager = [[DFProcessingImageManager alloc] initWithProcessor:configuration.processor queue:configuration.processingQueue];
+        }
     }
     return self;
 }
@@ -388,8 +403,7 @@ _DFImageRequestKeyCreate(DFImageRequest *request, id<DFImageFetcher> fetcher) {
     if (!task) {
         task = [[_DFImageManagerTask alloc] initWithTaskID:requestID.taskID request:request];
         task.fetcher = _conf.fetcher;
-        task.processor = _conf.processor;
-        task.processingQueue = _conf.processingQueue;
+        task.processingManager = _processingManager;
         task.cache = _conf.cache;
         task.delegate = self;
         _tasks[requestID.taskID] = task;
