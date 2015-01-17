@@ -26,7 +26,7 @@
 
 @interface DFImageRequestID ()
 
-@property (nonatomic, weak, readonly) id<DFCoreImageManager> imageManager;
+@property (nonatomic, weak, readonly) id<DFImageManager> imageManager;
 @property (nonatomic, readonly) NSUUID *taskID;
 @property (nonatomic, readonly) NSUUID *handlerID;
 
@@ -34,7 +34,7 @@
 
 @implementation DFImageRequestID
 
-- (instancetype)initWithImageManager:(id<DFCoreImageManager>)imageManager {
+- (instancetype)initWithImageManager:(id<DFImageManager>)imageManager {
     if (self = [super init]) {
         _imageManager = imageManager;
     }

@@ -27,7 +27,7 @@
 #import "DFImageRequestOptions.h"
 
 
-@protocol DFCoreImageManager <NSObject>
+@protocol DFImageManager <NSObject>
 
 - (BOOL)canHandleRequest:(DFImageRequest *)request;
 
@@ -51,9 +51,9 @@
 
 
 /*! Convenience methods.
- @discussion Implementation details. All you need to do is pack given parameters in a DFImageRequest object and dispatch it to the appropriate DFCoreImageManager method.
+ @discussion Implementation details. All you need to do is pack given parameters in a DFImageRequest object and dispatch it to the appropriate DFImageManager method.
  */
-@protocol DFConvenienceImageManager <NSObject>
+@protocol DFImageManagerConvenience <NSObject>
 
 /*! Requests an image representation for the specified asset.
  @param asset The asset whose image data is to be loaded. If asset is nil behavior is undefined.
@@ -67,10 +67,5 @@
 - (void)startPreheatingImageForAssets:(NSArray /* id<DFImageAsset> */ *)assets targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options;
 
 - (void)stopPreheatingImagesForAssets:(NSArray /* id<DFImageAsset> */ *)assets targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options;
-
-@end
-
-
-@protocol DFImageManager <DFCoreImageManager, DFConvenienceImageManager>
 
 @end

@@ -28,7 +28,7 @@
 #import <Foundation/Foundation.h>
 
 
-@interface DFImageManager : NSObject <DFImageManager>
+@interface DFImageManager : NSObject <DFImageManager, DFImageManagerConvenience>
 
 @property (nonatomic, readonly) DFImageManagerConfiguration *configuration;
 
@@ -36,14 +36,14 @@
 
 // Dependency injectors.
 
-+ (id<DFImageManager>)sharedManager;
-+ (void)setSharedManager:(id<DFImageManager>)manager;
++ (id<DFImageManager, DFImageManagerConvenience>)sharedManager;
++ (void)setSharedManager:(id<DFImageManager, DFImageManagerConvenience>)manager;
 
 @end
 
 
 @interface DFImageManager (DefaultManager)
 
-+ (id<DFImageManager>)defaultManager;
++ (id<DFImageManager, DFImageManagerConvenience>)defaultManager;
 
 @end

@@ -26,7 +26,7 @@
 
 
 @implementation DFCompositeImageManager {
-    NSMutableArray /* id<DFCoreImageManager> */ *_managers;
+    NSMutableArray /* id<DFImageManager> */ *_managers;
 }
 
 - (instancetype)initWithImageManagers:(NSArray *)imageManagers {
@@ -36,7 +36,7 @@
     return self;
 }
 
-- (void)addImageManager:(id<DFCoreImageManager>)imageManager {
+- (void)addImageManager:(id<DFImageManager>)imageManager {
     [self addImageManagers:@[imageManager]];
 }
 
@@ -44,7 +44,7 @@
     [_managers addObjectsFromArray:imageManagers];
 }
 
-- (void)removeImageManager:(id<DFCoreImageManager>)imageManager {
+- (void)removeImageManager:(id<DFImageManager>)imageManager {
     [self removeImageManagers:@[imageManager]];
 }
 
@@ -52,8 +52,8 @@
     [_managers removeObjectsInArray:imageManagers];
 }
 
-- (id<DFCoreImageManager>)_managerForRequest:(DFImageRequest *)request {
-    for (id<DFCoreImageManager> manager in _managers) {
+- (id<DFImageManager>)_managerForRequest:(DFImageRequest *)request {
+    for (id<DFImageManager> manager in _managers) {
         if ([manager canHandleRequest:request]) {
             return manager;
         }
@@ -61,7 +61,7 @@
     return nil;
 }
 
-#pragma mark - <DFCoreImageManager>
+#pragma mark - <DFImageManager>
 
 - (BOOL)canHandleRequest:(DFImageRequest *)request {
     return [self _managerForRequest:request] != nil;
@@ -92,12 +92,12 @@
 }
 
 - (void)stopPreheatingImagesForAllRequests {
-    for (id<DFCoreImageManager> manager in _managers) {
+    for (id<DFImageManager> manager in _managers) {
         [manager stopPreheatingImagesForAllRequests];
     }
 }
 
-#pragma mark - <DFImageManager>
+#pragma mark - <DFImageManagerConvenience>
 
 - (DFImageRequestID *)requestImageForAsset:(id)asset targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options completion:(void (^)(UIImage *, NSDictionary *))completion {
     return [self requestImageForRequest:[[DFImageRequest alloc] initWithAsset:asset targetSize:targetSize contentMode:contentMode options:options] completion:completion];

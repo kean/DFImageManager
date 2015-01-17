@@ -36,7 +36,7 @@ typedef NS_ENUM(NSUInteger, DFImageViewAnimation) {
  */
 @interface DFImageView : UIView
 
-@property (nonatomic) id<DFCoreImageManager> imageManager;
+@property (nonatomic) id<DFImageManager> imageManager;
 
 @property (nonatomic) CGSize targetSize;
 
