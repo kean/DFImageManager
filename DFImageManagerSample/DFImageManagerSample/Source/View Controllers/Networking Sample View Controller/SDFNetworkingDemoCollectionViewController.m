@@ -84,7 +84,7 @@ static NSString * const reuseIdentifier = @"Cell";
 - (void)_configureImageManager {
     // TODO: Use default image manager.
     
-    DFImageProcessingManager *processor = [DFImageProcessingManager new];
+    DFImageProcessor *processor = [DFImageProcessor new];
     
     // Initialize NSURLCache without memory cache because DFImageManager has a higher level memory cache (see <DFImageCache>.
     NSURLCache *cache = [[NSURLCache alloc] initWithMemoryCapacity:0 diskCapacity:1024 * 1024 * 100 diskPath:[[NSUUID UUID] UUIDString]];

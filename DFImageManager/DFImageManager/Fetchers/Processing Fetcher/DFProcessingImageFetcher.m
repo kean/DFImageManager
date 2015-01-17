@@ -47,7 +47,7 @@
         return YES;
     }
     if (![[request1.asset uniqueImageAssetIdentifier] isEqualToString:[request2.asset uniqueImageAssetIdentifier]]) {
-        return YES;
+        return NO;
     }
     return [_processor isProcessingForRequestEquivalent:request1 toRequest:request2];
 }
