@@ -42,13 +42,13 @@
 @end
 
 
-@interface DFImageManager (DefaultManager)
-
-+ (id<DFImageManager, DFImageManagerConvenience>)defaultManager;
+@interface DFImageManager (Convenience) <DFImageManagerConvenience>
 
 @end
 
 
-@interface DFImageManager (Convenience) <DFImageManagerConvenience>
+@interface DFImageManager (DefaultManager)
+
++ (id<DFImageManager, DFImageManagerConvenience>)defaultManager;
 
 @end

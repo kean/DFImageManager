@@ -50,10 +50,9 @@
 @end
 
 
-/*! Convenience methods.
- @discussion Implementation details. All you need to do is pack given parameters in a DFImageRequest object and dispatch it to the appropriate DFImageManager method.
+/*! Convenience methods for classes that implement <DFImageManager> protocol. In general implementation should not do anything apart from creating instances of DFImageRequest class and dispatching them to <DFImageManager> implemenation.
  */
-@protocol DFImageManagerConvenience <NSObject>
+@protocol DFImageManagerConvenience <DFImageManager>
 
 /*! Requests an image representation for the specified asset.
  @param asset The asset whose image data is to be loaded. If asset is nil behavior is undefined.

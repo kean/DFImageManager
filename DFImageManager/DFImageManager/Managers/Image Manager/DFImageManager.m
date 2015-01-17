@@ -605,11 +605,9 @@ static id<DFImageManager, DFImageManagerConvenience> _sharedManager;
 @end
 
 
-#pragma mark - DFImageManager (Convenience) -
+#pragma mark - DFImageManager (Convenience) <DFImageManagerConvenience> -
 
 @implementation DFImageManager (Convenience)
-
-#pragma mark - <DFImageManagerConvenience>
 
 - (DFImageRequestID *)requestImageForAsset:(id)asset targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options completion:(void (^)(UIImage *, NSDictionary *))completion {
     return [self requestImageForRequest:[[DFImageRequest alloc] initWithAsset:asset targetSize:targetSize contentMode:contentMode options:options] completion:completion];
