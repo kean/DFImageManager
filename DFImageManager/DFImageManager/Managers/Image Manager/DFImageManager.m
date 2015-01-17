@@ -181,6 +181,7 @@
 
 - (void)removeHandlerForID:(NSUUID *)handlerID {
     [_handlers removeObjectForKey:handlerID];
+    [((DFImageRequestID *)_processingRequestIDs[handlerID]) cancel];
 }
 
 - (void)_fetchImage {
@@ -229,14 +230,13 @@
     if (cachedImage != nil) {
         completion(cachedImage);
     } else {
-        DFImageRequest *request = [handler.request copy];
-        request.asset = [[DFProcessingInput alloc] initWithImage:input identifier:[self.taskID UUIDString]];
-        DFImageRequestID *requestID = [_processingManager requestImageForRequest:request completion:^(UIImage *image, NSDictionary *info) {
-            UIImage *processedImage = image;
+        DFImageRequest *processingRequest = [handler.request copy];
+        processingRequest.asset = [[DFProcessingInput alloc] initWithImage:input identifier:[self.taskID UUIDString]];
+        DFImageRequestID *requestID = [_processingManager requestImageForRequest:processingRequest completion:^(UIImage *processedImage, NSDictionary *info) {
             [_cache storeImage:processedImage forRequest:handler.request];
             completion(processedImage);
         }];
-        if (requestID) {
+        if (requestID != nil) {
             _processingRequestIDs[handler.requestID.handlerID] = requestID;
         }
     }
