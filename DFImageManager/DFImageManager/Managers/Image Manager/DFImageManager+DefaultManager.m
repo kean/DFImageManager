@@ -45,7 +45,7 @@
     
     DFImageManager *URLImageManager = ({
         // Initialize NSURLCache without memory cache because DFImageManager has a higher level memory cache (see <DFImageCache>.
-        NSURLCache *cache = [[NSURLCache alloc] initWithMemoryCapacity:0 diskCapacity:1024 * 1024 * 100 diskPath:@"com.github.kean.default_image_cache"];
+        NSURLCache *cache = [[NSURLCache alloc] initWithMemoryCapacity:0 diskCapacity:1024 * 1024 * 256 diskPath:@"com.github.kean.default_image_cache"];
         
         NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
         configuration.URLCache = cache;
