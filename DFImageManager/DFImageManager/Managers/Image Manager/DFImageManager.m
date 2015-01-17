@@ -125,8 +125,13 @@
 
 @implementation _DFImageManagerTask {
     NSMutableDictionary *_handlers;
+    
+    // Fetch
     DFImageResponse *_response;
     NSOperation<DFImageManagerOperation> *__weak _fetchOperation;
+    
+    // Processing
+    NSMutableDictionary /* NSUUID *handlerID : DFImageRequestID *processingRequestID */ *_processingRequestIDs;
 }
 
 - (instancetype)initWithTaskID:(NSUUID *)taskID request:(DFImageRequest *)request {
@@ -134,6 +139,7 @@
         _taskID = taskID;
         _request = request;
         _handlers = [NSMutableDictionary new];
+        _processingRequestIDs = [NSMutableDictionary new];
     }
     return self;
 }
@@ -204,33 +210,35 @@
 }
 
 - (void)_processResponseForHandler:(_DFImageManagerHandler *)handler {
-    [self _processImage:_response.image forHandler:handler completion:^(UIImage *image) {
-        DFMutableImageResponse *response = [[DFMutableImageResponse alloc] initWithResponse:_response];
-        response.image = image;
-        [self _didProcessResponse:response forHandler:handler];
-    }];
+    if (self.processingManager != nil && _response.image != nil) {
+        [self _processImage:_response.image forHandler:handler completion:^(UIImage *image) {
+            DFMutableImageResponse *response = [[DFMutableImageResponse alloc] initWithResponse:_response];
+            response.image = image;
+            [self _didProcessResponse:response forHandler:handler];
+        }];
+    } else {
+        if (_response.image != nil) {
+            [_cache storeImage:_response.image forRequest:handler.request];
+        }
+        [self _didProcessResponse:[_response copy] forHandler:handler];
+    }
 }
 
 - (void)_processImage:(UIImage *)input forHandler:(_DFImageManagerHandler *)handler completion:(void (^)(UIImage *image))completion {
-    if (self.processingManager != nil && input != nil) {
-        UIImage *cachedImage = [_cache cachedImageForRequest:handler.request];
-        if (cachedImage != nil) {
-            completion(cachedImage);
-        } else {
-            DFImageRequest *request = [handler.request copy];
-            request.asset = [[DFProcessingInput alloc] initWithImage:input identifier:[self.taskID UUIDString]];
-            DFImageRequestID *requestID = [_processingManager requestImageForRequest:request completion:^(UIImage *image, NSDictionary *info) {
-                UIImage *processedImage = image;
-                [_cache storeImage:processedImage forRequest:handler.request];
-                completion(processedImage);
-            }];
-            if (requestID) {
-                // TODO: Store requestID to be able to cancel processing requests.
-            }
-        }
+    UIImage *cachedImage = [_cache cachedImageForRequest:handler.request];
+    if (cachedImage != nil) {
+        completion(cachedImage);
     } else {
-        [_cache storeImage:input forRequest:handler.request];
-        completion(input);
+        DFImageRequest *request = [handler.request copy];
+        request.asset = [[DFProcessingInput alloc] initWithImage:input identifier:[self.taskID UUIDString]];
+        DFImageRequestID *requestID = [_processingManager requestImageForRequest:request completion:^(UIImage *image, NSDictionary *info) {
+            UIImage *processedImage = image;
+            [_cache storeImage:processedImage forRequest:handler.request];
+            completion(processedImage);
+        }];
+        if (requestID) {
+            _processingRequestIDs[handler.requestID.handlerID] = requestID;
+        }
     }
 }
 
