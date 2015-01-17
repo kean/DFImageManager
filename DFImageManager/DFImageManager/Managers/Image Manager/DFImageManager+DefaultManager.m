@@ -23,7 +23,7 @@
 #import "DFAssetsLibraryImageFetcher.h"
 #import "DFCompositeImageManager.h"
 #import "DFImageManager.h"
-#import "DFImageProcessingManager.h"
+#import "DFImageProcessor.h"
 #import "DFPhotosKitImageFetcher.h"
 #import "DFProxyImageManager.h"
 #import "DFURLImageFetcher.h"
@@ -41,7 +41,7 @@
 }
 
 + (id<DFImageManagerCore>)_createDefaultManager {
-    DFImageProcessingManager *processor = [DFImageProcessingManager new];
+    DFImageProcessor *processor = [DFImageProcessor new];
     
     DFImageManager *URLImageManager = ({
         // Initialize NSURLCache without memory cache because DFImageManager has a higher level memory cache (see <DFImageCache>.

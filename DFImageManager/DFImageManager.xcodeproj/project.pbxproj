@@ -27,7 +27,7 @@
 		0CA07D801A4BD08900B16F38 /* DFCompositeImageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CA07D7F1A4BD08900B16F38 /* DFCompositeImageManager.m */; };
 		0CA07D841A4BD1AF00B16F38 /* DFImageManagerBlockValueTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CA07D831A4BD1AF00B16F38 /* DFImageManagerBlockValueTransformer.m */; };
 		0CA07D8B1A4C13B200B16F38 /* DFProxyImageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CA07D8A1A4C13B200B16F38 /* DFProxyImageManager.m */; };
-		0CA129481A4A3CB500FB4688 /* DFImageProcessingManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CA129471A4A3CB500FB4688 /* DFImageProcessingManager.m */; };
+		0CA129481A4A3CB500FB4688 /* DFImageProcessor.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CA129471A4A3CB500FB4688 /* DFImageProcessor.m */; };
 		0CA1294C1A4A46BA00FB4688 /* DFImageUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CA1294B1A4A46BA00FB4688 /* DFImageUtilities.m */; };
 		0CA129631A4A591200FB4688 /* DFImageRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CA129621A4A591200FB4688 /* DFImageRequest.m */; };
 		0CD8A96C1A60AF6100B16BD1 /* ALAssetsLibrary+DFImageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD8A9591A60AF6100B16BD1 /* ALAssetsLibrary+DFImageManager.m */; };
@@ -114,8 +114,8 @@
 		0CA07D831A4BD1AF00B16F38 /* DFImageManagerBlockValueTransformer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFImageManagerBlockValueTransformer.m; sourceTree = "<group>"; };
 		0CA07D891A4C13B200B16F38 /* DFProxyImageManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFProxyImageManager.h; sourceTree = "<group>"; };
 		0CA07D8A1A4C13B200B16F38 /* DFProxyImageManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFProxyImageManager.m; sourceTree = "<group>"; };
-		0CA129461A4A3CB500FB4688 /* DFImageProcessingManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFImageProcessingManager.h; sourceTree = "<group>"; };
-		0CA129471A4A3CB500FB4688 /* DFImageProcessingManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFImageProcessingManager.m; sourceTree = "<group>"; };
+		0CA129461A4A3CB500FB4688 /* DFImageProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFImageProcessor.h; sourceTree = "<group>"; };
+		0CA129471A4A3CB500FB4688 /* DFImageProcessor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFImageProcessor.m; sourceTree = "<group>"; };
 		0CA129491A4A3F3200FB4688 /* DFImageProcessorProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFImageProcessorProtocol.h; sourceTree = "<group>"; };
 		0CA1294A1A4A46BA00FB4688 /* DFImageUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFImageUtilities.h; sourceTree = "<group>"; };
 		0CA1294B1A4A46BA00FB4688 /* DFImageUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFImageUtilities.m; sourceTree = "<group>"; };
@@ -263,8 +263,8 @@
 				0C2BD4D91A03A3B200412BE3 /* DFImageRequestID+Protected.h */,
 				0C2BD4DA1A03A3B200412BE3 /* DFImageRequestID.h */,
 				0C2BD4DB1A03A3B200412BE3 /* DFImageRequestID.m */,
-				0CA129461A4A3CB500FB4688 /* DFImageProcessingManager.h */,
-				0CA129471A4A3CB500FB4688 /* DFImageProcessingManager.m */,
+				0CA129461A4A3CB500FB4688 /* DFImageProcessor.h */,
+				0CA129471A4A3CB500FB4688 /* DFImageProcessor.m */,
 				0CA1294A1A4A46BA00FB4688 /* DFImageUtilities.h */,
 				0CA1294B1A4A46BA00FB4688 /* DFImageUtilities.m */,
 				0CA07D821A4BD1AF00B16F38 /* DFImageManagerBlockValueTransformer.h */,
@@ -583,7 +583,7 @@
 				0C2BD4E71A03A3B200412BE3 /* DFImageDeserializer.m in Sources */,
 				0CEEA5B01A6348610065982D /* DFURLSessionOperation.m in Sources */,
 				0CA07D8B1A4C13B200B16F38 /* DFProxyImageManager.m in Sources */,
-				0CA129481A4A3CB500FB4688 /* DFImageProcessingManager.m in Sources */,
+				0CA129481A4A3CB500FB4688 /* DFImageProcessor.m in Sources */,
 				0C48E4A91A5BBDF400CD2497 /* DFImageManager+DefaultManager.m in Sources */,
 				0CD8A9711A60AF6100B16BD1 /* DFPhotosKitImageFetchOperation.m in Sources */,
 				0C227D361A5236FD00DA6299 /* DFImageManager.m in Sources */,

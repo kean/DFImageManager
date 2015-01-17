@@ -25,9 +25,8 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
-/*! Processes and caches images retrieved by different image managers.
- */
-@interface DFImageProcessingManager : NSObject <DFImageProcessor, DFImageCache>
+
+@interface DFImageProcessor : NSObject <DFImageProcessor, DFImageCache>
 
 - (instancetype)initWithCache:(NSCache *)cache NS_DESIGNATED_INITIALIZER;
 - (instancetype)init;

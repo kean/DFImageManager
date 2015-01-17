@@ -21,12 +21,12 @@
 // THE SOFTWARE.
 
 #import "DFImageAssetProtocol.h"
-#import "DFImageProcessingManager.h"
+#import "DFImageProcessor.h"
 #import "DFImageRequest.h"
 #import "DFImageUtilities.h"
 
 
-@implementation DFImageProcessingManager
+@implementation DFImageProcessor
 
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];

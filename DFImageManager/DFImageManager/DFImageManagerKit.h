@@ -48,7 +48,7 @@
 #import "DFImageResponse.h"
 
 
-#import "DFImageProcessingManager.h"
+#import "DFImageProcessor.h"
 
 
 #import "DFURLImageFetcher.h"
