@@ -71,4 +71,5 @@
 #import "DFCollectionViewPreheatingController.h"
 
 #import "DFOperation.h"
+#import "DFBlockImageManagerOperation.h"
 #import "DFImageUtilities.h"

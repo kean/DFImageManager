@@ -20,42 +20,9 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "DFProcessingImageFetcher.h"
+#import "DFBlockImageManagerOperation.h"
 #import "DFImageResponse.h"
-
-
-@interface _DFImageProcessingOperation : NSOperation <DFImageManagerOperation>
-
-- (instancetype)initWithProcessor:(id<DFImageProcessor>)processor image:(UIImage *)image request:(DFImageRequest *)request;
-
-@end
-
-@implementation _DFImageProcessingOperation {
-    id<DFImageProcessor> _processor;
-    UIImage *_image;
-    DFImageRequest *_request;
-    DFImageResponse *_response;
-}
-
-- (instancetype)initWithProcessor:(id<DFImageProcessor>)processor image:(UIImage *)image request:(DFImageRequest *)request {
-    if (self = [super init]) {
-        _processor = processor;
-        _image = image;
-        _request = request;
-    }
-    return self;
-}
-
-- (void)main {
-    UIImage *processedImage = [_processor processedImage:_image forRequest:_request];
-    _response = [[DFImageResponse alloc] initWithImage:processedImage ?: _image];
-}
-
-- (DFImageResponse *)imageResponse {
-    return _response;
-}
-
-@end
+#import "DFProcessingImageFetcher.h"
 
 
 @implementation DFProcessingImageFetcher {
@@ -87,7 +54,10 @@
 
 - (NSOperation<DFImageManagerOperation> *)createOperationForRequest:(DFImageRequest *)request {
     UIImage *image = [((DFProcessingInput *)request.asset) image];
-    return [[_DFImageProcessingOperation alloc] initWithProcessor:_processor image:image request:request];
+    return [[DFBlockImageManagerOperation alloc] initWithBlock:^DFImageResponse *(DFBlockImageManagerOperation *operation) {
+        UIImage *processedImage = [_processor processedImage:image forRequest:request];
+         return [[DFImageResponse alloc] initWithImage:processedImage ?: image];
+    }];
 }
 
 - (void)enqueueOperation:(NSOperation<DFImageManagerOperation> *)operation {
