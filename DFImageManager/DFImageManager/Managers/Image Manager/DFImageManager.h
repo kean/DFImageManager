@@ -20,12 +20,10 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "DFImageCacheProtocol.h"
-#import "DFImageFetcherProtocol.h"
-#import "DFImageManagerConfiguration.h"
 #import "DFImageManagerProtocol.h"
-#import "DFImageProcessorProtocol.h"
 #import <Foundation/Foundation.h>
+
+@class DFImageManagerConfiguration;
 
 
 @interface DFImageManager : NSObject <DFImageManagerCore>

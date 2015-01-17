@@ -22,6 +22,7 @@
 
 #import "DFCompositeImageRequest.h"
 #import "DFImageManager.h"
+#import "DFImageRequestID.h"
 
 
 @implementation DFCompositeImageRequest {

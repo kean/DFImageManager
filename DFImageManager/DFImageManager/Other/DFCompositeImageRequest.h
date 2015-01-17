@@ -21,9 +21,11 @@
 // THE SOFTWARE.
 
 #import "DFImageManagerDefines.h"
-#import "DFImageManagerProtocol.h"
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
+
+@protocol DFImageManagerCore;
+
 
 
 @interface DFCompositeImageRequest : NSObject

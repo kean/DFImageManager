@@ -21,8 +21,9 @@
 // THE SOFTWARE.
 
 #import "DFImageManagerProtocol.h"
-#import "DFImageManagerValueTransformerProtocol.h"
 #import <Foundation/Foundation.h>
+
+@protocol DFImageManagerValueTransformer;
 
 
 /*! Use proxy image manager in case you need to transform application specific interfaces to the interfaces supported by the image manager. Image manager will always recieve transformed assets.

@@ -21,9 +21,9 @@
 // THE SOFTWARE.
 
 #import "DFImageFetcherProtocol.h"
-#import "DFImageProcessorProtocol.h"
-#import "DFProcessingInput.h"
 #import <Foundation/Foundation.h>
+
+@protocol DFImageProcessor;
 
 
 /*! Supports requests with a DFProcessingInput asset class.

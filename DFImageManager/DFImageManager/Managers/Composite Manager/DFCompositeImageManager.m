@@ -21,7 +21,7 @@
 // THE SOFTWARE.
 
 #import "DFCompositeImageManager.h"
-#import "DFImageRequestID+Protected.h"
+#import "DFImageRequest.h"
 #import "DFImageRequestID.h"
 
 

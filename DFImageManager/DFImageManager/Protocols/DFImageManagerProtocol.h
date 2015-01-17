@@ -20,11 +20,13 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "DFImageAssetProtocol.h"
 #import "DFImageManagerDefines.h"
-#import "DFImageRequest.h"
-#import "DFImageRequestID.h"
-#import "DFImageRequestOptions.h"
+
+@protocol DFImageAsset;
+
+@class DFImageRequestOptions;
+@class DFImageRequest;
+@class DFImageRequestID;
 
 
 @protocol DFImageManagerCore <NSObject>

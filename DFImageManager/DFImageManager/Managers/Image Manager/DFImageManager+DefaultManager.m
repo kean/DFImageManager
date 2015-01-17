@@ -23,6 +23,7 @@
 #import "DFAssetsLibraryImageFetcher.h"
 #import "DFCompositeImageManager.h"
 #import "DFImageManager.h"
+#import "DFImageManagerConfiguration.h"
 #import "DFImageProcessor.h"
 #import "DFPhotosKitImageFetcher.h"
 #import "DFProxyImageManager.h"

@@ -24,6 +24,8 @@
 #import "DFImageRequestOptions.h"
 #import "DFPhotosKitImageFetchOperation.h"
 #import "DFPhotosKitImageFetcher.h"
+#import "NSURL+DFImageAsset.h"
+#import "NSURL+DFPhotosKit.h"
 #import <Photos/Photos.h>
 
 

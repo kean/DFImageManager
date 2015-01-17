@@ -23,8 +23,9 @@
 #import "DFImageManagerDefines.h"
 #import <Foundation/Foundation.h>
 
-@class DFImageRequestOptions;
 @protocol DFImageAsset;
+
+@class DFImageRequestOptions;
 
 
 @interface DFImageRequest : NSObject <NSCopying>

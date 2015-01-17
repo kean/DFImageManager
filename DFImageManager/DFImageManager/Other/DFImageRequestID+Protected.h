@@ -22,6 +22,9 @@
 
 #import "DFImageRequestID.h"
 
+@protocol DFImageManagerCore;
+
+
 
 @interface DFImageRequestID (Protected)
 

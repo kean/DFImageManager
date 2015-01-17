@@ -21,7 +21,6 @@
 // THE SOFTWARE.
 
 #import "DFImageManagerOperationProtocol.h"
-#import "DFBlockImageManagerOperation.h"
 #import <Foundation/Foundation.h>
 
 @class DFImageResponse;

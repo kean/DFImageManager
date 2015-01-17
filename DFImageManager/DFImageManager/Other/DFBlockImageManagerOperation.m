@@ -21,6 +21,7 @@
 // THE SOFTWARE.
 
 #import "DFBlockImageManagerOperation.h"
+#import "DFImageManagerOperationProtocol.h"
 
 
 @implementation DFBlockImageManagerOperation

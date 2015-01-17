@@ -20,11 +20,12 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "DFImageManagerOperationProtocol.h"
-#import "DFImageManagerProtocol.h"
-#import "DFImageRequest.h"
+#import <Foundation/Foundation.h>
+
+@protocol DFImageManagerOperation;
 
 @class DFImageRequestOptions;
+@class DFImageRequest;
 
 
 /*! Factory for multiple image provider components.

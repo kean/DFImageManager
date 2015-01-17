@@ -21,8 +21,12 @@
 // THE SOFTWARE.
 
 #import "DFBlockImageManagerOperation.h"
+#import "DFImageProcessorProtocol.h"
+#import "DFImageRequest.h"
+#import "DFImageRequestOptions.h"
 #import "DFImageResponse.h"
 #import "DFProcessingImageFetcher.h"
+#import "DFProcessingInput.h"
 
 
 @implementation DFProcessingImageFetcher {

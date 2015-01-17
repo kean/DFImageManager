@@ -20,15 +20,20 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+#import "DFImageCacheProtocol.h"
+#import "DFImageFetcherProtocol.h"
 #import "DFImageManager.h"
+#import "DFImageManagerConfiguration.h"
 #import "DFImageManagerDefines.h"
+#import "DFImageManagerOperationProtocol.h"
+#import "DFImageProcessorProtocol.h"
 #import "DFImageRequest.h"
 #import "DFImageRequestID+Protected.h"
 #import "DFImageRequestID.h"
 #import "DFImageRequestOptions.h"
 #import "DFImageResponse.h"
 #import "DFProcessingImageFetcher.h"
-#import <UIKit/UIKit.h>
+#import "DFProcessingInput.h"
 
 
 #pragma mark - _DFImageManagerHandler -

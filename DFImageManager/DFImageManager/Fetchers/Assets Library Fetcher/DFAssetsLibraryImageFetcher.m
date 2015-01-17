@@ -23,7 +23,10 @@
 #import "DFAssetsLibraryImageFetchOperation.h"
 #import "DFAssetsLibraryImageFetcher.h"
 #import "DFAssetsLibraryUtilities.h"
+#import "DFImageAssetProtocol.h"
+#import "DFImageRequest.h"
 #import <AssetsLibrary/AssetsLibrary.h>
+#import <UIKit/UIKit.h>
 
 
 @implementation DFAssetsLibraryImageFetcher {

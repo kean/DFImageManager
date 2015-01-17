@@ -20,7 +20,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "DFImageManagerDefines.h"
+#import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
 
 @interface DFImageResponse : NSObject <NSCopying, NSMutableCopying>

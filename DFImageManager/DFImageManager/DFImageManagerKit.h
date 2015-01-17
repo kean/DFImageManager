@@ -20,25 +20,21 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import <Foundation/Foundation.h>
+#ifndef DFImageManagerKit_h
+#define DFImageManagerKit_h
 
 #import "DFImageManagerDefines.h"
 
 #import "DFImageAssetProtocol.h"
-#import "DFImageManagerProtocol.h"
-#import "DFImageFetcherProtocol.h"
-#import "DFImageProcessorProtocol.h"
 #import "DFImageCacheProtocol.h"
+#import "DFImageFetcherProtocol.h"
 #import "DFImageManagerOperationProtocol.h"
+#import "DFImageManagerProtocol.h"
+#import "DFImageProcessorProtocol.h"
 
-
-#import "NSURL+DFImageAsset.h"
-#import "PHAsset+DFImageAsset.h"
-#import "ALAsset+DFImageAsset.h"
-
-
-#import "DFImageManagerConfiguration.h"
 #import "DFImageManager.h"
+#import "DFImageManagerConfiguration.h"
+
 #import "DFCompositeImageManager.h"
 #import "DFProxyImageManager.h"
 
@@ -47,29 +43,34 @@
 #import "DFImageRequestOptions.h"
 #import "DFImageResponse.h"
 
-
-#import "DFImageProcessor.h"
-
-
+#import "NSURL+DFImageAsset.h"
 #import "DFURLImageFetcher.h"
 #import "DFURLSessionOperation.h"
 #import "DFURLResponseDeserializing.h"
 
-
+#import "PHAsset+DFImageAsset.h"
 #import "DFPhotosKitImageFetcher.h"
 #import "NSURL+DFPhotosKit.h"
 #import "DFPhotosKitImageFetchOperation.h"
 
-
+#import "ALAsset+DFImageAsset.h"
 #import "DFAssetsLibraryImageFetcher.h"
 #import "DFAssetsLibraryImageFetchOperation.h"
 #import "DFAssetsLibraryUtilities.h"
 
+#import "DFImageProcessor.h"
+
+// UI
 
 #import "DFImageView.h"
+
+// Utilities
 
 #import "DFCollectionViewPreheatingController.h"
 
 #import "DFOperation.h"
 #import "DFBlockImageManagerOperation.h"
+
 #import "DFImageUtilities.h"
+
+#endif

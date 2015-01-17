@@ -21,6 +21,8 @@
 // THE SOFTWARE.
 
 #import "DFImageManagerBlockValueTransformer.h"
+#import "DFImageManagerValueTransformerProtocol.h"
+#import "DFImageRequest.h"
 #import "DFProxyImageManager.h"
 
 #define _DF_TRANSFORMED_REQUEST(request) \

@@ -23,6 +23,7 @@
 #import "DFCompositeImageRequest.h"
 #import "DFImageManager.h"
 #import "DFImageManagerProtocol.h"
+#import "DFImageRequest.h"
 #import "DFImageRequestOptions.h"
 #import "DFImageView.h"
 

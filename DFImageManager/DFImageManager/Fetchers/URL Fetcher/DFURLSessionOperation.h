@@ -21,7 +21,8 @@
 // THE SOFTWARE.
 
 #import "DFOperation.h"
-#import "DFURLResponseDeserializing.h"
+
+@protocol DFURLResponseDeserializing;
 
 
 @interface DFURLSessionOperation : DFOperation

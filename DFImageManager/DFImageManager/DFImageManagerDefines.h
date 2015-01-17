@@ -23,8 +23,8 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
-
 typedef void (^DFImageRequestCompletion)(UIImage *image, NSDictionary *info);
+
 
 extern NSString *const DFImageInfoRequestIDKey;
 extern NSString *const DFImageInfoErrorKey;

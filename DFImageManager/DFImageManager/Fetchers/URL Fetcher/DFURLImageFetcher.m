@@ -21,10 +21,10 @@
 // THE SOFTWARE.
 
 #import "DFImageDeserializer.h"
+#import "DFImageManagerOperationProtocol.h"
 #import "DFImageRequest.h"
 #import "DFImageRequestOptions.h"
 #import "DFImageResponse.h"
-#import "DFOperation.h"
 #import "DFURLImageFetcher.h"
 #import "DFURLResponseDeserializing.h"
 #import "DFURLSessionOperation.h"
