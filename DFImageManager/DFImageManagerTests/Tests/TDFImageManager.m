@@ -18,7 +18,7 @@
 @end
 
 @implementation TDFImageManager {
-    id<DFImageManager, DFImageManagerConvenience> _imageManager;
+    id<DFImageManager> _imageManager;
 }
 
 - (void)setUp {

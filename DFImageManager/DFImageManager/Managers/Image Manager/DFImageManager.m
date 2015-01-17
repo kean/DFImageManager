@@ -360,7 +360,7 @@ _DFImageRequestKeyCreate(DFImageRequest *request, id<DFImageFetcher> fetcher) {
     return self;
 }
 
-#pragma mark - <DFImageManager>
+#pragma mark - <DFImageManagerCore>
 
 - (BOOL)canHandleRequest:(DFImageRequest *)request {
     return [_conf.fetcher canHandleRequest:request];
@@ -588,15 +588,15 @@ _DFImageRequestKeyCreate(DFImageRequest *request, id<DFImageFetcher> fetcher) {
 
 #pragma mark - Dependency Injectors
 
-static id<DFImageManager, DFImageManagerConvenience> _sharedManager;
+static id<DFImageManager> _sharedManager;
 
-+ (id<DFImageManager, DFImageManagerConvenience>)sharedManager {
++ (id<DFImageManager>)sharedManager {
     @synchronized(self) {
         return _sharedManager;
     }
 }
 
-+ (void)setSharedManager:(id<DFImageManager, DFImageManagerConvenience>)manager {
++ (void)setSharedManager:(id<DFImageManager>)manager {
     @synchronized(self) {
         _sharedManager = manager;
     }
@@ -605,7 +605,7 @@ static id<DFImageManager, DFImageManagerConvenience> _sharedManager;
 @end
 
 
-#pragma mark - DFImageManager (Convenience) <DFImageManagerConvenience> -
+#pragma mark - DFImageManager (Convenience) <DFImageManager> -
 
 @implementation DFImageManager (Convenience)
 

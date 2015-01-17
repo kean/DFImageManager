@@ -31,8 +31,8 @@
 
 @implementation DFImageManager (DefaultManager)
 
-+ (id<DFImageManager>)defaultManager {
-    static id<DFImageManager> defaultManager;
++ (id<DFImageManagerCore>)defaultManager {
+    static id<DFImageManagerCore> defaultManager;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         defaultManager = [self _createDefaultManager];
@@ -40,7 +40,7 @@
     return defaultManager;
 }
 
-+ (id<DFImageManager>)_createDefaultManager {
++ (id<DFImageManagerCore>)_createDefaultManager {
     DFImageProcessingManager *processor = [DFImageProcessingManager new];
     
     DFImageManager *URLImageManager = ({

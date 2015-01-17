@@ -39,7 +39,7 @@
 @synthesize valueTransformer = _transformer;
 @synthesize imageManager = _manager;
 
-- (instancetype)initWithImageManager:(id<DFImageManager>)imageManager {
+- (instancetype)initWithImageManager:(id<DFImageManagerCore>)imageManager {
     self.imageManager = imageManager;
     return self;
 }
@@ -56,7 +56,7 @@
     self.valueTransformer = [[DFImageManagerBlockValueTransformer alloc] initWithBlock:block];
 }
 
-#pragma mark - <DFImageManager>
+#pragma mark - <DFImageManagerCore>
 
 - (BOOL)canHandleRequest:(DFImageRequest *)request {
     return [_manager canHandleRequest:_DF_TRANSFORMED_REQUEST(request)];
@@ -82,7 +82,7 @@
     return [transformedRequests copy];
 }
 
-#pragma mark - <DFImageManagerConvenience>
+#pragma mark - <DFImageManager>
 
 - (DFImageRequestID *)requestImageForAsset:(id)asset targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options completion:(void (^)(UIImage *, NSDictionary *))completion {
     return [self requestImageForRequest:[[DFImageRequest alloc] initWithAsset:asset targetSize:targetSize contentMode:contentMode options:options] completion:completion];

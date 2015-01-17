@@ -28,7 +28,7 @@
 
 @interface DFCompositeImageRequest : NSObject
 
-@property (nonatomic, weak) id<DFImageManager> imageManager;
+@property (nonatomic, weak) id<DFImageManagerCore> imageManager;
 
 - (instancetype)initWithRequests:(NSArray /* DFImageRequest */ *)requests handler:(void (^)(UIImage *image, NSDictionary *info, BOOL isLastRequest))handler NS_DESIGNATED_INITIALIZER;
 

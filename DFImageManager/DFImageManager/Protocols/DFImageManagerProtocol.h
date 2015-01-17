@@ -27,7 +27,7 @@
 #import "DFImageRequestOptions.h"
 
 
-@protocol DFImageManager <NSObject>
+@protocol DFImageManagerCore <NSObject>
 
 - (BOOL)canHandleRequest:(DFImageRequest *)request;
 
@@ -50,9 +50,9 @@
 @end
 
 
-/*! Convenience methods for classes that implement <DFImageManager> protocol. In general implementation should not do anything apart from creating instances of DFImageRequest class and dispatching them to <DFImageManager> implemenation.
+/*! Convenience methods for classes that implement <DFImageManagerCore> protocol. In general implementation should not do anything apart from creating instances of DFImageRequest class and dispatching them to <DFImageManagerCore> implemenation.
  */
-@protocol DFImageManagerConvenience <DFImageManager>
+@protocol DFImageManager <DFImageManagerCore>
 
 /*! Requests an image representation for the specified asset.
  @param asset The asset whose image data is to be loaded. If asset is nil behavior is undefined.

@@ -27,12 +27,12 @@
 
 /*! Image manager that originated request ID.
  */
-@property (nonatomic, weak, readonly) id<DFImageManager> imageManager;
+@property (nonatomic, weak, readonly) id<DFImageManagerCore> imageManager;
 
 @property (nonatomic, readonly) NSUUID *taskID;
 @property (nonatomic, readonly) NSUUID *handlerID;
 
-- (instancetype)initWithImageManager:(id<DFImageManager>)imageManager;
+- (instancetype)initWithImageManager:(id<DFImageManagerCore>)imageManager;
 
 - (void)setTaskID:(NSUUID *)taskID handlerID:(NSUUID *)handlerID;
 
