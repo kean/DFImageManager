@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0C3EF4D41A6C6E1E0046FD55 /* DFImageManagerTests-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0C3EF4D31A6C6E1E0046FD55 /* DFImageManagerTests-Info.plist */; };
 		0C7476A31A4E6EAF004FE2EE /* libDFImageManager.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0C2BD4B81A03A28000412BE3 /* libDFImageManager.a */; };
 		0CD012451A6C6AB1004F6CD3 /* ALAsset+DFImageAsset.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD011EE1A6C6AB1004F6CD3 /* ALAsset+DFImageAsset.m */; };
 		0CD012461A6C6AB1004F6CD3 /* NSURL+DFImageAsset.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD011F01A6C6AB1004F6CD3 /* NSURL+DFImageAsset.m */; };
@@ -40,7 +41,6 @@
 		0CD012621A6C6AB1004F6CD3 /* DFImageRequestOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD0123E1A6C6AB1004F6CD3 /* DFImageRequestOptions.m */; };
 		0CD012631A6C6AB1004F6CD3 /* DFImageResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD012411A6C6AB1004F6CD3 /* DFImageResponse.m */; };
 		0CD012641A6C6AB1004F6CD3 /* DFImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD012441A6C6AB1004F6CD3 /* DFImageView.m */; };
-		0CD0126D1A6C6B16004F6CD3 /* DFImageManagerTests-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0CD012661A6C6B16004F6CD3 /* DFImageManagerTests-Info.plist */; };
 		0CD0126E1A6C6B16004F6CD3 /* Image.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0CD012681A6C6B16004F6CD3 /* Image.jpg */; };
 		0CD0126F1A6C6B16004F6CD3 /* TDFTesting.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD0126A1A6C6B16004F6CD3 /* TDFTesting.m */; };
 		0CD012701A6C6B16004F6CD3 /* TDFImageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD0126C1A6C6B16004F6CD3 /* TDFImageManager.m */; };
@@ -73,6 +73,7 @@
 		08231C32293CC0B246EA8D13 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "../Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		0C2BD4B81A03A28000412BE3 /* libDFImageManager.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libDFImageManager.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		0C2BD4C31A03A28000412BE3 /* DFImageManagerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DFImageManagerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		0C3EF4D31A6C6E1E0046FD55 /* DFImageManagerTests-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "DFImageManagerTests-Info.plist"; sourceTree = "<group>"; };
 		0CD011ED1A6C6AB1004F6CD3 /* ALAsset+DFImageAsset.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ALAsset+DFImageAsset.h"; sourceTree = "<group>"; };
 		0CD011EE1A6C6AB1004F6CD3 /* ALAsset+DFImageAsset.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ALAsset+DFImageAsset.m"; sourceTree = "<group>"; };
 		0CD011EF1A6C6AB1004F6CD3 /* NSURL+DFImageAsset.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSURL+DFImageAsset.h"; sourceTree = "<group>"; };
@@ -147,7 +148,6 @@
 		0CD012411A6C6AB1004F6CD3 /* DFImageResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFImageResponse.m; sourceTree = "<group>"; };
 		0CD012431A6C6AB1004F6CD3 /* DFImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFImageView.h; sourceTree = "<group>"; };
 		0CD012441A6C6AB1004F6CD3 /* DFImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFImageView.m; sourceTree = "<group>"; };
-		0CD012661A6C6B16004F6CD3 /* DFImageManagerTests-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "DFImageManagerTests-Info.plist"; sourceTree = "<group>"; };
 		0CD012681A6C6B16004F6CD3 /* Image.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Image.jpg; sourceTree = "<group>"; };
 		0CD012691A6C6B16004F6CD3 /* TDFTesting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDFTesting.h; sourceTree = "<group>"; };
 		0CD0126A1A6C6B16004F6CD3 /* TDFTesting.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDFTesting.m; sourceTree = "<group>"; };
@@ -181,6 +181,7 @@
 			children = (
 				0CD011EB1A6C6AB1004F6CD3 /* Source */,
 				0CD012651A6C6B16004F6CD3 /* Tests */,
+				0C3EF4D21A6C6E030046FD55 /* Supporting Files */,
 				0C2BD4B91A03A28000412BE3 /* Products */,
 				696562A56BA5751D9A244F06 /* Frameworks */,
 				789713635CD477B90979E448 /* Pods */,
@@ -194,6 +195,14 @@
 				0C2BD4C31A03A28000412BE3 /* DFImageManagerTests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		0C3EF4D21A6C6E030046FD55 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				0C3EF4D31A6C6E1E0046FD55 /* DFImageManagerTests-Info.plist */,
+			);
+			path = "Supporting Files";
 			sourceTree = "<group>";
 		};
 		0CD011EB1A6C6AB1004F6CD3 /* Source */ = {
@@ -400,7 +409,6 @@
 		0CD012651A6C6B16004F6CD3 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				0CD012661A6C6B16004F6CD3 /* DFImageManagerTests-Info.plist */,
 				0CD012691A6C6B16004F6CD3 /* TDFTesting.h */,
 				0CD0126A1A6C6B16004F6CD3 /* TDFTesting.m */,
 				0CD0126B1A6C6B16004F6CD3 /* Tests */,
@@ -522,7 +530,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0CD0126D1A6C6B16004F6CD3 /* DFImageManagerTests-Info.plist in Resources */,
+				0C3EF4D41A6C6E1E0046FD55 /* DFImageManagerTests-Info.plist in Resources */,
 				0CD0126E1A6C6B16004F6CD3 /* Image.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -750,7 +758,7 @@
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = "Tests/DFImageManagerTests-Info.plist";
+				INFOPLIST_FILE = "Supporting Files/DFImageManagerTests-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -764,7 +772,7 @@
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = "Tests/DFImageManagerTests-Info.plist";
+				INFOPLIST_FILE = "Supporting Files/DFImageManagerTests-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
