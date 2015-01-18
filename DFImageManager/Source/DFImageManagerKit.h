@@ -31,6 +31,7 @@
 #import "DFImageManagerOperationProtocol.h"
 #import "DFImageManagerProtocol.h"
 #import "DFImageProcessorProtocol.h"
+#import "DFImageManagerValueTransformerProtocol.h"
 
 #import "DFImageManager.h"
 #import "DFImageManagerConfiguration.h"
@@ -47,6 +48,7 @@
 #import "DFURLImageFetcher.h"
 #import "DFURLSessionOperation.h"
 #import "DFURLResponseDeserializing.h"
+#import "DFImageDeserializer.h"
 
 #import "PHAsset+DFImageAsset.h"
 #import "DFPhotosKitImageFetcher.h"
@@ -54,11 +56,14 @@
 #import "DFPhotosKitImageFetchOperation.h"
 
 #import "ALAsset+DFImageAsset.h"
+#import "ALAssetsLibrary+DFImageManager.h"
 #import "DFAssetsLibraryImageFetcher.h"
 #import "DFAssetsLibraryImageFetchOperation.h"
 #import "DFAssetsLibraryUtilities.h"
 
 #import "DFImageProcessor.h"
+#import "DFProcessingImageFetcher.h"
+#import "DFProcessingInput.h"
 
 // UI
 
@@ -68,9 +73,13 @@
 
 #import "DFCollectionViewPreheatingController.h"
 
+#import "DFCompositeImageRequest.h"
+
 #import "DFOperation.h"
 #import "DFBlockImageManagerOperation.h"
 
 #import "DFImageUtilities.h"
+
+#import "DFImageManagerBlockValueTransformer.h"
 
 #endif
