@@ -1,1 +1,1 @@
-../../../../../DFImageManager/DFImageManager/Other/DFCompositeImageRequest.h
+../../../../../DFImageManager/Source/Other/DFCompositeImageRequest.h

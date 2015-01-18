@@ -1,1 +1,1 @@
-../../../../../DFImageManager/DFImageManager/Managers/Proxy Manager/DFProxyImageManager.h
+../../../../../DFImageManager/Source/Managers/Proxy Manager/DFProxyImageManager.h

@@ -9,6 +9,6 @@ EXTERNAL SOURCES:
     :path: ../
 
 SPEC CHECKSUMS:
-  DFImageManager: f9c386a29af6cc1fa9b9ba0165205edad7523337
+  DFImageManager: 404d974a91b02c36e9fba32e8182826fca4500ff
 
 COCOAPODS: 0.35.0

@@ -1,1 +1,1 @@
-../../../../../DFImageManager/DFImageManager/Other/DFCollectionViewPreheatingController.h
+../../../../../DFImageManager/Source/Other/DFCollectionViewPreheatingController.h

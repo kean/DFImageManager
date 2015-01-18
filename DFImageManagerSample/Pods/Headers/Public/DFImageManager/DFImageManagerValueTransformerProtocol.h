@@ -1,1 +1,1 @@
-../../../../../DFImageManager/DFImageManager/Protocols/DFImageManagerValueTransformerProtocol.h
+../../../../../DFImageManager/Source/Protocols/DFImageManagerValueTransformerProtocol.h

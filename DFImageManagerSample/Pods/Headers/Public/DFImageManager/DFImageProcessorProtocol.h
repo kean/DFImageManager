@@ -1,1 +1,1 @@
-../../../../../DFImageManager/DFImageManager/Protocols/DFImageProcessorProtocol.h
+../../../../../DFImageManager/Source/Protocols/DFImageProcessorProtocol.h

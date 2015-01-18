@@ -1,1 +1,1 @@
-../../../../../DFImageManager/DFImageManager/Other/DFImageManagerBlockValueTransformer.h
+../../../../../DFImageManager/Source/Other/DFImageManagerBlockValueTransformer.h

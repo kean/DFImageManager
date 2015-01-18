@@ -1,1 +1,1 @@
-../../../../../DFImageManager/DFImageManager/Other/DFImageRequestID+Protected.h
+../../../../../DFImageManager/Source/Other/DFImageRequestID+Protected.h

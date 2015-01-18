@@ -1,1 +1,1 @@
-../../../../../DFImageManager/DFImageManager/Other/DFImageDeserializer.h
+../../../../../DFImageManager/Source/Other/DFImageDeserializer.h

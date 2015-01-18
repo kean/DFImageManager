@@ -9,6 +9,6 @@ Pod::Spec.new do |s|
    s.platform     = :ios
    s.ios.deployment_target = "7.0"
    s.source       = { :git => "https://github.com/kean/DFImageManager.git", :tag => s.version.to_s }
-   s.source_files  = "DFImageManager/DFImageManager/**/*.{h,m}"
+   s.source_files  = "DFImageManager/Source/**/*.{h,m}"
    s.requires_arc = true
 end
