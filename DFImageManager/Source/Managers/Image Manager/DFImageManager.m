@@ -641,6 +641,9 @@ static id<DFImageManager> _sharedManager;
 
 + (id<DFImageManager>)sharedManager {
     @synchronized(self) {
+        if (!_sharedManager) {
+            _sharedManager = [self defaultManager];
+        }
         return _sharedManager;
     }
 }

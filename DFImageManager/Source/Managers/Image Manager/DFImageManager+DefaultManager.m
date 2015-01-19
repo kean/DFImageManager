@@ -33,15 +33,6 @@
 @implementation DFImageManager (DefaultManager)
 
 + (id<DFImageManagerCore>)defaultManager {
-    static id<DFImageManagerCore> defaultManager;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        defaultManager = [self _createDefaultManager];
-    });
-    return defaultManager;
-}
-
-+ (id<DFImageManagerCore>)_createDefaultManager {
     DFImageProcessor *processor = [DFImageProcessor new];
     
     DFImageManager *URLImageManager = ({
@@ -73,7 +64,7 @@
     });
     
     DFCompositeImageManager *compositeImageManager = [[DFCompositeImageManager alloc] initWithImageManagers:@[ URLImageManager, photosKitImageManager, assetsLibraryImageManager ]];
-
+    
     return compositeImageManager;
 }
 

@@ -28,13 +28,23 @@
 
 @interface DFImageManager : NSObject <DFImageManagerCore>
 
-@property (nonatomic, readonly) DFImageManagerConfiguration *configuration;
+/*! A copy of the configuration object for this manager (read only). Changing mutable values within the configuration object has no effect on the current manager.
+ */
+@property (nonatomic, copy, readonly) DFImageManagerConfiguration *configuration;
 
+/*! Creates image manager with a specified configuration.
+ @param configuration A configuration object that specifies certain behaviors, such as fetching, processing, caching and more. Manager copies the configuration object.
+ */
 - (instancetype)initWithConfiguration:(DFImageManagerConfiguration *)configuration NS_DESIGNATED_INITIALIZER;
 
-// Dependency injectors.
+#pragma mark Dependency Injectors
 
+/*! Returns the iamge manager instancse shared by all clients of the current process. Unless set expilictly through a call to +setSharedManager: method, this method returns image manager created by +defaultManager method.
+ */
 + (id<DFImageManager>)sharedManager;
+
+/*! Sets the image manager instance shared by all clients of the current process.
+ */
 + (void)setSharedManager:(id<DFImageManager>)manager;
 
 @end
@@ -47,6 +57,8 @@
 
 @interface DFImageManager (DefaultManager)
 
+/*! Creates composite image manager that containts image managers with all built-in fetchers.
+ */
 + (id<DFImageManager>)defaultManager;
 
 @end
