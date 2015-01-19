@@ -51,6 +51,7 @@
         NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
         configuration.URLCache = cache;
         configuration.HTTPShouldUsePipelining = YES;
+        
         NSURLSession *session = [NSURLSession sessionWithConfiguration:configuration];
         
         DFURLImageFetcher *fetcher = [[DFURLImageFetcher alloc] initWithSession:session];

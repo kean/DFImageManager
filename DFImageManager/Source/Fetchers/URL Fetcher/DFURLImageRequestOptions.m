@@ -20,29 +20,22 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "DFOperation.h"
-
-@protocol DFURLResponseDeserializing;
+#import "DFURLImageRequestOptions.h"
 
 
-@interface DFURLSessionOperation : DFOperation
+@implementation DFURLImageRequestOptions
 
-@property (nonatomic) id<DFURLResponseDeserializing> deserializer;
-@property (nonatomic, readonly) NSURLRequest *request;
-@property (nonatomic, readonly) NSURLSession *session;
+- (instancetype)init {
+    if (self = [super init]) {
+        _cachePolicy = NSURLRequestUseProtocolCachePolicy;
+    }
+    return self;
+}
 
-@property (nonatomic, readonly) NSURLResponse *response;
-@property (nonatomic, readonly) NSData *data;
-@property (nonatomic, readonly) id responseObject;
-@property (nonatomic, readonly) NSError *error;
-
-- (instancetype)initWithRequest:(NSURLRequest *)request session:(NSURLSession *)session NS_DESIGNATED_INITIALIZER;
-
-@end
-
-
-@interface DFURLSessionOperation (HTTP)
-
-@property (nonatomic, readonly) NSHTTPURLResponse *HTTPResponse;
+- (id)copyWithZone:(NSZone *)zone {
+    DFURLImageRequestOptions *copy = [super copyWithZone:zone];
+    copy.cachePolicy = self.cachePolicy;
+    return copy;
+}
 
 @end

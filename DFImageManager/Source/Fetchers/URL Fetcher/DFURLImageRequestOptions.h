@@ -20,29 +20,13 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "DFOperation.h"
+#import "DFImageRequestOptions.h"
 
-@protocol DFURLResponseDeserializing;
+/*! Image request options specific for URL loading system.
+ @discussion In some cases, the policies defined in NSURLSessionConfiguration may be overridden by policies specified by an DFURLImageRequestOptions. Any policy specified on the request object is respected unless the session’s policy is more restrictive. For example, if the session configuration specifies that cellular networking should not be allowed, the NSURLRequest object cannot request cellular networking.
+ */
+@interface DFURLImageRequestOptions : DFImageRequestOptions
 
-
-@interface DFURLSessionOperation : DFOperation
-
-@property (nonatomic) id<DFURLResponseDeserializing> deserializer;
-@property (nonatomic, readonly) NSURLRequest *request;
-@property (nonatomic, readonly) NSURLSession *session;
-
-@property (nonatomic, readonly) NSURLResponse *response;
-@property (nonatomic, readonly) NSData *data;
-@property (nonatomic, readonly) id responseObject;
-@property (nonatomic, readonly) NSError *error;
-
-- (instancetype)initWithRequest:(NSURLRequest *)request session:(NSURLSession *)session NS_DESIGNATED_INITIALIZER;
-
-@end
-
-
-@interface DFURLSessionOperation (HTTP)
-
-@property (nonatomic, readonly) NSHTTPURLResponse *HTTPResponse;
+@property (nonatomic) NSURLRequestCachePolicy cachePolicy;
 
 @end

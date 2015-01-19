@@ -25,6 +25,7 @@
 #import "DFImageRequestOptions.h"
 #import "DFImageResponse.h"
 #import "DFURLImageFetcher.h"
+#import "DFURLImageRequestOptions.h"
 #import "DFURLResponseDeserializing.h"
 #import "DFURLSessionOperation.h"
 #import "NSURL+DFImageAsset.h"
@@ -102,8 +103,22 @@
     return [request1 _isFileRequest] ? YES : request1.options.networkAccessAllowed == request2.options.networkAccessAllowed;
 }
 
+- (DFImageRequest *)canonicalRequestForRequest:(DFImageRequest *)request {
+    if (!request.options || ![request.options isKindOfClass:[DFURLImageRequestOptions class]]) {
+        DFURLImageRequestOptions *options = [[DFURLImageRequestOptions alloc] initWithOptions:request.options];
+        NSURLSessionConfiguration *conf = self.session.configuration;
+        options.cachePolicy = conf.requestCachePolicy;
+        
+        DFImageRequest *canonical = [request copy];
+        canonical.options = options;
+        return canonical;
+    }
+    return request;
+}
+
 - (NSOperation *)startOperationWithRequest:(DFImageRequest *)request completion:(void (^)(DFImageResponse *))completion {
-    DFURLSessionOperation *operation = [[DFURLSessionOperation alloc] initWithURL:(NSURL *)request.asset session:self.session];
+    NSURLRequest *URLRequest = [self _createURLRequestWithRequest:request];
+    DFURLSessionOperation *operation = [[DFURLSessionOperation alloc] initWithRequest:URLRequest session:self.session];
     operation.deserializer = [DFImageDeserializer new];
     DFURLSessionOperation *__weak weakOp = operation;
     [operation setCompletionBlock:^{
@@ -114,6 +129,37 @@
     }];
     [_queue addOperation:operation];
     return operation;
+}
+
+- (NSMutableURLRequest *)_createURLRequestWithRequest:(DFImageRequest *)imageRequest {
+    NSURL *URL = (NSURL *)imageRequest.asset;
+    DFURLImageRequestOptions *options = (id)imageRequest.options;
+    
+    /*! From NSURLSessionConfiguration class reference:
+     "In some cases, the policies defined in this configuration may be overridden by policies specified by an NSURLRequest object provided for a task. Any policy specified on the request object is respected unless the session’s policy is more restrictive. For example, if the session configuration specifies that cellular networking should not be allowed, the NSURLRequest object cannot request cellular networking."
+     
+     Apple doesn't not provide a complete documentation on what NSURLSessionConfiguration options can be overridden by NSURLRequest and in when. So it's best to copy all the options, because the NSURLSession implementation might change in future versons.
+     */
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:URL];
+    
+    /* Set options that can not be configured by DFURLImageRequestOptions.
+     */
+    NSURLSessionConfiguration *conf = self.session.configuration;
+    request.timeoutInterval = conf.timeoutIntervalForRequest;
+    request.networkServiceType = conf.networkServiceType;
+    request.allowsCellularAccess = conf.allowsCellularAccess;
+    request.HTTPShouldHandleCookies = conf.HTTPShouldSetCookies;
+    request.HTTPShouldUsePipelining = conf.HTTPShouldUsePipelining;
+    request.allowsCellularAccess = conf.allowsCellularAccess;
+    
+    /* Set options that can be configured by DFURLImageRequestOptions.
+     */
+    request.cachePolicy = options.cachePolicy;
+    if (!options.networkAccessAllowed) {
+        request.cachePolicy = NSURLRequestReturnCacheDataDontLoad;
+    }
+    
+    return [request copy];
 }
 
 @end

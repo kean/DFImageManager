@@ -45,6 +45,7 @@
 
 #import "NSURL+DFImageAsset.h"
 #import "DFURLImageFetcher.h"
+#import "DFURLImageRequestOptions.h"
 #import "DFURLSessionOperation.h"
 #import "DFURLResponseDeserializing.h"
 #import "DFImageDeserializer.h"

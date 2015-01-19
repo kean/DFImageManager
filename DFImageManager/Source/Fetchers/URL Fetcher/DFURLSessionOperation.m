@@ -28,9 +28,9 @@
     NSURLSessionDataTask *_task;
 }
 
-- (instancetype)initWithURL:(NSURL *)URL session:(NSURLSession *)session {
+- (instancetype)initWithRequest:(NSURLRequest *)request session:(NSURLSession *)session {
     if (self = [super init]) {
-        _URL = URL;
+        _request = request;
         _session = session;
     }
     return self;
@@ -51,12 +51,9 @@
 
 - (void)_startDataTask {
     DFURLSessionOperation *__weak weakSelf = self;
-    _task = [self.session dataTaskWithURL:self.URL completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+    _task = [self.session dataTaskWithRequest:self.request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
         [weakSelf _didFinishWithData:data response:response error:error];
     }];
-    if ([_task respondsToSelector:@selector(setPriority:)]) {
-        _task.priority = [DFURLSessionOperation _taskPriorityForQueuePriority:self.queuePriority];
-    }
     if (_task != nil) {
         [_task resume];
     } else {

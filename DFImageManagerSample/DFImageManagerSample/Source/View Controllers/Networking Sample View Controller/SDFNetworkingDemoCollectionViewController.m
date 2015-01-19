@@ -35,11 +35,6 @@ SDFFlickrRecentPhotosModelDelegate>
 
 static NSString * const reuseIdentifier = @"Cell";
 
-- (void)dealloc {
-    [_cache removeAllCachedResponses];
-    [DFImageManager setSharedManager:[DFImageManager defaultManager]];
-}
-
 - (instancetype)initWithCollectionViewLayout:(UICollectionViewLayout *)layout {
     if (self = [super initWithCollectionViewLayout:layout]) {
         _allowsPreheating = YES;
@@ -56,9 +51,7 @@ static NSString * const reuseIdentifier = @"Cell";
     [self.collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:reuseIdentifier];
     
     _activityIndicatorView = [self df_showActivityIndicatorView];
-    
-    [self _configureImageManager];
-    
+
     _photos = [NSMutableArray new];
     
     _model = [SDFFlickrRecentPhotosModel new];
@@ -79,26 +72,6 @@ static NSString * const reuseIdentifier = @"Cell";
         [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[_detailsLabel]|" options:kNilOptions metrics:nil views:views]];
         [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_detailsLabel(==40)]|" options:NSLayoutFormatAlignAllBottom metrics:nil views:views]];
     }
-}
-
-- (void)_configureImageManager {
-    // TODO: Use default image manager.
-    
-    DFImageProcessor *processor = [DFImageProcessor new];
-    
-    // Initialize NSURLCache without memory cache because DFImageManager has a higher level memory cache (see <DFImageCache>.
-    NSURLCache *cache = [[NSURLCache alloc] initWithMemoryCapacity:0 diskCapacity:1024 * 1024 * 100 diskPath:[[NSUUID UUID] UUIDString]];
-    _cache = cache;
-    
-    NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
-    configuration.URLCache = cache;
-    configuration.HTTPShouldUsePipelining = YES;
-    NSURLSession *session = [NSURLSession sessionWithConfiguration:configuration];
-    
-    DFURLImageFetcher *fetcher = [[DFURLImageFetcher alloc] initWithSession:session];
-    DFImageManager *URLImageManager = [[DFImageManager alloc] initWithConfiguration:[DFImageManagerConfiguration configurationWithFetcher:fetcher processor:processor cache:processor]];
-    
-    [DFImageManager setSharedManager:URLImageManager];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
