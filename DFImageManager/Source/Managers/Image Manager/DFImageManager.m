@@ -359,10 +359,6 @@ _DFImageRequestKeyCreate(DFImageRequest *request, id<DFImageFetcher> fetcher) {
 
 @synthesize configuration = _conf;
 
-+ (void)initialize {
-    [self setSharedManager:[self defaultManager]];
-}
-
 - (instancetype)initWithConfiguration:(DFImageManagerConfiguration *)configuration {
     if (self = [super init]) {
         NSParameterAssert(configuration);
