@@ -122,7 +122,7 @@ static NSString * const reuseIdentifier = @"Cell";
     }
     
     SDFFlickrPhoto *photo = _photos[indexPath.row];
-    [imageView setImageWithAsset:[NSURL URLWithString:photo.photoURL] targetSize:[self _imageTargetSize] contentMode:DFImageContentModeAspectFill options:options];
+    [imageView setImageWithAsset:[NSURL URLWithString:photo.photoURL] targetSize:[self _imageTargetSize] contentMode:DFImageContentModeAspectFill options:nil];
     
     return cell;
 }

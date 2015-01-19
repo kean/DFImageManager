@@ -50,7 +50,7 @@
 }
 
 - (NSString *)description {
-    return [NSString stringWithFormat:@"<%@ %p> { asset = %@, targetSize = %@, contentMode = %i, options = %@, userInfo = %@ }", [self class], self, self.asset, NSStringFromCGSize(self.targetSize), (int)self.contentMode, self.options];
+    return [NSString stringWithFormat:@"<%@ %p> { asset = %@, targetSize = %@, contentMode = %i, options = %@ }", [self class], self, self.asset, NSStringFromCGSize(self.targetSize), (int)self.contentMode, self.options];
 }
 
 @end
