@@ -2,6 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:DFImageManager.playground">
+   </FileRef>
+   <FileRef
       location = "group:DFImageManager/DFImageManager.xcodeproj">
    </FileRef>
    <FileRef
