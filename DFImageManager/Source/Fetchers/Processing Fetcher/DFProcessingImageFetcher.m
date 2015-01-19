@@ -56,16 +56,14 @@
     return [_processor isProcessingForRequestEquivalent:request1 toRequest:request2];
 }
 
-- (NSOperation<DFImageManagerOperation> *)createOperationForRequest:(DFImageRequest *)request {
+- (NSOperation *)startOperationWithRequest:(DFImageRequest *)request completion:(void (^)(DFImageResponse *))completion {
     UIImage *image = [((DFProcessingInput *)request.asset) image];
-    return [[DFBlockImageManagerOperation alloc] initWithBlock:^DFImageResponse *(DFBlockImageManagerOperation *operation) {
+    NSBlockOperation *operation = [NSBlockOperation blockOperationWithBlock:^{
         UIImage *processedImage = [_processor processedImage:image forRequest:request];
-         return [[DFImageResponse alloc] initWithImage:processedImage ?: image];
+        completion([[DFImageResponse alloc] initWithImage:processedImage ?: image]);
     }];
-}
-
-- (void)startOperation:(NSOperation<DFImageManagerOperation> *)operation {
     [_queue addOperation:operation];
+    return operation;
 }
 
 @end

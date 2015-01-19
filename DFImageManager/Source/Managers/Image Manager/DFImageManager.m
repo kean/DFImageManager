@@ -133,7 +133,7 @@
     
     // Fetch
     DFImageResponse *_response;
-    NSOperation<DFImageManagerOperation> *__weak _fetchOperation;
+    NSOperation *__weak _fetchOperation;
     
     // Processing
     NSMutableDictionary /* NSUUID *handlerID : DFImageRequestID *processingRequestID */ *_processingRequestIDs;
@@ -190,21 +190,16 @@
 }
 
 - (void)_fetchImage {
-    NSOperation<DFImageManagerOperation> *operation = [_fetcher createOperationForRequest:self.request];
-    NSParameterAssert(operation);
-    
     _DFImageManagerTask *__weak weakSelf = self;
-    NSOperation<DFImageManagerOperation> *__weak weakOp = operation;
-    [operation setCompletionBlock:^{
-        [weakSelf _didFetchImageWithOperation:weakOp];
+    NSOperation *operation = [_fetcher startOperationWithRequest:self.request completion:^(DFImageResponse *response) {
+        [weakSelf _didReceiveResponse:response];
     }];
     operation.queuePriority = [self _queuePriority];
     _fetchOperation = operation;
-    [_fetcher startOperation:operation];
 }
 
-- (void)_didFetchImageWithOperation:(NSOperation<DFImageManagerOperation> *)operation {
-    _response = [operation imageResponse];
+- (void)_didReceiveResponse:(DFImageResponse *)response {
+    _response = response;
     [self.delegate task:self didReceiveResponse:_response completion:^(BOOL shouldContinue) {
         if (shouldContinue) {
             NSAssert(self.handlers.count > 0, @"Internal inconsistency");

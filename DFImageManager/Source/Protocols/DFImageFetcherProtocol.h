@@ -24,12 +24,12 @@
 
 @protocol DFImageManagerOperation;
 
-@class DFImageRequestOptions;
 @class DFImageRequest;
+@class DFImageResponse;
 
 
 /*! The DFImageFetcher protocol provides the basic structure for performing fetching of images for specific requests. Adopters handle the specifics associated with one of more types of the requests. The main difference between the requests might be a class of the asset.
- @discussion The role and the structure of the DFImageFetcher protocol is largely the same as of the NSURLProtocol abstract class.
+ @discussion The role and the structure of the DFImageFetcher protocol is largely inspired by the NSURLProtocol abstract class. The main difference is that NSURLProtocol is a one-shot task for a single request, while DFImageFetcher is a tasks factory.
  */
 @protocol DFImageFetcher <NSObject>
 
@@ -42,12 +42,9 @@
  */
 - (BOOL)isRequestEquivalent:(DFImageRequest *)request1 toRequest:(DFImageRequest *)request2;
 
-/*! Returns an operation that implements fetching of the image for the request. Should never return nil.
+/*! Starts fetching an image for the request. The completion block should always be called, even for the cancelled request. The completion block may be called in any fashion (asynchronously or not) and on any thread.
+ @return The operation that implements fetching. The operation might be nil.
  */
-- (NSOperation<DFImageManagerOperation> *)createOperationForRequest:(DFImageRequest *)request;
-
-/*! Starts an operation created by -createOperationForRequest: method.
- */
-- (void)startOperation:(NSOperation<DFImageManagerOperation> *)operation;
+- (NSOperation *)startOperationWithRequest:(DFImageRequest *)request completion:(void (^)(DFImageResponse *response))completion;
 
 @end

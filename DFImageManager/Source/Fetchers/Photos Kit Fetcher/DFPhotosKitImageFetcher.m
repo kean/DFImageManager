@@ -69,12 +69,14 @@
             request1.options.networkAccessAllowed == request2.options.networkAccessAllowed);
 }
 
-- (NSOperation<DFImageManagerOperation> *)createOperationForRequest:(DFImageRequest *)request {
-    return [[DFPhotosKitImageFetchOperation alloc] initWithRequest:request];
-}
-
-- (void)startOperation:(NSOperation<DFImageManagerOperation> *)operation {
+- (NSOperation *)startOperationWithRequest:(DFImageRequest *)request completion:(void (^)(DFImageResponse *))completion {
+    DFPhotosKitImageFetchOperation *operation =[[DFPhotosKitImageFetchOperation alloc] initWithRequest:request];
+    DFPhotosKitImageFetchOperation *__weak weakOp = operation;
+    [operation setCompletionBlock:^{
+        completion([weakOp imageResponse]);
+    }];
     [_queue addOperation:operation];
+    return operation;
 }
 
 @end

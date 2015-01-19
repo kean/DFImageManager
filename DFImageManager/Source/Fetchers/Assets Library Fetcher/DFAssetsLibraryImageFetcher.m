@@ -84,7 +84,7 @@
     }
 }
 
-- (NSOperation<DFImageManagerOperation> *)createOperationForRequest:(DFImageRequest *)request  {
+- (NSOperation *)startOperationWithRequest:(DFImageRequest *)request completion:(void (^)(DFImageResponse *))completion {
     DFAssetsLibraryImageFetchOperation *operation;
     if ([request.asset isKindOfClass:[ALAsset class]]) {
         operation = [[DFAssetsLibraryImageFetchOperation alloc] initWithAsset:(ALAsset *)request.asset];
@@ -92,11 +92,12 @@
         operation = [[DFAssetsLibraryImageFetchOperation alloc] initWithAssetURL:(NSURL *)request.asset];
     }
     operation.imageSize = [self _assetImageSizeForRequest:request];
-    return operation;
-}
-
-- (void)startOperation:(NSOperation<DFImageManagerOperation> *)operation {
+    DFAssetsLibraryImageFetchOperation *__weak weakOp = operation;
+    [operation setCompletionBlock:^{
+        completion([weakOp imageResponse]);
+    }];
     [_queue addOperation:operation];
+    return operation;
 }
 
 @end

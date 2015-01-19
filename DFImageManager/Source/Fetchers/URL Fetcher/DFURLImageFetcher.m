@@ -130,14 +130,15 @@
     return [request1 _isFileRequest] ? YES : request1.options.networkAccessAllowed == request2.options.networkAccessAllowed;
 }
 
-- (NSOperation<DFImageManagerOperation> *)createOperationForRequest:(DFImageRequest *)request {
+- (NSOperation *)startOperationWithRequest:(DFImageRequest *)request completion:(void (^)(DFImageResponse *))completion {
     _DFURLImageFetcherOperation *operation = [[_DFURLImageFetcherOperation alloc] initWithURL:(NSURL *)request.asset session:self.session];
     operation.deserializer = [DFImageDeserializer new];
-    return operation;
-}
-
-- (void)startOperation:(NSOperation<DFImageManagerOperation> *)operation {
+    _DFURLImageFetcherOperation *__weak weakOp = operation;
+    [operation setCompletionBlock:^{
+        completion([weakOp imageResponse]);
+    }];
     [_queue addOperation:operation];
+    return operation;
 }
 
 @end
