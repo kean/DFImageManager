@@ -23,6 +23,8 @@
 #import "DFImageFetcherProtocol.h"
 #import <Foundation/Foundation.h>
 
+extern NSString *const DFImageInfoURLResponseKey;
+
 
 /*! Image fetcher that supports NSURL and is implemented on top of Cocoa URL loading system.
  @note Supported URL schemes: http:, https:, ftp:, file:

@@ -30,6 +30,8 @@
 #import "DFURLSessionOperation.h"
 #import "NSURL+DFImageAsset.h"
 
+NSString *const DFImageInfoURLResponseKey = @"DFImageInfoURLResponseKey";
+
 
 @interface DFImageRequest (DFURLImageFetcher)
 
@@ -44,15 +46,6 @@
 }
 
 @end
-
-
-@interface DFURLImageFetcher ()
-
-@property (nonatomic, readonly) NSOperationQueue *queueForCache;
-@property (nonatomic, readonly) NSOperationQueue *queueForNetwork;
-
-@end
-
 
 
 @implementation DFURLImageFetcher {
@@ -131,6 +124,10 @@
         DFMutableImageResponse *response = [DFMutableImageResponse new];
         response.image = weakOp.responseObject;
         response.error = weakOp.error;
+        NSURLResponse *URLResponse = weakOp.response;
+        if (URLResponse != nil) {
+            response.userInfo = @{ DFImageInfoURLResponseKey : URLRequest };
+        }
         completion([response copy]);
     }];
     [_queue addOperation:operation];
