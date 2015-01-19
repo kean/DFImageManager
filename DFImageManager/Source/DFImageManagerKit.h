@@ -76,7 +76,6 @@
 #import "DFCompositeImageRequest.h"
 
 #import "DFOperation.h"
-#import "DFBlockImageManagerOperation.h"
 
 #import "DFImageUtilities.h"
 

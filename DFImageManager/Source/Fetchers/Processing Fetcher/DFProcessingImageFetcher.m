@@ -20,7 +20,6 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "DFBlockImageManagerOperation.h"
 #import "DFImageProcessorProtocol.h"
 #import "DFImageRequest.h"
 #import "DFImageRequestOptions.h"
