@@ -16,13 +16,17 @@ DFImageManager is a modern framework for managing fetching, caching, decompressi
 - High quality code base that successfully manages complexity and follows best design principles and patterns.
 
 ## Getting Started
-- [Download DFImageManager](https://github.com/kean/DFImageManager/releases) and play with [demo project](https://github.com/kean/DFImageManager/tree/master/DFImageManagerSample)
+- Download the [latest DFImageManager version](https://github.com/kean/DFImageManager/releases)
+- Take a look at the comprehensive [demo projects](https://github.com/kean/DFImageManager/tree/master/DFImageManagerSample)
+- Play with `DFImageManager` API in a Swift DFImageManager.playground
 - Read guides on [Wiki](https://github.com/kean/DFImageManager/wiki)
 
 ## Requirements
-iOS 7
+iOS 7.0+
 
-## Installation with [Cocoapods](http://cocoapods.org)
+## Installation with [CocoaPods](http://cocoapods.org)
+
+CocoaPods is the dependency manager for Cocoa projects, which automates the process of integrating thrid-party frameworks like DFImageManager. If you are not familiar with CocoaPods the best place to start would be [official CocoaPods guides](http://guides.cocoapods.org).
 ```ruby
 # Podfile example
 platform :ios, '7.0'
