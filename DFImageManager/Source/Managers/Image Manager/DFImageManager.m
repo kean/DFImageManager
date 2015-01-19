@@ -310,7 +310,7 @@
 - (instancetype)initWithRequest:(DFImageRequest *)request fetcher:(id<DFImageFetcher>)fetcher {
     if (self = [super init]) {
         _request = request;
-        _hash = [[request.asset uniqueImageAssetIdentifier] hash];
+        _hash = [request.asset.assetID hash];
         _fetcher = fetcher;
     }
     return self;

@@ -26,7 +26,7 @@
 
 @implementation ALAsset (DFImageAsset)
 
-- (NSString *)uniqueImageAssetIdentifier {
+- (NSString *)assetID {
     return self.defaultRepresentation.url.absoluteString;
 }
 

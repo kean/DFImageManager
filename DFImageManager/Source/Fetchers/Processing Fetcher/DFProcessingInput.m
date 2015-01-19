@@ -35,7 +35,7 @@
     return self;
 }
 
-- (NSString *)uniqueImageAssetIdentifier {
+- (NSString *)assetID {
     return _identifier;
 }
 

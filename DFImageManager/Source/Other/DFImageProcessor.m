@@ -78,7 +78,7 @@
 #pragma mark - <DFImageCache>
 
 - (UIImage *)cachedImageForRequest:(DFImageRequest *)request {
-    NSString *assetID = [request.asset uniqueImageAssetIdentifier];
+    NSString *assetID = [request.asset assetID];
     if (assetID != nil) {
         NSString *cacheKey = [self _cacheKeyForAssetID:assetID request:request];
         return [_cache objectForKey:cacheKey];
@@ -88,7 +88,7 @@
 
 - (void)storeImage:(UIImage *)image forRequest:(DFImageRequest *)request {
     if (image != nil) {
-        NSString *assetID = [request.asset uniqueImageAssetIdentifier];
+        NSString *assetID = [request.asset assetID];
         if (assetID != nil) {
             NSString *cacheKey = [self _cacheKeyForAssetID:assetID request:request];
             NSUInteger cost = [self _costForImage:image];

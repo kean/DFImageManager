@@ -25,7 +25,9 @@
 
 @implementation NSURL (DFImageAsset)
 
-- (NSString *)uniqueImageAssetIdentifier {
+/*! The identifier is not required to be persistent, it can even change within a single application launch. So it is ok to use an entire URL string as an assetID, even if if contains any transient parameters (like username).
+ */
+- (NSString *)assetID {
     return self.absoluteString;
 }
 

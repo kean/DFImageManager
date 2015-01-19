@@ -22,11 +22,13 @@
 
 #import <Foundation/Foundation.h>
 
-/*! Represents an image asset that can be retrieved by the image manager. It can be just an image URL (NSURL) or something more complex like PHAsset.
- @discussion Consider adapting this protocol in a category if you want to use system classes without subclassing them. For more info read https://developer.apple.com/legacy/library/documentation/Cocoa/Conceptual/ObjectiveC/Chapters/ocProtocols.html#//apple_ref/doc/uid/TP30001163-CH15-SW3
+/*! Represents an asset (or asset identifier) that the DFImageManager can use to retrieve images. It might be a simple HTTP image URL (NSURL) or something more complex like PHAsset.
+ @discussion Consider adapting this protocol in a category, especially if you want to use system classes with DFImageManager without subclassing them. For more info about categories adopting protocols read https://developer.apple.com/legacy/library/documentation/Cocoa/Conceptual/ObjectiveC/Chapters/ocProtocols.html#//apple_ref/doc/uid/TP30001163-CH15-SW3
  */
 @protocol DFImageAsset <NSObject>
 
-@property (nonatomic, readonly) NSString *uniqueImageAssetIdentifier;
+/*! Returns an asset identifier. The identifier is not required to be persistent, it can even change within a single application launch. Image manager uses it only for a very short-term purposes like memory caching and reusing existing operations.
+ */
+@property (nonatomic, readonly) NSString *assetID;
 
 @end

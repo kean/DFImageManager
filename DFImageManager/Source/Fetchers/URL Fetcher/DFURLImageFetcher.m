@@ -122,7 +122,9 @@
     if (request1 == request2) {
         return YES;
     }
-    if (![request1.asset.uniqueImageAssetIdentifier isEqualToString:request2.asset.uniqueImageAssetIdentifier]) {
+    NSURL *URL1 = (NSURL *)request1.asset;
+    NSURL *URL2 = (NSURL *)request2.asset;
+    if (![URL1 isEqual:URL2]) {
         return NO;
     }
     return [request1 _isFileRequest] ? YES : request1.options.networkAccessAllowed == request2.options.networkAccessAllowed;

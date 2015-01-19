@@ -63,7 +63,7 @@
     if (request1 == request2) {
         return YES;
     }
-    if (![request1.asset.uniqueImageAssetIdentifier isEqualToString:request2.asset.uniqueImageAssetIdentifier]) {
+    if (![request1.asset.assetID isEqualToString:request2.asset.assetID]) {
         return NO;
     }
     DFALAssetImageSize imageSize1 = [self _assetImageSizeForRequest:request1];
