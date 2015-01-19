@@ -198,7 +198,7 @@
     [operation setCompletionBlock:^{
         [weakSelf _didFetchImageWithOperation:weakOp];
     }];
-    operation.queuePriority = self._queuePriority;
+    operation.queuePriority = [self _queuePriority];
     _fetchOperation = operation;
     [_fetcher enqueueOperation:operation];
 }
