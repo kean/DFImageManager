@@ -30,6 +30,27 @@ NSString *DFImageProcessingClipsToBoundsKey = @"DFImageProcessingClipsToBoundsKe
 NSString *DFImageProcessingCornerRadiusKey = @"DFImageProcessingCornerRadiusKey";
 
 
+@interface _DFImageCacheEntry : NSObject
+
+@property (nonatomic) UIImage *image;
+@property (nonatomic) NSTimeInterval creationDate;
+
++ (instancetype)entryWithImage:(UIImage *)image;
+
+@end
+
+@implementation _DFImageCacheEntry
+
++ (instancetype)entryWithImage:(UIImage *)image {
+    _DFImageCacheEntry *entry = [_DFImageCacheEntry new];
+    entry.image = image;
+    entry.creationDate = CACurrentMediaTime();
+    return entry;
+}
+
+@end
+
+
 @implementation DFImageProcessor
 
 - (void)dealloc {
@@ -39,6 +60,7 @@ NSString *DFImageProcessingCornerRadiusKey = @"DFImageProcessingCornerRadiusKey"
 - (instancetype)initWithCache:(NSCache *)cache {
     if (self = [super init]) {
         _cache = cache;
+        _maximumCachedEntryAge = FLT_MAX;
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_didReceiveMemoryWarning:) name:UIApplicationDidReceiveMemoryWarningNotification object:nil];
     }
     return self;
@@ -104,7 +126,14 @@ NSString *DFImageProcessingCornerRadiusKey = @"DFImageProcessingCornerRadiusKey"
     NSString *assetID = [request.asset assetID];
     if (assetID != nil) {
         NSString *cacheKey = [self _cacheKeyForAssetID:assetID request:request];
-        return [_cache objectForKey:cacheKey];
+        _DFImageCacheEntry *entry = [_cache objectForKey:cacheKey];
+        if (entry != nil) {
+            if (CACurrentMediaTime() - entry.creationDate < self.maximumCachedEntryAge) {
+                return entry.image;
+            } else {
+                [_cache removeObjectForKey:cacheKey];
+            }
+        }
     }
     return nil;
 }
@@ -115,7 +144,7 @@ NSString *DFImageProcessingCornerRadiusKey = @"DFImageProcessingCornerRadiusKey"
         if (assetID != nil) {
             NSString *cacheKey = [self _cacheKeyForAssetID:assetID request:request];
             NSUInteger cost = [self _costForImage:image];
-            [_cache setObject:image forKey:cacheKey cost:cost];
+            [_cache setObject:[_DFImageCacheEntry entryWithImage:image] forKey:cacheKey cost:cost];
         }
     }
 }

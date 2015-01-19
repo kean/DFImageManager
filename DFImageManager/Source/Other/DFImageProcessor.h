@@ -41,6 +41,10 @@ extern NSString *DFImageProcessingCornerRadiusKey;
 
 @property (nonatomic, readonly) NSCache *cache;
 
+/*! The maximum entry age after which entry is considered expired and is removed from the cache.
+ */
+@property (nonatomic) NSUInteger maximumCachedEntryAge;
+
 @end
 
 
