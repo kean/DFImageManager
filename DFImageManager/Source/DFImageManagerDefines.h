@@ -36,9 +36,8 @@ extern CGSize const DFImageManagerMaximumSize;
 
 
 typedef NS_ENUM(NSInteger, DFImageContentMode) {
-    DFImageContentModeAspectFill = 0,
-    DFImageContentModeAspectFit = 1,
-    DFImageContentModeDefault = DFImageContentModeAspectFill
+    DFImageContentModeAspectFill,
+    DFImageContentModeAspectFit
 };
 
 typedef NS_ENUM(NSInteger, DFImageRequestPriority) {
