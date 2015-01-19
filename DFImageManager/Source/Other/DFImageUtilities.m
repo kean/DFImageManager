@@ -109,21 +109,30 @@
     return croppedImage;
 }
 
++ (UIImage *)croppedImageWithImage:(UIImage *)image aspectFillPixelSize:(CGSize)targetSize {
+    CGSize imageSize = DFImageBitmapPixelSize(image);
+    CGFloat scale = DFAspectFillScale(imageSize, targetSize);
+    CGSize sizeScaled = DFSizeScaled(imageSize, scale);
+    CGRect cropRect = CGRectMake((sizeScaled.width - targetSize.width) / 2.f, (sizeScaled.height - targetSize.height) / 2.f, targetSize.width, targetSize.height);
+    CGRect normalizedCropRect = CGRectMake(cropRect.origin.x / sizeScaled.width, cropRect.origin.y / sizeScaled.height, cropRect.size.width / sizeScaled.width, cropRect.size.height / sizeScaled.height);
+    return [self croppedImageWithImage:image normalizedCropRect:normalizedCropRect];
+}
+
 #pragma mark - Decompressing
 
 + (UIImage *)decompressedWithImage:(UIImage *)image {
     return [self decompressedWithImage:image scale:1.f];
 }
 
-+ (UIImage *)decompressedImageWithImage:(UIImage *)image aspectFitPixelSize:(CGSize)size {
++ (UIImage *)decompressedImageWithImage:(UIImage *)image aspectFitPixelSize:(CGSize)targetSize {
     CGSize imageSize = DFImageBitmapPixelSize(image);
-    CGFloat scale = DFAspectFitScale(imageSize, size);
+    CGFloat scale = DFAspectFitScale(imageSize, targetSize);
     return [self decompressedWithImage:image scale:scale];
 }
 
-+ (UIImage *)decompressedImageWithImage:(UIImage *)image aspectFillPixelSize:(CGSize)size {
++ (UIImage *)decompressedImageWithImage:(UIImage *)image aspectFillPixelSize:(CGSize)targetSize {
     CGSize imageSize = DFImageBitmapPixelSize(image);
-    CGFloat scale = DFAspectFillScale(imageSize, size);
+    CGFloat scale = DFAspectFillScale(imageSize, targetSize);
     return [self decompressedWithImage:image scale:scale];
 }
 
@@ -136,8 +145,10 @@
     }
     CGImageRef imageRef = image.CGImage;
     CGSize imageSize = CGSizeMake(CGImageGetWidth(imageRef), CGImageGetHeight(imageRef));
-    imageSize = DFSizeScaled(imageSize, scale);
-        
+    if (scale < 1.f) {
+        imageSize = DFSizeScaled(imageSize, scale);
+    }
+    
     CGRect imageRect = (CGRect){.origin = CGPointZero, .size = imageSize};
     
     CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
@@ -187,6 +198,17 @@
     UIImage *decompressedImage = [UIImage imageWithCGImage:decompressedImageRef scale:image.scale orientation:image.imageOrientation];
     CGImageRelease(decompressedImageRef);
     return decompressedImage;
+}
+
+#pragma mark - Corners
+
++ (UIImage *)imageWithImage:(UIImage *)image cornerRadius:(CGFloat)cornerRadius {
+    UIGraphicsBeginImageContextWithOptions(image.size, NO, 0);
+    [[UIBezierPath bezierPathWithRoundedRect:(CGRect){CGPointZero, image.size} cornerRadius:cornerRadius] addClip];
+    [image drawInRect:(CGRect){CGPointZero, image.size}];
+    UIImage *processedImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return processedImage;
 }
 
 @end

@@ -85,11 +85,16 @@ DFImagePixelSize(UIImage *image) {
 #pragma mark - Crop
 
 + (UIImage *)croppedImageWithImage:(UIImage *)image normalizedCropRect:(CGRect)cropRect;
++ (UIImage *)croppedImageWithImage:(UIImage *)image aspectFillPixelSize:(CGSize)size;
 
 #pragma mark - Decompressing
 
 + (UIImage *)decompressedWithImage:(UIImage *)image;
 + (UIImage *)decompressedImageWithImage:(UIImage *)image aspectFitPixelSize:(CGSize)size;
 + (UIImage *)decompressedImageWithImage:(UIImage *)image aspectFillPixelSize:(CGSize)size;
+
+#pragma mark - Corners
+
++ (UIImage *)imageWithImage:(UIImage *)image cornerRadius:(CGFloat)cornerRadius;
 
 @end

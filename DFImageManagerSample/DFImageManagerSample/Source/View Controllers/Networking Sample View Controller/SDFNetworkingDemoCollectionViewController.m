@@ -120,7 +120,7 @@ static NSString * const reuseIdentifier = @"Cell";
         imageView.tag = 15;
         [cell addSubview:imageView];
     }
-    
+        
     SDFFlickrPhoto *photo = _photos[indexPath.row];
     [imageView setImageWithAsset:[NSURL URLWithString:photo.photoURL] targetSize:[self _imageTargetSize] contentMode:DFImageContentModeAspectFill options:nil];
     

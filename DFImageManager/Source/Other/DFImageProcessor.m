@@ -25,6 +25,9 @@
 #import "DFImageRequest.h"
 #import "DFImageUtilities.h"
 
+NSString *DFImageProcessingClipsToBoundsKey = @"DFImageProcessingClipsToBoundsKey";
+NSString *DFImageProcessingCornerRadiusKey = @"DFImageProcessingCornerRadiusKey";
+
 
 @implementation DFImageProcessor
 
@@ -66,11 +69,21 @@
         case DFImageContentModeAspectFit:
             processedImage = [DFImageUtilities decompressedImageWithImage:image aspectFitPixelSize:request.targetSize];
             break;
-        case DFImageContentModeAspectFill:
+        case DFImageContentModeAspectFill: {
+            BOOL clipsToBounds = [request.userInfo[DFImageProcessingClipsToBoundsKey] boolValue];
+            if (clipsToBounds) {
+                processedImage = [DFImageUtilities croppedImageWithImage:processedImage aspectFillPixelSize:request.targetSize];
+            }
             processedImage = [DFImageUtilities decompressedImageWithImage:image aspectFillPixelSize:request.targetSize];
+        }
             break;
         default:
             break;
+    }
+    NSNumber *normalizedCornerRadius = request.userInfo[DFImageProcessingCornerRadiusKey];
+    if (normalizedCornerRadius != nil) {
+        CGFloat cornerRadius = [normalizedCornerRadius floatValue] * MIN(processedImage.size.width, processedImage.size.height);
+        processedImage = [DFImageUtilities imageWithImage:processedImage cornerRadius:cornerRadius];
     }
     return processedImage;
 }
@@ -100,7 +113,7 @@
 #pragma mark -
 
 - (NSString *)_cacheKeyForAssetID:(NSString *)assetID request:(DFImageRequest *)request {
-    return [NSString stringWithFormat:@"%@,%@,%i", assetID, NSStringFromCGSize(request.targetSize), (int)request.contentMode];
+    return [NSString stringWithFormat:@"%@,%@,%i,%@,%@", assetID, NSStringFromCGSize(request.targetSize), (int)request.contentMode, request.userInfo[DFImageProcessingClipsToBoundsKey], request.userInfo[DFImageProcessingCornerRadiusKey]];
 }
 
 - (NSUInteger)_costForImage:(UIImage *)image {
