@@ -200,7 +200,7 @@
     }];
     operation.queuePriority = [self _queuePriority];
     _fetchOperation = operation;
-    [_fetcher enqueueOperation:operation];
+    [_fetcher startOperation:operation];
 }
 
 - (void)_didFetchImageWithOperation:(NSOperation<DFImageManagerOperation> *)operation {

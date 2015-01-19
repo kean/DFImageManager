@@ -46,6 +46,8 @@
  */
 - (NSOperation<DFImageManagerOperation> *)createOperationForRequest:(DFImageRequest *)request;
 
-- (void)enqueueOperation:(NSOperation<DFImageManagerOperation> *)operation;
+/*! Starts an operation created by -createOperationForRequest: method.
+ */
+- (void)startOperation:(NSOperation<DFImageManagerOperation> *)operation;
 
 @end

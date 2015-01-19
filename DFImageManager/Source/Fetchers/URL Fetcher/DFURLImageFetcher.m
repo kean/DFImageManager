@@ -136,7 +136,7 @@
     return operation;
 }
 
-- (void)enqueueOperation:(NSOperation<DFImageManagerOperation> *)operation {
+- (void)startOperation:(NSOperation<DFImageManagerOperation> *)operation {
     [_queue addOperation:operation];
 }
 
