@@ -27,7 +27,7 @@
 @class DFImageRequest;
 
 
-@interface DFPhotosKitImageFetchOperation : DFOperation <DFImageManagerOperation>
+NS_CLASS_AVAILABLE_IOS(8_0) @interface DFPhotosKitImageFetchOperation : DFOperation <DFImageManagerOperation>
 
 - (instancetype)initWithRequest:(DFImageRequest *)request NS_DESIGNATED_INITIALIZER;
 

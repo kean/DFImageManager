@@ -23,6 +23,6 @@
 #import "DFImageFetcherProtocol.h"
 
 
-@interface DFPhotosKitImageFetcher : NSObject <DFImageFetcher>
+NS_CLASS_AVAILABLE_IOS(8_0) @interface DFPhotosKitImageFetcher : NSObject <DFImageFetcher>
 
 @end
