@@ -34,8 +34,6 @@
     CGSize _targetSize;
     DFImageContentMode _contentMode;
     DFImageRequestOptions *_options;
-    
-    DFImageResponse *_response;
 }
 
 - (instancetype)initWithRequest:(DFImageRequest *)request {
@@ -101,12 +99,6 @@
     response.image = result;
     _response = [response copy];
     [self finish];
-}
-
-#pragma mark - <DFImageManagerOperation>
-
-- (DFImageResponse *)imageResponse {
-    return _response;
 }
 
 @end

@@ -73,7 +73,7 @@
     DFPhotosKitImageFetchOperation *operation =[[DFPhotosKitImageFetchOperation alloc] initWithRequest:request];
     DFPhotosKitImageFetchOperation *__weak weakOp = operation;
     [operation setCompletionBlock:^{
-        completion([weakOp imageResponse]);
+        completion(weakOp.response);
     }];
     [_queue addOperation:operation];
     return operation;

@@ -21,7 +21,6 @@
 // THE SOFTWARE.
 
 #import "DFImageDeserializer.h"
-#import "DFImageManagerOperationProtocol.h"
 #import "DFImageRequest.h"
 #import "DFImageRequestOptions.h"
 #import "DFImageResponse.h"
@@ -50,33 +49,6 @@
 
 @property (nonatomic, readonly) NSOperationQueue *queueForCache;
 @property (nonatomic, readonly) NSOperationQueue *queueForNetwork;
-
-@end
-
-
-@interface _DFURLImageFetcherOperation : DFURLSessionOperation <DFImageManagerOperation>
-
-@end
-
-@implementation _DFURLImageFetcherOperation {
-    DFImageResponse *_response;
-    NSOperation *_currentOperation;
-}
-
-- (void)finish {
-    DFMutableImageResponse *response = [DFMutableImageResponse new];
-    response.image = self.responseObject;
-    response.error = self.error;
-    if (self.responseObject != nil) {
-        response.data = self.data;
-    }
-    _response = [response copy];
-    [super finish];
-}
-
-- (DFImageResponse *)imageResponse {
-    return _response;
-}
 
 @end
 
@@ -131,11 +103,14 @@
 }
 
 - (NSOperation *)startOperationWithRequest:(DFImageRequest *)request completion:(void (^)(DFImageResponse *))completion {
-    _DFURLImageFetcherOperation *operation = [[_DFURLImageFetcherOperation alloc] initWithURL:(NSURL *)request.asset session:self.session];
+    DFURLSessionOperation *operation = [[DFURLSessionOperation alloc] initWithURL:(NSURL *)request.asset session:self.session];
     operation.deserializer = [DFImageDeserializer new];
-    _DFURLImageFetcherOperation *__weak weakOp = operation;
+    DFURLSessionOperation *__weak weakOp = operation;
     [operation setCompletionBlock:^{
-        completion([weakOp imageResponse]);
+        DFMutableImageResponse *response = [DFMutableImageResponse new];
+        response.image = weakOp.responseObject;
+        response.error = weakOp.error;
+        completion([response copy]);
     }];
     [_queue addOperation:operation];
     return operation;

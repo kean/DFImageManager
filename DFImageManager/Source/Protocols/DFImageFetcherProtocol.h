@@ -22,8 +22,6 @@
 
 #import <Foundation/Foundation.h>
 
-@protocol DFImageManagerOperation;
-
 @class DFImageRequest;
 @class DFImageResponse;
 

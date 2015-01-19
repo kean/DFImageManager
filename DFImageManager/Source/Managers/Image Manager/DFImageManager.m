@@ -25,7 +25,6 @@
 #import "DFImageManager.h"
 #import "DFImageManagerConfiguration.h"
 #import "DFImageManagerDefines.h"
-#import "DFImageManagerOperationProtocol.h"
 #import "DFImageProcessorProtocol.h"
 #import "DFImageRequest.h"
 #import "DFImageRequestID+Protected.h"

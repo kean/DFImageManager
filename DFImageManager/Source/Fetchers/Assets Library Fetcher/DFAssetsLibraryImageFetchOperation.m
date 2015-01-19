@@ -22,14 +22,13 @@
 
 #import "ALAssetsLibrary+DFImageManager.h"
 #import "DFAssetsLibraryImageFetchOperation.h"
-#import "DFImageResponse.h"
 #import <AssetsLibrary/AssetsLibrary.h>
+#import <UIKit/UIKit.h>
 
 
 @implementation DFAssetsLibraryImageFetchOperation {
     ALAsset *_asset;
     NSURL *_assetURL;
-    DFImageResponse *_response;
 }
 
 - (instancetype)init {
@@ -75,22 +74,18 @@
 }
 
 - (void)_startFetching {
-    UIImage *image;
-    
     switch (_imageSize) {
         case DFALAssetImageSizeThumbnail:
-            image = [UIImage imageWithCGImage:_asset.aspectRatioThumbnail scale:[UIScreen mainScreen].scale orientation:UIImageOrientationUp];
+            _image = [UIImage imageWithCGImage:_asset.aspectRatioThumbnail scale:[UIScreen mainScreen].scale orientation:UIImageOrientationUp];
             break;
         case DFALAssetImageSizeFullscreen: {
             ALAssetRepresentation *assetRepresentation = [_asset defaultRepresentation];
-            image = [UIImage imageWithCGImage:[assetRepresentation fullScreenImage] scale:[UIScreen mainScreen].scale orientation:UIImageOrientationUp];
+            _image = [UIImage imageWithCGImage:[assetRepresentation fullScreenImage] scale:[UIScreen mainScreen].scale orientation:UIImageOrientationUp];
         }
             break;
         default:
             break;
     }
-    
-    _response = [[DFImageResponse alloc] initWithImage:image];
     [self finish];
 }
 
@@ -104,14 +99,8 @@
 }
 
 - (void)_didFailWithError:(NSError *)error {
-    _response = [[DFImageResponse alloc] initWithError:error];
+    _error = error;
     [self finish];
-}
-
-#pragma mark - <DFImageManagerOperation>
-
-- (DFImageResponse *)imageResponse {
-    return _response;
 }
 
 @end

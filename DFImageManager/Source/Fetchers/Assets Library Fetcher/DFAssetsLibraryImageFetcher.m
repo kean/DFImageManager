@@ -25,6 +25,7 @@
 #import "DFAssetsLibraryUtilities.h"
 #import "DFImageAssetProtocol.h"
 #import "DFImageRequest.h"
+#import "DFImageResponse.h"
 #import <AssetsLibrary/AssetsLibrary.h>
 #import <UIKit/UIKit.h>
 
@@ -94,7 +95,10 @@
     operation.imageSize = [self _assetImageSizeForRequest:request];
     DFAssetsLibraryImageFetchOperation *__weak weakOp = operation;
     [operation setCompletionBlock:^{
-        completion([weakOp imageResponse]);
+        DFMutableImageResponse *response = [DFMutableImageResponse new];
+        response.image = weakOp.image;
+        response.error = weakOp.error;
+        completion(response);
     }];
     [_queue addOperation:operation];
     return operation;

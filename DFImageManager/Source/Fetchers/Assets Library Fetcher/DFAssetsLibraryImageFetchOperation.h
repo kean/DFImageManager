@@ -21,16 +21,19 @@
 // THE SOFTWARE.
 
 #import "DFAssetsLibraryUtilities.h"
-#import "DFImageManagerOperationProtocol.h"
 #import "DFOperation.h"
 #import <Foundation/Foundation.h>
 
+@class UIImage;
 @class ALAsset;
 
 
-@interface DFAssetsLibraryImageFetchOperation : DFOperation <DFImageManagerOperation>
+@interface DFAssetsLibraryImageFetchOperation : DFOperation
 
 @property (nonatomic) DFALAssetImageSize imageSize;
+
+@property (nonatomic, readonly) UIImage *image;
+@property (nonatomic, readonly) NSError *error;
 
 - (instancetype)initWithAsset:(ALAsset *)asset;
 - (instancetype)initWithAssetURL:(NSURL *)assetURL;

@@ -20,14 +20,16 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "DFImageManagerOperationProtocol.h"
 #import "DFOperation.h"
 #import <Foundation/Foundation.h>
 
+@class DFImageResponse;
 @class DFImageRequest;
 
 
-NS_CLASS_AVAILABLE_IOS(8_0) @interface DFPhotosKitImageFetchOperation : DFOperation <DFImageManagerOperation>
+NS_CLASS_AVAILABLE_IOS(8_0) @interface DFPhotosKitImageFetchOperation : DFOperation
+
+@property (nonatomic, readonly) DFImageResponse *response;
 
 - (instancetype)initWithRequest:(DFImageRequest *)request NS_DESIGNATED_INITIALIZER;
 
