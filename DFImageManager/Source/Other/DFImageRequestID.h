@@ -20,9 +20,11 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+#import "DFImageManagerDefines.h"
 #import <Foundation/Foundation.h>
 
-
+/*! Abstract class representing image request identifier.
+ */
 @interface DFImageRequestID : NSObject
 
 /*! Cancels the request.

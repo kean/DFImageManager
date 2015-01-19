@@ -27,7 +27,6 @@
 #import "DFImageManagerDefines.h"
 #import "DFImageProcessorProtocol.h"
 #import "DFImageRequest.h"
-#import "DFImageRequestID+Protected.h"
 #import "DFImageRequestID.h"
 #import "DFImageRequestOptions.h"
 #import "DFImageResponse.h"
@@ -35,12 +34,64 @@
 #import "DFProcessingInput.h"
 
 
+#pragma mark - _DFImageRequestID -
+
+/*! Private DFImageRequestID implementation used by DFImageManager.
+ */
+@interface _DFImageRequestID : DFImageRequestID
+
+/*! Image manager that originated request ID.
+ */
+@property (nonatomic, weak, readonly) id<DFImageManagerCore> imageManager;
+
+@property (nonatomic, readonly) NSUUID *taskID;
+@property (nonatomic, readonly) NSUUID *handlerID;
+
+- (instancetype)initWithImageManager:(id<DFImageManagerCore>)imageManager;
+
+- (void)setTaskID:(NSUUID *)taskID handlerID:(NSUUID *)handlerID;
+
+@end
+
+@implementation _DFImageRequestID
+
+- (instancetype)initWithImageManager:(id<DFImageManagerCore>)imageManager {
+    if (self = [super init]) {
+        _imageManager = imageManager;
+    }
+    return self;
+}
+
+- (void)setTaskID:(NSUUID *)taskID handlerID:(NSUUID *)handlerID {
+    if (_taskID != nil ||
+        _handlerID != nil) {
+        [NSException raise:NSInternalInconsistencyException format:@"Attempting to rewrite image request state"];
+    }
+    _taskID = taskID;
+    _handlerID = handlerID;
+}
+
+- (void)cancel {
+    [self.imageManager cancelRequestWithID:self];
+}
+
+- (void)setPriority:(DFImageRequestPriority)priority {
+    [self.imageManager setPriority:priority forRequestWithID:self];
+}
+
+- (NSString *)description {
+    return [NSString stringWithFormat:@"<%@ %p> { manager = %@, taskID = %@, handlerID = %@ }", [self class], self, self.imageManager, self.taskID, self.handlerID];
+}
+
+@end
+
+
 #pragma mark - _DFImageManagerHandler -
 
 @interface _DFImageManagerHandler : NSObject
 
 @property (nonatomic, readonly) DFImageRequest *request;
-@property (nonatomic, readonly) DFImageRequestID *requestID;
+@property (nonatomic, readonly) _DFImageRequestID *requestID;
 @property (nonatomic, copy, readonly) DFImageRequestCompletion completion;
 
 - (instancetype)initWithRequest:(DFImageRequest *)request requestID:(DFImageRequestID *)requestID completion:(DFImageRequestCompletion)completion NS_DESIGNATED_INITIALIZER;
@@ -49,7 +100,7 @@
 
 @implementation _DFImageManagerHandler
 
-- (instancetype)initWithRequest:(DFImageRequest *)request requestID:(DFImageRequestID *)requestID completion:(DFImageRequestCompletion)completion {
+- (instancetype)initWithRequest:(DFImageRequest *)request requestID:(_DFImageRequestID *)requestID completion:(DFImageRequestCompletion)completion {
     if (self = [super init]) {
         _request = request;
         _requestID = requestID;
@@ -393,7 +444,7 @@ _DFImageRequestKeyCreate(DFImageRequest *request, id<DFImageFetcher> fetcher) {
 
 - (DFImageRequestID *)requestImageForRequest:(DFImageRequest *)request completion:(DFImageRequestCompletion)completion {
     request = [self _canonicalRequestForRequest:request];
-    DFImageRequestID *requestID = [[DFImageRequestID alloc] initWithImageManager:self]; // Represents requestID future.
+    _DFImageRequestID *requestID = [[_DFImageRequestID alloc] initWithImageManager:self]; // Represents requestID future.
     dispatch_async(_syncQueue, ^{
         NSUUID *taskID = _taskIDs[DFImageRequestKeyCreate(request)] ?: [NSUUID UUID];
         [requestID setTaskID:taskID handlerID:[NSUUID UUID]];
@@ -412,7 +463,7 @@ _DFImageRequestKeyCreate(DFImageRequest *request, id<DFImageFetcher> fetcher) {
 
 - (void)_requestImageForHandler:(_DFImageManagerHandler *)handler {
     DFImageRequest *request = handler.request;
-    DFImageRequestID *requestID = handler.requestID;
+    _DFImageRequestID *requestID = handler.requestID;
     
     _DFImageManagerTask *task = _tasks[requestID.taskID];
     if (!task) {
@@ -521,12 +572,12 @@ _DFImageRequestKeyCreate(DFImageRequest *request, id<DFImageFetcher> fetcher) {
 - (void)cancelRequestWithID:(DFImageRequestID *)requestID {
     if (requestID != nil) {
         dispatch_async(_syncQueue, ^{
-            [self _cancelRequestWithID:requestID];
+            [self _cancelRequestWithID:(_DFImageRequestID *)requestID];
         });
     }
 }
 
-- (void)_cancelRequestWithID:(DFImageRequestID *)requestID {
+- (void)_cancelRequestWithID:(_DFImageRequestID *)requestID {
     _DFImageManagerTask *task = _tasks[requestID.taskID];
     if (task != nil) {
         [task removeHandlerForID:requestID.handlerID];
@@ -541,7 +592,7 @@ _DFImageRequestKeyCreate(DFImageRequest *request, id<DFImageFetcher> fetcher) {
 
 #pragma mark Priorities
 
-- (void)setPriority:(DFImageRequestPriority)priority forRequestWithID:(DFImageRequestID *)requestID {
+- (void)setPriority:(DFImageRequestPriority)priority forRequestWithID:(_DFImageRequestID *)requestID {
     if (requestID != nil) {
         dispatch_async(_syncQueue, ^{
             _DFImageManagerTask *task = _tasks[requestID.taskID];
@@ -573,7 +624,7 @@ _DFImageRequestKeyCreate(DFImageRequest *request, id<DFImageFetcher> fetcher) {
         NSUUID *taskID = _taskIDs[DFImageRequestKeyCreate(request)];
         _DFImageManagerTask *task = _tasks[taskID];
         if (task == nil || ![self _preheatingHandlerForRequest:request task:task]) {
-            DFImageRequestID *requestID = [[DFImageRequestID alloc] initWithImageManager:self];
+            _DFImageRequestID *requestID = [[_DFImageRequestID alloc] initWithImageManager:self];
             [requestID setTaskID:taskID ?: [NSUUID UUID] handlerID:[NSUUID UUID]];
             _DFImageManagerPreheatHandler *handler = [[_DFImageManagerPreheatHandler alloc] initWithRequest:request requestID:requestID completion:nil];
             [self _requestImageForHandler:handler];
@@ -614,7 +665,7 @@ _DFImageRequestKeyCreate(DFImageRequest *request, id<DFImageFetcher> fetcher) {
                 }
             }
         }
-        for (DFImageRequestID *requestID in requestIDs) {
+        for (_DFImageRequestID *requestID in requestIDs) {
             [self _cancelRequestWithID:requestID];
         }
     });

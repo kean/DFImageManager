@@ -60,7 +60,6 @@
 		0C3EF52D1A6C6FF30046FD55 /* DFImageManagerBlockValueTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD012281A6C6AB1004F6CD3 /* DFImageManagerBlockValueTransformer.m */; };
 		0C3EF52E1A6C6FF30046FD55 /* DFImageProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = 0CD012291A6C6AB1004F6CD3 /* DFImageProcessor.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0C3EF52F1A6C6FF30046FD55 /* DFImageProcessor.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD0122A1A6C6AB1004F6CD3 /* DFImageProcessor.m */; };
-		0C3EF5301A6C6FF30046FD55 /* DFImageRequestID+Protected.h in Headers */ = {isa = PBXBuildFile; fileRef = 0CD0122B1A6C6AB1004F6CD3 /* DFImageRequestID+Protected.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		0C3EF5311A6C6FF30046FD55 /* DFImageRequestID.h in Headers */ = {isa = PBXBuildFile; fileRef = 0CD0122C1A6C6AB1004F6CD3 /* DFImageRequestID.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0C3EF5321A6C6FF30046FD55 /* DFImageRequestID.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD0122D1A6C6AB1004F6CD3 /* DFImageRequestID.m */; };
 		0C3EF5331A6C6FF30046FD55 /* DFImageUtilities.h in Headers */ = {isa = PBXBuildFile; fileRef = 0CD0122E1A6C6AB1004F6CD3 /* DFImageUtilities.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -219,7 +218,6 @@
 		0CD012281A6C6AB1004F6CD3 /* DFImageManagerBlockValueTransformer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFImageManagerBlockValueTransformer.m; sourceTree = "<group>"; };
 		0CD012291A6C6AB1004F6CD3 /* DFImageProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFImageProcessor.h; sourceTree = "<group>"; };
 		0CD0122A1A6C6AB1004F6CD3 /* DFImageProcessor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFImageProcessor.m; sourceTree = "<group>"; };
-		0CD0122B1A6C6AB1004F6CD3 /* DFImageRequestID+Protected.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "DFImageRequestID+Protected.h"; sourceTree = "<group>"; };
 		0CD0122C1A6C6AB1004F6CD3 /* DFImageRequestID.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFImageRequestID.h; sourceTree = "<group>"; };
 		0CD0122D1A6C6AB1004F6CD3 /* DFImageRequestID.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFImageRequestID.m; sourceTree = "<group>"; };
 		0CD0122E1A6C6AB1004F6CD3 /* DFImageUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFImageUtilities.h; sourceTree = "<group>"; };
@@ -466,7 +464,6 @@
 				0CD012281A6C6AB1004F6CD3 /* DFImageManagerBlockValueTransformer.m */,
 				0CD012291A6C6AB1004F6CD3 /* DFImageProcessor.h */,
 				0CD0122A1A6C6AB1004F6CD3 /* DFImageProcessor.m */,
-				0CD0122B1A6C6AB1004F6CD3 /* DFImageRequestID+Protected.h */,
 				0CD0122C1A6C6AB1004F6CD3 /* DFImageRequestID.h */,
 				0CD0122D1A6C6AB1004F6CD3 /* DFImageRequestID.m */,
 				0CD0122E1A6C6AB1004F6CD3 /* DFImageUtilities.h */,
@@ -611,7 +608,6 @@
 				0C3EF5351A6C6FF30046FD55 /* DFOperation.h in Headers */,
 				0C3EF5011A6C6F920046FD55 /* NSURL+DFImageAsset.h in Headers */,
 				0C3EF5371A6C6FF70046FD55 /* DFImageAssetProtocol.h in Headers */,
-				0C3EF5301A6C6FF30046FD55 /* DFImageRequestID+Protected.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

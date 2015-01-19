@@ -20,46 +20,16 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "DFImageManagerProtocol.h"
 #import "DFImageRequestID.h"
-
-
-@interface DFImageRequestID ()
-
-@property (nonatomic, weak, readonly) id<DFImageManagerCore> imageManager;
-@property (nonatomic, readonly) NSUUID *taskID;
-@property (nonatomic, readonly) NSUUID *handlerID;
-
-@end
 
 @implementation DFImageRequestID
 
-- (instancetype)initWithImageManager:(id<DFImageManagerCore>)imageManager {
-    if (self = [super init]) {
-        _imageManager = imageManager;
-    }
-    return self;
-}
-
-- (void)setTaskID:(NSUUID *)taskID handlerID:(NSUUID *)handlerID {
-    if (_taskID != nil ||
-        _handlerID != nil) {
-        [NSException raise:NSInternalInconsistencyException format:@"Attempting to rewrite image request state"];
-    }
-    _taskID = taskID;
-    _handlerID = handlerID;
-}
-
 - (void)cancel {
-    [self.imageManager cancelRequestWithID:self];
+    // Do nothing
 }
 
 - (void)setPriority:(DFImageRequestPriority)priority {
-    [self.imageManager setPriority:priority forRequestWithID:self];
-}
-
-- (NSString *)description {
-    return [NSString stringWithFormat:@"<%@ %p> { imageManager = %@, taskID = %@, handlerID = %@ }", [self class], self, self.imageManager, self.taskID, self.handlerID];
+    // Do nothing
 }
 
 @end
