@@ -37,6 +37,7 @@
     if (self = [self init]) {
         _priority = options.priority;
         _networkAccessAllowed = options.networkAccessAllowed;
+        _userInfo = [options.userInfo copy];
     }
     return self;
 }

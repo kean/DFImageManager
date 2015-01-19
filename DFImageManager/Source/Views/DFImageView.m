@@ -56,7 +56,7 @@
     self.imageManager = [DFImageManager sharedManager];
     
     _animation = DFImageViewAnimationFade;
-    _contentMode = DFImageContentModeDefault;
+    _contentMode = DFImageContentModeAspectFill;
     _managesRequestPriorities = YES;
     _placeholderColor = [UIColor colorWithWhite:235.f/255.f alpha:1.f];
     self.clipsToBounds = YES;

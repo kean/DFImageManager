@@ -34,7 +34,6 @@
 @property (nonatomic) CGSize targetSize;
 @property (nonatomic) DFImageContentMode contentMode;
 @property (nonatomic) DFImageRequestOptions *options;
-@property (nonatomic) NSDictionary *userInfo;
 
 - (instancetype)initWithAsset:(id<DFImageAsset>)asset targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options NS_DESIGNATED_INITIALIZER;
 - (instancetype)initWithAsset:(id<DFImageAsset>)asset;

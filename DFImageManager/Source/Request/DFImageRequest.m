@@ -37,7 +37,7 @@
 }
 
 - (instancetype)initWithAsset:(id<DFImageAsset>)asset {
-    return [self initWithAsset:asset targetSize:DFImageManagerMaximumSize contentMode:DFImageContentModeDefault options:nil];
+    return [self initWithAsset:asset targetSize:DFImageManagerMaximumSize contentMode:DFImageContentModeAspectFill options:nil];
 }
 
 - (id)copyWithZone:(NSZone *)zone {
@@ -46,12 +46,11 @@
     request.targetSize = self.targetSize;
     request.contentMode = self.contentMode;
     request.options = [self.options copy];
-    request.userInfo = [self.userInfo copy];
     return request;
 }
 
 - (NSString *)description {
-    return [NSString stringWithFormat:@"<%@ %p> { asset = %@, targetSize = %@, contentMode = %i, options = %@, userInfo = %@ }", [self class], self, self.asset, NSStringFromCGSize(self.targetSize), (int)self.contentMode, self.options, self.userInfo];
+    return [NSString stringWithFormat:@"<%@ %p> { asset = %@, targetSize = %@, contentMode = %i, options = %@, userInfo = %@ }", [self class], self, self.asset, NSStringFromCGSize(self.targetSize), (int)self.contentMode, self.options];
 }
 
 @end

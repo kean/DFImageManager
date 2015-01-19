@@ -31,6 +31,8 @@
 
 @property (nonatomic) BOOL networkAccessAllowed;
 
+@property (nonatomic) NSDictionary *userInfo;
+
 - (instancetype)initWithOptions:(DFImageRequestOptions *)options;
 
 @end
