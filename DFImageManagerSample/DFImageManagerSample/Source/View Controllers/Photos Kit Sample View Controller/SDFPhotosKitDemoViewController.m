@@ -182,6 +182,7 @@ static NSString * const reuseIdentifier = @"Cell";
     
     PHFetchResult *result = _assets[indexPath.section];
     PHAsset *asset = result[indexPath.item];
+    
     [imageView setImageWithAsset:asset targetSize:[self _imageTargetSize] contentMode:DFImageContentModeAspectFill options:nil];
 
     return cell;

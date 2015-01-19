@@ -25,6 +25,7 @@
 #import "DFImageRequestOptions.h"
 #import "DFImageResponse.h"
 #import "DFPhotosKitImageFetchOperation.h"
+#import "DFPhotosKitImageRequestOptions.h"
 #import <Photos/Photos.h>
 
 
@@ -33,7 +34,7 @@
     NSURL *_assetURL;
     CGSize _targetSize;
     DFImageContentMode _contentMode;
-    DFImageRequestOptions *_options;
+    DFPhotosKitImageRequestOptions *_options;
 }
 
 - (instancetype)initWithRequest:(DFImageRequest *)request {
@@ -45,7 +46,8 @@
         }
         _targetSize = request.targetSize;
         _contentMode = request.contentMode;
-        _options = request.options;
+        _options = (DFPhotosKitImageRequestOptions *)request.options;
+        NSParameterAssert([request.options isKindOfClass:[DFPhotosKitImageRequestOptions class]]);
     }
     return self;
 }
@@ -74,8 +76,13 @@
     
     PHImageRequestOptions *options = [PHImageRequestOptions new];
     options.networkAccessAllowed = _options.networkAccessAllowed;
-    options.deliveryMode = PHImageRequestOptionsDeliveryModeHighQualityFormat;
-    options.resizeMode = PHImageRequestOptionsResizeModeFast;
+    options.deliveryMode = _options.deliveryMode;
+    if (options.deliveryMode == PHImageRequestOptionsDeliveryModeOpportunistic) {
+        NSLog(@"%@: PHImageRequestOptionsDeliveryModeOpportunistic is unsupported", self);
+        options.deliveryMode = PHImageRequestOptionsDeliveryModeHighQualityFormat;
+    }
+    options.resizeMode = _options.resizeMode;
+    options.version = _options.version;
     
     PHImageContentMode contentMode = [self _PHContentModeForDFContentMode:_contentMode];
     

@@ -31,7 +31,7 @@
         _asset = asset;
         _targetSize = targetSize;
         _contentMode = contentMode;
-        _options = options ?: [DFImageRequestOptions defaultOptions];
+        _options = options ?: [DFImageRequestOptions new];
     }
     return self;
 }

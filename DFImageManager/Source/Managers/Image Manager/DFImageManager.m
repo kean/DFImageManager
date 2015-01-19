@@ -396,7 +396,7 @@ _DFImageRequestKeyCreate(DFImageRequest *request, id<DFImageFetcher> fetcher) {
 #pragma mark Fetching
 
 - (DFImageRequestID *)requestImageForRequest:(DFImageRequest *)request completion:(DFImageRequestCompletion)completion {
-    request = [request copy];
+    request = [self _canonicalRequestForRequest:request];
     DFImageRequestID *requestID = [[DFImageRequestID alloc] initWithImageManager:self]; // Represents requestID future.
     dispatch_async(_syncQueue, ^{
         NSUUID *taskID = _taskIDs[DFImageRequestKeyCreate(request)] ?: [NSUUID UUID];
@@ -405,6 +405,13 @@ _DFImageRequestKeyCreate(DFImageRequest *request, id<DFImageFetcher> fetcher) {
         [self _requestImageForHandler:handler];
     });
     return requestID;
+}
+
+- (DFImageRequest *)_canonicalRequestForRequest:(DFImageRequest *)request {
+    if ([_conf.fetcher respondsToSelector:@selector(canonicalRequestForRequest:)]) {
+        return [[_conf.fetcher canonicalRequestForRequest:request] copy];
+    }
+    return [request copy];
 }
 
 - (void)_requestImageForHandler:(_DFImageManagerHandler *)handler {
@@ -554,10 +561,13 @@ _DFImageRequestKeyCreate(DFImageRequest *request, id<DFImageFetcher> fetcher) {
 #pragma mark Preheating
 
 - (void)startPreheatingImagesForRequests:(NSArray *)requests {
-    requests = [[NSArray alloc] initWithArray:requests copyItems:YES];
-    if (requests.count > 0) {
+    NSMutableArray *canonicalRequests = [[NSMutableArray alloc] initWithCapacity:requests.count];
+    for (DFImageRequest *request in requests) {
+        [canonicalRequests addObject:[self _canonicalRequestForRequest:request]];
+    }
+    if (canonicalRequests.count > 0) {
         dispatch_async(_syncQueue, ^{
-            [self _startPreheatingImageForRequests:requests];
+            [self _startPreheatingImageForRequests:canonicalRequests];
         });
     }
 }
@@ -576,10 +586,13 @@ _DFImageRequestKeyCreate(DFImageRequest *request, id<DFImageFetcher> fetcher) {
 }
 
 - (void)stopPreheatingImagesForRequests:(NSArray *)requests {
-    requests = [[NSArray alloc] initWithArray:requests copyItems:YES];
-    if (requests.count > 0) {
+    NSMutableArray *canonicalRequests = [[NSMutableArray alloc] initWithCapacity:requests.count];
+    for (DFImageRequest *request in requests) {
+        [canonicalRequests addObject:[self _canonicalRequestForRequest:request]];
+    }
+    if (canonicalRequests.count > 0) {
         dispatch_async(_syncQueue, ^{
-            [self _stopPreheatingImagesForRequests:requests];
+            [self _stopPreheatingImagesForRequests:canonicalRequests];
         });
     }
 }

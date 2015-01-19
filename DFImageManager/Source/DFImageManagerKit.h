@@ -49,8 +49,9 @@
 #import "DFURLResponseDeserializing.h"
 #import "DFImageDeserializer.h"
 
-#import "PHAsset+DFImageAsset.h"
 #import "DFPhotosKitImageFetcher.h"
+#import "DFPhotosKitImageRequestOptions.h"
+#import "PHAsset+DFImageAsset.h"
 #import "NSURL+DFPhotosKit.h"
 #import "DFPhotosKitImageFetchOperation.h"
 

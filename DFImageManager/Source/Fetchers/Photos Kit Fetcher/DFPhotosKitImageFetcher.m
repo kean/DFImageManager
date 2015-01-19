@@ -24,6 +24,7 @@
 #import "DFImageRequestOptions.h"
 #import "DFPhotosKitImageFetchOperation.h"
 #import "DFPhotosKitImageFetcher.h"
+#import "DFPhotosKitImageRequestOptions.h"
 #import "NSURL+DFImageAsset.h"
 #import "NSURL+DFPhotosKit.h"
 #import <Photos/Photos.h>
@@ -57,6 +58,15 @@
     return NO;
 }
 
+- (DFImageRequest *)canonicalRequestForRequest:(DFImageRequest *)request {
+    if (!request.options || ![request.options isKindOfClass:[DFPhotosKitImageRequestOptions class]]) {
+        DFImageRequest *canonical = [request copy];
+        canonical.options = [[DFPhotosKitImageRequestOptions alloc] initWithOptions:request.options];
+        return canonical;
+    }
+    return request;
+}
+
 - (BOOL)isRequestEquivalent:(DFImageRequest *)request1 toRequest:(DFImageRequest *)request2 {
     if (request1 == request2) {
         return YES;
@@ -64,9 +74,17 @@
     if (![[request1.asset assetID] isEqualToString:[request2.asset assetID]]) {
         return NO;
     }
-    return (CGSizeEqualToSize(request1.targetSize, request2.targetSize) &&
-            request1.contentMode == request2.contentMode &&
-            request1.options.networkAccessAllowed == request2.options.networkAccessAllowed);
+    if (!(CGSizeEqualToSize(request1.targetSize, request2.targetSize) &&
+          request1.contentMode == request2.contentMode &&
+          request1.options.networkAccessAllowed == request2.options.networkAccessAllowed)) {
+        return NO;
+    }
+    
+    DFPhotosKitImageRequestOptions *options1 = (id)request1.options;
+    DFPhotosKitImageRequestOptions *options2 = (id)request2.options;
+    return (options1.version == options2.version &&
+            options1.deliveryMode == options2.deliveryMode &&
+            options1.resizeMode == options2.resizeMode);
 }
 
 - (NSOperation *)startOperationWithRequest:(DFImageRequest *)request completion:(void (^)(DFImageResponse *))completion {

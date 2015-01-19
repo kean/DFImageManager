@@ -45,4 +45,11 @@
  */
 - (NSOperation *)startOperationWithRequest:(DFImageRequest *)request completion:(void (^)(DFImageResponse *response))completion;
 
+@optional
+
+/*! Returns a canonical form of the given request. All DFImageFetcher methods recieve requests in a canonical form expept for the -canHandleRequest: method. It is up to each concrete protocol implementation to define what "canonical" means.
+ @discussion Some fetcher might support a particular subclass of either DFImageRequest or DFImageRequestOptions. In that case this method might modify the given request to return this subclass in case the base class was used.
+ */
+- (DFImageRequest *)canonicalRequestForRequest:(DFImageRequest *)request;
+
 @end

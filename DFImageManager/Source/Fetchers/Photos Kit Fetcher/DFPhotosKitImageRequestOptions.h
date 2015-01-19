@@ -20,17 +20,25 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "DFImageManagerDefines.h"
+#import "DFImageRequestOptions.h"
+#import <Foundation/Foundation.h>
+#import <Photos/Photos.h>
 
 
-@interface DFImageRequestOptions : NSObject <NSCopying>
-
-/*! Fetch request priority. Translates to NSOperationQueuePriority.
+/*! For more info see PHImageRequestOptions class.
  */
-@property (nonatomic) DFImageRequestPriority priority;
+NS_CLASS_AVAILABLE_IOS(8_0) @interface DFPhotosKitImageRequestOptions : DFImageRequestOptions
 
-@property (nonatomic) BOOL networkAccessAllowed;
+/*! Defaults to PHImageContentModeDefault.
+ */
+@property (nonatomic) PHImageRequestOptionsVersion version;
 
-- (instancetype)initWithOptions:(DFImageRequestOptions *)options;
+/*! Defaults to PHImageRequestOptionsDeliveryModeHighQualityFormat. @discussion Using PHImageRequestOptionsDeliveryModeOpportunistic might be useless in some classes, because DFImageManager doesn't call completion handler twice like PHImageManager does. You should use DFCompositeImageRequest to achieve similar results.
+ */
+@property (nonatomic) PHImageRequestOptionsDeliveryMode deliveryMode;
+
+/*! Defaults to PHImageRequestOptionsResizeModeFast.
+ */
+@property (nonatomic) PHImageRequestOptionsResizeMode resizeMode;
 
 @end

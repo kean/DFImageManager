@@ -20,46 +20,26 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "DFImageRequestOptions.h"
+#import "DFPhotosKitImageRequestOptions.h"
 
 
-@implementation DFImageRequestOptions
+@implementation DFPhotosKitImageRequestOptions
 
 - (instancetype)init {
     if (self = [super init]) {
-        _priority = DFImageRequestPriorityNormal;
-        _networkAccessAllowed = YES;
-    }
-    return self;
-}
-
-- (instancetype)initWithOptions:(DFImageRequestOptions *)options {
-    if (self = [self init]) {
-        _priority = options.priority;
-        _networkAccessAllowed = options.networkAccessAllowed;
+        _version = PHImageRequestOptionsVersionCurrent;
+        _deliveryMode = PHImageRequestOptionsDeliveryModeHighQualityFormat;
+        _resizeMode = PHImageRequestOptionsResizeModeFast;
     }
     return self;
 }
 
 - (id)copyWithZone:(NSZone *)zone {
-    return [((DFImageRequestOptions *)[[self class] alloc]) initWithOptions:self];
-}
-
-- (NSString *)description {
-    return [NSString stringWithFormat:@"<%@ %p> { priority = %@, network_access_allowed = %i }", [self class], self, [DFImageRequestOptions _descriptionForPriority:_priority], _networkAccessAllowed];
-}
-
-+ (NSString *)_descriptionForPriority:(DFImageRequestPriority)priority {
-    static NSDictionary *table;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        table = @{ @(DFImageRequestPriorityVeryLow) : @".VeryLow",
-                   @(DFImageRequestPriorityLow) : @".Low",
-                   @(DFImageRequestPriorityNormal) : @".Normal",
-                   @(DFImageRequestPriorityHigh) : @".High",
-                   @(DFImageRequestPriorityVeryHigh) : @".VeryHigh" };
-    });
-    return table[@(priority)];
+    DFPhotosKitImageRequestOptions *options = [super copyWithZone:zone];
+    options.version = self.version;
+    options.deliveryMode = self.deliveryMode;
+    options.resizeMode = self.resizeMode;
+    return options;
 }
 
 @end
