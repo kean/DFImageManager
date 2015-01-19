@@ -100,7 +100,13 @@
     if (![URL1 isEqual:URL2]) {
         return NO;
     }
-    return [request1 _isFileRequest] ? YES : request1.options.networkAccessAllowed == request2.options.networkAccessAllowed;
+    if ([request1 _isFileRequest]) {
+        return YES;
+    }
+    DFURLImageRequestOptions *options1 = (id)request1.options;
+    DFURLImageRequestOptions *options2 = (id)request2.options;
+    return (options1.networkAccessAllowed == options2.networkAccessAllowed &&
+            options1.cachePolicy == options2.cachePolicy);
 }
 
 - (DFImageRequest *)canonicalRequestForRequest:(DFImageRequest *)request {

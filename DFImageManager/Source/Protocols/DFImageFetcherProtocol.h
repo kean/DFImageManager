@@ -36,7 +36,7 @@
  */
 - (BOOL)canHandleRequest:(DFImageRequest *)request;
 
-/*! Compares two requests for equivalence with regard to fetching the image. Requests should be consitered equivalent if image fetcher can handle both requests by the same operation.
+/*! Compares two requests for equivalence with regard to fetching the image. Requests should be considered equivalent if image fetcher can handle both requests by the same operation.
  */
 - (BOOL)isRequestEquivalent:(DFImageRequest *)request1 toRequest:(DFImageRequest *)request2;
 
@@ -47,7 +47,7 @@
 
 @optional
 
-/*! Returns a canonical form of the given request. All DFImageFetcher methods recieve requests in a canonical form expept for the -canHandleRequest: method. It is up to each concrete protocol implementation to define what "canonical" means.
+/*! Returns a canonical form of the given request. All DFImageFetcher methods receive requests in a canonical form expect for the -canHandleRequest: method. It is up to each concrete protocol implementation to define what "canonical" means.
  @discussion Some fetcher might support a particular subclass of either DFImageRequest or DFImageRequestOptions. In that case this method might modify the given request to return this subclass in case the base class was used.
  */
 - (DFImageRequest *)canonicalRequestForRequest:(DFImageRequest *)request;
