@@ -34,8 +34,6 @@
 - (instancetype)initWithError:(NSError *)error;
 - (instancetype)initWithResponse:(DFImageResponse *)response;
 
-+ (instancetype)emptyResponse;
-
 @end
 
 

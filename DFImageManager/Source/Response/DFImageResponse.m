@@ -66,10 +66,6 @@
     return [[DFMutableImageResponse alloc] initWithResponse:self];
 }
 
-+ (instancetype)emptyResponse {
-    return [DFImageResponse new];
-}
-
 @end
 
 
