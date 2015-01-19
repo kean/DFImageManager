@@ -104,6 +104,7 @@
 - (void)_didFetchImage:(UIImage *)result info:(NSDictionary *)info {
     DFMutableImageResponse *response = [DFMutableImageResponse new];
     response.image = result;
+    response.userInfo = info;
     _response = [response copy];
     [self finish];
 }
