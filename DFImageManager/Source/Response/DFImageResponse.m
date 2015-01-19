@@ -27,7 +27,6 @@
 
 @property (nonatomic) UIImage *image;
 @property (nonatomic) NSError *error;
-@property (nonatomic) NSData *data;
 @property (nonatomic) NSDictionary *userInfo;
 
 @end
@@ -54,7 +53,6 @@
     if (self = [super init]) {
         _image = response.image;
         _error = response.error;
-        _data = response.data;
         _userInfo = response.userInfo;
     }
     return self;

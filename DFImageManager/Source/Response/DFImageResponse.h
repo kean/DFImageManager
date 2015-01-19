@@ -28,7 +28,6 @@
 
 @property (nonatomic, readonly) UIImage *image;
 @property (nonatomic, readonly) NSError *error;
-@property (nonatomic, readonly) NSData *data;
 @property (nonatomic, readonly) NSDictionary *userInfo;
 
 - (instancetype)initWithImage:(UIImage *)image;
@@ -44,7 +43,6 @@
 
 @property (nonatomic) UIImage *image;
 @property (nonatomic) NSError *error;
-@property (nonatomic) NSData *data;
 @property (nonatomic) NSDictionary *userInfo;
 
 @end
