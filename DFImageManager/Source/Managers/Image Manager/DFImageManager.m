@@ -339,17 +339,14 @@
 
 @property (nonatomic, readonly) DFImageRequest *request;
 
-+ (instancetype)keyWithRequest:(DFImageRequest *)request fetcher:(id<DFImageFetcher>)fetcher;
+- (instancetype)initWithRequest:(DFImageRequest *)request fetcher:(id<DFImageFetcher>)fetcher;
 
 @end
 
 @implementation _DFImageRequestKey {
     NSUInteger _hash;
+    DFImageRequest *_request;
     id<DFImageFetcher> _fetcher;
-}
-
-+ (instancetype)keyWithRequest:(DFImageRequest *)request fetcher:(id<DFImageFetcher>)fetcher {
-    return [[_DFImageRequestKey alloc] initWithRequest:request fetcher:fetcher];
 }
 
 - (instancetype)initWithRequest:(DFImageRequest *)request fetcher:(id<DFImageFetcher>)fetcher {
