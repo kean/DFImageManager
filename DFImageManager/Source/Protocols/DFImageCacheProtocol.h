@@ -30,5 +30,6 @@
 
 - (UIImage *)cachedImageForRequest:(DFImageRequest *)request;
 - (void)storeImage:(UIImage *)image forRequest:(DFImageRequest *)request;
+- (void)removeAllObjects;
 
 @end

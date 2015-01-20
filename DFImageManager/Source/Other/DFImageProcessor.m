@@ -149,6 +149,10 @@ NSString *DFImageProcessingCornerRadiusKey = @"DFImageProcessingCornerRadiusKey"
     }
 }
 
+- (void)removeAllObjects {
+    [_cache removeAllObjects];
+}
+
 #pragma mark -
 
 - (NSString *)_cacheKeyForAssetID:(NSString *)assetID request:(DFImageRequest *)request {
