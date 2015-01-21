@@ -56,6 +56,7 @@ static NSString * const reuseIdentifier = @"Cell";
     
     [self.collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:reuseIdentifier];
     [self.collectionView registerNib:[UINib nibWithNibName:NSStringFromClass([DFMomentHeaderCollectionReusableView class]) bundle:nil] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:NSStringFromClass([DFMomentHeaderCollectionReusableView class])];
+    self.collectionView.alwaysBounceVertical = YES;
 }
 
 - (void)viewWillAppear:(BOOL)animated {

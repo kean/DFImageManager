@@ -24,6 +24,8 @@
 #import <UIKit/UIKit.h>
 
 
+/*! Cache for storing images into memory.
+ */
 @protocol DFImageCache <NSObject>
 
 - (UIImage *)cacheImageForKey:(id<NSCopying>)key;

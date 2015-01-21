@@ -82,7 +82,6 @@
     return nil;
 }
 
-
 - (void)storeImage:(UIImage *)image forKey:(id<NSCopying>)key {
     if (image != nil && key != nil) {
         NSUInteger cost = [self _costForImage:image];
