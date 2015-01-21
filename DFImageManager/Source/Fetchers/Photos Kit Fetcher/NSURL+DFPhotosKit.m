@@ -39,4 +39,10 @@
     return [self df_assetURLWithAssetLocalIdentifier:asset.localIdentifier];
 }
 
+- (NSString *)df_assetLocalIdentifier {
+    NSURLComponents *components = [NSURLComponents componentsWithURL:self resolvingAgainstBaseURL:NO];
+    NSURLQueryItem *queryItem = [[components.queryItems filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"name=%@", @"local_identifier"]] firstObject];
+    return queryItem.value;
+}
+
 @end

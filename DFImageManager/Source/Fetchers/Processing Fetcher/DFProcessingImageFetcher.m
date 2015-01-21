@@ -49,7 +49,9 @@
     if (request1 == request2) {
         return YES;
     }
-    if (![[request1.asset assetID] isEqualToString:[request2.asset assetID]]) {
+    DFProcessingInput *input1 = request1.asset;
+    DFProcessingInput *input2 = request2.asset;
+    if (!(input1.image == input2.image || [input1.imageIdentifier isEqualToString:input2.imageIdentifier])) {
         return NO;
     }
     return [_processor isProcessingForRequestEquivalent:request1 toRequest:request2];

@@ -28,6 +28,7 @@
 @interface DFProcessingInput : NSObject <DFImageAsset>
 
 @property (nonatomic, readonly) UIImage *image;
+@property (nonatomic, readonly) NSString *imageIdentifier;
 
 - (instancetype)initWithImage:(UIImage *)image identifier:(NSString *)identifier;
 

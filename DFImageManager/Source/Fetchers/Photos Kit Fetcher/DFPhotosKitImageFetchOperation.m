@@ -26,6 +26,7 @@
 #import "DFImageResponse.h"
 #import "DFPhotosKitImageFetchOperation.h"
 #import "DFPhotosKitImageRequestOptions.h"
+#import "NSURL+DFPhotosKit.h"
 #import <Photos/Photos.h>
 
 
@@ -61,9 +62,7 @@
     }
     
     if (!_asset && _assetURL != nil) {
-        NSURLComponents *components = [NSURLComponents componentsWithURL:_assetURL resolvingAgainstBaseURL:NO];
-        NSURLQueryItem *queryItem = [[components.queryItems filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"name=%@", @"local_identifier"]] firstObject];
-        NSString *localIdentifier = queryItem.value;
+        NSString *localIdentifier = [_assetURL df_assetLocalIdentifier];
         if (localIdentifier != nil) {
             _asset = [[PHAsset fetchAssetsWithLocalIdentifiers:@[localIdentifier] options:nil] firstObject];
         }

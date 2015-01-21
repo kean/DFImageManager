@@ -30,6 +30,14 @@
 #import <UIKit/UIKit.h>
 
 
+static inline NSURL *_ALAssetURL(id asset) {
+    if ([asset isKindOfClass:[ALAsset class]]) {
+        return [((ALAsset *)asset) valueForProperty:ALAssetPropertyAssetURL];
+    } else {
+        return (NSURL *)asset;
+    }
+}
+
 @implementation DFAssetsLibraryImageFetcher {
     NSOperationQueue *_queue;
     BOOL _isIpad;
@@ -64,7 +72,7 @@
     if (request1 == request2) {
         return YES;
     }
-    if (![request1.asset.assetID isEqualToString:request2.asset.assetID]) {
+    if (![_ALAssetURL(request1.asset) isEqual:_ALAssetURL(request2.asset)]) {
         return NO;
     }
     DFALAssetImageSize imageSize1 = [self _assetImageSizeForRequest:request1];

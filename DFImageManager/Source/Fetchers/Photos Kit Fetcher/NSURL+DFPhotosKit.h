@@ -31,5 +31,6 @@ static NSString *const DFPhotosKitURLScheme = @"com.github.kean.photos-kit";
 
 + (NSURL *)df_assetURLWithAssetLocalIdentifier:(NSString *)localIdentifier NS_AVAILABLE_IOS(8_0);
 + (NSURL *)df_assetURLWithAsset:(PHAsset *)asset NS_AVAILABLE_IOS(8_0);
+- (NSString *)df_assetLocalIdentifier;
 
 @end

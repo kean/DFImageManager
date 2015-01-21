@@ -29,6 +29,13 @@
 #import "NSURL+DFPhotosKit.h"
 #import <Photos/Photos.h>
 
+static inline NSString *_PHAssetLocalIdentifier(id asset) {
+    if ([asset isKindOfClass:[PHAsset class]]) {
+        return ((PHAsset *)asset).localIdentifier;
+    } else {
+        return [((NSURL *)asset) df_assetLocalIdentifier];
+    }
+}
 
 @implementation DFPhotosKitImageFetcher {
     NSOperationQueue *_queue;
@@ -71,7 +78,7 @@
     if (request1 == request2) {
         return YES;
     }
-    if (![[request1.asset assetID] isEqualToString:[request2.asset assetID]]) {
+    if (![_PHAssetLocalIdentifier(request1.asset) isEqualToString:_PHAssetLocalIdentifier(request2.asset)]) {
         return NO;
     }
     if (!(CGSizeEqualToSize(request1.targetSize, request2.targetSize) &&

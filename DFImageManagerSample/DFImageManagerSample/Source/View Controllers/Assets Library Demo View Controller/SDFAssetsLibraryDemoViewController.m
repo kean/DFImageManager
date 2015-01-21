@@ -104,7 +104,7 @@ static NSString * const reuseIdentifier = @"Cell";
     
     ALAsset *asset = _photos[indexPath.row];
     [imageView setImageWithAsset:asset];
-    
+
     return cell;
 }
 

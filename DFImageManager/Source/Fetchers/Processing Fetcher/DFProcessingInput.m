@@ -23,20 +23,26 @@
 #import "DFProcessingInput.h"
 
 
-@implementation DFProcessingInput {
-    NSString *_identifier;
-}
+@implementation DFProcessingInput
 
 - (instancetype)initWithImage:(UIImage *)image identifier:(NSString *)identifier {
     if (self = [super init]) {
         _image = image;
-        _identifier = identifier;
+        _imageIdentifier = identifier;
     }
     return self;
 }
 
 - (NSString *)assetID {
-    return _identifier;
+    return _imageIdentifier;
+}
+
+- (NSUInteger)hash {
+    return [_imageIdentifier hash];
+}
+
+- (NSString *)description {
+    return [NSString stringWithFormat:@"<%@ %p> { image = %@, id = %@ }", [self class], self, self.image, self.imageIdentifier];
 }
 
 @end
