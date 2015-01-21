@@ -30,51 +30,7 @@ NSString *DFImageProcessingClipsToBoundsKey = @"DFImageProcessingClipsToBoundsKe
 NSString *DFImageProcessingCornerRadiusKey = @"DFImageProcessingCornerRadiusKey";
 
 
-@interface _DFImageCacheEntry : NSObject
-
-@property (nonatomic) UIImage *image;
-@property (nonatomic) NSTimeInterval creationDate;
-
-+ (instancetype)entryWithImage:(UIImage *)image;
-
-@end
-
-@implementation _DFImageCacheEntry
-
-+ (instancetype)entryWithImage:(UIImage *)image {
-    _DFImageCacheEntry *entry = [_DFImageCacheEntry new];
-    entry.image = image;
-    entry.creationDate = CACurrentMediaTime();
-    return entry;
-}
-
-@end
-
-
 @implementation DFImageProcessor
-
-- (void)dealloc {
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
-- (instancetype)initWithCache:(NSCache *)cache {
-    if (self = [super init]) {
-        _cache = cache;
-        _maximumCachedEntryAge = FLT_MAX;
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_didReceiveMemoryWarning:) name:UIApplicationDidReceiveMemoryWarningNotification object:nil];
-    }
-    return self;
-}
-
-- (instancetype)init {
-    NSCache *cache = [NSCache new];
-    cache.totalCostLimit = [NSCache df_recommendedTotalCostLimit];
-    return [self initWithCache:cache];
-}
-
-- (void)_didReceiveMemoryWarning:(NSNotification *__unused)notification {
-    [self.cache removeAllObjects];
-}
 
 #pragma mark - <DFImageProcessing>
 
@@ -118,66 +74,6 @@ NSString *DFImageProcessingCornerRadiusKey = @"DFImageProcessingCornerRadiusKey"
         image = [DFImageUtilities imageWithImage:image cornerRadius:cornerRadius];
     }
     return image;
-}
-
-#pragma mark - <DFImageCache>
-
-- (UIImage *)cacheImageForKey:(id<NSCopying>)key {
-    if (key != nil) {
-        _DFImageCacheEntry *entry = [_cache objectForKey:key];
-        if (entry != nil) {
-            if (CACurrentMediaTime() - entry.creationDate < self.maximumCachedEntryAge) {
-                return entry.image;
-            } else {
-                [_cache removeObjectForKey:key];
-            }
-        }
-    }
-    return nil;
-}
-
-
-- (void)storeImage:(UIImage *)image forKey:(id<NSCopying>)key {
-    if (image != nil && key != nil) {
-            NSUInteger cost = [self _costForImage:image];
-            [_cache setObject:[_DFImageCacheEntry entryWithImage:image] forKey:key cost:cost];
-    }
-}
-
-- (void)removeAllObjects {
-    [_cache removeAllObjects];
-}
-
-- (NSUInteger)_costForImage:(UIImage *)image {
-    CGImageRef imageRef = image.CGImage;
-    NSUInteger bitsPerPixel = CGImageGetBitsPerPixel(imageRef);
-    return (CGImageGetWidth(imageRef) * CGImageGetHeight(imageRef) * bitsPerPixel) / 8; // Return number of bytes in image bitmap.
-}
-
-@end
-
-
-@implementation NSCache (DFImageProcessingManager)
-
-+ (NSCache *)df_sharedImageCache {
-    static NSCache *cache;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        cache = [NSCache new];
-        cache.totalCostLimit = [self df_recommendedTotalCostLimit];
-    });
-    return cache;
-}
-
-+ (NSUInteger)df_recommendedTotalCostLimit {
-    static NSUInteger recommendedSize;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        NSProcessInfo *info = [NSProcessInfo processInfo];
-        CGFloat ratio = info.physicalMemory <= (1024 * 1024 * 512 /* 512 Mb */) ? 0.12f : 0.20f;
-        recommendedSize = (NSUInteger)MAX(1024 * 1024 * 50 /* 50 Mb */, info.physicalMemory * ratio);
-    });
-    return recommendedSize;
 }
 
 @end

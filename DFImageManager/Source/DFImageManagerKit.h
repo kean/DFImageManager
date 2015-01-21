@@ -66,6 +66,9 @@
 #import "DFProcessingImageFetcher.h"
 #import "DFProcessingInput.h"
 
+#import "DFImageCache.h"
+#import "NSCache+DFImageManager.h"
+
 // UI
 
 #import "DFImageView.h"

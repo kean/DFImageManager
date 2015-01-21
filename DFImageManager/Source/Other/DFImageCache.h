@@ -20,19 +20,18 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "DFImageProcessorProtocol.h"
+#import "DFImageCacheProtocol.h"
 #import <Foundation/Foundation.h>
-#import <UIKit/UIKit.h>
 
-/*! Boolean that indicates that some portion of the content should be clipped so that the image aspect ratio is the same as of the target size. This option only works for DFImageContentModeAspectFill. Should be put into DFImageRequestOptions userInfo dictionary.
+
+@interface DFImageCache : NSObject <DFImageCache>
+
+- (instancetype)initWithCache:(NSCache *)cache NS_DESIGNATED_INITIALIZER;
+
+@property (nonatomic, readonly) NSCache *cache;
+
+/*! The maximum entry age after which entry is considered expired and is removed from the cache. Default value is FLT_MAX so that entries never expire.
  */
-extern NSString *DFImageProcessingClipsToBoundsKey;
-
-/*! NSNumber with float value that specifies a normalized image corner radius, where 0.5 is a corner radius that is half of the minimum image side. Should be put into DFImageRequestOptions userInfo dictionary.
- */
-extern NSString *DFImageProcessingCornerRadiusKey;
-
-
-@interface DFImageProcessor : NSObject <DFImageProcessor>
+@property (nonatomic) NSUInteger maximumEntryAge;
 
 @end

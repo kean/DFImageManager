@@ -20,19 +20,12 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "DFImageProcessorProtocol.h"
 #import <Foundation/Foundation.h>
-#import <UIKit/UIKit.h>
-
-/*! Boolean that indicates that some portion of the content should be clipped so that the image aspect ratio is the same as of the target size. This option only works for DFImageContentModeAspectFill. Should be put into DFImageRequestOptions userInfo dictionary.
- */
-extern NSString *DFImageProcessingClipsToBoundsKey;
-
-/*! NSNumber with float value that specifies a normalized image corner radius, where 0.5 is a corner radius that is half of the minimum image side. Should be put into DFImageRequestOptions userInfo dictionary.
- */
-extern NSString *DFImageProcessingCornerRadiusKey;
 
 
-@interface DFImageProcessor : NSObject <DFImageProcessor>
+@interface NSCache (DFImageManager)
+
++ (NSCache *)df_sharedImageCache;
++ (NSUInteger)df_recommendedTotalCostLimit;
 
 @end

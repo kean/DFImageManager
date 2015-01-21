@@ -20,19 +20,31 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "DFImageProcessorProtocol.h"
-#import <Foundation/Foundation.h>
+#import "NSCache+DFImageManager.h"
 #import <UIKit/UIKit.h>
 
-/*! Boolean that indicates that some portion of the content should be clipped so that the image aspect ratio is the same as of the target size. This option only works for DFImageContentModeAspectFill. Should be put into DFImageRequestOptions userInfo dictionary.
- */
-extern NSString *DFImageProcessingClipsToBoundsKey;
 
-/*! NSNumber with float value that specifies a normalized image corner radius, where 0.5 is a corner radius that is half of the minimum image side. Should be put into DFImageRequestOptions userInfo dictionary.
- */
-extern NSString *DFImageProcessingCornerRadiusKey;
+@implementation NSCache (DFImageManager)
 
++ (NSCache *)df_sharedImageCache {
+    static NSCache *cache;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        cache = [NSCache new];
+        cache.totalCostLimit = [self df_recommendedTotalCostLimit];
+    });
+    return cache;
+}
 
-@interface DFImageProcessor : NSObject <DFImageProcessor>
++ (NSUInteger)df_recommendedTotalCostLimit {
+    static NSUInteger recommendedSize;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        NSProcessInfo *info = [NSProcessInfo processInfo];
+        CGFloat ratio = info.physicalMemory <= (1024 * 1024 * 512 /* 512 Mb */) ? 0.12f : 0.20f;
+        recommendedSize = (NSUInteger)MAX(1024 * 1024 * 50 /* 50 Mb */, info.physicalMemory * ratio);
+    });
+    return recommendedSize;
+}
 
 @end
