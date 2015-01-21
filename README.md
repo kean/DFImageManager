@@ -1,7 +1,10 @@
-# DFImageManager
-DFImageManager is a modern framework for managing fetching, caching, decompressing, preheating of images from various sources.
+<img src="https://cloud.githubusercontent.com/assets/1567433/5834797/52b403f0-a105-11e4-88dd-6a072675d466.png" alt="DFImageManager" align="left" height="140" hspace="30" vspace="6"></a> 
 
-### Supported assets and asset identifiers
+### DFImageManager
+
+Modern iOS framework for fetching, caching, processing and preheating images from various sources. It uses latest advancements in iOS SDK and doesn't reinvent the existing technologies. It provides a powerful API that will extend the capabilities of your app.
+
+#### Supported assets and asset identifiers
 - NSURL with schemes http:, https:, ftp:, file:
 - PHAsset and NSURL with scheme com.github.kean.photos-kit:
 - ALAsset and NSURL with scheme assets-library:
