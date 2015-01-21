@@ -37,7 +37,7 @@
 }
 
 - (instancetype)initWithAsset:(id)asset {
-    return [self initWithAsset:asset targetSize:DFImageManagerMaximumSize contentMode:DFImageContentModeAspectFill options:nil];
+    return [self initWithAsset:asset targetSize:DFImageMaximumSize contentMode:DFImageContentModeAspectFill options:nil];
 }
 
 - (id)copyWithZone:(NSZone *)zone {

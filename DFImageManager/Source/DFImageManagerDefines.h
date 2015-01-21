@@ -32,7 +32,7 @@ extern NSString *const DFImageInfoErrorKey;
 
 /* Size to pass when requesting the largest image for asset available (contentMode will be ignored).
  */
-extern CGSize const DFImageManagerMaximumSize;
+extern CGSize const DFImageMaximumSize;
 
 
 typedef NS_ENUM(NSInteger, DFImageContentMode) {

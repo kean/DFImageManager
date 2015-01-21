@@ -103,6 +103,10 @@
     return [self requestImageForRequest:[[DFImageRequest alloc] initWithAsset:asset targetSize:targetSize contentMode:contentMode options:options] completion:completion];
 }
 
+- (DFImageRequestID *)requestImageForAsset:(id)asset completion:(void (^)(UIImage *, NSDictionary *))completion {
+    return [self requestImageForAsset:asset targetSize:DFImageMaximumSize contentMode:DFImageContentModeAspectFill options:nil completion:completion];
+}
+
 - (void)startPreheatingImageForAssets:(NSArray *)assets targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options {
     [self startPreheatingImagesForRequests:[self _requestsForAssets:assets targetSize:targetSize contentMode:contentMode options:options]];
 }

@@ -63,6 +63,8 @@
  */
 - (DFImageRequestID *)requestImageForAsset:(id)asset targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options completion:(void (^)(UIImage *image, NSDictionary *info))completion;
 
+- (DFImageRequestID *)requestImageForAsset:(id)asset completion:(void (^)(UIImage *image, NSDictionary *info))completion;
+
 - (void)startPreheatingImageForAssets:(NSArray *)assets targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options;
 
 - (void)stopPreheatingImagesForAssets:(NSArray *)assets targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options;

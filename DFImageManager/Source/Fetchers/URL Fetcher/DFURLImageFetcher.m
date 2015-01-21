@@ -125,7 +125,7 @@ NSString *const DFImageInfoURLResponseKey = @"DFImageInfoURLResponseKey";
         response.error = weakOp.error;
         NSURLResponse *URLResponse = weakOp.response;
         if (URLResponse != nil) {
-            response.userInfo = @{ DFImageInfoURLResponseKey : URLRequest };
+            response.userInfo = @{ DFImageInfoURLResponseKey : URLResponse };
         }
         completion([response copy]);
     }];
