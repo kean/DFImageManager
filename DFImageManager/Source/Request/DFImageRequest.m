@@ -26,7 +26,7 @@
 
 @implementation DFImageRequest
 
-- (instancetype)initWithAsset:(id<DFImageAsset>)asset targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options {
+- (instancetype)initWithAsset:(id)asset targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options {
     if (self = [super init]) {
         _asset = asset;
         _targetSize = targetSize;
@@ -36,7 +36,7 @@
     return self;
 }
 
-- (instancetype)initWithAsset:(id<DFImageAsset>)asset {
+- (instancetype)initWithAsset:(id)asset {
     return [self initWithAsset:asset targetSize:DFImageManagerMaximumSize contentMode:DFImageContentModeAspectFill options:nil];
 }
 

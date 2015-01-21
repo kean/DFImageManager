@@ -20,12 +20,11 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "DFImageAssetProtocol.h"
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
 
-@interface DFProcessingInput : NSObject <DFImageAsset>
+@interface DFProcessingInput : NSObject
 
 @property (nonatomic, readonly) UIImage *image;
 @property (nonatomic, readonly) NSString *imageIdentifier;

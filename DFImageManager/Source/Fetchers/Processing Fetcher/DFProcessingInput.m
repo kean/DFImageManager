@@ -33,10 +33,6 @@
     return self;
 }
 
-- (NSString *)assetID {
-    return _imageIdentifier;
-}
-
 - (NSUInteger)hash {
     return [_imageIdentifier hash];
 }

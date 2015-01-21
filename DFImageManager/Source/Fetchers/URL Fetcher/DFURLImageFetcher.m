@@ -28,7 +28,6 @@
 #import "DFURLImageRequestOptions.h"
 #import "DFURLResponseDeserializing.h"
 #import "DFURLSessionOperation.h"
-#import "NSURL+DFImageAsset.h"
 
 NSString *const DFImageInfoURLResponseKey = @"DFImageInfoURLResponseKey";
 

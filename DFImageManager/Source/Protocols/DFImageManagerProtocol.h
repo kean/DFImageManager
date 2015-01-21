@@ -22,8 +22,6 @@
 
 #import "DFImageManagerDefines.h"
 
-@protocol DFImageAsset;
-
 @class DFImageRequestOptions;
 @class DFImageRequest;
 @class DFImageRequestID;
@@ -63,10 +61,10 @@
  @param options Options specifying how image manager should handle the request.
  @param completion A block to be called when loading is complete, providing the requested image and information about the status of the request.
  */
-- (DFImageRequestID *)requestImageForAsset:(id<DFImageAsset>)asset targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options completion:(void (^)(UIImage *image, NSDictionary *info))completion;
+- (DFImageRequestID *)requestImageForAsset:(id)asset targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options completion:(void (^)(UIImage *image, NSDictionary *info))completion;
 
-- (void)startPreheatingImageForAssets:(NSArray /* id<DFImageAsset> */ *)assets targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options;
+- (void)startPreheatingImageForAssets:(NSArray *)assets targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options;
 
-- (void)stopPreheatingImagesForAssets:(NSArray /* id<DFImageAsset> */ *)assets targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options;
+- (void)stopPreheatingImagesForAssets:(NSArray *)assets targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options;
 
 @end

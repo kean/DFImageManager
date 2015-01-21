@@ -23,7 +23,6 @@
 #import "DFAssetsLibraryImageFetchOperation.h"
 #import "DFAssetsLibraryImageFetcher.h"
 #import "DFAssetsLibraryUtilities.h"
-#import "DFImageAssetProtocol.h"
 #import "DFImageRequest.h"
 #import "DFImageResponse.h"
 #import <AssetsLibrary/AssetsLibrary.h>

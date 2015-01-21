@@ -152,7 +152,7 @@
 - (instancetype)initWithRequest:(DFImageRequest *)request fetcher:(id<DFImageFetcher>)fetcher processor:(id<DFImageProcessor>)processor {
     if (self = [super init]) {
         _request = request;
-        _hash = request.asset.hash;
+        _hash = [request.asset hash];
         _fetcher = fetcher;
         _processor = processor;
     }

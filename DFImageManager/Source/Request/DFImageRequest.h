@@ -23,19 +23,17 @@
 #import "DFImageManagerDefines.h"
 #import <Foundation/Foundation.h>
 
-@protocol DFImageAsset;
-
 @class DFImageRequestOptions;
 
 
 @interface DFImageRequest : NSObject <NSCopying>
 
-@property (nonatomic) id<DFImageAsset> asset;
+@property (nonatomic) id asset;
 @property (nonatomic) CGSize targetSize;
 @property (nonatomic) DFImageContentMode contentMode;
 @property (nonatomic) DFImageRequestOptions *options;
 
-- (instancetype)initWithAsset:(id<DFImageAsset>)asset targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options NS_DESIGNATED_INITIALIZER;
-- (instancetype)initWithAsset:(id<DFImageAsset>)asset;
+- (instancetype)initWithAsset:(id)asset targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithAsset:(id)asset;
 
 @end

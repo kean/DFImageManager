@@ -18,7 +18,6 @@ FOUNDATION_EXPORT const unsigned char DFImageManagerFrameworkVersionString[];
 
 #import <DFImageManagerKit/DFImageManagerDefines.h>
 
-#import <DFImageManagerKit/DFImageAssetProtocol.h>
 #import <DFImageManagerKit/DFImageCacheProtocol.h>
 #import <DFImageManagerKit/DFImageFetcherProtocol.h>
 #import <DFImageManagerKit/DFImageManagerProtocol.h>
@@ -36,7 +35,6 @@ FOUNDATION_EXPORT const unsigned char DFImageManagerFrameworkVersionString[];
 #import <DFImageManagerKit/DFImageRequestOptions.h>
 #import <DFImageManagerKit/DFImageResponse.h>
 
-#import <DFImageManagerKit/NSURL+DFImageAsset.h>
 #import <DFImageManagerKit/DFURLImageFetcher.h>
 #import <DFImageManagerKit/DFURLImageRequestOptions.h>
 #import <DFImageManagerKit/DFURLSessionOperation.h>
@@ -45,11 +43,9 @@ FOUNDATION_EXPORT const unsigned char DFImageManagerFrameworkVersionString[];
 
 #import <DFImageManagerKit/DFPhotosKitImageFetcher.h>
 #import <DFImageManagerKit/DFPhotosKitImageRequestOptions.h>
-#import <DFImageManagerKit/PHAsset+DFImageAsset.h>
 #import <DFImageManagerKit/NSURL+DFPhotosKit.h>
 #import <DFImageManagerKit/DFPhotosKitImageFetchOperation.h>
 
-#import <DFImageManagerKit/ALAsset+DFImageAsset.h>
 #import <DFImageManagerKit/ALAssetsLibrary+DFImageManager.h>
 #import <DFImageManagerKit/DFAssetsLibraryImageFetcher.h>
 #import <DFImageManagerKit/DFAssetsLibraryImageFetchOperation.h>
