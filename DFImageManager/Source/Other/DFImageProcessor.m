@@ -122,41 +122,30 @@ NSString *DFImageProcessingCornerRadiusKey = @"DFImageProcessingCornerRadiusKey"
 
 #pragma mark - <DFImageCache>
 
-- (UIImage *)cachedImageForRequest:(DFImageRequest *)request {
-    NSString *assetID = [request.asset assetID];
-    if (assetID != nil) {
-        NSString *cacheKey = [self _cacheKeyForAssetID:assetID request:request];
-        _DFImageCacheEntry *entry = [_cache objectForKey:cacheKey];
+- (UIImage *)cacheImageForKey:(id<NSCopying>)key {
+    if (key != nil) {
+        _DFImageCacheEntry *entry = [_cache objectForKey:key];
         if (entry != nil) {
             if (CACurrentMediaTime() - entry.creationDate < self.maximumCachedEntryAge) {
                 return entry.image;
             } else {
-                [_cache removeObjectForKey:cacheKey];
+                [_cache removeObjectForKey:key];
             }
         }
     }
     return nil;
 }
 
-- (void)storeImage:(UIImage *)image forRequest:(DFImageRequest *)request {
-    if (image != nil) {
-        NSString *assetID = [request.asset assetID];
-        if (assetID != nil) {
-            NSString *cacheKey = [self _cacheKeyForAssetID:assetID request:request];
+
+- (void)storeImage:(UIImage *)image forKey:(id<NSCopying>)key {
+    if (image != nil && key != nil) {
             NSUInteger cost = [self _costForImage:image];
-            [_cache setObject:[_DFImageCacheEntry entryWithImage:image] forKey:cacheKey cost:cost];
-        }
+            [_cache setObject:[_DFImageCacheEntry entryWithImage:image] forKey:key cost:cost];
     }
 }
 
 - (void)removeAllObjects {
     [_cache removeAllObjects];
-}
-
-#pragma mark -
-
-- (NSString *)_cacheKeyForAssetID:(NSString *)assetID request:(DFImageRequest *)request {
-    return [NSString stringWithFormat:@"%@,%@,%i,%@,%@", assetID, NSStringFromCGSize(request.targetSize), (int)request.contentMode, request.options.userInfo[DFImageProcessingClipsToBoundsKey], request.options.userInfo[DFImageProcessingCornerRadiusKey]];
 }
 
 - (NSUInteger)_costForImage:(UIImage *)image {

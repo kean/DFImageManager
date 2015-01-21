@@ -23,13 +23,11 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
-@class DFImageRequest;
-
 
 @protocol DFImageCache <NSObject>
 
-- (UIImage *)cachedImageForRequest:(DFImageRequest *)request;
-- (void)storeImage:(UIImage *)image forRequest:(DFImageRequest *)request;
+- (UIImage *)cacheImageForKey:(id<NSCopying>)key;
+- (void)storeImage:(UIImage *)image forKey:(id<NSCopying>)key;
 - (void)removeAllObjects;
 
 @end
