@@ -24,19 +24,27 @@
 
 @protocol DFURLResponseDeserializing;
 
+@class DFURLSessionOperation;
+
+@protocol DFURLSessionOperationDelegate <NSObject>
+
+- (NSURLSessionDataTask *)URLSessionOperation:(DFURLSessionOperation *)operation dataTaskWithRequest:(NSURLRequest *)request completion:(void (^)(NSData *data, NSURLResponse *response, NSError *error))completion;
+
+@end
+
 
 @interface DFURLSessionOperation : DFOperation
 
 @property (nonatomic) id<DFURLResponseDeserializing> deserializer;
+@property (nonatomic) id<DFURLSessionOperationDelegate> delegate;
 @property (nonatomic, readonly) NSURLRequest *request;
-@property (nonatomic, readonly) NSURLSession *session;
 
 @property (nonatomic, readonly) NSURLResponse *response;
 @property (nonatomic, readonly) NSData *data;
 @property (nonatomic, readonly) id responseObject;
 @property (nonatomic, readonly) NSError *error;
 
-- (instancetype)initWithRequest:(NSURLRequest *)request session:(NSURLSession *)session NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithRequest:(NSURLRequest *)request NS_DESIGNATED_INITIALIZER;
 
 @end
 

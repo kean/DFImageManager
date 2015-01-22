@@ -47,14 +47,43 @@ NSString *const DFImageInfoURLResponseKey = @"DFImageInfoURLResponseKey";
 @end
 
 
-@implementation DFURLImageFetcher {
-    NSOperationQueue *_queue;
+@interface _DFURLSessionDataTaskHandler : NSObject
+
+@property (nonatomic, copy, readonly) void (^completion)(NSData *, NSURLResponse *, NSError *);
+@property (nonatomic, readonly) NSMutableData *data;
+
+- (instancetype)initWithCompletion:(void (^)(NSData *, NSURLResponse *, NSError *))completion;
+
+@end
+
+@implementation _DFURLSessionDataTaskHandler
+
+- (instancetype)initWithCompletion:(void (^)(NSData *, NSURLResponse *, NSError *))completion {
+    if (self = [super init]) {
+        _completion = completion;
+        _data = [NSMutableData new];
+    }
+    return self;
 }
 
-- (instancetype)initWithSession:(NSURLSession *)session {
+@end
+
+
+@interface DFURLImageFetcher () <DFURLSessionOperationDelegate>
+
+@end
+
+@implementation DFURLImageFetcher {
+    NSOperationQueue *_queue;
+    NSMutableDictionary *_sessionTaskHandlers;
+}
+
+- (instancetype)initWithSessionConfiguration:(NSURLSessionConfiguration *)configuration {
     if (self = [super init]) {
-        NSParameterAssert(session);
-        _session = session;
+        NSParameterAssert(configuration);
+        _session = [NSURLSession sessionWithConfiguration:configuration delegate:self delegateQueue:nil];
+        
+        _sessionTaskHandlers = [NSMutableDictionary new];
         
         // We don't need to limit concurrent operations for NSURLSession. For more info see https://github.com/kean/DFImageManager/wiki/Image-Caching-Guide
         _queue = [NSOperationQueue new];
@@ -97,7 +126,7 @@ NSString *const DFImageInfoURLResponseKey = @"DFImageInfoURLResponseKey";
     }
     DFURLImageRequestOptions *options1 = (id)request1.options;
     DFURLImageRequestOptions *options2 = (id)request2.options;
-    return (options1.networkAccessAllowed == options2.networkAccessAllowed &&
+    return (options1.allowsNetworkAccess == options2.allowsNetworkAccess &&
             options1.cachePolicy == options2.cachePolicy);
 }
 
@@ -116,8 +145,9 @@ NSString *const DFImageInfoURLResponseKey = @"DFImageInfoURLResponseKey";
 
 - (NSOperation *)startOperationWithRequest:(DFImageRequest *)request completion:(void (^)(DFImageResponse *))completion {
     NSURLRequest *URLRequest = [self _createURLRequestWithRequest:request];
-    DFURLSessionOperation *operation = [[DFURLSessionOperation alloc] initWithRequest:URLRequest session:self.session];
+    DFURLSessionOperation *operation = [[DFURLSessionOperation alloc] initWithRequest:URLRequest];
     operation.deserializer = [DFImageDeserializer new];
+    operation.delegate = self;
     DFURLSessionOperation *__weak weakOp = operation;
     [operation setCompletionBlock:^{
         DFMutableImageResponse *response = [DFMutableImageResponse new];
@@ -157,11 +187,36 @@ NSString *const DFImageInfoURLResponseKey = @"DFImageInfoURLResponseKey";
     /* Set options that can be configured by DFURLImageRequestOptions.
      */
     request.cachePolicy = options.cachePolicy;
-    if (!options.networkAccessAllowed) {
+    if (!options.allowsNetworkAccess) {
         request.cachePolicy = NSURLRequestReturnCacheDataDontLoad;
     }
     
     return [request copy];
+}
+
+#pragma mark - <NSURLSessionDataTaskDelegate>
+
+- (void)URLSession:(NSURLSession *)session dataTask:(NSURLSessionDataTask *)dataTask didReceiveData:(NSData *)data {
+    _DFURLSessionDataTaskHandler *handler = _sessionTaskHandlers[dataTask];
+    [handler.data appendData:data];
+}
+
+- (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task didCompleteWithError:(NSError *)error {
+    _DFURLSessionDataTaskHandler *handler = _sessionTaskHandlers[task];
+    if (handler.completion != nil) {
+        handler.completion(handler.data, task.response, error);
+    }
+    [_sessionTaskHandlers removeObjectForKey:task];
+}
+
+#pragma mark - <DFURLSessionOperationDelegate>
+
+- (NSURLSessionDataTask *)URLSessionOperation:(DFURLSessionOperation *)operation dataTaskWithRequest:(NSURLRequest *)request completion:(void (^)(NSData *, NSURLResponse *, NSError *))completion {
+    NSURLSessionDataTask *task = [self.session dataTaskWithRequest:request];
+    if (task != nil && completion != nil) {
+        _sessionTaskHandlers[task] = [[_DFURLSessionDataTaskHandler alloc] initWithCompletion:completion];
+    }
+    return task;
 }
 
 @end

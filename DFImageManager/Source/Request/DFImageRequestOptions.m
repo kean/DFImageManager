@@ -28,7 +28,7 @@
 - (instancetype)init {
     if (self = [super init]) {
         _priority = DFImageRequestPriorityNormal;
-        _networkAccessAllowed = YES;
+        _allowsNetworkAccess = YES;
         _allowsClipping = NO;
     }
     return self;
@@ -37,7 +37,7 @@
 - (instancetype)initWithOptions:(DFImageRequestOptions *)options {
     if (self = [self init]) {
         _priority = options.priority;
-        _networkAccessAllowed = options.networkAccessAllowed;
+        _allowsNetworkAccess = options.allowsNetworkAccess;
         _allowsClipping = options.allowsClipping;
         _userInfo = [options.userInfo copy];
     }
@@ -49,7 +49,7 @@
 }
 
 - (NSString *)description {
-    return [NSString stringWithFormat:@"<%@ %p> { priority = %@, network_access_allowed = %i }", [self class], self, [DFImageRequestOptions _descriptionForPriority:_priority], _networkAccessAllowed];
+    return [NSString stringWithFormat:@"<%@ %p> { priority = %@, network_allowedg = %i }", [self class], self, [DFImageRequestOptions _descriptionForPriority:_priority], _allowsNetworkAccess];
 }
 
 + (NSString *)_descriptionForPriority:(DFImageRequestPriority)priority {

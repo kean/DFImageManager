@@ -29,7 +29,7 @@
  */
 @property (nonatomic) DFImageRequestPriority priority;
 
-@property (nonatomic) BOOL networkAccessAllowed;
+@property (nonatomic) BOOL allowsNetworkAccess;
 
 /*! Allows some portion of the image content to be clipped when filling the content to target size. Only works with DFImageContentModeAspectFill. Default value is NO. 
  */

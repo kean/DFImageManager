@@ -73,7 +73,7 @@
     }
     
     PHImageRequestOptions *options = [PHImageRequestOptions new];
-    options.networkAccessAllowed = _options.networkAccessAllowed;
+    options.networkAccessAllowed = _options.allowsNetworkAccess;
     options.deliveryMode = _options.deliveryMode;
     if (options.deliveryMode == PHImageRequestOptionsDeliveryModeOpportunistic) {
         NSLog(@"%@: PHImageRequestOptionsDeliveryModeOpportunistic is unsupported", self);

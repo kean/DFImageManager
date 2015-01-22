@@ -29,11 +29,11 @@ extern NSString *const DFImageInfoURLResponseKey;
 /*! Image fetcher that supports NSURL and is implemented on top of Cocoa URL loading system.
  @note Supported URL schemes: http:, https:, ftp:, file:
  */
-@interface DFURLImageFetcher : NSObject <DFImageFetching>
+@interface DFURLImageFetcher : NSObject <DFImageFetching, NSURLSessionDelegate, NSURLSessionDataDelegate>
 
 @property (nonatomic, readonly) NSURLSession *session;
 
-- (instancetype)initWithSession:(NSURLSession *)session NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithSessionConfiguration:(NSURLSessionConfiguration *)configuration NS_DESIGNATED_INITIALIZER;
 
 + (NSSet *)supportedSchemes;
 

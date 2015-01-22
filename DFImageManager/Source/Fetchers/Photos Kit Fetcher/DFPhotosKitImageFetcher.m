@@ -82,7 +82,7 @@ static inline NSString *_PHAssetLocalIdentifier(id resource) {
     }
     if (!(CGSizeEqualToSize(request1.targetSize, request2.targetSize) &&
           request1.contentMode == request2.contentMode &&
-          request1.options.networkAccessAllowed == request2.options.networkAccessAllowed)) {
+          request1.options.allowsNetworkAccess == request2.options.allowsNetworkAccess)) {
         return NO;
     }
     
