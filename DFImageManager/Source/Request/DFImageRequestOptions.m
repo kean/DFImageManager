@@ -29,6 +29,7 @@
     if (self = [super init]) {
         _priority = DFImageRequestPriorityNormal;
         _networkAccessAllowed = YES;
+        _allowsClipping = NO;
     }
     return self;
 }
@@ -37,6 +38,7 @@
     if (self = [self init]) {
         _priority = options.priority;
         _networkAccessAllowed = options.networkAccessAllowed;
+        _allowsClipping = options.allowsClipping;
         _userInfo = [options.userInfo copy];
     }
     return self;

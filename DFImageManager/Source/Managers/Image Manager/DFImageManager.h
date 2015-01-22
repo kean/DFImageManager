@@ -26,6 +26,8 @@
 @class DFImageManagerConfiguration;
 
 
+/*! The DFImageManager and the related classes provides an implementation of the DFImageManaging protocol.
+ */
 @interface DFImageManager : NSObject <DFImageManagingCore>
 
 /*! A copy of the configuration object for this manager (read only). Changing mutable values within the configuration object has no effect on the current manager.

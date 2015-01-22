@@ -16,7 +16,7 @@ manager.requestImageForResource(imageURL) { (image: UIImage!, [NSObject : AnyObj
 }
 
 // Request scaled image
-manager.requestImageForResource(imageURL, targetSize: CGSize(width: 100, height: 100), contentMode: DFImageContentMode.AspectFit, options: nil) { (image: UIImage!, [NSObject : AnyObject]!) -> Void in
+manager.requestImageForResource(imageURL, targetSize: CGSize(width: 100, height: 100), contentMode: DFImageContentMode.AspectFill, options: nil) { (image: UIImage!, [NSObject : AnyObject]!) -> Void in
     var fetchedImage = image
 }
 

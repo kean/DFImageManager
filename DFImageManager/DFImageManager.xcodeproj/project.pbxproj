@@ -413,9 +413,9 @@
 		0CD012151A6C6AB1004F6CD3 /* Image Manager */ = {
 			isa = PBXGroup;
 			children = (
-				0CD012161A6C6AB1004F6CD3 /* DFImageManager+DefaultManager.m */,
 				0CD012171A6C6AB1004F6CD3 /* DFImageManager.h */,
 				0CD012181A6C6AB1004F6CD3 /* DFImageManager.m */,
+				0CD012161A6C6AB1004F6CD3 /* DFImageManager+DefaultManager.m */,
 				0CD012191A6C6AB1004F6CD3 /* DFImageManagerConfiguration.h */,
 				0CD0121A1A6C6AB1004F6CD3 /* DFImageManagerConfiguration.m */,
 			);

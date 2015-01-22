@@ -31,6 +31,10 @@
 
 @property (nonatomic) BOOL networkAccessAllowed;
 
+/*! Allows some portion of the image content to be clipped when filling the content to target size. Only works with DFImageContentModeAspectFill. Default value is NO. 
+ */
+@property (nonatomic) BOOL allowsClipping;
+
 @property (nonatomic) NSDictionary *userInfo;
 
 - (instancetype)initWithOptions:(DFImageRequestOptions *)options;

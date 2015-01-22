@@ -23,20 +23,31 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
-typedef void (^DFImageRequestCompletion)(UIImage *image, NSDictionary *info);
-
-
-extern NSString *const DFImageInfoRequestIDKey;
-extern NSString *const DFImageInfoErrorKey;
-
-
 /* Size to pass when requesting the largest image for resource available (contentMode will be ignored).
  */
 extern CGSize const DFImageMaximumSize;
 
 
+// Requests results info keys:
+
+/*! A unique identifier for the image request (DFImageRequestID). 
+ */
+extern NSString *const DFImageInfoRequestIDKey;
+
+/*! An error that occurred when Photos attempted to load the image (NSError). 
+ */
+extern NSString *const DFImageInfoErrorKey;
+
+
+/*! Options for fitting an image’s aspect ratio to a target size.
+ */
 typedef NS_ENUM(NSInteger, DFImageContentMode) {
+    /*! Fill the target size. Some portion of the content may be clipped if the clipping is allowed (see DFImageRequestOptions for more info).
+    */
     DFImageContentModeAspectFill,
+    
+    /*! Fit the target size by maintaining the aspect ratio.
+     */
     DFImageContentModeAspectFit
 };
 
@@ -47,5 +58,3 @@ typedef NS_ENUM(NSInteger, DFImageRequestPriority) {
     DFImageRequestPriorityHigh = NSOperationQueuePriorityHigh,
     DFImageRequestPriorityVeryHigh = NSOperationQueuePriorityVeryHigh
 };
-
-extern NSString *const DFImageErrorDomain;

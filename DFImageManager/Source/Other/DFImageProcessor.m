@@ -25,7 +25,6 @@
 #import "DFImageRequestOptions.h"
 #import "DFImageUtilities.h"
 
-NSString *DFImageProcessingClipsToBoundsKey = @"DFImageProcessingClipsToBoundsKey";
 NSString *DFImageProcessingCornerRadiusKey = @"DFImageProcessingCornerRadiusKey";
 
 
@@ -38,7 +37,8 @@ NSString *DFImageProcessingCornerRadiusKey = @"DFImageProcessingCornerRadiusKey"
         return YES;
     }
     if (!(CGSizeEqualToSize(request1.targetSize, request2.targetSize) &&
-          request1.contentMode == request2.contentMode)) {
+          request1.contentMode == request2.contentMode &&
+          request1.options.allowsClipping == request2.options.allowsClipping)) {
         return NO;
     }
     NSDictionary *userInfo1 = request1.options.userInfo;
@@ -57,8 +57,7 @@ NSString *DFImageProcessingCornerRadiusKey = @"DFImageProcessingCornerRadiusKey"
             image = [DFImageUtilities decompressedImageWithImage:image aspectFitPixelSize:request.targetSize];
             break;
         case DFImageContentModeAspectFill: {
-            BOOL clipsToBounds = [userInfo[DFImageProcessingClipsToBoundsKey] boolValue];
-            if (clipsToBounds) {
+            if (request.options.allowsClipping) {
                 image = [DFImageUtilities croppedImageWithImage:image aspectFillPixelSize:request.targetSize];
             }
             image = [DFImageUtilities decompressedImageWithImage:image aspectFillPixelSize:request.targetSize];
