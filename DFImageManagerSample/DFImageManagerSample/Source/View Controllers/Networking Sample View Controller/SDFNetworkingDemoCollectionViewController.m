@@ -122,7 +122,7 @@ static NSString * const reuseIdentifier = @"Cell";
     }
     
     SDFFlickrPhoto *photo = _photos[indexPath.row];
-    [imageView setImageWithAsset:[NSURL URLWithString:photo.photoURL] targetSize:[self _imageTargetSize] contentMode:DFImageContentModeAspectFill options:nil];
+    [imageView setImageWithResource:[NSURL URLWithString:photo.photoURL] targetSize:[self _imageTargetSize] contentMode:DFImageContentModeAspectFill options:nil];
     
     return cell;
 }
@@ -140,9 +140,9 @@ static NSString * const reuseIdentifier = @"Cell";
     
     NSArray *addedAssets = [self _imageAssetsAtIndexPaths:addedIndexPaths];
     
-    [[DFImageManager sharedManager] startPreheatingImageForAssets:addedAssets targetSize:targetSize contentMode:DFImageContentModeAspectFill options:nil];
+    [[DFImageManager sharedManager] startPreheatingImageForResources:addedAssets targetSize:targetSize contentMode:DFImageContentModeAspectFill options:nil];
     NSArray *removedAssets = [self _imageAssetsAtIndexPaths:removedIndexPaths];
-    [[DFImageManager sharedManager] stopPreheatingImagesForAssets:removedAssets targetSize:targetSize contentMode:DFImageContentModeAspectFill options:nil];
+    [[DFImageManager sharedManager] stopPreheatingImagesForResources:removedAssets targetSize:targetSize contentMode:DFImageContentModeAspectFill options:nil];
     
     if (self.displaysPreheatingDetails) {
         _detailsLabel.text = [NSString stringWithFormat:@"Preheat window: %@", NSStringFromCGRect(controller.preheatRect)];

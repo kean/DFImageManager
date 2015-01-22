@@ -54,19 +54,19 @@
  */
 @protocol DFImageManaging <DFImageManagingCore>
 
-/*! Requests an image representation for the specified asset.
- @param asset The asset whose image data is to be loaded. If asset is nil behavior is undefined.
+/*! Requests an image representation for the specified resource.
+ @param resource The resource whose image data is to be loaded. If resource is nil behavior is undefined.
  @param targetSize The target size in pixels of image to be returned.
  @param contentMode An option for how to fit the image to the aspect ratio of the requested size. For details, see DFImageContentMode.
  @param options Options specifying how image manager should handle the request.
  @param completion A block to be called when loading is complete, providing the requested image and information about the status of the request.
  */
-- (DFImageRequestID *)requestImageForAsset:(id)asset targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options completion:(void (^)(UIImage *image, NSDictionary *info))completion;
+- (DFImageRequestID *)requestImageForResource:(id)resource targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options completion:(void (^)(UIImage *image, NSDictionary *info))completion;
 
-- (DFImageRequestID *)requestImageForAsset:(id)asset completion:(void (^)(UIImage *image, NSDictionary *info))completion;
+- (DFImageRequestID *)requestImageForResource:(id)resource completion:(void (^)(UIImage *image, NSDictionary *info))completion;
 
-- (void)startPreheatingImageForAssets:(NSArray *)assets targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options;
+- (void)startPreheatingImageForResources:(NSArray *)resources targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options;
 
-- (void)stopPreheatingImagesForAssets:(NSArray *)assets targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options;
+- (void)stopPreheatingImagesForResources:(NSArray *)resources targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options;
 
 @end

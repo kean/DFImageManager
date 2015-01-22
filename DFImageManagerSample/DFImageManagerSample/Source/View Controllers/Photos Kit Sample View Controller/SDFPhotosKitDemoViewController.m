@@ -184,7 +184,7 @@ static NSString * const reuseIdentifier = @"Cell";
     PHFetchResult *result = _assets[indexPath.section];
     PHAsset *asset = result[indexPath.item];
     
-    [imageView setImageWithAsset:asset targetSize:[self _imageTargetSize] contentMode:DFImageContentModeAspectFill options:nil];
+    [imageView setImageWithResource:asset targetSize:[self _imageTargetSize] contentMode:DFImageContentModeAspectFill options:nil];
 
     return cell;
 }
@@ -242,9 +242,9 @@ static NSString * const reuseIdentifier = @"Cell";
     
     NSArray *addedAssets = [self _imageAssetsAtIndexPaths:addedIndexPaths];
     
-    [[DFImageManager sharedManager] startPreheatingImageForAssets:addedAssets targetSize:targetSize contentMode:DFImageContentModeAspectFill options:nil];
+    [[DFImageManager sharedManager] startPreheatingImageForResources:addedAssets targetSize:targetSize contentMode:DFImageContentModeAspectFill options:nil];
     NSArray *removedAssets = [self _imageAssetsAtIndexPaths:removedIndexPaths];
-    [[DFImageManager sharedManager] stopPreheatingImagesForAssets:removedAssets targetSize:targetSize contentMode:DFImageContentModeAspectFill options:nil];
+    [[DFImageManager sharedManager] stopPreheatingImagesForResources:removedAssets targetSize:targetSize contentMode:DFImageContentModeAspectFill options:nil];
 }
 
 - (NSArray *)_imageAssetsAtIndexPaths:(NSArray *)indexPaths {

@@ -11,12 +11,12 @@ let manager = DFImageManager.sharedManager()
 let imageURL = NSURL(string: "https://raw.githubusercontent.com/kean/DFImageManager/master/DFImageManager/Tests/Resources/Image.jpg")
 
 // Request fullsize image
-manager.requestImageForAsset(imageURL, targetSize: DFImageManagerMaximumSize, contentMode: DFImageContentMode.AspectFit, options: nil) { (image: UIImage!, [NSObject : AnyObject]!) -> Void in
+manager.requestImageForResource(imageURL) { (image: UIImage!, [NSObject : AnyObject]!) -> Void in
     var fetchedImage = image
 }
 
 // Request scaled image
-manager.requestImageForAsset(imageURL, targetSize: CGSize(width: 100, height: 100), contentMode: DFImageContentMode.AspectFit, options: nil) { (image: UIImage!, [NSObject : AnyObject]!) -> Void in
+manager.requestImageForResource(imageURL, targetSize: CGSize(width: 100, height: 100), contentMode: DFImageContentMode.AspectFit, options: nil) { (image: UIImage!, [NSObject : AnyObject]!) -> Void in
     var fetchedImage = image
 }
 

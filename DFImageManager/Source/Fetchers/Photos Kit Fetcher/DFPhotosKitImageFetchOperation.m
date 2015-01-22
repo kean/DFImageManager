@@ -39,10 +39,10 @@
 
 - (instancetype)initWithRequest:(DFImageRequest *)request {
     if (self = [super init]) {
-        if ([request.asset isKindOfClass:[PHAsset class]]) {
-            _asset = (PHAsset *)request.asset;
-        } else if ([request.asset isKindOfClass:[NSURL class]]) {
-            _assetURL = (NSURL *)request.asset;
+        if ([request.resource isKindOfClass:[PHAsset class]]) {
+            _asset = (PHAsset *)request.resource;
+        } else if ([request.resource isKindOfClass:[NSURL class]]) {
+            _assetURL = (NSURL *)request.resource;
         }
         _targetSize = request.targetSize;
         _contentMode = request.contentMode;

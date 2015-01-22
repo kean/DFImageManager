@@ -94,14 +94,14 @@
     return _targetSize;
 }
 
-- (void)setImageWithAsset:(id)asset {
-    [self setImageWithAsset:asset targetSize:self.targetSize contentMode:self.contentMode options:nil];
+- (void)setImageWithResource:(id)resource {
+    [self setImageWithResource:resource targetSize:self.targetSize contentMode:self.contentMode options:nil];
 }
 
-- (void)setImageWithAsset:(id)asset targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options {
+- (void)setImageWithResource:(id)resource targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options {
     DFImageRequest *request;
-    if (asset != nil) {
-        request = [[DFImageRequest alloc] initWithAsset:asset targetSize:targetSize contentMode:contentMode options:options];
+    if (resource != nil) {
+        request = [[DFImageRequest alloc] initWithResource:resource targetSize:targetSize contentMode:contentMode options:options];
     }
     [self setImagesWithRequests:(request != nil) ? @[request] : nil];
 }

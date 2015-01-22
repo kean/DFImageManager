@@ -30,7 +30,7 @@ extern NSString *const DFImageInfoRequestIDKey;
 extern NSString *const DFImageInfoErrorKey;
 
 
-/* Size to pass when requesting the largest image for asset available (contentMode will be ignored).
+/* Size to pass when requesting the largest image for resource available (contentMode will be ignored).
  */
 extern CGSize const DFImageMaximumSize;
 

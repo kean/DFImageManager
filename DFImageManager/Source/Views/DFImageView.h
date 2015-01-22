@@ -52,7 +52,7 @@ typedef NS_ENUM(NSUInteger, DFImageViewAnimation) {
  */
 @property (nonatomic) BOOL managesRequestPriorities;
 
-/*! Image that gets displayed when either the request failes or when a given asset is nil.
+/*! Image that gets displayed when either the request failes or when a given resource is nil.
  */
 @property (nonatomic) UIImage *failureImage;
 
@@ -64,8 +64,8 @@ typedef NS_ENUM(NSUInteger, DFImageViewAnimation) {
 
 - (void)setImage:(UIImage *)image;
 
-- (void)setImageWithAsset:(id)asset;
-- (void)setImageWithAsset:(id)asset targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options;
+- (void)setImageWithResource:(id)resource;
+- (void)setImageWithResource:(id)resource targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options;
 
 /*! Starts composite request with a given requests. For more info see DFCompositeImageRequest.
  */

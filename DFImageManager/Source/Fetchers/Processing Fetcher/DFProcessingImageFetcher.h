@@ -26,7 +26,7 @@
 @protocol DFImageProcessing;
 
 
-/*! Supports requests with a DFProcessingInput asset class.
+/*! Supports requests with a resources of DFProcessingInput class.
  */
 @interface DFProcessingImageFetcher : NSObject <DFImageFetching>
 

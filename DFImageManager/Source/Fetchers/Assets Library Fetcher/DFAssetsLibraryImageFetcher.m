@@ -29,11 +29,11 @@
 #import <UIKit/UIKit.h>
 
 
-static inline NSURL *_ALAssetURL(id asset) {
-    if ([asset isKindOfClass:[ALAsset class]]) {
-        return [((ALAsset *)asset) valueForProperty:ALAssetPropertyAssetURL];
+static inline NSURL *_ALAssetURL(id resource) {
+    if ([resource isKindOfClass:[ALAsset class]]) {
+        return [((ALAsset *)resource) valueForProperty:ALAssetPropertyAssetURL];
     } else {
-        return (NSURL *)asset;
+        return (NSURL *)resource;
     }
 }
 
@@ -54,7 +54,7 @@ static inline NSURL *_ALAssetURL(id asset) {
 #pragma mark - <DFImageFetching>
 
 - (BOOL)canHandleRequest:(DFImageRequest *)request {
-    id asset = request.asset;
+    id asset = request.resource;
     if ([asset isKindOfClass:[ALAsset class]]) {
         return YES;
     }
@@ -71,7 +71,7 @@ static inline NSURL *_ALAssetURL(id asset) {
     if (request1 == request2) {
         return YES;
     }
-    if (![_ALAssetURL(request1.asset) isEqual:_ALAssetURL(request2.asset)]) {
+    if (![_ALAssetURL(request1.resource) isEqual:_ALAssetURL(request2.resource)]) {
         return NO;
     }
     DFALAssetImageSize imageSize1 = [self _assetImageSizeForRequest:request1];
@@ -94,10 +94,10 @@ static inline NSURL *_ALAssetURL(id asset) {
 
 - (NSOperation *)startOperationWithRequest:(DFImageRequest *)request completion:(void (^)(DFImageResponse *))completion {
     DFAssetsLibraryImageFetchOperation *operation;
-    if ([request.asset isKindOfClass:[ALAsset class]]) {
-        operation = [[DFAssetsLibraryImageFetchOperation alloc] initWithAsset:(ALAsset *)request.asset];
+    if ([request.resource isKindOfClass:[ALAsset class]]) {
+        operation = [[DFAssetsLibraryImageFetchOperation alloc] initWithAsset:(ALAsset *)request.resource];
     } else {
-        operation = [[DFAssetsLibraryImageFetchOperation alloc] initWithAssetURL:(NSURL *)request.asset];
+        operation = [[DFAssetsLibraryImageFetchOperation alloc] initWithAssetURL:(NSURL *)request.resource];
     }
     operation.imageSize = [self _assetImageSizeForRequest:request];
     DFAssetsLibraryImageFetchOperation *__weak weakOp = operation;

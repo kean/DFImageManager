@@ -26,9 +26,9 @@
 
 @implementation DFImageRequest
 
-- (instancetype)initWithAsset:(id)asset targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options {
+- (instancetype)initWithResource:(id)resource targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options {
     if (self = [super init]) {
-        _asset = asset;
+        _resource = resource;
         _targetSize = targetSize;
         _contentMode = contentMode;
         _options = options ?: [DFImageRequestOptions new];
@@ -36,13 +36,13 @@
     return self;
 }
 
-- (instancetype)initWithAsset:(id)asset {
-    return [self initWithAsset:asset targetSize:DFImageMaximumSize contentMode:DFImageContentModeAspectFill options:nil];
+- (instancetype)initWithResource:(id)resource {
+    return [self initWithResource:resource targetSize:DFImageMaximumSize contentMode:DFImageContentModeAspectFill options:nil];
 }
 
 - (id)copyWithZone:(NSZone *)zone {
     DFImageRequest *request = [DFImageRequest new];
-    request.asset = self.asset;
+    request.resource = self.resource;
     request.targetSize = self.targetSize;
     request.contentMode = self.contentMode;
     request.options = [self.options copy];
@@ -50,7 +50,7 @@
 }
 
 - (NSString *)description {
-    return [NSString stringWithFormat:@"<%@ %p> { asset = %@, targetSize = %@, contentMode = %i, options = %@ }", [self class], self, self.asset, NSStringFromCGSize(self.targetSize), (int)self.contentMode, self.options];
+    return [NSString stringWithFormat:@"<%@ %p> { resource = %@, targetSize = %@, contentMode = %i, options = %@ }", [self class], self, self.resource, NSStringFromCGSize(self.targetSize), (int)self.contentMode, self.options];
 }
 
 @end

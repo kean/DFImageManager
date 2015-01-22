@@ -26,7 +26,7 @@
 @protocol DFImageManagerValueTransforming;
 
 
-/*! Use proxy image manager in case you need to transform application specific interfaces to the interfaces supported by the image manager. Image manager will always recieve transformed assets.
+/*! Use proxy image manager in case you need to transform application specific interfaces to the interfaces supported by the image manager. Image manager will always receive transformed assets.
  @note Adapts image manager that it was initialized with to <DFImageManaging> protocol.
  */
 @interface DFProxyImageManager : NSProxy <DFImageManaging>
@@ -35,10 +35,10 @@
 
 - (instancetype)initWithImageManager:(id<DFImageManagingCore>)imageManager;
 
-/*! Set value transformer in case you need to transform assets before passing them to the image manager factory and to the image managers.
+/*! Set value transformer in case you need to transform resources before passing them to the image manager factory and to the image managers.
  */
 @property (nonatomic) id<DFImageManagerValueTransforming> valueTransformer;
 
-- (void)setValueTransformerWithBlock:(id (^)(id asset))valueTransfomer;
+- (void)setValueTransformerWithBlock:(id (^)(id resource))valueTransfomer;
 
 @end

@@ -59,7 +59,7 @@ static NSString * const reuseIdentifier = @"Cell";
     }
     
     NSURL *imageURL = _photos[indexPath.row];
-    [imageView setImageWithAsset:imageURL targetSize:[self _imageTargetSize] contentMode:DFImageContentModeAspectFill options:nil];
+    [imageView setImageWithResource:imageURL targetSize:[self _imageTargetSize] contentMode:DFImageContentModeAspectFill options:nil];
     
     return cell;
 }

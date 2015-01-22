@@ -42,15 +42,15 @@
 }
 
 - (BOOL)canHandleRequest:(DFImageRequest *)request {
-    return [request.asset isKindOfClass:[DFProcessingInput class]];
+    return [request.resource isKindOfClass:[DFProcessingInput class]];
 }
 
 - (BOOL)isRequestEquivalent:(DFImageRequest *)request1 toRequest:(DFImageRequest *)request2 {
     if (request1 == request2) {
         return YES;
     }
-    DFProcessingInput *input1 = request1.asset;
-    DFProcessingInput *input2 = request2.asset;
+    DFProcessingInput *input1 = request1.resource;
+    DFProcessingInput *input2 = request2.resource;
     if (!(input1.image == input2.image || [input1.imageIdentifier isEqualToString:input2.imageIdentifier])) {
         return NO;
     }
@@ -58,7 +58,7 @@
 }
 
 - (NSOperation *)startOperationWithRequest:(DFImageRequest *)request completion:(void (^)(DFImageResponse *))completion {
-    UIImage *image = [((DFProcessingInput *)request.asset) image];
+    UIImage *image = [((DFProcessingInput *)request.resource) image];
     NSBlockOperation *operation = [NSBlockOperation blockOperationWithBlock:^{
         UIImage *processedImage = [_processor processedImage:image forRequest:request];
         completion([[DFImageResponse alloc] initWithImage:processedImage ?: image]);

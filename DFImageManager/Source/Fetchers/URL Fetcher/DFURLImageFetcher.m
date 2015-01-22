@@ -41,7 +41,7 @@ NSString *const DFImageInfoURLResponseKey = @"DFImageInfoURLResponseKey";
 @implementation DFImageRequest (DFURLImageFetcher)
 
 - (BOOL)_isFileRequest {
-    return [((NSURL *)self.asset) isFileURL];
+    return [((NSURL *)self.resource) isFileURL];
 }
 
 @end
@@ -65,8 +65,8 @@ NSString *const DFImageInfoURLResponseKey = @"DFImageInfoURLResponseKey";
 #pragma mark - <DFImageFetching>
 
 - (BOOL)canHandleRequest:(DFImageRequest *)request {
-    if ([request.asset isKindOfClass:[NSURL class]]) {
-        NSURL *URL = (NSURL *)request.asset;
+    if ([request.resource isKindOfClass:[NSURL class]]) {
+        NSURL *URL = (NSURL *)request.resource;
         if ([[[self class] supportedSchemes] containsObject:URL.scheme]) {
             return YES;
         }
@@ -87,8 +87,8 @@ NSString *const DFImageInfoURLResponseKey = @"DFImageInfoURLResponseKey";
     if (request1 == request2) {
         return YES;
     }
-    NSURL *URL1 = (NSURL *)request1.asset;
-    NSURL *URL2 = (NSURL *)request2.asset;
+    NSURL *URL1 = (NSURL *)request1.resource;
+    NSURL *URL2 = (NSURL *)request2.resource;
     if (![URL1 isEqual:URL2]) {
         return NO;
     }
@@ -134,7 +134,7 @@ NSString *const DFImageInfoURLResponseKey = @"DFImageInfoURLResponseKey";
 }
 
 - (NSMutableURLRequest *)_createURLRequestWithRequest:(DFImageRequest *)imageRequest {
-    NSURL *URL = (NSURL *)imageRequest.asset;
+    NSURL *URL = (NSURL *)imageRequest.resource;
     DFURLImageRequestOptions *options = (id)imageRequest.options;
     
     /*! From NSURLSessionConfiguration class reference:

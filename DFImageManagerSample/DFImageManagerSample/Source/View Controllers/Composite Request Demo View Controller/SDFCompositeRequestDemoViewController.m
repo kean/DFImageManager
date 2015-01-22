@@ -68,9 +68,9 @@ static NSString * const reuseIdentifier = @"Cell";
     
     SDFFlickrPhoto *photo = _photos[indexPath.row];
     
-    DFImageRequest *requestWithSmallURL = [[DFImageRequest alloc] initWithAsset:[NSURL URLWithString:photo.photoURLSmall] targetSize:DFImageMaximumSize contentMode:DFImageContentModeAspectFill options:nil];
+    DFImageRequest *requestWithSmallURL = [[DFImageRequest alloc] initWithResource:[NSURL URLWithString:photo.photoURLSmall] targetSize:DFImageMaximumSize contentMode:DFImageContentModeAspectFill options:nil];
     
-    DFImageRequest *requestWithBigURL = [[DFImageRequest alloc] initWithAsset:[NSURL URLWithString:photo.photoURLBig] targetSize:imageView.targetSize contentMode:DFImageContentModeAspectFill options:nil];
+    DFImageRequest *requestWithBigURL = [[DFImageRequest alloc] initWithResource:[NSURL URLWithString:photo.photoURLBig] targetSize:imageView.targetSize contentMode:DFImageContentModeAspectFill options:nil];
     
     [imageView setImagesWithRequests:@[ requestWithSmallURL, requestWithBigURL] ];
     

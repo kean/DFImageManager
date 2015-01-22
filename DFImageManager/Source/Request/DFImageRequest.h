@@ -28,12 +28,12 @@
 
 @interface DFImageRequest : NSObject <NSCopying>
 
-@property (nonatomic) id asset;
+@property (nonatomic) id resource;
 @property (nonatomic) CGSize targetSize;
 @property (nonatomic) DFImageContentMode contentMode;
 @property (nonatomic) DFImageRequestOptions *options;
 
-- (instancetype)initWithAsset:(id)asset targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options NS_DESIGNATED_INITIALIZER;
-- (instancetype)initWithAsset:(id)asset;
+- (instancetype)initWithResource:(id)resource targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithResource:(id)resource;
 
 @end

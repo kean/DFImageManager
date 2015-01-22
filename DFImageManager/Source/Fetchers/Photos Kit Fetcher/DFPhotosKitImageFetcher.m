@@ -28,11 +28,11 @@
 #import "NSURL+DFPhotosKit.h"
 #import <Photos/Photos.h>
 
-static inline NSString *_PHAssetLocalIdentifier(id asset) {
-    if ([asset isKindOfClass:[PHAsset class]]) {
-        return ((PHAsset *)asset).localIdentifier;
+static inline NSString *_PHAssetLocalIdentifier(id resource) {
+    if ([resource isKindOfClass:[PHAsset class]]) {
+        return ((PHAsset *)resource).localIdentifier;
     } else {
-        return [((NSURL *)asset) df_assetLocalIdentifier];
+        return [((NSURL *)resource) df_assetLocalIdentifier];
     }
 }
 
@@ -51,7 +51,7 @@ static inline NSString *_PHAssetLocalIdentifier(id asset) {
 #pragma mark - <DFImageFetching>
 
 - (BOOL)canHandleRequest:(DFImageRequest *)request {
-    id asset = request.asset;
+    id asset = request.resource;
     if ([asset isKindOfClass:[PHAsset class]]) {
         return YES;
     }
@@ -77,7 +77,7 @@ static inline NSString *_PHAssetLocalIdentifier(id asset) {
     if (request1 == request2) {
         return YES;
     }
-    if (![_PHAssetLocalIdentifier(request1.asset) isEqualToString:_PHAssetLocalIdentifier(request2.asset)]) {
+    if (![_PHAssetLocalIdentifier(request1.resource) isEqualToString:_PHAssetLocalIdentifier(request2.resource)]) {
         return NO;
     }
     if (!(CGSizeEqualToSize(request1.targetSize, request2.targetSize) &&

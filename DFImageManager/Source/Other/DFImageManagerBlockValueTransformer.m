@@ -37,8 +37,8 @@
 
 #pragma mark - <DFImageManagerValueTransforming>
 
-- (id)transformedAsset:(id)asset {
-    return _block(asset);
+- (id)transformedResource:(id)resource {
+    return _block(resource);
 }
 
 @end

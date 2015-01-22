@@ -68,7 +68,7 @@ static NSString * const reuseIdentifier = @"Cell";
     }
         
     SDFFlickrPhoto *photo = _photos[indexPath.row];
-    [imageView setImageWithAsset:[NSURL URLWithString:photo.photoURL]];
+    [imageView setImageWithResource:[NSURL URLWithString:photo.photoURL]];
     
     return cell;
 }

@@ -25,6 +25,6 @@
 
 @protocol DFImageManagerValueTransforming <NSObject>
 
-- (id)transformedAsset:(id)asset;
+- (id)transformedResource:(id)resource;
 
 @end

@@ -46,9 +46,9 @@
     [TDFTesting stubRequestWithURL:imageURL];
     
     XCTestExpectation *expectation = [self expectationWithDescription:@"image_fetched"];
-    XCTAssertTrue([_imageManager canHandleRequest:[[DFImageRequest alloc] initWithAsset:imageURL]]);
+    XCTAssertTrue([_imageManager canHandleRequest:[[DFImageRequest alloc] initWithResource:imageURL]]);
     
-    [_imageManager requestImageForAsset:imageURL targetSize:DFImageMaximumSize contentMode:DFImageContentModeAspectFill options:nil completion:^(UIImage *image, NSDictionary *info) {
+    [_imageManager requestImageForResource:imageURL targetSize:DFImageMaximumSize contentMode:DFImageContentModeAspectFill options:nil completion:^(UIImage *image, NSDictionary *info) {
         XCTAssertNotNil(image);
         [expectation fulfill];
     }];
@@ -67,9 +67,9 @@
     
     XCTestExpectation *expectation = [self expectationWithDescription:@"fetch_failed"];
     
-    XCTAssertTrue([_imageManager canHandleRequest:[[DFImageRequest alloc] initWithAsset:imageURL]]);
+    XCTAssertTrue([_imageManager canHandleRequest:[[DFImageRequest alloc] initWithResource:imageURL]]);
     
-    [_imageManager requestImageForAsset:imageURL targetSize:DFImageMaximumSize contentMode:DFImageContentModeAspectFill options:nil completion:^(UIImage *image, NSDictionary *info) {
+    [_imageManager requestImageForResource:imageURL targetSize:DFImageMaximumSize contentMode:DFImageContentModeAspectFill options:nil completion:^(UIImage *image, NSDictionary *info) {
         NSError *error = info[DFImageInfoErrorKey];
         XCTAssertTrue([error.domain isEqualToString:NSURLErrorDomain] && error.code == NSURLErrorNotConnectedToInternet);
         [expectation fulfill];
@@ -85,7 +85,7 @@
     
     XCTestExpectation *expectation = [self expectationWithDescription:@"fetch_failed"];
     
-    [_imageManager requestImageForAsset:fileURL targetSize:DFImageMaximumSize contentMode:DFImageContentModeAspectFill options:nil completion:^(UIImage *image, NSDictionary *info) {
+    [_imageManager requestImageForResource:fileURL targetSize:DFImageMaximumSize contentMode:DFImageContentModeAspectFill options:nil completion:^(UIImage *image, NSDictionary *info) {
         XCTAssertNotNil(image);
         [expectation fulfill];
     }];

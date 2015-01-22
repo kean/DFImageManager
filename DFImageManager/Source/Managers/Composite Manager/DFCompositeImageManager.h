@@ -24,7 +24,7 @@
 #import <Foundation/Foundation.h>
 
 
-/*! Composite image manager is a dynamic dispatcher in a chain of responsibility. Each image manager added to the composite manager defines the types of assets if can handle. The rest assets are passed to the next image manager in the chain.
+/*! Composite image manager is a dynamic dispatcher in a chain of responsibility. Each image manager added to the composite manager defines the types of resources if can handle. The rest of the resources are passed to the next image manager in the chain.
  @note Automatically adapts DFImageManager to <DFImageManaging> protocol.
  */
 @interface DFCompositeImageManager : NSObject <DFImageManaging>
