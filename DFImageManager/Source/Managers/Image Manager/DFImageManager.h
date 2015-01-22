@@ -20,13 +20,13 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "DFImageManagerProtocol.h"
+#import "DFImageManaging.h"
 #import <Foundation/Foundation.h>
 
 @class DFImageManagerConfiguration;
 
 
-@interface DFImageManager : NSObject <DFImageManagerCore>
+@interface DFImageManager : NSObject <DFImageManagingCore>
 
 /*! A copy of the configuration object for this manager (read only). Changing mutable values within the configuration object has no effect on the current manager.
  */
@@ -41,16 +41,16 @@
 
 /*! Returns the iamge manager instancse shared by all clients of the current process. Unless set expilictly through a call to +setSharedManager: method, this method returns image manager created by +defaultManager method.
  */
-+ (id<DFImageManager>)sharedManager;
++ (id<DFImageManaging>)sharedManager;
 
 /*! Sets the image manager instance shared by all clients of the current process.
  */
-+ (void)setSharedManager:(id<DFImageManager>)manager;
++ (void)setSharedManager:(id<DFImageManaging>)manager;
 
 @end
 
 
-@interface DFImageManager (Convenience) <DFImageManager>
+@interface DFImageManager (Convenience) <DFImageManaging>
 
 @end
 
@@ -59,6 +59,6 @@
 
 /*! Creates composite image manager that containts image managers with all built-in fetchers.
  */
-+ (id<DFImageManager>)defaultManager;
++ (id<DFImageManaging>)defaultManager;
 
 @end

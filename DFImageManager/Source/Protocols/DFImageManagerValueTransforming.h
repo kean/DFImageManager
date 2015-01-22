@@ -23,7 +23,7 @@
 #import <Foundation/Foundation.h>
 
 
-@protocol DFImageManagerValueTransformer <NSObject>
+@protocol DFImageManagerValueTransforming <NSObject>
 
 - (id)transformedAsset:(id)asset;
 

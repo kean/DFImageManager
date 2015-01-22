@@ -18,7 +18,7 @@
 @end
 
 @implementation TDFImageManager {
-    id<DFImageManager> _imageManager;
+    id<DFImageManaging> _imageManager;
 }
 
 - (void)setUp {
@@ -29,7 +29,7 @@
     
     NSURLSession *session = [NSURLSession sessionWithConfiguration:configuration];
     
-    id<DFImageFetcher> fetcher = [[DFURLImageFetcher alloc] initWithSession:session];
+    id<DFImageFetching> fetcher = [[DFURLImageFetcher alloc] initWithSession:session];
     _imageManager = [[DFImageManager alloc] initWithConfiguration:[[DFImageManagerConfiguration alloc] initWithFetcher:fetcher]];
 }
 
@@ -48,7 +48,7 @@
     XCTestExpectation *expectation = [self expectationWithDescription:@"image_fetched"];
     XCTAssertTrue([_imageManager canHandleRequest:[[DFImageRequest alloc] initWithAsset:imageURL]]);
     
-    [_imageManager requestImageForAsset:imageURL targetSize:DFImageMaximumSize contentMode:DFImageContentModeDefault options:nil completion:^(UIImage *image, NSDictionary *info) {
+    [_imageManager requestImageForAsset:imageURL targetSize:DFImageMaximumSize contentMode:DFImageContentModeAspectFill options:nil completion:^(UIImage *image, NSDictionary *info) {
         XCTAssertNotNil(image);
         [expectation fulfill];
     }];
@@ -69,7 +69,7 @@
     
     XCTAssertTrue([_imageManager canHandleRequest:[[DFImageRequest alloc] initWithAsset:imageURL]]);
     
-    [_imageManager requestImageForAsset:imageURL targetSize:DFImageMaximumSize contentMode:DFImageContentModeDefault options:nil completion:^(UIImage *image, NSDictionary *info) {
+    [_imageManager requestImageForAsset:imageURL targetSize:DFImageMaximumSize contentMode:DFImageContentModeAspectFill options:nil completion:^(UIImage *image, NSDictionary *info) {
         NSError *error = info[DFImageInfoErrorKey];
         XCTAssertTrue([error.domain isEqualToString:NSURLErrorDomain] && error.code == NSURLErrorNotConnectedToInternet);
         [expectation fulfill];
@@ -85,7 +85,7 @@
     
     XCTestExpectation *expectation = [self expectationWithDescription:@"fetch_failed"];
     
-    [_imageManager requestImageForAsset:fileURL targetSize:DFImageMaximumSize contentMode:DFImageContentModeDefault options:nil completion:^(UIImage *image, NSDictionary *info) {
+    [_imageManager requestImageForAsset:fileURL targetSize:DFImageMaximumSize contentMode:DFImageContentModeAspectFill options:nil completion:^(UIImage *image, NSDictionary *info) {
         XCTAssertNotNil(image);
         [expectation fulfill];
     }];

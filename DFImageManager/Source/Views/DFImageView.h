@@ -20,7 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "DFImageManagerProtocol.h"
+#import "DFImageManaging.h"
 #import <UIKit/UIKit.h>
 
 @class DFImageRequestOptions;
@@ -36,7 +36,7 @@ typedef NS_ENUM(NSUInteger, DFImageViewAnimation) {
  */
 @interface DFImageView : UIView
 
-@property (nonatomic) id<DFImageManagerCore> imageManager;
+@property (nonatomic) id<DFImageManagingCore> imageManager;
 
 @property (nonatomic) CGSize targetSize;
 

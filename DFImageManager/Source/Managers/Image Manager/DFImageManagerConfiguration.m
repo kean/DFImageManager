@@ -25,7 +25,7 @@
 
 @implementation DFImageManagerConfiguration
 
-- (instancetype)initWithFetcher:(id<DFImageFetcher>)fetcher {
+- (instancetype)initWithFetcher:(id<DFImageFetching>)fetcher {
     if (self = [super init]) {
         NSParameterAssert(fetcher);
         _fetcher = fetcher;
@@ -36,11 +36,11 @@
     return self;
 }
 
-+ (instancetype)configurationWithFetcher:(id<DFImageFetcher>)fetcher {
++ (instancetype)configurationWithFetcher:(id<DFImageFetching>)fetcher {
     return [[DFImageManagerConfiguration alloc] initWithFetcher:fetcher];
 }
 
-+ (instancetype)configurationWithFetcher:(id<DFImageFetcher>)fetcher processor:(id<DFImageProcessor>)processor cache:(id<DFImageCache>)cache {
++ (instancetype)configurationWithFetcher:(id<DFImageFetching>)fetcher processor:(id<DFImageProcessing>)processor cache:(id<DFImageCaching>)cache {
     DFImageManagerConfiguration *conf = [self configurationWithFetcher:fetcher];
     conf.processor = processor;
     conf.cache = cache;

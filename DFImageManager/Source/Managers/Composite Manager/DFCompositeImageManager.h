@@ -20,20 +20,20 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "DFImageManagerProtocol.h"
+#import "DFImageManaging.h"
 #import <Foundation/Foundation.h>
 
 
 /*! Composite image manager is a dynamic dispatcher in a chain of responsibility. Each image manager added to the composite manager defines the types of assets if can handle. The rest assets are passed to the next image manager in the chain.
- @note Automatically adapts DFImageManager to <DFImageManager> protocol.
+ @note Automatically adapts DFImageManager to <DFImageManaging> protocol.
  */
-@interface DFCompositeImageManager : NSObject <DFImageManager>
+@interface DFCompositeImageManager : NSObject <DFImageManaging>
 
-- (instancetype)initWithImageManagers:(NSArray /* id<DFImageManagerCore> */ *)imageManagers NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithImageManagers:(NSArray /* id<DFImageManagingCore> */ *)imageManagers NS_DESIGNATED_INITIALIZER;
 
-- (void)addImageManager:(id<DFImageManagerCore>)imageManager;
-- (void)addImageManagers:(NSArray /* <DFImageManagerCore> */ *)imageManagers;
-- (void)removeImageManager:(id<DFImageManagerCore>)imageManager;
-- (void)removeImageManagers:(NSArray /* <DFImageManagerCore> */ *)imageManagers;
+- (void)addImageManager:(id<DFImageManagingCore>)imageManager;
+- (void)addImageManagers:(NSArray /* <DFImageManagingCore> */ *)imageManagers;
+- (void)removeImageManager:(id<DFImageManagingCore>)imageManager;
+- (void)removeImageManagers:(NSArray /* <DFImageManagingCore> */ *)imageManagers;
 
 @end

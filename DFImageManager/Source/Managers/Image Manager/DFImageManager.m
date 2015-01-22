@@ -20,12 +20,12 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "DFImageCacheProtocol.h"
-#import "DFImageFetcherProtocol.h"
+#import "DFImageCaching.h"
+#import "DFImageFetching.h"
 #import "DFImageManager.h"
 #import "DFImageManagerConfiguration.h"
 #import "DFImageManagerDefines.h"
-#import "DFImageProcessorProtocol.h"
+#import "DFImageProcessing.h"
 #import "DFImageRequest.h"
 #import "DFImageRequestID.h"
 #import "DFImageRequestOptions.h"
@@ -42,12 +42,12 @@
 
 /*! Image manager that originated request ID.
  */
-@property (nonatomic, weak, readonly) id<DFImageManagerCore> imageManager;
+@property (nonatomic, weak, readonly) id<DFImageManagingCore> imageManager;
 
 @property (nonatomic, readonly) NSUUID *taskID;
 @property (nonatomic, readonly) NSUUID *handlerID;
 
-- (instancetype)initWithImageManager:(id<DFImageManagerCore>)imageManager;
+- (instancetype)initWithImageManager:(id<DFImageManagingCore>)imageManager;
 
 - (void)setTaskID:(NSUUID *)taskID handlerID:(NSUUID *)handlerID;
 
@@ -55,7 +55,7 @@
 
 @implementation _DFImageRequestID
 
-- (instancetype)initWithImageManager:(id<DFImageManagerCore>)imageManager {
+- (instancetype)initWithImageManager:(id<DFImageManagingCore>)imageManager {
     if (self = [super init]) {
         _imageManager = imageManager;
     }
@@ -131,25 +131,25 @@
 
 #pragma mark - _DFImageRequestKey -
 
-/*! Make it possible to use DFImageRequest as a key in dictionaries (and dictionary-like structures). Requests may be interpreted differently so we compare them using <DFImageFetcher> -isRequestEquivalent:toRequest: method and (optionally) similar <DFImageProcessor> method.
+/*! Make it possible to use DFImageRequest as a key in dictionaries (and dictionary-like structures). Requests may be interpreted differently so we compare them using <DFImageFetching> -isRequestEquivalent:toRequest: method and (optionally) similar <DFImageProcessing> method.
  @note CFDictionary and CFDictionaryKeyCallBacks could be used instead, but the solution that uses _DFImageRequestKey is cleaner and it supports any structure that relies on -hash and -isEqual methods (NSSet, NSCache and others).
  */
 @interface _DFImageRequestKey : NSObject <NSCopying>
 
 @property (nonatomic, readonly) DFImageRequest *request;
 
-- (instancetype)initWithRequest:(DFImageRequest *)request fetcher:(id<DFImageFetcher>)fetcher processor:(id<DFImageProcessor>)processor;
+- (instancetype)initWithRequest:(DFImageRequest *)request fetcher:(id<DFImageFetching>)fetcher processor:(id<DFImageProcessing>)processor;
 
 @end
 
 @implementation _DFImageRequestKey {
     NSUInteger _hash;
     DFImageRequest *_request;
-    id<DFImageFetcher> _fetcher;
-    id<DFImageProcessor> _processor;
+    id<DFImageFetching> _fetcher;
+    id<DFImageProcessing> _processor;
 }
 
-- (instancetype)initWithRequest:(DFImageRequest *)request fetcher:(id<DFImageFetcher>)fetcher processor:(id<DFImageProcessor>)processor {
+- (instancetype)initWithRequest:(DFImageRequest *)request fetcher:(id<DFImageFetching>)fetcher processor:(id<DFImageProcessing>)processor {
     if (self = [super init]) {
         _request = request;
         _hash = [request.asset hash];
@@ -183,7 +183,7 @@
 @end
 
 static inline _DFImageRequestKey *
-_DFImageRequestKeyCreate(DFImageRequest *request, id<DFImageFetcher> fetcher, id<DFImageProcessor> processor) {
+_DFImageRequestKeyCreate(DFImageRequest *request, id<DFImageFetching> fetcher, id<DFImageProcessing> processor) {
     return [[_DFImageRequestKey alloc] initWithRequest:request fetcher:fetcher processor:processor];
 }
 
@@ -225,10 +225,10 @@ _DFImageRequestKeyCreate(DFImageRequest *request, id<DFImageFetcher> fetcher, id
 
 @property (nonatomic, weak) id<_DFImageManagerTaskDelegate> delegate;
 
-@property (nonatomic) id<DFImageFetcher> fetcher;
-@property (nonatomic) id<DFImageProcessor> processor;
-@property (nonatomic) id<DFImageCache> cache;
-@property (nonatomic) id<DFImageManagerCore> processingManager;
+@property (nonatomic) id<DFImageFetching> fetcher;
+@property (nonatomic) id<DFImageProcessing> processor;
+@property (nonatomic) id<DFImageCaching> cache;
+@property (nonatomic) id<DFImageManagingCore> processingManager;
 
 - (instancetype)initWithTaskID:(NSUUID *)taskID request:(DFImageRequest *)request NS_DESIGNATED_INITIALIZER;
 
@@ -416,7 +416,7 @@ _DFImageRequestKeyCreate(DFImageRequest *request, id<DFImageFetcher> fetcher, id
     
     /*! Read more about processing manager it initWithConfiguration: method.
      */
-    id<DFImageManagerCore> _processingManager;
+    id<DFImageManagingCore> _processingManager;
 }
 
 @synthesize configuration = _conf;
@@ -431,11 +431,11 @@ _DFImageRequestKeyCreate(DFImageRequest *request, id<DFImageFetcher> fetcher, id
         _taskIDs = [NSMutableDictionary new];
         
         if (configuration.processor) {
-            /*! DFImageManager implementation guarantees that it will create a single operation for multiple image requests that are considered equivalent by <DFImageFetcher>. It does so by creating _DFImageManagerTask per request and assigning multiple handlers to the task.
+            /*! DFImageManager implementation guarantees that it will create a single operation for multiple image requests that are considered equivalent by <DFImageFetching>. It does so by creating _DFImageManagerTask per request and assigning multiple handlers to the task.
              
-             But, those handlers might have different image processing options like target size and content mode (or they might be the same, which is common when preheating is used). So DFImageManager also needs to guarantee that the same processing operations are executed exactly once for the handlers with the same processing options. We don't want to resize and decompress original image twice, because those are very CPU intensive operations. DFImageManager also needs to keep track of those operations and be able to cancel them. Those requirements seems very familiar - that's exactly what DFImageManager does  for the initial image requests handled by <DFImageFetcher>!
+             But, those handlers might have different image processing options like target size and content mode (or they might be the same, which is common when preheating is used). So DFImageManager also needs to guarantee that the same processing operations are executed exactly once for the handlers with the same processing options. We don't want to resize and decompress original image twice, because those are very CPU intensive operations. DFImageManager also needs to keep track of those operations and be able to cancel them. Those requirements seems very familiar - that's exactly what DFImageManager does  for the initial image requests handled by <DFImageFetching>!
              
-             The solution is quite simple and elegant: use an instance of DFImageManager to manage processing operations and implement image processing using <DFImageFetcher> protocol. That's exactly what DFProcessingImageManager does (and it has a simple initiliazer that takes <DFImageProcessor> and operation queue as a parameters). So DFImageManager uses instances of DFImageManager class in it's own implementation.
+             The solution is quite simple and elegant: use an instance of DFImageManager to manage processing operations and implement image processing using <DFImageFetching> protocol. That's exactly what DFProcessingImageManager does (and it has a simple initiliazer that takes <DFImageProcessing> and operation queue as a parameters). So DFImageManager uses instances of DFImageManager class in it's own implementation.
              */
             
             DFProcessingImageFetcher *processingFetcher = [[DFProcessingImageFetcher alloc] initWithProcessor:configuration.processor qeueu:configuration.processingQueue];
@@ -445,7 +445,7 @@ _DFImageRequestKeyCreate(DFImageRequest *request, id<DFImageFetcher> fetcher, id
     return self;
 }
 
-#pragma mark - <DFImageManagerCore>
+#pragma mark - <DFImageManagingCore>
 
 - (BOOL)canHandleRequest:(DFImageRequest *)request {
     return [_conf.fetcher canHandleRequest:request];
@@ -696,9 +696,9 @@ _DFImageRequestKeyCreate(DFImageRequest *request, id<DFImageFetcher> fetcher, id
 
 #pragma mark - Dependency Injectors
 
-static id<DFImageManager> _sharedManager;
+static id<DFImageManaging> _sharedManager;
 
-+ (id<DFImageManager>)sharedManager {
++ (id<DFImageManaging>)sharedManager {
     @synchronized(self) {
         if (!_sharedManager) {
             _sharedManager = [self defaultManager];
@@ -707,7 +707,7 @@ static id<DFImageManager> _sharedManager;
     }
 }
 
-+ (void)setSharedManager:(id<DFImageManager>)manager {
++ (void)setSharedManager:(id<DFImageManaging>)manager {
     @synchronized(self) {
         _sharedManager = manager;
     }
@@ -716,7 +716,7 @@ static id<DFImageManager> _sharedManager;
 @end
 
 
-#pragma mark - DFImageManager (Convenience) <DFImageManager> -
+#pragma mark - DFImageManager (Convenience) <DFImageManaging> -
 
 @implementation DFImageManager (Convenience)
 

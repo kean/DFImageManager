@@ -29,7 +29,7 @@
 /*! The DFImageFetcher protocol provides the basic structure for performing fetching of images for specific requests. Adopters handle the specifics associated with one of more types of the requests. The main difference between the requests might be a class of the asset.
  @discussion The role and the structure of the DFImageFetcher protocol is largely inspired by the NSURLProtocol abstract class. The main difference is that NSURLProtocol is a one-shot task for a single request, while DFImageFetcher is a tasks factory.
  */
-@protocol DFImageFetcher <NSObject>
+@protocol DFImageFetching <NSObject>
 
 /*! A concrete image fetcher implementation should inspect the given request and determine whether or not the implementation can handle the request.
  @param A request to inspect.

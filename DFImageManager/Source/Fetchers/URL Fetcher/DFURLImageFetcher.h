@@ -20,7 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "DFImageFetcherProtocol.h"
+#import "DFImageFetching.h"
 #import <Foundation/Foundation.h>
 
 extern NSString *const DFImageInfoURLResponseKey;
@@ -29,7 +29,7 @@ extern NSString *const DFImageInfoURLResponseKey;
 /*! Image fetcher that supports NSURL and is implemented on top of Cocoa URL loading system.
  @note Supported URL schemes: http:, https:, ftp:, file:
  */
-@interface DFURLImageFetcher : NSObject <DFImageFetcher>
+@interface DFURLImageFetcher : NSObject <DFImageFetching>
 
 @property (nonatomic, readonly) NSURLSession *session;
 

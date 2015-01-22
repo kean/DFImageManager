@@ -20,7 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "DFImageProcessorProtocol.h"
+#import "DFImageProcessing.h"
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
@@ -33,6 +33,6 @@ extern NSString *DFImageProcessingClipsToBoundsKey;
 extern NSString *DFImageProcessingCornerRadiusKey;
 
 
-@interface DFImageProcessor : NSObject <DFImageProcessor>
+@interface DFImageProcessor : NSObject <DFImageProcessing>
 
 @end

@@ -20,19 +20,19 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "DFImageCacheProtocol.h"
+#import "DFImageCaching.h"
 #import <Foundation/Foundation.h>
 
 
 /*! Memory cache implementation that is built on top of NSCache and adds more functionality to it, like cached entries expiration, automatic cleanup on memory warnings and more.
  */
-@interface DFImageCache : NSObject <DFImageCache>
+@interface DFImageCache : NSObject <DFImageCaching>
 
 - (instancetype)initWithCache:(NSCache *)cache NS_DESIGNATED_INITIALIZER;
 
 @property (nonatomic, readonly) NSCache *cache;
 
-/*! The maximum entry age after which entry is considered expired and is removed from the cache. Default value is FLT_MAX so that entries never expire.
+/*! The maximum entry age after which entry is considered expired and is removed from the cache. Default value is INT_MAX so that entries never expire.
  */
 @property (nonatomic) NSUInteger maximumEntryAge;
 

@@ -23,13 +23,21 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
+@class DFImageRequest;
 
-/*! Cache for storing images into memory.
+
+/*! Processes fetched images. Might include image decompression, resizing and anything else.
+ @note Implementations should not cache processed images and leave it to classes conforming <DFImageCaching> protocol. However, the same class may implement both protocols.
  */
-@protocol DFImageCache <NSObject>
+@protocol DFImageProcessing <NSObject>
 
-- (UIImage *)cacheImageForKey:(id<NSCopying>)key;
-- (void)storeImage:(UIImage *)image forKey:(id<NSCopying>)key;
-- (void)removeAllObjects;
+/*! Compares two requests for equivalence with regard to processing the image. Requests should be considered equivalent if image processor will produce the same result for both requests when given the same input image. 
+ @warning Implementation should not inspect an asset object of the request!
+ */
+- (BOOL)isProcessingForRequestEquivalent:(DFImageRequest *)request1 toRequest:(DFImageRequest *)request2;
+
+/*! Returns processed image for a given request.
+ */
+- (UIImage *)processedImage:(UIImage *)image forRequest:(DFImageRequest *)request;
 
 @end

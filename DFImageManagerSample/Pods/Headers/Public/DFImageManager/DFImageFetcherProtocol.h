@@ -1,1 +1,0 @@
-../../../../../DFImageManager/Source/Protocols/DFImageFetcherProtocol.h

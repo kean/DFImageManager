@@ -20,9 +20,9 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "DFImageFetcherProtocol.h"
+#import "DFImageFetching.h"
 
 
-NS_CLASS_AVAILABLE_IOS(8_0) @interface DFPhotosKitImageFetcher : NSObject <DFImageFetcher>
+NS_CLASS_AVAILABLE_IOS(8_0) @interface DFPhotosKitImageFetcher : NSObject <DFImageFetching>
 
 @end

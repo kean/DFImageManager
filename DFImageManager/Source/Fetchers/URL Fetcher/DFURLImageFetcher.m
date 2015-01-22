@@ -62,7 +62,7 @@ NSString *const DFImageInfoURLResponseKey = @"DFImageInfoURLResponseKey";
     return self;
 }
 
-#pragma mark - <DFImageFetcher>
+#pragma mark - <DFImageFetching>
 
 - (BOOL)canHandleRequest:(DFImageRequest *)request {
     if ([request.asset isKindOfClass:[NSURL class]]) {

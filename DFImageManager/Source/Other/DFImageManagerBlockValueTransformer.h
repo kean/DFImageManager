@@ -20,11 +20,11 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "DFImageManagerValueTransformerProtocol.h"
+#import "DFImageManagerValueTransforming.h"
 #import <Foundation/Foundation.h>
 
 
-@interface DFImageManagerBlockValueTransformer : NSObject <DFImageManagerValueTransformer>
+@interface DFImageManagerBlockValueTransformer : NSObject <DFImageManagerValueTransforming>
 
 - (instancetype)initWithBlock:(id (^)(id))block NS_DESIGNATED_INITIALIZER;
 

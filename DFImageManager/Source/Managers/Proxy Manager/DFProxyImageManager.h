@@ -20,24 +20,24 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "DFImageManagerProtocol.h"
+#import "DFImageManaging.h"
 #import <Foundation/Foundation.h>
 
-@protocol DFImageManagerValueTransformer;
+@protocol DFImageManagerValueTransforming;
 
 
 /*! Use proxy image manager in case you need to transform application specific interfaces to the interfaces supported by the image manager. Image manager will always recieve transformed assets.
- @note Adapts image manager that it was initialized with to <DFImageManager> protocol.
+ @note Adapts image manager that it was initialized with to <DFImageManaging> protocol.
  */
-@interface DFProxyImageManager : NSProxy <DFImageManager>
+@interface DFProxyImageManager : NSProxy <DFImageManaging>
 
-@property (nonatomic) id<DFImageManagerCore> imageManager;
+@property (nonatomic) id<DFImageManagingCore> imageManager;
 
-- (instancetype)initWithImageManager:(id<DFImageManagerCore>)imageManager;
+- (instancetype)initWithImageManager:(id<DFImageManagingCore>)imageManager;
 
 /*! Set value transformer in case you need to transform assets before passing them to the image manager factory and to the image managers.
  */
-@property (nonatomic) id<DFImageManagerValueTransformer> valueTransformer;
+@property (nonatomic) id<DFImageManagerValueTransforming> valueTransformer;
 
 - (void)setValueTransformerWithBlock:(id (^)(id asset))valueTransfomer;
 

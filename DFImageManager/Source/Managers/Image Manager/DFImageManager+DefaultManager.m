@@ -33,12 +33,12 @@
 
 @implementation DFImageManager (DefaultManager)
 
-+ (id<DFImageManagerCore>)defaultManager {
++ (id<DFImageManagingCore>)defaultManager {
     DFImageProcessor *processor = [DFImageProcessor new];
     DFImageCache *cache = [DFImageCache new];
     
     DFImageManager *URLImageManager = ({
-        // Initialize NSURLCache without memory cache because DFImageManager has a higher level memory cache (see <DFImageCache>.
+        // Initialize NSURLCache without memory cache because DFImageManager has a higher level memory cache (see <DFImageCaching>.
         NSURLCache *URLCache = [[NSURLCache alloc] initWithMemoryCapacity:0 diskCapacity:1024 * 1024 * 256 diskPath:@"com.github.kean.default_image_cache"];
         
         NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];

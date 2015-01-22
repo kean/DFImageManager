@@ -24,13 +24,13 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
-@protocol DFImageManagerCore;
+@protocol DFImageManagingCore;
 
 
 
 @interface DFCompositeImageRequest : NSObject
 
-@property (nonatomic, weak) id<DFImageManagerCore> imageManager;
+@property (nonatomic, weak) id<DFImageManagingCore> imageManager;
 
 - (instancetype)initWithRequests:(NSArray /* DFImageRequest */ *)requests handler:(void (^)(UIImage *image, NSDictionary *info, BOOL isLastRequest))handler NS_DESIGNATED_INITIALIZER;
 

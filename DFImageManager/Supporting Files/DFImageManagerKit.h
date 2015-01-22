@@ -18,11 +18,11 @@ FOUNDATION_EXPORT const unsigned char DFImageManagerFrameworkVersionString[];
 
 #import <DFImageManagerKit/DFImageManagerDefines.h>
 
-#import <DFImageManagerKit/DFImageCacheProtocol.h>
-#import <DFImageManagerKit/DFImageFetcherProtocol.h>
-#import <DFImageManagerKit/DFImageManagerProtocol.h>
-#import <DFImageManagerKit/DFImageProcessorProtocol.h>
-#import <DFImageManagerKit/DFImageManagerValueTransformerProtocol.h>
+#import <DFImageManagerKit/DFImageCaching.h>
+#import <DFImageManagerKit/DFImageFetching.h>
+#import <DFImageManagerKit/DFImageManaging.h>
+#import <DFImageManagerKit/DFImageProcessing.h>
+#import <DFImageManagerKit/DFImageManagerValueTransforming.h>
 
 #import <DFImageManagerKit/DFImageManager.h>
 #import <DFImageManagerKit/DFImageManagerConfiguration.h>

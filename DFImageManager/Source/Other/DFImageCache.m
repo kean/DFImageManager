@@ -54,7 +54,7 @@
 - (instancetype)initWithCache:(NSCache *)cache {
     if (self = [super init]) {
         _cache = cache;
-        _maximumEntryAge = FLT_MAX;
+        _maximumEntryAge = INT_MAX;
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_didReceiveMemoryWarning:) name:UIApplicationDidReceiveMemoryWarningNotification object:nil];
     }
     return self;
@@ -66,7 +66,7 @@
     return [self initWithCache:cache];
 }
 
-#pragma mark - <DFImageCache>
+#pragma mark - <DFImageCaching>
 
 - (UIImage *)cacheImageForKey:(id<NSCopying>)key {
     if (key != nil) {

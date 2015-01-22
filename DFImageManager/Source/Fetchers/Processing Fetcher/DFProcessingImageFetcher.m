@@ -20,7 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "DFImageProcessorProtocol.h"
+#import "DFImageProcessing.h"
 #import "DFImageRequest.h"
 #import "DFImageRequestOptions.h"
 #import "DFImageResponse.h"
@@ -29,11 +29,11 @@
 
 
 @implementation DFProcessingImageFetcher {
-    id<DFImageProcessor> _processor;
+    id<DFImageProcessing> _processor;
     NSOperationQueue *_queue;
 }
 
-- (instancetype)initWithProcessor:(id<DFImageProcessor>)processor qeueu:(NSOperationQueue *)queue {
+- (instancetype)initWithProcessor:(id<DFImageProcessing>)processor qeueu:(NSOperationQueue *)queue {
     if (self = [super init]) {
         _processor = processor;
         _queue = queue;

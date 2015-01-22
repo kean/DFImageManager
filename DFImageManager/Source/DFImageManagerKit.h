@@ -25,11 +25,11 @@
 
 #import "DFImageManagerDefines.h"
 
-#import "DFImageCacheProtocol.h"
-#import "DFImageFetcherProtocol.h"
-#import "DFImageManagerProtocol.h"
-#import "DFImageProcessorProtocol.h"
-#import "DFImageManagerValueTransformerProtocol.h"
+#import "DFImageCaching.h"
+#import "DFImageFetching.h"
+#import "DFImageManaging.h"
+#import "DFImageProcessing.h"
+#import "DFImageManagerValueTransforming.h"
 
 #import "DFImageManager.h"
 #import "DFImageManagerConfiguration.h"

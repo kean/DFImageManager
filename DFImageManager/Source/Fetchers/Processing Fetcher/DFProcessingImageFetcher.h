@@ -20,16 +20,16 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "DFImageFetcherProtocol.h"
+#import "DFImageFetching.h"
 #import <Foundation/Foundation.h>
 
-@protocol DFImageProcessor;
+@protocol DFImageProcessing;
 
 
 /*! Supports requests with a DFProcessingInput asset class.
  */
-@interface DFProcessingImageFetcher : NSObject <DFImageFetcher>
+@interface DFProcessingImageFetcher : NSObject <DFImageFetching>
 
-- (instancetype)initWithProcessor:(id<DFImageProcessor>)processor qeueu:(NSOperationQueue *)queue;
+- (instancetype)initWithProcessor:(id<DFImageProcessing>)processor qeueu:(NSOperationQueue *)queue;
 
 @end

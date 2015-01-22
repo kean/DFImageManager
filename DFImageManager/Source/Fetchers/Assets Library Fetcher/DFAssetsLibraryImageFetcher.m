@@ -51,7 +51,7 @@ static inline NSURL *_ALAssetURL(id asset) {
     return self;
 }
 
-#pragma mark - <DFImageFetcher>
+#pragma mark - <DFImageFetching>
 
 - (BOOL)canHandleRequest:(DFImageRequest *)request {
     id asset = request.asset;

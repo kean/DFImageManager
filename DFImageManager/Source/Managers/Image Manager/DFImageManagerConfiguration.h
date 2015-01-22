@@ -22,32 +22,32 @@
 
 #import <Foundation/Foundation.h>
 
-@protocol DFImageCache;
-@protocol DFImageFetcher;
-@protocol DFImageProcessor;
+@protocol DFImageCaching;
+@protocol DFImageFetching;
+@protocol DFImageProcessing;
 
 
 @interface DFImageManagerConfiguration : NSObject <NSCopying>
 
-@property (nonatomic, readonly) id<DFImageFetcher> fetcher;
-@property (nonatomic) id<DFImageProcessor> processor;
+@property (nonatomic, readonly) id<DFImageFetching> fetcher;
+@property (nonatomic) id<DFImageProcessing> processor;
 
-/*! Operation queue, that is used for executing image processing operations (see <DFImageProcessor> protocol).
+/*! Operation queue, that is used for executing image processing operations (see <DFImageProcessing> protocol).
  */
 @property (nonatomic) NSOperationQueue *processingQueue;
 
 /*! Memory cache that stores processed images.
-  @note It's a good idea to implement <DFImageProcessing> and <DFImageCache> in that same object.
+  @note It's a good idea to implement <DFImageProcessing> and <DFImageCaching> in that same object.
  */
-@property (nonatomic) id<DFImageCache> cache;
+@property (nonatomic) id<DFImageCaching> cache;
 
 /*! Maximum number of preheating requests that are allowed to execute concurrently.
  */
 @property (nonatomic) NSUInteger maximumConcurrentPreheatingRequests;
 
-- (instancetype)initWithFetcher:(id<DFImageFetcher>)fetcher NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithFetcher:(id<DFImageFetching>)fetcher NS_DESIGNATED_INITIALIZER;
 
-+ (instancetype)configurationWithFetcher:(id<DFImageFetcher>)fetcher;
-+ (instancetype)configurationWithFetcher:(id<DFImageFetcher>)fetcher processor:(id<DFImageProcessor>)processor cache:(id<DFImageCache>)cache;
++ (instancetype)configurationWithFetcher:(id<DFImageFetching>)fetcher;
++ (instancetype)configurationWithFetcher:(id<DFImageFetching>)fetcher processor:(id<DFImageProcessing>)processor cache:(id<DFImageCaching>)cache;
 
 @end

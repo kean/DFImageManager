@@ -20,10 +20,10 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "DFImageFetcherProtocol.h"
+#import "DFImageFetching.h"
 #import <Foundation/Foundation.h>
 
 
-@interface DFAssetsLibraryImageFetcher : NSObject <DFImageFetcher>
+@interface DFAssetsLibraryImageFetcher : NSObject <DFImageFetching>
 
 @end

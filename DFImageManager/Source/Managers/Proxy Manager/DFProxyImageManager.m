@@ -21,7 +21,7 @@
 // THE SOFTWARE.
 
 #import "DFImageManagerBlockValueTransformer.h"
-#import "DFImageManagerValueTransformerProtocol.h"
+#import "DFImageManagerValueTransforming.h"
 #import "DFImageRequest.h"
 #import "DFProxyImageManager.h"
 
@@ -41,7 +41,7 @@
 @synthesize valueTransformer = _transformer;
 @synthesize imageManager = _manager;
 
-- (instancetype)initWithImageManager:(id<DFImageManagerCore>)imageManager {
+- (instancetype)initWithImageManager:(id<DFImageManagingCore>)imageManager {
     self.imageManager = imageManager;
     return self;
 }
@@ -58,7 +58,7 @@
     self.valueTransformer = [[DFImageManagerBlockValueTransformer alloc] initWithBlock:block];
 }
 
-#pragma mark - <DFImageManagerCore>
+#pragma mark - <DFImageManagingCore>
 
 - (BOOL)canHandleRequest:(DFImageRequest *)request {
     return [_manager canHandleRequest:_DF_TRANSFORMED_REQUEST(request)];
@@ -84,7 +84,7 @@
     return [transformedRequests copy];
 }
 
-#pragma mark - <DFImageManager>
+#pragma mark - <DFImageManaging>
 
 - (DFImageRequestID *)requestImageForAsset:(id)asset targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options completion:(void (^)(UIImage *, NSDictionary *))completion {
     return [self requestImageForRequest:[[DFImageRequest alloc] initWithAsset:asset targetSize:targetSize contentMode:contentMode options:options] completion:completion];

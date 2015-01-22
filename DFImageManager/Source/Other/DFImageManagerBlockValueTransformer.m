@@ -35,7 +35,7 @@
     return self;
 }
 
-#pragma mark - <DFImageManagerValueTransformer>
+#pragma mark - <DFImageManagerValueTransforming>
 
 - (id)transformedAsset:(id)asset {
     return _block(asset);
