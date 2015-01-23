@@ -20,22 +20,24 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import <Foundation/Foundation.h>
+#import "DFURLImageDeserializer.h"
 
-/*! Deserialization error domain.
+/*! The DFURLHTTPImageDeserializer implements image deserialization and performs additional response validation based on HTTP status code and content type.
  */
-static NSString *const DFURLDeserializationErrorDomain = @"DFURLDeserializationErrorDomain";
+@interface DFURLHTTPImageDeserializer : DFURLImageDeserializer
 
-/*! A URL response (NSURLResponse).
+/*! The acceptable HTTP status codes for responses. For more info see the HTTP specification http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html
+ @note All status codes are acceptable in case acceptableStatusCodes is nil.
  */
-static NSString *const DFURLErrorInfoURLResponseKey = @"DFURLErrorInfoURLResponseKey";
+@property (nonatomic, copy) NSIndexSet *acceptableStatusCodes;
 
-/*! The DFURLResponseDeserializing protocol is adopted by an object that decodes response data into an object representation used by the application.
-*/
-@protocol DFURLResponseDeserializing <NSObject>
-
-/*! The response object decoded from the data associated with a specified response. Response deserializer may also perform validation on the incoming response and data.
+/*! The acceptable MIME types for responses.
+ @note All content types are acceptable in case acceptableContentTypes is nil.
  */
-- (id)objectFromResponse:(NSURLResponse *)response data:(NSData *)data error:(NSError *__autoreleasing *)error;
+@property (nonatomic, copy) NSSet *acceptableContentTypes;
+
+/*! Validates the given response by inspecting the response status code and content type.
+ */
+- (BOOL)isValidResponse:(NSHTTPURLResponse *)response error:(NSError *__autoreleasing *)error;
 
 @end

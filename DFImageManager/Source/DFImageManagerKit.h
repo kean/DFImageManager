@@ -46,7 +46,8 @@
 #import "DFURLImageRequestOptions.h"
 #import "DFURLSessionOperation.h"
 #import "DFURLResponseDeserializing.h"
-#import "DFImageDeserializer.h"
+#import "DFURLImageDeserializer.h"
+#import "DFURLHTTPImageDeserializer.h"
 
 #import "DFPhotosKitImageFetcher.h"
 #import "DFPhotosKitImageRequestOptions.h"

@@ -78,11 +78,6 @@
 
 - (void)_deserializeResponse {
     NSError *error;
-    if (![_deserializer isValidResponse:_response error:&error]) {
-        _error = error;
-        [self finish];
-        return;
-    }
     _responseObject = [_deserializer objectFromResponse:_response data:_data error:&error];
     _error = error;
     [self finish];

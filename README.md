@@ -6,9 +6,9 @@
 Modern iOS framework for fetching, caching, processing and preheating images from various sources. It uses latest advancements in iOS SDK and doesn't reinvent the existing technologies. It provides a powerful API that will extend the capabilities of your app.
 
 #### Supported assets and asset identifiers
-- NSURL with schemes http:, https:, ftp:, file: and data:
-- PHAsset and NSURL with scheme com.github.kean.photos-kit:
-- ALAsset and NSURL with scheme assets-library:
+- NSURL with schemes http, https, ftp, file and data
+- PHAsset and NSURL with scheme com.github.kean.photos-kit
+- ALAsset and NSURL with scheme assets-library
 
 ## Features
 - Uses latest advancements in [Foundation URL Loading System](https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/URLLoadingSystem/URLLoadingSystem.html) including [NSURLSession](https://developer.apple.com/library/ios/documentation/Foundation/Reference/NSURLSession_class/).
@@ -22,8 +22,9 @@ Modern iOS framework for fetching, caching, processing and preheating images fro
 ## Getting Started
 - Download the [latest DFImageManager version](https://github.com/kean/DFImageManager/releases)
 - Take a look at the comprehensive [demo projects](https://github.com/kean/DFImageManager/tree/master/DFImageManagerSample)
-- Play with `DFImageManager` API in a Swift DFImageManager.playground
-- Read guides on [Wiki](https://github.com/kean/DFImageManager/wiki)
+- Play with `DFImageManager` API in a Swift playground available in the project
+- Check out the complete [documentation](http://cocoadocs.org/docsets/DFImageManager/0.0.15/index.html)
+- Read guides on a project [Wiki](https://github.com/kean/DFImageManager/wiki)
 
 ## Requirements
 iOS 7.0+

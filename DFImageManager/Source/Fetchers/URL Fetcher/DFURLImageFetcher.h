@@ -24,23 +24,25 @@
 #import "DFImageFetching.h"
 #import <Foundation/Foundation.h>
 
+/*! A URL response received by the URL loading system (NSURLRequest). Clients may use it to retrieve HTTP status code and other metadata associated with a URL load.
+ */
 extern NSString *const DFImageInfoURLResponseKey;
 
 
 /*! The DFURLImageFetcher is a class that implements DFImageFetching protocol to provide a functionality of fetching images via Cocoa URL Loading System.
  @note Uses NSURLSession with a custom delegate. For more info on NSURLSession life cycle with custom delegates see the "URL Loading System Programming Guide" from Apple.
- @note Supported URL schemes: http:, https:, ftp:, file:
+ @note Supported URL schemes: http, https, ftp, file and data
  */
 @interface DFURLImageFetcher : NSObject <DFImageFetching, NSURLSessionDelegate, NSURLSessionDataDelegate, DFURLSessionOperationDelegate>
 
-/*! The NSURLSession instance used by the reciever.
+/*! The NSURLSession instance used by the image fetcher.
  */
 @property (nonatomic, readonly) NSURLSession *session;
 
 /*! A set containing all the supported URL schemes. The default set contains "http", "https", "ftp", "file" and "data" schemes.
  @note The property can be changed in case there are any custom protocols supported by NSURLSession.
  */
-@property (nonatomic) NSSet *supportedSchemes;
+@property (nonatomic, copy) NSSet *supportedSchemes;
 
 /*! Initializes DFURLImageFetcher with a given session configuration. DFURLImageFetcher creates an instance of NSURLSession with a given configuration and sets itself as a session delegate.
  */
@@ -49,5 +51,11 @@ extern NSString *const DFImageInfoURLResponseKey;
 /*! Initializes DFURLImageFetcher with a given session configuration, delegate and delegate queue. DFURLImageFetcher creates an instance of NSURLSession with a given configuration, delegate and delegate queue.
  */
 - (instancetype)initWithSessionConfiguration:(NSURLSessionConfiguration *)configuration delegate:(id<NSURLSessionDelegate, DFURLSessionOperationDelegate>)delegate delegateQueue:(NSOperationQueue *)queue NS_DESIGNATED_INITIALIZER;
+
+#pragma mark - Subclassing Hooks
+
+/*! Returns response deserializer for the given request.
+ */
+- (id<DFURLResponseDeserializing>)responseDeserializerForRequest:(NSURLRequest *)request;
 
 @end

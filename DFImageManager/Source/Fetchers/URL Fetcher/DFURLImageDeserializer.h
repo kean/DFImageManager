@@ -21,8 +21,10 @@
 // THE SOFTWARE.
 
 #import "DFURLResponseDeserializing.h"
+#import <Foundation/Foundation.h>
 
-
-@interface DFImageDeserializer : NSObject <DFURLResponseDeserializing>
+/*! Base class for image deserialization from URL response data.
+*/
+@interface DFURLImageDeserializer : NSObject <DFURLResponseDeserializing>
 
 @end

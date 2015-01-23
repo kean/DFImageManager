@@ -39,7 +39,8 @@ FOUNDATION_EXPORT const unsigned char DFImageManagerFrameworkVersionString[];
 #import <DFImageManagerKit/DFURLImageRequestOptions.h>
 #import <DFImageManagerKit/DFURLSessionOperation.h>
 #import <DFImageManagerKit/DFURLResponseDeserializing.h>
-#import <DFImageManagerKit/DFImageDeserializer.h>
+#import <DFImageManagerKit/DFURLImageDeserializer.h>
+#import <DFImageManagerKit/DFURLHTTPImageDeserializer.h>
 
 #import <DFImageManagerKit/DFPhotosKitImageFetcher.h>
 #import <DFImageManagerKit/DFPhotosKitImageRequestOptions.h>

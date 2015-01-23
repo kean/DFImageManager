@@ -20,31 +20,17 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "DFImageDeserializer.h"
 #import "DFImageRequest.h"
 #import "DFImageRequestOptions.h"
 #import "DFImageResponse.h"
+#import "DFURLHTTPImageDeserializer.h"
+#import "DFURLImageDeserializer.h"
 #import "DFURLImageFetcher.h"
 #import "DFURLImageRequestOptions.h"
 #import "DFURLResponseDeserializing.h"
 #import "DFURLSessionOperation.h"
 
 NSString *const DFImageInfoURLResponseKey = @"DFImageInfoURLResponseKey";
-
-
-@interface DFImageRequest (DFURLImageFetcher)
-
-- (BOOL)_isFileRequest;
-
-@end
-
-@implementation DFImageRequest (DFURLImageFetcher)
-
-- (BOOL)_isFileRequest {
-    return [((NSURL *)self.resource) isFileURL];
-}
-
-@end
 
 
 @interface _DFURLSessionDataTaskHandler : NSObject
@@ -119,9 +105,6 @@ NSString *const DFImageInfoURLResponseKey = @"DFImageInfoURLResponseKey";
     if (![URL1 isEqual:URL2]) {
         return NO;
     }
-    if ([request1 _isFileRequest]) {
-        return YES;
-    }
     DFURLImageRequestOptions *options1 = (id)request1.options;
     DFURLImageRequestOptions *options2 = (id)request2.options;
     return (options1.allowsNetworkAccess == options2.allowsNetworkAccess &&
@@ -144,7 +127,7 @@ NSString *const DFImageInfoURLResponseKey = @"DFImageInfoURLResponseKey";
 - (NSOperation *)startOperationWithRequest:(DFImageRequest *)request completion:(void (^)(DFImageResponse *))completion {
     NSURLRequest *URLRequest = [self _createURLRequestWithRequest:request];
     DFURLSessionOperation *operation = [[DFURLSessionOperation alloc] initWithRequest:URLRequest];
-    operation.deserializer = [DFImageDeserializer new];
+    operation.deserializer = [self responseDeserializerForRequest:URLRequest];
     operation.delegate = _operationsDelegate;
     DFURLSessionOperation *__weak weakOp = operation;
     [operation setCompletionBlock:^{
@@ -159,6 +142,14 @@ NSString *const DFImageInfoURLResponseKey = @"DFImageInfoURLResponseKey";
     }];
     [_queue addOperation:operation];
     return operation;
+}
+
+- (id<DFURLResponseDeserializing>)responseDeserializerForRequest:(NSURLRequest *)request {
+    if ([request.URL.scheme hasPrefix:@"http"]) {
+        return [DFURLHTTPImageDeserializer new];
+    } else {
+        return [DFURLImageDeserializer new];
+    }
 }
 
 - (NSMutableURLRequest *)_createURLRequestWithRequest:(DFImageRequest *)imageRequest {

@@ -20,24 +20,10 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "DFImageDeserializer.h"
+#import "DFURLImageDeserializer.h"
 #import <UIKit/UIKit.h>
 
-
-@implementation DFImageDeserializer
-
-- (BOOL)isValidResponse:(NSURLResponse *)response error:(NSError *__autoreleasing *)error {
-    if ([response isKindOfClass:[NSHTTPURLResponse class]]) {
-        NSHTTPURLResponse *HTTPResponse = (NSHTTPURLResponse *)response;
-        if (HTTPResponse.statusCode != 200) {
-            if (error) {
-                *error = [NSError errorWithDomain:NSURLErrorDomain code:HTTPResponse.statusCode userInfo:nil];
-            }
-            return NO;
-        }
-    }
-    return YES;
-}
+@implementation DFURLImageDeserializer
 
 - (id)objectFromResponse:(NSURLResponse *)response data:(NSData *)data error:(NSError *__autoreleasing *)error {
     return [[UIImage alloc] initWithData:data scale:[UIScreen mainScreen].scale];
