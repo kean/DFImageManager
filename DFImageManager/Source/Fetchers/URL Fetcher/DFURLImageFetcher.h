@@ -54,6 +54,8 @@ extern NSString *const DFImageInfoURLResponseKey;
 
 #pragma mark - Subclassing Hooks
 
+- (NSURLRequest *)URLRequestForImageRequest:(DFImageRequest *)request;
+
 /*! Returns response deserializer for the given request.
  */
 - (id<DFURLResponseDeserializing>)responseDeserializerForRequest:(NSURLRequest *)request;

@@ -31,7 +31,7 @@
  */
 @property (nonatomic, copy) NSIndexSet *acceptableStatusCodes;
 
-/*! The acceptable MIME types for responses.
+/*! The acceptable MIME types for responses. Default value is nil so that all content types are supported. Image initialization never crashes when provided with an invalid data.
  @note All content types are acceptable in case acceptableContentTypes is nil.
  */
 @property (nonatomic, copy) NSSet *acceptableContentTypes;

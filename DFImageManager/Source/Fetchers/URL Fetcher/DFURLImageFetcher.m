@@ -125,7 +125,7 @@ NSString *const DFImageInfoURLResponseKey = @"DFImageInfoURLResponseKey";
 }
 
 - (NSOperation *)startOperationWithRequest:(DFImageRequest *)request completion:(void (^)(DFImageResponse *))completion {
-    NSURLRequest *URLRequest = [self _createURLRequestWithRequest:request];
+    NSURLRequest *URLRequest = [self URLRequestForImageRequest:request];
     DFURLSessionOperation *operation = [[DFURLSessionOperation alloc] initWithRequest:URLRequest];
     operation.deserializer = [self responseDeserializerForRequest:URLRequest];
     operation.delegate = _operationsDelegate;
@@ -152,7 +152,7 @@ NSString *const DFImageInfoURLResponseKey = @"DFImageInfoURLResponseKey";
     }
 }
 
-- (NSMutableURLRequest *)_createURLRequestWithRequest:(DFImageRequest *)imageRequest {
+- (NSURLRequest *)URLRequestForImageRequest:(DFImageRequest *)imageRequest {
     NSURL *URL = (NSURL *)imageRequest.resource;
     DFURLImageRequestOptions *options = (id)imageRequest.options;
     
@@ -162,6 +162,7 @@ NSString *const DFImageInfoURLResponseKey = @"DFImageInfoURLResponseKey";
      Apple doesn't not provide a complete documentation on what NSURLSessionConfiguration options can be overridden by NSURLRequest and in when. So it's best to copy all the options, because the NSURLSession implementation might change in future versons.
      */
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:URL];
+    [request addValue:@"image/*" forHTTPHeaderField:@"Accept"];
     
     /* Set options that can not be configured by DFURLImageRequestOptions.
      */
