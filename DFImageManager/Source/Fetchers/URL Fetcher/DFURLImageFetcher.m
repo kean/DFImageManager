@@ -69,19 +69,20 @@ NSString *const DFImageInfoURLResponseKey = @"DFImageInfoURLResponseKey";
 @end
 
 
-@interface DFURLImageFetcher () <DFURLSessionOperationDelegate>
-
-@end
 
 @implementation DFURLImageFetcher {
     NSOperationQueue *_queue;
     NSMutableDictionary *_sessionTaskHandlers;
+    id<DFURLSessionOperationDelegate> __weak _operationsDelegate;
 }
 
-- (instancetype)initWithSessionConfiguration:(NSURLSessionConfiguration *)configuration {
+- (instancetype)initWithSessionConfiguration:(NSURLSessionConfiguration *)configuration delegate:(id<NSURLSessionDelegate,DFURLSessionOperationDelegate>)delegate delegateQueue:(NSOperationQueue *)queue {
+    NSParameterAssert(configuration);
+    NSParameterAssert(delegate);
+    
     if (self = [super init]) {
-        NSParameterAssert(configuration);
-        _session = [NSURLSession sessionWithConfiguration:configuration delegate:self delegateQueue:nil];
+        _session = [NSURLSession sessionWithConfiguration:configuration delegate:delegate delegateQueue:queue];
+        _operationsDelegate = delegate;
         
         _sessionTaskHandlers = [NSMutableDictionary new];
         
@@ -89,6 +90,10 @@ NSString *const DFImageInfoURLResponseKey = @"DFImageInfoURLResponseKey";
         _queue = [NSOperationQueue new];
     }
     return self;
+}
+
+- (instancetype)initWithSessionConfiguration:(NSURLSessionConfiguration *)configuration {
+    return [self initWithSessionConfiguration:configuration delegate:self delegateQueue:nil];
 }
 
 #pragma mark - <DFImageFetching>
@@ -147,7 +152,7 @@ NSString *const DFImageInfoURLResponseKey = @"DFImageInfoURLResponseKey";
     NSURLRequest *URLRequest = [self _createURLRequestWithRequest:request];
     DFURLSessionOperation *operation = [[DFURLSessionOperation alloc] initWithRequest:URLRequest];
     operation.deserializer = [DFImageDeserializer new];
-    operation.delegate = self;
+    operation.delegate = _operationsDelegate;
     DFURLSessionOperation *__weak weakOp = operation;
     [operation setCompletionBlock:^{
         DFMutableImageResponse *response = [DFMutableImageResponse new];
