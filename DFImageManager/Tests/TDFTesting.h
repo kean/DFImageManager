@@ -14,6 +14,8 @@
 
 + (NSURL *)testImageURL;
 + (UIImage *)testImage;
++ (NSData *)testImageData;
+
 + (void)stubRequestWithURL:(NSURL *)imageURL;
 
 @end

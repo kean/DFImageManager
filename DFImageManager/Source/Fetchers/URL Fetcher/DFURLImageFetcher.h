@@ -33,7 +33,14 @@ extern NSString *const DFImageInfoURLResponseKey;
  */
 @interface DFURLImageFetcher : NSObject <DFImageFetching, NSURLSessionDelegate, NSURLSessionDataDelegate, DFURLSessionOperationDelegate>
 
+/*! The NSURLSession instance used by the reciever.
+ */
 @property (nonatomic, readonly) NSURLSession *session;
+
+/*! A set containing all the supported URL schemes. The default set contains "http", "https", "ftp", "file" and "data" schemes.
+ @note The property can be changed in case there are any custom protocols supported by NSURLSession.
+ */
+@property (nonatomic) NSSet *supportedSchemes;
 
 /*! Initializes DFURLImageFetcher with a given session configuration. DFURLImageFetcher creates an instance of NSURLSession with a given configuration and sets itself as a session delegate.
  */
@@ -42,7 +49,5 @@ extern NSString *const DFImageInfoURLResponseKey;
 /*! Initializes DFURLImageFetcher with a given session configuration, delegate and delegate queue. DFURLImageFetcher creates an instance of NSURLSession with a given configuration, delegate and delegate queue.
  */
 - (instancetype)initWithSessionConfiguration:(NSURLSessionConfiguration *)configuration delegate:(id<NSURLSessionDelegate, DFURLSessionOperationDelegate>)delegate delegateQueue:(NSOperationQueue *)queue NS_DESIGNATED_INITIALIZER;
-
-+ (NSSet *)supportedSchemes;
 
 @end

@@ -12,7 +12,7 @@
 @implementation TDFTesting
 
 + (id)testImage {
-    return [[UIImage alloc] initWithData:[self _testImageData] scale:[UIScreen mainScreen].scale];
+    return [[UIImage alloc] initWithData:[self testImageData] scale:[UIScreen mainScreen].scale];
 }
 
 + (NSURL *)testImageURL {
@@ -21,7 +21,7 @@
     return [NSURL fileURLWithPath:path];
 }
 
-+ (NSData *)_testImageData {
++ (NSData *)testImageData {
     return [NSData dataWithContentsOfURL:[self testImageURL]];
 }
 

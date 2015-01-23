@@ -88,6 +88,8 @@ NSString *const DFImageInfoURLResponseKey = @"DFImageInfoURLResponseKey";
         
         // We don't need to limit concurrent operations for NSURLSession. For more info see https://github.com/kean/DFImageManager/wiki/Image-Caching-Guide
         _queue = [NSOperationQueue new];
+        
+        _supportedSchemes = [NSSet setWithObjects:@"http", @"https", @"ftp", @"file", @"data", nil];
     }
     return self;
 }
@@ -101,20 +103,11 @@ NSString *const DFImageInfoURLResponseKey = @"DFImageInfoURLResponseKey";
 - (BOOL)canHandleRequest:(DFImageRequest *)request {
     if ([request.resource isKindOfClass:[NSURL class]]) {
         NSURL *URL = (NSURL *)request.resource;
-        if ([[[self class] supportedSchemes] containsObject:URL.scheme]) {
+        if ([[self supportedSchemes] containsObject:URL.scheme]) {
             return YES;
         }
     }
     return NO;
-}
-
-+ (NSSet *)supportedSchemes {
-    static NSSet *schemes;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        schemes = [NSSet setWithObjects:@"http", @"https", @"ftp", @"file", nil];
-    });
-    return schemes;
 }
 
 - (BOOL)isRequestEquivalent:(DFImageRequest *)request1 toRequest:(DFImageRequest *)request2 {

@@ -27,9 +27,7 @@
     NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
     configuration.URLCache = nil;
     
-    NSURLSession *session = [NSURLSession sessionWithConfiguration:configuration];
-    
-    id<DFImageFetching> fetcher = [[DFURLImageFetcher alloc] initWithSession:session];
+    id<DFImageFetching> fetcher = [[DFURLImageFetcher alloc] initWithSessionConfiguration:configuration];
     _imageManager = [[DFImageManager alloc] initWithConfiguration:[[DFImageManagerConfiguration alloc] initWithFetcher:fetcher]];
 }
 
