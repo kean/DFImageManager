@@ -81,10 +81,10 @@
 		0C7A0EA41A6CDC37003CD246 /* DFURLImageRequestOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C7A0EA11A6CDC37003CD246 /* DFURLImageRequestOptions.m */; };
 		0CA8F1811A723E1400156090 /* TDFURLImageFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CA8F1801A723E1400156090 /* TDFURLImageFetcher.m */; };
 		0CA8F1821A723E1400156090 /* TDFURLImageFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CA8F1801A723E1400156090 /* TDFURLImageFetcher.m */; };
-		0CB0C6E31A72689C0010E6CA /* DFURLImageDeserializer.h in Headers */ = {isa = PBXBuildFile; fileRef = 0CB0C6E11A72689C0010E6CA /* DFURLImageDeserializer.h */; };
+		0CB0C6E31A72689C0010E6CA /* DFURLImageDeserializer.h in Headers */ = {isa = PBXBuildFile; fileRef = 0CB0C6E11A72689C0010E6CA /* DFURLImageDeserializer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0CB0C6E41A72689C0010E6CA /* DFURLImageDeserializer.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CB0C6E21A72689C0010E6CA /* DFURLImageDeserializer.m */; };
 		0CB0C6E51A72689C0010E6CA /* DFURLImageDeserializer.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CB0C6E21A72689C0010E6CA /* DFURLImageDeserializer.m */; };
-		0CB0C6E81A7268AC0010E6CA /* DFURLHTTPImageDeserializer.h in Headers */ = {isa = PBXBuildFile; fileRef = 0CB0C6E61A7268AC0010E6CA /* DFURLHTTPImageDeserializer.h */; };
+		0CB0C6E81A7268AC0010E6CA /* DFURLHTTPImageDeserializer.h in Headers */ = {isa = PBXBuildFile; fileRef = 0CB0C6E61A7268AC0010E6CA /* DFURLHTTPImageDeserializer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0CB0C6E91A7268AC0010E6CA /* DFURLHTTPImageDeserializer.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CB0C6E71A7268AC0010E6CA /* DFURLHTTPImageDeserializer.m */; };
 		0CB0C6EA1A7268AC0010E6CA /* DFURLHTTPImageDeserializer.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CB0C6E71A7268AC0010E6CA /* DFURLHTTPImageDeserializer.m */; };
 		0CD012481A6C6AB1004F6CD3 /* DFImageManagerDefines.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD011F41A6C6AB1004F6CD3 /* DFImageManagerDefines.m */; };
