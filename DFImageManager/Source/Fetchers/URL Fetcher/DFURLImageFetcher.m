@@ -117,9 +117,9 @@ NSString *const DFImageInfoURLResponseKey = @"DFImageInfoURLResponseKey";
         NSURLSessionConfiguration *conf = self.session.configuration;
         options.cachePolicy = conf.requestCachePolicy;
         
-        DFImageRequest *canonical = [request copy];
-        canonical.options = options;
-        return canonical;
+        DFImageRequest *canonicalRequest = [request copy];
+        canonicalRequest.options = options;
+        return canonicalRequest;
     }
     return request;
 }

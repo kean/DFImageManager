@@ -22,6 +22,7 @@
 
 #import "DFAssetsLibraryImageFetchOperation.h"
 #import "DFAssetsLibraryImageFetcher.h"
+#import "DFAssetsLibraryImageRequestOptions.h"
 #import "DFAssetsLibraryUtilities.h"
 #import "DFImageRequest.h"
 #import "DFImageResponse.h"
@@ -67,6 +68,18 @@ static inline NSURL *_ALAssetURL(id resource) {
     return NO;
 }
 
+- (DFImageRequest *)canonicalRequestForRequest:(DFImageRequest *)request {
+    if (!request.options || ![request.options isKindOfClass:[DFAssetsLibraryImageRequestOptions class]]) {
+        DFAssetsLibraryImageRequestOptions *options = [[DFAssetsLibraryImageRequestOptions alloc] initWithOptions:request.options];
+        options.imageSize = request != nil ? [self _assetImageSizeForRequest:request] : DFALAssetImageSizeFullscreen;
+        
+        DFImageRequest *canonicalRequest = [request copy];
+        canonicalRequest.options = options;
+        return canonicalRequest;
+    }
+    return request;
+}
+
 - (BOOL)isRequestEquivalent:(DFImageRequest *)request1 toRequest:(DFImageRequest *)request2 {
     if (request1 == request2) {
         return YES;
@@ -74,9 +87,9 @@ static inline NSURL *_ALAssetURL(id resource) {
     if (![_ALAssetURL(request1.resource) isEqual:_ALAssetURL(request2.resource)]) {
         return NO;
     }
-    DFALAssetImageSize imageSize1 = [self _assetImageSizeForRequest:request1];
-    DFALAssetImageSize imageSize2 = [self _assetImageSizeForRequest:request2];
-    return imageSize1 == imageSize2;
+    DFAssetsLibraryImageRequestOptions *options1 = (id)request1.options;
+    DFAssetsLibraryImageRequestOptions *options2 = (id)request1.options;
+    return options1.imageSize == options2.imageSize;
 }
 
 - (DFALAssetImageSize)_assetImageSizeForRequest:(DFImageRequest *)request {

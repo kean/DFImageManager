@@ -66,9 +66,9 @@ static inline NSString *_PHAssetLocalIdentifier(id resource) {
 
 - (DFImageRequest *)canonicalRequestForRequest:(DFImageRequest *)request {
     if (!request.options || ![request.options isKindOfClass:[DFPhotosKitImageRequestOptions class]]) {
-        DFImageRequest *canonical = [request copy];
-        canonical.options = [[DFPhotosKitImageRequestOptions alloc] initWithOptions:request.options];
-        return canonical;
+        DFImageRequest *canonicalRequest = [request copy];
+        canonicalRequest.options = [[DFPhotosKitImageRequestOptions alloc] initWithOptions:request.options];
+        return canonicalRequest;
     }
     return request;
 }

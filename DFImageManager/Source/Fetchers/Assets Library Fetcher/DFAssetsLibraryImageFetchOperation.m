@@ -86,16 +86,40 @@
             _image = [UIImage imageWithCGImage:[assetRepresentation fullScreenImage] scale:[UIScreen mainScreen].scale orientation:UIImageOrientationUp];
         }
             break;
-        case DFALAssetImageSizeFullsize: {
-            ALAssetRepresentation *assetRepresentation = [_asset defaultRepresentation];
-            UIImageOrientation orientation = (UIImageOrientation)assetRepresentation.orientation;
-            _image = [UIImage imageWithCGImage:[assetRepresentation fullResolutionImage] scale:[UIScreen mainScreen].scale orientation:orientation];
-        }
+        case DFALAssetImageSizeFullsize:
+            _image = [self _fullResolutionAdjustedImage];
             break;
         default:
             break;
     }
     [self finish];
+}
+
+- (UIImage *)_fullResolutionAdjustedImage {
+    ALAssetRepresentation *representation = [_asset defaultRepresentation];
+    
+    // WARNING: This code doesn't work for iOS 8.0+. Use PhotosKit instead.
+    
+    CGImageRef imageRef = [representation fullResolutionImage];
+    NSString *adjustment = [[representation metadata] objectForKey:@"AdjustmentXMP"];
+    if (adjustment != nil) {
+        NSData *xmpData = [adjustment dataUsingEncoding:NSUTF8StringEncoding];
+        CIImage *image = [CIImage imageWithCGImage:imageRef];
+        
+        NSError *error = nil;
+        NSArray *filterArray = [CIFilter filterArrayFromSerializedXMP:xmpData inputImageExtent:image.extent error:&error];
+        CIContext *context = [CIContext contextWithOptions:nil];
+        if (filterArray != nil && !error) {
+            for (CIFilter *filter in filterArray) {
+                [filter setValue:image forKey:kCIInputImageKey];
+                image = [filter outputImage];
+            }
+            // TODO: Fix crash when OpenGL calls are made in the background
+            imageRef = [context createCGImage:image fromRect:[image extent]];
+        }
+    }
+    UIImageOrientation orientation = (UIImageOrientation)representation.orientation;
+    return [UIImage imageWithCGImage:imageRef scale:[representation scale] orientation:orientation];
 }
 
 - (void)_didReceiveAsset:(ALAsset *)asset {

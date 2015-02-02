@@ -20,25 +20,22 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "DFImageRequestOptions.h"
-#import <Foundation/Foundation.h>
-#import <Photos/Photos.h>
+#import "DFAssetsLibraryImageRequestOptions.h"
 
 
-/*! For more info see PHImageRequestOptions class.
- */
-NS_CLASS_AVAILABLE_IOS(8_0) @interface DFPhotosKitImageRequestOptions : DFImageRequestOptions
+@implementation DFAssetsLibraryImageRequestOptions
 
-/*! Defaults to PHImageRequestOptionsVersionCurrent.
- */
-@property (nonatomic) PHImageRequestOptionsVersion version;
+- (instancetype)init {
+    if (self = [super init]) {
+        _imageSize = DFALAssetImageSizeFullscreen;
+    }
+    return self;
+}
 
-/*! Defaults to PHImageRequestOptionsDeliveryModeHighQualityFormat. @discussion Using PHImageRequestOptionsDeliveryModeOpportunistic might be useless in some classes, because DFImageManager doesn't call completion handler twice like PHImageManager does. You should use DFCompositeImageRequest to achieve similar results.
- */
-@property (nonatomic) PHImageRequestOptionsDeliveryMode deliveryMode;
-
-/*! Defaults to PHImageRequestOptionsResizeModeFast.
- */
-@property (nonatomic) PHImageRequestOptionsResizeMode resizeMode;
+- (id)copyWithZone:(NSZone *)zone {
+    DFAssetsLibraryImageRequestOptions *copy = [super copyWithZone:zone];
+    copy.imageSize = self.imageSize;
+    return copy;
+}
 
 @end

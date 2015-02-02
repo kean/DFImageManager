@@ -20,9 +20,6 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#ifndef DFImageManagerKit_h
-#define DFImageManagerKit_h
-
 #import "DFImageManagerDefines.h"
 
 #import "DFImageCaching.h"
@@ -56,6 +53,7 @@
 
 #import "ALAssetsLibrary+DFImageManager.h"
 #import "DFAssetsLibraryImageFetcher.h"
+#import "DFAssetsLibraryImageRequestOptions.h"
 #import "DFAssetsLibraryImageFetchOperation.h"
 #import "DFAssetsLibraryUtilities.h"
 
@@ -81,5 +79,3 @@
 #import "DFImageUtilities.h"
 
 #import "DFImageManagerBlockValueTransformer.h"
-
-#endif

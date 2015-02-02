@@ -49,6 +49,7 @@ FOUNDATION_EXPORT const unsigned char DFImageManagerFrameworkVersionString[];
 
 #import <DFImageManagerKit/ALAssetsLibrary+DFImageManager.h>
 #import <DFImageManagerKit/DFAssetsLibraryImageFetcher.h>
+#import <DFImageManagerKit/DFAssetsLibraryImageRequestOptions.h>
 #import <DFImageManagerKit/DFAssetsLibraryImageFetchOperation.h>
 #import <DFImageManagerKit/DFAssetsLibraryUtilities.h>
 
