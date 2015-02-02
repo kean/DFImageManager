@@ -86,10 +86,17 @@ static inline NSURL *_ALAssetURL(id resource) {
     thumbnailSide *= 1.2f;
     if (request.targetSize.width <= thumbnailSide &&
         request.targetSize.height <= thumbnailSide) {
-        return DFALAssetImageSizeThumbnail;
-    } else {
+        return DFALAssetImageSizeAspectRatioThumbnail;
+    }
+    
+    CGFloat fullscreenSide = MAX([UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height);
+    fullscreenSide *= [UIScreen mainScreen].scale;
+    if (request.targetSize.width <= fullscreenSide &&
+        request.targetSize.height <= fullscreenSide) {
         return DFALAssetImageSizeFullscreen;
     }
+
+    return DFALAssetImageSizeFullsize;
 }
 
 - (NSOperation *)startOperationWithRequest:(DFImageRequest *)request completion:(void (^)(DFImageResponse *))completion {

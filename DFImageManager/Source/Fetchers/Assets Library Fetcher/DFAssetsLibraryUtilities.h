@@ -24,6 +24,19 @@
 
 
 typedef NS_ENUM(NSInteger, DFALAssetImageSize) {
+    /*! An image with a square thumbnail of the asset. The size of the thumbnail is the appropriate size for the platform.  The thumbnail will be in the correct orientation.
+     */
     DFALAssetImageSizeThumbnail,
-    DFALAssetImageSizeFullscreen
+    
+    /*! An image with an aspect ratio thumbnail of the asset. The size of the thumbnail is the appropriate size for the platform. The thumbnail will be in the correct orientation.
+     */
+    DFALAssetImageSizeAspectRatioThumbnail,
+    
+    /*! An image that is appropriate for displaying full screen.
+     */
+    DFALAssetImageSizeFullscreen,
+    
+    /*! The biggest, best representation available.
+     */
+    DFALAssetImageSizeFullsize
 };

@@ -75,12 +75,21 @@
 
 - (void)_startFetching {
     switch (_imageSize) {
-        case DFALAssetImageSizeThumbnail:
+        case DFALAssetImageSizeAspectRatioThumbnail:
             _image = [UIImage imageWithCGImage:_asset.aspectRatioThumbnail scale:[UIScreen mainScreen].scale orientation:UIImageOrientationUp];
+            break;
+        case DFALAssetImageSizeThumbnail:
+            _image = [UIImage imageWithCGImage:_asset.thumbnail scale:[UIScreen mainScreen].scale orientation:UIImageOrientationUp];
             break;
         case DFALAssetImageSizeFullscreen: {
             ALAssetRepresentation *assetRepresentation = [_asset defaultRepresentation];
             _image = [UIImage imageWithCGImage:[assetRepresentation fullScreenImage] scale:[UIScreen mainScreen].scale orientation:UIImageOrientationUp];
+        }
+            break;
+        case DFALAssetImageSizeFullsize: {
+            ALAssetRepresentation *assetRepresentation = [_asset defaultRepresentation];
+            UIImageOrientation orientation = (UIImageOrientation)assetRepresentation.orientation;
+            _image = [UIImage imageWithCGImage:[assetRepresentation fullResolutionImage] scale:[UIScreen mainScreen].scale orientation:orientation];
         }
             break;
         default:

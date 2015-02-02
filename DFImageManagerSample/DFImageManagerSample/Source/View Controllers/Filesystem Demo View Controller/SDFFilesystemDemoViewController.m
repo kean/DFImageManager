@@ -32,7 +32,10 @@ static NSString * const reuseIdentifier = @"Cell";
 - (NSArray *)_photosWithNames:(NSArray *)names {
     NSMutableArray *photos = [NSMutableArray new];
     for (NSString *name in names) {
-        [photos addObject:[[NSBundle mainBundle] URLForResource:name withExtension:@"jpg"]];
+        NSURL *URL = [[NSBundle mainBundle] URLForResource:name withExtension:@"jpg"];
+        if (URL != nil) {
+            [photos addObject:URL];
+        }
     }
     return [photos copy];
 }
