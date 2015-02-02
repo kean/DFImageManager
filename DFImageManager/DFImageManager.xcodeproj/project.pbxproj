@@ -342,10 +342,10 @@
 		0CD011F61A6C6AB1004F6CD3 /* Fetchers */ = {
 			isa = PBXGroup;
 			children = (
-				0CD011F71A6C6AB1004F6CD3 /* Assets Library Fetcher */,
-				0CD011FF1A6C6AB1004F6CD3 /* Photos Kit Fetcher */,
-				0CD012061A6C6AB1004F6CD3 /* Processing Fetcher */,
 				0CD0120B1A6C6AB1004F6CD3 /* URL Fetcher */,
+				0CD011FF1A6C6AB1004F6CD3 /* Photos Kit Fetcher */,
+				0CD011F71A6C6AB1004F6CD3 /* Assets Library Fetcher */,
+				0CD012061A6C6AB1004F6CD3 /* Processing Fetcher */,
 			);
 			path = Fetchers;
 			sourceTree = "<group>";
