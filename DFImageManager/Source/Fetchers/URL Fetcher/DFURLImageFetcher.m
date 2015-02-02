@@ -125,9 +125,9 @@ NSString *const DFImageInfoURLResponseKey = @"DFImageInfoURLResponseKey";
 }
 
 - (NSOperation *)startOperationWithRequest:(DFImageRequest *)request completion:(void (^)(DFImageResponse *))completion {
-    NSURLRequest *URLRequest = [self URLRequestForImageRequest:request];
-    DFURLSessionOperation *operation = [[DFURLSessionOperation alloc] initWithRequest:URLRequest];
-    operation.deserializer = [self responseDeserializerForRequest:URLRequest];
+    NSURLRequest *URLRequest = [self createURLRequestForImageRequest:request];
+    DFURLSessionOperation *operation = [self createOperationForURLRequest:URLRequest];
+    operation.deserializer = [self createResponseDeserializerForRequest:URLRequest];
     operation.delegate = _operationsDelegate;
     DFURLSessionOperation *__weak weakOp = operation;
     [operation setCompletionBlock:^{
@@ -144,15 +144,7 @@ NSString *const DFImageInfoURLResponseKey = @"DFImageInfoURLResponseKey";
     return operation;
 }
 
-- (id<DFURLResponseDeserializing>)responseDeserializerForRequest:(NSURLRequest *)request {
-    if ([request.URL.scheme hasPrefix:@"http"]) {
-        return [DFURLHTTPImageDeserializer new];
-    } else {
-        return [DFURLImageDeserializer new];
-    }
-}
-
-- (NSURLRequest *)URLRequestForImageRequest:(DFImageRequest *)imageRequest {
+- (NSURLRequest *)createURLRequestForImageRequest:(DFImageRequest *)imageRequest {
     NSURL *URL = (NSURL *)imageRequest.resource;
     DFURLImageRequestOptions *options = (id)imageRequest.options;
     
@@ -182,6 +174,18 @@ NSString *const DFImageInfoURLResponseKey = @"DFImageInfoURLResponseKey";
     }
     
     return [request copy];
+}
+
+- (DFURLSessionOperation *)createOperationForURLRequest:(NSURLRequest *)request {
+    return [[DFURLSessionOperation alloc] initWithRequest:request];
+}
+
+- (id<DFURLResponseDeserializing>)createResponseDeserializerForRequest:(NSURLRequest *)request {
+    if ([request.URL.scheme hasPrefix:@"http"]) {
+        return [DFURLHTTPImageDeserializer new];
+    } else {
+        return [DFURLImageDeserializer new];
+    }
 }
 
 #pragma mark - <NSURLSessionDataTaskDelegate>
