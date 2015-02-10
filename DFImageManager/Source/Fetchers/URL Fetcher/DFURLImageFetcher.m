@@ -191,16 +191,20 @@ NSString *const DFImageInfoURLResponseKey = @"DFImageInfoURLResponseKey";
 #pragma mark - <NSURLSessionDataTaskDelegate>
 
 - (void)URLSession:(NSURLSession *)session dataTask:(NSURLSessionDataTask *)dataTask didReceiveData:(NSData *)data {
-    _DFURLSessionDataTaskHandler *handler = _sessionTaskHandlers[dataTask];
-    [handler.data appendData:data];
+    @synchronized(self) {
+        _DFURLSessionDataTaskHandler *handler = _sessionTaskHandlers[dataTask];
+        [handler.data appendData:data];
+    }
 }
 
 - (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task didCompleteWithError:(NSError *)error {
-    _DFURLSessionDataTaskHandler *handler = _sessionTaskHandlers[task];
-    if (handler.completion != nil) {
-        handler.completion(handler.data, task.response, error);
+    @synchronized(self) {
+        _DFURLSessionDataTaskHandler *handler = _sessionTaskHandlers[task];
+        if (handler.completion != nil) {
+            handler.completion(handler.data, task.response, error);
+        }
+        [_sessionTaskHandlers removeObjectForKey:task];
     }
-    [_sessionTaskHandlers removeObjectForKey:task];
 }
 
 #pragma mark - <DFURLSessionOperationDelegate>
@@ -208,7 +212,9 @@ NSString *const DFImageInfoURLResponseKey = @"DFImageInfoURLResponseKey";
 - (NSURLSessionDataTask *)URLSessionOperation:(DFURLSessionOperation *)operation dataTaskWithRequest:(NSURLRequest *)request completion:(void (^)(NSData *, NSURLResponse *, NSError *))completion {
     NSURLSessionDataTask *task = [self.session dataTaskWithRequest:request];
     if (task != nil && completion != nil) {
-        _sessionTaskHandlers[task] = [[_DFURLSessionDataTaskHandler alloc] initWithCompletion:completion];
+        @synchronized(self) {
+            _sessionTaskHandlers[task] = [[_DFURLSessionDataTaskHandler alloc] initWithCompletion:completion];
+        }
     }
     return task;
 }
