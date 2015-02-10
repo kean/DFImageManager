@@ -74,32 +74,43 @@
 }
 
 - (void)_startFetching {
-    switch (_imageSize) {
-        case DFALAssetImageSizeAspectRatioThumbnail:
-            _image = [UIImage imageWithCGImage:_asset.aspectRatioThumbnail scale:[UIScreen mainScreen].scale orientation:UIImageOrientationUp];
-            break;
-        case DFALAssetImageSizeThumbnail:
-            _image = [UIImage imageWithCGImage:_asset.thumbnail scale:[UIScreen mainScreen].scale orientation:UIImageOrientationUp];
-            break;
-        case DFALAssetImageSizeFullscreen: {
-            ALAssetRepresentation *assetRepresentation = [_asset defaultRepresentation];
-            _image = [UIImage imageWithCGImage:[assetRepresentation fullScreenImage] scale:[UIScreen mainScreen].scale orientation:UIImageOrientationUp];
+    if (_version == DFALAssetVersionCurrent) {
+        switch (_imageSize) {
+            case DFALAssetImageSizeAspectRatioThumbnail:
+                _image = [UIImage imageWithCGImage:_asset.aspectRatioThumbnail scale:[UIScreen mainScreen].scale orientation:UIImageOrientationUp];
+                break;
+            case DFALAssetImageSizeThumbnail:
+                _image = [UIImage imageWithCGImage:_asset.thumbnail scale:[UIScreen mainScreen].scale orientation:UIImageOrientationUp];
+                break;
+            case DFALAssetImageSizeFullscreen: {
+                ALAssetRepresentation *assetRepresentation = [_asset defaultRepresentation];
+                _image = [UIImage imageWithCGImage:[assetRepresentation fullScreenImage] scale:[UIScreen mainScreen].scale orientation:UIImageOrientationUp];
+            }
+                break;
+            case DFALAssetImageSizeFullsize:
+                _image = [self _fullResolutionAdjustedImage];
+                break;
+            default:
+                break;
         }
-            break;
-        case DFALAssetImageSizeFullsize:
-            _image = [self _fullResolutionAdjustedImage];
-            break;
-        default:
-            break;
+    } else {
+        _image = [self _fullResolutionUnadjustedImage];
     }
     [self finish];
+}
+
+- (UIImage *)_fullResolutionUnadjustedImage {
+    ALAssetRepresentation *representation = [_asset defaultRepresentation];
+    CGImageRef imageRef = [representation fullResolutionImage];
+    UIImageOrientation orientation = (UIImageOrientation)representation.orientation;
+    return [UIImage imageWithCGImage:imageRef scale:[representation scale] orientation:orientation];
 }
 
 - (UIImage *)_fullResolutionAdjustedImage {
     ALAssetRepresentation *representation = [_asset defaultRepresentation];
     
     // WARNING: This code doesn't work for iOS 8.0+. Use PhotosKit instead.
-    
+
     CGImageRef imageRef = [representation fullResolutionImage];
     NSString *adjustment = [[representation metadata] objectForKey:@"AdjustmentXMP"];
     if (adjustment != nil) {

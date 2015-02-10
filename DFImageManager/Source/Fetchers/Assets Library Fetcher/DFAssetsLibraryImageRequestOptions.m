@@ -28,6 +28,7 @@
 - (instancetype)init {
     if (self = [super init]) {
         _imageSize = DFALAssetImageSizeFullscreen;
+        _version = DFALAssetVersionCurrent;
     }
     return self;
 }
@@ -35,6 +36,7 @@
 - (id)copyWithZone:(NSZone *)zone {
     DFAssetsLibraryImageRequestOptions *copy = [super copyWithZone:zone];
     copy.imageSize = self.imageSize;
+    copy.version = self.version;
     return copy;
 }
 

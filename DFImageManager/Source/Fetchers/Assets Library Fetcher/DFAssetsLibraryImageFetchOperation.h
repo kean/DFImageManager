@@ -31,6 +31,7 @@
 @interface DFAssetsLibraryImageFetchOperation : DFOperation
 
 @property (nonatomic) DFALAssetImageSize imageSize;
+@property (nonatomic) DFALAssetVersion version;
 
 @property (nonatomic, readonly) UIImage *image;
 @property (nonatomic, readonly) NSError *error;

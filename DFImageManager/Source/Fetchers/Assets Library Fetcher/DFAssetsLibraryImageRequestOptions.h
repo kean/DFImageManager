@@ -28,6 +28,12 @@
  */
 @interface DFAssetsLibraryImageRequestOptions : DFImageRequestOptions
 
+/*! Specifies which of the available representations of the ALAsset to use.
+ */
 @property (nonatomic) DFALAssetImageSize imageSize;
+
+/*! Options for requesting an image asset with or without adjustments, used by the version property.
+ */
+@property (nonatomic) DFALAssetVersion version;
 
 @end

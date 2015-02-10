@@ -40,3 +40,14 @@ typedef NS_ENUM(NSInteger, DFALAssetImageSize) {
      */
     DFALAssetImageSizeFullsize
 };
+
+
+typedef NS_ENUM(NSInteger, DFALAssetVersion) {
+    /*! Version with edits (aka adjustments) rendered or unadjusted version if there is no edits.
+     */
+    DFALAssetVersionCurrent,
+    
+    /*! Original version without any adjustments. It always returns the biggest, best representation available.
+     */
+    DFALAssetVersionUnadjusted
+};

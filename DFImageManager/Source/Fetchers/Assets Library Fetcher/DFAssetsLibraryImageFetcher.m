@@ -89,7 +89,8 @@ static inline NSURL *_ALAssetURL(id resource) {
     }
     DFAssetsLibraryImageRequestOptions *options1 = (id)request1.options;
     DFAssetsLibraryImageRequestOptions *options2 = (id)request1.options;
-    return options1.imageSize == options2.imageSize;
+    return (options1.imageSize == options2.imageSize &&
+            options1.version == options2.version);
 }
 
 - (DFALAssetImageSize)_assetImageSizeForRequest:(DFImageRequest *)request {
@@ -119,7 +120,10 @@ static inline NSURL *_ALAssetURL(id resource) {
     } else {
         operation = [[DFAssetsLibraryImageFetchOperation alloc] initWithAssetURL:(NSURL *)request.resource];
     }
-    operation.imageSize = [self _assetImageSizeForRequest:request];
+    DFAssetsLibraryImageRequestOptions *options = (id)request.options;
+    operation.imageSize = options.imageSize;
+    operation.version = options.version;
+    
     DFAssetsLibraryImageFetchOperation *__weak weakOp = operation;
     [operation setCompletionBlock:^{
         DFMutableImageResponse *response = [DFMutableImageResponse new];
