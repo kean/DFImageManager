@@ -53,6 +53,7 @@
 
 - (instancetype)initWithCache:(NSCache *)cache {
     if (self = [super init]) {
+        NSParameterAssert(cache);
         _cache = cache;
         _maximumEntryAge = INT_MAX;
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_didReceiveMemoryWarning:) name:UIApplicationDidReceiveMemoryWarningNotification object:nil];
