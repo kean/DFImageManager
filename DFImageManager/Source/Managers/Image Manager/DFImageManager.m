@@ -136,9 +136,10 @@
  */
 @interface _DFImageRequestKey : NSObject <NSCopying>
 
+@property (nonatomic, readonly, weak) DFImageManager *manager;
 @property (nonatomic, readonly) DFImageRequest *request;
 
-- (instancetype)initWithRequest:(DFImageRequest *)request fetcher:(id<DFImageFetching>)fetcher processor:(id<DFImageProcessing>)processor;
+- (instancetype)initWithManager:(DFImageManager *)manager request:(DFImageRequest *)request fetcher:(id<DFImageFetching>)fetcher processor:(id<DFImageProcessing>)processor;
 
 @end
 
@@ -149,8 +150,9 @@
     id<DFImageProcessing> _processor;
 }
 
-- (instancetype)initWithRequest:(DFImageRequest *)request fetcher:(id<DFImageFetching>)fetcher processor:(id<DFImageProcessing>)processor {
+- (instancetype)initWithManager:(DFImageManager *)manager request:(DFImageRequest *)request fetcher:(id<DFImageFetching>)fetcher processor:(id<DFImageProcessing>)processor {
     if (self = [super init]) {
+        _manager = manager;
         _request = request;
         _hash = [request.resource hash];
         _fetcher = fetcher;
@@ -171,6 +173,9 @@
     if (other == self) {
         return YES;
     }
+    if (other.manager != self.manager) {
+        return NO;
+    }
     if (![_fetcher isRequestEquivalent:self.request toRequest:other.request]) {
         return NO;
     }
@@ -183,8 +188,8 @@
 @end
 
 static inline _DFImageRequestKey *
-_DFImageRequestKeyCreate(DFImageRequest *request, id<DFImageFetching> fetcher, id<DFImageProcessing> processor) {
-    return [[_DFImageRequestKey alloc] initWithRequest:request fetcher:fetcher processor:processor];
+_DFImageKeyCreate(DFImageManager *manager, DFImageRequest *request, id<DFImageFetching> fetcher, id<DFImageProcessing> processor) {
+    return [[_DFImageRequestKey alloc] initWithManager:manager request:request fetcher:fetcher processor:processor];
 }
 
 
@@ -205,7 +210,7 @@ _DFImageRequestKeyCreate(DFImageRequest *request, id<DFImageFetching> fetcher, i
 @end
 
 
-#define DFImageCacheKeyCreate(request) _DFImageRequestKeyCreate(request, _fetcher, _processor)
+#define DFImageCacheKeyCreate(request) _DFImageKeyCreate(_manager, request, _fetcher, _processor)
 
 /*! Implements the entire flow of retrieving, processing and caching images. Requires synchronization from the user of the class.
  @note Not thread safe.
@@ -225,10 +230,11 @@ _DFImageRequestKeyCreate(DFImageRequest *request, id<DFImageFetching> fetcher, i
 
 @property (nonatomic, weak) id<_DFImageManagerTaskDelegate> delegate;
 
+@property (nonatomic, weak) DFImageManager *manager;
 @property (nonatomic) id<DFImageFetching> fetcher;
 @property (nonatomic) id<DFImageProcessing> processor;
-@property (nonatomic) id<DFImageCaching> cache;
 @property (nonatomic) id<DFImageManagingCore> processingManager;
+@property (nonatomic) id<DFImageCaching> cache;
 
 - (instancetype)initWithTaskID:(NSUUID *)taskID request:(DFImageRequest *)request NS_DESIGNATED_INITIALIZER;
 
@@ -397,7 +403,7 @@ _DFImageRequestKeyCreate(DFImageRequest *request, id<DFImageFetching> fetcher, i
 
 #pragma mark - DFImageManager -
 
-#define DFImageRequestKeyCreate(request) _DFImageRequestKeyCreate(request, _conf.fetcher, nil)
+#define DFImageRequestKeyCreate(request) _DFImageKeyCreate(self, request, _conf.fetcher, nil)
 
 @interface DFImageManager () <_DFImageManagerTaskDelegate>
 
@@ -479,6 +485,7 @@ _DFImageRequestKeyCreate(DFImageRequest *request, id<DFImageFetching> fetcher, i
     _DFImageManagerTask *task = _tasks[requestID.taskID];
     if (!task) {
         task = [[_DFImageManagerTask alloc] initWithTaskID:requestID.taskID request:request];
+        task.manager = self;
         task.fetcher = _conf.fetcher;
         task.processor = _conf.processor;
         task.cache = _conf.cache;
