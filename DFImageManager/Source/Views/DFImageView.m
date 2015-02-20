@@ -28,14 +28,10 @@
 #import "DFImageView.h"
 
 
-@implementation DFImageView {
-    DFCompositeImageRequest *_request;
-    UIView *_backgroundView;
-    UIImageView *_failureImageView;
-}
+@implementation DFImageView
 
 - (void)dealloc {
-    [self _df_cancelFetching];
+    [self _cancelFetching];
 }
 
 - (instancetype)initWithFrame:(CGRect)frame {
@@ -45,7 +41,7 @@
     return self;
 }
 
-- (instancetype)initWithCoder:(NSCoder *)aDecoder {
+- (id)initWithCoder:(NSCoder *)aDecoder {
     if (self = [super initWithCoder:aDecoder]) {
         [self _commonInit];
     }
@@ -53,49 +49,43 @@
 }
 
 - (void)_commonInit {
-    self.imageManager = [DFImageManager sharedManager];
-    
-    _animation = DFImageViewAnimationFade;
-    _contentMode = DFImageContentModeAspectFill;
-    _managesRequestPriorities = YES;
-    _placeholderColor = [UIColor colorWithWhite:235.f/255.f alpha:1.f];
+    self.contentMode = UIViewContentModeScaleAspectFill;
     self.clipsToBounds = YES;
     
-    _imageView = ({
-        UIImageView *view = [[UIImageView alloc] initWithFrame:self.bounds];
-        view.contentMode = UIViewContentModeScaleAspectFill;
-        view.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-        view.clipsToBounds = YES;
-        view;
-    });
+    self.imageManager = [DFImageManager sharedManager];
     
-    _backgroundView = ({
-        UIView *view = [[UIView alloc] initWithFrame:self.bounds];
-        view.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-        view.backgroundColor = self.placeholderColor;
-        view;
-    });
+    _imageTargetSize = CGSizeZero;
+    _imageContentMode = DFImageContentModeAspectFill;
+    _allowsAnimations = YES;
+    _managesRequestPriorities = YES;
+    _imageRequestOptions = [DFImageRequestOptions new];
     
-    [self addSubview:_backgroundView];
-    [self addSubview:_imageView];
+    self.delegate = self;
 }
 
-- (void)setPlaceholderColor:(UIColor *)placeholderColor {
-    _placeholderColor = placeholderColor;
-    _backgroundView.backgroundColor = placeholderColor;
+#pragma mark -
+
+- (void)prepareForReuse {
+    [self _cancelFetching];
+    _currentRequest = nil;
+    self.image = nil;
 }
 
-- (CGSize)targetSize {
-    if (CGSizeEqualToSize(CGSizeZero, _targetSize)) {
+- (void)_cancelFetching {
+    [_currentRequest cancel];
+}
+
+- (CGSize)imageTargetSize {
+    if (CGSizeEqualToSize(CGSizeZero, _imageTargetSize)) {
         CGSize size = self.bounds.size;
         CGFloat scale = [UIScreen mainScreen].scale;
         return CGSizeMake(size.width * scale, size.height * scale);
     }
-    return _targetSize;
+    return _imageTargetSize;
 }
 
 - (void)setImageWithResource:(id)resource {
-    [self setImageWithResource:resource targetSize:self.targetSize contentMode:self.contentMode options:nil];
+    [self setImageWithResource:resource targetSize:self.imageTargetSize contentMode:self.imageContentMode options:self.imageRequestOptions];
 }
 
 - (void)setImageWithResource:(id)resource targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options {
@@ -103,95 +93,37 @@
     if (resource != nil) {
         request = [[DFImageRequest alloc] initWithResource:resource targetSize:targetSize contentMode:contentMode options:options];
     }
+    [self setImageWithRequest:request];
+}
+
+- (void)setImageWithRequest:(DFImageRequest *)request {
     [self setImagesWithRequests:(request != nil) ? @[request] : nil];
 }
 
 - (void)setImagesWithRequests:(NSArray *)requests {
-    [self prepareForReuse];
+    [self _cancelFetching];
     
-    if (!requests.count) {
-        self.failureImageView.hidden = NO;
-        return;
-    }
-    
-    if (self.managesRequestPriorities) {
-        for (DFImageRequest *request in requests) {
-            request.options.priority = (self.window == nil) ? DFImageRequestPriorityNormal : DFImageRequestPriorityVeryHigh;
-        }
+    if ([self.delegate respondsToSelector:@selector(imageView:willStartFetchingImagesForRequests:)]) {
+        [self.delegate imageView:self willStartFetchingImagesForRequests:requests];
     }
     
-    DFImageView *__weak weakSelf = self;
-    NSTimeInterval startTime = CACurrentMediaTime();
-    _request = [[DFCompositeImageRequest alloc] initWithRequests:requests handler:^(UIImage *image, NSDictionary *info, BOOL isLastRequest) {
-        NSError *error = info[DFImageInfoErrorKey];
-        if (image != nil) {
-            [weakSelf requestDidFinishWithImage:image info:info elapsedTime:CACurrentMediaTime() - startTime];
-        } else if (!self.imageView.image){
-            [weakSelf requestDidFailWithError:error info:info];
-        } else {
-            // Do nothing.
+    if (requests.count > 0) {
+        if (self.managesRequestPriorities) {
+            for (DFImageRequest *request in requests) {
+                request.options.priority = (self.window == nil) ? DFImageRequestPriorityNormal : DFImageRequestPriorityVeryHigh;
+            }
         }
-    }];
-    [_request start];
-}
-
-- (void)requestDidFinishWithImage:(UIImage *)image info:(NSDictionary *)info elapsedTime:(NSTimeInterval)elapsedTime {
-    BOOL isFastResponse = (elapsedTime * 1000.0) < 33.2; // Elapsed time is lower then 32 ms.
-    DFImageViewAnimation animation = DFImageViewAnimationNone;
-    if (self.animation != DFImageViewAnimationNone) {
-        if (self.imageView.image != nil) {
-            animation = DFImageViewAnimationNone;
-        } else {
-            animation = isFastResponse ? DFImageViewAnimationNone : _animation;
-        }
-    }
-    [self _df_setImage:image withAnimation:animation];
-}
-
-#pragma mark - Handling Failure
-
-- (UIImageView *)failureImageView {
-    if (!self.failureImage) {
-        return nil;
-    }
-    if (!_failureImageView) {
-        UIImageView *imageView = [[UIImageView alloc] initWithFrame:self.bounds];
-        imageView.contentMode = UIViewContentModeCenter;
-        imageView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-        imageView.image = self.failureImage;
-        imageView.hidden = YES;
-        _failureImageView = imageView;
-        [self addSubview:_failureImageView];
-    }
-    return _failureImageView;
-}
-
-- (void)setFailureImage:(UIImage *)failureImage {
-    _failureImage = failureImage;
-    _failureImageView.image = failureImage;
-}
-
-- (void)requestDidFailWithError:(NSError *)error info:(NSDictionary *)info {
-    if (self.imageView.image != nil) {
-        self.failureImageView.hidden = NO;
+        
+        DFImageView *__weak weakSelf = self;
+        _currentRequest = [self createCompositeImageRequestForRequests:requests handler:^(UIImage *image, NSDictionary *info, DFImageRequest *request) {
+            [weakSelf.delegate imageView:weakSelf didCompleteRequest:request withImage:image info:info];
+        }];
+        [_currentRequest start];
     }
 }
 
-#pragma mark - Reuse
-
-- (void)prepareForReuse {
-    self.imageView.image = nil;
-    _failureImageView.hidden = YES;
-    _backgroundView.alpha = 1.f;
-    [self _df_cancelFetching];
-    _request = nil;
-    [self.layer removeAllAnimations];
-    [_backgroundView.layer removeAllAnimations];
-    [_imageView.layer removeAllAnimations];
-}
-
-- (void)_df_cancelFetching {
-    [_request cancel];
+- (DFCompositeImageRequest *)createCompositeImageRequestForRequests:(NSArray *)requests handler:(void (^)(UIImage *, NSDictionary *, DFImageRequest *))handler {
+    return [[DFCompositeImageRequest alloc] initWithRequests:requests handler:handler];
 }
 
 #pragma mark - Priorities
@@ -200,63 +132,26 @@
     [super willMoveToWindow:newWindow];
     if (self.managesRequestPriorities) {
         DFImageRequestPriority priority = (newWindow == nil) ? DFImageRequestPriorityNormal : DFImageRequestPriorityVeryHigh;
-        [_request setPriority:priority];
+        [_currentRequest setPriority:priority];
     }
 }
 
-#pragma mark - Animation
+#pragma mark - <DFImageViewDelegate>
 
-- (void)setImage:(UIImage *)image {
-    [self _df_setImage:image withAnimation:DFImageViewAnimationNone];
-}
-
-- (void)_df_setImage:(UIImage *)image withAnimation:(DFImageViewAnimation)animationType {
-    self.imageView.image = image;
-    switch (animationType) {
-        case DFImageViewAnimationNone:
-            _backgroundView.alpha = 0.f;
-            break;
-        case DFImageViewAnimationFade: {
-            [self.imageView.layer addAnimation:({
-                CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"opacity"];
-                animation.keyPath = @"opacity";
-                animation.fromValue = @0.f;
-                animation.toValue = @1.f;
-                animation.duration = 0.2f;
-                animation;
-            }) forKey:@"opacity"];
-            
-            _backgroundView.alpha = 0.f;
-            [_backgroundView.layer addAnimation:({
-                CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"opacity"];
-                animation.keyPath = @"opacity";
-                animation.fromValue = @1.f;
-                animation.toValue = @0.f;
-                animation.duration = 0.3f;
-                animation;
-            }) forKey:@"opacity"];
-        }
-            break;
-        case DFImageViewAnimationCrossDissolve: {
-            [UIView transitionWithView:self.imageView
-                              duration:0.2f
-                               options:UIViewAnimationOptionTransitionCrossDissolve
-                            animations:nil
-                            completion:nil];
-            
-            _backgroundView.alpha = 0.f;
-            [_backgroundView.layer addAnimation:({
-                CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"opacity"];
-                animation.keyPath = @"opacity";
-                animation.fromValue = @1.f;
-                animation.toValue = @0.f;
-                animation.duration = 0.3f;
-                animation;
-            }) forKey:@"opacity"];
-        }
-            break;
-        default:
-            break;
+- (void)imageView:(DFImageView *)imageView didCompleteRequest:(DFImageRequest *)request withImage:(UIImage *)image info:(NSDictionary *)info {
+    BOOL isFastResponse = (_currentRequest.elapsedTime * 1000.0) < 64.f; // Elapsed time is lower then 64 ms.
+    if (self.allowsAnimations && !isFastResponse && !self.image) {
+        self.image = image;
+        [self.layer addAnimation:({
+            CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"opacity"];
+            animation.keyPath = @"opacity";
+            animation.fromValue = @0.f;
+            animation.toValue = @1.f;
+            animation.duration = 0.25f;
+            animation;
+        }) forKey:@"opacity"];
+    } else {
+        self.image = image;
     }
 }
 

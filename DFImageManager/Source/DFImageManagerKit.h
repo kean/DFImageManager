@@ -66,7 +66,9 @@
 
 // UI
 
+#import "UIImageView+DFImageManager.h"
 #import "DFImageView.h"
+#import "DFImageContainerView.h"
 
 // Utilities
 

@@ -23,64 +23,89 @@
 #import "DFImageManaging.h"
 #import <UIKit/UIKit.h>
 
+@class DFCompositeImageRequest;
+@class DFImageRequest;
 @class DFImageRequestOptions;
-
-typedef NS_ENUM(NSUInteger, DFImageViewAnimation) {
-   DFImageViewAnimationNone,
-   DFImageViewAnimationFade,
-   DFImageViewAnimationCrossDissolve
-};
+@class DFImageView;
 
 
-/*! Implements most of the basic functionality required to fetch images and then display them with animation.
+/*! A class conforming to the DFImageViewDelegate protocol provides method for displaying fetched images and reacting to failures.
  */
-@interface DFImageView : UIView
+@protocol DFImageViewDelegate <NSObject>
 
-@property (nonatomic) id<DFImageManagingCore> imageManager;
-
-@property (nonatomic) CGSize targetSize;
-
-@property (nonatomic) DFImageContentMode contentMode;
-
-@property (nonatomic) DFImageViewAnimation animation;
-
-/*! Placeholder color is displayed when the image is being loaded. It doesn't interfere with the background color of the view so that the images that has transparency are displayed properly.
+/*! Method gets called every time the completion block of the composite request used by DFImageView is called. 
+ @note Might be called multiple times depending on the number of requests composite request options.
  */
-@property (nonatomic) UIColor *placeholderColor;
+- (void)imageView:(DFImageView *)imageView didCompleteRequest:(DFImageRequest *)request withImage:(UIImage *)image info:(NSDictionary *)info;
 
-/*! Automatically changes image request priorities when image view gets added/removed from the window. Default value is YES.
+@optional
+/*! Method gets called right after the image view receives image requests. The requests array might be either nil or empty.
  */
-@property (nonatomic) BOOL managesRequestPriorities;
-
-/*! Image that gets displayed when either the request failes or when a given resource is nil.
- */
-@property (nonatomic) UIImage *failureImage;
-
-@property (nonatomic, readonly) UIImageView *imageView;
-
-/*! Lazily creates and returns failure image view. The property is made public so that you can modify view's behavior. For example, you might want to change it's layout or content mode.
- */
-@property (nonatomic, readonly) UIImageView *failureImageView;
-
-- (void)setImage:(UIImage *)image;
-
-- (void)setImageWithResource:(id)resource;
-- (void)setImageWithResource:(id)resource targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options;
-
-/*! Starts composite request with a given requests. For more info see DFCompositeImageRequest.
- */
-- (void)setImagesWithRequests:(NSArray /* DFImageRequest */ *)requests;
-
-- (void)prepareForReuse;
+- (void)imageView:(DFImageView *)imageView willStartFetchingImagesForRequests:(NSArray /*! DFImageRequest */ *)requests;
 
 @end
 
 
-/*! Subclassing hooks are method intended to be overrided in case you want to extend/or change default behavior of DFImageView. You don't have to call super if you override one of this methods.
+/*! An image view extends UIImageView class with image fetching functionality. It also adds other features like managing request priorities, retrying failed requests and more.
  */
-@interface DFImageView (SubclassingHooks)
+@interface DFImageView : UIImageView <DFImageViewDelegate>
 
-- (void)requestDidFinishWithImage:(UIImage *)image info:(NSDictionary *)info;
-- (void)requestDidFailWithError:(NSError *)error info:(NSDictionary *)info;
+/*! Image manager used by the image view. Set to the shared manager during initialization.
+ */
+@property (nonatomic) id<DFImageManagingCore> imageManager;
+
+/*! Image target size  used for image requests when target size is not present in -setImageWith... method that was called.. Returns current view pixel size when the value is CGSizeZero.
+ */
+@property (nonatomic) CGSize imageTargetSize;
+
+/*! Image content mode used for image requests when content mode is not present in -setImageWith... method that was called. Default value is DFImageContentModeAspectFill.
+ */
+@property (nonatomic) DFImageContentMode imageContentMode;
+
+/*! Image request options used for image requests when options are no present in -setImageWith... method that was called.
+ */
+@property (nonatomic) DFImageRequestOptions *imageRequestOptions;
+
+/*! Automatically changes current request priority when image view gets added/removed from the window. Default value is YES.
+ */
+@property (nonatomic) BOOL managesRequestPriorities;
+
+/*! Set to YES to allow image view to animate image changes when necessary. Default is YES.
+ */
+@property (nonatomic) BOOL allowsAnimations;
+
+/*! Image view delegate. By default delegate is set to the image view itself. The implementation displays fetched images with animation when necessary.
+ */
+@property (nonatomic, weak) id<DFImageViewDelegate> delegate;
+
+/*! Performs any clean up necessary to prepare the view for use again. Removes currently displayed image and cancels all requests registered with a receiver.
+ */
+- (void)prepareForReuse;
+
+/*! Returns current composite image request.
+ */
+@property (nonatomic, readonly) DFCompositeImageRequest *currentRequest;
+
+/*! Requests an image representation with a target size, image content mode and request options of the receiver. For more info see setImagesWithRequests: method.
+ */
+- (void)setImageWithResource:(id)resource;
+
+/*! Requests an image representation for the specified resource. For more info see setImagesWithRequests: method.
+ */
+- (void)setImageWithResource:(id)resource targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options;
+
+/*! Requests an image representation for the specified request. For more info see setImagesWithRequests: method.
+ */
+- (void)setImageWithRequest:(DFImageRequest *)request;
+
+/*! Requests an image representation for each of the specified requests.
+ @note When the method is called image view cancels current composite request and starts a new composite request with a given image requests. For more info see DFCompositeImageRequest.
+ @note This method doesn't call -prepareForReuse in case you need to refresh image without invalidating previously displayed image.
+ */
+- (void)setImagesWithRequests:(NSArray /* DFImageRequest */ *)requests;
+
+/*! Creates composite image request for given requests. Subclasses may override this method to customize composite request.
+ */
+- (DFCompositeImageRequest *)createCompositeImageRequestForRequests:(NSArray /* DFImageRequest */ *)requests handler:(void (^)(UIImage *image, NSDictionary *info, DFImageRequest *request))handler;
 
 @end

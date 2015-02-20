@@ -171,19 +171,20 @@ static NSString * const reuseIdentifier = @"Cell";
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifier forIndexPath:indexPath];
+    cell.backgroundColor = [UIColor colorWithWhite:0.1f alpha:1.f];
     
     DFImageView *imageView = (id)[cell viewWithTag:15];
     if (!imageView) {
         imageView = [[DFImageView alloc] initWithFrame:cell.bounds];
         imageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         imageView.tag = 15;
-        imageView.placeholderColor = [UIColor colorWithWhite:0.1f alpha:1.f];
         [cell addSubview:imageView];
     }
     
     PHFetchResult *result = _assets[indexPath.section];
     PHAsset *asset = result[indexPath.item];
     
+    [imageView prepareForReuse];
     [imageView setImageWithResource:asset targetSize:[self _imageTargetSize] contentMode:DFImageContentModeAspectFill options:nil];
 
     return cell;

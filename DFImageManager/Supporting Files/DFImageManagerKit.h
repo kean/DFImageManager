@@ -62,7 +62,9 @@ FOUNDATION_EXPORT const unsigned char DFImageManagerFrameworkVersionString[];
 
 // UI
 
+#import <DFImageManagerKit/UIImageView+DFImageManager.h>
 #import <DFImageManagerKit/DFImageView.h>
+#import <DFImageManagerKit/DFImageContainerView.h>
 
 // Utilities
 

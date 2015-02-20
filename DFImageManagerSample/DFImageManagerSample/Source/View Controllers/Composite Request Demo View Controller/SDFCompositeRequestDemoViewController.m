@@ -57,6 +57,7 @@ static NSString * const reuseIdentifier = @"Cell";
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifier forIndexPath:indexPath];
+    cell.backgroundColor = [UIColor colorWithWhite:235.f/255.f alpha:1.f];
     
     DFImageView *imageView = (id)[cell viewWithTag:15];
     if (!imageView) {
@@ -70,9 +71,10 @@ static NSString * const reuseIdentifier = @"Cell";
     
     DFImageRequest *requestWithSmallURL = [[DFImageRequest alloc] initWithResource:[NSURL URLWithString:photo.photoURLSmall] targetSize:DFImageMaximumSize contentMode:DFImageContentModeAspectFill options:nil];
     
-    DFImageRequest *requestWithBigURL = [[DFImageRequest alloc] initWithResource:[NSURL URLWithString:photo.photoURLBig] targetSize:imageView.targetSize contentMode:DFImageContentModeAspectFill options:nil];
+    DFImageRequest *requestWithBigURL = [[DFImageRequest alloc] initWithResource:[NSURL URLWithString:photo.photoURLBig] targetSize:imageView.imageTargetSize contentMode:DFImageContentModeAspectFill options:nil];
     
-    [imageView setImagesWithRequests:@[ requestWithSmallURL, requestWithBigURL] ];
+    [imageView prepareForReuse];
+    [imageView setImagesWithRequests:@[ requestWithSmallURL, requestWithBigURL ] ];
     
     return cell;
 }

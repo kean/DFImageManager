@@ -93,6 +93,7 @@ static NSString * const reuseIdentifier = @"Cell";
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifier forIndexPath:indexPath];
+    cell.backgroundColor = [UIColor colorWithWhite:235.f/255.f alpha:1.f];
     
     DFImageView *imageView = (id)[cell viewWithTag:15];
     if (!imageView) {
@@ -103,6 +104,7 @@ static NSString * const reuseIdentifier = @"Cell";
     }
     
     ALAsset *asset = _photos[indexPath.row];
+    [imageView prepareForReuse];
     [imageView setImageWithResource:asset];
 
     return cell;
