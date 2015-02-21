@@ -23,20 +23,34 @@
 #import "DFImageManagerDefines.h"
 
 
+/*! You use a DFImageRequestOptions object to specify options when requesting image representations of resources using classes conforming DFImageManaging protocol.
+ @note Some classes that implement DFImageManaging protocol might want to extend the base options by providing subclasses of the DFImageRequestOptions class.
+ */
 @interface DFImageRequestOptions : NSObject <NSCopying>
 
-/*! Fetch request priority. Translates to NSOperationQueuePriority.
+/*! Image request priority. Default value is DFImageRequestPriorityNormal.
  */
 @property (nonatomic) DFImageRequestPriority priority;
 
+/*! A Boolean value that specifies whether image manager can download the requested image using network connection. Default value is YES.
+ */
 @property (nonatomic) BOOL allowsNetworkAccess;
 
-/*! Allows some portion of the image content to be clipped when filling the content to target size. Only works with DFImageContentModeAspectFill. Default value is NO. 
+/*! IF YES allows some portion of the image content to be clipped when filling the content to target size. Only works with DFImageContentModeAspectFill. Default value is NO.
  */
 @property (nonatomic) BOOL allowsClipping;
 
+/*! The amount of time to elapse before memory-cached images associated with a request are considered to have expired. Default value is 600.0 seconds.
+ @warning This property doesn't affect caching implemented in a classes conforming to DFImageFetching protocol (for example, NSURLSession caching)! For more info see DFImageCaching protocol and DFCachedImage class.
+ */
+@property (nonatomic) NSTimeInterval expirationAge;
+
+/*! A dictionary containing image manager-specific data pertaining to the receiver. Default value is nil.
+ */
 @property (nonatomic) NSDictionary *userInfo;
 
+/*! Initializes DFImageRequestOptions with another instance of request options.
+ */
 - (instancetype)initWithOptions:(DFImageRequestOptions *)options;
 
 @end

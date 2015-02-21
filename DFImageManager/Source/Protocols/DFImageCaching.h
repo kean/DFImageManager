@@ -23,13 +23,23 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
+@class DFCachedImage;
+
 
 /*! Cache for storing images into memory.
  */
 @protocol DFImageCaching <NSObject>
 
-- (UIImage *)cacheImageForKey:(id<NSCopying>)key;
-- (void)storeImage:(UIImage *)image forKey:(id<NSCopying>)key;
+/*! Returns the cached image associated with a given key.
+ */
+- (DFCachedImage *)cachedImageForKey:(id<NSCopying>)key;
+
+/*! Stores the cached image for the given key.
+ */
+- (void)storeImage:(DFCachedImage *)image forKey:(id<NSCopying>)key;
+
+/*! Removes all cached images.
+ */
 - (void)removeAllObjects;
 
 @end

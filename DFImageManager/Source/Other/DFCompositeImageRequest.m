@@ -78,7 +78,7 @@
     
     // Iterate through the 'left' subarray and cancel obsolete requests
     if (self.allowsObsoleteRequests) {
-        for (NSInteger i = 0; i < [_requests indexOfObject:request]; i++) {
+        for (NSUInteger i = 0; i < [_requests indexOfObject:request]; i++) {
             DFImageRequest *obsoleteRequest = _requests[i];
             if (![_completedRequests containsObject:obsoleteRequest] && [self shouldCancelObsoleteRequest:obsoleteRequest]) {
                 [self cancelRequest:obsoleteRequest];
@@ -95,7 +95,7 @@
 
 - (BOOL)shouldCallCompletionHandlerForRequest:(DFImageRequest *)request image:(UIImage *)image info:(NSDictionary *)info {
     // Iterate throught the 'right' subarray of requests
-    for (NSInteger i = [_requests indexOfObject:request] + 1; i < _requests.count; i++) {
+    for (NSUInteger i = [_requests indexOfObject:request] + 1; i < _requests.count; i++) {
         if ([_completedRequests containsObject:_requests[i]]) {
             return NO;
         }

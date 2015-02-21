@@ -20,18 +20,17 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "DFImageCaching.h"
-#import <Foundation/Foundation.h>
+#import "DFCachedImage.h"
 
 
-/*! Memory cache implementation that is built on top of NSCache and adds more functionality to it, like expiration of cached entries, automatic cleanup on memory warnings and more.
- */
-@interface DFImageCache : NSObject <DFImageCaching>
+@implementation DFCachedImage
 
-/*! Initializes image cache with an instance of NSCache class. Cache shouldn't be nil.
- */
-- (instancetype)initWithCache:(NSCache *)cache NS_DESIGNATED_INITIALIZER;
-
-@property (nonatomic, readonly) NSCache *cache;
+- (instancetype)initWithImage:(UIImage *)image expirationDate:(NSTimeInterval)expirationDate {
+    if (self = [super init]) {
+        _image = image;
+        _expirationDate = expirationDate;
+    }
+    return self;
+}
 
 @end

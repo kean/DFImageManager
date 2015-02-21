@@ -20,6 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+#import "DFCachedImage.h"
 #import "DFImageCaching.h"
 #import "DFImageFetching.h"
 #import "DFImageManager.h"
@@ -273,10 +274,10 @@ _DFImageKeyCreate(DFImageManager *manager, DFImageRequest *request, id<DFImageFe
     _isExecuting = YES;
     
     for (_DFImageManagerHandler *handler in [self.handlers allValues]) {
-        UIImage *image = [_cache cacheImageForKey:DFImageCacheKeyCreate(handler.request)];
-        if (image != nil) {
+        DFCachedImage *cachedImage = [_cache cachedImageForKey:DFImageCacheKeyCreate(handler.request)];
+        if (cachedImage != nil) {
             // Fullfill request with image from memory cache
-            [self _didProcessResponse:[[DFImageResponse alloc] initWithImage:image] forHandler:handler];
+            [self _didProcessResponse:[[DFImageResponse alloc] initWithImage:cachedImage.image] forHandler:handler];
         }
     }
     // Start fetching if not all requests were fulfilled by memory cache
@@ -288,10 +289,10 @@ _DFImageKeyCreate(DFImageManager *manager, DFImageRequest *request, id<DFImageFe
 - (void)addHandler:(_DFImageManagerHandler *)handler {
     _handlers[handler.requestID.handlerID] = handler;
     if (self.isExecuting) {
-        UIImage *image = [_cache cacheImageForKey:DFImageCacheKeyCreate(handler.request)];
-        if (image != nil) {
+        DFCachedImage *cachedImage =[_cache cachedImageForKey:DFImageCacheKeyCreate(handler.request)];
+        if (cachedImage != nil) {
             // Fullfill request with image from memory cache
-            [self _didProcessResponse:[[DFImageResponse alloc] initWithImage:image] forHandler:handler];
+            [self _didProcessResponse:[[DFImageResponse alloc] initWithImage:cachedImage.image] forHandler:handler];
         } else if (_response != nil) {
             // Start image processing if task already has original image
             [self _processResponseForHandler:handler];
@@ -338,27 +339,33 @@ _DFImageKeyCreate(DFImageManager *manager, DFImageRequest *request, id<DFImageFe
         }];
     } else {
         if (_response.image != nil) {
-            [_cache storeImage:_response.image forKey:DFImageCacheKeyCreate(handler.request)];
+            [self _storeImage:_response.image forRequest:handler.request];
         }
         [self _didProcessResponse:[_response copy] forHandler:handler];
     }
 }
 
 - (void)_processImage:(UIImage *)input forHandler:(_DFImageManagerHandler *)handler completion:(void (^)(UIImage *image))completion {
-    UIImage *cachedImage = [_cache cacheImageForKey:DFImageCacheKeyCreate(handler.request)];
+    DFCachedImage *cachedImage = [_cache cachedImageForKey:DFImageCacheKeyCreate(handler.request)];
     if (cachedImage != nil) {
-        completion(cachedImage);
+        completion(cachedImage.image);
     } else {
         DFImageRequest *processingRequest = [handler.request copy];
         processingRequest.resource = [[DFProcessingInput alloc] initWithImage:input identifier:[self.taskID UUIDString]];
+        _DFImageManagerTask *__weak weakSelf = self;
         DFImageRequestID *requestID = [_processingManager requestImageForRequest:processingRequest completion:^(UIImage *processedImage, NSDictionary *info) {
-            [_cache storeImage:processedImage forKey:DFImageCacheKeyCreate(handler.request)];
+            [weakSelf _storeImage:processedImage forRequest:handler.request];
             completion(processedImage);
         }];
         if (requestID != nil) {
             _processingRequestIDs[handler.requestID.handlerID] = requestID;
         }
     }
+}
+
+- (void)_storeImage:(UIImage *)image forRequest:(DFImageRequest *)request {
+    DFCachedImage *cachedImage = [[DFCachedImage alloc] initWithImage:_response.image expirationDate:(CACurrentMediaTime() + request.options.expirationAge)];
+    [_cache storeImage:cachedImage forKey:DFImageCacheKeyCreate(request)];
 }
 
 - (void)_didProcessResponse:(DFImageResponse *)response forHandler:(_DFImageManagerHandler *)handler {

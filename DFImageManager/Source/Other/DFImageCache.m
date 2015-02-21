@@ -20,29 +20,9 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+#import "DFCachedImage.h"
 #import "DFImageCache.h"
 #import "NSCache+DFImageManager.h"
-
-
-@interface _DFImageCacheEntry : NSObject
-
-@property (nonatomic) UIImage *image;
-@property (nonatomic) NSTimeInterval creationDate;
-
-+ (instancetype)entryWithImage:(UIImage *)image;
-
-@end
-
-@implementation _DFImageCacheEntry
-
-+ (instancetype)entryWithImage:(UIImage *)image {
-    _DFImageCacheEntry *entry = [_DFImageCacheEntry new];
-    entry.image = image;
-    entry.creationDate = CACurrentMediaTime();
-    return entry;
-}
-
-@end
 
 
 @implementation DFImageCache
@@ -55,7 +35,6 @@
     if (self = [super init]) {
         NSParameterAssert(cache);
         _cache = cache;
-        _maximumEntryAge = INT_MAX;
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_didReceiveMemoryWarning:) name:UIApplicationDidReceiveMemoryWarningNotification object:nil];
     }
     return self;
@@ -69,24 +48,22 @@
 
 #pragma mark - <DFImageCaching>
 
-- (UIImage *)cacheImageForKey:(id<NSCopying>)key {
-    if (key != nil) {
-        _DFImageCacheEntry *entry = [_cache objectForKey:key];
-        if (entry != nil) {
-            if (CACurrentMediaTime() - entry.creationDate < self.maximumEntryAge) {
-                return entry.image;
-            } else {
-                [_cache removeObjectForKey:key];
-            }
+- (DFCachedImage *)cachedImageForKey:(id<NSCopying>)key {
+    DFCachedImage *cachedImage = [_cache objectForKey:key];
+    if (cachedImage != nil) {
+        if (cachedImage.expirationDate > CACurrentMediaTime()) {
+            return cachedImage;
+        } else {
+            [_cache removeObjectForKey:key];
         }
     }
     return nil;
 }
 
-- (void)storeImage:(UIImage *)image forKey:(id<NSCopying>)key {
-    if (image != nil && key != nil) {
-        NSUInteger cost = [self _costForImage:image];
-        [_cache setObject:[_DFImageCacheEntry entryWithImage:image] forKey:key cost:cost];
+- (void)storeImage:(DFCachedImage *)cachedImage forKey:(id<NSCopying>)key {
+    if (cachedImage != nil && key != nil) {
+        NSUInteger cost = [self _costForImage:cachedImage.image];
+        [_cache setObject:cachedImage forKey:key cost:cost];
     }
 }
 
