@@ -53,4 +53,10 @@
     return [NSString stringWithFormat:@"<%@ %p> { resource = %@, targetSize = %@, contentMode = %i, options = %@ }", [self class], self, self.resource, NSStringFromCGSize(self.targetSize), (int)self.contentMode, self.options];
 }
 
++ (CGSize)targetSizeForView:(UIView *)view {
+    CGSize size = view.bounds.size;
+    CGFloat scale = [UIScreen mainScreen].scale;
+    return CGSizeMake(size.width * scale, size.height * scale);
+}
+
 @end

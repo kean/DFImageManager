@@ -55,4 +55,8 @@
 - (instancetype)initWithResource:(id)resource targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options NS_DESIGNATED_INITIALIZER;
 - (instancetype)initWithResource:(id)resource;
 
+/*! Returns image target size (in pixels) for a given view.
+ */
++ (CGSize)targetSizeForView:(UIView *)view;
+
 @end
