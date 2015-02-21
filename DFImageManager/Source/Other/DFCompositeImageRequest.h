@@ -25,11 +25,28 @@
 #import <UIKit/UIKit.h>
 
 @class DFImageRequest;
+@class DFImageRequestID;
 @protocol DFImageManagingCore;
 
 
-/*! Manages execution of multiple image requests. Provides a single completion block that gets called multiple times (similar to PHImageManager completion handler for opportunistic requests).
- @note By default doesn't call completion for completed requests that became obsolete. The request is treated as obsolete if there is at least one completed request in the 'right' subarray of the requests. This behavior can be disabled by settings allowsObsoleteRequests property to NO. The further customization is available via -shouldCallCompletionHandlerForRequest:image:info: and -shouldCancelObsoleteRequest: methods.
+/*! The execution context of the image request inside the composite request.
+ */
+@interface DFCompositeImageRequestContext : NSObject
+
+@property (nonatomic, readonly) DFImageRequestID *requestID;
+@property (nonatomic, readonly) BOOL isCompleted;
+@property (nonatomic, readonly) UIImage *image;
+@property (nonatomic, readonly) NSDictionary *info;
+
+/*! Initializes context with a given request ID, which might be nil.
+ */
+- (instancetype)initWithRequestID:(DFImageRequestID *)requestID NS_DESIGNATED_INITIALIZER;
+
+@end
+
+
+/*! Manages execution of multiple image requests. Provides a single completion block that gets called multiple times (similar to PHImageManager completion handler for opportunistic requests). All requests are executed concurrently.
+ @note By default, DFCompositeImageRequest does not call its completion handler for each of the completed requests. Instead, it does just what you would expect - it treats the array of the requests as if the last request was the final image that you would want to display, while the others were the placeholders. The completion handler is guaranteed to be called at least once, even if all of the requests have failed. It also automatically cancels obsolete requests. The entire behavior can be disabled by setting allowsObsoleteRequests property to NO before starting the composite request.
  */
 @interface DFCompositeImageRequest : NSObject
 
@@ -41,11 +58,7 @@
  */
 @property (nonatomic, copy, readonly) NSArray /* DFImageRequest */ *requests;
 
-/*! Array of completed requests.
- */
-@property (nonatomic, copy, readonly) NSArray /* DFImageRequest */ *completedRequests;
-
-/*! The time the request was started (in seconds).
+/*! The time when the request was started (in seconds).
  */
 @property (nonatomic, readonly) NSTimeInterval startTime;
 
@@ -77,13 +90,20 @@
  */
 - (void)cancel;
 
-/*! Cancels given request. Request should be contained the receiver's array of the requests.
+/*! Cancels the given request.
+ @param request Request should be contained by the receiver's array of the requests.
  */
 - (void)cancelRequest:(DFImageRequest *)request;
 
-/*! Cancels given requests. Requests should be contained the receiver's array of the requests.
+/*! Cancels the given requests.
+ @param requests Requests should be contained by the receiver's array of the requests.
  */
 - (void)cancelRequests:(NSArray /* DFImageRequest */ *)requests;
+
+/*! Returns execution context for the given request. 
+ @param request Request should be contained by the receiver's array of the requests.
+ */
+- (DFCompositeImageRequestContext *)contextForRequest:(DFImageRequest *)request;
 
 /*! Sets the priority for all the requests registered with a receiver.
  */
@@ -92,13 +112,27 @@
 @end
 
 
-@interface DFCompositeImageRequest (SubclassingHooks)
-
-/*! Returns YES in case the composite image request completion handler should be called for the completed request. Default implementation returns YES in case there are no other completed requests in the 'right' requests subarray relative to the given request.
+/*! Methods used during obsolete requests handling.
  */
-- (BOOL)shouldCallCompletionHandlerForRequest:(DFImageRequest *)request image:(UIImage *)image info:(NSDictionary *)info;
+@interface DFCompositeImageRequest (ObsoleteRequests)
 
-/*! Return YES in case the obsolete request should be canceled. Requests become obsolete when there are any completed requests in the 'right' subarray of requests relative to the given request. Default implementation always returns YES.
+/*! Returns YES if the request is completed successfully. The request is considered successful if the image was fetched.
+ @param request Request should be contained by the receiver's array of the requests.
+ */
+- (BOOL)isRequestSuccessful:(DFImageRequest *)request;
+
+/*! Returns YES if the request is obsolete. The request is considered obsolete if there is at least one successfully completed request in the 'right' subarray of the requests.
+ @param request Request should be contained by the receiver's array of the requests.
+ */
+- (BOOL)isRequestObsolete:(DFImageRequest *)request;
+
+/*! Returns YES if all the requests are completed.
+ @param request Request should be contained by the receiver's array of the requests.
+ */
+- (BOOL)isRequestFinal:(DFImageRequest *)request;
+
+/*! Return YES in case the obsolete request should be canceled. Default implementation always returns YES.
+ @param request Request should be contained by the receiver's array of the requests.
  */
 - (BOOL)shouldCancelObsoleteRequest:(DFImageRequest *)request;
 
