@@ -24,9 +24,36 @@
 #import "DFImageFetching.h"
 #import <Foundation/Foundation.h>
 
+@class DFURLImageFetcher;
+
+
 /*! A URL response received by the URL loading system (NSURLRequest). Clients may use it to retrieve HTTP status code and other metadata associated with a URL load.
  */
 extern NSString *const DFImageInfoURLResponseKey;
+
+/*! The DFURLImageFetcherDelegate protocol describes the methods that DFURLImageFetcher objects call on their delegates to customize its behavior.
+ */
+@protocol DFURLImageFetcherDelegate <NSObject>
+
+@optional
+
+/*! Sent before the DFURLImageFetcher creates a DFURLSessionOperation for load.
+ @param fetcher The image fetcher sending the message.
+ @param imageRequest The image request.
+ @param URLRequest The proposed URL request to used for image load.
+ @return The delegate may return modified, unmodified NSURLResponse or create NSURLResponse from scratch.
+ */
+- (NSURLRequest *)URLImageFetcher:(DFURLImageFetcher *)fetcher URLRequestForImageRequest:(DFImageRequest *)imageRequest URLRequest:(NSURLRequest *)URLRequest;
+
+/*! Creates operation for a given request.
+ */
+- (DFURLSessionOperation *)URLImageFetcher:(DFURLImageFetcher *)fetcher operationForImageRequest:(DFImageRequest *)imageRequest URLRequest:(NSURLRequest *)URLRequest;
+
+/*! Creates response deserializer for a given request.
+ */
+- (id<DFURLResponseDeserializing>)URLImageFetcher:(DFURLImageFetcher *)fetcher responseDeserializerForImageRequest:(DFImageRequest *)imageRequest URLRequest:(NSURLRequest *)URLRequest;
+
+@end
 
 
 /*! The DFURLImageFetcher is a class that implements DFImageFetching protocol to provide a functionality of fetching images via Cocoa URL Loading System.
@@ -44,6 +71,10 @@ extern NSString *const DFImageInfoURLResponseKey;
  */
 @property (nonatomic, copy) NSSet *supportedSchemes;
 
+/*! The delegate of the DFURLImageFetcher.
+ */
+@property (nonatomic, weak) id<DFURLImageFetcherDelegate> delegate;
+
 /*! Initializes DFURLImageFetcher with a given session configuration. DFURLImageFetcher creates an instance of NSURLSession with a given configuration and sets itself as a session delegate.
  */
 - (instancetype)initWithSessionConfiguration:(NSURLSessionConfiguration *)configuration;
@@ -51,19 +82,5 @@ extern NSString *const DFImageInfoURLResponseKey;
 /*! Initializes DFURLImageFetcher with a given session configuration, delegate and delegate queue. DFURLImageFetcher creates an instance of NSURLSession with a given configuration, delegate and delegate queue.
  */
 - (instancetype)initWithSessionConfiguration:(NSURLSessionConfiguration *)configuration delegate:(id<NSURLSessionDelegate, DFURLSessionOperationDelegate>)delegate delegateQueue:(NSOperationQueue *)queue NS_DESIGNATED_INITIALIZER;
-
-#pragma mark - Subclassing Hooks
-
-/*! Creates URL request for a given image request.
- */
-- (NSURLRequest *)createURLRequestForImageRequest:(DFImageRequest *)request;
-
-/*! Creates operation for a given URL request.
- */
-- (DFURLSessionOperation *)createOperationForURLRequest:(NSURLRequest *)request;
-
-/*! Creates response deserializer for a given request.
- */
-- (id<DFURLResponseDeserializing>)createResponseDeserializerForRequest:(NSURLRequest *)request;
 
 @end
