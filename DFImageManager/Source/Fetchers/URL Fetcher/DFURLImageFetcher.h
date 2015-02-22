@@ -81,6 +81,6 @@ extern NSString *const DFImageInfoURLResponseKey;
 
 /*! Initializes DFURLImageFetcher with a given session configuration, delegate and delegate queue. DFURLImageFetcher creates an instance of NSURLSession with a given configuration, delegate and delegate queue.
  */
-- (instancetype)initWithSessionConfiguration:(NSURLSessionConfiguration *)configuration delegate:(id<NSURLSessionDelegate, DFURLSessionOperationDelegate>)delegate delegateQueue:(NSOperationQueue *)queue NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithSessionConfiguration:(NSURLSessionConfiguration *)configuration sessionDelegate:(id<NSURLSessionDelegate, DFURLSessionOperationDelegate>)sessionDelegate delegateQueue:(NSOperationQueue *)queue NS_DESIGNATED_INITIALIZER;
 
 @end

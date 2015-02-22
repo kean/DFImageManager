@@ -62,13 +62,13 @@ NSString *const DFImageInfoURLResponseKey = @"DFImageInfoURLResponseKey";
     id<DFURLSessionOperationDelegate> __weak _operationsDelegate;
 }
 
-- (instancetype)initWithSessionConfiguration:(NSURLSessionConfiguration *)configuration delegate:(id<NSURLSessionDelegate,DFURLSessionOperationDelegate>)delegate delegateQueue:(NSOperationQueue *)queue {
+- (instancetype)initWithSessionConfiguration:(NSURLSessionConfiguration *)configuration sessionDelegate:(id<NSURLSessionDelegate,DFURLSessionOperationDelegate>)sessionDelegate delegateQueue:(NSOperationQueue *)queue {
     NSParameterAssert(configuration);
-    NSParameterAssert(delegate);
+    NSParameterAssert(sessionDelegate);
     
     if (self = [super init]) {
-        _session = [NSURLSession sessionWithConfiguration:configuration delegate:delegate delegateQueue:queue];
-        _operationsDelegate = delegate;
+        _session = [NSURLSession sessionWithConfiguration:configuration delegate:sessionDelegate delegateQueue:queue];
+        _operationsDelegate = sessionDelegate;
         
         _sessionTaskHandlers = [NSMutableDictionary new];
         
@@ -81,7 +81,7 @@ NSString *const DFImageInfoURLResponseKey = @"DFImageInfoURLResponseKey";
 }
 
 - (instancetype)initWithSessionConfiguration:(NSURLSessionConfiguration *)configuration {
-    return [self initWithSessionConfiguration:configuration delegate:self delegateQueue:nil];
+    return [self initWithSessionConfiguration:configuration sessionDelegate:self delegateQueue:nil];
 }
 
 #pragma mark - <DFImageFetching>
