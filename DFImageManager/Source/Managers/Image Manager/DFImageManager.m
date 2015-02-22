@@ -364,7 +364,7 @@ _DFImageKeyCreate(DFImageManager *manager, DFImageRequest *request, id<DFImageFe
 }
 
 - (void)_storeImage:(UIImage *)image forRequest:(DFImageRequest *)request {
-    DFCachedImage *cachedImage = [[DFCachedImage alloc] initWithImage:_response.image expirationDate:(CACurrentMediaTime() + request.options.expirationAge)];
+    DFCachedImage *cachedImage = [[DFCachedImage alloc] initWithImage:image expirationDate:(CACurrentMediaTime() + request.options.expirationAge)];
     [_cache storeImage:cachedImage forKey:DFImageCacheKeyCreate(request)];
 }
 
