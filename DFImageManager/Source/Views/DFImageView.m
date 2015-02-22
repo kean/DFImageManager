@@ -26,11 +26,17 @@
 #import "DFImageRequest.h"
 #import "DFImageRequestOptions.h"
 #import "DFImageView.h"
+#import "DFNetworkReachability.h"
 
 
-@implementation DFImageView
+static const NSTimeInterval _kMinimumAutoretryInterval = 8.f;
+
+@implementation DFImageView {
+    NSTimeInterval _previousAutoretryTime;
+}
 
 - (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
     [self _cancelFetching];
 }
 
@@ -57,10 +63,13 @@
     _imageTargetSize = CGSizeZero;
     _imageContentMode = DFImageContentModeAspectFill;
     _allowsAnimations = YES;
+    _allowsAutoRetries = YES;
     _managesRequestPriorities = YES;
     _imageRequestOptions = [DFImageRequestOptions new];
     
     self.delegate = self;
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_reachabilityDidChange:) name:DFNetworkReachabilityDidChangeNotification object:[DFNetworkReachability shared]];
 }
 
 #pragma mark -
@@ -68,6 +77,7 @@
 - (void)prepareForReuse {
     [self _cancelFetching];
     _currentRequest = nil;
+    _previousAutoretryTime = 0.0;
     self.image = nil;
 }
 
@@ -97,10 +107,10 @@
 }
 
 - (void)setImageWithRequest:(DFImageRequest *)request {
-    [self setImagesWithRequests:(request != nil) ? @[request] : nil];
+    [self setImageWithRequests:(request != nil) ? @[request] : nil];
 }
 
-- (void)setImagesWithRequests:(NSArray *)requests {
+- (void)setImageWithRequests:(NSArray *)requests {
     [self _cancelFetching];
     
     if ([self.delegate respondsToSelector:@selector(imageView:willStartFetchingImagesForRequests:)]) {
@@ -153,6 +163,38 @@
     } else {
         self.image = image;
     }
+}
+
+#pragma mark - Notifications
+
+- (void)_reachabilityDidChange:(NSNotification *)notification {
+    DFNetworkReachability *reachability = notification.object;
+    if (self.allowsAutoRetries
+        && reachability.isReachable
+        && self.window != nil
+        && self.hidden != YES
+        && self.currentRequest.isCompleted) {
+        DFCompositeImageRequestContext *context = [self.currentRequest contextForRequest:[self.currentRequest.requests lastObject]];
+        NSError *error = context.info[DFImageInfoErrorKey];
+        if (error && [self _isNetworkConnetionError:error]) {
+            [self _attemptRetry];
+        }
+    }
+}
+
+- (void)_attemptRetry {
+    if (_previousAutoretryTime == 0.0 || CACurrentMediaTime() > _previousAutoretryTime + _kMinimumAutoretryInterval) {
+        _previousAutoretryTime = CACurrentMediaTime();
+        [self setImageWithRequests:self.currentRequest.requests];
+    }
+}
+
+- (BOOL)_isNetworkConnetionError:(NSError *)error {
+    return ([error.domain isEqualToString:NSURLErrorDomain] &&
+            (error.code == NSURLErrorNotConnectedToInternet ||
+             error.code == NSURLErrorTimedOut ||
+             error.code == NSURLErrorCannotConnectToHost ||
+             error.code == NSURLErrorNetworkConnectionLost));
 }
 
 @end

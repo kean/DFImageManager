@@ -70,9 +70,14 @@
  */
 @property (nonatomic) BOOL managesRequestPriorities;
 
-/*! Set to YES to allow image view to animate image changes when necessary. Default is YES.
+/*! If the value is YES image view will animate image changes when necessary. Default value is YES.
  */
 @property (nonatomic) BOOL allowsAnimations;
+
+/*! If the value YES image view will automatically retry image requests when necessary. Default value is YES.
+ @note Image view is very careful with autoretries. It will attempt automatic retry only when network reachability changes (and becomes reachable), image view is visible, current image request is completed and was failed with a network connection error. It also won't autoretry too frequently.
+ */
+@property (nonatomic) BOOL allowsAutoRetries;
 
 /*! Image view delegate. By default delegate is set to the image view itself. The implementation displays fetched images with animation when necessary.
  */
@@ -86,15 +91,15 @@
  */
 @property (nonatomic, readonly) DFCompositeImageRequest *currentRequest;
 
-/*! Requests an image representation with a target size, image content mode and request options of the receiver. For more info see setImagesWithRequests: method.
+/*! Requests an image representation with a target size, image content mode and request options of the receiver. For more info see setImageWithRequests: method.
  */
 - (void)setImageWithResource:(id)resource;
 
-/*! Requests an image representation for the specified resource. For more info see setImagesWithRequests: method.
+/*! Requests an image representation for the specified resource. For more info see setImageWithRequests: method.
  */
 - (void)setImageWithResource:(id)resource targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options;
 
-/*! Requests an image representation for the specified request. For more info see setImagesWithRequests: method.
+/*! Requests an image representation for the specified request. For more info see setImageWithRequests: method.
  */
 - (void)setImageWithRequest:(DFImageRequest *)request;
 
@@ -102,7 +107,7 @@
  @note When the method is called image view cancels current composite request and starts a new composite request with a given image requests. For more info see DFCompositeImageRequest.
  @note This method doesn't call -prepareForReuse in case you need to refresh image without invalidating previously displayed image.
  */
-- (void)setImagesWithRequests:(NSArray /* DFImageRequest */ *)requests;
+- (void)setImageWithRequests:(NSArray /* DFImageRequest */ *)requests;
 
 /*! Creates composite image request for given requests. Subclasses may override this method to customize composite request.
  */

@@ -38,7 +38,7 @@
  */
 - (void)df_setImageWithResource:(id)resource;
 
-/*! Requests an image representation for the specified resource. For more info see setImagesWithRequests: method.
+/*! Requests an image representation for the specified resource. For more info see setImageWithRequests: method.
  */
 - (void)df_setImageWithResource:(id)resource targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options;
 

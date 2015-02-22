@@ -74,7 +74,7 @@ static NSString * const reuseIdentifier = @"Cell";
     DFImageRequest *requestWithBigURL = [[DFImageRequest alloc] initWithResource:[NSURL URLWithString:photo.photoURLBig] targetSize:imageView.imageTargetSize contentMode:DFImageContentModeAspectFill options:nil];
     
     [imageView prepareForReuse];
-    [imageView setImagesWithRequests:@[ requestWithSmallURL, requestWithBigURL ] ];
+    [imageView setImageWithRequests:@[ requestWithSmallURL, requestWithBigURL ] ];
     
     return cell;
 }
