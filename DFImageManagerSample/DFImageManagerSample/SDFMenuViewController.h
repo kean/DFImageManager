@@ -10,6 +10,4 @@
 
 @interface SDFMenuViewController : UITableViewController
 
-
 @end
-

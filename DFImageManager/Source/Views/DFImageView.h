@@ -23,7 +23,7 @@
 #import "DFImageManaging.h"
 #import <UIKit/UIKit.h>
 
-@class DFCompositeImageRequest;
+@class DFCompositeImageFetchOperation;
 @class DFImageRequest;
 @class DFImageRequestOptions;
 @class DFImageView;
@@ -87,9 +87,9 @@
  */
 - (void)prepareForReuse;
 
-/*! Returns current composite image request.
+/*! Returns current composite image fetch operation.
  */
-@property (nonatomic, readonly) DFCompositeImageRequest *currentRequest;
+@property (nonatomic, readonly) DFCompositeImageFetchOperation *operation;
 
 /*! Requests an image representation with a target size, image content mode and request options of the receiver. For more info see setImageWithRequests: method.
  */
@@ -104,13 +104,13 @@
 - (void)setImageWithRequest:(DFImageRequest *)request;
 
 /*! Requests an image representation for each of the specified requests.
- @note When the method is called image view cancels current composite request and starts a new composite request with a given image requests. For more info see DFCompositeImageRequest.
+ @note When the method is called image view cancels current composite request and starts a new composite request with a given image requests. For more info see DFCompositeImageFetchOperation.
  @note This method doesn't call -prepareForReuse in case you need to refresh image without invalidating previously displayed image.
  */
 - (void)setImageWithRequests:(NSArray /* DFImageRequest */ *)requests;
 
-/*! Creates composite image request for given requests. Subclasses may override this method to customize composite request.
+/*! Creates composite image fetch operation for given requests. Subclasses may override this method to customize composite request.
  */
-- (DFCompositeImageRequest *)createCompositeImageRequestForRequests:(NSArray /* DFImageRequest */ *)requests handler:(void (^)(UIImage *image, NSDictionary *info, DFImageRequest *request))handler;
+- (DFCompositeImageFetchOperation *)createCompositeImageFetchOperationForRequests:(NSArray /* DFImageRequest */ *)requests handler:(void (^)(UIImage *image, NSDictionary *info, DFImageRequest *request))handler;
 
 @end

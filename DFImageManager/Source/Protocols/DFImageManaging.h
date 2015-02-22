@@ -41,7 +41,7 @@ typedef void (^DFImageRequestCompletion)(UIImage *image, NSDictionary *info);
 
 /*! Requests an image representation for the specified request.
  @param request The request that contains the resource whose image it to be loaded as well as other request options. The implementation should create a deep copy of the request so that it can't be changed underneath it later. The implementation may provide more request options that are available in a base class, so make sure to check the documentation on that.
- @param completion A block to be called when image loading is complete, providing the requested image or information about the status of the request. The info  dictionary provides information about the status of the request. See the definitions of DFImageInfo*Key strings for possible keys and values.
+ @param completion A block to be called when image loading is complete, providing the requested image or information about the status of the request. The info dictionary provides information about the status of the request. See the definitions of DFImageInfo*Key strings for possible keys and values.
  @return An unique identifier for the request, which can be used to cancel the request or change its priority.
  */
 - (DFImageRequestID *)requestImageForRequest:(DFImageRequest *)request completion:(void (^)(UIImage *image, NSDictionary *info))completion;

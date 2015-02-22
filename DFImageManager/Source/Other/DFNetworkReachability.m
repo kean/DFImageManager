@@ -120,4 +120,8 @@ static void _DFReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkRe
     SCNetworkReachabilityUnscheduleFromRunLoop(_reachabilityRef, CFRunLoopGetCurrent(), kCFRunLoopDefaultMode);
 }
 
+- (NSString *)description {
+    return [NSString stringWithFormat:@"<%@ %p> { reachable = %i }", [self class], self, self.isReachable];
+}
+
 @end

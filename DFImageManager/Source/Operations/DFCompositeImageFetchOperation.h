@@ -30,6 +30,7 @@
 
 
 /*! The execution context of the image request inside the composite request.
+ @note The DFImageFetchOperation is not used here for performance reasons.
  */
 @interface DFCompositeImageRequestContext : NSObject
 
@@ -44,15 +45,31 @@
 
 @end
 
-
-/*! Manages execution of multiple image requests. Provides a single completion block that gets called multiple times (similar to PHImageManager completion handler for opportunistic requests). All requests are executed concurrently.
- @note By default, DFCompositeImageRequest does not call its completion handler for each of the completed requests. Instead, it does just what you would expect - it treats the array of the requests as if the last request was the final image that you would want to display, while the others were the placeholders. The completion handler is guaranteed to be called at least once, even if all of the requests have failed. It also automatically cancels obsolete requests. The entire behavior can be disabled by setting allowsObsoleteRequests property to NO before starting the composite request.
+/*! The DFCompositeImageFetchOperation manages execution of multiple image requests. Provides a single completion block that gets called multiple times (similar to PHImageManager completion handler for opportunistic requests). All requests are executed concurrently.
+ @note By default, DFCompositeImageFetchOperation does not call its completion handler for each of the completed requests. Instead, it does just what you would expect - it treats the array of the requests as if the last request was the final image that you would want to display, while the others were the placeholders. The completion handler is guaranteed to be called at least once, even if all of the requests have failed. It also automatically cancels obsolete requests. The entire behavior can be disabled by setting allowsObsoleteRequests property to NO before starting the composite operation.
+  @note The DFCompositeImageFetchOperation doesn't use DFImageFetchOperation for performance reasons, the overhead of the composite operation should be as low as possible.
  */
-@interface DFCompositeImageRequest : NSObject
+@interface DFCompositeImageFetchOperation : NSObject
 
-/*! Image manager used by the composite request. Set to the shared manager during initialization.
+/*! Initializes composite operation with an array of image requests and a completion handler. After you create the request, you must start it by calling -start method.
+ @param requests Array of requests. Must contain at least one request.
+ @param handler Completion block that gets called multiple times, for more info see class description.
+ */
+- (instancetype)initWithRequests:(NSArray /* DFImageRequest */ *)requests handler:(void (^)(UIImage *image, NSDictionary *info, DFImageRequest *request))handler NS_DESIGNATED_INITIALIZER;
+
+/*! Creates and starts composite operation with an array of image requests.
+ @param requests Array of requests. Must contain at least one request.
+ @param handler Completion block that gets called multiple times, for more info see class description.
+ */
++ (DFCompositeImageFetchOperation *)requestImageForRequests:(NSArray /* DFImageRequest */ *)requests handler:(void (^)(UIImage *image, NSDictionary *info, DFImageRequest *request))handler;
+
+/*! Image manager used by the composite operation. Set to the shared manager during initialization.
  */
 @property (nonatomic) id<DFImageManagingCore> imageManager;
+
+/*! Set to YES to enable special handling of obsolete requests. Default value is YES. For more info see class notes.
+ */
+@property (nonatomic) BOOL allowsObsoleteRequests;
 
 /*! Array of requests that the receiver was initialized with.
  */
@@ -66,27 +83,11 @@
  */
 @property (nonatomic, readonly) NSTimeInterval elapsedTime;
 
-/*! Returns YES if all the requests have completed.
+/*! Returns YES if all the operations have finished.
  */
-@property (nonatomic, readonly) BOOL isCompleted;
+@property (nonatomic, readonly) BOOL isFinished;
 
-/*! Set to YES to enable special handling of obsolete requests. Default value is YES. For more info see class notes.
- */
-@property (nonatomic) BOOL allowsObsoleteRequests;
-
-/*! Initializes composite request with an array of image requests and a completion handler. After you create the request, you must start it by calling -start method.
- @param requests Array of requests. Must contain at least one request. Requests are deeply copied.
- @param handler Completion block that gets called multiple times based on the number of the requests and the implementation of -shouldCallCompletionHandlerForRequest method.
- */
-- (instancetype)initWithRequests:(NSArray /* DFImageRequest */ *)requests handler:(void (^)(UIImage *image, NSDictionary *info, DFImageRequest *request))handler NS_DESIGNATED_INITIALIZER;
-
-/*! Creates and starts composite request with an array of image requests.
- @param requests Array of requests. Must contain at least one request. Requests are deeply copied.
- @param handler Completion block that gets called multiple times based on the number of the requests and the implementation of -shouldCallCompletionHandlerForRequest method.
- */
-+ (DFCompositeImageRequest *)requestImageForRequests:(NSArray /* DFImageRequest */ *)requests handler:(void (^)(UIImage *image, NSDictionary *info, DFImageRequest *request))handler;
-
-/*! Start all the requests. The requests are executed concurrently.
+/*! Start all the requests. The requests are wrapped into DFImageFetchOperation objects and executed on the receiver's operation queue.
  */
 - (void)start;
 
@@ -94,17 +95,7 @@
  */
 - (void)cancel;
 
-/*! Cancels the given request.
- @param request Request should be contained by the receiver's array of the requests.
- */
-- (void)cancelRequest:(DFImageRequest *)request;
-
-/*! Cancels the given requests.
- @param requests Requests should be contained by the receiver's array of the requests.
- */
-- (void)cancelRequests:(NSArray /* DFImageRequest */ *)requests;
-
-/*! Returns execution context for the given request. 
+/*! Returns operation for the given request.
  @param request Request should be contained by the receiver's array of the requests.
  */
 - (DFCompositeImageRequestContext *)contextForRequest:(DFImageRequest *)request;
@@ -118,7 +109,7 @@
 
 /*! Methods used during obsolete requests handling.
  */
-@interface DFCompositeImageRequest (ObsoleteRequests)
+@interface DFCompositeImageFetchOperation (ObsoleteRequests)
 
 /*! Returns YES if the request is completed successfully. The request is considered successful if the image was fetched.
  @param request Request should be contained by the receiver's array of the requests.

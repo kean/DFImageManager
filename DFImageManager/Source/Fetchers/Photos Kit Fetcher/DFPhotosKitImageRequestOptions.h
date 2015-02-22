@@ -33,7 +33,7 @@ NS_CLASS_AVAILABLE_IOS(8_0) @interface DFPhotosKitImageRequestOptions : DFImageR
  */
 @property (nonatomic) PHImageRequestOptionsVersion version;
 
-/*! Defaults to PHImageRequestOptionsDeliveryModeHighQualityFormat. @discussion Using PHImageRequestOptionsDeliveryModeOpportunistic might be useless in some classes, because DFImageManager doesn't call completion handler twice like PHImageManager does. You should use DFCompositeImageRequest to achieve similar results.
+/*! Defaults to PHImageRequestOptionsDeliveryModeHighQualityFormat. @discussion Using PHImageRequestOptionsDeliveryModeOpportunistic might be useless in some classes, because DFImageManager doesn't call completion handler twice like PHImageManager does. You should use DFCompositeImageFetchOperation to achieve similar results.
  */
 @property (nonatomic) PHImageRequestOptionsDeliveryMode deliveryMode;
 

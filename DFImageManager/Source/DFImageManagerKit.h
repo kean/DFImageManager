@@ -65,6 +65,9 @@
 #import "DFCachedImage.h"
 #import "NSCache+DFImageManager.h"
 
+#import "DFImageFetchOperation.h"
+#import "DFCompositeImageFetchOperation.h"
+
 // UI
 
 #import "UIImageView+DFImageManager.h"
@@ -74,7 +77,6 @@
 // Utilities
 
 #import "DFCollectionViewPreheatingController.h"
-#import "DFCompositeImageRequest.h"
 #import "DFOperation.h"
 #import "DFImageUtilities.h"
 #import "DFImageManagerBlockValueTransformer.h"

@@ -20,9 +20,34 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "DFCompositeImageRequest.h"
+#import "DFCompositeImageFetchOperation.h"
 #import "DFImageManager.h"
+#import "DFImageRequest.h"
 #import "DFImageRequestID.h"
+#import <objc/runtime.h>
+
+
+/*! Associated objects are used for better performance, we don't want to create NSMapTable or other structures for each operation.
+ */
+@interface DFImageRequest (DFCompositeImageFetchOperation)
+
+@property (nonatomic) DFCompositeImageRequestContext *df_compositeContext;
+
+@end
+
+static char *_contextKey;
+
+@implementation DFImageRequest (DFCompositeImageFetchOperation)
+
+- (DFCompositeImageRequestContext *)df_compositeContext {
+    return objc_getAssociatedObject(self, &_contextKey);
+}
+
+- (void)setDf_compositeContext:(DFCompositeImageRequestContext *)context {
+    objc_setAssociatedObject(self, &_contextKey, context, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+@end
 
 
 @interface DFCompositeImageRequestContext (Protected)
@@ -49,28 +74,24 @@
 @end
 
 
-@implementation DFCompositeImageRequest {
-    NSMapTable *_contexts;
+@implementation DFCompositeImageFetchOperation {
     void (^_handler)(UIImage *, NSDictionary *, DFImageRequest *);
-    BOOL _isStarted;
 }
 
 - (instancetype)initWithRequests:(NSArray *)requests handler:(void (^)(UIImage *, NSDictionary *, DFImageRequest *))handler {
     if (self = [super init]) {
         NSParameterAssert(requests.count > 0);
-        _requests = [[NSArray alloc] initWithArray:requests copyItems:YES];
+        _requests = [requests copy];
         _handler = [handler copy];
-        
-        _contexts = [NSMapTable strongToStrongObjectsMapTable];
-        
+
         _imageManager = [DFImageManager sharedManager];
         _allowsObsoleteRequests = YES;
     }
     return self;
 }
 
-+ (DFCompositeImageRequest *)requestImageForRequests:(NSArray *)requests handler:(void (^)(UIImage *, NSDictionary *, DFImageRequest *))handler {
-    DFCompositeImageRequest *request = [[DFCompositeImageRequest alloc] initWithRequests:requests handler:handler];
++ (DFCompositeImageFetchOperation *)requestImageForRequests:(NSArray *)requests handler:(void (^)(UIImage *, NSDictionary *, DFImageRequest *))handler {
+    DFCompositeImageFetchOperation *request = [[DFCompositeImageFetchOperation alloc] initWithRequests:requests handler:handler];
     [request start];
     return request;
 }
@@ -80,24 +101,19 @@
 }
 
 - (void)start {
-    if (!_isStarted) {
-        _isStarted = YES;
-        _startTime = CACurrentMediaTime();
-        DFCompositeImageRequest *__weak weakSelf = self;
-        for (DFImageRequest *request in _requests) {
-            DFImageRequestID *requestID = [self.imageManager requestImageForRequest:request completion:^(UIImage *image, NSDictionary *info) {
-                [weakSelf _didFinishRequest:request image:image info:info];
-            }];
-            DFCompositeImageRequestContext *context = [[DFCompositeImageRequestContext alloc] initWithRequestID:requestID];
-            [_contexts setObject:context forKey:request];
-        }
+    _startTime = CACurrentMediaTime();
+    DFCompositeImageFetchOperation *__weak weakSelf = self;
+    for (DFImageRequest *request in _requests) {
+        DFImageRequestID *requestID = [self.imageManager requestImageForRequest:request completion:^(UIImage *image, NSDictionary *info) {
+            [weakSelf _didFinishRequest:request image:image info:info];
+        }];
+        request.df_compositeContext = [[DFCompositeImageRequestContext alloc] initWithRequestID:requestID];
     }
 }
 
-- (BOOL)isCompleted {
+- (BOOL)isFinished {
     for (DFImageRequest *request in _requests) {
-        DFCompositeImageRequestContext *context = [self contextForRequest:request];
-        if (!context.isCompleted) {
+        if (![self contextForRequest:request].isCompleted) {
             return NO;
         }
     }
@@ -105,7 +121,7 @@
 }
 
 - (DFCompositeImageRequestContext *)contextForRequest:(DFImageRequest *)request {
-    return [_contexts objectForKey:request];
+    return request.df_compositeContext;
 }
 
 - (void)cancel {
@@ -114,12 +130,16 @@
 }
 
 - (void)cancelRequest:(DFImageRequest *)request {
-    [self cancelRequests:(request != nil ? @[ request ] : nil)];
+    DFCompositeImageRequestContext *context = [self contextForRequest:request];
+    if (!context.isCompleted) {
+        [context completeWithImage:nil info:nil];
+        [context.requestID cancel];
+    }
 }
 
 - (void)cancelRequests:(NSArray *)requests {
     for (DFImageRequest *request in requests) {
-        [[self contextForRequest:request].requestID cancel];
+        [self cancelRequest:request];
     }
 }
 
@@ -159,15 +179,13 @@
 }
 
 - (BOOL)isRequestSuccessful:(DFImageRequest *)inputRequest {
-    DFCompositeImageRequestContext *context = [self contextForRequest:inputRequest];
-    return context.image != nil;
+    return [self contextForRequest:inputRequest].image != nil;
 }
 
 - (BOOL)isRequestObsolete:(DFImageRequest *)inputRequest {
     // Iterate throught the 'right' subarray of requests
     for (NSUInteger i = [_requests indexOfObject:inputRequest] + 1; i < _requests.count; i++) {
-        DFImageRequest *request = _requests[i];
-        if ([self isRequestSuccessful:request]) {
+        if ([self isRequestSuccessful:_requests[i]]) {
             return YES;
         }
     }
@@ -179,8 +197,7 @@
         if (request == inputRequest) {
             continue;
         }
-        DFCompositeImageRequestContext *context = [self contextForRequest:request];
-        if (!context.isCompleted) {
+        if (![self contextForRequest:request].isCompleted) {
             return NO;
         }
     }

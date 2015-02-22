@@ -25,6 +25,18 @@
 #import "DFImageRequestID.h"
 
 
+#define DFManagerForRequest(request) \
+({ \
+    id<DFImageManagingCore> outManager; \
+    for (id<DFImageManagingCore> manager in _managers) { \
+        if ([manager canHandleRequest:request]) { \
+            outManager = manager; \
+            break; \
+        } \
+    } \
+    outManager; \
+})
+
 @implementation DFCompositeImageManager {
     NSMutableArray /* id<DFImageManagingCore> */ *_managers;
 }
@@ -52,23 +64,14 @@
     [_managers removeObjectsInArray:imageManagers];
 }
 
-- (id<DFImageManagingCore>)_managerForRequest:(DFImageRequest *)request {
-    for (id<DFImageManagingCore> manager in _managers) {
-        if ([manager canHandleRequest:request]) {
-            return manager;
-        }
-    }
-    return nil;
-}
-
 #pragma mark - <DFImageManagingCore>
 
 - (BOOL)canHandleRequest:(DFImageRequest *)request {
-    return [self _managerForRequest:request] != nil;
+    return DFManagerForRequest(request) != nil;
 }
 
 - (DFImageRequestID *)requestImageForRequest:(DFImageRequest *)request completion:(void (^)(UIImage *, NSDictionary *))completion {
-    return [[self _managerForRequest:request] requestImageForRequest:request completion:completion];
+    return [DFManagerForRequest(request) requestImageForRequest:request completion:completion];
 }
 
 - (void)cancelRequestWithID:(DFImageRequestID *)requestID {
@@ -81,13 +84,13 @@
 
 - (void)startPreheatingImagesForRequests:(NSArray *)requests {
     for (DFImageRequest *request in requests) {
-        [[self _managerForRequest:request] startPreheatingImagesForRequests:@[request]];
+        [DFManagerForRequest(request) startPreheatingImagesForRequests:@[request]];
     }
 }
 
 - (void)stopPreheatingImagesForRequests:(NSArray *)requests {
     for (DFImageRequest *request in requests) {
-        [[self _managerForRequest:request] stopPreheatingImagesForRequests:@[request]];
+        [DFManagerForRequest(request) stopPreheatingImagesForRequests:@[request]];
     }
 }
 

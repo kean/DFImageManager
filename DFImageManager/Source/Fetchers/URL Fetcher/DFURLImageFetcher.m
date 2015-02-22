@@ -88,8 +88,7 @@ NSString *const DFImageInfoURLResponseKey = @"DFImageInfoURLResponseKey";
 
 - (BOOL)canHandleRequest:(DFImageRequest *)request {
     if ([request.resource isKindOfClass:[NSURL class]]) {
-        NSURL *URL = (NSURL *)request.resource;
-        if ([[self supportedSchemes] containsObject:URL.scheme]) {
+        if ([self.supportedSchemes containsObject:((NSURL *)request.resource).scheme]) {
             return YES;
         }
     }
