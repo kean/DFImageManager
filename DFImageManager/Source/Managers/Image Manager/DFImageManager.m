@@ -467,12 +467,12 @@ _DFImageKeyCreate(DFImageManager *manager, DFImageRequest *request, id<DFImageFe
 #pragma mark Fetching
 
 - (DFImageRequestID *)requestImageForRequest:(DFImageRequest *)request completion:(DFImageRequestCompletion)completion {
-    request = [self _canonicalRequestForRequest:request];
     _DFImageRequestID *requestID = [[_DFImageRequestID alloc] initWithImageManager:self]; // Represents requestID future.
     dispatch_async(_syncQueue, ^{
-        NSUUID *taskID = _taskIDs[DFImageRequestKeyCreate(request)] ?: [NSUUID UUID];
+        DFImageRequest *canonicalRequest = [self _canonicalRequestForRequest:request];
+        NSUUID *taskID = _taskIDs[DFImageRequestKeyCreate(canonicalRequest)] ?: [NSUUID UUID];
         [requestID setTaskID:taskID handlerID:[NSUUID UUID]];
-        _DFImageManagerHandler *handler = [[_DFImageManagerHandler alloc] initWithRequest:request requestID:requestID completion:completion];
+        _DFImageManagerHandler *handler = [[_DFImageManagerHandler alloc] initWithRequest:canonicalRequest requestID:requestID completion:completion];
         [self _requestImageForHandler:handler];
     });
     return requestID;
@@ -634,12 +634,12 @@ _DFImageKeyCreate(DFImageManager *manager, DFImageRequest *request, id<DFImageFe
 #pragma mark Preheating
 
 - (void)startPreheatingImagesForRequests:(NSArray *)requests {
-    NSMutableArray *canonicalRequests = [[NSMutableArray alloc] initWithCapacity:requests.count];
-    for (DFImageRequest *request in requests) {
-        [canonicalRequests addObject:[self _canonicalRequestForRequest:request]];
-    }
-    if (canonicalRequests.count > 0) {
+    if (requests.count > 0) {
         dispatch_async(_syncQueue, ^{
+            NSMutableArray *canonicalRequests = [[NSMutableArray alloc] initWithCapacity:requests.count];
+            for (DFImageRequest *request in requests) {
+                [canonicalRequests addObject:[self _canonicalRequestForRequest:request]];
+            }
             [self _startPreheatingImageForRequests:canonicalRequests];
         });
     }
@@ -659,12 +659,12 @@ _DFImageKeyCreate(DFImageManager *manager, DFImageRequest *request, id<DFImageFe
 }
 
 - (void)stopPreheatingImagesForRequests:(NSArray *)requests {
-    NSMutableArray *canonicalRequests = [[NSMutableArray alloc] initWithCapacity:requests.count];
-    for (DFImageRequest *request in requests) {
-        [canonicalRequests addObject:[self _canonicalRequestForRequest:request]];
-    }
-    if (canonicalRequests.count > 0) {
+    if (requests.count > 0) {
         dispatch_async(_syncQueue, ^{
+            NSMutableArray *canonicalRequests = [[NSMutableArray alloc] initWithCapacity:requests.count];
+            for (DFImageRequest *request in requests) {
+                [canonicalRequests addObject:[self _canonicalRequestForRequest:request]];
+            }
             [self _stopPreheatingImagesForRequests:canonicalRequests];
         });
     }
