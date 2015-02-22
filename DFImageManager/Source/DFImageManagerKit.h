@@ -74,11 +74,8 @@
 // Utilities
 
 #import "DFCollectionViewPreheatingController.h"
-
 #import "DFCompositeImageRequest.h"
-
 #import "DFOperation.h"
-
 #import "DFImageUtilities.h"
-
 #import "DFImageManagerBlockValueTransformer.h"
+#import "DFNetworkReachability.h"
