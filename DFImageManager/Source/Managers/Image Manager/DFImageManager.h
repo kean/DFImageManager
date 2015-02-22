@@ -61,7 +61,7 @@
 
 @interface DFImageManager (DefaultManager)
 
-/*! Creates composite image manager that containts image managers with all built-in fetchers.
+/*! Creates default image manager that contains all built-in fetchers.
  */
 + (id<DFImageManaging>)defaultManager;
 
