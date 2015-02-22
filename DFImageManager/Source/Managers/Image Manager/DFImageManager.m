@@ -713,18 +713,17 @@ _DFImageKeyCreate(DFImageManager *manager, DFImageRequest *request, id<DFImageFe
 static id<DFImageManaging> _sharedManager;
 
 + (id<DFImageManaging>)sharedManager {
-    @synchronized(self) {
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
         if (!_sharedManager) {
             _sharedManager = [self defaultManager];
         }
-        return _sharedManager;
-    }
+    });
+    return _sharedManager;
 }
 
 + (void)setSharedManager:(id<DFImageManaging>)manager {
-    @synchronized(self) {
-        _sharedManager = manager;
-    }
+    _sharedManager = manager;
 }
 
 @end
