@@ -66,6 +66,10 @@
  */
 @property (nonatomic, readonly) NSTimeInterval elapsedTime;
 
+/*! Returns YES if all the requests have completed.
+ */
+@property (nonatomic, readonly) BOOL isCompleted;
+
 /*! Set to YES to enable special handling of obsolete requests. Default value is YES. For more info see class notes.
  */
 @property (nonatomic) BOOL allowsObsoleteRequests;

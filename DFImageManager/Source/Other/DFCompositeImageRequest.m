@@ -94,6 +94,16 @@
     }
 }
 
+- (BOOL)isCompleted {
+    for (DFImageRequest *request in _requests) {
+        DFCompositeImageRequestContext *context = [self contextForRequest:request];
+        if (!context.isCompleted) {
+            return NO;
+        }
+    }
+    return YES;
+}
+
 - (DFCompositeImageRequestContext *)contextForRequest:(DFImageRequest *)request {
     return [_contexts objectForKey:request];
 }
