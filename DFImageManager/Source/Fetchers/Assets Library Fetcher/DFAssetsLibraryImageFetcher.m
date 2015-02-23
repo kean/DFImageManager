@@ -80,7 +80,11 @@ static inline NSURL *_ALAssetURL(id resource) {
     return request;
 }
 
-- (BOOL)isRequestEquivalent:(DFImageRequest *)request1 toRequest:(DFImageRequest *)request2 {
+- (BOOL)isRequestFetchEquivalent:(DFImageRequest *)request1 toRequest:(DFImageRequest *)request2 {
+    return [self isRequestCacheEquivalent:request1 toRequest:request2];
+}
+
+- (BOOL)isRequestCacheEquivalent:(DFImageRequest *)request1 toRequest:(DFImageRequest *)request2 {
     if (request1 == request2) {
         return YES;
     }

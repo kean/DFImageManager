@@ -37,7 +37,11 @@
 
 /*! Compares two requests for equivalence with regard to fetching the image. Requests should be considered equivalent if image fetcher can handle both requests by the same operation.
  */
-- (BOOL)isRequestEquivalent:(DFImageRequest *)request1 toRequest:(DFImageRequest *)request2;
+- (BOOL)isRequestFetchEquivalent:(DFImageRequest *)request1 toRequest:(DFImageRequest *)request2;
+
+/*! Compares two requests for equivalence with regard to caching the image. The DFImageManager uses this method for memory caching.
+ */
+- (BOOL)isRequestCacheEquivalent:(DFImageRequest *)request1 toRequest:(DFImageRequest *)request2;
 
 /*! Starts fetching an image for the request. The completion block should always be called, even for the cancelled request. The completion block may be called in any fashion (asynchronously or not) and on any thread.
  @return The operation that implements fetching. The operation might be nil.

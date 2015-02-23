@@ -27,7 +27,7 @@
  */
 @interface DFURLImageRequestOptions : DFImageRequestOptions
 
-/*! The receiver’s cache policy.
+/*! The receiver’s cache policy. Default value is NSURLRequestUseProtocolCachePolicy.
  */
 @property (nonatomic) NSURLRequestCachePolicy cachePolicy;
 

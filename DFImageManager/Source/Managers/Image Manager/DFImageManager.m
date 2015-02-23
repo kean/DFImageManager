@@ -132,7 +132,7 @@
 
 #pragma mark - _DFImageRequestKey -
 
-/*! Make it possible to use DFImageRequest as a key in dictionaries (and dictionary-like structures). Requests may be interpreted differently so we compare them using <DFImageFetching> -isRequestEquivalent:toRequest: method and (optionally) similar <DFImageProcessing> method.
+/*! Make it possible to use DFImageRequest as a key in dictionaries (and dictionary-like structures). Requests may be interpreted differently so we compare them using <DFImageFetching> -isRequestFetchEquivalent:toRequest: method and (optionally) similar <DFImageProcessing> method.
  @note CFDictionary and CFDictionaryKeyCallBacks could be used instead, but the solution that uses _DFImageRequestKey is cleaner and it supports any structure that relies on -hash and -isEqual methods (NSSet, NSCache and others).
  */
 @interface _DFImageRequestKey : NSObject <NSCopying>
@@ -140,7 +140,7 @@
 @property (nonatomic, readonly, weak) DFImageManager *manager;
 @property (nonatomic, readonly) DFImageRequest *request;
 
-- (instancetype)initWithManager:(DFImageManager *)manager request:(DFImageRequest *)request fetcher:(id<DFImageFetching>)fetcher processor:(id<DFImageProcessing>)processor;
+- (instancetype)initWithManager:(DFImageManager *)manager request:(DFImageRequest *)request fetcher:(id<DFImageFetching>)fetcher processor:(id<DFImageProcessing>)processor isCacheKey:(BOOL)isCacheKey;
 
 @end
 
@@ -149,15 +149,17 @@
     DFImageRequest *_request;
     id<DFImageFetching> _fetcher;
     id<DFImageProcessing> _processor;
+    BOOL _isCacheKey;
 }
 
-- (instancetype)initWithManager:(DFImageManager *)manager request:(DFImageRequest *)request fetcher:(id<DFImageFetching>)fetcher processor:(id<DFImageProcessing>)processor {
+- (instancetype)initWithManager:(DFImageManager *)manager request:(DFImageRequest *)request fetcher:(id<DFImageFetching>)fetcher processor:(id<DFImageProcessing>)processor isCacheKey:(BOOL)isCacheKey {
     if (self = [super init]) {
         _manager = manager;
         _request = request;
         _hash = [request.resource hash];
         _fetcher = fetcher;
         _processor = processor;
+        _isCacheKey = isCacheKey;
     }
     return self;
 }
@@ -177,20 +179,24 @@
     if (other.manager != self.manager) {
         return NO;
     }
-    if (![_fetcher isRequestEquivalent:self.request toRequest:other.request]) {
-        return NO;
+    if (_isCacheKey) {
+        if (![_fetcher isRequestCacheEquivalent:self.request toRequest:other.request]) {
+            return NO;
+        }
+        if (!_processor) {
+            return YES;
+        }
+        return [_processor isProcessingForRequestEquivalent:self.request toRequest:other.request];
+    } else {
+        return [_fetcher isRequestFetchEquivalent:self.request toRequest:other.request];
     }
-    if (!_processor) {
-        return YES;
-    }
-    return [_processor isProcessingForRequestEquivalent:self.request toRequest:other.request];
 }
 
 @end
 
 static inline _DFImageRequestKey *
-_DFImageKeyCreate(DFImageManager *manager, DFImageRequest *request, id<DFImageFetching> fetcher, id<DFImageProcessing> processor) {
-    return [[_DFImageRequestKey alloc] initWithManager:manager request:request fetcher:fetcher processor:processor];
+_DFImageKeyCreate(DFImageManager *manager, DFImageRequest *request, id<DFImageFetching> fetcher, id<DFImageProcessing> processor, BOOL isCacheKey) {
+    return [[_DFImageRequestKey alloc] initWithManager:manager request:request fetcher:fetcher processor:processor isCacheKey:isCacheKey];
 }
 
 
@@ -211,7 +217,7 @@ _DFImageKeyCreate(DFImageManager *manager, DFImageRequest *request, id<DFImageFe
 @end
 
 
-#define DFImageCacheKeyCreate(request) _DFImageKeyCreate(_manager, request, _fetcher, _processor)
+#define DFImageCacheKeyCreate(request) _DFImageKeyCreate(_manager, request, _fetcher, _processor, YES)
 
 /*! Implements the entire flow of retrieving, processing and caching images. Requires synchronization from the user of the class.
  @note Not thread safe.
@@ -413,7 +419,7 @@ _DFImageKeyCreate(DFImageManager *manager, DFImageRequest *request, id<DFImageFe
 
 #pragma mark - DFImageManager -
 
-#define DFImageRequestKeyCreate(request) _DFImageKeyCreate(self, request, _conf.fetcher, nil)
+#define DFImageRequestKeyCreate(request) _DFImageKeyCreate(self, request, _conf.fetcher, nil, NO)
 
 @interface DFImageManager () <_DFImageManagerTaskDelegate>
 

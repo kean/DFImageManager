@@ -73,7 +73,14 @@ static inline NSString *_PHAssetLocalIdentifier(id resource) {
     return request;
 }
 
-- (BOOL)isRequestEquivalent:(DFImageRequest *)request1 toRequest:(DFImageRequest *)request2 {
+- (BOOL)isRequestFetchEquivalent:(DFImageRequest *)request1 toRequest:(DFImageRequest *)request2 {
+    if (![self isRequestCacheEquivalent:request1 toRequest:request2]) {
+        return NO;
+    }
+    return (request1.options.allowsNetworkAccess != request2.options.allowsNetworkAccess);
+}
+
+- (BOOL)isRequestCacheEquivalent:(DFImageRequest *)request1 toRequest:(DFImageRequest *)request2 {
     if (request1 == request2) {
         return YES;
     }
@@ -81,11 +88,9 @@ static inline NSString *_PHAssetLocalIdentifier(id resource) {
         return NO;
     }
     if (!(CGSizeEqualToSize(request1.targetSize, request2.targetSize) &&
-          request1.contentMode == request2.contentMode &&
-          request1.options.allowsNetworkAccess == request2.options.allowsNetworkAccess)) {
+          request1.contentMode == request2.contentMode)) {
         return NO;
     }
-    
     DFPhotosKitImageRequestOptions *options1 = (id)request1.options;
     DFPhotosKitImageRequestOptions *options2 = (id)request2.options;
     return (options1.version == options2.version &&

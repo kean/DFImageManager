@@ -95,19 +95,23 @@ NSString *const DFImageInfoURLResponseKey = @"DFImageInfoURLResponseKey";
     return NO;
 }
 
-- (BOOL)isRequestEquivalent:(DFImageRequest *)request1 toRequest:(DFImageRequest *)request2 {
-    if (request1 == request2) {
-        return YES;
-    }
-    NSURL *URL1 = (NSURL *)request1.resource;
-    NSURL *URL2 = (NSURL *)request2.resource;
-    if (![URL1 isEqual:URL2]) {
+- (BOOL)isRequestFetchEquivalent:(DFImageRequest *)request1 toRequest:(DFImageRequest *)request2 {
+    if (![self isRequestCacheEquivalent:request1 toRequest:request2]) {
         return NO;
     }
     DFURLImageRequestOptions *options1 = (id)request1.options;
     DFURLImageRequestOptions *options2 = (id)request2.options;
     return (options1.allowsNetworkAccess == options2.allowsNetworkAccess &&
             options1.cachePolicy == options2.cachePolicy);
+}
+
+- (BOOL)isRequestCacheEquivalent:(DFImageRequest *)request1 toRequest:(DFImageRequest *)request2 {
+    if (request1 == request2) {
+        return YES;
+    }
+    NSURL *URL1 = (NSURL *)request1.resource;
+    NSURL *URL2 = (NSURL *)request2.resource;
+    return [URL1 isEqual:URL2];
 }
 
 - (DFImageRequest *)canonicalRequestForRequest:(DFImageRequest *)request {
