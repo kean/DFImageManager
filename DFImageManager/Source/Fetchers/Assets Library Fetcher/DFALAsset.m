@@ -20,15 +20,21 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import <AssetsLibrary/ALAssetsLibrary.h>
+#import "DFALAsset.h"
+#import <AssetsLibrary/AssetsLibrary.h>
 
+@implementation DFALAsset
 
-/*! The ALAssetsLibrary category for DFImageManager needs.
- */
-@interface ALAssetsLibrary (DFImageManager)
+- (instancetype)initWithAsset:(ALAsset *)asset {
+    if (self = [super init]) {
+        _asset = asset;
+        _assetURL = [asset valueForProperty:ALAssetPropertyAssetURL];
+    }
+    return self;
+}
 
-/*! Returns the ALAssetsLibrary instance shared within an application.
- */
-+ (instancetype)df_sharedLibrary;
+- (NSUInteger)hash {
+    return [self.assetURL hash];
+}
 
 @end

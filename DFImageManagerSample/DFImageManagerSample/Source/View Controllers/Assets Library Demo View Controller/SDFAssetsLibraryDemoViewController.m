@@ -9,21 +9,20 @@
 #import "SDFAssetsLibraryDemoViewController.h"
 #import <AssetsLibrary/AssetsLibrary.h>
 #import <DFImageManager/DFImageManagerKit.h>
+#import "UIViewController+SDFImageManager.h"
 
 
 static NSString * const reuseIdentifier = @"Cell";
 
 @implementation SDFAssetsLibraryDemoViewController {
-    ALAssetsLibrary *_library;
-    NSArray *_photos;
+    NSArray /* DFALAsset */ *_photos;
+    UIActivityIndicatorView *_activity;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     
     [self.collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:reuseIdentifier];
-    
-    _library = [ALAssetsLibrary new];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -48,13 +47,18 @@ static NSString * const reuseIdentifier = @"Cell";
 }
 
 - (void)_loadAssets {
+    _activity = [self df_showActivityIndicatorView];
+    
     SDFAssetsLibraryDemoViewController *__weak weakSelf = self;
     NSMutableArray *assets = [NSMutableArray new];
-    [_library enumerateGroupsWithTypes:ALAssetsGroupSavedPhotos usingBlock:^(ALAssetsGroup *group, BOOL *stop) {
+    [[ALAssetsLibrary df_sharedLibrary] enumerateGroupsWithTypes:ALAssetsGroupSavedPhotos usingBlock:^(ALAssetsGroup *group, BOOL *stop) {
         [group enumerateAssetsUsingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop) {
             NSString *assetType = [result valueForProperty:ALAssetPropertyType];
             if ([assetType isEqual:ALAssetTypePhoto]) {
-                [assets addObject:result];
+                DFALAsset *wrapper = [[DFALAsset alloc] initWithAsset:result];
+                if (wrapper) {
+                    [assets addObject:wrapper];
+                }
             }
         }];
         if (group == nil) { // Enumeration is done
@@ -66,11 +70,13 @@ static NSString * const reuseIdentifier = @"Cell";
 }
 
 - (void)_didLoadAssets:(NSArray *)assets {
+    [_activity removeFromSuperview];
     _photos = assets;
     [self.collectionView reloadData];
 }
 
 - (void)_didFailWithError:(NSError *)error {
+    [_activity removeFromSuperview];
     if (error.code == ALAssetsLibraryAccessUserDeniedError) {
         [self _showErrorMessageForDeniedPhotoLibraryAccess];
     }
@@ -103,7 +109,7 @@ static NSString * const reuseIdentifier = @"Cell";
         [cell addSubview:imageView];
     }
     
-    ALAsset *asset = _photos[indexPath.row];
+    DFALAsset *asset = _photos[indexPath.row];
     [imageView prepareForReuse];
     [imageView setImageWithResource:asset];
 

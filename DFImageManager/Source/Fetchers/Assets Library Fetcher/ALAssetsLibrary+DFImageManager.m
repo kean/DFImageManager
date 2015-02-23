@@ -25,7 +25,7 @@
 
 @implementation ALAssetsLibrary (DFImageManager)
 
-+ (instancetype)sharedLibrary {
++ (instancetype)df_sharedLibrary {
     static ALAssetsLibrary *_shared = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{

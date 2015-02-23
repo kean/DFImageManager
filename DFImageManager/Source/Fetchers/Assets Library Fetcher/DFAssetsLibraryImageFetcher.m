@@ -20,6 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+#import "DFALAsset.h"
 #import "DFAssetsLibraryImageFetchOperation.h"
 #import "DFAssetsLibraryImageFetcher.h"
 #import "DFAssetsLibraryImageRequestOptions.h"
@@ -31,8 +32,8 @@
 
 
 static inline NSURL *_ALAssetURL(id resource) {
-    if ([resource isKindOfClass:[ALAsset class]]) {
-        return [((ALAsset *)resource) valueForProperty:ALAssetPropertyAssetURL];
+    if ([resource isKindOfClass:[DFALAsset class]]) {
+        return [((DFALAsset *)resource) assetURL];
     } else {
         return (NSURL *)resource;
     }
@@ -40,14 +41,12 @@ static inline NSURL *_ALAssetURL(id resource) {
 
 @implementation DFAssetsLibraryImageFetcher {
     NSOperationQueue *_queue;
-    BOOL _isIpad;
 }
 
 - (instancetype)init {
     if (self = [super init]) {
         _queue = [NSOperationQueue new];
         _queue.maxConcurrentOperationCount = 2;
-        _isIpad = [[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad;
     }
     return self;
 }
@@ -56,7 +55,7 @@ static inline NSURL *_ALAssetURL(id resource) {
 
 - (BOOL)canHandleRequest:(DFImageRequest *)request {
     id asset = request.resource;
-    if ([asset isKindOfClass:[ALAsset class]]) {
+    if ([asset isKindOfClass:[DFALAsset class]]) {
         return YES;
     }
     if ([asset isKindOfClass:[NSURL class]]) {
@@ -99,7 +98,7 @@ static inline NSURL *_ALAssetURL(id resource) {
 
 - (DFALAssetImageSize)_assetImageSizeForRequest:(DFImageRequest *)request {
     // TODO: Improve decision making here.
-    CGFloat thumbnailSide = _isIpad ? 125.f : 75.f;
+    CGFloat thumbnailSide = [UIScreen mainScreen].bounds.size.width / 4.0;
     thumbnailSide *= [UIScreen mainScreen].scale;
     thumbnailSide *= 1.2f;
     if (request.targetSize.width <= thumbnailSide &&
@@ -119,8 +118,8 @@ static inline NSURL *_ALAssetURL(id resource) {
 
 - (NSOperation *)startOperationWithRequest:(DFImageRequest *)request completion:(void (^)(DFImageResponse *))completion {
     DFAssetsLibraryImageFetchOperation *operation;
-    if ([request.resource isKindOfClass:[ALAsset class]]) {
-        operation = [[DFAssetsLibraryImageFetchOperation alloc] initWithAsset:(ALAsset *)request.resource];
+    if ([request.resource isKindOfClass:[DFALAsset class]]) {
+        operation = [[DFAssetsLibraryImageFetchOperation alloc] initWithAsset:((DFALAsset *)request.resource).asset];
     } else {
         operation = [[DFAssetsLibraryImageFetchOperation alloc] initWithAssetURL:(NSURL *)request.resource];
     }

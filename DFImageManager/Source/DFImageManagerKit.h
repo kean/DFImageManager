@@ -51,6 +51,7 @@
 #import "NSURL+DFPhotosKit.h"
 #import "DFPhotosKitImageFetchOperation.h"
 
+#import "DFALAsset.h"
 #import "ALAssetsLibrary+DFImageManager.h"
 #import "DFAssetsLibraryImageFetcher.h"
 #import "DFAssetsLibraryImageRequestOptions.h"

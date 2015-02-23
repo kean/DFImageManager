@@ -62,7 +62,7 @@
     } else {
         DFAssetsLibraryImageFetchOperation *__weak weakSelf = self;
         if (!_asset) {
-            [[ALAssetsLibrary sharedLibrary] assetForURL:_assetURL resultBlock:^(ALAsset *asset) {
+            [[ALAssetsLibrary df_sharedLibrary] assetForURL:_assetURL resultBlock:^(ALAsset *asset) {
                 [weakSelf _didReceiveAsset:asset];
             } failureBlock:^(NSError *error) {
                 [weakSelf _didFailWithError:error];

@@ -20,15 +20,24 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import <AssetsLibrary/ALAssetsLibrary.h>
+#import <Foundation/Foundation.h>
 
+@class ALAsset;
 
-/*! The ALAssetsLibrary category for DFImageManager needs.
+/*! ALAsset wrapper that implements -hash method and caches assetURL.
  */
-@interface ALAssetsLibrary (DFImageManager)
+@interface DFALAsset : NSObject
 
-/*! Returns the ALAssetsLibrary instance shared within an application.
+/*! The asset the receiver was initialized with.
  */
-+ (instancetype)df_sharedLibrary;
+@property (nonatomic, readonly) ALAsset *asset;
+
+/*! The asset URL (assets-library:) of the asset.
+ */
+@property (nonatomic, readonly) NSURL *assetURL;
+
+/*! Initializes DFALAsset with an instance of ALAsset class.
+ */
+- (instancetype)initWithAsset:(ALAsset *)asset NS_DESIGNATED_INITIALIZER;
 
 @end

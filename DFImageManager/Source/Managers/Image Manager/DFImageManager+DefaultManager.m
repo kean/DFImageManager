@@ -60,8 +60,8 @@
     DFImageManager *assetsLibraryImageManager = ({
         DFAssetsLibraryImageFetcher *fetcher = [DFAssetsLibraryImageFetcher new];
         
-        // We do need both image decompression and caching.
-        [[DFImageManager alloc] initWithConfiguration:[DFImageManagerConfiguration configurationWithFetcher:fetcher processor:processor cache:cache]];
+        // Disable image decompression because ALAssetsLibrary blocks main thread anyway.
+        [[DFImageManager alloc] initWithConfiguration:[DFImageManagerConfiguration configurationWithFetcher:fetcher processor:nil cache:cache]];
     });
     
     DFCompositeImageManager *compositeImageManager = [[DFCompositeImageManager alloc] initWithImageManagers:@[ URLImageManager, photosKitImageManager, assetsLibraryImageManager ]];
