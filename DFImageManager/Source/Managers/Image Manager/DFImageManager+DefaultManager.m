@@ -33,7 +33,7 @@
 
 @implementation DFImageManager (DefaultManager)
 
-+ (id<DFImageManagingCore>)defaultManager {
++ (id<DFImageManagingCore>)createDefaultManager {
     DFImageProcessor *processor = [DFImageProcessor new];
     DFImageCache *cache = [DFImageCache new];
     

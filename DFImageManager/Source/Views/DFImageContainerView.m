@@ -105,7 +105,7 @@
 }
 
 - (void)imageView:(DFImageView *)imageView didCompleteRequest:(DFImageRequest *)request withImage:(UIImage *)image info:(NSDictionary *)info {
-    BOOL isFastResponse = (self.imageView.operation.elapsedTime * 1000.0) < 64.f; // Elapsed time is lower then 64 ms.
+    BOOL isFastResponse = (self.imageView.operation.elapsedTime * 1000.0) < 96.f; // Elapsed time is lower then 96 ms.
     if (image) {
         DFImageViewAnimation animation = DFImageViewAnimationNone;
         if (self.animation != DFImageViewAnimationNone) {

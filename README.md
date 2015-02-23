@@ -3,7 +3,7 @@
 </p>
 <h1 align="center">DFImageManager</h1>
 
-Modern iOS framework for fetching, caching, processing and preheating images from various sources. It uses latest advancements in iOS SDK and doesn't reinvent the existing technologies. It provides a powerful API that will extend the capabilities of your app.
+Modern iOS framework for fetching, caching, processing, and preheating images from various sources. It uses latest advancements in iOS SDK and doesn't reinvent existing technologies. It provides a powerful API and an extreme performance that will extend the capabilities of your app.
 
 #### Supported resources
 - NSURL with schemes http, https, ftp, file and data
@@ -12,12 +12,12 @@ Modern iOS framework for fetching, caching, processing and preheating images fro
 
 ## Features
 - Uses latest advancements in [Foundation URL Loading System](https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/URLLoadingSystem/URLLoadingSystem.html) including [NSURLSession](https://developer.apple.com/library/ios/documentation/Foundation/Reference/NSURLSession_class/).
+- Extreme performance even on outdated devices. Completely asynchronous and thread safe. Performance-critical subsystems run entirely on the background threads.
 - Instead of reinventing a caching methodology it relies on HTTP cache as defined in [HTTP specification](https://tools.ietf.org/html/rfc7234) and caching implementation provided by [Foundation URL Loading System](https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/URLLoadingSystem/URLLoadingSystem.html). The caching and revalidation are completely transparent to the client. [Read more...](https://github.com/kean/DFImageManager/wiki/Image-Caching-Guide)
 - Has a separate in-memory cache layer that stores decompressed (and/or resized and processed in other ways) images. Image resizing results in a lack of misaligned images and lower memory footprint. Image processing is optional and fully customizable.
 - [Automatic preheating](https://github.com/kean/DFImageManager/wiki/Image-Preheating-Guide) of images that are close to the viewport.
 - Groups the same requests and never executes them twice. This is true for both fetching and processing. For example, the user creates three requests for the same URL, two of the requests want the image to be resized to the same target size while the other one wants the original image. `DFImageManager` will fetch the original image once, then it will resize it once, no extra work will be done. `DFImageManager` provides a fine grained control over which requests should be considered equivalent (both in terms of fetching and processing).
-- Completely asynchronous and thread safe. Performance-critical subsystems run entirely on the background threads.
-- High quality code base that successfully manages complexity and follows best design principles and patterns.
+- High quality code base with modular architecture that successfully manages complexity and follows best design principles and patterns.
 
 ## Getting Started
 - Download the [latest DFImageManager version](https://github.com/kean/DFImageManager/releases)

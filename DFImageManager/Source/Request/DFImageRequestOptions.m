@@ -53,7 +53,7 @@
 }
 
 - (NSString *)description {
-    return [NSString stringWithFormat:@"<%@ %p> { priority = %@, network = %i, clip = %i, cache = %li, expires = %0.2f }", [self class], self, [DFImageRequestOptions _descriptionForPriority:_priority], _allowsNetworkAccess, _allowsClipping, _memoryCachePolicy, _expirationAge];
+    return [NSString stringWithFormat:@"<%@ %p> { priority = %@, network = %i, clip = %i, cache = %i, expires = %0.2f }", [self class], self, [DFImageRequestOptions _descriptionForPriority:_priority], _allowsNetworkAccess, _allowsClipping, (int)_memoryCachePolicy, _expirationAge];
 }
 
 + (NSString *)_descriptionForPriority:(DFImageRequestPriority)priority {

@@ -63,6 +63,6 @@
 
 /*! Creates default image manager that contains all built-in fetchers.
  */
-+ (id<DFImageManaging>)defaultManager;
++ (id<DFImageManaging>)createDefaultManager;
 
 @end

@@ -77,14 +77,20 @@ static inline NSString *_PHAssetLocalIdentifier(id resource) {
     if (![self isRequestCacheEquivalent:request1 toRequest:request2]) {
         return NO;
     }
-    return (request1.options.allowsNetworkAccess != request2.options.allowsNetworkAccess);
+    return (request1.options.allowsNetworkAccess == request2.options.allowsNetworkAccess);
 }
 
 - (BOOL)isRequestCacheEquivalent:(DFImageRequest *)request1 toRequest:(DFImageRequest *)request2 {
     if (request1 == request2) {
         return YES;
     }
-    if (![_PHAssetLocalIdentifier(request1.resource) isEqualToString:_PHAssetLocalIdentifier(request2.resource)]) {
+    if ([request1.resource isKindOfClass:[PHAsset class]] &&
+        [request2.resource isKindOfClass:[PHAsset class]]) {
+        // Comparing PHAsset's directly is much faster then getting their localIdentifiers.
+        if (![request1.resource isEqual:request2.resource]) {
+            return NO;
+        }
+    } else if (![_PHAssetLocalIdentifier(request1.resource) isEqualToString:_PHAssetLocalIdentifier(request2.resource)]) {
         return NO;
     }
     if (!(CGSizeEqualToSize(request1.targetSize, request2.targetSize) &&

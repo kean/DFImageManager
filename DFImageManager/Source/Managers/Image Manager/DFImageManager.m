@@ -117,7 +117,6 @@
 @end
 
 
-
 #pragma mark - _DFImageManagerPreheatHandler -
 
 @interface _DFImageManagerPreheatHandler : _DFImageManagerHandler
@@ -129,36 +128,39 @@
 @end
 
 
-
 #pragma mark - _DFImageRequestKey -
+
+@class _DFImageRequestKey;
+
+/*! The implementation of key comparer. Keys are only compared when they have the same delegate instance.
+ */
+@protocol _DFImageRequestKeyDelegate <NSObject>
+
+- (BOOL)isImageRequestKeyEqual:(_DFImageRequestKey *)key1 toKey:(_DFImageRequestKey *)key2;
+
+@end
 
 /*! Make it possible to use DFImageRequest as a key in dictionaries (and dictionary-like structures). Requests may be interpreted differently so we compare them using <DFImageFetching> -isRequestFetchEquivalent:toRequest: method and (optionally) similar <DFImageProcessing> method.
  @note CFDictionary and CFDictionaryKeyCallBacks could be used instead, but the solution that uses _DFImageRequestKey is cleaner and it supports any structure that relies on -hash and -isEqual methods (NSSet, NSCache and others).
  */
 @interface _DFImageRequestKey : NSObject <NSCopying>
 
-@property (nonatomic, readonly, weak) DFImageManager *manager;
 @property (nonatomic, readonly) DFImageRequest *request;
+@property (nonatomic, readonly) BOOL isCacheKey;
+@property (nonatomic, weak) id<_DFImageRequestKeyDelegate> delegate;
 
-- (instancetype)initWithManager:(DFImageManager *)manager request:(DFImageRequest *)request fetcher:(id<DFImageFetching>)fetcher processor:(id<DFImageProcessing>)processor isCacheKey:(BOOL)isCacheKey;
+- (instancetype)initWithRequest:(DFImageRequest *)request isCacheKey:(BOOL)isCacheKey;
 
 @end
 
 @implementation _DFImageRequestKey {
     NSUInteger _hash;
-    DFImageRequest *_request;
-    id<DFImageFetching> _fetcher;
-    id<DFImageProcessing> _processor;
-    BOOL _isCacheKey;
 }
 
-- (instancetype)initWithManager:(DFImageManager *)manager request:(DFImageRequest *)request fetcher:(id<DFImageFetching>)fetcher processor:(id<DFImageProcessing>)processor isCacheKey:(BOOL)isCacheKey {
+- (instancetype)initWithRequest:(DFImageRequest *)request isCacheKey:(BOOL)isCacheKey {
     if (self = [super init]) {
-        _manager = manager;
         _request = request;
         _hash = [request.resource hash];
-        _fetcher = fetcher;
-        _processor = processor;
         _isCacheKey = isCacheKey;
     }
     return self;
@@ -176,27 +178,19 @@
     if (other == self) {
         return YES;
     }
-    if (other.manager != self.manager) {
+    if (other.delegate != self.delegate) {
         return NO;
     }
-    if (_isCacheKey) {
-        if (![_fetcher isRequestCacheEquivalent:self.request toRequest:other.request]) {
-            return NO;
-        }
-        if (!_processor) {
-            return YES;
-        }
-        return [_processor isProcessingForRequestEquivalent:self.request toRequest:other.request];
-    } else {
-        return [_fetcher isRequestFetchEquivalent:self.request toRequest:other.request];
-    }
+    return [self.delegate isImageRequestKeyEqual:self toKey:other];
 }
 
 @end
 
 static inline _DFImageRequestKey *
-_DFImageKeyCreate(DFImageManager *manager, DFImageRequest *request, id<DFImageFetching> fetcher, id<DFImageProcessing> processor, BOOL isCacheKey) {
-    return [[_DFImageRequestKey alloc] initWithManager:manager request:request fetcher:fetcher processor:processor isCacheKey:isCacheKey];
+_DFImageKeyCreate(DFImageRequest *request, BOOL isCacheKey, id<_DFImageRequestKeyDelegate> delegate) {
+    _DFImageRequestKey *key = [[_DFImageRequestKey alloc] initWithRequest:request isCacheKey:isCacheKey];
+    key.delegate = delegate;
+    return key;
 }
 
 
@@ -210,14 +204,14 @@ _DFImageKeyCreate(DFImageManager *manager, DFImageRequest *request, id<DFImageFe
  */
 - (void)task:(_DFImageManagerTask *)task didReceiveResponse:(DFImageResponse *)response completion:(void (^)(BOOL shouldContinue))completion;
 
-/*! Gets called when task retreives processed response.
+/*! Gets called when task retrieves processed response.
  */
 - (void)task:(_DFImageManagerTask *)task didProcessResponse:(DFImageResponse *)response forHandler:(_DFImageManagerHandler *)handler;
 
 @end
 
 
-#define DFImageCacheKeyCreate(request) _DFImageKeyCreate(_manager, request, _fetcher, _processor, YES)
+#define DFImageCacheKeyCreate(request) _DFImageKeyCreate(request, YES,  _manager)
 
 /*! Implements the entire flow of retrieving, processing and caching images. Requires synchronization from the user of the class.
  @note Not thread safe.
@@ -237,7 +231,7 @@ _DFImageKeyCreate(DFImageManager *manager, DFImageRequest *request, id<DFImageFe
 
 @property (nonatomic, weak) id<_DFImageManagerTaskDelegate> delegate;
 
-@property (nonatomic, weak) DFImageManager *manager;
+@property (nonatomic, weak) DFImageManager<_DFImageRequestKeyDelegate> *manager;
 @property (nonatomic) id<DFImageFetching> fetcher;
 @property (nonatomic) id<DFImageProcessing> processor;
 @property (nonatomic) id<DFImageManagingCore> processingManager;
@@ -284,7 +278,7 @@ _DFImageKeyCreate(DFImageManager *manager, DFImageRequest *request, id<DFImageFe
     for (_DFImageManagerHandler *handler in [self.handlers allValues]) {
         UIImage *cachedImage = [self _cachedImageForRequest:handler.request];
         if (cachedImage != nil) {
-            // Fullfill request with image from memory cache
+            // Fulfill request with image from memory cache
             [self _didProcessResponse:[[DFImageResponse alloc] initWithImage:cachedImage] forHandler:handler];
         } else {
             cacheMissCount++;
@@ -301,7 +295,7 @@ _DFImageKeyCreate(DFImageManager *manager, DFImageRequest *request, id<DFImageFe
     if (self.isExecuting) {
         UIImage *cachedImage = [self _cachedImageForRequest:handler.request];
         if (cachedImage != nil) {
-            // Fullfill request with image from memory cache
+            // Fulfill request with image from memory cache
             [self _didProcessResponse:[[DFImageResponse alloc] initWithImage:cachedImage] forHandler:handler];
         } else if (_response != nil) {
             // Start image processing if task already has original image
@@ -432,12 +426,11 @@ _DFImageKeyCreate(DFImageManager *manager, DFImageRequest *request, id<DFImageFe
 @end
 
 
-
 #pragma mark - DFImageManager -
 
-#define DFImageRequestKeyCreate(request) _DFImageKeyCreate(self, request, _conf.fetcher, nil, NO)
+#define DFImageRequestKeyCreate(request) _DFImageKeyCreate(request, NO, self)
 
-@interface DFImageManager () <_DFImageManagerTaskDelegate>
+@interface DFImageManager () <_DFImageManagerTaskDelegate, _DFImageRequestKeyDelegate>
 
 @end
 
@@ -477,7 +470,7 @@ _DFImageKeyCreate(DFImageManager *manager, DFImageRequest *request, id<DFImageFe
              
              But, those handlers might have different image processing options like target size and content mode (or they might be the same, which is common when preheating is used). So DFImageManager also needs to guarantee that the same processing operations are executed exactly once for the handlers with the same processing options. We don't want to resize and decompress original image twice, because those are very CPU intensive operations. DFImageManager also needs to keep track of those operations and be able to cancel them. Those requirements seems very familiar - that's exactly what DFImageManager does  for the initial image requests handled by <DFImageFetching>!
              
-             The solution is quite simple and elegant: use an instance of DFImageManager to manage processing operations and implement image processing using <DFImageFetching> protocol. That's exactly what DFProcessingImageManager does (and it has a simple initiliazer that takes <DFImageProcessing> and operation queue as a parameters). So DFImageManager uses instances of DFImageManager class in it's own implementation.
+             The solution is quite simple and elegant: use an instance of DFImageManager to manage processing operations and implement image processing using <DFImageFetching> protocol. That's exactly what DFProcessingImageManager does (and it has a simple initializer that takes <DFImageProcessing> and operation queue as a parameters). So DFImageManager uses instances of DFImageManager class in it's own implementation.
              */
             
             DFProcessingImageFetcher *processingFetcher = [[DFProcessingImageFetcher alloc] initWithProcessor:configuration.processor qeueu:configuration.processingQueue];
@@ -547,8 +540,8 @@ _DFImageKeyCreate(DFImageManager *manager, DFImageRequest *request, id<DFImageFe
     if (!_needsToExecutePreheatRequests) {
         _needsToExecutePreheatRequests = YES;
         /*! Delays serves double purpose:
-         - Image manager won't start executing preheating requests in case you'are about to add normal (non-preheating) right after adding preheating onces.
-         - Image manager won't execute relatively -_executePreheatingTasksIfNecesary methon too often.
+         - Image manager won't start executing preheating requests in case you are about to add normal (non-preheating) right after adding preheating ones.
+         - Image manager won't execute relatively -_executePreheatingTasksIfNecesary method too often.
          */
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.05 * NSEC_PER_SEC)), _syncQueue, ^{
             [self _executePreheatingTasksIfNecesary];
@@ -622,6 +615,27 @@ _DFImageKeyCreate(DFImageManager *manager, DFImageRequest *request, id<DFImageFe
     }
     [info addEntriesFromDictionary:response.userInfo];
     return [info copy];
+}
+
+#pragma mark - <_DFImageRequestKeyDelegate>
+
+- (BOOL)isImageRequestKeyEqual:(_DFImageRequestKey *)key1 toKey:(_DFImageRequestKey *)key2 {
+    if (key1.isCacheKey != key2.isCacheKey) {
+        return NO;
+    }
+    DFImageRequest *request1 = key1.request;
+    DFImageRequest *request2 = key2.request;
+    if (key1.isCacheKey) {
+        if (![_conf.fetcher isRequestCacheEquivalent:request1 toRequest:request2]) {
+            return NO;
+        }
+        if (!_conf.processor) {
+            return YES;
+        }
+        return [_conf.processor isProcessingForRequestEquivalent:request1 toRequest:request2];
+    } else {
+        return [_conf.fetcher isRequestFetchEquivalent:request1 toRequest:request2];
+    }
 }
 
 #pragma mark Cancel
@@ -747,7 +761,7 @@ static id<DFImageManaging> _sharedManager;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         if (!_sharedManager) {
-            _sharedManager = [self defaultManager];
+            _sharedManager = [self createDefaultManager];
         }
     });
     return _sharedManager;
