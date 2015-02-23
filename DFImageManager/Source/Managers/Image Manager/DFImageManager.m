@@ -273,15 +273,18 @@ _DFImageKeyCreate(DFImageManager *manager, DFImageRequest *request, id<DFImageFe
     NSAssert(_isExecuting == NO, nil);
     _isExecuting = YES;
     
+    NSInteger cacheMissCount = 0;
     for (_DFImageManagerHandler *handler in [self.handlers allValues]) {
         DFCachedImage *cachedImage = [_cache cachedImageForKey:DFImageCacheKeyCreate(handler.request)];
         if (cachedImage != nil) {
             // Fullfill request with image from memory cache
             [self _didProcessResponse:[[DFImageResponse alloc] initWithImage:cachedImage.image] forHandler:handler];
+        } else {
+            cacheMissCount++;
         }
     }
-    // Start fetching if not all requests were fulfilled by memory cache
-    if (self.handlers.count > 0) {
+    // Start fetching if not all requests were fulfilled by memory cache;
+    if (cacheMissCount > 0) {
         [self _fetchImage];
     }
 }
@@ -427,6 +430,10 @@ _DFImageKeyCreate(DFImageManager *manager, DFImageRequest *request, id<DFImageFe
     dispatch_queue_t _syncQueue;
     BOOL _needsToExecutePreheatRequests;
     
+    struct {
+        unsigned int fetcherRespondsToCanonicalRequest:1;
+    } _flags;
+    
     /*! Read more about processing manager it initWithConfiguration: method.
      */
     id<DFImageManagingCore> _processingManager;
@@ -454,6 +461,8 @@ _DFImageKeyCreate(DFImageManager *manager, DFImageRequest *request, id<DFImageFe
             DFProcessingImageFetcher *processingFetcher = [[DFProcessingImageFetcher alloc] initWithProcessor:configuration.processor qeueu:configuration.processingQueue];
             _processingManager = [[DFImageManager alloc] initWithConfiguration:[DFImageManagerConfiguration configurationWithFetcher:processingFetcher]];
         }
+        
+        _flags.fetcherRespondsToCanonicalRequest = [_conf.fetcher respondsToSelector:@selector(canonicalRequestForRequest:)];
     }
     return self;
 }
@@ -479,7 +488,7 @@ _DFImageKeyCreate(DFImageManager *manager, DFImageRequest *request, id<DFImageFe
 }
 
 - (DFImageRequest *)_canonicalRequestForRequest:(DFImageRequest *)request {
-    if ([_conf.fetcher respondsToSelector:@selector(canonicalRequestForRequest:)]) {
+    if (_flags.fetcherRespondsToCanonicalRequest) {
         return [[_conf.fetcher canonicalRequestForRequest:request] copy];
     }
     return [request copy];
