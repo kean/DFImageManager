@@ -35,6 +35,7 @@
     CGSize _targetSize;
     DFImageContentMode _contentMode;
     DFPhotosKitImageRequestOptions *_options;
+    PHImageRequestID _requestID;
 }
 
 - (instancetype)initWithRequest:(DFImageRequest *)request {
@@ -48,18 +49,23 @@
         _contentMode = request.contentMode;
         _options = (DFPhotosKitImageRequestOptions *)request.options;
         NSParameterAssert([request.options isKindOfClass:[DFPhotosKitImageRequestOptions class]]);
+        _requestID = PHInvalidImageRequestID;
     }
     return self;
 }
 
 - (void)start {
-    [super start];
-    
-    if (self.isCancelled) {
-        [self finish];
-        return;
+    @synchronized(self) {
+        [super start];
+        if (self.isCancelled) {
+            [self finish];
+        } else {
+            [self _fetch];
+        }
     }
-    
+}
+
+- (void)_fetch {
     if (!_asset && _assetURL != nil) {
         NSString *localIdentifier = [_assetURL df_assetLocalIdentifier];
         if (localIdentifier != nil) {
@@ -85,7 +91,7 @@
     PHImageContentMode contentMode = [self _PHContentModeForDFContentMode:_contentMode];
     
     DFPhotosKitImageFetchOperation *__weak weakSelf = self;
-    [[PHImageManager defaultManager] requestImageForAsset:_asset targetSize:_targetSize contentMode:contentMode options:options resultHandler:^(UIImage *result, NSDictionary *info) {
+    _requestID = [[PHImageManager defaultManager] requestImageForAsset:_asset targetSize:_targetSize contentMode:contentMode options:options resultHandler:^(UIImage *result, NSDictionary *info) {
         result = result ? [UIImage imageWithCGImage:result.CGImage scale:[UIScreen mainScreen].scale orientation:result.imageOrientation] : nil;
         [weakSelf _didFetchImage:result info:info];
     }];
@@ -100,11 +106,29 @@
 }
 
 - (void)_didFetchImage:(UIImage *)result info:(NSDictionary *)info {
-    DFMutableImageResponse *response = [DFMutableImageResponse new];
-    response.image = result;
-    response.userInfo = info;
-    _response = [response copy];
-    [self finish];
+    @synchronized(self) {
+        if (!self.isCancelled) {
+            DFMutableImageResponse *response = [DFMutableImageResponse new];
+            response.image = result;
+            response.userInfo = info;
+            _response = [response copy];
+            [self finish];
+        }
+    }
+}
+
+- (void)cancel {
+    @synchronized(self) {
+        if (!self.isCancelled && !self.isFinished) {
+            [super cancel];
+            if (_requestID != PHInvalidImageRequestID) {
+                /*! From Apple docs: "If the request is cancelled, resultHandler may not be called at all.", that's why all the mess.
+                 */
+                [[PHImageManager defaultManager] cancelImageRequest:_requestID];
+                [self finish];
+            }
+        }
+    }
 }
 
 @end
