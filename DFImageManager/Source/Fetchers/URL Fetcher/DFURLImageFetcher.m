@@ -177,7 +177,6 @@ NSString *const DFImageInfoURLResponseKey = @"DFImageInfoURLResponseKey";
     request.allowsCellularAccess = conf.allowsCellularAccess;
     request.HTTPShouldHandleCookies = conf.HTTPShouldSetCookies;
     request.HTTPShouldUsePipelining = conf.HTTPShouldUsePipelining;
-    request.allowsCellularAccess = conf.allowsCellularAccess;
     
     /* Set options that can be configured by DFURLImageRequestOptions.
      */

@@ -24,30 +24,6 @@
 #import "DFImageManager.h"
 #import "DFImageRequest.h"
 #import "DFImageRequestID.h"
-#import <objc/runtime.h>
-
-
-/*! Associated objects are used for better performance, we don't want to create NSMapTable or other structures for each operation.
- */
-@interface DFImageRequest (DFCompositeImageFetchOperation)
-
-@property (nonatomic) DFCompositeImageRequestContext *df_compositeContext;
-
-@end
-
-static char *_contextKey;
-
-@implementation DFImageRequest (DFCompositeImageFetchOperation)
-
-- (DFCompositeImageRequestContext *)df_compositeContext {
-    return objc_getAssociatedObject(self, &_contextKey);
-}
-
-- (void)setDf_compositeContext:(DFCompositeImageRequestContext *)context {
-    objc_setAssociatedObject(self, &_contextKey, context, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-}
-
-@end
 
 
 @interface DFCompositeImageRequestContext (Protected)
@@ -75,6 +51,7 @@ static char *_contextKey;
 
 
 @implementation DFCompositeImageFetchOperation {
+    NSMapTable *_contexts;
     void (^_handler)(UIImage *, NSDictionary *, DFImageRequest *);
 }
 
@@ -83,6 +60,7 @@ static char *_contextKey;
         NSParameterAssert(requests.count > 0);
         _requests = [requests copy];
         _handler = [handler copy];
+        _contexts = [NSMapTable strongToStrongObjectsMapTable];
 
         _imageManager = [DFImageManager sharedManager];
         _allowsObsoleteRequests = YES;
@@ -107,7 +85,8 @@ static char *_contextKey;
         DFImageRequestID *requestID = [self.imageManager requestImageForRequest:request completion:^(UIImage *image, NSDictionary *info) {
             [weakSelf _didFinishRequest:request image:image info:info];
         }];
-        request.df_compositeContext = [[DFCompositeImageRequestContext alloc] initWithRequestID:requestID];
+        DFCompositeImageRequestContext *context =[[DFCompositeImageRequestContext alloc] initWithRequestID:requestID];
+        [_contexts setObject:context forKey:request];
     }
 }
 
@@ -121,7 +100,7 @@ static char *_contextKey;
 }
 
 - (DFCompositeImageRequestContext *)contextForRequest:(DFImageRequest *)request {
-    return request.df_compositeContext;
+    return [_contexts objectForKey:request];
 }
 
 - (void)cancel {
