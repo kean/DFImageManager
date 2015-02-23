@@ -30,6 +30,7 @@
         _priority = DFImageRequestPriorityNormal;
         _allowsNetworkAccess = YES;
         _allowsClipping = NO;
+        _memoryCachePolicy = DFImageRequestCachePolicyDefault;
         _expirationAge = 60.0 * 10.0; // 600.0 seconds
     }
     return self;
@@ -40,6 +41,7 @@
         _priority = options.priority;
         _allowsNetworkAccess = options.allowsNetworkAccess;
         _allowsClipping = options.allowsClipping;
+        _memoryCachePolicy = options.memoryCachePolicy;
         _expirationAge = options.expirationAge;
         _userInfo = [options.userInfo copy];
     }
@@ -51,7 +53,7 @@
 }
 
 - (NSString *)description {
-    return [NSString stringWithFormat:@"<%@ %p> { priority = %@, network = %i, clipping = %i, expires = %0.2f }", [self class], self, [DFImageRequestOptions _descriptionForPriority:_priority], _allowsNetworkAccess, _allowsClipping, _expirationAge];
+    return [NSString stringWithFormat:@"<%@ %p> { priority = %@, network = %i, clip = %i, cache = %li, expires = %0.2f }", [self class], self, [DFImageRequestOptions _descriptionForPriority:_priority], _allowsNetworkAccess, _allowsClipping, _memoryCachePolicy, _expirationAge];
 }
 
 + (NSString *)_descriptionForPriority:(DFImageRequestPriority)priority {

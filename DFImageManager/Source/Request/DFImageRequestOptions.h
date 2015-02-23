@@ -36,9 +36,13 @@
  */
 @property (nonatomic) BOOL allowsNetworkAccess;
 
-/*! IF YES allows some portion of the image content to be clipped when filling the content to target size. Only works with DFImageContentModeAspectFill. Default value is NO.
+/*! If YES allows some portion of the image content to be clipped when filling the content to target size. Only works with DFImageContentModeAspectFill. Default value is NO.
  */
 @property (nonatomic) BOOL allowsClipping;
+
+/*! The request cache policy used for memory caching. Default value is DFImageRequestCachePolicyDefault.
+ */
+@property (nonatomic) DFImageRequestCachePolicy memoryCachePolicy;
 
 /*! The amount of time to elapse before memory-cached images associated with a request are considered to have expired. Default value is 600.0 seconds.
  @warning This property doesn't affect caching implemented in a classes conforming to DFImageFetching protocol (for example, NSURLSession caching)! For more info see DFImageCaching protocol and DFCachedImage class.

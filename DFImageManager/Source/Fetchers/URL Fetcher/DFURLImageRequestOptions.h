@@ -28,6 +28,7 @@
 @interface DFURLImageRequestOptions : DFImageRequestOptions
 
 /*! The receiver’s cache policy. Default value is NSURLRequestUseProtocolCachePolicy.
+ @note In order to completely ignore cached images you should also disable memory caching using memoryCachePolicy property.
  */
 @property (nonatomic) NSURLRequestCachePolicy cachePolicy;
 

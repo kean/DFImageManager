@@ -51,6 +51,18 @@ typedef NS_ENUM(NSInteger, DFImageContentMode) {
     DFImageContentModeAspectFit
 };
 
+/*! The DFImageRequestCachePolicy defines the request cache policy used for memory caching. For more info on memory caching in DFImageManager docs.
+ */
+typedef NS_ENUM(NSInteger, DFImageRequestCachePolicy) {
+    /*! The default policy allows memory cache lookup.
+     */
+    DFImageRequestCachePolicyDefault,
+    
+    /* Specifies that the image should loaded from the originating source. No existing cache data should be used to satisfy the request.
+     */
+    DFImageRequestCachePolicyReloadIgnoringCache
+};
+
 typedef NS_ENUM(NSInteger, DFImageRequestPriority) {
     DFImageRequestPriorityVeryLow = NSOperationQueuePriorityVeryLow,
     DFImageRequestPriorityLow = NSOperationQueuePriorityLow,

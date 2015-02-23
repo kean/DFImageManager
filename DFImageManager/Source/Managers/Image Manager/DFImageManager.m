@@ -256,6 +256,7 @@ _DFImageKeyCreate(DFImageManager *manager, DFImageRequest *request, id<DFImageFe
 
 @implementation _DFImageManagerTask {
     NSMutableDictionary *_handlers;
+    BOOL _isFetching;
     
     // Fetch
     DFImageResponse *_response;
@@ -281,32 +282,33 @@ _DFImageKeyCreate(DFImageManager *manager, DFImageRequest *request, id<DFImageFe
     
     NSInteger cacheMissCount = 0;
     for (_DFImageManagerHandler *handler in [self.handlers allValues]) {
-        DFCachedImage *cachedImage = [_cache cachedImageForKey:DFImageCacheKeyCreate(handler.request)];
+        UIImage *cachedImage = [self _cachedImageForRequest:handler.request];
         if (cachedImage != nil) {
             // Fullfill request with image from memory cache
-            [self _didProcessResponse:[[DFImageResponse alloc] initWithImage:cachedImage.image] forHandler:handler];
+            [self _didProcessResponse:[[DFImageResponse alloc] initWithImage:cachedImage] forHandler:handler];
         } else {
             cacheMissCount++;
         }
     }
-    // Start fetching if not all requests were fulfilled by memory cache;
+    // Start fetching if not all requests were fulfilled by memory cache
     if (cacheMissCount > 0) {
-        [self _fetchImage];
+        [self _startFetchingIfNecessary];
     }
 }
 
 - (void)addHandler:(_DFImageManagerHandler *)handler {
     _handlers[handler.requestID.handlerID] = handler;
     if (self.isExecuting) {
-        DFCachedImage *cachedImage =[_cache cachedImageForKey:DFImageCacheKeyCreate(handler.request)];
+        UIImage *cachedImage = [self _cachedImageForRequest:handler.request];
         if (cachedImage != nil) {
             // Fullfill request with image from memory cache
-            [self _didProcessResponse:[[DFImageResponse alloc] initWithImage:cachedImage.image] forHandler:handler];
+            [self _didProcessResponse:[[DFImageResponse alloc] initWithImage:cachedImage] forHandler:handler];
         } else if (_response != nil) {
             // Start image processing if task already has original image
             [self _processResponseForHandler:handler];
         } else {
-            // Wait until task receives requested image
+            // Start fetching or wait till fetch is complete
+            [self _startFetchingIfNecessary];
         }
     } else {
         // Wait until task is resumed
@@ -318,13 +320,16 @@ _DFImageKeyCreate(DFImageManager *manager, DFImageRequest *request, id<DFImageFe
     [((DFImageRequestID *)_processingRequestIDs[handlerID]) cancel];
 }
 
-- (void)_fetchImage {
-    _DFImageManagerTask *__weak weakSelf = self;
-    NSOperation *operation = [_fetcher startOperationWithRequest:self.request completion:^(DFImageResponse *response) {
-        [weakSelf _didReceiveResponse:response];
-    }];
-    operation.queuePriority = [self _queuePriority];
-    _fetchOperation = operation;
+- (void)_startFetchingIfNecessary {
+    if (!_isFetching) {
+        _isFetching = YES;
+        _DFImageManagerTask *__weak weakSelf = self;
+        NSOperation *operation = [_fetcher startOperationWithRequest:self.request completion:^(DFImageResponse *response) {
+            [weakSelf _didReceiveResponse:response];
+        }];
+        operation.queuePriority = [self _queuePriority];
+        _fetchOperation = operation;
+    }
 }
 
 - (void)_didReceiveResponse:(DFImageResponse *)response {
@@ -355,9 +360,9 @@ _DFImageKeyCreate(DFImageManager *manager, DFImageRequest *request, id<DFImageFe
 }
 
 - (void)_processImage:(UIImage *)input forHandler:(_DFImageManagerHandler *)handler completion:(void (^)(UIImage *image))completion {
-    DFCachedImage *cachedImage = [_cache cachedImageForKey:DFImageCacheKeyCreate(handler.request)];
+    UIImage *cachedImage = [self _cachedImageForRequest:handler.request];
     if (cachedImage != nil) {
-        completion(cachedImage.image);
+        completion(cachedImage);
     } else {
         DFImageRequest *processingRequest = [handler.request copy];
         processingRequest.resource = [[DFProcessingInput alloc] initWithImage:input identifier:[self.taskID UUIDString]];
@@ -370,11 +375,6 @@ _DFImageKeyCreate(DFImageManager *manager, DFImageRequest *request, id<DFImageFe
             _processingRequestIDs[handler.requestID.handlerID] = requestID;
         }
     }
-}
-
-- (void)_storeImage:(UIImage *)image forRequest:(DFImageRequest *)request {
-    DFCachedImage *cachedImage = [[DFCachedImage alloc] initWithImage:image expirationDate:(CACurrentMediaTime() + request.options.expirationAge)];
-    [_cache storeImage:cachedImage forKey:DFImageCacheKeyCreate(request)];
 }
 
 - (void)_didProcessResponse:(DFImageResponse *)response forHandler:(_DFImageManagerHandler *)handler {
@@ -408,6 +408,22 @@ _DFImageKeyCreate(DFImageManager *manager, DFImageRequest *request, id<DFImageFe
     return YES;
 }
 
+#pragma mark - Memory cache
+
+- (UIImage *)_cachedImageForRequest:(DFImageRequest *)request {
+    if (request.options.memoryCachePolicy == DFImageRequestCachePolicyReloadIgnoringCache) {
+        return nil;
+    }
+    DFCachedImage *cachedImage = [_cache cachedImageForKey:DFImageCacheKeyCreate(request)];
+    return cachedImage.image;
+}
+
+- (void)_storeImage:(UIImage *)image forRequest:(DFImageRequest *)request {
+    DFCachedImage *cachedImage = [[DFCachedImage alloc] initWithImage:image expirationDate:(CACurrentMediaTime() + request.options.expirationAge)];
+    [_cache storeImage:cachedImage forKey:DFImageCacheKeyCreate(request)];
+}
+
+#pragma mark -
 
 - (NSString *)description {
     return [NSString stringWithFormat:@"<%@ %p> { isExecuting = %i, isCancelled = %i, isPreheating = %i }", [self class], self, self.isExecuting, self.isCancelled, self.isPreheating];
