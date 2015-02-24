@@ -23,18 +23,35 @@
 #import "DFALAsset.h"
 #import <AssetsLibrary/AssetsLibrary.h>
 
-@implementation DFALAsset
+
+@implementation DFALAsset {
+    NSURL *_assetURL;
+}
 
 - (instancetype)initWithAsset:(ALAsset *)asset {
     if (self = [super init]) {
         _asset = asset;
-        _assetURL = [asset valueForProperty:ALAssetPropertyAssetURL];
     }
     return self;
 }
 
+- (NSURL *)assetURL {
+    @synchronized(self) {
+        if (!_assetURL) {
+            _assetURL = [self.asset valueForProperty:ALAssetPropertyAssetURL];
+        }
+    }
+    return _assetURL;
+}
+
 - (NSUInteger)hash {
     return [self.assetURL hash];
+}
+
+- (void)warmup {
+    if (self.assetURL) {
+        // Warm up asset URL
+    }
 }
 
 @end

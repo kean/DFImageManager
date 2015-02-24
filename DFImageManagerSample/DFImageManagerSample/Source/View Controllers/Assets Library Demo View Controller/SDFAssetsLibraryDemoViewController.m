@@ -14,9 +14,14 @@
 
 static NSString * const reuseIdentifier = @"Cell";
 
+@interface SDFAssetsLibraryDemoViewController () <DFCollectionViewPreheatingControllerDelegate>
+
+@end
+
 @implementation SDFAssetsLibraryDemoViewController {
-    NSArray /* DFALAsset */ *_photos;
+    NSArray /* NSURL */ *_photos;
     UIActivityIndicatorView *_activity;
+    DFCollectionViewPreheatingController *_preheatingController;
 }
 
 - (void)viewDidLoad {
@@ -46,6 +51,22 @@ static NSString * const reuseIdentifier = @"Cell";
     }
 }
 
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
+    _preheatingController = [[DFCollectionViewPreheatingController alloc] initWithCollectionView:self.collectionView];
+    _preheatingController.delegate = self;
+    [_preheatingController updatePreheatRect];
+}
+
+- (void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
+    
+    // Resets preheat rect and stop preheating images via delegate call.
+    [_preheatingController resetPreheatRect];
+    _preheatingController = nil;
+}
+
 - (void)_loadAssets {
     _activity = [self df_showActivityIndicatorView];
     
@@ -55,9 +76,19 @@ static NSString * const reuseIdentifier = @"Cell";
         [group enumerateAssetsUsingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop) {
             NSString *assetType = [result valueForProperty:ALAssetPropertyType];
             if ([assetType isEqual:ALAssetTypePhoto]) {
+                /*! 
+                 The example of DFALAsset usage
                 DFALAsset *wrapper = [[DFALAsset alloc] initWithAsset:result];
+                // For more info about DLALAsset and warmup methods see DFAssetsLibraryImageFetcher docs.
+                [wrapper warmup];
                 if (wrapper) {
                     [assets addObject:wrapper];
+                }
+                 */
+                
+                NSURL *assetURL = [result valueForProperty:ALAssetPropertyAssetURL];
+                if (assetURL) {
+                    [assets addObject:assetURL];
                 }
             }
         }];
@@ -109,11 +140,36 @@ static NSString * const reuseIdentifier = @"Cell";
         [cell addSubview:imageView];
     }
     
-    DFALAsset *asset = _photos[indexPath.row];
+    NSURL *assetURL = _photos[indexPath.row];
     [imageView prepareForReuse];
-    [imageView setImageWithResource:asset];
+    [imageView setImageWithResource:assetURL];
 
     return cell;
+}
+
+#pragma mark - <DFCollectionViewPreheatingControllerDelegate>
+
+- (void)collectionViewPreheatingController:(DFCollectionViewPreheatingController *)controller didUpdatePreheatRectWithAddedIndexPaths:(NSArray *)addedIndexPaths removedIndexPaths:(NSArray *)removedIndexPaths {
+    UICollectionViewFlowLayout *layout = (id)self.collectionViewLayout;
+    CGSize targetSize = ({
+        CGFloat scale = [UIScreen mainScreen].scale;
+        CGSizeMake(layout.itemSize.width * scale, layout.itemSize.height * scale);
+    });
+    
+    NSArray *addedAssets = [self _imageAssetsAtIndexPaths:addedIndexPaths];
+    
+    [[DFImageManager sharedManager] startPreheatingImageForResources:addedAssets targetSize:targetSize contentMode:DFImageContentModeAspectFill options:nil];
+    NSArray *removedAssets = [self _imageAssetsAtIndexPaths:removedIndexPaths];
+    [[DFImageManager sharedManager] stopPreheatingImagesForResources:removedAssets targetSize:targetSize contentMode:DFImageContentModeAspectFill options:nil];
+}
+
+- (NSArray *)_imageAssetsAtIndexPaths:(NSArray *)indexPaths {
+    NSMutableArray *assets = [NSMutableArray new];
+    for (NSIndexPath *indexPath in indexPaths) {
+        NSURL *assetURL = _photos[indexPath.row];
+        [assets addObject:assetURL];
+    }
+    return assets;
 }
 
 @end

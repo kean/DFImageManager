@@ -20,6 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+#import "DFALAsset.h"
 #import "DFAssetsLibraryImageFetcher.h"
 #import "DFCompositeImageManager.h"
 #import "DFImageCache.h"
@@ -29,6 +30,7 @@
 #import "DFPhotosKitImageFetcher.h"
 #import "DFProxyImageManager.h"
 #import "DFURLImageFetcher.h"
+#import <AssetsLibrary/AssetsLibrary.h>
 
 
 @implementation DFImageManager (DefaultManager)
@@ -57,11 +59,21 @@
         [[DFImageManager alloc] initWithConfiguration:[DFImageManagerConfiguration configurationWithFetcher:fetcher processor:nil cache:cache]];
     });
     
-    DFImageManager *assetsLibraryImageManager = ({
+    id<DFImageManagingCore> assetsLibraryImageManager = ({
         DFAssetsLibraryImageFetcher *fetcher = [DFAssetsLibraryImageFetcher new];
         
         // Disable image decompression because ALAssetsLibrary blocks main thread anyway.
-        [[DFImageManager alloc] initWithConfiguration:[DFImageManagerConfiguration configurationWithFetcher:fetcher processor:nil cache:cache]];
+        DFImageManager *imageManager = [[DFImageManager alloc] initWithConfiguration:[DFImageManagerConfiguration configurationWithFetcher:fetcher processor:nil cache:cache]];
+        
+        // Create proxy to support ALAsset class.
+        DFProxyImageManager *proxy = [[DFProxyImageManager alloc] initWithImageManager:imageManager];
+        [proxy setValueTransformerWithBlock:^id(id resource) {
+            if ([resource isKindOfClass:[ALAsset class]]) {
+                return [[DFALAsset alloc] initWithAsset:resource];
+            }
+            return resource;
+        }];
+        proxy;
     });
     
     DFCompositeImageManager *compositeImageManager = [[DFCompositeImageManager alloc] initWithImageManagers:@[ URLImageManager, photosKitImageManager, assetsLibraryImageManager ]];

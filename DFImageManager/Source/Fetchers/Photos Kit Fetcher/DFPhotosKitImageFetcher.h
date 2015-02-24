@@ -23,6 +23,9 @@
 #import "DFImageFetching.h"
 
 
+/*! Image fetcher for Photos Kit framework. Supported resources: PHAsset, NSURL with scheme com.github.kean.photos-kit.
+ @note Use methods of NSURL+DFPhotosKit category to construct URLs for PHAssets.
+ */
 NS_CLASS_AVAILABLE_IOS(8_0) @interface DFPhotosKitImageFetcher : NSObject <DFImageFetching>
 
 @end

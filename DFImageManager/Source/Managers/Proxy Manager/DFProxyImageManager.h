@@ -31,8 +31,12 @@
  */
 @interface DFProxyImageManager : NSProxy <DFImageManaging>
 
+/*! Image manager that the receiver was initialized with.
+ */
 @property (nonatomic) id<DFImageManagingCore> imageManager;
 
+/*! Initializes proxy with the image manager.
+ */
 - (instancetype)initWithImageManager:(id<DFImageManagingCore>)imageManager;
 
 /*! Set value transformer in case you need to transform resources before passing them to the image manager factory and to the image managers.

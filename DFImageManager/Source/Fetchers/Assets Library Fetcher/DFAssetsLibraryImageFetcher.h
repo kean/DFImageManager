@@ -24,6 +24,11 @@
 #import <Foundation/Foundation.h>
 
 
+/*! Image fetcher for ALAssetsLibrary framework. Supported resources: DLALAsset, NSURL with scheme assets-library.
+ @note You may use the DFProxyImageManager to add support for ALAsset class.
+ @warning Refrain from using DFAssetsLibraryImageFetcher on iOS 8.0+.
+ @warning For best results use NSURL with assets-library scheme instead of of ALAsset class (which might seem counterintuitive). You can retrieve the asset URL like this [asset valueForProperty:ALAssetPropertyAssetURL]. If you use DFALAsset you should warmup instances of that class in background before use. The problem is, unlike PHAsset, the ALAsset class doesn't implement -hash and -isEqual methods. And what's worse, retrieving the ALAsset URL is very (very!) slow operation that blocks the entire assets library.
+ */
 @interface DFAssetsLibraryImageFetcher : NSObject <DFImageFetching>
 
 @end

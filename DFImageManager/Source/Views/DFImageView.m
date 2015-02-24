@@ -149,7 +149,7 @@ static const NSTimeInterval _kMinimumAutoretryInterval = 8.f;
 #pragma mark - <DFImageViewDelegate>
 
 - (void)imageView:(DFImageView *)imageView didCompleteRequest:(DFImageRequest *)request withImage:(UIImage *)image info:(NSDictionary *)info {
-    BOOL isFastResponse = (_operation.elapsedTime * 1000.0) < 96.f; // Elapsed time is lower then 96 ms, if we miss 6 frames, that's good enough
+    BOOL isFastResponse = (_operation.elapsedTime * 1000.0) < 64.f; // Elapsed time is lower then 64 ms, if we miss 4 frames, that's good enough
     if (self.allowsAnimations && !isFastResponse && !self.image) {
         self.image = image;
         [self.layer addAnimation:({

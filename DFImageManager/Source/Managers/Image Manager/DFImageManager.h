@@ -54,6 +54,8 @@
 @end
 
 
+/*! The DFImageManager category that implements convenience methods declated in DFImageManaging protocol.
+ */
 @interface DFImageManager (Convenience) <DFImageManaging>
 
 @end
@@ -62,6 +64,13 @@
 @interface DFImageManager (DefaultManager)
 
 /*! Creates default image manager that contains all built-in fetchers.
+ @note Supported assets:
+
+ - NSURL with schemes http, https, ftp, file and data
+ 
+ - PHAsset and NSURL with scheme com.github.kean.photos-kit
+ 
+ - ALAsset, DFALAsset and NSURL with scheme assets-library
  */
 + (id<DFImageManaging>)createDefaultManager;
 

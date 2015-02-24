@@ -24,7 +24,8 @@
 
 @class ALAsset;
 
-/*! ALAsset wrapper that implements -hash method and caches assetURL.
+/*! ALAsset wrapper that implements -hash method and memorizes assetURL.
+ @note The asset URL is created lazily. In some cases it might be a good idea to warm-up this property.
  */
 @interface DFALAsset : NSObject
 
@@ -32,12 +33,16 @@
  */
 @property (nonatomic, readonly) ALAsset *asset;
 
-/*! The asset URL (assets-library:) of the asset.
+/*! The asset URL (assets-library:) of the asset. Asset URL is created lazily.
  */
 @property (nonatomic, readonly) NSURL *assetURL;
 
 /*! Initializes DFALAsset with an instance of ALAsset class.
  */
 - (instancetype)initWithAsset:(ALAsset *)asset NS_DESIGNATED_INITIALIZER;
+
+/*! Warms up the receiver's properties. For best performance use it in the background before displaying multiple DFALAsset instances. ALAssetsLibrary is ridiculously slow and might otherwise trash the image manager.
+ */
+- (void)warmup;
 
 @end
