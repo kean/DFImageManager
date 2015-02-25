@@ -43,7 +43,7 @@
 
 #pragma mark Dependency Injectors
 
-/*! Returns the iamge manager instancse shared by all clients of the current process. Unless set expilictly through a call to +setSharedManager: method, this method returns image manager created by +defaultManager method.
+/*! Returns the shared image manager instance. By default returns the image manager instance created using DFImageManager -createDefaultManager method. An application with more specific needs can create a custom image manager and set it as a shared instance.
  */
 + (id<DFImageManaging>)sharedManager;
 
@@ -54,7 +54,7 @@
 @end
 
 
-/*! The DFImageManager category that implements convenience methods declated in DFImageManaging protocol.
+/*! The DFImageManager category that implements convenience methods declared in DFImageManaging protocol.
  */
 @interface DFImageManager (Convenience) <DFImageManaging>
 

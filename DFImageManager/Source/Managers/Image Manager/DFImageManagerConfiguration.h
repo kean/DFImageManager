@@ -26,18 +26,24 @@
 @protocol DFImageFetching;
 @protocol DFImageProcessing;
 
-
+/*! An DFImageManagerConfiguration object defines the behavior and policies to use when retrieving images using DFImageManager object.
+ */
 @interface DFImageManagerConfiguration : NSObject <NSCopying>
 
+/*! The image fetcher the receiver was initialized with.
+ */
 @property (nonatomic, readonly) id<DFImageFetching> fetcher;
+
+/*! The image processor.
+ */
 @property (nonatomic) id<DFImageProcessing> processor;
 
-/*! Operation queue, that is used for executing image processing operations (see <DFImageProcessing> protocol).
+/*! Operation queue used for executing image processing operations (see DFImageProcessing protocol).
  */
 @property (nonatomic) NSOperationQueue *processingQueue;
 
 /*! Memory cache that stores processed images.
-  @note It's a good idea to implement <DFImageProcessing> and <DFImageCaching> in that same object.
+  @note It's a good idea to implement DFImageProcessing and DFImageCaching in that same object.
  */
 @property (nonatomic) id<DFImageCaching> cache;
 
@@ -45,9 +51,19 @@
  */
 @property (nonatomic) NSUInteger maximumConcurrentPreheatingRequests;
 
+/*! Returns a DFImageManagerConfiguration initialized with a given image fetcher.
+ @param fetcher Image fetcher, Must not be nil.
+ */
 - (instancetype)initWithFetcher:(id<DFImageFetching>)fetcher NS_DESIGNATED_INITIALIZER;
 
+/*! Returns configuration created with a given image fetcher.
+  @param fetcher Image fetcher, Must not be nil.
+ */
 + (instancetype)configurationWithFetcher:(id<DFImageFetching>)fetcher;
+
+/*! Returns configuration created with a given fetcher, processor and cache. All parameters except for fetcher might be nil.
+  @param fetcher Image fetcher, Must not be nil.
+ */
 + (instancetype)configurationWithFetcher:(id<DFImageFetching>)fetcher processor:(id<DFImageProcessing>)processor cache:(id<DFImageCaching>)cache;
 
 @end

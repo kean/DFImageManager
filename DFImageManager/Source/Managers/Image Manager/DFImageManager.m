@@ -492,7 +492,7 @@ _DFImageKeyCreate(DFImageRequest *request, BOOL isCacheKey, id<_DFImageRequestKe
              The solution is quite simple and elegant: use an instance of DFImageManager to manage processing operations and implement image processing using <DFImageFetching> protocol. That's exactly what DFProcessingImageManager does (and it has a simple initializer that takes <DFImageProcessing> and operation queue as a parameters). So DFImageManager uses instances of DFImageManager class in it's own implementation.
              */
             
-            DFProcessingImageFetcher *processingFetcher = [[DFProcessingImageFetcher alloc] initWithProcessor:configuration.processor qeueu:configuration.processingQueue];
+            DFProcessingImageFetcher *processingFetcher = [[DFProcessingImageFetcher alloc] initWithProcessor:configuration.processor queue:configuration.processingQueue];
             _processingManager = [[DFImageManager alloc] initWithConfiguration:[DFImageManagerConfiguration configurationWithFetcher:processingFetcher]];
         }
         

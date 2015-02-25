@@ -26,11 +26,14 @@
 @class DFImageResponse;
 @class DFImageRequest;
 
-
+/*! The operation the implements fetching of image representation  for images using Photos Kit framework.
+ */
 NS_CLASS_AVAILABLE_IOS(8_0) @interface DFPhotosKitImageFetchOperation : DFOperation
 
 @property (nonatomic, readonly) DFImageResponse *response;
 
+/*! Initializes operation with an image request.
+ */
 - (instancetype)initWithRequest:(DFImageRequest *)request NS_DESIGNATED_INITIALIZER;
 
 @end

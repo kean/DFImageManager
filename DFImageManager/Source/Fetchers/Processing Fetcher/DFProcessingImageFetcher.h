@@ -30,6 +30,6 @@
  */
 @interface DFProcessingImageFetcher : NSObject <DFImageFetching>
 
-- (instancetype)initWithProcessor:(id<DFImageProcessing>)processor qeueu:(NSOperationQueue *)queue;
+- (instancetype)initWithProcessor:(id<DFImageProcessing>)processor queue:(NSOperationQueue *)queue;
 
 @end

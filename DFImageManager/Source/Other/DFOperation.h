@@ -23,6 +23,8 @@
 #import <Foundation/Foundation.h>
 
 
+/*! The DFOperation operation is a base class that simplified creation of concurrent operations.
+ */
 @interface DFOperation : NSOperation
 
 - (void)start;

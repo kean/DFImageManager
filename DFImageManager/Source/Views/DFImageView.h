@@ -75,7 +75,7 @@
 @property (nonatomic) BOOL allowsAnimations;
 
 /*! If the value YES image view will automatically retry image requests when necessary. Default value is YES.
- @note Image view is very careful with autoretries. It will attempt automatic retry only when network reachability changes (and becomes reachable), image view is visible, current image request is completed and was failed with a network connection error. It also won't autoretry too frequently.
+ @note Image view is very careful with auto-retries. It will attempt automatic retry only when network reachability changes (and becomes reachable), image view is visible, current image request is completed and was failed with a network connection error. It also won't auto retry too frequently.
  */
 @property (nonatomic) BOOL allowsAutoRetries;
 

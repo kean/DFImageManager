@@ -24,11 +24,13 @@
 #import <UIKit/UIKit.h>
 
 
+/*! Represents image that can be used as an input for DFProcessingImageFetcher.
+ */
 @interface DFProcessingInput : NSObject
 
 @property (nonatomic, readonly) UIImage *image;
 @property (nonatomic, readonly) NSString *imageIdentifier;
 
-- (instancetype)initWithImage:(UIImage *)image identifier:(NSString *)identifier;
+- (instancetype)initWithImage:(UIImage *)image identifier:(NSString *)identifier NS_DESIGNATED_INITIALIZER;
 
 @end

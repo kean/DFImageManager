@@ -34,6 +34,7 @@
 - (instancetype)init {
     if (self = [super init]) {
         _imageSize = DFALAssetImageSizeThumbnail;
+        _version = DFALAssetVersionCurrent;
     }
     return self;
 }

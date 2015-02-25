@@ -28,15 +28,28 @@
 @class ALAsset;
 
 
+/*! The operation the implements fetching of image representation of instances of ALAsset class.
+ */
 @interface DFAssetsLibraryImageFetchOperation : DFOperation
 
+/*! The image size. Default value is DFALAssetImageSizeThumbnail.
+ */
 @property (nonatomic) DFALAssetImageSize imageSize;
+
+/*! The image version. Default value is DFALAssetVersionCurrent.
+ @warning Using DFALAssetVersionUnadjusted will always return the biggest, best representation available, ignoring the value of imageSize property.
+ */
 @property (nonatomic) DFALAssetVersion version;
 
 @property (nonatomic, readonly) UIImage *image;
 @property (nonatomic, readonly) NSError *error;
 
+/*! Initializes operation with instance of ALAsset class.
+ */
 - (instancetype)initWithAsset:(ALAsset *)asset;
+
+/*! Initializes operation with asset URL. Instance of ALAsset will be fetched automatically when operation is started.
+ */
 - (instancetype)initWithAssetURL:(NSURL *)assetURL;
 
 @end

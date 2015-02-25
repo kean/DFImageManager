@@ -33,7 +33,7 @@
     NSOperationQueue *_queue;
 }
 
-- (instancetype)initWithProcessor:(id<DFImageProcessing>)processor qeueu:(NSOperationQueue *)queue {
+- (instancetype)initWithProcessor:(id<DFImageProcessing>)processor queue:(NSOperationQueue *)queue {
     if (self = [super init]) {
         _processor = processor;
         _queue = queue;

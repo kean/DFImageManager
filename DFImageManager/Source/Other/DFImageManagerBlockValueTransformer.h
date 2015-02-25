@@ -24,8 +24,12 @@
 #import <Foundation/Foundation.h>
 
 
+/*! The implementation of value transforming that uses a block for transforming.
+ */
 @interface DFImageManagerBlockValueTransformer : NSObject <DFImageManagerValueTransforming>
 
+/*! Returns an DFImageManagerBlockValueTransformer instance initialized with a given block.
+ */
 - (instancetype)initWithBlock:(id (^)(id))block NS_DESIGNATED_INITIALIZER;
 
 @end

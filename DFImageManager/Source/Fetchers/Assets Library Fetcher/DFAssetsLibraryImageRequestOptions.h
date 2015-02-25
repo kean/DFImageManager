@@ -33,6 +33,7 @@
 @property (nonatomic) DFALAssetImageSize imageSize;
 
 /*! Options for requesting an image asset with or without adjustments, used by the version property.
+ @warning Using DFALAssetVersionUnadjusted will always return the biggest, best representation available, ignoring the value of imageSize property.
  */
 @property (nonatomic) DFALAssetVersion version;
 

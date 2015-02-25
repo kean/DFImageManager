@@ -50,9 +50,12 @@
  @param resource The resource whose image data is to be loaded.
  @param targetSize The size in pixels of image to be returned.
  @param contentMode An option for how to fit the image to the aspect ratio of the requested size. For details, see DFImageContentMode.
- @param options Options specifying how image manager should handle the request and process the received image. More options that are provided in a base class may be available, so make sure to check the documentation on that.
+ @param options Options specifying how image manager should handle the request and process the received image. Default options are created when parameter is nil. More options that are provided in a base class may be available, so make sure to check the documentation on that.
  */
 - (instancetype)initWithResource:(id)resource targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options NS_DESIGNATED_INITIALIZER;
+
+/*! Returns a DFImageRequest initialized with a given resource. Uses DFImageMaximumSize and DFImageContentModeAspectFill as other parameters.
+ */
 - (instancetype)initWithResource:(id)resource;
 
 /*! Returns image target size (in pixels) for a given view.
