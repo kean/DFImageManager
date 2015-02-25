@@ -151,7 +151,7 @@ Those were the most common features. `DFImageManager` jam-packed with features, 
 - If you **want to contribute**, submit a pull request.
 
 ## Contacts
-[Alexander Grebenyuk](https://github.com/kean)
+[Alexander Grebenyuk](https://github.com/kean) ([@a_grebenyuk](https://twitter.com/a_grebenyuk))
 
 ## License
 DFImageManager is available under the MIT license. See the LICENSE file for more info.
