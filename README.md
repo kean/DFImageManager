@@ -46,9 +46,11 @@ pod 'DFImageManager'
 #### Zero config image fetching
 
 ```objective-c
-[[DFImageManager sharedManager] requestImageForResource:[NSURL URLWithString:@"http://..."] completion:^(UIImage *image, NSDictionary *info) {
+DFImageRequestID *requestID = [[DFImageManager sharedManager] requestImageForResource:[NSURL URLWithString:@"http://..."] completion:^(UIImage *image, NSDictionary *info) {
   // Use decompressed image and inspect info
 }];
+
+[requestID cancel]; // Cancelling requests is very easy
 ```
 
 #### Add some options
