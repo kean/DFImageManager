@@ -1,3 +1,23 @@
+DFImageManager 0.0.17
+=====================
+* Performance improvements
+* Add progressHandler to DFImageRequestOptions
+* Improvements in memory caching:
+  * DFImageFetching protocol changes. Rename -isRequestEquivalent:toRequest: method to -isRequestFetchEquivalent:toRequest. Add -isRequestCacheEquivalent:toRequest: method for comparing requests for memory-cached images.
+  * Add DFImageRequestCachePolicy enum that describes the request cache policy that applies to memory caching. Add memoryCachePolicy property to DFImageRequestOptions. Users can now reload images ignoring memory cache.
+  * DFImageManager now can’t use cached images stored by other managers if they share the same cache instance (which makes all the sense)
+  * Add DFCachedImage class. Slightly changed and more flexible expiration mechanism in DFImageCache. Each cached image now might have a different expiration age, which is configured via a new expirationAge property of the DFImageRequestOptions; remove maximumEntryAge property from DFImageCache.
+* Add DFURLImageFetcherDelegate protocol for DFURLImageFetcher customization, remove public methods that were responsible for that. Users can now customize DFURLImageFetcher without subclassing it.
+* Reworked DFCompositeImageFetchOperation (previous name was DFCompositeImageRequest). It now gives users full access to the underlying requests and their results. Add startTime and elapsedTime properties. Add new methods and properties that are used for handling the obsolete requests. And more.
+* DFImageView is now a UIImageView subclass. It’s easier to use and it doesn’t have any unnecessary functionality that it had before.
+* DFImageView now automatically retries image requests in certain conditions, controlled using new allowsAutoRetries property
+* Add DFImageContainerView class that implements all the functionality that was removed from DFImageView. The DFImageContainerView works in conjunctions with DFImageView.
+* Add UIImageView+DFImageManager category that adds some basic image fetching functionality to UIImageView
+* Add DFImageFetchOperation that wraps DFImageManager API to give clients a power of NSOperation and NSOperationQueue
+* Add DFNetworkReachability class
+* DFPhotosKitImageFetchOperation now cancels requests started using PHImageManager
+* Add DFALAsset class, DFAssetsLibraryImageFetcher now supports DFALAsset class, for more info see DFAssetsLibraryImageFetcher docs.
+
 DFImageManager 0.0.16
 =====================
 * Rename all existing protocols according to Coding Guidelines for Cocoa (<DFImageManager> -> <DFImageManaging>)
