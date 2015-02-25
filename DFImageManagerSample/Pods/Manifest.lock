@@ -1,5 +1,5 @@
 PODS:
-  - DFImageManager (0.0.16)
+  - DFImageManager (0.0.17)
 
 DEPENDENCIES:
   - DFImageManager (from `../`)
@@ -9,6 +9,6 @@ EXTERNAL SOURCES:
     :path: ../
 
 SPEC CHECKSUMS:
-  DFImageManager: ce674856e1431b18680f60687a028820c94e84af
+  DFImageManager: 3790bba4cccb6da1e5fa09900e440808bab8159a
 
 COCOAPODS: 0.35.0
