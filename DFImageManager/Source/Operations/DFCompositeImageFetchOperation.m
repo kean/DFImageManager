@@ -53,6 +53,10 @@
 @implementation DFCompositeImageFetchOperation {
     NSMapTable *_contexts;
     void (^_handler)(UIImage *, NSDictionary *, DFImageRequest *);
+    
+    // Optimization for single request case
+    DFCompositeImageRequestContext *_context;
+    
 }
 
 - (instancetype)initWithRequests:(NSArray *)requests handler:(void (^)(UIImage *, NSDictionary *, DFImageRequest *))handler {
@@ -60,8 +64,9 @@
         NSParameterAssert(requests.count > 0);
         _requests = [requests copy];
         _handler = [handler copy];
-        _contexts = [NSMapTable strongToStrongObjectsMapTable];
-
+        if (requests.count > 1) {
+            _contexts = [NSMapTable strongToStrongObjectsMapTable];
+        }
         _imageManager = [DFImageManager sharedManager];
         _allowsObsoleteRequests = YES;
     }
@@ -86,7 +91,11 @@
             [weakSelf _didFinishRequest:request image:image info:info];
         }];
         DFCompositeImageRequestContext *context =[[DFCompositeImageRequestContext alloc] initWithRequestID:requestID];
-        [_contexts setObject:context forKey:request];
+        if (_contexts) {
+            [_contexts setObject:context forKey:request];
+        } else {
+            _context = context;
+        }
     }
 }
 
@@ -100,7 +109,11 @@
 }
 
 - (DFCompositeImageRequestContext *)contextForRequest:(DFImageRequest *)request {
-    return [_contexts objectForKey:request];
+    if (_contexts) {
+        return [_contexts objectForKey:request];
+    } else {
+        return request == [_requests firstObject] ? _context : nil;
+    }
 }
 
 - (void)cancel {
