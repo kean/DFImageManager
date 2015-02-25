@@ -116,7 +116,7 @@ static inline NSURL *_ALAssetURL(id resource) {
     return DFALAssetImageSizeFullsize;
 }
 
-- (NSOperation *)startOperationWithRequest:(DFImageRequest *)request completion:(void (^)(DFImageResponse *))completion {
+- (NSOperation *)startOperationWithRequest:(DFImageRequest *)request progressHandler:(void (^)(double))progressHandler completion:(void (^)(DFImageResponse *))completion {
     DFAssetsLibraryImageFetchOperation *operation;
     if ([request.resource isKindOfClass:[DFALAsset class]]) {
         operation = [[DFAssetsLibraryImageFetchOperation alloc] initWithAsset:((DFALAsset *)request.resource).asset];

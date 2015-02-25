@@ -44,9 +44,11 @@
 - (BOOL)isRequestCacheEquivalent:(DFImageRequest *)request1 toRequest:(DFImageRequest *)request2;
 
 /*! Starts fetching an image for the request. The completion block should always be called, even for the cancelled request. The completion block may be called in any fashion (asynchronously or not) and on any thread.
+ @param progressHandler Progress handler that can be called on any thread. Image fetcher that don't report progress should ignore this the handler.
+ @param completion Completion handler that can be called on any thread.
  @return The operation that implements fetching. The operation might be nil.
  */
-- (NSOperation *)startOperationWithRequest:(DFImageRequest *)request completion:(void (^)(DFImageResponse *response))completion;
+- (NSOperation *)startOperationWithRequest:(DFImageRequest *)request progressHandler:(void (^)(double progress))progressHandler completion:(void (^)(DFImageResponse *response))completion;
 
 @optional
 

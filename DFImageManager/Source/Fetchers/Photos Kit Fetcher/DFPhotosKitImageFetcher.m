@@ -104,7 +104,7 @@ static inline NSString *_PHAssetLocalIdentifier(id resource) {
             options1.resizeMode == options2.resizeMode);
 }
 
-- (NSOperation *)startOperationWithRequest:(DFImageRequest *)request completion:(void (^)(DFImageResponse *))completion {
+- (NSOperation *)startOperationWithRequest:(DFImageRequest *)request progressHandler:(void (^)(double))progressHandler completion:(void (^)(DFImageResponse *))completion {
     DFPhotosKitImageFetchOperation *operation =[[DFPhotosKitImageFetchOperation alloc] initWithRequest:request];
     DFPhotosKitImageFetchOperation *__weak weakOp = operation;
     [operation setCompletionBlock:^{

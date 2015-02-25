@@ -56,7 +56,7 @@ extern NSString *const DFImageInfoURLResponseKey;
 @end
 
 
-/*! The DFURLImageFetcher is a class that implements DFImageFetching protocol to provide a functionality of fetching images via Cocoa URL Loading System.
+/*! The DFURLImageFetcher implements DFImageFetching protocol to provide a functionality of fetching images using Cocoa URL Loading System.
  @note Uses NSURLSession with a custom delegate. For more info on NSURLSession life cycle with custom delegates see the "URL Loading System Programming Guide" from Apple.
  @note Supported URL schemes: http, https, ftp, file and data
  */

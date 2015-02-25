@@ -53,6 +53,10 @@
  */
 @property (nonatomic) NSDictionary *userInfo;
 
+/*! Progress handler, called on a main thread.
+ */
+@property (nonatomic, copy) DFImageRequestProgressHandler progressHandler;
+
 /*! Initializes DFImageRequestOptions with another instance of request options.
  */
 - (instancetype)initWithOptions:(DFImageRequestOptions *)options;

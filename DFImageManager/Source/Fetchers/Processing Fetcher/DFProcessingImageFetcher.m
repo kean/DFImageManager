@@ -61,7 +61,7 @@
     return [_processor isProcessingForRequestEquivalent:request1 toRequest:request2];
 }
 
-- (NSOperation *)startOperationWithRequest:(DFImageRequest *)request completion:(void (^)(DFImageResponse *))completion {
+- (NSOperation *)startOperationWithRequest:(DFImageRequest *)request progressHandler:(void (^)(double))progressHandler completion:(void (^)(DFImageResponse *))completion {
     UIImage *image = [((DFProcessingInput *)request.resource) image];
     NSBlockOperation *operation = [NSBlockOperation blockOperationWithBlock:^{
         UIImage *processedImage = [_processor processedImage:image forRequest:request];

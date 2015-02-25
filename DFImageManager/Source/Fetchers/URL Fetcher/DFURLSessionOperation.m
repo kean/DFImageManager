@@ -50,13 +50,21 @@
 
 - (void)_startDataTask {
     DFURLSessionOperation *__weak weakSelf = self;
-    _task = [self.delegate URLSessionOperation:self dataTaskWithRequest:self.request completion:^(NSData *data, NSURLResponse *response, NSError *error) {
+    _task = [self.delegate URLSessionOperation:self dataTaskWithRequest:self.request progressHandler:^(int64_t countOfBytesReceived, int64_t countOfBytesExpectedToReceive) {
+        [weakSelf _didUpdateProgressWithCountOfBytesReceived:countOfBytesReceived countOfBytesExpectedToReceive:countOfBytesExpectedToReceive];
+    } completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
         [weakSelf _didFinishWithData:data response:response error:error];
     }];
     if (_task != nil) {
         [_task resume];
     } else {
         [self finish];
+    }
+}
+
+- (void)_didUpdateProgressWithCountOfBytesReceived:(int64_t) countOfBytesReceived countOfBytesExpectedToReceive:(int64_t)countOfBytesExpectedToReceive {
+    if (self.progressHandler) {
+        self.progressHandler(countOfBytesReceived, countOfBytesExpectedToReceive);
     }
 }
 

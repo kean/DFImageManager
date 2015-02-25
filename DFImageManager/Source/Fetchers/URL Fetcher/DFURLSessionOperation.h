@@ -24,21 +24,30 @@
 
 @protocol DFURLResponseDeserializing;
 
+typedef void (^DFURLSessionProgressHandler)(int64_t countOfBytesReceived, int64_t countOfBytesExpectedToReceive);
+typedef void (^DFURLSessionCompletionHandler)(NSData *data, NSURLResponse *response, NSError *error);
+
+
 @class DFURLSessionOperation;
 
 @protocol DFURLSessionOperationDelegate <NSObject>
 
-- (NSURLSessionDataTask *)URLSessionOperation:(DFURLSessionOperation *)operation dataTaskWithRequest:(NSURLRequest *)request completion:(void (^)(NSData *data, NSURLResponse *response, NSError *error))completion;
+/*! The DFURLSessionOperation delegates the creation and managing of the NSURLSessionDataTask to its delegate.
+ */
+- (NSURLSessionDataTask *)URLSessionOperation:(DFURLSessionOperation *)operation dataTaskWithRequest:(NSURLRequest *)request progressHandler:(DFURLSessionProgressHandler)progressHandler completionHandler:(DFURLSessionCompletionHandler)completionHandler;
 
 @end
 
 
+/*! The NSURLSessionDataTask wrapper. The NSURLSession flow with a custom delegate requires a lot of redirection. For more info on NSURLSession life cycle with custom delegates see the "URL Loading System Programming Guide" from Apple.
+ */
 @interface DFURLSessionOperation : DFOperation
 
 @property (nonatomic) id<DFURLResponseDeserializing> deserializer;
 @property (nonatomic) id<DFURLSessionOperationDelegate> delegate;
-@property (nonatomic, readonly) NSURLRequest *request;
+@property (nonatomic, copy) DFURLSessionProgressHandler progressHandler;
 
+@property (nonatomic, readonly) NSURLRequest *request;
 @property (nonatomic, readonly) NSURLResponse *response;
 @property (nonatomic, readonly) NSData *data;
 @property (nonatomic, readonly) id responseObject;

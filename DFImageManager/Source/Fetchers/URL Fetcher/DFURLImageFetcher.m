@@ -35,18 +35,20 @@ NSString *const DFImageInfoURLResponseKey = @"DFImageInfoURLResponseKey";
 
 @interface _DFURLSessionDataTaskHandler : NSObject
 
-@property (nonatomic, copy, readonly) void (^completion)(NSData *, NSURLResponse *, NSError *);
+@property (nonatomic, copy, readonly) DFURLSessionProgressHandler progressHandler;
+@property (nonatomic, copy, readonly) DFURLSessionCompletionHandler completionHandler;
 @property (nonatomic, readonly) NSMutableData *data;
 
-- (instancetype)initWithCompletion:(void (^)(NSData *, NSURLResponse *, NSError *))completion;
+- (instancetype)initWithProgressHandler:(DFURLSessionProgressHandler)progressHandler completion:(DFURLSessionCompletionHandler)completion;
 
 @end
 
 @implementation _DFURLSessionDataTaskHandler
 
-- (instancetype)initWithCompletion:(void (^)(NSData *, NSURLResponse *, NSError *))completion {
+- (instancetype)initWithProgressHandler:(DFURLSessionProgressHandler)progressHandler completion:(DFURLSessionCompletionHandler)completionHandler {
     if (self = [super init]) {
-        _completion = completion;
+        _progressHandler = [progressHandler copy];
+        _completionHandler = [completionHandler copy];
         _data = [NSMutableData new];
     }
     return self;
@@ -127,11 +129,16 @@ NSString *const DFImageInfoURLResponseKey = @"DFImageInfoURLResponseKey";
     return request;
 }
 
-- (NSOperation *)startOperationWithRequest:(DFImageRequest *)request completion:(void (^)(DFImageResponse *))completion {
+- (NSOperation *)startOperationWithRequest:(DFImageRequest *)request progressHandler:(void (^)(double))progressHandler completion:(void (^)(DFImageResponse *))completion {
     DFURLSessionOperation *operation = [self _createOperationForImageRequest:request];
     operation.delegate = _operationsDelegate;
     
     DFURLSessionOperation *__weak weakOp = operation;
+    [operation setProgressHandler:^(int64_t countOfBytesReceived, int64_t countOfBytesExpectedToReceive) {
+        if (progressHandler) {
+            progressHandler((double)countOfBytesReceived / (double)countOfBytesExpectedToReceive);
+        }
+    }];
     [operation setCompletionBlock:^{
         DFMutableImageResponse *response = [DFMutableImageResponse new];
         response.image = weakOp.responseObject;
@@ -215,6 +222,9 @@ NSString *const DFImageInfoURLResponseKey = @"DFImageInfoURLResponseKey";
 - (void)URLSession:(NSURLSession *)session dataTask:(NSURLSessionDataTask *)dataTask didReceiveData:(NSData *)data {
     @synchronized(self) {
         _DFURLSessionDataTaskHandler *handler = _sessionTaskHandlers[dataTask];
+        if (handler.progressHandler) {
+            handler.progressHandler(dataTask.countOfBytesReceived, dataTask.countOfBytesExpectedToReceive);
+        }
         [handler.data appendData:data];
     }
 }
@@ -222,8 +232,8 @@ NSString *const DFImageInfoURLResponseKey = @"DFImageInfoURLResponseKey";
 - (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task didCompleteWithError:(NSError *)error {
     @synchronized(self) {
         _DFURLSessionDataTaskHandler *handler = _sessionTaskHandlers[task];
-        if (handler.completion != nil) {
-            handler.completion(handler.data, task.response, error);
+        if (handler.completionHandler) {
+            handler.completionHandler(handler.data, task.response, error);
         }
         [_sessionTaskHandlers removeObjectForKey:task];
     }
@@ -231,11 +241,11 @@ NSString *const DFImageInfoURLResponseKey = @"DFImageInfoURLResponseKey";
 
 #pragma mark - <DFURLSessionOperationDelegate>
 
-- (NSURLSessionDataTask *)URLSessionOperation:(DFURLSessionOperation *)operation dataTaskWithRequest:(NSURLRequest *)request completion:(void (^)(NSData *, NSURLResponse *, NSError *))completion {
+- (NSURLSessionDataTask *)URLSessionOperation:(DFURLSessionOperation *)operation dataTaskWithRequest:(NSURLRequest *)request progressHandler:(DFURLSessionProgressHandler)progressHandler completionHandler:(DFURLSessionCompletionHandler)completionHandler {
     NSURLSessionDataTask *task = [self.session dataTaskWithRequest:request];
-    if (task != nil && completion != nil) {
+    if (task) {
         @synchronized(self) {
-            _sessionTaskHandlers[task] = [[_DFURLSessionDataTaskHandler alloc] initWithCompletion:completion];
+            _sessionTaskHandlers[task] = [[_DFURLSessionDataTaskHandler alloc] initWithProgressHandler:progressHandler completion:completionHandler];
         }
     }
     return task;

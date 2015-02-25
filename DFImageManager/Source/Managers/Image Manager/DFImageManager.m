@@ -200,9 +200,14 @@ _DFImageKeyCreate(DFImageRequest *request, BOOL isCacheKey, id<_DFImageRequestKe
 
 @protocol _DFImageManagerTaskDelegate <NSObject>
 
-/*! Gets called when task fetches image. Task may skip this method if it already has processed response for all handlers.
+/*! Gets called when task fetches image. Task may skip calling this method if it already has processed response for all handlers. The delegate should call the completion handler with a shouldContinue.
+ @note This method is required for maintaining thread safety. The method is similar to NSURLSessionTask callbacks.
  */
 - (void)task:(_DFImageManagerTask *)task didReceiveResponse:(DFImageResponse *)response completion:(void (^)(BOOL shouldContinue))completion;
+
+/*! Gets called when task updates progress.
+ */
+- (void)task:(_DFImageManagerTask *)task didUpdateProgress:(double)progress;
 
 /*! Gets called when task retrieves processed response.
  */
@@ -250,6 +255,7 @@ _DFImageKeyCreate(DFImageRequest *request, BOOL isCacheKey, id<_DFImageRequestKe
 
 @implementation _DFImageManagerTask {
     NSMutableDictionary *_handlers;
+    BOOL _isReportingProgress;
     BOOL _isFetching;
     
     // Fetch
@@ -292,6 +298,9 @@ _DFImageKeyCreate(DFImageRequest *request, BOOL isCacheKey, id<_DFImageRequestKe
 
 - (void)addHandler:(_DFImageManagerHandler *)handler {
     _handlers[handler.requestID.handlerID] = handler;
+    if (handler.request.options.progressHandler) {
+        _isReportingProgress = YES;
+    }
     if (self.isExecuting) {
         UIImage *cachedImage = [self _cachedImageForRequest:handler.request];
         if (cachedImage != nil) {
@@ -318,11 +327,21 @@ _DFImageKeyCreate(DFImageRequest *request, BOOL isCacheKey, id<_DFImageRequestKe
     if (!_isFetching) {
         _isFetching = YES;
         _DFImageManagerTask *__weak weakSelf = self;
-        NSOperation *operation = [_fetcher startOperationWithRequest:self.request completion:^(DFImageResponse *response) {
+        NSOperation *operation = [_fetcher startOperationWithRequest:self.request progressHandler:^(double progress) {
+            [weakSelf _didUpdateProgress:progress];
+        } completion:^(DFImageResponse *response) {
             [weakSelf _didReceiveResponse:response];
         }];
         operation.queuePriority = [self _queuePriority];
         _fetchOperation = operation;
+    }
+}
+
+- (void)_didUpdateProgress:(double)progress {
+    /*! Performance optimization for users that are not interested in progress reporting. Lower DFImageManager's internal queue usage.
+     */
+    if (_isReportingProgress) {
+        [self.delegate task:self didUpdateProgress:progress];
     }
 }
 
@@ -587,6 +606,23 @@ _DFImageKeyCreate(DFImageRequest *request, BOOL isCacheKey, id<_DFImageRequestKe
 - (void)task:(_DFImageManagerTask *)task didReceiveResponse:(DFImageResponse *)response completion:(void (^)(BOOL))completion {
     dispatch_async(_syncQueue, ^{
         completion(_tasks[task.taskID] == task);
+    });
+}
+
+- (void)task:(_DFImageManagerTask *)task didUpdateProgress:(double)progress {
+    dispatch_async(_syncQueue, ^{
+        if (_tasks[task.taskID] == task) {
+            [task.handlers enumerateKeysAndObjectsUsingBlock:^(id key, _DFImageManagerHandler *handler, BOOL *stop) {
+                void (^progressHandler)(double) = handler.request.options.progressHandler;
+                if (progressHandler) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        if (progressHandler) {
+                            progressHandler(progress);
+                        }
+                    });
+                }
+            }];
+        }
     });
 }
 

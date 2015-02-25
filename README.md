@@ -6,9 +6,9 @@
 Modern iOS framework for fetching, caching, processing, and preheating images from various sources. It uses latest advancements in iOS SDK and doesn't reinvent existing technologies. It provides a powerful API and an extreme performance that will extend the capabilities of your app.
 
 #### Supported resources
-- NSURL with schemes http, https, ftp, file and data
-- PHAsset and NSURL with scheme com.github.kean.photos-kit
-- DFALAsset, ALAsset and NSURL with scheme assets-library
+- NSURL with http, https, ftp, file, and data schemes
+- PHAsset and NSURL with com.github.kean.photos-kit scheme
+- DFALAsset, ALAsset and NSURL with assets-library scheme
 
 ## Features
 - Uses latest advancements in [Foundation URL Loading System](https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/URLLoadingSystem/URLLoadingSystem.html) including [NSURLSession](https://developer.apple.com/library/ios/documentation/Foundation/Reference/NSURLSession_class/).

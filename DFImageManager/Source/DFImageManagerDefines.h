@@ -70,3 +70,7 @@ typedef NS_ENUM(NSInteger, DFImageRequestPriority) {
     DFImageRequestPriorityHigh = NSOperationQueuePriorityHigh,
     DFImageRequestPriorityVeryHigh = NSOperationQueuePriorityVeryHigh
 };
+
+/*! Progress handler, called on a main thread.
+ */
+typedef void (^DFImageRequestProgressHandler)(double progress);
