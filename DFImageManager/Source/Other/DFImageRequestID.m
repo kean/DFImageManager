@@ -25,11 +25,11 @@
 @implementation DFImageRequestID
 
 - (void)cancel {
-    // Do nothing
+    [NSException raise:NSInternalInconsistencyException format:@"Abstract method called %@", NSStringFromSelector(_cmd)];
 }
 
 - (void)setPriority:(DFImageRequestPriority)priority {
-    // Do nothing
+    [NSException raise:NSInternalInconsistencyException format:@"Abstract method called %@", NSStringFromSelector(_cmd)];
 }
 
 @end
