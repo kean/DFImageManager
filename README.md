@@ -36,12 +36,18 @@ iOS 7.0+
 
 CocoaPods is the dependency manager for Cocoa projects, which automates the process of integrating thrid-party frameworks like DFImageManager. If you are not familiar with CocoaPods the best place to start would be [official CocoaPods guides](http://guides.cocoapods.org).
 ```ruby
-# Podfile example
+# Podfile
 platform :ios, '7.0'
 pod 'DFImageManager'
 ```
 
-## Examples
+If you want to use the latest `DFImageManager` features before the new version is released, you can specify the `:head` flag in you podfile.
+```ruby
+platform :ios, '7.0'
+pod 'DFImageManager', :head
+```
+
+## Usage
 
 #### Zero config image fetching
 
@@ -50,7 +56,7 @@ DFImageRequestID *requestID = [[DFImageManager sharedManager] requestImageForRes
   // Use decompressed image and inspect info
 }];
 
-[requestID cancel]; // Cancelling requests is very easy
+[requestID cancel]; // requestID can be used to cancel the request
 ```
 
 #### Add some options

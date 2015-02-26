@@ -32,6 +32,7 @@
         _processingQueue = [NSOperationQueue new];
         _processingQueue.maxConcurrentOperationCount = 2;
         _maximumConcurrentPreheatingRequests = 2;
+        _allowsSynchronousCallbacks = YES;
     }
     return self;
 }
@@ -49,8 +50,11 @@
 
 - (id)copyWithZone:(NSZone *)zone {
     DFImageManagerConfiguration *copy = [[DFImageManagerConfiguration alloc] initWithFetcher:self.fetcher];
-    copy.processor = self.processor;
     copy.cache = self.cache;
+    copy.processor = self.processor;
+    copy.processingQueue = self.processingQueue;
+    copy.maximumConcurrentPreheatingRequests = self.maximumConcurrentPreheatingRequests;
+    copy.allowsSynchronousCallbacks = self.allowsSynchronousCallbacks;
     return copy;
 }
 

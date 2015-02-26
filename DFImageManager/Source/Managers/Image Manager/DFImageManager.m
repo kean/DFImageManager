@@ -213,10 +213,12 @@ _DFImageKeyCreate(DFImageRequest *request, BOOL isCacheKey, id<_DFImageRequestKe
  */
 - (void)task:(_DFImageManagerTask *)task didProcessResponse:(DFImageResponse *)response forHandler:(_DFImageManagerHandler *)handler;
 
+- (UIImage *)task:(_DFImageManagerTask *)task cachedImageForRequest:(DFImageRequest *)request;
+
+- (void)task:(_DFImageManagerTask *)task storeImage:(UIImage *)image forRequest:(DFImageRequest *)request;
+
 @end
 
-
-#define DFImageCacheKeyCreate(request) _DFImageKeyCreate(request, YES,  _manager)
 
 /*! Implements the entire flow of retrieving, processing and caching images. Requires synchronization from the user of the class.
  @note Not thread safe.
@@ -238,9 +240,7 @@ _DFImageKeyCreate(DFImageRequest *request, BOOL isCacheKey, id<_DFImageRequestKe
 
 @property (nonatomic, weak) DFImageManager<_DFImageRequestKeyDelegate> *manager;
 @property (nonatomic) id<DFImageFetching> fetcher;
-@property (nonatomic) id<DFImageProcessing> processor;
 @property (nonatomic) id<DFImageManagingCore> processingManager;
-@property (nonatomic) id<DFImageCaching> cache;
 
 - (instancetype)initWithTaskID:(NSUUID *)taskID request:(DFImageRequest *)request NS_DESIGNATED_INITIALIZER;
 
@@ -424,16 +424,11 @@ _DFImageKeyCreate(DFImageRequest *request, BOOL isCacheKey, id<_DFImageRequestKe
 #pragma mark - Memory cache
 
 - (UIImage *)_cachedImageForRequest:(DFImageRequest *)request {
-    if (request.options.memoryCachePolicy == DFImageRequestCachePolicyReloadIgnoringCache) {
-        return nil;
-    }
-    DFCachedImage *cachedImage = [_cache cachedImageForKey:DFImageCacheKeyCreate(request)];
-    return cachedImage.image;
+    return [self.delegate task:self cachedImageForRequest:request];
 }
 
 - (void)_storeImage:(UIImage *)image forRequest:(DFImageRequest *)request {
-    DFCachedImage *cachedImage = [[DFCachedImage alloc] initWithImage:image expirationDate:(CACurrentMediaTime() + request.options.expirationAge)];
-    [_cache storeImage:cachedImage forKey:DFImageCacheKeyCreate(request)];
+    [self.delegate task:self storeImage:image forRequest:request];
 }
 
 #pragma mark -
@@ -510,9 +505,18 @@ _DFImageKeyCreate(DFImageRequest *request, BOOL isCacheKey, id<_DFImageRequestKe
 #pragma mark Fetching
 
 - (DFImageRequestID *)requestImageForRequest:(DFImageRequest *)request completion:(DFImageRequestCompletion)completion {
+    DFImageRequest *canonicalRequest = [self _canonicalRequestForRequest:request];
+    if (_conf.allowsSynchronousCallbacks) {
+        UIImage *cachedImage = [self _cachedImageForRequest:canonicalRequest];
+        if (cachedImage) {
+            if (completion) {
+                completion(cachedImage, nil);
+            }
+            return nil;
+        }
+    }
     _DFImageRequestID *requestID = [[_DFImageRequestID alloc] initWithImageManager:self]; // Represents requestID future.
     dispatch_async(_syncQueue, ^{
-        DFImageRequest *canonicalRequest = [self _canonicalRequestForRequest:request];
         NSUUID *taskID = _taskIDs[DFImageRequestKeyCreate(canonicalRequest)] ?: [NSUUID UUID];
         [requestID setTaskID:taskID handlerID:[NSUUID UUID]];
         _DFImageManagerHandler *handler = [[_DFImageManagerHandler alloc] initWithRequest:canonicalRequest requestID:requestID completion:completion];
@@ -537,8 +541,6 @@ _DFImageKeyCreate(DFImageRequest *request, BOOL isCacheKey, id<_DFImageRequestKe
         task = [[_DFImageManagerTask alloc] initWithTaskID:requestID.taskID request:request];
         task.manager = self;
         task.fetcher = _conf.fetcher;
-        task.processor = _conf.processor;
-        task.cache = _conf.cache;
         task.processingManager = _processingManager;
         task.delegate = self;
         _tasks[requestID.taskID] = task;
@@ -651,6 +653,25 @@ _DFImageKeyCreate(DFImageRequest *request, BOOL isCacheKey, id<_DFImageRequestKe
     }
     [info addEntriesFromDictionary:response.userInfo];
     return [info copy];
+}
+
+#define DFImageCacheKeyCreate(request) _DFImageKeyCreate(request, YES,  self)
+
+- (UIImage *)task:(_DFImageManagerTask *)task cachedImageForRequest:(DFImageRequest *)request {
+    return [self _cachedImageForRequest:request];
+}
+
+- (UIImage *)_cachedImageForRequest:(DFImageRequest *)request {
+    if (request.options.memoryCachePolicy == DFImageRequestCachePolicyReloadIgnoringCache) {
+        return nil;
+    }
+    DFCachedImage *cachedImage = [_conf.cache cachedImageForKey:DFImageCacheKeyCreate(request)];
+    return cachedImage.image;
+}
+
+- (void)task:(_DFImageManagerTask *)task storeImage:(UIImage *)image forRequest:(DFImageRequest *)request {
+    DFCachedImage *cachedImage = [[DFCachedImage alloc] initWithImage:image expirationDate:(CACurrentMediaTime() + request.options.expirationAge)];
+    [_conf.cache storeImage:cachedImage forKey:DFImageCacheKeyCreate(request)];
 }
 
 #pragma mark - <_DFImageRequestKeyDelegate>

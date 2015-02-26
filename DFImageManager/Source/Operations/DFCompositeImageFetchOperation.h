@@ -39,10 +39,6 @@
 @property (nonatomic, readonly) UIImage *image;
 @property (nonatomic, readonly) NSDictionary *info;
 
-/*! Initializes context with a given request ID, which might be nil.
- */
-- (instancetype)initWithRequestID:(DFImageRequestID *)requestID NS_DESIGNATED_INITIALIZER;
-
 @end
 
 /*! The DFCompositeImageFetchOperation manages execution of multiple image requests. Provides a single completion block that gets called multiple times (similar to PHImageManager completion handler for opportunistic requests). All requests are executed concurrently.

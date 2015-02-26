@@ -26,20 +26,15 @@
 #import "DFImageRequestID.h"
 
 
-@interface DFCompositeImageRequestContext (Protected)
+@interface DFCompositeImageRequestContext ()
+
+@property (nonatomic) DFImageRequestID *requestID;
 
 - (void)completeWithImage:(UIImage *)image info:(NSDictionary *)info;
 
 @end
 
 @implementation DFCompositeImageRequestContext
-
-- (instancetype)initWithRequestID:(DFImageRequestID *)requestID {
-    if (self = [super init]) {
-        _requestID = requestID;
-    }
-    return self;
-}
 
 - (void)completeWithImage:(UIImage *)image info:(NSDictionary *)info {
     _isCompleted = YES;
@@ -87,15 +82,15 @@
     _startTime = CACurrentMediaTime();
     DFCompositeImageFetchOperation *__weak weakSelf = self;
     for (DFImageRequest *request in _requests) {
-        DFImageRequestID *requestID = [self.imageManager requestImageForRequest:request completion:^(UIImage *image, NSDictionary *info) {
-            [weakSelf _didFinishRequest:request image:image info:info];
-        }];
-        DFCompositeImageRequestContext *context =[[DFCompositeImageRequestContext alloc] initWithRequestID:requestID];
+        DFCompositeImageRequestContext *context =[DFCompositeImageRequestContext new];
         if (_contexts) {
             [_contexts setObject:context forKey:request];
         } else {
             _context = context;
         }
+        context.requestID = [self.imageManager requestImageForRequest:request completion:^(UIImage *image, NSDictionary *info) {
+            [weakSelf _didFinishRequest:request image:image info:info];
+        }];
     }
 }
 
