@@ -62,7 +62,7 @@
 
 - (void)storeImage:(DFCachedImage *)cachedImage forKey:(id<NSCopying>)key {
     if (cachedImage != nil && key != nil) {
-        NSUInteger cost = [self _costForImage:cachedImage.image];
+        NSUInteger cost = [self costForImage:cachedImage.image];
         [_cache setObject:cachedImage forKey:key cost:cost];
     }
 }
@@ -73,7 +73,7 @@
 
 #pragma mark -
 
-- (NSUInteger)_costForImage:(UIImage *)image {
+- (NSUInteger)costForImage:(UIImage *)image {
     CGImageRef imageRef = image.CGImage;
     NSUInteger bitsPerPixel = CGImageGetBitsPerPixel(imageRef);
     return (CGImageGetWidth(imageRef) * CGImageGetHeight(imageRef) * bitsPerPixel) / 8; // Return number of bytes in image bitmap.

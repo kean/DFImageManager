@@ -12,7 +12,7 @@ Modern iOS framework for fetching, caching, processing, and preheating images fr
 
 ## Features
 - Zero config yet immense customization and extensibility.
-- Uses latest advancements in [Foundation URL Loading System](https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/URLLoadingSystem/URLLoadingSystem.html) including [NSURLSession](https://developer.apple.com/library/ios/documentation/Foundation/Reference/NSURLSession_class/) that supports [SPDY](http://en.wikipedia.org/wiki/SPDY).
+- Uses latest advancements in [Foundation URL Loading System](https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/URLLoadingSystem/URLLoadingSystem.html) including [NSURLSession](https://developer.apple.com/library/ios/documentation/Foundation/Reference/NSURLSession_class/) that supports [SPDY](http://en.wikipedia.org/wiki/SPDY) protocol.
 - Extreme performance even on outdated devices. Completely asynchronous and thread safe. Performance-critical subsystems run entirely on the background threads.
 - Instead of reinventing a caching methodology it relies on HTTP cache as defined in [HTTP specification](https://tools.ietf.org/html/rfc7234) and caching implementation provided by [Foundation URL Loading System](https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/URLLoadingSystem/URLLoadingSystem.html). The caching and revalidation are completely transparent to the client. [Read more](https://github.com/kean/DFImageManager/wiki/Image-Caching-Guide)
 - Memory cache layer that stores decompressed and processed images with fine grained control.
@@ -108,24 +108,27 @@ NSArray *requests = @[ previewRequest, fullsizeImageRequest ];
 There are many [smart ways](https://github.com/kean/DFImageManager/wiki/Advanced-Image-Caching-Guide#custom-revalidation-using-dfcompositeimagefetchoperation) how composite requests can be used.
 
 #### Use UI components
+Use methods from `UIImageView` category for simple cases:
 ```objective-c
 UIImageView *imageView = ...;
 [imageView df_setImageWithResource:[NSURL URLWithString:@"http://..."]];
 ```
 
+Use `DFImageView` for more advanced features:
 ```objective-c
 DFImageView *imageView = ...;
 // All options are enabled be default
 imageView.managesRequestPriorities = YES;
 imageView.allowsAnimations = YES; // Animates images when the response isn't fast enough
 imageView.allowsAutoRetries = YES; // Retries when network reachability changes
+
+[imageView prepareForReuse];
 [imageView setImageWithResource:[NSURL URLWithString:@"http://..."]];
+// Or set multiple requests [imageView setImageWithRequests:@[ ... ]];
 ```
 
-#### Leverage power of composite managers
-The `sharedManager` provided by `DFImageManager` is an instance of `DFCompositeImageManager` class that implements `DFImageManaging` protocol. It dynamically dispatches image requests between multiple image managers that construct a chain of responsibility. What it means is that `sharedManager` doesn't only support URL image fetching, it also supports assets (`PHAsset`, `ALAsset` and their URLs) and it can be easily extended to support your custom classes. For more info see [Using DFCompositeImageManager](https://github.com/kean/DFImageManager/wiki/Extending-Image-Manager-Guide#using-dfcompositeimagemanager).
+#### Use the same `DFImageManaging` APIs for PHAsset, ALAsset and other classes
 ```objective-c
-// Use the same `DFImageManaging` API for PHAsset
 PHAsset *asset = ...;
 [[DFImageManager sharedManager] requestImageForResource:asset targetSize:CGSizeMake(100.f, 100.f) contentMode:DFImageContentModeAspectFill options:nil completion:^(UIImage *image, NSDictionary *info) {
   // Image resized to 100x100px square
@@ -134,16 +137,38 @@ PHAsset *asset = ...;
 ```
 
 ```objective-c
-// You can use easily serializable NSURL for fetching too
+// You can use easily serializable asset NSURL for fetching too
 NSURL *assetURL = [NSURL df_assetURLWithAsset:asset];
     
-// And there are Photos Kit-specific options as well
+// There are Photos Kit-specific options as well
 DFPhotosKitImageRequestOptions *options = [DFPhotosKitImageRequestOptions new];
 options.version = PHImageRequestOptionsVersionUnadjusted;
 options.deliveryMode = PHImageRequestOptionsDeliveryModeHighQualityFormat;
 
 // Use full power of polymorphism
 DFImageRequest *request = [[DFImageRequest alloc] initWithResource:assetURL targetSize:DFImageMaximumSize contentMode:DFImageContentModeAspectFill options:options];
+```
+
+#### Leverage power of composite managers
+The `sharedManager` provided by `DFImageManager` is an instance of `DFCompositeImageManager` class that implements `DFImageManaging` protocol. It dynamically dispatches image requests between multiple image managers that construct a chain of responsibility. What it means is that `sharedManager` doesn't only support URL image fetching, it also supports assets (`PHAsset`, `ALAsset` and their URLs) and it can be easily extended to support your custom classes. For more info see [Using DFCompositeImageManager](https://github.com/kean/DFImageManager/wiki/Extending-Image-Manager-Guide#using-dfcompositeimagemanager).
+
+```objective-c
+// Implement custom image fetcher that conforms to DFImageFetching protocol,
+// including - (BOOL)canHandleRequest:(DFImageRequest *)request; method
+id<DFImageFetching> fetcher = [YourImageFetcher new];
+id<DFImageProcessing> processor = [YourImageProcessor new];
+id<DFImageCaching> cache = [YourImageMemCache new];
+
+// Create DFImageManager with your configuration.
+DFImageManagerConfiguration *configuration = [DFImageManagerConfiguration configurationWithFetcher:fetcher processor:processor cache:cache];
+DFImageManager *manager = [[DFImageManager alloc] initWithConfiguration:configuration];
+
+// Create composite manager with your custom manager and all built-in managers.
+NSArray *managers = @[ manager, [DFImageManager sharedManager] ];
+DFCompositeImageManager *compositeImageManager = [[DFCompositeImageManager alloc] initWithImageManagers:managers];
+
+// Use dependency injector to set shared manager
+[DFImageManager setSharedManager:compositeImageManager];
 ```
 
 #### What's more

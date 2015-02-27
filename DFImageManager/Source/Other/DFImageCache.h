@@ -34,4 +34,8 @@
 
 @property (nonatomic, readonly) NSCache *cache;
 
+/*! Returns cost for a given image.
+ */
+- (NSUInteger)costForImage:(UIImage *)image;
+
 @end
