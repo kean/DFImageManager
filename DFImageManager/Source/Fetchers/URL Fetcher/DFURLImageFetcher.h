@@ -56,11 +56,21 @@ extern NSString *const DFImageInfoURLResponseKey;
 @end
 
 
+/*! The DFURLImageFetcherSessionDelegate protocol should be implemented by your classes if you initialize DFURLImageFetcher with an instance of NSURLSession and implement NSURLSession delegate by yourself.
+ */
+@protocol DFURLImageFetcherSessionDelegate <NSObject>
+
+/*! Creates NSURLSessionDataTask with a given request.
+ */
+- (NSURLSessionDataTask *)URLImageFetcher:(DFURLImageFetcher *)fetcher dataTaskWithRequest:(NSURLRequest *)request progressHandler:(void (^)(int64_t countOfBytesReceived, int64_t countOfBytesExpectedToReceive))progressHandler completionHandler:(void (^)(NSData *data, NSURLResponse *response, NSError *error))completionHandler;
+
+@end
+
 /*! The DFURLImageFetcher implements DFImageFetching protocol to provide a functionality of fetching images using Cocoa URL Loading System.
  @note Uses NSURLSession with a custom delegate. For more info on NSURLSession life cycle with custom delegates see the "URL Loading System Programming Guide" from Apple.
  @note Supported URL schemes: http, https, ftp, file and data
  */
-@interface DFURLImageFetcher : NSObject <DFImageFetching, NSURLSessionDelegate, NSURLSessionDataDelegate, DFURLSessionOperationDelegate>
+@interface DFURLImageFetcher : NSObject <DFImageFetching, NSURLSessionDelegate, NSURLSessionDataDelegate, DFURLImageFetcherSessionDelegate>
 
 /*! The NSURLSession instance used by the image fetcher.
  */
@@ -71,16 +81,22 @@ extern NSString *const DFImageInfoURLResponseKey;
  */
 @property (nonatomic) NSSet *supportedSchemes;
 
-/*! The delegate of the DFURLImageFetcher.
+/*! The delegate of the receiver.
  */
 @property (nonatomic, weak) id<DFURLImageFetcherDelegate> delegate;
 
-/*! Initializes DFURLImageFetcher with a given session configuration. DFURLImageFetcher creates an instance of NSURLSession with a given configuration and sets itself as a session delegate.
+/*! The session delegate of the receiver.
+ */
+@property (nonatomic, weak) id<DFURLImageFetcherSessionDelegate> sessionDelegate;
+
+/*! Initializes the DFURLImageFetcher with a given session and sessionDelegate.
+ @param session The NSURLSession instance that is used with a custom delegate. For more info on NSURLSession life cycle with custom delegates see the "URL Loading System Programming Guide" from Apple.
+ @param sessionDelegate Apart from implementing NSURLSessionDataDelegate protocol your classes should also provide a DFURLImageFetcherSessionDelegate implementation.
+ */
+- (instancetype)initWithSession:(NSURLSession *)session sessionDelegate:(id<DFURLImageFetcherSessionDelegate>)sessionDelegate NS_DESIGNATED_INITIALIZER;
+
+/*! Initializes the DFURLImageFetcher with a given session configuration. The DFURLImageFetcher sets itself as a NSURLSessionDelegate and DFURLImageFetcherSessionDelegate.
  */
 - (instancetype)initWithSessionConfiguration:(NSURLSessionConfiguration *)configuration;
-
-/*! Initializes DFURLImageFetcher with a given session configuration, delegate and delegate queue. DFURLImageFetcher creates an instance of NSURLSession with a given configuration, delegate and delegate queue.
- */
-- (instancetype)initWithSessionConfiguration:(NSURLSessionConfiguration *)configuration sessionDelegate:(id<NSURLSessionDelegate, DFURLSessionOperationDelegate>)sessionDelegate delegateQueue:(NSOperationQueue *)queue NS_DESIGNATED_INITIALIZER;
 
 @end
