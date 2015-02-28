@@ -13,20 +13,21 @@
 #import <XCTest/XCTest.h>
 
 
+/*! The TDFImageManager is a test suite for DFImageManager class.
+ */
 @interface TDFImageManager : XCTestCase
 
 @end
 
 @implementation TDFImageManager {
-    id<DFImageManaging> _imageManager;
+    DFImageManager *_imageManager;
 }
 
 - (void)setUp {
     [super setUp];
     
+    // Simple configuration without processor and cache.
     NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
-    configuration.URLCache = nil;
-    
     id<DFImageFetching> fetcher = [[DFURLImageFetcher alloc] initWithSessionConfiguration:configuration];
     _imageManager = [[DFImageManager alloc] initWithConfiguration:[[DFImageManagerConfiguration alloc] initWithFetcher:fetcher]];
 }
@@ -74,6 +75,38 @@
     }];
     
     [self waitForExpectationsWithTimeout:3.0 handler:nil];
+}
+
+#pragma mark - Operation Reuse
+
+- (void)testThatImageManagerReusesFetchOperationsForSameURLs {
+    // Start two requests. Image manager is initialized without a memory cache, so it will have to use fetcher for both requests.
+    
+    NSUInteger __block countOfResponses = 0;
+    
+    NSData *data = [TDFTesting testImageData];
+    [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+        return [request.URL isEqual:[NSURL URLWithString:@"http://imagemanager.com/image.jpg"]];
+    } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
+        countOfResponses++;
+        return [[OHHTTPStubsResponse alloc] initWithData:data statusCode:200 headers:nil];
+    }];
+    
+    XCTestExpectation *expectation1 = [self expectationWithDescription:@"first_fetch_complete"];
+    [_imageManager requestImageForResource:[NSURL URLWithString:@"http://imagemanager.com/image.jpg"] completion:^(UIImage *image, NSDictionary *info) {
+        XCTAssertNotNil(image);
+        [expectation1 fulfill];
+    }];
+    
+    XCTestExpectation *expectation2 = [self expectationWithDescription:@"second_fetch_complete"];
+    [_imageManager requestImageForResource:[NSURL URLWithString:@"http://imagemanager.com/image.jpg"] completion:^(UIImage *image, NSDictionary *info) {
+        XCTAssertNotNil(image);
+        [expectation2 fulfill];
+    }];
+    
+    [self waitForExpectationsWithTimeout:3.0 handler:^(NSError *error) {
+        XCTAssertTrue(countOfResponses == 1);
+    }];
 }
 
 #pragma mark - DFURLImageFetcher

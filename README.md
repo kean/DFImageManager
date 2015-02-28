@@ -92,7 +92,7 @@ DFImageRequest *request = [[DFImageRequest alloc] initWithResource:[NSURL URLWit
 }];
 ```
 
-#### Create composite requests
+#### Create composite requests using array of `DFImageRequest` objects
 ```objective-c
 DFImageRequest *previewRequest = [[DFImageRequest alloc] initWithResource:[NSURL URLWithString:@"http://preview"]];
     
@@ -161,7 +161,7 @@ id<DFImageCaching> cache = [YourImageMemCache new];
 
 // Create DFImageManager with your configuration.
 DFImageManagerConfiguration *configuration = [DFImageManagerConfiguration configurationWithFetcher:fetcher processor:processor cache:cache];
-DFImageManager *manager = [[DFImageManager alloc] initWithConfiguration:configuration];
+id<DFImageManaging> manager = [[DFImageManager alloc] initWithConfiguration:configuration];
 
 // Create composite manager with your custom manager and all built-in managers.
 NSArray *managers = @[ manager, [DFImageManager sharedManager] ];
@@ -173,15 +173,17 @@ DFCompositeImageManager *compositeImageManager = [[DFCompositeImageManager alloc
 
 #### What's more
 
-Those were the most common features. `DFImageManager` jam-packed with features, there are much more options for customization and room for extension. Fore more info check out the complete [documentation](http://cocoadocs.org/docsets/DFImageManager) and project [Wiki](https://github.com/kean/DFImageManager/wiki)
+Those were the most common cases. `DFImageManager` is jam-packed with other features. There are much more options for customization and room for extension. Fore more info check out the complete [documentation](http://cocoadocs.org/docsets/DFImageManager) and project [Wiki](https://github.com/kean/DFImageManager/wiki)
 
 ## Contribution
-
+ 
 - If you **need help**, use [Stack Overflow](http://stackoverflow.com/questions/tagged/dfimagemanager). (Tag 'dfimagemanager')
 - If you'd like to **ask a general question**, use [Stack Overflow](http://stackoverflow.com/questions/tagged/dfimagemanager).
-- If you **found a bug**, and can provide steps to reliably reproduce it, open an issue.
+- If you **found a bug**, and can provide steps to reproduce it, open an issue.
 - If you **have a feature request**, open an issue.
 - If you **want to contribute**, submit a pull request.
+
+`DFImageManager` is constantly improving. Help to make it better!
 
 ## Contacts
 [Alexander Grebenyuk](https://github.com/kean) ([@a_grebenyuk](https://twitter.com/a_grebenyuk))

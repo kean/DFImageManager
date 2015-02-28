@@ -26,24 +26,32 @@
 @class DFImageResponse;
 
 
-/*! The DFImageFetcher protocol provides the basic structure for performing fetching of images for specific requests. Adopters handle the specifics associated with one of more types of the requests. The main difference between the requests might be a class of the resource.
- @note The role and the structure of the DFImageFetcher protocol is largely inspired by the NSURLProtocol abstract class. The main difference is that NSURLProtocol is a one-shot task for a single request, while DFImageFetcher is a tasks factory.
+/*! The DFImageFetching protocol provides the basic structure for performing fetching of images for specific DFImageRequest objects. Classes adopting the protocol handle the specifics associated with one of more types of the image requests. In general the main difference between the requests should be a class of the resource.
+ @note The role and the structure of the DFImageFetching protocol is largely inspired by the NSURLProtocol abstract class.
  */
 @protocol DFImageFetching <NSObject>
 
-/*! Inspects the given request and determines whether or not it can be handled.
+/*! Inspects the given request and determines whether the receiver can handle the given request.
+ @note This is the first method that is called on the receiver.
+ @param request The initial request to be handled. The request is not canonical.
  */
 - (BOOL)canHandleRequest:(DFImageRequest *)request;
 
 /*! Compares two requests for equivalence with regard to fetching the image. Requests should be considered equivalent if image fetcher can handle both requests by the same operation.
+ @param request1 The first canonical request.
+ @param request2 The second canonical request.
  */
 - (BOOL)isRequestFetchEquivalent:(DFImageRequest *)request1 toRequest:(DFImageRequest *)request2;
 
-/*! Compares two requests for equivalence with regard to caching the image. The DFImageManager uses this method for memory caching.
+/*! Compares two requests for equivalence with regard to caching the image. 
+ @note The DFImageManager uses this method for memory caching only, which means that there is no need for filtering out the dynamic part of the request (is there is any). For example, the dynamic part might be a username and password in a URL.
+ @param request1 The first canonical request.
+ @param request2 The second canonical request.
  */
 - (BOOL)isRequestCacheEquivalent:(DFImageRequest *)request1 toRequest:(DFImageRequest *)request2;
 
 /*! Starts fetching an image for the request. The completion block should always be called, even for the cancelled request. The completion block may be called in any fashion (asynchronously or not) and on any thread.
+ @param request The canonical request.
  @param progressHandler Progress handler that can be called on any thread. Image fetcher that don't report progress should ignore this the handler.
  @param completion Completion handler that can be called on any thread.
  @return The operation that implements fetching. The operation might be nil.
@@ -52,8 +60,9 @@
 
 @optional
 
-/*! Returns a canonical form of the given request. All DFImageFetcher methods receive requests in a canonical form expect for the -canHandleRequest: method. It is up to each concrete protocol implementation to define what "canonical" means.
+/*! Returns a canonical form of the given request. All DFImageFetching methods receive requests in a canonical form expect for the -canHandleRequest: method. It is up to each concrete protocol implementation to define what "canonical" means.
  @discussion Some fetcher might support a particular subclass of either DFImageRequest or DFImageRequestOptions. In that case this method might modify the given request to return this subclass in case the base class was used.
+ @param request The initial request to be handled.
  */
 - (DFImageRequest *)canonicalRequestForRequest:(DFImageRequest *)request;
 

@@ -98,7 +98,7 @@ static inline NSURL *_ALAssetURL(id resource) {
 
 - (DFALAssetImageSize)_assetImageSizeForRequest:(DFImageRequest *)request {
     // TODO: Improve decision making here.
-    CGFloat thumbnailSide = [UIScreen mainScreen].bounds.size.width / 4.0;
+    CGFloat thumbnailSide = [UIScreen mainScreen].bounds.size.width / 4.f;
     thumbnailSide *= [UIScreen mainScreen].scale;
     thumbnailSide *= 1.2f;
     if (request.targetSize.width <= thumbnailSide &&
