@@ -53,6 +53,11 @@
     return [NSString stringWithFormat:@"<%@ %p> { resource = %@, targetSize = %@, contentMode = %i, options = %@ }", [self class], self, self.resource, NSStringFromCGSize(self.targetSize), (int)self.contentMode, self.options];
 }
 
+@end
+
+
+@implementation DFImageRequest (UIKitAdditions)
+
 + (CGSize)targetSizeForView:(UIView *)view {
     CGSize size = view.bounds.size;
     CGFloat scale = [UIScreen mainScreen].scale;

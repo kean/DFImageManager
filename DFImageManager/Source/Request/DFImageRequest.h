@@ -58,6 +58,11 @@
  */
 - (instancetype)initWithResource:(id)resource;
 
+@end
+
+
+@interface DFImageRequest (UIKitAdditions)
+
 /*! Returns image target size (in pixels) for a given view.
  */
 + (CGSize)targetSizeForView:(UIView *)view;
