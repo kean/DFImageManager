@@ -28,4 +28,4 @@ DerivedData
 
 Pods/
 Podfile.lock
-Samples/DFImageManagerSample/Pods
+DFImageManagerSample/Pods/

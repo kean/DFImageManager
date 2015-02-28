@@ -1,1 +1,0 @@
-../../../../../DFImageManager/Source/Fetchers/URL Fetcher/DFURLImageFetcher.h
