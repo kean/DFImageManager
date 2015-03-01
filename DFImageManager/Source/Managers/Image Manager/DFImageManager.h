@@ -26,10 +26,25 @@
 @class DFImageManagerConfiguration;
 
 
-/*! The DFImageManager and the related classes provides an implementation of the DFImageManaging protocol.
- @note Image manager calls completion block synchronously if the image can be retrieved from memory cache. This behavior can be disabled using DFImageManagerConfiguration.
- @note Image manager uses cache (<DFImageCaching>) specified in the  configuration for memory caching. It should be able to lookup cached images based on the image request, but it doesn't know anything about the resources, specific request options, the way the requests are interpreted and handled and other factors. There are three simple rules how image manager stores and retrieves cached images. First, image manager can't use cached images stored by other managers if they share the same cache instance (which makes all the sense). Second, all resources must implement -hash method. Third, image manager has an intelligent way of creating cache keys that delegate the comparison of image requests to the image fetcher (<DFImageFetching>) and the image processor (<DFImageProcessing>). Make sure to implement al least -isRequestCacheEquivalent:toRequest: method in your <DFImageFetching> implementation and -isProcessingForRequestEquivalent:toRequest: method in <DFImageProcessing> implementation.
- @note Image manager automatically reuses fetch operations and processing operations. It order to enable this functionality you should implement the -isRequestFetchEquivalent:toRequest: method in your <DFImageFetching> implementation and -isProcessingForRequestEquivalent:toRequest: method in <DFImageProcessing> implementation.
+/*! The DFImageManager and the related classes provides an implementation of the DFImageManaging protocol. The role of the DFImageManager is to manage the execution of image requests by delegating the actual job to a classes, implementing DFImageFetching, DFImageCaching, and DFImageProcessing protocols.
+ 
+ @note Reusing Operations
+ 
+ Image manager automatically reuses fetch operations and processing operations. It order to enable this functionality you should implement the -isRequestFetchEquivalent:toRequest: method in your <DFImageFetching> implementation and -isProcessingForRequestEquivalent:toRequest: method in <DFImageProcessing> implementation.
+ 
+ @note Cancellation
+ 
+ Image manager cancels managed operations only when there are no remaining handlers. This rule applies for both fetch and processing operations.
+ 
+ @note  Memory Caching
+ 
+ Image manager uses cache (<DFImageCaching>) specified in the  configuration for memory caching. It should be able to lookup cached images based on the image request, but it doesn't know anything about the resources, specific request options, and the way the requests are interpreted and handled. There are three simple rules how image manager stores and retrieves cached images. First, image manager can't use cached images stored by other managers if they share the same cache instance. Second, all resources must implement -hash method. Third, image manager has an intelligent way of creating cache keys that delegate the comparison of image requests to the image fetcher (<DFImageFetching>) and the image processor (<DFImageProcessing>). Make sure to implement al least -isRequestCacheEquivalent:toRequest: method in your <DFImageFetching> implementation and -isProcessingForRequestEquivalent:toRequest: method in <DFImageProcessing> implementation.
+ 
+ Image manager calls completion block synchronously if the image can be retrieved from memory cache. This behavior can be disabled using DFImageManagerConfiguration.
+ 
+ @note Preheating
+ 
+ DFImageManager does its best to guarantee that preheating requests never interfere with normal (non-preheating) requests. There is a limit of concurrent preheating requests enforced by DFImageManager. Preheating requests don't start executing until there are any non-preheating requests remaining. There is also certain (very small) delay when manager runs out of non-preheating requests and starts executing preheating requests. Given that fact, clients don't need to worry about the order in which they start their requests (preheating or not), which comes really handy when you, for example, reload collection view's data and start preheating and requesting multiple images at the same time.
  */
 @interface DFImageManager : NSObject <DFImageManagingCore>
 

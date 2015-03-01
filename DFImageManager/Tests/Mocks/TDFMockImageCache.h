@@ -9,6 +9,10 @@
 #import "DFImageManagerKit.h"
 #import <Foundation/Foundation.h>
 
+
+static NSString *TDFMockImageCacheWillReturnCachedImageNotification = @"TDFMockImageCacheWillReturnCachedImageNotification";
+static NSString *TDFMockImageCacheImageKey = @"TDFMockImageCacheImageKey";
+
 /*! The DFImageCaching implementation that can be easily enabled and disabled, doesn't evict objects and provides other features required for testing.
  */
 @interface TDFMockImageCache : NSObject <DFImageCaching>

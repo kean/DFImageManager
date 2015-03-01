@@ -6,10 +6,14 @@
 //  Copyright (c) 2015 Alexander Grebenyuk. All rights reserved.
 //
 
+#import "TDFMockFetchOperation.h"
 #import "TDFMockImageFetcher.h"
 #import "TDFMockResource.h"
 #import "TDFTesting.h"
 
+
+NSString *TDFMockImageFetcherWillStartOperationNotification = @"TDFMockImageFetcherWillStartOperationNotification";
+NSString *TDFMockImageFetcherRequestKey = @"TDFMockImageFetcherRequestKey";
 
 @implementation TDFMockImageFetcher
 
@@ -34,8 +38,10 @@
 }
 
 - (NSOperation *)startOperationWithRequest:(DFImageRequest *)request progressHandler:(void (^)(double))progressHandler completion:(void (^)(DFImageResponse *))completion {
+    [[NSNotificationCenter defaultCenter] postNotificationName:TDFMockImageFetcherWillStartOperationNotification object:self userInfo:@{ TDFMockImageFetcherRequestKey : request }];
+    
     _createdOperationCount++;
-    NSBlockOperation *operation = [NSBlockOperation blockOperationWithBlock:^{
+    TDFMockFetchOperation *operation = [TDFMockFetchOperation blockOperationWithBlock:^{
         completion([self.response copy]);
     }];
     [_queue addOperation:operation];

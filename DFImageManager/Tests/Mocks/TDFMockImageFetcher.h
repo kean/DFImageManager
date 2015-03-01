@@ -9,8 +9,12 @@
 #import "DFImageManagerKit.h"
 #import <Foundation/Foundation.h>
 
+extern NSString *TDFMockImageFetcherWillStartOperationNotification;
+extern NSString *TDFMockImageFetcherRequestKey;
+
 /*! The mock implementation of DFImageFetching protocol.
  @note Supports resources of TDFResource class.
+ @note Uses TDFMockFetchOperation class for fetch operations.
  */
 @interface TDFMockImageFetcher : NSObject <DFImageFetching>
 

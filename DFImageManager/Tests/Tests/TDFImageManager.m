@@ -43,7 +43,7 @@
 
 #pragma mark - Basics
 
-- (void)testThatImageManagerFetchesImages {
+- (void)testThatImageRequestIsFulfilled {
     XCTestExpectation *expectation = [self expectationWithDescription:@"first_request"];
     [_manager requestImageForResource:[TDFMockResource resourceWithID:@"ID01"] completion:^(UIImage *image, NSDictionary *info) {
         XCTAssertNotNil(image);
@@ -54,7 +54,7 @@
 
 #pragma mark - Response Info
 
-- (void)testThatImageManagerResponseInfoContainsRequestID {
+- (void)testThatResponseInfoContainsRequestID {
     XCTestExpectation *expectation = [self expectationWithDescription:@"request"];
     DFImageRequestID *__block requestID = [_manager requestImageForResource:[TDFMockResource resourceWithID:@"ID01"] completion:^(UIImage *image, NSDictionary *info) {
         XCTAssertEqualObjects(info[DFImageInfoRequestIDKey], requestID);
@@ -65,7 +65,7 @@
 
 /*! Test that image manager response info contains error under DFImageInfoErrorKey key when request fails.
  */
-- (void)testThatImageManagerResponseInfoContainsError {
+- (void)testThatResponseInfoContainsError {
     _fetcher.response = [[DFImageResponse alloc] initWithError:[NSError errorWithDomain:@"TDFErrorDomain" code:14 userInfo:nil]];
     
     XCTestExpectation *expectation = [self expectationWithDescription:@"request"];
@@ -78,7 +78,7 @@
     [self waitForExpectationsWithTimeout:3.0 handler:nil];
 }
 
-- (void)testThatImageManagerResponseInfoContainsCustomUserInfo {
+- (void)testThatResponseInfoContainsCustomUserInfo {
     DFMutableImageResponse *response = [TDFMockImageFetcher successfullResponse];
     response.userInfo = @{ @"TestKey" : @"TestValue" };
     _fetcher.response = response;
@@ -91,9 +91,69 @@
     [self waitForExpectationsWithTimeout:3.0 handler:nil];
 }
 
+#pragma mark - Cancellation
+
+- (void)testThatCancelsFetchOperationUsingRequestID {
+    DFImageRequestID *requestID = [_manager requestImageForResource:[TDFMockResource resourceWithID:@"ID01"] completion:^(UIImage *image, NSDictionary *info) {
+        // Do nothing
+    }];
+    [self expectationForNotification:TDFMockFetchOperationDidCancelNotification object:nil handler:nil];
+    [requestID cancel];
+    [self waitForExpectationsWithTimeout:3.0 handler:nil];
+}
+
+- (void)testThatCancelsFetchOperationUsingManager {
+    _fetcher.queue.suspended = YES;
+    DFImageRequestID *requestID = [_manager requestImageForResource:[TDFMockResource resourceWithID:@"ID01"] completion:^(UIImage *image, NSDictionary *info) {
+        // Do nothing
+    }];
+    [self expectationForNotification:TDFMockFetchOperationDidCancelNotification object:nil handler:nil];
+    [_manager cancelRequestWithID:requestID];
+    [self waitForExpectationsWithTimeout:3.0 handler:nil];
+}
+
+/*! > Image manager cancels managed operations only when there are no remaining handlers.
+ */
+- (void)testThatDoesntCancelFetchOperationWithRemainingHandlers {
+    _fetcher.queue.suspended = YES;
+    
+    TDFMockResource *resource = [TDFMockResource resourceWithID:@"ID01"];
+    DFImageRequestID *requestID1 = [_manager requestImageForResource:resource completion:nil];
+    
+    XCTestExpectation *expectThatOperationIsCancelled = [self expectationForNotification:TDFMockFetchOperationDidCancelNotification object:nil handler:nil];
+    
+    XCTestExpectation *expectSecondRequestToSucceed = [self expectationWithDescription:@"seconds_request"];
+    [_manager requestImageForResource:resource completion:^(UIImage *image, NSDictionary *info) {
+        XCTAssertNotNil(image);
+        [expectSecondRequestToSucceed fulfill];
+        // Raises exception if fullfilled twice.
+        [expectThatOperationIsCancelled fulfill];
+    }];
+    
+    [requestID1 cancel];
+    
+    _fetcher.queue.suspended = NO;
+    [self waitForExpectationsWithTimeout:3.0 handler:nil];
+}
+
+- (void)testThatCancelsFetchOperationWithTwoHandlers {
+    _fetcher.queue.suspended = YES;
+    
+    [self expectationForNotification:TDFMockFetchOperationDidCancelNotification object:nil handler:nil];
+    
+    TDFMockResource *resource = [TDFMockResource resourceWithID:@"ID01"];
+    DFImageRequestID *requestID1 = [_manager requestImageForResource:resource completion:nil];
+    DFImageRequestID *requestID2 = [_manager requestImageForResource:resource completion:nil];
+    
+    [requestID1 cancel];
+    [requestID2 cancel];
+    
+    [self waitForExpectationsWithTimeout:3.0 handler:nil];
+}
+
 #pragma mark - Operation Reuse
 
-- (void)testThatImageManagerReuseOperations {
+- (void)testThatOperationsAreReused {
     // Start two requests. Image manager is initialized without a memory cache, so it will have to use fetcher and processor for both requests.
     
     _fetcher.queue.suspended = YES;
@@ -140,8 +200,10 @@
 #pragma mark - Memory Cache
 
 /*! Test that image manager calls completion block synchronously (default configuration).
+ 
+ > Image manager calls completion block synchronously if the image can be retrieved from memory cache. This behavior can be disabled using DFImageManagerConfiguration.
  */
-- (void)testThatImageManagerCallsCompletionBlockSynchonously {
+- (void)testThatCompletionBlockIsCalledSynchronouslyForMemCachedImages {
     _cache.enabled = YES;
     
     TDFMockResource *resource = [TDFMockResource resourceWithID:@"ID01"];
@@ -160,8 +222,10 @@
 }
 
 /*! Test that image manager calls completion block asynchronously with a specific configuration option.
+ 
+ > Image manager calls completion block synchronously if the image can be retrieved from memory cache. This behavior can be disabled using DFImageManagerConfiguration.
  */
-- (void)testThatImageManagerCallsCompletionBlockAsynchonously {
+- (void)testThatSynchronousCallbacksCanBeDisabled {
     DFImageManagerConfiguration *configuration = [_manager.configuration copy];
     configuration.allowsSynchronousCallbacks = NO;
     _manager = [[DFImageManager alloc] initWithConfiguration:configuration];
@@ -183,6 +247,85 @@
         [expectation2 fulfill];
     }];
     XCTAssertFalse(isCompletionHandlerCalled);
+    [self waitForExpectationsWithTimeout:3.0 handler:nil];
+}
+
+/*! Test first memory caching rule:
+ 
+ > First, image manager can't use cached images stored by other managers if they share the same cache instance (which makes all the sense).
+ */
+- (void)testThatCacheEntriesCantBeSharedBetweenManagers {
+    _cache.enabled = YES;
+    DFImageManagerConfiguration *conf = _manager.configuration;
+    
+    DFImageManager *manager1 = [[DFImageManager alloc] initWithConfiguration:conf];
+    DFImageManager *manager2 = [[DFImageManager alloc] initWithConfiguration:conf];
+    
+    // 1. Store image in cache
+    TDFMockResource *resource = [TDFMockResource resourceWithID:@"ID01"];
+    XCTestExpectation *expectation1 = [self expectationWithDescription:@"request"];
+    [manager1 requestImageForResource:resource completion:^(UIImage *image, NSDictionary *info) {
+        XCTAssertNotNil(image);
+        [expectation1 fulfill];
+    }];
+    [self waitForExpectationsWithTimeout:3.0 handler:nil];
+    XCTAssertTrue(_cache.images.count == 1);
+    
+    // 2. Test that first manager uses cached image
+    UIImage *__block cachedImage = nil;
+    [self expectationForNotification:TDFMockImageCacheWillReturnCachedImageNotification object:_cache handler:^BOOL(NSNotification *notification) {
+        cachedImage = notification.userInfo[TDFMockImageCacheImageKey];
+        return YES;
+    }];
+    XCTestExpectation *expectation2 = [self expectationWithDescription:@"lookup_first_manager"];
+    [manager1 requestImageForResource:resource completion:^(UIImage *image, NSDictionary *info) {
+        XCTAssertTrue(image == cachedImage);
+        [expectation2 fulfill];
+    }];
+    [self waitForExpectationsWithTimeout:3.0 handler:nil];
+
+    // 3. Test that second manager can't access cached image
+    XCTAssertTrue(manager2.configuration.cache == manager1.configuration.cache);
+    XCTestExpectation *expectationThatSecondManagerTriggeredCache = [self expectationForNotification:TDFMockImageCacheWillReturnCachedImageNotification object:_cache handler:nil];
+    XCTestExpectation *expectationThatSecondManagerHandledRequest = [self expectationWithDescription:@"request_on_second_manager"];
+    [manager2 requestImageForResource:resource completion:^(UIImage *image, NSDictionary *info) {
+        // Raises exception if fullfilled twice.
+        [expectationThatSecondManagerTriggeredCache fulfill];
+        XCTAssertNotNil(image);
+        [expectationThatSecondManagerHandledRequest fulfill];
+    }];
+    [self waitForExpectationsWithTimeout:3.0 handler:nil];
+}
+
+#pragma mark - Preheating
+
+/*! Test documented feature:
+ 
+ > There is also certain (very small) delay when manager runs out of non-preheating requests and starts executing preheating requests. Given that fact, clients don't need to worry about the order in which they start their requests (preheating or not), which comes really handy when you, for example, reload collection view's data and start preheating and requesting multiple images at the same time.
+ */
+- (void)testThatPreheatingRequestsHasLowerExecutionPrirorty {
+    TDFMockResource *resource1 = [TDFMockResource resourceWithID:@"ID01"];
+    DFImageRequest *request1 = [[DFImageRequest alloc] initWithResource:resource1];
+    
+    TDFMockResource *resource2 = [TDFMockResource resourceWithID:@"ID02"];
+    
+    BOOL __block isRequestForResource2Started = NO;
+    [self expectationForNotification:TDFMockImageFetcherWillStartOperationNotification object:_fetcher handler:^BOOL(NSNotification *notification) {
+        DFImageRequest *request = notification.userInfo[TDFMockImageFetcherRequestKey];
+        if ([request.resource isEqual:resource2]) {
+            isRequestForResource2Started = YES;
+            return NO;
+        } else {
+            XCTAssertTrue(isRequestForResource2Started);
+            return YES;
+        }
+    }];
+    
+    [_manager startPreheatingImagesForRequests:@[ request1 ]];
+    
+    // Start request after the preheating request, but it always must execute first
+    [_manager requestImageForResource:resource2 completion:nil];
+    
     [self waitForExpectationsWithTimeout:3.0 handler:nil];
 }
 

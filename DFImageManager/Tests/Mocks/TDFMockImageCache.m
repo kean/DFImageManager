@@ -25,7 +25,11 @@
 }
 
 - (DFCachedImage *)cachedImageForKey:(id<NSCopying>)key {
-    return [_images objectForKey:key];
+    DFCachedImage *cachedImage = [_images objectForKey:key];
+    if (cachedImage) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:TDFMockImageCacheWillReturnCachedImageNotification object:self userInfo:@{ TDFMockImageCacheImageKey : cachedImage.image }];
+    }
+    return cachedImage;
 }
 
 - (void)storeImage:(DFCachedImage *)image forKey:(id<NSCopying>)key {

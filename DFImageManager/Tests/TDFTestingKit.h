@@ -9,5 +9,6 @@
 #import "TDFTesting.h"
 #import "TDFMockResource.h"
 #import "TDFMockImageFetcher.h"
+#import "TDFMockFetchOperation.h"
 #import "TDFMockImageProcessor.h"
 #import "TDFMockImageCache.h"

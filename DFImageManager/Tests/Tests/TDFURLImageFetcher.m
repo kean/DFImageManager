@@ -35,7 +35,7 @@
     [OHHTTPStubs removeAllStubs];
 }
 
-#pragma mark - Test Canonical Requests
+#pragma mark - Canonical Requests
 
 - (void)testThatCanonicalRequestCreatesFetcherSpecificOptionsWithoutOverridingInitialOptions {
     // Create options with non-default parameters.
@@ -103,7 +103,7 @@
     XCTAssertTrue(canonicalOptions.cachePolicy == NSURLRequestReturnCacheDataDontLoad);
 }
 
-#pragma mark - Test Request Cache Equivalence
+#pragma mark - Request Cache Equivalence
 
 - (void)testThatRequestsWithTheSameURLAreCacheEquivalent {
     DFImageRequest *request1 = [[DFImageRequest alloc] initWithResource:[NSURL URLWithString:@"http://path/resourse"]];

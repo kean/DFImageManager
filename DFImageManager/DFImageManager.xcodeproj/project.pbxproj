@@ -149,6 +149,7 @@
 		0CD2A1061A6F2B44009478A2 /* NSCache+DFImageManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 0CD2A1041A6F2B44009478A2 /* NSCache+DFImageManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0CD2A1071A6F2B44009478A2 /* NSCache+DFImageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD2A1051A6F2B44009478A2 /* NSCache+DFImageManager.m */; };
 		0CD2A1081A6F2B44009478A2 /* NSCache+DFImageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD2A1051A6F2B44009478A2 /* NSCache+DFImageManager.m */; };
+		0CE578481AA352B000E934FB /* TDFMockFetchOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CE578471AA352B000E934FB /* TDFMockFetchOperation.m */; };
 		E3F8DD56F2B8E4BA2BD17E25 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FE905C97593137A3540CA56B /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -293,6 +294,8 @@
 		0CD2A0FE1A6F2A7B009478A2 /* DFImageCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFImageCache.m; sourceTree = "<group>"; };
 		0CD2A1041A6F2B44009478A2 /* NSCache+DFImageManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSCache+DFImageManager.h"; sourceTree = "<group>"; };
 		0CD2A1051A6F2B44009478A2 /* NSCache+DFImageManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSCache+DFImageManager.m"; sourceTree = "<group>"; };
+		0CE578461AA352B000E934FB /* TDFMockFetchOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDFMockFetchOperation.h; sourceTree = "<group>"; };
+		0CE578471AA352B000E934FB /* TDFMockFetchOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDFMockFetchOperation.m; sourceTree = "<group>"; };
 		D39726C7936014ADA2B50F72 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "../Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		FE905C97593137A3540CA56B /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -388,6 +391,8 @@
 				0C5BD74C1AA31943003C0BB6 /* TDFMockImageProcessor.m */,
 				0C5BD74E1AA32CA5003C0BB6 /* TDFMockImageCache.h */,
 				0C5BD74F1AA32CA5003C0BB6 /* TDFMockImageCache.m */,
+				0CE578461AA352B000E934FB /* TDFMockFetchOperation.h */,
+				0CE578471AA352B000E934FB /* TDFMockFetchOperation.m */,
 			);
 			path = Mocks;
 			sourceTree = "<group>";
@@ -894,6 +899,7 @@
 				0CD012531A6C6AB1004F6CD3 /* DFCompositeImageManager.m in Sources */,
 				0CD0124D1A6C6AB1004F6CD3 /* DFPhotosKitImageFetchOperation.m in Sources */,
 				0CD012601A6C6AB1004F6CD3 /* DFOperation.m in Sources */,
+				0CE578481AA352B000E934FB /* TDFMockFetchOperation.m in Sources */,
 				0CD012621A6C6AB1004F6CD3 /* DFImageRequestOptions.m in Sources */,
 				0CD0125D1A6C6AB1004F6CD3 /* DFImageProcessor.m in Sources */,
 				0C5BD74D1AA31943003C0BB6 /* TDFMockImageProcessor.m in Sources */,

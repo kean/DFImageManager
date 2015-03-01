@@ -34,5 +34,9 @@
     }
     return [self.ID isEqualToString:((TDFMockResource *)other).ID];
 }
+
+- (NSString *)description {
+    return [NSString stringWithFormat:@"<%@ %p> { ID = %@ }", [self class], self, self.ID];
+}
             
 @end
