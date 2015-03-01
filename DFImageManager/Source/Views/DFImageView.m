@@ -79,6 +79,7 @@ static const NSTimeInterval _kMinimumAutoretryInterval = 8.f;
     _operation = nil;
     _previousAutoretryTime = 0.0;
     self.image = nil;
+    [self.layer removeAllAnimations];
 }
 
 - (void)_cancelFetching {

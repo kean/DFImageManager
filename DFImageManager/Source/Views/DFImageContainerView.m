@@ -166,7 +166,7 @@
                 animation.keyPath = @"opacity";
                 animation.fromValue = @1.f;
                 animation.toValue = @0.f;
-                animation.duration = 0.3f;
+                animation.duration = 0.25f;
                 animation;
             }) forKey:@"opacity"];
         }
