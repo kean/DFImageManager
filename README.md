@@ -23,30 +23,15 @@ Modern iOS framework for fetching, caching, processing, and preheating images fr
 - Unit tests help to maintain the project and ensure its future growth.
 
 ## Getting Started
-- Download the [latest DFImageManager version](https://github.com/kean/DFImageManager/releases)
+- Download the [latest version](https://github.com/kean/DFImageManager/releases)
 - Take a look at the comprehensive [demo projects](https://github.com/kean/DFImageManager/tree/master/DFImageManagerSample)
 - Check out the complete [documentation](http://cocoadocs.org/docsets/DFImageManager)
 - Try `DFImageManager` API in a Swift playground available in the project
 - Read guides on project [Wiki](https://github.com/kean/DFImageManager/wiki)
-- Install `DFImageManager` using [CocoaPods](http://cocoapods.org), import `<DFImageManager/DFImageManagerKit.h>` and enjoy!
+- [Install using CocoaPods](#install_using_cocopods), import `<DFImageManager/DFImageManagerKit.h>` and enjoy!
 
 ## Requirements
 iOS 7.0+
-
-## Installation with [CocoaPods](http://cocoapods.org)
-
-CocoaPods is the dependency manager for Cocoa projects, which automates the process of integrating thrid-party frameworks like DFImageManager. If you are not familiar with CocoaPods the best place to start would be [official CocoaPods guides](http://guides.cocoapods.org).
-```ruby
-# Podfile
-platform :ios, '7.0'
-pod 'DFImageManager'
-```
-
-If you want to use the latest `DFImageManager` features before the new version is released, you can specify the `:head` flag in you podfile.
-```ruby
-platform :ios, '7.0'
-pod 'DFImageManager', :head
-```
 
 ## Usage
 
@@ -175,6 +160,21 @@ DFCompositeImageManager *compositeImageManager = [[DFCompositeImageManager alloc
 #### What's more
 
 Those were the most common cases. `DFImageManager` is jam-packed with other features. There are much more options for customization and room for extension. Fore more info check out the complete [documentation](http://cocoadocs.org/docsets/DFImageManager) and project [Wiki](https://github.com/kean/DFImageManager/wiki)
+
+## <a name="install_using_cocopods"></a>Installation with [CocoaPods](http://cocoapods.org)
+
+CocoaPods is the dependency manager for Cocoa projects, which automates the process of integrating thrid-party frameworks like DFImageManager. If you are not familiar with CocoaPods the best place to start would be [official CocoaPods guides](http://guides.cocoapods.org).
+```ruby
+# Podfile
+platform :ios, '7.0'
+pod 'DFImageManager'
+```
+
+If you want to use the latest `DFImageManager` features before the new version is released, you can specify the `:head` flag in you podfile.
+```ruby
+platform :ios, '7.0'
+pod 'DFImageManager', :head
+```
 
 ## Contribution
  
