@@ -11,7 +11,7 @@
 
 /*! The mock implementation of DFImageProcessing protocol.
  */
-@interface TDFImageProcessor : NSObject <DFImageProcessing>
+@interface TDFMockImageProcessor : NSObject <DFImageProcessing>
 
 @property (nonatomic, readonly) NSUInteger numberOfProcessedImageCalls;
 

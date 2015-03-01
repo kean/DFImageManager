@@ -22,18 +22,18 @@
 @implementation TDFImageManager {
     DFImageManager *_imageManager;
     
-    TDFImageFetcher *_fetcher;
-    TDFImageProcessor *_processor;
-    TDFImageCache *_cache;
+    TDFMockImageFetcher *_fetcher;
+    TDFMockImageProcessor *_processor;
+    TDFMockImageCache *_cache;
     DFImageManager *_manager;
 }
 
 - (void)setUp {
     [super setUp];
     
-    _fetcher = [TDFImageFetcher new];
-    _processor = [TDFImageProcessor new];
-    _cache = [TDFImageCache new]; // Cache is disabled by default
+    _fetcher = [TDFMockImageFetcher new];
+    _processor = [TDFMockImageProcessor new];
+    _cache = [TDFMockImageCache new]; // Cache is disabled by default
     _manager = [[DFImageManager alloc] initWithConfiguration:[DFImageManagerConfiguration configurationWithFetcher:_fetcher processor:_processor cache:_cache]];
 }
 
@@ -45,7 +45,7 @@
 
 - (void)testThatImageManagerFetchesImages {
     XCTestExpectation *expectation = [self expectationWithDescription:@"first_request"];
-    [_manager requestImageForResource:[TDFResource resourceWithID:@"ID01"] completion:^(UIImage *image, NSDictionary *info) {
+    [_manager requestImageForResource:[TDFMockResource resourceWithID:@"ID01"] completion:^(UIImage *image, NSDictionary *info) {
         XCTAssertNotNil(image);
         [expectation fulfill];
     }];
@@ -56,7 +56,7 @@
 
 - (void)testThatImageManagerResponseInfoContainsRequestID {
     XCTestExpectation *expectation = [self expectationWithDescription:@"request"];
-    DFImageRequestID *__block requestID = [_manager requestImageForResource:[TDFResource resourceWithID:@"ID01"] completion:^(UIImage *image, NSDictionary *info) {
+    DFImageRequestID *__block requestID = [_manager requestImageForResource:[TDFMockResource resourceWithID:@"ID01"] completion:^(UIImage *image, NSDictionary *info) {
         XCTAssertEqualObjects(info[DFImageInfoRequestIDKey], requestID);
         [expectation fulfill];
     }];
@@ -69,7 +69,7 @@
     _fetcher.response = [[DFImageResponse alloc] initWithError:[NSError errorWithDomain:@"TDFErrorDomain" code:14 userInfo:nil]];
     
     XCTestExpectation *expectation = [self expectationWithDescription:@"request"];
-    [_manager requestImageForResource:[TDFResource resourceWithID:@"ID01"] completion:^(UIImage *image, NSDictionary *info) {
+    [_manager requestImageForResource:[TDFMockResource resourceWithID:@"ID01"] completion:^(UIImage *image, NSDictionary *info) {
         NSError *error = info[DFImageInfoErrorKey];
         XCTAssertTrue([error.domain isEqualToString:@"TDFErrorDomain"]);
         XCTAssertTrue(error.code == 14);
@@ -79,12 +79,12 @@
 }
 
 - (void)testThatImageManagerResponseInfoContainsCustomUserInfo {
-    DFMutableImageResponse *response = [TDFImageFetcher successfullResponse];
+    DFMutableImageResponse *response = [TDFMockImageFetcher successfullResponse];
     response.userInfo = @{ @"TestKey" : @"TestValue" };
     _fetcher.response = response;
     
     XCTestExpectation *expectation = [self expectationWithDescription:@"request"];
-    [_manager requestImageForResource:[TDFResource resourceWithID:@"ID01"] completion:^(UIImage *image, NSDictionary *info) {
+    [_manager requestImageForResource:[TDFMockResource resourceWithID:@"ID01"] completion:^(UIImage *image, NSDictionary *info) {
         XCTAssertTrue([info[@"TestKey"] isEqualToString:@"TestValue"]);
         [expectation fulfill];
     }];
@@ -98,7 +98,7 @@
     
     _fetcher.queue.suspended = YES;
     
-    XCTestExpectation *expectation1 = [self expectationWithDescription:@"01"]; { DFImageRequest *request1 = [[DFImageRequest alloc] initWithResource:[TDFResource resourceWithID:@"ID01"] targetSize:CGSizeMake(150.f, 150.f) contentMode:DFImageContentModeAspectFill options:nil];
+    XCTestExpectation *expectation1 = [self expectationWithDescription:@"01"]; { DFImageRequest *request1 = [[DFImageRequest alloc] initWithResource:[TDFMockResource resourceWithID:@"ID01"] targetSize:CGSizeMake(150.f, 150.f) contentMode:DFImageContentModeAspectFill options:nil];
         [_manager requestImageForRequest:request1 completion:^(UIImage *image, NSDictionary *info) {
             XCTAssertNotNil(image);
             [expectation1 fulfill];
@@ -106,7 +106,7 @@
     }
     
     XCTestExpectation *expectation2 = [self expectationWithDescription:@"02"]; {
-        DFImageRequest *request2 = [[DFImageRequest alloc] initWithResource:[TDFResource resourceWithID:@"ID01"] targetSize:CGSizeMake(150.f, 150.f) contentMode:DFImageContentModeAspectFill options:nil];
+        DFImageRequest *request2 = [[DFImageRequest alloc] initWithResource:[TDFMockResource resourceWithID:@"ID01"] targetSize:CGSizeMake(150.f, 150.f) contentMode:DFImageContentModeAspectFill options:nil];
         [_manager requestImageForRequest:request2 completion:^(UIImage *image, NSDictionary *info) {
             XCTAssertNotNil(image);
             [expectation2 fulfill];
@@ -114,7 +114,7 @@
     }
     
     XCTestExpectation *expectation3 = [self expectationWithDescription:@"03"]; {
-        DFImageRequest *request3 = [[DFImageRequest alloc] initWithResource:[TDFResource resourceWithID:@"ID01"] targetSize:CGSizeMake(100.f, 100.f) contentMode:DFImageContentModeAspectFill options:nil];
+        DFImageRequest *request3 = [[DFImageRequest alloc] initWithResource:[TDFMockResource resourceWithID:@"ID01"] targetSize:CGSizeMake(100.f, 100.f) contentMode:DFImageContentModeAspectFill options:nil];
         [_manager requestImageForRequest:request3 completion:^(UIImage *image, NSDictionary *info) {
             XCTAssertNotNil(image);
             [expectation3 fulfill];
@@ -122,7 +122,7 @@
     }
     
     XCTestExpectation *expectation4 = [self expectationWithDescription:@"04"]; {
-        DFImageRequest *request4 = [[DFImageRequest alloc] initWithResource:[TDFResource resourceWithID:@"ID02"] targetSize:CGSizeMake(100.f, 100.f) contentMode:DFImageContentModeAspectFill options:nil];
+        DFImageRequest *request4 = [[DFImageRequest alloc] initWithResource:[TDFMockResource resourceWithID:@"ID02"] targetSize:CGSizeMake(100.f, 100.f) contentMode:DFImageContentModeAspectFill options:nil];
         [_manager requestImageForRequest:request4 completion:^(UIImage *image, NSDictionary *info) {
             XCTAssertNotNil(image);
             [expectation4 fulfill];
@@ -144,7 +144,7 @@
 - (void)testThatImageManagerCallsCompletionBlockSynchonously {
     _cache.enabled = YES;
     
-    TDFResource *resource = [TDFResource resourceWithID:@"ID01"];
+    TDFMockResource *resource = [TDFMockResource resourceWithID:@"ID01"];
     XCTestExpectation *expectation = [self expectationWithDescription:@"request"];
     [_manager requestImageForResource:resource completion:^(UIImage *image, NSDictionary *info) {
         [expectation fulfill];
@@ -168,7 +168,7 @@
     
     _cache.enabled = YES;
     
-    TDFResource *resource = [TDFResource resourceWithID:@"ID01"];
+    TDFMockResource *resource = [TDFMockResource resourceWithID:@"ID01"];
     XCTestExpectation *expectation = [self expectationWithDescription:@"request"];
     [_manager requestImageForResource:resource completion:^(UIImage *image, NSDictionary *info) {
         [expectation fulfill];

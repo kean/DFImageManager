@@ -11,7 +11,7 @@
 
 /*! The DFImageCaching implementation that can be easily enabled and disabled, doesn't evict objects and provides other features required for testing.
  */
-@interface TDFImageCache : NSObject <DFImageCaching>
+@interface TDFMockImageCache : NSObject <DFImageCaching>
 
 /*! Default value is NO.
  */

@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface TDFResource : NSObject
+@interface TDFMockResource : NSObject
 
 @property (nonatomic, readonly) NSString *ID;
 

@@ -6,9 +6,9 @@
 //  Copyright (c) 2015 Alexander Grebenyuk. All rights reserved.
 //
 
-#import "TDFResource.h"
+#import "TDFMockResource.h"
 
-@implementation TDFResource
+@implementation TDFMockResource
 
 - (instancetype)initWithID:(NSString *)ID {
     if (self = [super init]) {
@@ -32,7 +32,7 @@
     if (!other || ![other isKindOfClass:[self class]]) {
         return NO;
     }
-    return [self.ID isEqualToString:((TDFResource *)other).ID];
+    return [self.ID isEqualToString:((TDFMockResource *)other).ID];
 }
             
 @end

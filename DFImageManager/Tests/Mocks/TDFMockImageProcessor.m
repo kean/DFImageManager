@@ -6,9 +6,9 @@
 //  Copyright (c) 2015 Alexander Grebenyuk. All rights reserved.
 //
 
-#import "TDFImageProcessor.h"
+#import "TDFMockImageProcessor.h"
 
-@implementation TDFImageProcessor
+@implementation TDFMockImageProcessor
 
 - (BOOL)isProcessingForRequestEquivalent:(DFImageRequest *)request1 toRequest:(DFImageRequest *)request2 {
     return CGSizeEqualToSize(request1.targetSize, request2.targetSize);

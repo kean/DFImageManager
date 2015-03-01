@@ -7,7 +7,7 @@
 //
 
 #import "TDFTesting.h"
-#import "TDFResource.h"
-#import "TDFImageFetcher.h"
-#import "TDFImageProcessor.h"
-#import "TDFImageCache.h"
+#import "TDFMockResource.h"
+#import "TDFMockImageFetcher.h"
+#import "TDFMockImageProcessor.h"
+#import "TDFMockImageCache.h"

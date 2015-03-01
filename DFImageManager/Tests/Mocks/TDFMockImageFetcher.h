@@ -12,7 +12,7 @@
 /*! The mock implementation of DFImageFetching protocol.
  @note Supports resources of TDFResource class.
  */
-@interface TDFImageFetcher : NSObject <DFImageFetching>
+@interface TDFMockImageFetcher : NSObject <DFImageFetching>
 
 @property (nonatomic) NSOperationQueue *queue;
 

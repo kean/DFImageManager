@@ -6,9 +6,9 @@
 //  Copyright (c) 2015 Alexander Grebenyuk. All rights reserved.
 //
 
-#import "TDFImageCache.h"
+#import "TDFMockImageCache.h"
 
-@implementation TDFImageCache
+@implementation TDFMockImageCache
 
 - (instancetype)init {
     if (self = [super init]) {
