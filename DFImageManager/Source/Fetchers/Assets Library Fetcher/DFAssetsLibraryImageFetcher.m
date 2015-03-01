@@ -70,11 +70,8 @@ static inline NSURL *_ALAssetURL(id resource) {
 - (DFImageRequest *)canonicalRequestForRequest:(DFImageRequest *)request {
     if (!request.options || ![request.options isKindOfClass:[DFAssetsLibraryImageRequestOptions class]]) {
         DFAssetsLibraryImageRequestOptions *options = [[DFAssetsLibraryImageRequestOptions alloc] initWithOptions:request.options];
-        options.imageSize = request != nil ? [self _assetImageSizeForRequest:request] : DFALAssetImageSizeFullscreen;
-        
-        DFImageRequest *canonicalRequest = [request copy];
-        canonicalRequest.options = options;
-        return canonicalRequest;
+        options.imageSize = [self _assetImageSizeForRequest:request];
+        request.options = options;
     }
     return request;
 }

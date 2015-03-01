@@ -37,4 +37,8 @@
  */
 @property (nonatomic) DFALAssetVersion version;
 
+/*! Initializes DFAssetsLibraryImageRequestOptions with default options.
+ */
+- (instancetype)init NS_DESIGNATED_INITIALIZER;
+
 @end

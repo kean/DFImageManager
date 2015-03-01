@@ -32,4 +32,8 @@
  */
 @property (nonatomic) NSURLRequestCachePolicy cachePolicy;
 
+/*! Initializes DFURLImageRequestOptions with default options.
+ */
+- (instancetype)init NS_DESIGNATED_INITIALIZER;
+
 @end

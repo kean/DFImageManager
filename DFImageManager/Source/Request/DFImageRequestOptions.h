@@ -57,7 +57,12 @@
  */
 @property (nonatomic, copy) DFImageRequestProgressHandler progressHandler;
 
+/*! Initializes DFImageRequestOptions with default options.
+ */
+- (instancetype)init NS_DESIGNATED_INITIALIZER;
+
 /*! Initializes DFImageRequestOptions with another instance of request options.
+ @param options The given options. Options might be nil.
  */
 - (instancetype)initWithOptions:(DFImageRequestOptions *)options;
 

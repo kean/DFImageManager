@@ -51,7 +51,7 @@
     };
     DFImageRequest *request = [[DFImageRequest alloc] initWithResource:[NSURL URLWithString:@"http://path/resourse"] targetSize:CGSizeMake(100.f, 100.f) contentMode:DFImageContentModeAspectFit options:options];
     
-    DFImageRequest *canonicalRequest = [_fetcher canonicalRequestForRequest:request];
+    DFImageRequest *canonicalRequest = [_fetcher canonicalRequestForRequest:[request copy]];
     
     XCTAssertTrue([canonicalRequest.resource isEqual:[NSURL URLWithString:@"http://path/resourse"]]);
     XCTAssertTrue(CGSizeEqualToSize(canonicalRequest.targetSize, CGSizeMake(100.f, 100.f)));
@@ -74,7 +74,7 @@
 - (void)testThatCanonicalRequestCreatesFetcherSpecificOptionsWhenInitialsOptionsAreNil {
     DFImageRequest *request = [[DFImageRequest alloc] initWithResource:[NSURL URLWithString:@"http://path/resourse"] targetSize:CGSizeMake(100.f, 100.f) contentMode:DFImageContentModeAspectFit options:nil];
     
-    DFImageRequest *canonicalRequest = [_fetcher canonicalRequestForRequest:request];
+    DFImageRequest *canonicalRequest = [_fetcher canonicalRequestForRequest:[request copy]];
     XCTAssertTrue([canonicalRequest.options isKindOfClass:[DFURLImageRequestOptions class]]);
     
     DFURLImageRequestOptions *canonicalOptions = (DFURLImageRequestOptions *)canonicalRequest.options;
@@ -96,7 +96,7 @@
     
     DFImageRequest *request = [[DFImageRequest alloc] initWithResource:[NSURL URLWithString:@"http://path/resourse"] targetSize:CGSizeMake(100.f, 100.f) contentMode:   DFImageContentModeAspectFit options:options];
     
-    DFImageRequest *canonicalRequest = [_fetcher canonicalRequestForRequest:request];
+    DFImageRequest *canonicalRequest = [_fetcher canonicalRequestForRequest:[request copy]];
     XCTAssertTrue([canonicalRequest.options isKindOfClass:[DFURLImageRequestOptions class]]);
     
     DFURLImageRequestOptions *canonicalOptions = (DFURLImageRequestOptions *)canonicalRequest.options;

@@ -41,4 +41,8 @@ NS_CLASS_AVAILABLE_IOS(8_0) @interface DFPhotosKitImageRequestOptions : DFImageR
  */
 @property (nonatomic) PHImageRequestOptionsResizeMode resizeMode;
 
+/*! Initializes DFPhotosKitImageRequestOptions with default options.
+ */
+- (instancetype)init NS_DESIGNATED_INITIALIZER;
+
 @end
