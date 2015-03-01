@@ -7,13 +7,13 @@
 //
 
 #import "DFImageManagerKit.h"
-#import "TDFTesting.h"
+#import "TDFTestingKit.h"
 #import <OHHTTPStubs/OHHTTPStubs.h>
 #import "NSURL+DFPhotosKit.h"
 #import <XCTest/XCTest.h>
 
 
-/*! The TDFImageManager is a test suite for DFImageManager class.
+/*! The TDFImageManager is a test suite for DFImageManager class. All tests are designed to test a single module (DFImageManager) without testing other dependencies and/or integration.
  */
 @interface TDFImageManager : XCTestCase
 
@@ -21,106 +21,168 @@
 
 @implementation TDFImageManager {
     DFImageManager *_imageManager;
+    
+    TDFImageFetcher *_fetcher;
+    TDFImageProcessor *_processor;
+    TDFImageCache *_cache;
+    DFImageManager *_manager;
 }
 
 - (void)setUp {
     [super setUp];
     
-    // Simple configuration without processor and cache.
-    NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
-    id<DFImageFetching> fetcher = [[DFURLImageFetcher alloc] initWithSessionConfiguration:configuration];
-    _imageManager = [[DFImageManager alloc] initWithConfiguration:[[DFImageManagerConfiguration alloc] initWithFetcher:fetcher]];
+    _fetcher = [TDFImageFetcher new];
+    _processor = [TDFImageProcessor new];
+    _cache = [TDFImageCache new]; // Cache is disabled by default
+    _manager = [[DFImageManager alloc] initWithConfiguration:[DFImageManagerConfiguration configurationWithFetcher:_fetcher processor:_processor cache:_cache]];
 }
 
 - (void)tearDown {
     [super tearDown];
-    
-    [OHHTTPStubs removeAllStubs];
 }
 
-#pragma mark - Smoke Tests
+#pragma mark - Basics
 
-- (void)testThatImageManagerWorks {
-    NSURL *imageURL = [NSURL URLWithString:@"http://imagemanager.com/image.jpg"];
-    [TDFTesting stubRequestWithURL:imageURL];
-    
-    XCTestExpectation *expectation = [self expectationWithDescription:@"image_fetched"];
-    XCTAssertTrue([_imageManager canHandleRequest:[[DFImageRequest alloc] initWithResource:imageURL]]);
-    
-    [_imageManager requestImageForResource:imageURL targetSize:DFImageMaximumSize contentMode:DFImageContentModeAspectFill options:nil completion:^(UIImage *image, NSDictionary *info) {
+- (void)testThatImageManagerFetchesImages {
+    XCTestExpectation *expectation = [self expectationWithDescription:@"first_request"];
+    [_manager requestImageForResource:[TDFResource resourceWithID:@"ID01"] completion:^(UIImage *image, NSDictionary *info) {
         XCTAssertNotNil(image);
         [expectation fulfill];
     }];
-    
     [self waitForExpectationsWithTimeout:3.0 handler:nil];
 }
 
-- (void)testThatImageManagerHandlesErrors {
-    NSURL *imageURL = [NSURL URLWithString:@"http://imagemanager.com/image.jpg"];
-    
-    [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
-        return [request.URL isEqual:imageURL];
-    } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
-        return [OHHTTPStubsResponse responseWithError:[NSError errorWithDomain:NSURLErrorDomain code:NSURLErrorNotConnectedToInternet userInfo:nil]];
-    }];
-    
-    XCTestExpectation *expectation = [self expectationWithDescription:@"fetch_failed"];
-    
-    XCTAssertTrue([_imageManager canHandleRequest:[[DFImageRequest alloc] initWithResource:imageURL]]);
-    
-    [_imageManager requestImageForResource:imageURL targetSize:DFImageMaximumSize contentMode:DFImageContentModeAspectFill options:nil completion:^(UIImage *image, NSDictionary *info) {
-        NSError *error = info[DFImageInfoErrorKey];
-        XCTAssertTrue([error.domain isEqualToString:NSURLErrorDomain] && error.code == NSURLErrorNotConnectedToInternet);
+#pragma mark - Response Info
+
+- (void)testThatImageManagerResponseInfoContainsRequestID {
+    XCTestExpectation *expectation = [self expectationWithDescription:@"request"];
+    DFImageRequestID *__block requestID = [_manager requestImageForResource:[TDFResource resourceWithID:@"ID01"] completion:^(UIImage *image, NSDictionary *info) {
+        XCTAssertEqualObjects(info[DFImageInfoRequestIDKey], requestID);
         [expectation fulfill];
     }];
+    [self waitForExpectationsWithTimeout:3.0 handler:nil];
+}
+
+/*! Test that image manager response info contains error under DFImageInfoErrorKey key when request fails.
+ */
+- (void)testThatImageManagerResponseInfoContainsError {
+    _fetcher.response = [[DFImageResponse alloc] initWithError:[NSError errorWithDomain:@"TDFErrorDomain" code:14 userInfo:nil]];
     
+    XCTestExpectation *expectation = [self expectationWithDescription:@"request"];
+    [_manager requestImageForResource:[TDFResource resourceWithID:@"ID01"] completion:^(UIImage *image, NSDictionary *info) {
+        NSError *error = info[DFImageInfoErrorKey];
+        XCTAssertTrue([error.domain isEqualToString:@"TDFErrorDomain"]);
+        XCTAssertTrue(error.code == 14);
+        [expectation fulfill];
+    }];
+    [self waitForExpectationsWithTimeout:3.0 handler:nil];
+}
+
+- (void)testThatImageManagerResponseInfoContainsCustomUserInfo {
+    DFMutableImageResponse *response = [TDFImageFetcher successfullResponse];
+    response.userInfo = @{ @"TestKey" : @"TestValue" };
+    _fetcher.response = response;
+    
+    XCTestExpectation *expectation = [self expectationWithDescription:@"request"];
+    [_manager requestImageForResource:[TDFResource resourceWithID:@"ID01"] completion:^(UIImage *image, NSDictionary *info) {
+        XCTAssertTrue([info[@"TestKey"] isEqualToString:@"TestValue"]);
+        [expectation fulfill];
+    }];
     [self waitForExpectationsWithTimeout:3.0 handler:nil];
 }
 
 #pragma mark - Operation Reuse
 
-- (void)testThatImageManagerReusesFetchOperationsForSameURLs {
-    // Start two requests. Image manager is initialized without a memory cache, so it will have to use fetcher for both requests.
+- (void)testThatImageManagerReuseOperations {
+    // Start two requests. Image manager is initialized without a memory cache, so it will have to use fetcher and processor for both requests.
     
-    NSUInteger __block countOfResponses = 0;
+    _fetcher.queue.suspended = YES;
     
-    NSData *data = [TDFTesting testImageData];
-    [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
-        return [request.URL isEqual:[NSURL URLWithString:@"http://imagemanager.com/image.jpg"]];
-    } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
-        countOfResponses++;
-        return [[OHHTTPStubsResponse alloc] initWithData:data statusCode:200 headers:nil];
-    }];
+    XCTestExpectation *expectation1 = [self expectationWithDescription:@"01"]; { DFImageRequest *request1 = [[DFImageRequest alloc] initWithResource:[TDFResource resourceWithID:@"ID01"] targetSize:CGSizeMake(150.f, 150.f) contentMode:DFImageContentModeAspectFill options:nil];
+        [_manager requestImageForRequest:request1 completion:^(UIImage *image, NSDictionary *info) {
+            XCTAssertNotNil(image);
+            [expectation1 fulfill];
+        }];
+    }
     
-    XCTestExpectation *expectation1 = [self expectationWithDescription:@"first_fetch_complete"];
-    [_imageManager requestImageForResource:[NSURL URLWithString:@"http://imagemanager.com/image.jpg"] completion:^(UIImage *image, NSDictionary *info) {
-        XCTAssertNotNil(image);
-        [expectation1 fulfill];
-    }];
+    XCTestExpectation *expectation2 = [self expectationWithDescription:@"02"]; {
+        DFImageRequest *request2 = [[DFImageRequest alloc] initWithResource:[TDFResource resourceWithID:@"ID01"] targetSize:CGSizeMake(150.f, 150.f) contentMode:DFImageContentModeAspectFill options:nil];
+        [_manager requestImageForRequest:request2 completion:^(UIImage *image, NSDictionary *info) {
+            XCTAssertNotNil(image);
+            [expectation2 fulfill];
+        }];
+    }
     
-    XCTestExpectation *expectation2 = [self expectationWithDescription:@"second_fetch_complete"];
-    [_imageManager requestImageForResource:[NSURL URLWithString:@"http://imagemanager.com/image.jpg"] completion:^(UIImage *image, NSDictionary *info) {
-        XCTAssertNotNil(image);
-        [expectation2 fulfill];
-    }];
+    XCTestExpectation *expectation3 = [self expectationWithDescription:@"03"]; {
+        DFImageRequest *request3 = [[DFImageRequest alloc] initWithResource:[TDFResource resourceWithID:@"ID01"] targetSize:CGSizeMake(100.f, 100.f) contentMode:DFImageContentModeAspectFill options:nil];
+        [_manager requestImageForRequest:request3 completion:^(UIImage *image, NSDictionary *info) {
+            XCTAssertNotNil(image);
+            [expectation3 fulfill];
+        }];
+    }
+    
+    XCTestExpectation *expectation4 = [self expectationWithDescription:@"04"]; {
+        DFImageRequest *request4 = [[DFImageRequest alloc] initWithResource:[TDFResource resourceWithID:@"ID02"] targetSize:CGSizeMake(100.f, 100.f) contentMode:DFImageContentModeAspectFill options:nil];
+        [_manager requestImageForRequest:request4 completion:^(UIImage *image, NSDictionary *info) {
+            XCTAssertNotNil(image);
+            [expectation4 fulfill];
+        }];
+    }
+    
+    _fetcher.queue.suspended = NO;
     
     [self waitForExpectationsWithTimeout:3.0 handler:^(NSError *error) {
-        XCTAssertTrue(countOfResponses == 1);
+        XCTAssertEqual(_fetcher.createdOperationCount, 2);
+        XCTAssertEqual(_processor.numberOfProcessedImageCalls, 3);
     }];
 }
 
-#pragma mark - DFURLImageFetcher
+#pragma mark - Memory Cache
 
-- (void)testThatURLFetcherSupportsFileSystemURL {
-    NSURL *fileURL = [TDFTesting testImageURL];
+/*! Test that image manager calls completion block synchronously (default configuration).
+ */
+- (void)testThatImageManagerCallsCompletionBlockSynchonously {
+    _cache.enabled = YES;
     
-    XCTestExpectation *expectation = [self expectationWithDescription:@"fetch_failed"];
-    
-    [_imageManager requestImageForResource:fileURL targetSize:DFImageMaximumSize contentMode:DFImageContentModeAspectFill options:nil completion:^(UIImage *image, NSDictionary *info) {
-        XCTAssertNotNil(image);
+    TDFResource *resource = [TDFResource resourceWithID:@"ID01"];
+    XCTestExpectation *expectation = [self expectationWithDescription:@"request"];
+    [_manager requestImageForResource:resource completion:^(UIImage *image, NSDictionary *info) {
         [expectation fulfill];
     }];
+    [self waitForExpectationsWithTimeout:3.0 handler:nil];
     
+    BOOL __block isCompletionHandlerCalled = NO;
+    [_manager requestImageForResource:resource completion:^(UIImage *image, NSDictionary *info) {
+        XCTAssertNotNil(image);
+        isCompletionHandlerCalled = YES;
+    }];
+    XCTAssertTrue(isCompletionHandlerCalled);
+}
+
+/*! Test that image manager calls completion block asynchronously with a specific configuration option.
+ */
+- (void)testThatImageManagerCallsCompletionBlockAsynchonously {
+    DFImageManagerConfiguration *configuration = [_manager.configuration copy];
+    configuration.allowsSynchronousCallbacks = NO;
+    _manager = [[DFImageManager alloc] initWithConfiguration:configuration];
+    
+    _cache.enabled = YES;
+    
+    TDFResource *resource = [TDFResource resourceWithID:@"ID01"];
+    XCTestExpectation *expectation = [self expectationWithDescription:@"request"];
+    [_manager requestImageForResource:resource completion:^(UIImage *image, NSDictionary *info) {
+        [expectation fulfill];
+    }];
+    [self waitForExpectationsWithTimeout:3.0 handler:nil];
+    
+    XCTestExpectation *expectation2 = [self expectationWithDescription:@"cache"];
+    BOOL __block isCompletionHandlerCalled = NO;
+    [_manager requestImageForResource:resource completion:^(UIImage *image, NSDictionary *info) {
+        XCTAssertNotNil(image);
+        isCompletionHandlerCalled = YES;
+        [expectation2 fulfill];
+    }];
+    XCTAssertFalse(isCompletionHandlerCalled);
     [self waitForExpectationsWithTimeout:3.0 handler:nil];
 }
 

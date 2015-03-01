@@ -55,7 +55,7 @@
     }
     DFProcessingInput *input1 = request1.resource;
     DFProcessingInput *input2 = request2.resource;
-    if (!(input1.image == input2.image || [input1.imageIdentifier isEqualToString:input2.imageIdentifier])) {
+    if (![input1.imageIdentifier isEqualToString:input2.imageIdentifier]) {
         return NO;
     }
     return [_processor isProcessingForRequestEquivalent:request1 toRequest:request2];

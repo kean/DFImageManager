@@ -119,17 +119,38 @@
 
 #pragma mark - Schemes
 
-// TODO: Move to separate test suite.
+/*! Test 'file' scheme
+ */
+- (void)testThatURLFetcherSupportsFileSystemURL {
+    NSURL *fileURL = [TDFTesting testImageURL];
+    
+    DFImageRequest *request = [[DFImageRequest alloc] initWithResource:fileURL];
+    XCTAssertTrue([_fetcher canHandleRequest:request]);
+    
+    XCTestExpectation *expectation = [self expectationWithDescription:@"fetch_completed"];
+    request = [_fetcher canonicalRequestForRequest:request];
+    [_fetcher startOperationWithRequest:request progressHandler:nil completion:^(DFImageResponse *response) {
+        XCTAssertNotNil(response.image);
+        [expectation fulfill];
+    }];
+    
+    [self waitForExpectationsWithTimeout:3.0 handler:nil];
+}
+
+/*! Test 'data' scheme
+ */
 - (void)testThatURLImageFetcherSupportsDataScheme {
     NSData *imgData = [TDFTesting testImageData];
     NSString *dataFormatString = @"data:image/png;base64,%@";
     NSString *dataString = [NSString stringWithFormat:dataFormatString, [imgData base64EncodedStringWithOptions:0]];
     NSURL *dataURL = [NSURL URLWithString:dataString];
     
-    XCTestExpectation *expectation = [self expectationWithDescription:@"image_fetched"];
+    DFImageRequest *request = [[DFImageRequest alloc] initWithResource:dataURL];
+    XCTAssertTrue([_fetcher canHandleRequest:request]);
     
-    [[DFImageManager sharedManager] requestImageForResource:dataURL completion:^(UIImage *image, NSDictionary *info) {
-        XCTAssertNotNil(image);
+    XCTestExpectation *expectation = [self expectationWithDescription:@"fetch_completed"];
+    [_fetcher startOperationWithRequest:[_fetcher canonicalRequestForRequest:request] progressHandler:nil completion:^(DFImageResponse *response) {
+        XCTAssertNotNil(response.image);
         [expectation fulfill];
     }];
     

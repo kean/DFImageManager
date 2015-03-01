@@ -37,6 +37,10 @@
  */
 @property (nonatomic, copy, readonly) DFImageManagerConfiguration *configuration;
 
+/*! The receivers name.
+ */
+@property (nonatomic) NSString *name;
+
 /*! Creates image manager with a specified configuration.
  @param configuration A configuration object that specifies certain behaviors, such as fetching, processing, caching and more. Manager copies the configuration object.
  */

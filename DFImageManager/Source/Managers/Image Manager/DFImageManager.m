@@ -334,9 +334,9 @@ _DFImageKeyCreate(DFImageRequest *request, BOOL isCacheKey, id<_DFImageRequestKe
 }
 
 - (void)_didFetchImageWithResponse:(DFImageResponse *)response {
-    _fetchResponse = response;
     [self.delegate task:self didReceiveResponse:_fetchResponse completion:^(BOOL shouldContinue) {
         if (shouldContinue) {
+            _fetchResponse = response;
             NSAssert(self.handlers.count > 0, @"Internal inconsistency");
             for (_DFImageManagerHandler *handler in [self.handlers allValues]) {
                 [self _processResponseForHandler:handler];
@@ -476,7 +476,9 @@ _DFImageKeyCreate(DFImageRequest *request, BOOL isCacheKey, id<_DFImageRequestKe
              */
             
             DFProcessingImageFetcher *processingFetcher = [[DFProcessingImageFetcher alloc] initWithProcessor:configuration.processor queue:configuration.processingQueue];
-            _processingManager = [[DFImageManager alloc] initWithConfiguration:[DFImageManagerConfiguration configurationWithFetcher:processingFetcher]];
+            DFImageManager *processingManager = [[DFImageManager alloc] initWithConfiguration:[DFImageManagerConfiguration configurationWithFetcher:processingFetcher]];
+            processingManager.name = @"DFUnderlyingProcessingImageManager";
+            _processingManager = processingManager;
         }
         
         _flags.fetcherRespondsToCanonicalRequest = (unsigned int)[_conf.fetcher respondsToSelector:@selector(canonicalRequestForRequest:)];
@@ -808,6 +810,12 @@ static id<DFImageManaging> _sharedManager;
 
 + (void)setSharedManager:(id<DFImageManaging>)manager {
     _sharedManager = manager;
+}
+
+#pragma mark -
+
+- (NSString *)description {
+    return [NSString stringWithFormat:@"<%@ %p> { name = %@ }", [self class], self, self.name];
 }
 
 @end
