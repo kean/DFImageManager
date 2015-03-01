@@ -515,7 +515,7 @@ _DFImageKeyCreate(DFImageRequest *request, BOOL isCacheKey, id<_DFImageRequestKe
 
 - (DFImageRequest *)_canonicalRequestForRequest:(DFImageRequest *)request {
     if (_flags.fetcherRespondsToCanonicalRequest) {
-        return [[_conf.fetcher canonicalRequestForRequest:request] copy];
+        return [[_conf.fetcher canonicalRequestForRequest:[request copy]] copy];
     }
     return [request copy];
 }

@@ -62,7 +62,7 @@
 
 /*! Returns a canonical form of the given request. All DFImageFetching methods receive requests in a canonical form expect for the -canHandleRequest: method. It is up to each concrete protocol implementation to define what "canonical" means.
  @discussion Some fetcher might support a particular subclass of either DFImageRequest or DFImageRequestOptions. In that case this method might modify the given request to return this subclass in case the base class was used.
- @param request The initial request to be handled.
+ @param request The initial request to be handled. The method can modify the given request.
  */
 - (DFImageRequest *)canonicalRequestForRequest:(DFImageRequest *)request;
 

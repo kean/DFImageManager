@@ -121,10 +121,8 @@ NSString *const DFImageInfoURLResponseKey = @"DFImageInfoURLResponseKey";
 - (DFImageRequest *)canonicalRequestForRequest:(DFImageRequest *)request {
     if (!request.options || ![request.options isKindOfClass:[DFURLImageRequestOptions class]]) {
         DFURLImageRequestOptions *options = [[DFURLImageRequestOptions alloc] initWithOptions:request.options];
-        
-        DFImageRequest *canonicalRequest = [request copy];
-        canonicalRequest.options = options;
-        return canonicalRequest;
+        options.cachePolicy = self.session.configuration.requestCachePolicy;
+        request.options = options;
     }
     return request;
 }

@@ -64,6 +64,7 @@
     
     XCTAssertTrue(canonicalOptions.priority == DFImageRequestPriorityVeryLow);
     XCTAssertTrue(canonicalOptions.allowsNetworkAccess == NO);
+    XCTAssertTrue(canonicalOptions.allowsClipping == YES);
     XCTAssertTrue(canonicalOptions.memoryCachePolicy == DFImageRequestCachePolicyReloadIgnoringCache);
     XCTAssertTrue(canonicalOptions.expirationAge == 300.);
     XCTAssertTrue([canonicalOptions.userInfo isEqualToDictionary:@{ @"TestKey" : @YES }]);
@@ -78,6 +79,15 @@
     
     DFURLImageRequestOptions *canonicalOptions = (DFURLImageRequestOptions *)canonicalRequest.options;
     XCTAssertTrue(canonicalOptions.cachePolicy == NSURLRequestUseProtocolCachePolicy);
+    
+    // Test that default options were created
+    XCTAssertTrue(canonicalOptions.priority == DFImageRequestPriorityNormal);
+    XCTAssertTrue(canonicalOptions.allowsNetworkAccess == YES);
+    XCTAssertTrue(canonicalOptions.allowsClipping == NO);
+    XCTAssertTrue(canonicalOptions.memoryCachePolicy == DFImageRequestCachePolicyDefault);
+    XCTAssertTrue(canonicalOptions.expirationAge == 600.);
+    XCTAssertTrue(canonicalOptions.userInfo == nil);
+    XCTAssertTrue(canonicalOptions.progressHandler == nil);
 }
 
 - (void)testThatCanonicalRequestDoesntRewriteFetcherSpecificOptions {

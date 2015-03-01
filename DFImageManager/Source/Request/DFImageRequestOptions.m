@@ -38,19 +38,21 @@
 
 - (instancetype)initWithOptions:(DFImageRequestOptions *)options {
     if (self = [self init]) {
-        _priority = options.priority;
-        _allowsNetworkAccess = options.allowsNetworkAccess;
-        _allowsClipping = options.allowsClipping;
-        _memoryCachePolicy = options.memoryCachePolicy;
-        _expirationAge = options.expirationAge;
-        _progressHandler = [options.progressHandler copy];
-        _userInfo = [options.userInfo copy];
+        if (options) {
+            _priority = options.priority;
+            _allowsNetworkAccess = options.allowsNetworkAccess;
+            _allowsClipping = options.allowsClipping;
+            _memoryCachePolicy = options.memoryCachePolicy;
+            _expirationAge = options.expirationAge;
+            _progressHandler = [options.progressHandler copy];
+            _userInfo = [options.userInfo copy];
+        }
     }
     return self;
 }
 
 - (id)copyWithZone:(NSZone *)zone {
-    return [((DFImageRequestOptions *)[[self class] alloc]) initWithOptions:self];
+    return [((DFImageRequestOptions *)[[self class] allocWithZone:zone]) initWithOptions:self];
 }
 
 - (NSString *)description {
