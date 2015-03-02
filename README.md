@@ -18,16 +18,16 @@ Modern iOS framework for fetching, caching, processing, and preheating images fr
 - Separate memory cache that stores decompressed and processed images. Fine grained control over memory cache.
 - Centralized image decompression, resizing and processing. Resizing provides a lack of misaligned images and lower memory footprint. Fully customizable.
 - [Automatic preheating](https://github.com/kean/DFImageManager/wiki/Image-Preheating-Guide) of images that are close to the viewport.
-- Groups similar requests and never executes them twice. This is true for both fetching and processing. `DFImageManager` provides a fine grained control over which requests should be considered equivalent (both in terms of fetching and processing).
+- Groups similar requests and never executes them twice. This is true for both fetching and processing. Intelligent control over which requests are considered equivalent (both in terms of fetching and processing).
 - High quality code base successfully manages complexity and follows best design principles and patterns, including dependency injection that is used throughout.
 - Unit tests help to maintain the project and ensure its future growth.
 
 ## Getting Started
-- Download the [latest version](https://github.com/kean/DFImageManager/releases)
+- Download the latest [release](https://github.com/kean/DFImageManager/releases) or [development](https://github.com/kean/DFImageManager/archive/master.zip) version
 - Take a look at the comprehensive [demo projects](https://github.com/kean/DFImageManager/tree/master/DFImageManagerSample)
 - Check out the complete [documentation](http://cocoadocs.org/docsets/DFImageManager)
 - Try `DFImageManager` API in a Swift playground available in the project
-- Read guides on project [Wiki](https://github.com/kean/DFImageManager/wiki)
+- View growing project [Wiki](https://github.com/kean/DFImageManager/wiki)
 - [Install using CocoaPods](#install_using_cocopods), import `<DFImageManager/DFImageManagerKit.h>` and enjoy!
 
 ## Requirements

@@ -9,6 +9,11 @@
 #import "DFImageManagerKit.h"
 #import <XCTest/XCTest.h>
 
+#define DF_TESTING_PHOTOS_KIT \
+if (![PHImageManager class]) { \
+    return; \
+} \
+
 /*! Test suite for DFURLImageFetcher class.
  */
 @interface TDFPhotosKitImageFetcher : XCTestCase
@@ -22,6 +27,7 @@
 - (void)setUp {
     [super setUp];
     
+    DF_TESTING_PHOTOS_KIT
     _fetcher = [DFPhotosKitImageFetcher new];
 }
 
@@ -32,6 +38,7 @@
 #pragma mark - Test Canonical Requests
 
 - (void)testThatCanonicalRequestCreatesSpecificSubclassWithDefaultOptions {
+    DF_TESTING_PHOTOS_KIT
     DFImageRequestOptions *options = [DFImageRequestOptions new];
     options.allowsNetworkAccess = NO;
     
@@ -45,6 +52,7 @@
 }
 
 - (void)testThatCanonicalRequestCreatesOptionsWhenOptionsAreNil {
+    DF_TESTING_PHOTOS_KIT
     DFImageRequest *request = [[DFImageRequest alloc] initWithResource:[NSURL df_assetURLWithAssetLocalIdentifier:@"frugh438t35235325"] targetSize:DFImageMaximumSize contentMode:DFImageContentModeAspectFill options:nil];
     
     DFImageRequest *canonicalRequest = [_fetcher canonicalRequestForRequest:[request copy]];
