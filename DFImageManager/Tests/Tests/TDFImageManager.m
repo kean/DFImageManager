@@ -52,6 +52,12 @@
     [self waitForExpectationsWithTimeout:3.0 handler:nil];
 }
 
+- (void)testThatCanHandleRequestIsForwardedToFetcher {
+    DFImageRequest *request = [[DFImageRequest alloc] initWithResource:[TDFMockResource resourceWithID:@"ID01"]];
+    XCTAssertTrue([_fetcher canHandleRequest:request]);
+    XCTAssertTrue([_manager canHandleRequest:request]);
+}
+
 #pragma mark - Response Info
 
 - (void)testThatResponseInfoContainsRequestID {

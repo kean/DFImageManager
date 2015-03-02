@@ -150,6 +150,7 @@
 		0CD2A1071A6F2B44009478A2 /* NSCache+DFImageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD2A1051A6F2B44009478A2 /* NSCache+DFImageManager.m */; };
 		0CD2A1081A6F2B44009478A2 /* NSCache+DFImageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD2A1051A6F2B44009478A2 /* NSCache+DFImageManager.m */; };
 		0CE578481AA352B000E934FB /* TDFMockFetchOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CE578471AA352B000E934FB /* TDFMockFetchOperation.m */; };
+		0CE578541AA4067D00E934FB /* TDFCompositeImageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CE578531AA4067D00E934FB /* TDFCompositeImageManager.m */; };
 		E3F8DD56F2B8E4BA2BD17E25 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FE905C97593137A3540CA56B /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -296,6 +297,7 @@
 		0CD2A1051A6F2B44009478A2 /* NSCache+DFImageManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSCache+DFImageManager.m"; sourceTree = "<group>"; };
 		0CE578461AA352B000E934FB /* TDFMockFetchOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDFMockFetchOperation.h; sourceTree = "<group>"; };
 		0CE578471AA352B000E934FB /* TDFMockFetchOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDFMockFetchOperation.m; sourceTree = "<group>"; };
+		0CE578531AA4067D00E934FB /* TDFCompositeImageManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDFCompositeImageManager.m; sourceTree = "<group>"; };
 		D39726C7936014ADA2B50F72 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "../Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		FE905C97593137A3540CA56B /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -624,6 +626,7 @@
 				0CD0126C1A6C6B16004F6CD3 /* TDFImageManager.m */,
 				0CA8F1801A723E1400156090 /* TDFURLImageFetcher.m */,
 				0C74E0991AA294AD0015346B /* TDFPhotosKitImageFetcher.m */,
+				0CE578531AA4067D00E934FB /* TDFCompositeImageManager.m */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -949,6 +952,7 @@
 				0C74E09A1AA294AD0015346B /* TDFPhotosKitImageFetcher.m in Sources */,
 				0CA8F1811A723E1400156090 /* TDFURLImageFetcher.m in Sources */,
 				0CBFD3D01AA300CA00A6A482 /* TDFMockImageFetcher.m in Sources */,
+				0CE578541AA4067D00E934FB /* TDFCompositeImageManager.m in Sources */,
 				0CD012701A6C6B16004F6CD3 /* TDFImageManager.m in Sources */,
 				0CBFD3D31AA3017600A6A482 /* TDFMockResource.m in Sources */,
 				0CD0126F1A6C6B16004F6CD3 /* TDFTesting.m in Sources */,
