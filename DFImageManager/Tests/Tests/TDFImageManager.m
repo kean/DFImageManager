@@ -94,9 +94,7 @@
 #pragma mark - Cancellation
 
 - (void)testThatCancelsFetchOperationUsingRequestID {
-    DFImageRequestID *requestID = [_manager requestImageForResource:[TDFMockResource resourceWithID:@"ID01"] completion:^(UIImage *image, NSDictionary *info) {
-        // Do nothing
-    }];
+    DFImageRequestID *requestID = [_manager requestImageForResource:[TDFMockResource resourceWithID:@"ID01"] completion:nil];
     [self expectationForNotification:TDFMockFetchOperationDidCancelNotification object:nil handler:nil];
     [requestID cancel];
     [self waitForExpectationsWithTimeout:3.0 handler:nil];
@@ -104,9 +102,7 @@
 
 - (void)testThatCancelsFetchOperationUsingManager {
     _fetcher.queue.suspended = YES;
-    DFImageRequestID *requestID = [_manager requestImageForResource:[TDFMockResource resourceWithID:@"ID01"] completion:^(UIImage *image, NSDictionary *info) {
-        // Do nothing
-    }];
+    DFImageRequestID *requestID = [_manager requestImageForResource:[TDFMockResource resourceWithID:@"ID01"] completion:nil];
     [self expectationForNotification:TDFMockFetchOperationDidCancelNotification object:nil handler:nil];
     [_manager cancelRequestWithID:requestID];
     [self waitForExpectationsWithTimeout:3.0 handler:nil];
@@ -200,8 +196,7 @@
 #pragma mark - Memory Cache
 
 /*! Test that image manager calls completion block synchronously (default configuration).
- 
- > Image manager calls completion block synchronously if the image can be retrieved from memory cache. This behavior can be disabled using DFImageManagerConfiguration.
+ @see DFImageManager class reference
  */
 - (void)testThatCompletionBlockIsCalledSynchronouslyForMemCachedImages {
     _cache.enabled = YES;
@@ -222,12 +217,11 @@
 }
 
 /*! Test that image manager calls completion block asynchronously with a specific configuration option.
- 
- > Image manager calls completion block synchronously if the image can be retrieved from memory cache. This behavior can be disabled using DFImageManagerConfiguration.
+ @see DFImageManager class reference
  */
 - (void)testThatSynchronousCallbacksCanBeDisabled {
     DFImageManagerConfiguration *configuration = [_manager.configuration copy];
-    configuration.allowsSynchronousCallbacks = NO;
+    configuration.allowsSynchronousMemoryCacheLookup = NO;
     _manager = [[DFImageManager alloc] initWithConfiguration:configuration];
     
     _cache.enabled = YES;
@@ -247,6 +241,31 @@
         [expectation2 fulfill];
     }];
     XCTAssertFalse(isCompletionHandlerCalled);
+    [self waitForExpectationsWithTimeout:3.0 handler:nil];
+}
+
+/*! Test that callbacks are called on the main thread when the image is in memory cache and the request was made from background thread.
+ @see DFImageManager class reference
+ */
+- (void)testThatCallbacksAreCalledOnTheMainThread {
+    _cache.enabled = YES;
+    
+    TDFMockResource *resource = [TDFMockResource resourceWithID:@"ID01"];
+    XCTestExpectation *expectation1 = [self expectationWithDescription:@"request1"];
+    [_manager requestImageForResource:resource completion:^(UIImage *image, NSDictionary *info) {
+        [expectation1 fulfill];
+    }];
+    [self waitForExpectationsWithTimeout:3.0 handler:nil];
+    XCTAssertTrue(_cache.images.count == 1);
+    
+    XCTestExpectation *expectation2 = [self expectationWithDescription:@"request2"];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [_manager requestImageForResource:resource completion:^(UIImage *image, NSDictionary *info) {
+            XCTAssertNotNil(image);
+            XCTAssertTrue([NSThread isMainThread]);
+            [expectation2 fulfill];
+        }];
+    });
     [self waitForExpectationsWithTimeout:3.0 handler:nil];
 }
 

@@ -66,7 +66,7 @@
  */
 @property (nonatomic) DFImageRequestOptions *imageRequestOptions;
 
-/*! Automatically changes current request priority when image view gets added/removed from the window. Default value is YES.
+/*! Automatically changes current request priority when image view gets added/removed from the window. Default value is NO.
  */
 @property (nonatomic) BOOL managesRequestPriorities;
 

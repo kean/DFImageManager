@@ -28,6 +28,10 @@
 
 /*! The DFImageManager and the related classes provides an implementation of the DFImageManaging protocol. The role of the DFImageManager is to manage the execution of image requests by delegating the actual job to a classes, implementing DFImageFetching, DFImageCaching, and DFImageProcessing protocols.
  
+ @note Completion Block
+ 
+ Completion block is guaranteed to be called on the main thread. Image manager can call a completion block synchronously if the requested image can be retrieved from the memory cache and the request was made on the main thread. This behavior can be disabled using DFImageManagerConfiguration.
+ 
  @note Reusing Operations
  
  Image manager automatically reuses fetch operations and processing operations. It order to enable this functionality you should implement the -isRequestFetchEquivalent:toRequest: method in your <DFImageFetching> implementation and -isProcessingForRequestEquivalent:toRequest: method in <DFImageProcessing> implementation.
@@ -39,8 +43,6 @@
  @note  Memory Caching
  
  Image manager uses cache (<DFImageCaching>) specified in the  configuration for memory caching. It should be able to lookup cached images based on the image request, but it doesn't know anything about the resources, specific request options, and the way the requests are interpreted and handled. There are three simple rules how image manager stores and retrieves cached images. First, image manager can't use cached images stored by other managers if they share the same cache instance. Second, all resources must implement -hash method. Third, image manager has an intelligent way of creating cache keys that delegate the comparison of image requests to the image fetcher (<DFImageFetching>) and the image processor (<DFImageProcessing>). Make sure to implement al least -isRequestCacheEquivalent:toRequest: method in your <DFImageFetching> implementation and -isProcessingForRequestEquivalent:toRequest: method in <DFImageProcessing> implementation.
- 
- Image manager calls completion block synchronously if the image can be retrieved from memory cache. This behavior can be disabled using DFImageManagerConfiguration.
  
  @note Preheating
  

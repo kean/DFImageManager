@@ -53,7 +53,7 @@
 
 /*! Set YES to allow synchronous memory cache lookups and callbacks. Default value is YES.
  */
-@property (nonatomic) BOOL allowsSynchronousCallbacks;
+@property (nonatomic) BOOL allowsSynchronousMemoryCacheLookup;
 
 /*! Returns a DFImageManagerConfiguration initialized with a given image fetcher.
  @param fetcher Image fetcher, Must not be nil.

@@ -13,13 +13,13 @@ Modern iOS framework for fetching, caching, processing, and preheating images fr
 ## Features
 - Zero config, yet immense customization and extensibility.
 - Uses latest advancements in [Foundation URL Loading System](https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/URLLoadingSystem/URLLoadingSystem.html) including [NSURLSession](https://developer.apple.com/library/ios/documentation/Foundation/Reference/NSURLSession_class/) that supports [SPDY](http://en.wikipedia.org/wiki/SPDY) protocol.
-- Extreme performance even on outdated devices. Completely asynchronous and thread safe.
+- Extreme performance even on outdated devices. Asynchronous and thread safe.
 - Instead of reinventing a caching methodology it relies on HTTP cache as defined in [HTTP specification](https://tools.ietf.org/html/rfc7234) and caching implementation provided by [Foundation URL Loading System](https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/URLLoadingSystem/URLLoadingSystem.html). The caching and revalidation are completely transparent to the client. [Read more](https://github.com/kean/DFImageManager/wiki/Image-Caching-Guide)
-- Separate memory cache that stores decompressed and processed images. Fine grained control over memory cache.
+- Separate memory cache for decompressed and processed images. Fine grained control over memory cache.
 - Centralized image decompression, resizing and processing. Resizing provides a lack of misaligned images and lower memory footprint. Fully customizable.
 - [Automatic preheating](https://github.com/kean/DFImageManager/wiki/Image-Preheating-Guide) of images that are close to the viewport.
 - Groups similar requests and never executes them twice. This is true for both fetching and processing. Intelligent control over which requests are considered equivalent (both in terms of fetching and processing).
-- High quality code base successfully manages complexity and follows best design principles and patterns, including dependency injection that is used throughout.
+- High quality code base. Follows best design principles and patterns, including _dependency injection_ used throughout.
 - Unit tests help to maintain the project and ensure its future growth.
 
 ## Getting Started
@@ -45,7 +45,7 @@ DFImageRequestID *requestID = [[DFImageManager sharedManager] requestImageForRes
 [requestID cancel]; // requestID can be used to cancel the request
 ```
 
-#### Add some options
+#### Add options
 
 ```objective-c
 DFImageRequestOptions *options = [DFImageRequestOptions new];
@@ -53,15 +53,16 @@ options.allowsClipping = YES;
 options.progressHandler = ^(double progress){
   // Observe progress
 };
-    
-[[DFImageManager sharedManager] requestImageForResource:[NSURL URLWithString:@"http://..."] targetSize:CGSizeMake(100.f, 100.f) contentMode:DFImageContentModeAspectFill options:options completion:^(UIImage *image, NSDictionary *info) {
-  // Image is resized and clipped to 100x100px square
+
+NSURL *imageURL = [NSURL URLWithString:@"http://..."];
+[[DFImageManager sharedManager] requestImageForResource:imageURL targetSize:CGSizeMake(100.f, 100.f) contentMode:DFImageContentModeAspectFill options:options completion:^(UIImage *image, NSDictionary *info) {
+  // Image is resized and clipped to fill 100x100px square
 }];
 ```
 
 #### Options can be specialized and packed into `DFImageRequest`
 
-Use `DFURLImageRequestOptions` (`DFImageRequestOptions` subclass) to set request cache policy. Create instance of `DFImageRequest` to pack all parameters.
+Use `DFURLImageRequestOptions` (`DFImageRequestOptions` subclass) to set request cache policy. Create instance of `DFImageRequest` to pack all request parameters.
 ```objective-c
 DFURLImageRequestOptions *options = [DFURLImageRequestOptions new];
 options.allowsClipping = YES;
@@ -78,14 +79,12 @@ DFImageRequest *request = [[DFImageRequest alloc] initWithResource:[NSURL URLWit
 }];
 ```
 
-#### Create composite requests using array of `DFImageRequest` objects
+#### Create composite requests from array of `DFImageRequest` objects
 ```objective-c
 DFImageRequest *previewRequest = [[DFImageRequest alloc] initWithResource:[NSURL URLWithString:@"http://preview"]];
-    
 DFImageRequest *fullsizeImageRequest = [[DFImageRequest alloc] initWithResource:[NSURL URLWithString:@"http://fullsize_image"]];
-    
-NSArray *requests = @[ previewRequest, fullsizeImageRequest ];
 
+NSArray *requests = @[ previewRequest, fullsizeImageRequest ];
 [DFCompositeImageFetchOperation requestImageForRequests:requests handler:^(UIImage *image, NSDictionary *info, DFImageRequest *request) {
   // Handler does just what you would expect
   // For more info see DFCompositeImageFetchOperation docs
@@ -110,7 +109,7 @@ imageView.allowsAutoRetries = YES; // Retries when network reachability changes
 
 [imageView prepareForReuse];
 [imageView setImageWithResource:[NSURL URLWithString:@"http://..."]];
-// Or set multiple requests [imageView setImageWithRequests:@[ ... ]];
+// Or use other APIs, for example, set multiple requests [imageView setImageWithRequests:@[ ... ]];
 ```
 
 #### Use the same `DFImageManaging` APIs for PHAsset, ALAsset and other classes

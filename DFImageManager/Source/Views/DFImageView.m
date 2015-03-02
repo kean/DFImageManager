@@ -64,7 +64,7 @@ static const NSTimeInterval _kMinimumAutoretryInterval = 8.f;
     _imageContentMode = DFImageContentModeAspectFill;
     _allowsAnimations = YES;
     _allowsAutoRetries = YES;
-    _managesRequestPriorities = YES;
+    _managesRequestPriorities = NO;
     _imageRequestOptions = [DFImageRequestOptions new];
     
     self.delegate = self;
