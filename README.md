@@ -158,11 +158,11 @@ DFCompositeImageManager *compositeImageManager = [[DFCompositeImageManager alloc
 
 #### What's more
 
-Those were the most common cases. `DFImageManager` is jam-packed with other features. There are much more options for customization and room for extension. Fore more info check out the complete [documentation](http://cocoadocs.org/docsets/DFImageManager) and project [Wiki](https://github.com/kean/DFImageManager/wiki)
+Those were the most common cases. `DFImageManager` is jam-packed with other features. There are much more options for customization and room for extension. For more info check out the complete [documentation](http://cocoadocs.org/docsets/DFImageManager) and project [Wiki](https://github.com/kean/DFImageManager/wiki)
 
 ## <a name="install_using_cocopods"></a>Installation with [CocoaPods](http://cocoapods.org)
 
-CocoaPods is the dependency manager for Cocoa projects, which automates the process of integrating thrid-party frameworks like DFImageManager. If you are not familiar with CocoaPods the best place to start would be [official CocoaPods guides](http://guides.cocoapods.org).
+CocoaPods is the dependency manager for Cocoa projects, which automates the process of integrating third-party frameworks like DFImageManager. If you are not familiar with CocoaPods the best place to start would be [official CocoaPods guides](http://guides.cocoapods.org).
 ```ruby
 # Podfile
 platform :ios, '7.0'
