@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
    s.name         = "DFImageManager"
-   s.version      = "0.0.17"
-   s.summary      = "Modern iOS framework for fetching images from various sources."
+   s.version      = "0.0.18"
+   s.summary      = "Modern iOS framework for fetching images from various sources. Zero config, yet immense customization and extensibility."
    s.homepage     = "https://github.com/kean/DFImageManager"
    s.license      = { :type => "MIT", :file => "LICENSE" }
    s.author             = { "Alexander Grebenyuk" => "grebenyuk.alexander@gmail.com" }

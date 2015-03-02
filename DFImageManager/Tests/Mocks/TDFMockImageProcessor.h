@@ -13,6 +13,7 @@
  */
 @interface TDFMockImageProcessor : NSObject <DFImageProcessing>
 
+@property (nonatomic) NSTimeInterval processingTime;
 @property (nonatomic, readonly) NSUInteger numberOfProcessedImageCalls;
 
 @end

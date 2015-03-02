@@ -16,6 +16,9 @@
 
 - (UIImage *)processedImage:(UIImage *)image forRequest:(DFImageRequest *)request {
     _numberOfProcessedImageCalls++;
+    if (self.processingTime > 0.0) {
+        [NSThread sleepForTimeInterval:self.processingTime];
+    }
     return image;
 }
 

@@ -159,6 +159,7 @@
     // Start two requests. Image manager is initialized without a memory cache, so it will have to use fetcher and processor for both requests.
     
     _fetcher.queue.suspended = YES;
+    _processor.processingTime = 0.05; // Add some processing time so that the processing request doesn't cancel too early
     
     XCTestExpectation *expectation1 = [self expectationWithDescription:@"01"]; { DFImageRequest *request1 = [[DFImageRequest alloc] initWithResource:[TDFMockResource resourceWithID:@"ID01"] targetSize:CGSizeMake(150.f, 150.f) contentMode:DFImageContentModeAspectFill options:nil];
         [_manager requestImageForRequest:request1 completion:^(UIImage *image, NSDictionary *info) {
