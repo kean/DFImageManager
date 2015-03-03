@@ -53,6 +53,10 @@ extern NSString *const DFImageInfoURLResponseKey;
  */
 - (id<DFURLResponseDeserializing>)URLImageFetcher:(DFURLImageFetcher *)fetcher responseDeserializerForImageRequest:(DFImageRequest *)imageRequest URLRequest:(NSURLRequest *)URLRequest;
 
+/*! Sent every time image fetcher encounters error. Doesn't get called if image fetcher isn't set as NSURLSession delegate.
+ */
+- (void)URLImageFetcher:(DFURLImageFetcher *)fetcher didEncounterError:(NSError *)error;
+
 @end
 
 

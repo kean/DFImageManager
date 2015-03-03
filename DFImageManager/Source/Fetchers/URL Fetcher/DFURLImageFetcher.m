@@ -235,6 +235,9 @@ NSString *const DFImageInfoURLResponseKey = @"DFImageInfoURLResponseKey";
         }
         [_sessionTaskHandlers removeObjectForKey:task];
     }
+    if (error && [self.delegate respondsToSelector:@selector(URLImageFetcher:didEncounterError:)]) {
+        [self.delegate URLImageFetcher:self didEncounterError:error];
+    }
 }
 
 #pragma mark - <DFURLSessionOperationDelegate>
