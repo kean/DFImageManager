@@ -101,7 +101,7 @@
 
 - (void)testThatCancelsFetchOperationUsingRequestID {
     DFImageRequestID *requestID = [_manager requestImageForResource:[TDFMockResource resourceWithID:@"ID01"] completion:nil];
-    [self expectationForNotification:TDFMockFetchOperationDidCancelNotification object:nil handler:nil];
+    [self expectationForNotification:TDFMockFetchOperationWillCancelNotification object:nil handler:nil];
     [requestID cancel];
     [self waitForExpectationsWithTimeout:3.0 handler:nil];
 }
@@ -109,7 +109,7 @@
 - (void)testThatCancelsFetchOperationUsingManager {
     _fetcher.queue.suspended = YES;
     DFImageRequestID *requestID = [_manager requestImageForResource:[TDFMockResource resourceWithID:@"ID01"] completion:nil];
-    [self expectationForNotification:TDFMockFetchOperationDidCancelNotification object:nil handler:nil];
+    [self expectationForNotification:TDFMockFetchOperationWillCancelNotification object:nil handler:nil];
     [_manager cancelRequestWithID:requestID];
     [self waitForExpectationsWithTimeout:3.0 handler:nil];
 }
@@ -122,7 +122,7 @@
     TDFMockResource *resource = [TDFMockResource resourceWithID:@"ID01"];
     DFImageRequestID *requestID1 = [_manager requestImageForResource:resource completion:nil];
     
-    XCTestExpectation *expectThatOperationIsCancelled = [self expectationForNotification:TDFMockFetchOperationDidCancelNotification object:nil handler:nil];
+    XCTestExpectation *expectThatOperationIsCancelled = [self expectationForNotification:TDFMockFetchOperationWillCancelNotification object:nil handler:nil];
     
     XCTestExpectation *expectSecondRequestToSucceed = [self expectationWithDescription:@"seconds_request"];
     [_manager requestImageForResource:resource completion:^(UIImage *image, NSDictionary *info) {
@@ -141,7 +141,7 @@
 - (void)testThatCancelsFetchOperationWithTwoHandlers {
     _fetcher.queue.suspended = YES;
     
-    [self expectationForNotification:TDFMockFetchOperationDidCancelNotification object:nil handler:nil];
+    [self expectationForNotification:TDFMockFetchOperationWillCancelNotification object:nil handler:nil];
     
     TDFMockResource *resource = [TDFMockResource resourceWithID:@"ID01"];
     DFImageRequestID *requestID1 = [_manager requestImageForResource:resource completion:nil];
@@ -336,7 +336,7 @@
     TDFMockResource *resource2 = [TDFMockResource resourceWithID:@"ID02"];
     
     BOOL __block isRequestForResource2Started = NO;
-    [self expectationForNotification:TDFMockImageFetcherWillStartOperationNotification object:_fetcher handler:^BOOL(NSNotification *notification) {
+    [self expectationForNotification:TDFMockImageFetcherDidStartOperationNotification object:_fetcher handler:^BOOL(NSNotification *notification) {
         DFImageRequest *request = notification.userInfo[TDFMockImageFetcherRequestKey];
         if ([request.resource isEqual:resource2]) {
             isRequestForResource2Started = YES;
@@ -352,6 +352,57 @@
     // Start request after the preheating request, but it always must execute first
     [_manager requestImageForResource:resource2 completion:nil];
     
+    [self waitForExpectationsWithTimeout:3.0 handler:nil];
+}
+
+- (void)testThatPreheatingRequestsAreStopped {
+    _fetcher.queue.suspended = YES;
+    
+    DFImageRequest *request = [DFImageRequest requestWithResource:[TDFMockResource resourceWithID:@"ID01"]];
+    
+    [self expectationForNotification:TDFMockImageFetcherDidStartOperationNotification object:nil handler:nil];
+    [_manager startPreheatingImagesForRequests:@[ request ]];
+    // DFImageManager doesn't start preheating operations after a certain delay
+    [self waitForExpectationsWithTimeout:3.0 handler:nil];
+    
+    [self expectationForNotification:TDFMockFetchOperationWillCancelNotification object:nil handler:nil];
+    [_manager stopPreheatingImagesForRequests:@[ request ]];
+    [self waitForExpectationsWithTimeout:3.0 handler:nil];
+}
+
+- (void)testThatSimilarPreheatingRequestsAreStoppedWithSingleStopCall {
+    _fetcher.queue.suspended = YES;
+    
+    DFImageRequest *request = [DFImageRequest requestWithResource:[TDFMockResource resourceWithID:@"ID01"]];
+    
+    [self expectationForNotification:TDFMockImageFetcherDidStartOperationNotification object:_fetcher handler:nil];
+    [_manager startPreheatingImagesForRequests:@[ request, request ]];
+    [_manager startPreheatingImagesForRequests:@[ request ]];
+    [self waitForExpectationsWithTimeout:3.0 handler:nil];
+    
+    [self expectationForNotification:TDFMockFetchOperationWillCancelNotification object:nil handler:nil];
+    [_manager stopPreheatingImagesForRequests:@[ request ]];
+    [self waitForExpectationsWithTimeout:3.0 handler:^(NSError *error) {
+        XCTAssertEqual(_fetcher.queue.operationCount, 1);
+    }];
+}
+
+- (void)testThatAllPreheatingRequestsAreStopped {
+    _fetcher.queue.suspended = YES;
+    
+    NSMutableArray *operations = [NSMutableArray new];
+    [self expectationForNotification:TDFMockImageFetcherDidStartOperationNotification object:_fetcher handler:^BOOL(NSNotification *notification) {
+        TDFMockFetchOperation *operation = notification.userInfo[TDFMockImageFetcherOperationKey];
+        [operations addObject:operation];
+        return operations.count == 2;
+    }];
+    [_manager startPreheatingImagesForRequests:@[ [DFImageRequest requestWithResource:[TDFMockResource resourceWithID:@"ID01"]], [DFImageRequest requestWithResource:[TDFMockResource resourceWithID:@"ID02"]] ]];
+    [self waitForExpectationsWithTimeout:3.0 handler:nil];
+    
+    for (TDFMockFetchOperation *operation in operations) {
+        [self expectationForNotification:TDFMockFetchOperationWillCancelNotification object:operation handler:nil];
+    }
+    [_manager stopPreheatingImagesForAllRequests];
     [self waitForExpectationsWithTimeout:3.0 handler:nil];
 }
 

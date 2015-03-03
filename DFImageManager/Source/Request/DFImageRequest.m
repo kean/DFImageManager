@@ -40,6 +40,10 @@
     return [self initWithResource:resource targetSize:DFImageMaximumSize contentMode:DFImageContentModeAspectFill options:nil];
 }
 
++ (instancetype)requestWithResource:(id)resource {
+    return [[DFImageRequest alloc] initWithResource:resource];
+}
+
 - (id)copyWithZone:(NSZone *)zone {
     DFImageRequest *request = [DFImageRequest new];
     request.resource = self.resource;

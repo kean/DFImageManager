@@ -11,7 +11,7 @@
 @implementation TDFMockFetchOperation
 
 - (void)cancel {
-    [[NSNotificationCenter defaultCenter] postNotificationName:TDFMockFetchOperationDidCancelNotification object:self];
+    [[NSNotificationCenter defaultCenter] postNotificationName:TDFMockFetchOperationWillCancelNotification object:self];
     [super cancel];
 }
 

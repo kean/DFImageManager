@@ -35,6 +35,10 @@
     return [self.ID isEqualToString:((TDFMockResource *)other).ID];
 }
 
+- (id)copyWithZone:(NSZone *)zone {
+    return [[TDFMockResource alloc] initWithID:self.ID];
+}
+
 - (NSString *)description {
     return [NSString stringWithFormat:@"<%@ %p> { ID = %@ }", [self class], self, self.ID];
 }

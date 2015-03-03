@@ -58,6 +58,10 @@
  */
 - (instancetype)initWithResource:(id)resource;
 
+/*! Returns a DFImageRequest initialized with a given resource. Uses DFImageMaximumSize and DFImageContentModeAspectFill as other parameters.
+ */
++ (instancetype)requestWithResource:(id)resource;
+
 @end
 
 

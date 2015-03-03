@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-static NSString *const TDFMockFetchOperationDidCancelNotification = @"TDFMockFetchOperationDidCancelNotification";
+static NSString *const TDFMockFetchOperationWillCancelNotification = @"TDFMockFetchOperationWillCancelNotification";
 
 @interface TDFMockFetchOperation : NSBlockOperation
 
