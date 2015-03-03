@@ -46,7 +46,6 @@
         NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
         // See https://github.com/kean/DFImageManager/wiki/Image-Caching-Guide for more info on image caching and NSURLCache
         configuration.URLCache = URLCache;
-        configuration.HTTPShouldUsePipelining = YES;
             
         DFURLImageFetcher *fetcher = [[DFURLImageFetcher alloc] initWithSessionConfiguration:configuration];
         [[DFImageManager alloc] initWithConfiguration:[DFImageManagerConfiguration configurationWithFetcher:fetcher processor:processor cache:cache]];
