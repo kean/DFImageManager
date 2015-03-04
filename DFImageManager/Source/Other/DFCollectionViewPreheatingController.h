@@ -42,23 +42,32 @@
  */
 @interface DFCollectionViewPreheatingController : NSObject
 
+/*! The collection view the receiver was initializer with.
+ */
 @property (nonatomic, readonly) UICollectionView *collectionView;
 
+/*! The delegate object for the receiver.
+ */
 @property (nonatomic, weak) id<DFCollectionViewPreheatingControllerDelegate> delegate;
 
 /*! The proportion of the collection view bounds (either width or height depending on the scroll direction) that is used as a preheat window. Default value is 2.0.
  */
 @property (nonatomic) CGFloat preheatRectRatio;
 
-/*! How far the user need to scroll from the current preheat rect to revalidate it. Default value is 0.33.
+/*! Determines how far the user needs to scroll from the point where the current preheat rect was set to refresh it. Default value is 0.33. The value of this property is the ratio of the collection view height for UICollectionViewScrollDirectionVertical and width for UICollectionViewScrollDirectionHorizontal.
  */
-@property (nonatomic) CGFloat preheatRectRevalidationRatio;
+@property (nonatomic) CGFloat preheatRectUpdateRatio;
 
+/*! Returns current preheat rect.
+ */
 @property (nonatomic, readonly) CGRect preheatRect;
+
+/*! Returns current preheat indexes.
+ */
 @property (nonatomic, readonly) NSSet *preheatIndexPaths;
 
 /*! Initializes preheating controller with a collection view.
- Collection view must not be nil.
+ @param collectionView Collection view, must not be nil.
  */
 - (instancetype)initWithCollectionView:(UICollectionView *)collectionView NS_DESIGNATED_INITIALIZER;
 

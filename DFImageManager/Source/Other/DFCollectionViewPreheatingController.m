@@ -25,6 +25,7 @@
 
 @implementation DFCollectionViewPreheatingController {
     NSMutableSet *_preheatIndexPaths;
+    CGPoint _preheatContentOffset;
 }
 
 - (void)dealloc {
@@ -39,8 +40,9 @@
         
         _preheatIndexPaths = [NSMutableSet new];
         _preheatRect = CGRectZero;
+        _preheatContentOffset = CGPointZero;
         _preheatRectRatio = 2.f;
-        _preheatRectRevalidationRatio = 0.33f;
+        _preheatRectUpdateRatio = 0.33f;
     }
     return self;
 }
@@ -66,30 +68,31 @@
 - (void)_resetPreheatRect {
     [_preheatIndexPaths removeAllObjects];
     _preheatRect = CGRectZero;
+    _preheatContentOffset = CGPointZero;
 }
 
 - (void)_updatePreheatRect {
     NSAssert([self.collectionView.collectionViewLayout isKindOfClass:[UICollectionViewFlowLayout class]], @"Not suported collection view layout");
     BOOL isVertical = ((UICollectionViewFlowLayout *)self.collectionView.collectionViewLayout).scrollDirection == UICollectionViewScrollDirectionVertical;
     
-    // UIScrollView bounds works differently from UIView bounds. It adds the contentOffset to the rect.
-    CGRect preheatRect = self.collectionView.bounds;
-    CGFloat delta;
-    BOOL isScrolledSignificantly;
+    CGPoint offset = self.collectionView.contentOffset;
+    CGFloat delta = isVertical ? _preheatContentOffset.y - offset.y : _preheatContentOffset.x - offset.x;
+    CGFloat margin = isVertical ? CGRectGetHeight(self.collectionView.bounds) * _preheatRectUpdateRatio : CGRectGetHeight(self.collectionView.bounds) * _preheatRectUpdateRatio;
     
-    if (isVertical) {
-        CGFloat inset = preheatRect.size.height - preheatRect.size.height * _preheatRectRatio;
-        preheatRect = CGRectInset(preheatRect, 0.f, inset / 2.f);
-        delta = CGRectGetMidY(preheatRect) - CGRectGetMidY(_preheatRect);
-        isScrolledSignificantly = fabs(delta) > CGRectGetHeight(self.collectionView.bounds) * _preheatRectRevalidationRatio;
-    } else {
-        CGFloat inset = preheatRect.size.width - preheatRect.size.width * _preheatRectRatio;
-        preheatRect = CGRectInset(preheatRect, inset / 2.f, 0.f);
-        delta = CGRectGetMidX(preheatRect) - CGRectGetMidX(_preheatRect);
-        isScrolledSignificantly = fabs(delta) > CGRectGetWidth(self.collectionView.bounds) * _preheatRectRevalidationRatio;
-    }
-    
-    if (isScrolledSignificantly || CGRectEqualToRect(_preheatRect, CGRectZero)) {
+    if (fabs(delta) > margin || CGPointEqualToPoint(_preheatContentOffset, CGPointZero)) {
+        _preheatContentOffset = offset;
+        
+        // UIScrollView bounds works differently from UIView bounds. It adds the contentOffset to the rect.
+        CGRect viewport = self.collectionView.bounds;
+        CGRect preheatRect;
+        if (isVertical) {
+            CGFloat inset = viewport.size.height - viewport.size.height * _preheatRectRatio;
+            preheatRect = CGRectInset(viewport, 0.f, inset / 2.f);
+        } else {
+            CGFloat inset = viewport.size.width - viewport.size.width * _preheatRectRatio;
+            preheatRect = CGRectInset(viewport, inset / 2.f, 0.f);
+        }
+        
         NSMutableSet *newIndexPaths = [NSMutableSet setWithArray:[self _indexPathsForElementsInRect:preheatRect]];
         
         NSMutableSet *oldIndexPaths = [NSMutableSet setWithSet:self.preheatIndexPaths];
@@ -101,7 +104,7 @@
         [removedIndexPaths minusSet:newIndexPaths];
         
         _preheatIndexPaths = newIndexPaths;
-
+        
         // Sort added index paths.
         BOOL ascending = delta > 0.f || CGRectEqualToRect(_preheatRect, CGRectZero);
         NSArray *sortedAddedIndexPaths = [[addedIndexPaths allObjects] sortedArrayUsingDescriptors:@[ [NSSortDescriptor sortDescriptorWithKey:@"section" ascending:ascending], [NSSortDescriptor sortDescriptorWithKey:@"item" ascending:ascending] ]];
