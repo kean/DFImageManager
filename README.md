@@ -5,7 +5,7 @@
 
 Modern iOS framework for fetching, caching, processing, and preheating images from various sources. It uses latest advancements in iOS SDK and doesn't reinvent existing technologies. It provides a powerful API that will extend the capabilities of your app.
 
-#### Supported resources
+#### Supported Resources
 - `NSURL` with **http**, **https**, **ftp**, **file**, and **data** schemes
 - `PHAsset` and `NSURL` with **com.github.kean.photos-kit** scheme
 - `DFALAsset`, `ALAsset` and `NSURL` with **assets-library** scheme
@@ -13,13 +13,15 @@ Modern iOS framework for fetching, caching, processing, and preheating images fr
 ## Features
 - Zero config, yet immense customization and extensibility.
 - Uses latest advancements in [Foundation URL Loading System](https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/URLLoadingSystem/URLLoadingSystem.html) including [NSURLSession](https://developer.apple.com/library/ios/documentation/Foundation/Reference/NSURLSession_class/) that supports [SPDY](http://en.wikipedia.org/wiki/SPDY) protocol.
-- Extreme performance even on outdated devices. Asynchronous and thread safe.
 - Instead of reinventing a caching methodology it relies on HTTP cache as defined in [HTTP specification](https://tools.ietf.org/html/rfc7234) and caching implementation provided by [Foundation URL Loading System](https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/URLLoadingSystem/URLLoadingSystem.html). The caching and revalidation are completely transparent to the client. [Read more](https://github.com/kean/DFImageManager/wiki/Image-Caching-Guide)
 - Separate memory cache for decompressed and processed images. Fine grained control over memory cache.
 - Centralized image decompression, resizing and processing. Resizing provides a lack of misaligned images and lower memory footprint. Fully customizable.
+- The same APIs for different resources (`NSURL`, `PHAsset`, `ALAsset` etc).
+- [Compose image managers](https://github.com/kean/DFImageManager/wiki/Extending-Image-Manager-Guide#using-dfcompositeimagemanager) into a tree of responsibility.
 - [Automatic preheating](https://github.com/kean/DFImageManager/wiki/Image-Preheating-Guide) of images that are close to the viewport.
 - Groups similar requests and never executes them twice. This is true for both fetching and processing. Intelligent control over which requests are considered equivalent (both in terms of fetching and processing).
 - High quality code base. Follows best design principles and patterns, including _dependency injection_ used throughout.
+- Extreme performance even on outdated devices. Asynchronous and thread safe.
 - Unit tests help to maintain the project and ensure its future growth.
 
 ## Getting Started
@@ -45,7 +47,7 @@ DFImageRequestID *requestID = [[DFImageManager sharedManager] requestImageForRes
 [requestID cancel]; // requestID can be used to cancel the request
 ```
 
-#### Add options
+#### Add request options
 
 ```objective-c
 DFImageRequestOptions *options = [DFImageRequestOptions new];
@@ -79,7 +81,7 @@ DFImageRequest *request = [[DFImageRequest alloc] initWithResource:[NSURL URLWit
 }];
 ```
 
-#### Create composite requests from array of `DFImageRequest` objects
+#### Create composite requests from multiple `DFImageRequest` objects
 ```objective-c
 DFImageRequest *previewRequest = [[DFImageRequest alloc] initWithResource:[NSURL URLWithString:@"http://preview"]];
 DFImageRequest *fullsizeImageRequest = [[DFImageRequest alloc] initWithResource:[NSURL URLWithString:@"http://fullsize_image"]];
@@ -135,7 +137,9 @@ DFImageRequest *request = [[DFImageRequest alloc] initWithResource:assetURL targ
 ```
 
 #### Leverage power of composite managers
-The `sharedManager` provided by `DFImageManager` is an instance of `DFCompositeImageManager` class that implements `DFImageManaging` protocol. It dynamically dispatches image requests between multiple image managers that construct a chain of responsibility. What it means is that `sharedManager` doesn't only support URL image fetching, it also supports assets (`PHAsset`, `ALAsset` and their URLs) and it can be easily extended to support your custom classes. For more info see [Using DFCompositeImageManager](https://github.com/kean/DFImageManager/wiki/Extending-Image-Manager-Guide#using-dfcompositeimagemanager).
+The `DFCompositeImageManager` allows clients to construct a tree of responsibility from multiple image managers, where image requests are dynamically dispatched between them. Each manager should conform to `DFImageManaging` protocol. The `DFCompositeImageManager` also conforms to `DFImageManaging` protocol, which lets clients treat individual objects and compositions uniformly. The default `[DFImageManager sharedManager]` is a composite that contains all built in managers: the ones that support `NSURL` fetching, `PHAsset` objects, etc. 
+
+It's easy for clients to add additional managers to the shared manager. You can either add support for new image requests, or intercept existing onces. For more info see [Composing Image Managers](https://github.com/kean/DFImageManager/wiki/Extending-Image-Manager-Guide#using-dfcompositeimagemanager).
 
 ```objective-c
 // Implement custom image fetcher that conforms to DFImageFetching protocol,
@@ -150,7 +154,7 @@ id<DFImageManaging> manager = [[DFImageManager alloc] initWithConfiguration:conf
 
 // Create composite manager with your custom manager and all built-in managers.
 NSArray *managers = @[ manager, [DFImageManager sharedManager] ];
-DFCompositeImageManager *compositeImageManager = [[DFCompositeImageManager alloc] initWithImageManagers:managers];
+id<DFImageManaging> compositeImageManager = [[DFCompositeImageManager alloc] initWithImageManagers:managers];
 
 // Use dependency injector to set shared manager
 [DFImageManager setSharedManager:compositeImageManager];

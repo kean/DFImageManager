@@ -81,7 +81,7 @@
     
     [sections addObject:({
         NSMutableArray *items = [NSMutableArray new];
-        [items addObject:[SDFMenuItem itemWithTitle:@"Zero Config Demo" subtitle:@"Showcases most of image manager features" action:^{
+        [items addObject:[SDFMenuItem itemWithTitle:@"Zero Config Demo" subtitle:nil action:^{
             SDFMainDemoViewController *controller = [SDFMainDemoViewController new];
             controller.title = @"Demo";
             [self.navigationController pushViewController:controller animated:YES];

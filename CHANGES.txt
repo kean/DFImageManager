@@ -1,3 +1,20 @@
+DFImageManager 0.0.18
+=====================
+This release focuses on stability. It ensures the future growth through the addition of essential unit tests and a test environment with multiple mock and stub objects. The primary goal of unit tests in this project is to ensure isolation of all the dependencies, which is achieved using dependency injection.
+
+- Add unit tests to ensure future grown; improve documentation.
+- DFImageManager now calls a completion block synchronously if the requested image was available in memory cache and the request was made from the main thread. It prevents 'flashes' when you reload the UI and resubmit image requests. It also improves performance by reducing the pressure on DFImageManager.
+- DFURLImageFetcher now has a more flexible designated initializer -initWithSession:(NSURLSession *)session sessionDelegate:(id<DFURLImageFetcherSessionDelegate>)sessionDelegate
+- Add DFURLImageFetcherSessionDelegate protocol that should be implemented in your classes if you initialize DFURLImageFetcher with NSURLSession object. This protocol replaced more strict DFURLSessionOperationDelegate protocol.
+- Fix rare memory warnings under pressure on outdated devices. NSCache+DFImageManager has a sightly more strict totalCostLimit. Remove animations on DFImageView when it is reused.
+- Make -costForImage: method of DFImageCache public.
+- Fix DFImageManagerConfiguration copyWithZone: method, maximumConcurrentPreheatingRequests and processingQueue properties are now copied correctly.
+- DFImageManager now copies image request before passing it to -canonicalRequestForRequest: method of the fetcher. Fetcher is no longer responsible for copying it and it can now modify the given request.
+- DFImageRequestOptions now longer overwrites default options in -initWithOptions: method.
+- DFImageRequest now uses [self class] to create a copy which simplifies subclassing.
+- Mark DFImageRequestOptions -init method as a NS_DESIGNATED_INITIALIZER, mark designated initializer on subclasses too.
+- Add name property to DFImageManager
+
 DFImageManager 0.0.17
 =====================
 * Performance improvements

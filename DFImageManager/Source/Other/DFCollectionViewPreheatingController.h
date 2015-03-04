@@ -54,7 +54,13 @@
  */
 @property (nonatomic) CGFloat preheatRectRatio;
 
-/*! Determines how far the user needs to scroll from the point where the current preheat rect was set to refresh it. Default value is 0.33. The value of this property is the ratio of the collection view height for UICollectionViewScrollDirectionVertical and width for UICollectionViewScrollDirectionHorizontal.
+/*! Determines the offset of the preheat from the center of the collection view visible area. The default value is 0.33.
+ @note The value of this property is the ratio of the collection view height for UICollectionViewScrollDirectionVertical and width for UICollectionViewScrollDirectionHorizontal.
+ */
+@property (nonatomic) CGFloat preheatRectOffset;
+
+/*! Determines how far the user needs to scroll from the point where the current preheat rect was set to refresh it. Default value is 0.33.
+ @note The value of this property is the ratio of the collection view height for UICollectionViewScrollDirectionVertical and width for UICollectionViewScrollDirectionHorizontal. 
  */
 @property (nonatomic) CGFloat preheatRectUpdateRatio;
 
