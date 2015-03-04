@@ -99,9 +99,7 @@
         
         _preheatIndexPaths = newIndexPaths;
         
-        // Sort added index paths.
-        BOOL ascending = delta > 0.f || CGRectEqualToRect(_preheatRect, CGRectZero);
-        NSArray *sortedAddedIndexPaths = [[addedIndexPaths allObjects] sortedArrayUsingDescriptors:@[ [NSSortDescriptor sortDescriptorWithKey:@"section" ascending:ascending], [NSSortDescriptor sortDescriptorWithKey:@"item" ascending:ascending] ]];
+        NSArray *sortedAddedIndexPaths = [[addedIndexPaths allObjects] sortedArrayUsingDescriptors:@[ [NSSortDescriptor sortDescriptorWithKey:@"section" ascending:isScrollingForward], [NSSortDescriptor sortDescriptorWithKey:@"item" ascending:isScrollingForward] ]];
         
         _preheatRect = preheatRect;
         
