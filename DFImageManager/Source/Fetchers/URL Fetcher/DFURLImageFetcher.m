@@ -60,9 +60,130 @@ typedef void (^_DFURLSessionDataTaskCompletionHandler)(NSData *data, NSURLRespon
 @end
 
 
+@interface _DFSessionTaskCommand : NSObject <NSCopying>
+
+@property (nonatomic, readonly) NSURLSessionTask *task;
+
+- (instancetype)initWithTask:(NSURLSessionTask *)task;
+- (void)execute;
+
+@end
+
+@implementation _DFSessionTaskCommand
+
+- (instancetype)initWithTask:(NSURLSessionTask *)task {
+    if (self = [super init]) {
+        _task = task;
+    }
+    return self;
+}
+
+- (void)execute {
+    // Do nothing
+}
+
+- (id)copyWithZone:(NSZone *)zone {
+    return self;
+}
+
+- (NSUInteger)hash {
+    return self.task.hash;
+}
+
+- (BOOL)isEqual:(_DFSessionTaskCommand *)other {
+    return [self.task isEqual:other.task];
+}
+
+- (NSString *)description {
+    return [NSString stringWithFormat:@"<%@ %p> task:%@ }", [self class], self, _task];
+}
+
+@end
+
+
+@interface _DFSessionTaskResumeCommand : _DFSessionTaskCommand
+
+@end
+
+@implementation _DFSessionTaskResumeCommand
+
+- (void)execute {
+    [self.task resume];
+}
+
+@end
+
+
+@interface _DFSessionTaskCancelCommand : _DFSessionTaskCommand
+
+@end
+
+@implementation _DFSessionTaskCancelCommand
+
+- (void)execute {
+    [self.task cancel];
+}
+
+@end
+
+
+static const NSTimeInterval _kCommandExecutionInterval = 0.0025; // 2.5 ms
+
+/*! The _DFURLFetcherCommandExecutor serves multiple puproses:
+ - Prevents NSURLSession trashing
+ - Prevents excessive resuming of tasks during the extremely fast scrolling
+ - Limits the possibility of the known system crash http://prod.lists.apple.com/archives/macnetworkprog/2014/Oct/msg00001.html that sometimes reproduces on an older devices. It does NOT reproduce on newer devices.
+ */
+@interface _DFURLFetcherCommandExecutor : NSObject
+
+- (void)executeCommand:(_DFSessionTaskCommand *)command;
+
+@end
+
+@implementation _DFURLFetcherCommandExecutor {
+    NSMutableOrderedSet *_commands;
+}
+
+- (instancetype)init {
+    if (self = [super init]) {
+        _commands = [NSMutableOrderedSet new];
+        [self _executeCommand];
+    }
+    return self;
+}
+
+- (void)executeCommand:(_DFSessionTaskCommand *)command {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if ([command isKindOfClass:[_DFSessionTaskCancelCommand class]]) {
+            // If contains other commands for a given task - remove them
+            if ([_commands containsObject:command]) {
+                [_commands removeObject:command];
+                return;
+            }
+        }
+        [_commands addObject:command];
+    });
+}
+
+- (void)_executeCommand {
+    _DFSessionTaskCommand *command = [_commands firstObject];
+    if (command) {
+        [_commands removeObject:command];
+        [command execute];
+    }
+    _DFURLFetcherCommandExecutor *__weak weakSelf = self;
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(_kCommandExecutionInterval * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [weakSelf _executeCommand];
+    });
+}
+
+@end
+
+
 @implementation DFURLImageFetcher {
     NSMutableDictionary *_sessionTaskHandlers;
     NSMutableDictionary *_operations;
+    _DFURLFetcherCommandExecutor *_taskExecutor;
 }
 
 - (instancetype)initWithSession:(NSURLSession *)session sessionDelegate:(id<DFURLImageFetcherSessionDelegate>)sessionDelegate {
@@ -73,6 +194,7 @@ typedef void (^_DFURLSessionDataTaskCompletionHandler)(NSData *data, NSURLRespon
         _sessionDelegate = sessionDelegate;
         _sessionTaskHandlers = [NSMutableDictionary new];
         _operations = [NSMutableDictionary new];
+        _taskExecutor = [_DFURLFetcherCommandExecutor new];
         
         _supportedSchemes = [NSSet setWithObjects:@"http", @"https", @"ftp", @"file", @"data", nil];
     }
@@ -153,7 +275,7 @@ typedef void (^_DFURLSessionDataTaskCompletionHandler)(NSData *data, NSURLRespon
     // Passive container, DFURLImageFetcher never even start the operation, it only uses it's -cancel and -setPririty APIs. DFImageManager should probably have a specific protocol instead of NSOperation, because sometimes there is not need in one.
     DFURLSessionOperation *operation = [DFURLSessionOperation new];
     [operation setCancellationHandler:^{
-        [task cancel];
+        [_taskExecutor executeCommand:[[_DFSessionTaskCancelCommand alloc] initWithTask:task]];
     }];
     [operation setPriorityHandler:^(NSOperationQueuePriority priority) {
         task.priority = [DFURLImageFetcher _taskPriorityForQueuePriority:priority];
@@ -163,7 +285,7 @@ typedef void (^_DFURLSessionDataTaskCompletionHandler)(NSData *data, NSURLRespon
         _operations[task] = operation;
     }
     
-    [task resume];
+    [_taskExecutor executeCommand:[[_DFSessionTaskResumeCommand alloc] initWithTask:task]];
     
     return operation;
 }
