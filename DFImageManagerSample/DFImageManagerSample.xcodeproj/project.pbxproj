@@ -13,6 +13,7 @@
 		0C016FC81A8A1B01009FDDCA /* 10872981.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0C016FC21A8A1B01009FDDCA /* 10872981.jpg */; };
 		0C016FC91A8A1B01009FDDCA /* 10915709.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0C016FC31A8A1B01009FDDCA /* 10915709.jpg */; };
 		0C016FCA1A8A1B01009FDDCA /* 10926234.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0C016FC41A8A1B01009FDDCA /* 10926234.jpg */; };
+		0C0D18FB1AA88AE80046F710 /* SDFGIFSampleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C0D18F91AA88AE80046F710 /* SDFGIFSampleViewController.m */; };
 		0C3304B71A4A6CDB001808F3 /* SDFPhotosKitDemoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C3304B61A4A6CDB001808F3 /* SDFPhotosKitDemoViewController.m */; };
 		0C48E4B11A5BD06000CD2497 /* UIViewController+SDFImageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C48E4B01A5BD06000CD2497 /* UIViewController+SDFImageManager.m */; };
 		0C48E4B51A5BD0EF00CD2497 /* SDFMainDemoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C48E4B41A5BD0EF00CD2497 /* SDFMainDemoViewController.m */; };
@@ -53,6 +54,8 @@
 		0C016FC21A8A1B01009FDDCA /* 10872981.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 10872981.jpg; sourceTree = "<group>"; };
 		0C016FC31A8A1B01009FDDCA /* 10915709.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 10915709.jpg; sourceTree = "<group>"; };
 		0C016FC41A8A1B01009FDDCA /* 10926234.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 10926234.jpg; sourceTree = "<group>"; };
+		0C0D18F81AA88AE80046F710 /* SDFGIFSampleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDFGIFSampleViewController.h; sourceTree = "<group>"; };
+		0C0D18F91AA88AE80046F710 /* SDFGIFSampleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDFGIFSampleViewController.m; sourceTree = "<group>"; };
 		0C3304B51A4A6CDB001808F3 /* SDFPhotosKitDemoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDFPhotosKitDemoViewController.h; sourceTree = "<group>"; };
 		0C3304B61A4A6CDB001808F3 /* SDFPhotosKitDemoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDFPhotosKitDemoViewController.m; sourceTree = "<group>"; };
 		0C48E4AF1A5BD06000CD2497 /* UIViewController+SDFImageManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+SDFImageManager.h"; sourceTree = "<group>"; };
@@ -127,6 +130,15 @@
 			);
 			name = Resources;
 			path = DFImageManagerSample/Resources;
+			sourceTree = "<group>";
+		};
+		0C0D18F71AA88ACF0046F710 /* GIF Sample View Controller */ = {
+			isa = PBXGroup;
+			children = (
+				0C0D18F81AA88AE80046F710 /* SDFGIFSampleViewController.h */,
+				0C0D18F91AA88AE80046F710 /* SDFGIFSampleViewController.m */,
+			);
+			path = "GIF Sample View Controller";
 			sourceTree = "<group>";
 		};
 		0C3304B41A4A6C72001808F3 /* Photos Kit Sample View Controller */ = {
@@ -286,6 +298,7 @@
 				0C8651331A5E80D2000EF271 /* Assets Library Demo View Controller */,
 				0C48E4BE1A5BD6E600CD2497 /* Composite Request Demo View Controller */,
 				0C97D6BF1A5E51DE0014D8AD /* Collection View Controller */,
+				0C0D18F71AA88ACF0046F710 /* GIF Sample View Controller */,
 			);
 			path = "View Controllers";
 			sourceTree = "<group>";
@@ -491,6 +504,7 @@
 				0CF5934F1A4948C4007C5B56 /* SDFMenuViewController.m in Sources */,
 				0C48E4B51A5BD0EF00CD2497 /* SDFMainDemoViewController.m in Sources */,
 				0CF5934C1A4948C4007C5B56 /* SDFAppDelegate.m in Sources */,
+				0C0D18FB1AA88AE80046F710 /* SDFGIFSampleViewController.m in Sources */,
 				0C8651361A5E80EA000EF271 /* SDFAssetsLibraryDemoViewController.m in Sources */,
 				0CF8BE131A5F554400D8FE27 /* DFStickyHeaderCollectionViewFlowLayout.m in Sources */,
 				0CF593491A4948C4007C5B56 /* main.m in Sources */,

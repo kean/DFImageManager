@@ -9,6 +9,7 @@
 #import "SDFAssetsLibraryDemoViewController.h"
 #import "SDFCompositeRequestDemoViewController.h"
 #import "SDFFilesystemDemoViewController.h"
+#import "SDFGIFSampleViewController.h"
 #import "SDFMainDemoViewController.h"
 #import "SDFMenuViewController.h"
 #import "SDFNetworkingDemoCollectionViewController.h"
@@ -79,12 +80,13 @@
     
     NSMutableArray *sections = [NSMutableArray new];
     
+    SDFMenuViewController *__weak weakSelf = self;
     [sections addObject:({
         NSMutableArray *items = [NSMutableArray new];
         [items addObject:[SDFMenuItem itemWithTitle:@"Zero Config Demo" subtitle:nil action:^{
             SDFMainDemoViewController *controller = [SDFMainDemoViewController new];
             controller.title = @"Demo";
-            [self.navigationController pushViewController:controller animated:YES];
+            [weakSelf.navigationController pushViewController:controller animated:YES];
         }]];
         [SDFMenuSection sectionWithTitle:@"Main" items:items];
     })];
@@ -94,13 +96,13 @@
         [items addObject:[SDFMenuItem itemWithTitle:@"Networking Demo" action:^{
             UIViewController *controller = [SDFNetworkingDemoCollectionViewController new];
             controller.title = @"Networking Demo";
-            [self.navigationController pushViewController:controller animated:YES];
+            [weakSelf.navigationController pushViewController:controller animated:YES];
         }]];
         [items addObject:[SDFMenuItem itemWithTitle:@"Photos Kit Demo" action:^{
             if ([PHPhotoLibrary class] != nil) {
                 SDFPhotosKitDemoViewController *controller =[SDFPhotosKitDemoViewController new];
                 controller.title = @"Photos Kit Demo";
-                [self.navigationController pushViewController:controller animated:YES];
+                [weakSelf.navigationController pushViewController:controller animated:YES];
             } else {
                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Photos Kit is only available starting with iOS 8" message:nil delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
                 [alert show];
@@ -109,30 +111,35 @@
         [items addObject:[SDFMenuItem itemWithTitle:@"ALAssetsLibrary Demo" action:^{
             SDFAssetsLibraryDemoViewController *controller = [SDFAssetsLibraryDemoViewController new];
             controller.title = @"ALAssetsLibrary Demo";
-            [self.navigationController pushViewController:controller animated:YES];
+            [weakSelf.navigationController pushViewController:controller animated:YES];
         }]];
         [items addObject:[SDFMenuItem itemWithTitle:@"Filesystem Demo" action:^{
             SDFFilesystemDemoViewController *controller = [SDFFilesystemDemoViewController new];
             controller.title = @"Filesystem Demo";
-            [self.navigationController pushViewController:controller animated:YES];
+            [weakSelf.navigationController pushViewController:controller animated:YES];
         }]];
         [SDFMenuSection sectionWithTitle:@"Image Managers" items:items];
     })];
     
     [sections addObject:({
         NSMutableArray *items = [NSMutableArray new];
+        [items addObject:[SDFMenuItem itemWithTitle:@"GIF Demo" subtitle:@"GIFs authored by FLRN: http://flrn.nl/gifs/" action:^{
+            SDFGIFSampleViewController *controller = [SDFGIFSampleViewController new];
+            controller.title = @"GIF Demo";
+            [weakSelf.navigationController pushViewController:controller animated:YES];
+        }]];
         [items addObject:[SDFMenuItem itemWithTitle:@"Preheating Demo" subtitle:@"Preheat images close to viewport"  action:^{
             SDFNetworkingDemoCollectionViewController *controller = [SDFNetworkingDemoCollectionViewController new];
             controller.allowsPreheating = YES;
             controller.numberOfItemsPerRow = 3;
             controller.displaysPreheatingDetails = YES;
             controller.title = @"Preheating Demo";
-            [self.navigationController pushViewController:controller animated:YES];
+            [weakSelf.navigationController pushViewController:controller animated:YES];
         }]];
         [items addObject:[SDFMenuItem itemWithTitle:@"Composite Operation Demo" subtitle:@"Request both thumbnail and fullscreen image" action:^{
             SDFCompositeRequestDemoViewController *controller = [SDFCompositeRequestDemoViewController new];
             controller.title = @"Composite Operation Demo";
-            [self.navigationController pushViewController:controller animated:YES];
+            [weakSelf.navigationController pushViewController:controller animated:YES];
         }]];
         [SDFMenuSection sectionWithTitle:@"Other" items:items];
     })];

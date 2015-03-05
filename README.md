@@ -15,7 +15,7 @@ Modern iOS framework for fetching, caching, processing, displaying and preheatin
 - Uses latest advancements in [Foundation URL Loading System](https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/URLLoadingSystem/URLLoadingSystem.html) including [NSURLSession](https://developer.apple.com/library/ios/documentation/Foundation/Reference/NSURLSession_class/) that supports [SPDY](http://en.wikipedia.org/wiki/SPDY) protocol.
 - Instead of reinventing a caching methodology it relies on HTTP cache as defined in [HTTP specification](https://tools.ietf.org/html/rfc7234) and caching implementation provided by [Foundation URL Loading System](https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/URLLoadingSystem/URLLoadingSystem.html). The caching and revalidation are completely transparent to the client. [Read more](https://github.com/kean/DFImageManager/wiki/Image-Caching-Guide)
 - The same APIs for different resources (`NSURL`, `PHAsset`, `ALAsset` etc).
-- Animated GIF support using best-in-class [FLAnimatedImage] library.
+- Animated GIF support using best-in-class [FLAnimatedImage](https://github.com/Flipboard/FLAnimatedImage) library.
 - Centralized image decompression, resizing and processing. Resizing provides a lack of misaligned images and lower memory footprint. Fully customizable.
 - Separate memory cache for decompressed and processed images. Fine grained control over memory cache.
 - [Compose image managers](https://github.com/kean/DFImageManager/wiki/Extending-Image-Manager-Guide#using-dfcompositeimagemanager) into a tree of responsibility.
