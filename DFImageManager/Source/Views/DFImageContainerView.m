@@ -145,7 +145,7 @@
 }
 
 - (void)_setImage:(UIImage *)image withAnimation:(DFImageViewAnimation)animationType {
-    self.imageView.image = image;
+    [self.imageView displayImage:image];
     switch (animationType) {
         case DFImageViewAnimationNone:
             _backgroundView.alpha = 0.f;

@@ -3,7 +3,7 @@
 </p>
 <h1 align="center">DFImageManager</h1>
 
-Modern iOS framework for fetching, caching, processing, and preheating images from various sources. It uses latest advancements in iOS SDK and doesn't reinvent existing technologies. It provides a powerful API that will extend the capabilities of your app.
+Modern iOS framework for fetching, caching, processing, displaying and preheating images from various sources. It uses latest advancements in iOS SDK and doesn't reinvent existing technologies. It provides a powerful API that will extend the capabilities of your app.
 
 #### Supported Resources
 - `NSURL` with **http**, **https**, **ftp**, **file**, and **data** schemes
@@ -14,9 +14,10 @@ Modern iOS framework for fetching, caching, processing, and preheating images fr
 - Zero config, yet immense customization and extensibility.
 - Uses latest advancements in [Foundation URL Loading System](https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/URLLoadingSystem/URLLoadingSystem.html) including [NSURLSession](https://developer.apple.com/library/ios/documentation/Foundation/Reference/NSURLSession_class/) that supports [SPDY](http://en.wikipedia.org/wiki/SPDY) protocol.
 - Instead of reinventing a caching methodology it relies on HTTP cache as defined in [HTTP specification](https://tools.ietf.org/html/rfc7234) and caching implementation provided by [Foundation URL Loading System](https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/URLLoadingSystem/URLLoadingSystem.html). The caching and revalidation are completely transparent to the client. [Read more](https://github.com/kean/DFImageManager/wiki/Image-Caching-Guide)
-- Separate memory cache for decompressed and processed images. Fine grained control over memory cache.
-- Centralized image decompression, resizing and processing. Resizing provides a lack of misaligned images and lower memory footprint. Fully customizable.
 - The same APIs for different resources (`NSURL`, `PHAsset`, `ALAsset` etc).
+- Animated GIF support using best-in-class [FLAnimatedImage] library.
+- Centralized image decompression, resizing and processing. Resizing provides a lack of misaligned images and lower memory footprint. Fully customizable.
+- Separate memory cache for decompressed and processed images. Fine grained control over memory cache.
 - [Compose image managers](https://github.com/kean/DFImageManager/wiki/Extending-Image-Manager-Guide#using-dfcompositeimagemanager) into a tree of responsibility.
 - [Automatic preheating](https://github.com/kean/DFImageManager/wiki/Image-Preheating-Guide) of images that are close to the viewport.
 - Groups similar requests and never executes them twice. This is true for both fetching and processing. Intelligent control over which requests are considered equivalent (both in terms of fetching and processing).
@@ -25,7 +26,7 @@ Modern iOS framework for fetching, caching, processing, and preheating images fr
 - Unit tests help to maintain the project and ensure its future growth.
 
 ## Getting Started
-- Download the latest [release](https://github.com/kean/DFImageManager/releases) or [development](https://github.com/kean/DFImageManager/archive/master.zip) version
+- Download the latest [release](https://github.com/kean/DFImageManager/releases) version
 - Take a look at the comprehensive [demo projects](https://github.com/kean/DFImageManager/tree/master/DFImageManagerSample)
 - Check out the complete [documentation](http://cocoadocs.org/docsets/DFImageManager)
 - Experiment with the APIs in a Swift playground available in the project
@@ -162,7 +163,7 @@ id<DFImageManaging> compositeImageManager = [[DFCompositeImageManager alloc] ini
 
 #### What's more
 
-Those were the most common cases. `DFImageManager` is jam-packed with other features. There are much more options for customization and room for extension. For more info check out the complete [documentation](http://cocoadocs.org/docsets/DFImageManager) and project [Wiki](https://github.com/kean/DFImageManager/wiki)
+Those were the most common cases. `DFImageManager` is packed with features. There are much more options for customization and room for extension. For more info check out the complete [documentation](http://cocoadocs.org/docsets/DFImageManager) and project [Wiki](https://github.com/kean/DFImageManager/wiki)
 
 ## <a name="install_using_cocopods"></a>Installation with [CocoaPods](http://cocoapods.org)
 
@@ -171,12 +172,6 @@ CocoaPods is the dependency manager for Cocoa projects, which automates the proc
 # Podfile
 platform :ios, '7.0'
 pod 'DFImageManager'
-```
-
-If you want to use the latest `DFImageManager` features before the new version is released, you can specify the `:head` flag in you podfile.
-```ruby
-platform :ios, '7.0'
-pod 'DFImageManager', :head
 ```
 
 ## Contribution

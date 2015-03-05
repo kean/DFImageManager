@@ -78,3 +78,6 @@ FOUNDATION_EXPORT const unsigned char DFImageManagerFrameworkVersionString[];
 #import <DFImageManagerKit/DFImageUtilities.h>
 #import <DFImageManagerKit/DFImageManagerBlockValueTransformer.h>
 #import <DFImageManagerKit/DFNetworkReachability.h>
+
+// GIF
+#import <DFImageManagerKit/DFAnimatedImage.h>

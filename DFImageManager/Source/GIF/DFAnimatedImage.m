@@ -20,38 +20,24 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "DFURLImageDeserializer.h"
-#import <UIKit/UIKit.h>
-
-#if __has_include("DFAnimatedImage.h")
-#import <FLAnimatedImage.h>
 #import "DFAnimatedImage.h"
-#endif
 
 
-@implementation DFURLImageDeserializer
+@implementation DFAnimatedImage
 
-- (id)objectFromResponse:(NSURLResponse *)response data:(NSData *)data error:(NSError *__autoreleasing *)error {
-    if (!data.length) {
-        return nil;
+- (instancetype)initWithAnimatedImage:(FLAnimatedImage *)animatedImage {
+    if (self = [super initWithCGImage:animatedImage.posterImage.CGImage]) {
+        _animatedImage = animatedImage;
     }
-#if __has_include("DFAnimatedImage.h")
-    if ([self _isGIF:data]) {
-        UIImage *image = [[DFAnimatedImage alloc] initWithAnimatedGIFData:data];
-        if (image) {
-            return image;
-        }
-    }
-#endif
-    return [[UIImage alloc] initWithData:data scale:[UIScreen mainScreen].scale];
+    return self;
 }
 
-/*! Based on http://en.wikipedia.org/wiki/Magic_number_(programming)
- */
-- (BOOL)_isGIF:(NSData *)data {
-    uint8_t c;
-    [data getBytes:&c length:1];
-    return c == 0x47;
+- (instancetype)initWithAnimatedGIFData:(NSData *)data {
+    return [self initWithAnimatedImage:[FLAnimatedImage animatedImageWithGIFData:data]];
+}
+
++ (instancetype)animatedImageWithGIFData:(NSData *)data {
+    return [[DFAnimatedImage alloc] initWithAnimatedGIFData:data];
 }
 
 @end

@@ -82,3 +82,9 @@
 #import "DFImageUtilities.h"
 #import "DFImageManagerBlockValueTransformer.h"
 #import "DFNetworkReachability.h"
+
+// GIF
+#if __has_include("DFAnimatedImage.h")
+#import "DFAnimatedImage.h"
+#endif
+

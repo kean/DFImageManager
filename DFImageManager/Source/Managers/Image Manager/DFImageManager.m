@@ -34,6 +34,9 @@
 #import "DFProcessingImageFetcher.h"
 #import "DFProcessingInput.h"
 
+#if __has_include("DFAnimatedImage.h")
+#import "DFAnimatedImage.h"
+#endif
 
 #pragma mark - _DFImageRequestID -
 
@@ -348,7 +351,13 @@ _DFImageKeyCreate(DFImageRequest *request, BOOL isCacheKey, id<_DFImageRequestKe
 #pragma mark - Processing
 
 - (void)_processResponseForHandler:(_DFImageManagerHandler *)handler {
-    if (self.processingManager && _fetchResponse.image) {
+    BOOL shouldProcessResponse = YES;
+#if __has_include("DFAnimatedImage.h")
+    if ([_fetchResponse.image isKindOfClass:[DFAnimatedImage class]]) {
+        shouldProcessResponse = NO;
+    }
+#endif
+    if (shouldProcessResponse && self.processingManager && _fetchResponse.image) {
         [self _processImage:_fetchResponse.image forHandler:handler completion:^(UIImage *image) {
             DFMutableImageResponse *response = [[DFMutableImageResponse alloc] initWithResponse:_fetchResponse];
             response.image = image;

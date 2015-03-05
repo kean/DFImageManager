@@ -23,7 +23,8 @@
 #import "DFURLResponseDeserializing.h"
 #import <Foundation/Foundation.h>
 
-/*! Base class for image deserialization from URL response data.
+/*! Base class for image deserialization from URL response data. 
+ @note Only if 'GIF' subspec is installed: Returns DFAnimatedImage (UIImageView subclass that wraps FLAnimatedImage) if the image data represents GIF.
 */
 @interface DFURLImageDeserializer : NSObject <DFURLResponseDeserializing>
 

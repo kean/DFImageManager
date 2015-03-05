@@ -23,10 +23,15 @@
 #import "DFImageManaging.h"
 #import <UIKit/UIKit.h>
 
+#if __has_include("DFAnimatedImage.h")
+#import <FLAnimatedImage.h>
+#endif
+
 @class DFCompositeImageFetchOperation;
 @class DFImageRequest;
 @class DFImageRequestOptions;
 @class DFImageView;
+
 
 
 /*! A class conforming to the DFImageViewDelegate protocol provides method for displaying fetched images and reacting to failures.
@@ -46,13 +51,24 @@
 @end
 
 
+#if __has_include("DFAnimatedImage.h")
+/*! An image view extends UIImageView class with image fetching functionality. It also adds other features like managing request priorities, retrying failed requests and more.
+ @note The DFImageView is a FLAnimatedImageView subclass that support animated GIF playback. The playback is enabled by default and can be disabled using allowsGIFPlayback property. The DFImageView doesn't override any of the FLAnimatedImageView methods so should get the same experience as when using the FLAnimatedImageView class directly. The only addition is a new - (void)displayImage:(UIImage *)image method that supports DFAnimatedImage objects and will automatically start GIF playback when passed an object of that class.
+ */
+@interface DFImageView : FLAnimatedImageView <DFImageViewDelegate>
+#else
 /*! An image view extends UIImageView class with image fetching functionality. It also adds other features like managing request priorities, retrying failed requests and more.
  */
 @interface DFImageView : UIImageView <DFImageViewDelegate>
+#endif
 
 /*! Image manager used by the image view. Set to the shared manager during initialization.
  */
 @property (nonatomic) id<DFImageManagingCore> imageManager;
+
+/*! Image view delegate. By default delegate is set to the image view itself. The implementation displays fetched images with animation when necessary.
+ */
+@property (nonatomic, weak) id<DFImageViewDelegate> delegate;
 
 /*! Image target size  used for image requests when target size is not present in -setImageWith... method that was called.. Returns current view pixel size when the value is CGSizeZero.
  */
@@ -79,15 +95,25 @@
  */
 @property (nonatomic) BOOL allowsAutoRetries;
 
-/*! Image view delegate. By default delegate is set to the image view itself. The implementation displays fetched images with animation when necessary.
+#if __has_include("DFAnimatedImage.h")
+/*! If the value is YES the receiver will start a GIF playback as soon as the image is displayed. Default value is YES.
  */
-@property (nonatomic, weak) id<DFImageViewDelegate> delegate;
+@property (nonatomic) BOOL allowsGIFPlayback;
+
+#endif
+
+/*! Displays a given image. Automatically starts GIF playback when given a DFAnimatedImage object and when the GIF playback is enabled. The 'GIF' subspec should be installed to enable this feature.
+ @note This method is always included in compilation even if the The 'GIF' subspec is not installed.
+ */
+- (void)displayImage:(UIImage *)image;
 
 /*! Performs any clean up necessary to prepare the view for use again. Removes currently displayed image and cancels all requests registered with a receiver.
  */
 - (void)prepareForReuse;
 
-/*! Returns current composite image fetch operation.
+#pragma mark - Fetching
+
+/*! Returns current image fetch operation. The operation stores a lot of information about the running and completed requests that can be retrieved at any time.
  */
 @property (nonatomic, readonly) DFCompositeImageFetchOperation *operation;
 

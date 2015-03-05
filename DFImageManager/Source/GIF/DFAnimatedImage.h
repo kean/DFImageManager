@@ -20,38 +20,28 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "DFURLImageDeserializer.h"
 #import <UIKit/UIKit.h>
-
-#if __has_include("DFAnimatedImage.h")
 #import <FLAnimatedImage.h>
-#import "DFAnimatedImage.h"
-#endif
 
 
-@implementation DFURLImageDeserializer
-
-- (id)objectFromResponse:(NSURLResponse *)response data:(NSData *)data error:(NSError *__autoreleasing *)error {
-    if (!data.length) {
-        return nil;
-    }
-#if __has_include("DFAnimatedImage.h")
-    if ([self _isGIF:data]) {
-        UIImage *image = [[DFAnimatedImage alloc] initWithAnimatedGIFData:data];
-        if (image) {
-            return image;
-        }
-    }
-#endif
-    return [[UIImage alloc] initWithData:data scale:[UIScreen mainScreen].scale];
-}
-
-/*! Based on http://en.wikipedia.org/wiki/Magic_number_(programming)
+/*! The DFAnimatedImage subclasses UIImage and represents a poster image for the underlying animated image. It is a regular UIImage that doesn't override any of the native UIImage behaviors it can be used anywhere where a regular `UIImage` can be used.
  */
-- (BOOL)_isGIF:(NSData *)data {
-    uint8_t c;
-    [data getBytes:&c length:1];
-    return c == 0x47;
-}
+@interface DFAnimatedImage : UIImage
+
+/* The animated image that the receiver was initialized with. An `FLAnimatedImage`'s job is to deliver frames in a highly performant way and works in conjunction with `FLAnimatedImageView`.
+ */
+@property (nonatomic, readonly) FLAnimatedImage *animatedImage;
+
+/*! Initializes the DFAnimatedImage with an instance of FLAnimatedImage class.
+ */
+- (instancetype)initWithAnimatedImage:(FLAnimatedImage *)animatedImage NS_DESIGNATED_INITIALIZER;
+
+/*! Initializes the DFAnimatedImage with an instance of FLAnimatedImage class created from a given data.
+ */
+- (instancetype)initWithAnimatedGIFData:(NSData *)data;
+
+/*! Returns the DFAnimatedImage object with an instance of FLAnimatedImage class created from a given data.
+ */
++ (instancetype)animatedImageWithGIFData:(NSData *)data;
 
 @end
