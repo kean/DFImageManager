@@ -24,6 +24,7 @@
 #import "DFImageFetching.h"
 #import <Foundation/Foundation.h>
 
+@protocol DFURLResponseDeserializing;
 @class DFURLImageFetcher;
 
 
@@ -44,10 +45,6 @@ extern NSString *const DFImageInfoURLResponseKey;
  @return The delegate may return modified, unmodified NSURLResponse or create NSURLResponse from scratch.
  */
 - (NSURLRequest *)URLImageFetcher:(DFURLImageFetcher *)fetcher URLRequestForImageRequest:(DFImageRequest *)imageRequest URLRequest:(NSURLRequest *)URLRequest;
-
-/*! Creates operation for a given request.
- */
-- (DFURLSessionOperation *)URLImageFetcher:(DFURLImageFetcher *)fetcher operationForImageRequest:(DFImageRequest *)imageRequest URLRequest:(NSURLRequest *)URLRequest;
 
 /*! Creates response deserializer for a given request.
  */

@@ -33,19 +33,22 @@
 NSString *const DFImageInfoURLResponseKey = @"DFImageInfoURLResponseKey";
 
 
+typedef void (^_DFURLSessionDataTaskProgressHandler)(int64_t countOfBytesReceived, int64_t countOfBytesExpectedToReceive);
+typedef void (^_DFURLSessionDataTaskCompletionHandler)(NSData *data, NSURLResponse *response, NSError *error);
+
 @interface _DFURLSessionDataTaskHandler : NSObject
 
-@property (nonatomic, copy, readonly) DFURLSessionProgressHandler progressHandler;
-@property (nonatomic, copy, readonly) DFURLSessionCompletionHandler completionHandler;
+@property (nonatomic, copy, readonly) _DFURLSessionDataTaskProgressHandler progressHandler;
+@property (nonatomic, copy, readonly) _DFURLSessionDataTaskCompletionHandler completionHandler;
 @property (nonatomic, readonly) NSMutableData *data;
 
-- (instancetype)initWithProgressHandler:(DFURLSessionProgressHandler)progressHandler completion:(DFURLSessionCompletionHandler)completion;
+- (instancetype)initWithProgressHandler:(_DFURLSessionDataTaskProgressHandler)progressHandler completion:(_DFURLSessionDataTaskCompletionHandler)completion;
 
 @end
 
 @implementation _DFURLSessionDataTaskHandler
 
-- (instancetype)initWithProgressHandler:(DFURLSessionProgressHandler)progressHandler completion:(DFURLSessionCompletionHandler)completionHandler {
+- (instancetype)initWithProgressHandler:(_DFURLSessionDataTaskProgressHandler)progressHandler completion:(_DFURLSessionDataTaskCompletionHandler)completionHandler {
     if (self = [super init]) {
         _progressHandler = [progressHandler copy];
         _completionHandler = [completionHandler copy];
@@ -57,13 +60,9 @@ NSString *const DFImageInfoURLResponseKey = @"DFImageInfoURLResponseKey";
 @end
 
 
-@interface DFURLImageFetcher () <DFURLSessionOperationDelegate>
-
-@end
-
 @implementation DFURLImageFetcher {
-    NSOperationQueue *_queue;
     NSMutableDictionary *_sessionTaskHandlers;
+    NSMutableDictionary *_operations;
 }
 
 - (instancetype)initWithSession:(NSURLSession *)session sessionDelegate:(id<DFURLImageFetcherSessionDelegate>)sessionDelegate {
@@ -73,9 +72,7 @@ NSString *const DFImageInfoURLResponseKey = @"DFImageInfoURLResponseKey";
         _session = session;
         _sessionDelegate = sessionDelegate;
         _sessionTaskHandlers = [NSMutableDictionary new];
-        
-        // We don't need to limit concurrent operations for NSURLSession. For more info see https://github.com/kean/DFImageManager/wiki/Image-Caching-Guide
-        _queue = [NSOperationQueue new];
+        _operations = [NSMutableDictionary new];
         
         _supportedSchemes = [NSSet setWithObjects:@"http", @"https", @"ftp", @"file", @"data", nil];
     }
@@ -128,34 +125,57 @@ NSString *const DFImageInfoURLResponseKey = @"DFImageInfoURLResponseKey";
 }
 
 - (NSOperation *)startOperationWithRequest:(DFImageRequest *)request progressHandler:(void (^)(double))progressHandler completion:(void (^)(DFImageResponse *))completion {
-    DFURLSessionOperation *operation = [self _createOperationForImageRequest:request];
-    operation.delegate = self;
-    
-    DFURLSessionOperation *__weak weakOp = operation;
-    [operation setProgressHandler:^(int64_t countOfBytesReceived, int64_t countOfBytesExpectedToReceive) {
+    NSURLRequest *URLRequest = [self _URLRequestForImageRequest:request];
+    NSURLSessionDataTask *__block task = [self.sessionDelegate URLImageFetcher:self dataTaskWithRequest:URLRequest progressHandler:^(int64_t countOfBytesReceived, int64_t countOfBytesExpectedToReceive) {
         if (progressHandler) {
             progressHandler((double)countOfBytesReceived / (double)countOfBytesExpectedToReceive);
         }
-    }];
-    [operation setCompletionBlock:^{
-        DFMutableImageResponse *response = [DFMutableImageResponse new];
-        response.image = weakOp.responseObject;
-        response.error = weakOp.error;
-        NSURLResponse *URLResponse = weakOp.response;
-        if (URLResponse != nil) {
-            response.userInfo = @{ DFImageInfoURLResponseKey : URLResponse };
+    } completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+        @synchronized(self) {
+            [_operations removeObjectForKey:task];
         }
-        completion([response copy]);
+        DFMutableImageResponse *imageResponse = [DFMutableImageResponse new];
+        imageResponse.error = error;
+        if (response) {
+            imageResponse.userInfo = @{ DFImageInfoURLResponseKey : response };
+        }
+        if (error) {
+            completion([imageResponse copy]);
+        } else {
+            id<DFURLResponseDeserializing> deserializer = [self _responseDeserializerForImageRequest:request URLRequest:URLRequest];
+            UIImage *image = [deserializer objectFromResponse:response data:data error:&error];
+            imageResponse.error = error;
+            imageResponse.image = image;
+            completion([imageResponse copy]);
+        }
     }];
-    [_queue addOperation:operation];
+    
+    // Passive container, DFURLImageFetcher never even start the operation, it only uses it's -cancel and -setPririty APIs. DFImageManager should probably have a specific protocol instead of NSOperation, because sometimes there is not need in one.
+    DFURLSessionOperation *operation = [DFURLSessionOperation new];
+    [operation setCancellationHandler:^{
+        [task cancel];
+    }];
+    [operation setPriorityHandler:^(NSOperationQueuePriority priority) {
+        task.priority = [DFURLImageFetcher _taskPriorityForQueuePriority:priority];
+    }];
+    
+    @synchronized(self) {
+        _operations[task] = operation;
+    }
+    
+    [task resume];
+    
     return operation;
 }
 
-- (DFURLSessionOperation *)_createOperationForImageRequest:(DFImageRequest *)imageRequest {
-    NSURLRequest *URLRequest = [self _URLRequestForImageRequest:imageRequest];
-    DFURLSessionOperation *operation = [self _operationForImageRequest:imageRequest URLRequest:URLRequest];
-    operation.deserializer = [self _responseDeserializerForImageRequest:imageRequest URLRequest:URLRequest];
-    return operation;
++ (float)_taskPriorityForQueuePriority:(NSOperationQueuePriority)queuePriority {
+    switch (queuePriority) {
+        case NSOperationQueuePriorityVeryHigh: return 0.9f;
+        case NSOperationQueuePriorityHigh: return 0.7f;
+        case NSOperationQueuePriorityNormal: return 0.5f;
+        case NSOperationQueuePriorityLow: return 0.3f;
+        case NSOperationQueuePriorityVeryLow: return 0.1f;
+    }
 }
 
 - (NSURLRequest *)_URLRequestForImageRequest:(DFImageRequest *)imageRequest {
@@ -197,13 +217,6 @@ NSString *const DFImageInfoURLResponseKey = @"DFImageInfoURLResponseKey";
     return [request copy];
 }
 
-- (DFURLSessionOperation *)_operationForImageRequest:(DFImageRequest *)imageRequest URLRequest:(NSURLRequest *)URLRequest {
-    if ([self.delegate respondsToSelector:@selector(URLImageFetcher:operationForImageRequest:URLRequest:)]) {
-        return [self.delegate URLImageFetcher:self operationForImageRequest:imageRequest URLRequest:URLRequest];
-    }
-    return [[DFURLSessionOperation alloc] initWithRequest:URLRequest];
-}
-
 - (id<DFURLResponseDeserializing>)_responseDeserializerForImageRequest:(DFImageRequest *)imageRequest URLRequest:(NSURLRequest *)URLRequest {
     if ([self.delegate respondsToSelector:@selector(URLImageFetcher:responseDeserializerForImageRequest:URLRequest:)]) {
         return [self.delegate URLImageFetcher:self responseDeserializerForImageRequest:imageRequest URLRequest:URLRequest];
@@ -240,15 +253,9 @@ NSString *const DFImageInfoURLResponseKey = @"DFImageInfoURLResponseKey";
     }
 }
 
-#pragma mark - <DFURLSessionOperationDelegate>
-
-- (NSURLSessionDataTask *)URLSessionOperation:(DFURLSessionOperation *)operation dataTaskWithRequest:(NSURLRequest *)request progressHandler:(DFURLSessionProgressHandler)progressHandler completionHandler:(DFURLSessionCompletionHandler)completionHandler {
-    return [self.sessionDelegate URLImageFetcher:self dataTaskWithRequest:request progressHandler:progressHandler completionHandler:completionHandler];
-}
-
 #pragma mark - <DFURLImageFetcherSessionDelegate>
 
-- (NSURLSessionDataTask *)URLImageFetcher:(DFURLImageFetcher *)fetcher dataTaskWithRequest:(NSURLRequest *)request progressHandler:(DFURLSessionProgressHandler)progressHandler completionHandler:(DFURLSessionCompletionHandler)completionHandler {
+- (NSURLSessionDataTask *)URLImageFetcher:(DFURLImageFetcher *)fetcher dataTaskWithRequest:(NSURLRequest *)request progressHandler:(_DFURLSessionDataTaskProgressHandler)progressHandler completionHandler:(_DFURLSessionDataTaskCompletionHandler)completionHandler {
     NSURLSessionDataTask *task = [self.session dataTaskWithRequest:request];
     if (task) {
         @synchronized(self) {
