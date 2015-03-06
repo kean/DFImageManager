@@ -142,12 +142,13 @@ static const NSTimeInterval _kCommandExecutionInterval = 0.0025; // 2.5 ms
 
 @implementation _DFURLFetcherCommandExecutor {
     NSMutableOrderedSet *_commands;
+    BOOL _isRunning;
+    BOOL _isStopping;
 }
 
 - (instancetype)init {
     if (self = [super init]) {
         _commands = [NSMutableOrderedSet new];
-        [self _executeCommand];
     }
     return self;
 }
@@ -162,19 +163,39 @@ static const NSTimeInterval _kCommandExecutionInterval = 0.0025; // 2.5 ms
             }
         }
         [_commands addObject:command];
+        if (!_isRunning) {
+            [self _runAfterDelay];
+        }
     });
 }
 
-- (void)_executeCommand {
+/*! Gurantees that there is is at least '_kCommandExecutionInterval' seconds between the execution of each command.
+ */
+- (void)_runAfterDelay {
+    _isRunning = YES;
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(_kCommandExecutionInterval * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self _run];
+    });
+}
+
+- (void)_run {
+    if (_isStopping) {
+        _isStopping = NO;
+        if (!_commands.count) {
+            _isRunning = NO;
+            return;
+        }
+    }
     _DFSessionTaskCommand *command = [_commands firstObject];
     if (command) {
         [_commands removeObject:command];
         [command execute];
     }
-    _DFURLFetcherCommandExecutor *__weak weakSelf = self;
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(_kCommandExecutionInterval * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [weakSelf _executeCommand];
-    });
+    if (!_commands.count) {
+        // Stop execution on the next run (if no commands are added)
+        _isStopping = YES;
+    }
+    [self _runAfterDelay];
 }
 
 @end
@@ -183,7 +204,7 @@ static const NSTimeInterval _kCommandExecutionInterval = 0.0025; // 2.5 ms
 @implementation DFURLImageFetcher {
     NSMutableDictionary *_sessionTaskHandlers;
     NSMutableDictionary *_operations;
-    _DFURLFetcherCommandExecutor *_taskExecutor;
+    _DFURLFetcherCommandExecutor *_executor;
 }
 
 - (instancetype)initWithSession:(NSURLSession *)session sessionDelegate:(id<DFURLImageFetcherSessionDelegate>)sessionDelegate {
@@ -194,7 +215,7 @@ static const NSTimeInterval _kCommandExecutionInterval = 0.0025; // 2.5 ms
         _sessionDelegate = sessionDelegate;
         _sessionTaskHandlers = [NSMutableDictionary new];
         _operations = [NSMutableDictionary new];
-        _taskExecutor = [_DFURLFetcherCommandExecutor new];
+        _executor = [_DFURLFetcherCommandExecutor new];
         
         _supportedSchemes = [NSSet setWithObjects:@"http", @"https", @"ftp", @"file", @"data", nil];
     }
@@ -275,7 +296,7 @@ static const NSTimeInterval _kCommandExecutionInterval = 0.0025; // 2.5 ms
     // Passive container, DFURLImageFetcher never even start the operation, it only uses it's -cancel and -setPririty APIs. DFImageManager should probably have a specific protocol instead of NSOperation, because sometimes there is not need in one.
     DFURLSessionOperation *operation = [DFURLSessionOperation new];
     [operation setCancellationHandler:^{
-        [_taskExecutor executeCommand:[[_DFSessionTaskCancelCommand alloc] initWithTask:task]];
+        [_executor executeCommand:[[_DFSessionTaskCancelCommand alloc] initWithTask:task]];
     }];
     [operation setPriorityHandler:^(NSOperationQueuePriority priority) {
         task.priority = [DFURLImageFetcher _taskPriorityForQueuePriority:priority];
@@ -285,7 +306,7 @@ static const NSTimeInterval _kCommandExecutionInterval = 0.0025; // 2.5 ms
         _operations[task] = operation;
     }
     
-    [_taskExecutor executeCommand:[[_DFSessionTaskResumeCommand alloc] initWithTask:task]];
+    [_executor executeCommand:[[_DFSessionTaskResumeCommand alloc] initWithTask:task]];
     
     return operation;
 }
