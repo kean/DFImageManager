@@ -27,7 +27,7 @@ Modern iOS framework for fetching, caching, processing, displaying and preheatin
 
 ## Getting Started
 - Download the latest [release](https://github.com/kean/DFImageManager/releases) version
-- Take a look at the comprehensive [demo projects](https://github.com/kean/DFImageManager/tree/master/DFImageManagerSample)
+- Take a look at the comprehensive [demo](https://github.com/kean/DFImageManager/tree/master/Demo), it's easy to install it with `pod try DFImageManager` command
 - Check out the complete [documentation](http://cocoadocs.org/docsets/DFImageManager)
 - View the growing project [Wiki](https://github.com/kean/DFImageManager/wiki)
 - Experiment with the APIs in a Swift playground available in the project
