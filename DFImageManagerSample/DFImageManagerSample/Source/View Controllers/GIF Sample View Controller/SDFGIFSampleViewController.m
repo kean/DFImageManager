@@ -10,7 +10,8 @@
 #import <DFImageManagerKit.h>
 
 
-static NSString *kReuseIdentifier = @"kReuseIdentifier";
+static NSString *const kReuseIdentifierTextViewCell = @"kReuseIdentifierTextViewCell";
+static NSString *const kReuseIdentifierImageCell = @"kReuseIdentifierImageCell";
 
 @interface SDFGIFSampleViewController () <UICollectionViewDelegateFlowLayout>
 
@@ -19,6 +20,7 @@ static NSString *kReuseIdentifier = @"kReuseIdentifier";
 @implementation SDFGIFSampleViewController {
     NSArray *_imageURLs;
 }
+
 - (instancetype)init {
     return [self initWithCollectionViewLayout:[UICollectionViewFlowLayout new]];
 }
@@ -26,7 +28,8 @@ static NSString *kReuseIdentifier = @"kReuseIdentifier";
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    [self.collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:kReuseIdentifier];
+    [self.collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:kReuseIdentifierTextViewCell];
+    [self.collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:kReuseIdentifierImageCell];
     self.collectionView.alwaysBounceVertical = YES;
     self.view.backgroundColor = [UIColor whiteColor];
     self.collectionView.backgroundColor = self.view.backgroundColor;
@@ -52,31 +55,60 @@ static NSString *kReuseIdentifier = @"kReuseIdentifier";
 #pragma mark - UICollectionViewController
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:kReuseIdentifier forIndexPath:indexPath];
-    cell.backgroundColor = [UIColor colorWithWhite:235.f/255.f alpha:1.f];
-    
-    DFImageView *imageView = (id)[cell viewWithTag:15];
-    if (!imageView) {
-        imageView = [[DFImageView alloc] initWithFrame:cell.bounds];
-        imageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-        imageView.tag = 15;
-        [cell addSubview:imageView];
+    UICollectionViewCell *cell;
+    if (indexPath.section == 0) {
+        cell = [collectionView dequeueReusableCellWithReuseIdentifier:kReuseIdentifierTextViewCell forIndexPath:indexPath];
+        
+        UITextView *textView = (id)[cell viewWithTag:14];
+        if (!textView) {
+            textView = [UITextView new];
+            textView.textColor = [UIColor blackColor];
+            textView.font = [UIFont systemFontOfSize:16.f];
+            textView.editable = NO;
+            textView.textAlignment = NSTextAlignmentCenter;
+            textView.dataDetectorTypes = UIDataDetectorTypeLink;
+            
+            [cell.contentView addSubview:textView];
+            textView.frame = cell.contentView.bounds;
+            textView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+            
+            textView.text = @"Images by Florian de Looij\n http://flrn.nl/gifs/";
+        }
+    } else {
+        cell = [collectionView dequeueReusableCellWithReuseIdentifier:kReuseIdentifierImageCell forIndexPath:indexPath];
+        cell.backgroundColor = [UIColor colorWithWhite:235.f/255.f alpha:1.f];
+        
+        DFImageView *imageView = (id)[cell viewWithTag:15];
+        if (!imageView) {
+            imageView = [[DFImageView alloc] initWithFrame:cell.bounds];
+            imageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+            imageView.tag = 15;
+            [cell addSubview:imageView];
+        }
+        
+        [imageView prepareForReuse];
+        [imageView setImageWithResource:_imageURLs[indexPath.item]];
     }
-    
-    [imageView prepareForReuse];
-    [imageView setImageWithResource:_imageURLs[indexPath.item]];
     
     return cell;
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
     UICollectionViewFlowLayout *layout = (id)self.collectionViewLayout;
-    CGFloat side = (self.view.bounds.size.width - layout.sectionInset.left - layout.sectionInset.right);
-    return CGSizeMake(side, side);
+    CGFloat width = (self.view.bounds.size.width - layout.sectionInset.left - layout.sectionInset.right);
+    if (indexPath.section == 0) {
+        return CGSizeMake(width, 50.f);
+    } else {
+        return CGSizeMake(width, width);
+    }
+}
+
+- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
+    return 2;
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    return _imageURLs.count;
+    return section == 0 ? 1 : _imageURLs.count;
 }
 
 @end

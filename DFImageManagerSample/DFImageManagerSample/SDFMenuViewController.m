@@ -123,7 +123,7 @@
     
     [sections addObject:({
         NSMutableArray *items = [NSMutableArray new];
-        [items addObject:[SDFMenuItem itemWithTitle:@"GIF Demo" subtitle:@"GIFs authored by FLRN: http://flrn.nl/gifs/" action:^{
+        [items addObject:[SDFMenuItem itemWithTitle:@"GIF Demo" subtitle:nil action:^{
             SDFGIFSampleViewController *controller = [SDFGIFSampleViewController new];
             controller.title = @"GIF Demo";
             [weakSelf.navigationController pushViewController:controller animated:YES];
