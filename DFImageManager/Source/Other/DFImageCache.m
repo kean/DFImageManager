@@ -45,9 +45,7 @@
 }
 
 - (instancetype)init {
-    NSCache *cache = [NSCache new];
-    cache.totalCostLimit = [NSCache df_recommendedTotalCostLimit];
-    return [self initWithCache:cache];
+    return [self initWithCache:[NSCache df_sharedImageCache]];
 }
 
 #pragma mark - <DFImageCaching>
