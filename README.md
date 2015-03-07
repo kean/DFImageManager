@@ -3,12 +3,12 @@
 </p>
 <h1 align="center">DFImageManager</h1>
 
-Modern iOS framework for fetching images from various sources. It uses latest advancements in iOS SDK and doesn't reinvent existing technologies.
+Modern iOS framework for fetching images from various sources. It uses latest advancements in iOS SDK and doesn't reinvent existing technologies. It provides a powerful API that will extend the capabilities of your app.
 
 #### Supported Resources
-- NSURL with http, https, ftp, file, and data schemes
-- PHAsset and NSURL with com.github.kean.photos-kit scheme
-- DFALAsset, ALAsset and NSURL with assets-library scheme
+- `NSURL` with **http**, **https**, **ftp**, **file**, and **data** schemes
+- `PHAsset`, `NSURL` with **com.github.kean.photos-kit** scheme
+- `DFALAsset`, `ALAsset`, `NSURL` with **assets-library** scheme
 
 ## Features
 - Zero config, yet immense customization and extensibility.
