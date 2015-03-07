@@ -29,4 +29,10 @@
     TDFAssertBaseOptionsAreEqual(options, copy);
 }
 
+- (void)testThatOptionsInitWithOptionsMethodsWorks {
+    DFImageRequestOptions *options = TDFCreateRequestOptionsWithNotDefaultParameters();
+    DFImageRequestOptions *copy = [[DFImageRequestOptions alloc] initWithOptions:options];
+    TDFAssertBaseOptionsAreEqual(options, copy);
+}
+
 @end

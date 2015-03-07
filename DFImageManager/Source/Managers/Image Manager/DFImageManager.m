@@ -255,8 +255,13 @@ _DFImageKeyCreate(DFImageRequest *request, BOOL isCacheKey, id<_DFImageRequestKe
 
 @implementation _DFImageManagerTask {
     NSMutableDictionary *_handlers;
-    BOOL _isReportingProgress;
-    BOOL _isFetching;
+    
+    struct {
+        unsigned int isExecuting:1;
+        unsigned int isFetching:1;
+        unsigned int isPreheating:1;
+        unsigned int isReportingProgress:1;
+    } _flags;
     
     // Fetch
     NSOperation *__weak _fetchOperation;
@@ -277,19 +282,9 @@ _DFImageKeyCreate(DFImageRequest *request, BOOL isCacheKey, id<_DFImageRequestKe
 }
 
 - (void)resume {
-    NSAssert(_isExecuting == NO, nil);
-    _isExecuting = YES;
+    NSAssert(_flags.isExecuting == NO, nil);
+    _flags.isExecuting = YES;
     for (_DFImageManagerHandler *handler in [self.handlers allValues]) {
-        [self _executeHandler:handler];
-    }
-}
-
-- (void)addHandler:(_DFImageManagerHandler *)handler {
-    _handlers[handler.requestID.handlerID] = handler;
-    if (handler.request.options.progressHandler) {
-        _isReportingProgress = YES;
-    }
-    if (self.isExecuting) {
         [self _executeHandler:handler];
     }
 }
@@ -302,17 +297,41 @@ _DFImageKeyCreate(DFImageRequest *request, BOOL isCacheKey, id<_DFImageRequestKe
     } else if (_fetchResponse) {
         // Start image processing if task already has original image
         [self _processResponseForHandler:handler];
-    } else if (!_isFetching) {
-        _isFetching = YES;
+    } else if (!_flags.isFetching) {
+        _flags.isFetching = YES;
         [self _fetchImage];
     } else {
         // Do nothing, wait for response
     }
 }
 
+#pragma mark - Handlers
+
+- (void)addHandler:(_DFImageManagerHandler *)handler {
+    _handlers[handler.requestID.handlerID] = handler;
+    [self _didUpdateHandlers];
+    if (self.isExecuting) {
+        [self _executeHandler:handler];
+    }
+}
+
 - (void)removeHandlerForID:(NSUUID *)handlerID {
     [_handlers removeObjectForKey:handlerID];
+    [self _didUpdateHandlers];
     [((DFImageRequestID *)_processingRequestIDs[handlerID]) cancel];
+}
+
+- (void)_didUpdateHandlers {
+    _flags.isReportingProgress = NO;
+    _flags.isPreheating = YES;
+    [_handlers enumerateKeysAndObjectsUsingBlock:^(id key, _DFImageManagerHandler *handler, BOOL *stop) {
+        if (handler.request.options.progressHandler) {
+            _flags.isReportingProgress = YES;
+        }
+        if (![handler isKindOfClass:[_DFImageManagerPreheatHandler class]]) {
+            _flags.isPreheating = NO;
+        }
+    }];
 }
 
 #pragma mark - Fetching
@@ -324,14 +343,14 @@ _DFImageKeyCreate(DFImageRequest *request, BOOL isCacheKey, id<_DFImageRequestKe
     } completion:^(DFImageResponse *response) {
         [weakSelf _didFetchImageWithResponse:response];
     }];
-    operation.queuePriority = [self _queuePriority];
     _fetchOperation = operation;
+    [self updatePriority];
 }
 
 - (void)_didUpdateFetchProgress:(double)progress {
     /*! Performance optimization for users that are not interested in progress reporting. Lower DFImageManager's internal queue usage.
      */
-    if (_isReportingProgress) {
+    if (_flags.isReportingProgress) {
         [self.delegate task:self didUpdateProgress:progress];
     }
 }
@@ -358,10 +377,11 @@ _DFImageKeyCreate(DFImageRequest *request, BOOL isCacheKey, id<_DFImageRequestKe
     }
 #endif
     if (shouldProcessResponse && self.processingManager && _fetchResponse.image) {
+        _DFImageManagerTask *__weak weakSelf = self;
         [self _processImage:_fetchResponse.image forHandler:handler completion:^(UIImage *image) {
             DFMutableImageResponse *response = [[DFMutableImageResponse alloc] initWithResponse:_fetchResponse];
             response.image = image;
-            [self _didProcessResponse:response forHandler:handler];
+            [weakSelf _didProcessResponse:response forHandler:handler];
         }];
     } else {
         if (_fetchResponse.image) {
@@ -401,7 +421,10 @@ _DFImageKeyCreate(DFImageRequest *request, BOOL isCacheKey, id<_DFImageRequestKe
 }
 
 - (void)updatePriority {
-    _fetchOperation.queuePriority = self._queuePriority;
+    NSOperationQueuePriority priority = [self _queuePriority];
+    if (_fetchOperation.queuePriority != priority) {
+        _fetchOperation.queuePriority = priority;
+    }
 }
 
 - (NSOperationQueuePriority)_queuePriority {
@@ -413,12 +436,11 @@ _DFImageKeyCreate(DFImageRequest *request, BOOL isCacheKey, id<_DFImageRequestKe
 }
 
 - (BOOL)isPreheating {
-    for (_DFImageManagerHandler *handler in self.handlers.allValues) {
-        if (![handler isKindOfClass:[_DFImageManagerPreheatHandler class]]) {
-            return NO;
-        }
-    }
-    return YES;
+    return _flags.isPreheating;
+}
+
+- (BOOL)isExecuting {
+    return _flags.isExecuting;
 }
 
 - (UIImage *)_cachedImageForRequest:(DFImageRequest *)request {
@@ -458,6 +480,7 @@ _DFImageKeyCreate(DFImageRequest *request, BOOL isCacheKey, id<_DFImageRequestKe
     struct {
         unsigned int needsToExecutePreheatRequests:1;
         unsigned int fetcherRespondsToCanonicalRequest:1;
+        unsigned int isUnderlyingProcessingManager:1;
     } _flags;
     
     /*! Read more about processing manager it initWithConfiguration: method.
@@ -487,6 +510,7 @@ _DFImageKeyCreate(DFImageRequest *request, BOOL isCacheKey, id<_DFImageRequestKe
             DFProcessingImageFetcher *processingFetcher = [[DFProcessingImageFetcher alloc] initWithProcessor:configuration.processor queue:configuration.processingQueue];
             DFImageManager *processingManager = [[DFImageManager alloc] initWithConfiguration:[DFImageManagerConfiguration configurationWithFetcher:processingFetcher]];
             processingManager.name = @"DFUnderlyingProcessingImageManager";
+            processingManager->_flags.isUnderlyingProcessingManager = YES;
             _processingManager = processingManager;
         }
         
@@ -546,7 +570,7 @@ _DFImageKeyCreate(DFImageRequest *request, BOOL isCacheKey, id<_DFImageRequestKe
     }
     [task addHandler:handler];
     
-    /*! Execute non-preheating tasks immediately. Existing preheating tasks may become non-preheating when new handlers are added.
+    /* Execute non-preheating tasks immediately. Existing preheating tasks may become non-preheating when new handlers are added.
      */
     if (!task.isExecuting && !task.isPreheating) {
         [task resume];
@@ -556,13 +580,20 @@ _DFImageKeyCreate(DFImageRequest *request, BOOL isCacheKey, id<_DFImageRequestKe
 }
 
 - (void)_setNeedsExecutePreheatingTasks {
+    if (_flags.isUnderlyingProcessingManager) {
+        /*
+         - Performance optimization: prevent uncessary work in proccesing manager (it doesn't implement preheating)
+         - Simplifies debugging for regular managers
+         */
+        return;
+    }
     if (!_flags.needsToExecutePreheatRequests) {
         _flags.needsToExecutePreheatRequests = YES;
-        /*! Delays serves double purpose:
+        /* Delays serves double purpose:
          - Image manager won't start executing preheating requests in case you are about to add normal (non-preheating) right after adding preheating ones.
          - Image manager won't execute relatively -_executePreheatingTasksIfNecesary method too often.
          */
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.05 * NSEC_PER_SEC)), _syncQueue, ^{
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), _syncQueue, ^{
             [self _executePreheatingTasksIfNecesary];
             _flags.needsToExecutePreheatRequests = NO;
         });
