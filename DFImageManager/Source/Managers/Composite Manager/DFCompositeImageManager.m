@@ -27,14 +27,14 @@
 
 #define DFManagerForRequest(request) \
 ({ \
-    id<DFImageManagingCore> outManager; \
-    for (id<DFImageManagingCore> manager in _managers) { \
-        if ([manager canHandleRequest:request]) { \
-            outManager = manager; \
+    id<DFImageManagingCore> outManager_macro; \
+    for (id<DFImageManagingCore> manager_macro in _managers) { \
+        if ([manager_macro canHandleRequest:request]) { \
+            outManager_macro = manager_macro; \
             break; \
         } \
     } \
-    outManager; \
+    outManager_macro; \
 })
 
 @implementation DFCompositeImageManager {
@@ -71,7 +71,17 @@
 }
 
 - (DFImageRequestID *)requestImageForRequest:(DFImageRequest *)request completion:(void (^)(UIImage *, NSDictionary *))completion {
-    return [DFManagerForRequest(request) requestImageForRequest:request completion:completion];
+    id<DFImageManagingCore> manager = DFManagerForRequest(request);
+    if (manager) {
+        return [manager requestImageForRequest:request completion:completion];
+    } else {
+        if (completion) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                completion(nil, nil);
+            });
+        }
+        return nil;
+    }
 }
 
 - (void)cancelRequestWithID:(DFImageRequestID *)requestID {
