@@ -78,7 +78,7 @@
 - (NSUInteger)costForImage:(UIImage *)image {
     CGImageRef imageRef = image.CGImage;
     NSUInteger bitsPerPixel = CGImageGetBitsPerPixel(imageRef);
-    NSInteger cost = (CGImageGetWidth(imageRef) * CGImageGetHeight(imageRef) * bitsPerPixel) / 8; // Return number of bytes in image bitmap.
+    NSUInteger cost = (CGImageGetWidth(imageRef) * CGImageGetHeight(imageRef) * bitsPerPixel) / 8; // Return number of bytes in image bitmap.
     
 #if __has_include("DFAnimatedImage.h")
     if ([image isKindOfClass:[DFAnimatedImage class]]) {

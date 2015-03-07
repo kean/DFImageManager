@@ -12,3 +12,4 @@
 #import "TDFMockFetchOperation.h"
 #import "TDFMockImageProcessor.h"
 #import "TDFMockImageCache.h"
+#import "TDFCommonTests.h"
