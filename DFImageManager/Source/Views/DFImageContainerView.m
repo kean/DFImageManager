@@ -98,12 +98,6 @@
 
 #pragma mark - <DFImageViewDelegate>
 
-- (void)imageView:(DFImageView *)imageView willStartFetchingImagesForRequests:(NSArray *)requests {
-    if (requests.count == 0) {
-        [self _handleFailureWithError:nil];
-    }
-}
-
 - (void)imageView:(DFImageView *)imageView didCompleteRequest:(DFImageRequest *)request withImage:(UIImage *)image info:(NSDictionary *)info {
     BOOL isFastResponse = (self.imageView.operation.elapsedTime * 1000.0) < 64.f;
     if (image) {

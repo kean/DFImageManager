@@ -38,13 +38,14 @@
  */
 @protocol DFImageViewDelegate <NSObject>
 
-/*! Method gets called every time the completion block of the composite request used by DFImageView is called. 
+/*! Method gets called every time the completion block of the composite request used by DFImageView is called.
  @note Might be called multiple times depending on the number of requests composite request options.
  */
 - (void)imageView:(DFImageView *)imageView didCompleteRequest:(DFImageRequest *)request withImage:(UIImage *)image info:(NSDictionary *)info;
 
 @optional
 /*! Method gets called right after the image view receives image requests. The requests array might be either nil or empty.
+ @note This method call is always paired with a least one -imageView:didCompleteRequest:withImage:info call.
  */
 - (void)imageView:(DFImageView *)imageView willStartFetchingImagesForRequests:(NSArray /*! DFImageRequest */ *)requests;
 

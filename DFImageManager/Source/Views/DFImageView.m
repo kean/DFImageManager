@@ -154,6 +154,8 @@ static const NSTimeInterval _kMinimumAutoretryInterval = 8.f;
             [weakSelf.delegate imageView:weakSelf didCompleteRequest:request withImage:image info:info];
         }];
         [_operation start];
+    } else {
+        [self.delegate imageView:self didCompleteRequest:nil withImage:nil info:nil];
     }
 }
 
