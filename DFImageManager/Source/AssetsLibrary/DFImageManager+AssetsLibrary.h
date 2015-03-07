@@ -20,9 +20,9 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "DFAssetsLibraryImageFetcher.h"
-#import "DFALAsset.h"
 #import "ALAssetsLibrary+DFImageManager.h"
-#import "DFAssetsLibraryImageRequestOptions.h"
+#import "DFALAsset.h"
 #import "DFAssetsLibraryImageFetchOperation.h"
+#import "DFAssetsLibraryImageFetcher.h"
+#import "DFAssetsLibraryImageRequestOptions.h"
 #import "DFAssetsLibraryUtilities.h"

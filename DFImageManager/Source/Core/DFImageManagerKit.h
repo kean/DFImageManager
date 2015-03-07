@@ -56,18 +56,17 @@
 
 #import "DFCompositeImageFetchOperation.h"
 
-// UI
-
-#import "UIImageView+DFImageManager.h"
-#import "DFImageView.h"
-#import "DFImageContainerView.h"
-
 // Utilities
 
-#import "DFCollectionViewPreheatingController.h"
 #import "DFImageUtilities.h"
 #import "DFImageManagerBlockValueTransformer.h"
 #import "DFNetworkReachability.h"
+
+
+// Subspec 'UI'
+#if __has_include("DFImageManager+UI.h")
+#import "DFImageManager+UI.h"
+#endif
 
 
 // Subspec 'PhotosKit'

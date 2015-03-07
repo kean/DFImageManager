@@ -20,7 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+#import "DFPhotosKitImageFetchOperation.h"
 #import "DFPhotosKitImageFetcher.h"
 #import "DFPhotosKitImageRequestOptions.h"
 #import "NSURL+DFPhotosKit.h"
-#import "DFPhotosKitImageFetchOperation.h"

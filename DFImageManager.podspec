@@ -15,6 +15,11 @@ Pod::Spec.new do |s|
         ss.source_files  = "DFImageManager/Source/Core/**/*.{h,m}"
     end
 
+    s.subspec "UI" do |ss|
+        ss.dependency "DFImageManager/Core"
+        ss.source_files = "DFImageManager/Source/UI/**/*.{h,m}"
+    end
+
     s.subspec "PhotosKit" do |ss|
         ss.dependency "DFImageManager/Core"
         ss.source_files = "DFImageManager/Source/PhotosKit/**/*.{h,m}"
