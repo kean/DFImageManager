@@ -134,6 +134,30 @@ options.deliveryMode = PHImageRequestOptionsDeliveryModeHighQualityFormat;
 DFImageRequest *request = [[DFImageRequest alloc] initWithResource:assetURL targetSize:DFImageMaximumSize contentMode:DFImageContentModeAspectFill options:options];
 ```
 
+#### Use composite managers
+The `DFCompositeImageManager` allows clients to construct a tree of responsibility from multiple image managers, where image requests are dynamically dispatched between them. Each manager should conform to `DFImageManaging` protocol. The `DFCompositeImageManager` also conforms to `DFImageManaging` protocol, which lets clients treat individual objects and compositions uniformly. The default `[DFImageManager sharedManager]` is a composite that contains all built in managers: the ones that support `NSURL` fetching, `PHAsset` objects, etc. 
+
+It's easy for clients to add additional managers to the shared manager. You can either add support for new image requests, or intercept existing onces. For more info see [Composing Image Managers](https://github.com/kean/DFImageManager/wiki/Extending-Image-Manager-Guide#using-dfcompositeimagemanager).
+
+```objective-c
+// Implement custom image fetcher that conforms to DFImageFetching protocol,
+// including - (BOOL)canHandleRequest:(DFImageRequest *)request; method
+id<DFImageFetching> fetcher = [YourImageFetcher new];
+id<DFImageProcessing> processor = [YourImageProcessor new];
+id<DFImageCaching> cache = [YourImageMemCache new];
+
+// Create DFImageManager with your configuration.
+DFImageManagerConfiguration *configuration = [DFImageManagerConfiguration configurationWithFetcher:fetcher processor:processor cache:cache];
+id<DFImageManaging> manager = [[DFImageManager alloc] initWithConfiguration:configuration];
+
+// Create composite manager with your custom manager and all built-in managers.
+NSArray *managers = @[ manager, [DFImageManager sharedManager] ];
+id<DFImageManaging> compositeImageManager = [[DFCompositeImageManager alloc] initWithImageManagers:managers];
+
+// Use dependency injector to set shared manager
+[DFImageManager setSharedManager:compositeImageManager];
+```
+
 #### What's more
 
 Those were the most common cases. `DFImageManager` is packed with other features. For more info check out the complete [documentation](http://cocoadocs.org/docsets/DFImageManager) and project [Wiki](https://github.com/kean/DFImageManager/wiki)
