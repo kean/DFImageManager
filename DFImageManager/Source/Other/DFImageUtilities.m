@@ -25,47 +25,6 @@
 
 @implementation DFImageUtilities
 
-+ (UIImage *)imageWithImage:(UIImage *)image aspectFitSize:(CGSize)boundsSize {
-    CGSize pixelSize = DFPixelSizeFromSize(boundsSize);
-    return [self imageWithImage:image aspectFitPixelSize:pixelSize];
-}
-
-+ (UIImage *)imageWithImage:(UIImage *)image aspectFillSize:(CGSize)boundsSize {
-    CGSize pixelSize = DFPixelSizeFromSize(boundsSize);
-    return [self imageWithImage:image aspectFillPixelSize:pixelSize];
-}
-
-+ (UIImage *)imageWithImage:(UIImage *)image aspectFitPixelSize:(CGSize)boundsSize {
-    CGSize imageSize = DFImageBitmapPixelSize(image);
-    CGFloat scale = DFAspectFitScale(imageSize, boundsSize);
-    if (scale < 1.0) {
-        CGSize scaledSize = DFSizeScaled(imageSize, scale);
-        CGSize pointSize = DFSizeFromPixelSize(scaledSize);
-        return [self imageWithImage:image scaledToSize:pointSize];
-    }
-    return image;
-}
-
-+ (UIImage *)imageWithImage:(UIImage *)image aspectFillPixelSize:(CGSize)boundsSize {
-    CGSize imageSize = DFImageBitmapPixelSize(image);
-    CGFloat scale = DFAspectFillScale(imageSize, boundsSize);
-    if (scale < 1.0) {
-        CGSize scaledSize = DFSizeScaled(imageSize, scale);
-        CGSize pointSize = DFSizeFromPixelSize(scaledSize);
-        return [self imageWithImage:image scaledToSize:pointSize];
-    }
-    return image;
-}
-
-+ (UIImage *)imageWithImage:(UIImage *)image scaledToSize:(CGSize)boundsSize {
-    CGSize roundedSize = CGSizeMake((CGFloat)floor(boundsSize.width), (CGFloat)floor(boundsSize.height));
-    UIGraphicsBeginImageContextWithOptions(roundedSize, NO, 0.0);
-    [image drawInRect:CGRectMake(0, 0, roundedSize.width, roundedSize.height)];
-    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    return newImage;
-}
-
 + (UIImage *)croppedImageWithImage:(UIImage *)image normalizedCropRect:(CGRect)inputCropRect {
     CGRect cropRect = inputCropRect;
     
@@ -198,17 +157,6 @@
     UIImage *decompressedImage = [UIImage imageWithCGImage:decompressedImageRef scale:image.scale orientation:image.imageOrientation];
     CGImageRelease(decompressedImageRef);
     return decompressedImage;
-}
-
-#pragma mark - Corners
-
-+ (UIImage *)imageWithImage:(UIImage *)image cornerRadius:(CGFloat)cornerRadius {
-    UIGraphicsBeginImageContextWithOptions(image.size, NO, 0);
-    [[UIBezierPath bezierPathWithRoundedRect:(CGRect){CGPointZero, image.size} cornerRadius:cornerRadius] addClip];
-    [image drawInRect:(CGRect){CGPointZero, image.size}];
-    UIImage *processedImage = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    return processedImage;
 }
 
 @end

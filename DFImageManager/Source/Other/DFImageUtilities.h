@@ -49,52 +49,19 @@ DFPixelSizeFromSize(CGSize size) {
     return CGSizeMake(size.width * scale, size.height * scale);
 }
 
-
-static inline CGSize
-DFSizeFromPixelSize(CGSize size) {
-    CGFloat scale = [UIScreen mainScreen].scale;
-    return CGSizeMake(size.width / scale, size.height / scale);
-}
-
 static inline CGSize
 DFImageBitmapPixelSize(UIImage *image) {
     return CGSizeMake(CGImageGetWidth(image.CGImage), CGImageGetHeight(image.CGImage));
 }
 
-static inline CGSize
-DFImagePixelSize(UIImage *image) {
-    return CGSizeMake(image.size.width * image.scale, image.size.height * image.scale);
-}
-
 
 @interface DFImageUtilities : NSObject
-
-#pragma mark - Image Scaling
-
-// decompress given image and draw in a given size
-
-// Points
-+ (UIImage *)imageWithImage:(UIImage *)image scaledToSize:(CGSize)size;
-+ (UIImage *)imageWithImage:(UIImage *)image aspectFitSize:(CGSize)size;
-+ (UIImage *)imageWithImage:(UIImage *)image aspectFillSize:(CGSize)size;
-
-// Pixels
-+ (UIImage *)imageWithImage:(UIImage *)image aspectFitPixelSize:(CGSize)size;
-+ (UIImage *)imageWithImage:(UIImage *)image aspectFillPixelSize:(CGSize)size;
-
-#pragma mark - Crop
 
 + (UIImage *)croppedImageWithImage:(UIImage *)image normalizedCropRect:(CGRect)cropRect;
 + (UIImage *)croppedImageWithImage:(UIImage *)image aspectFillPixelSize:(CGSize)size;
 
-#pragma mark - Decompressing
-
 + (UIImage *)decompressedWithImage:(UIImage *)image;
 + (UIImage *)decompressedImageWithImage:(UIImage *)image aspectFitPixelSize:(CGSize)size;
 + (UIImage *)decompressedImageWithImage:(UIImage *)image aspectFillPixelSize:(CGSize)size;
-
-#pragma mark - Corners
-
-+ (UIImage *)imageWithImage:(UIImage *)image cornerRadius:(CGFloat)cornerRadius;
 
 @end
