@@ -29,6 +29,13 @@
 #import <Photos/Photos.h>
 
 
+@interface DFPhotosKitImageFetchOperation ()
+
+@property (nonatomic, getter = isExecuting) BOOL executing;
+@property (nonatomic, getter = isFinished) BOOL finished;
+
+@end
+
 @implementation DFPhotosKitImageFetchOperation {
     PHAsset *_asset;
     NSURL *_assetURL;
@@ -37,6 +44,9 @@
     DFPhotosKitImageRequestOptions *_options;
     PHImageRequestID _requestID;
 }
+
+@synthesize executing = _executing;
+@synthesize finished = _finished;
 
 - (instancetype)initWithRequest:(DFImageRequest *)request {
     if (self = [super init]) {
@@ -56,13 +66,20 @@
 
 - (void)start {
     @synchronized(self) {
-        [super start];
+        self.executing = YES;
         if (self.isCancelled) {
             [self finish];
         } else {
             [self _fetch];
         }
     }
+}
+
+- (void)finish {
+    if (_executing) {
+        self.executing = NO;
+    }
+    self.finished = YES;
 }
 
 - (void)_fetch {
@@ -129,6 +146,18 @@
             }
         }
     }
+}
+
+- (void)setFinished:(BOOL)finished {
+    [self willChangeValueForKey:@"isFinished"];
+    _finished = finished;
+    [self didChangeValueForKey:@"isFinished"];
+}
+
+- (void)setExecuting:(BOOL)executing {
+    [self willChangeValueForKey:@"isExecuting"];
+    _executing = executing;
+    [self didChangeValueForKey:@"isExecuting"];
 }
 
 @end

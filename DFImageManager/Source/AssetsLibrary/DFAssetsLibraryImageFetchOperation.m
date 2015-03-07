@@ -26,10 +26,20 @@
 #import <UIKit/UIKit.h>
 
 
+@interface DFAssetsLibraryImageFetchOperation ()
+
+@property (nonatomic, getter = isExecuting) BOOL executing;
+@property (nonatomic, getter = isFinished) BOOL finished;
+
+@end
+
 @implementation DFAssetsLibraryImageFetchOperation {
     ALAsset *_asset;
     NSURL *_assetURL;
 }
+
+@synthesize executing = _executing;
+@synthesize finished = _finished;
 
 - (instancetype)init {
     if (self = [super init]) {
@@ -53,10 +63,8 @@
     return self;
 }
 
-#pragma mark - Operation
-
 - (void)start {
-    [super start];
+    self.executing = YES;
     
     if (self.isCancelled) {
         [self finish];
@@ -72,6 +80,13 @@
             [self _startFetching];
         }
     }
+}
+
+- (void)finish {
+    if (_executing) {
+        self.executing = NO;
+    }
+    self.finished = YES;
 }
 
 - (void)_startFetching {
@@ -146,6 +161,18 @@
 - (void)_didFailWithError:(NSError *)error {
     _error = error;
     [self finish];
+}
+
+- (void)setFinished:(BOOL)finished {
+    [self willChangeValueForKey:@"isFinished"];
+    _finished = finished;
+    [self didChangeValueForKey:@"isFinished"];
+}
+
+- (void)setExecuting:(BOOL)executing {
+    [self willChangeValueForKey:@"isExecuting"];
+    _executing = executing;
+    [self didChangeValueForKey:@"isExecuting"];
 }
 
 @end

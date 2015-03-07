@@ -20,7 +20,6 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "DFOperation.h"
 #import <Foundation/Foundation.h>
 
 @class DFImageResponse;
@@ -28,7 +27,7 @@
 
 /*! The operation the implements fetching of image representation  for images using Photos Kit framework.
  */
-NS_CLASS_AVAILABLE_IOS(8_0) @interface DFPhotosKitImageFetchOperation : DFOperation
+NS_CLASS_AVAILABLE_IOS(8_0) @interface DFPhotosKitImageFetchOperation : NSOperation
 
 @property (nonatomic, readonly) DFImageResponse *response;
 

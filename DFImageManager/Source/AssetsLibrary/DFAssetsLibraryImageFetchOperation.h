@@ -21,7 +21,6 @@
 // THE SOFTWARE.
 
 #import "DFAssetsLibraryUtilities.h"
-#import "DFOperation.h"
 #import <Foundation/Foundation.h>
 
 @class UIImage;
@@ -30,7 +29,7 @@
 
 /*! The operation the implements fetching of image representation of instances of ALAsset class.
  */
-@interface DFAssetsLibraryImageFetchOperation : DFOperation
+@interface DFAssetsLibraryImageFetchOperation : NSOperation
 
 /*! The image size. Default value is DFALAssetImageSizeThumbnail.
  */

@@ -66,7 +66,6 @@ FOUNDATION_EXPORT const unsigned char DFImageManagerFrameworkVersionString[];
 // Utilities
 
 #import <DFImageManagerKit/DFCollectionViewPreheatingController.h>
-#import <DFImageManagerKit/DFOperation.h>
 #import <DFImageManagerKit/DFImageUtilities.h>
 #import <DFImageManagerKit/DFImageManagerBlockValueTransformer.h>
 #import <DFImageManagerKit/DFNetworkReachability.h>
