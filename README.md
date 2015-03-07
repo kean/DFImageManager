@@ -3,12 +3,12 @@
 </p>
 <h1 align="center">DFImageManager</h1>
 
-Modern iOS framework for fetching images from various sources. It uses latest advancements in iOS SDK and doesn't reinvent existing technologies. It provides a powerful API that will extend the capabilities of your app.
+Modern iOS framework for fetching images from various sources. It uses latest advancements in iOS SDK and doesn't reinvent existing technologies.
 
 #### Supported Resources
-- `NSURL` with **http**, **https**, **ftp**, **file**, and **data** schemes
-- `PHAsset` and `NSURL` with **com.github.kean.photos-kit** scheme
-- `DFALAsset`, `ALAsset` and `NSURL` with **assets-library** scheme
+- NSURL with http, https, ftp, file, and data schemes
+- PHAsset and NSURL with com.github.kean.photos-kit scheme
+- DFALAsset, ALAsset and NSURL with assets-library scheme
 
 ## Features
 - Zero config, yet immense customization and extensibility.
@@ -124,21 +124,19 @@ PHAsset *asset = ...;
 ```
 
 ```objective-c
-// You can use easily serializable asset NSURL for fetching too
 NSURL *assetURL = [NSURL df_assetURLWithAsset:asset];
     
-// There are Photos Kit-specific options as well
+// There are Photos Kit specific options as well
 DFPhotosKitImageRequestOptions *options = [DFPhotosKitImageRequestOptions new];
 options.version = PHImageRequestOptionsVersionUnadjusted;
 options.deliveryMode = PHImageRequestOptionsDeliveryModeHighQualityFormat;
 
-// Use full power of polymorphism
 DFImageRequest *request = [[DFImageRequest alloc] initWithResource:assetURL targetSize:DFImageMaximumSize contentMode:DFImageContentModeAspectFill options:options];
 ```
 
 #### What's more
 
-Those were the most common cases. `DFImageManager` is packed with features. There are much more options for customization and room for extension. For more info check out the complete [documentation](http://cocoadocs.org/docsets/DFImageManager) and project [Wiki](https://github.com/kean/DFImageManager/wiki)
+Those were the most common cases. `DFImageManager` is packed with other features. For more info check out the complete [documentation](http://cocoadocs.org/docsets/DFImageManager) and project [Wiki](https://github.com/kean/DFImageManager/wiki)
 
 ## <a name="install_using_cocopods"></a>Installation with [CocoaPods](http://cocoapods.org)
 
@@ -169,9 +167,6 @@ pod 'DFImageManager'
 </a>
 <a href="https://www.linkedin.com/pub/alexander-grebenyuk/83/b43/3a0">
 <img src="https://cloud.githubusercontent.com/assets/1567433/6521256/20247bc2-c379-11e4-8e9e-417123debb8c.png" height="44" hspace="2"/>
-</a>
-<a href="https://plus.google.com/u/0/113493554871498775842/about">
-<img src="https://cloud.githubusercontent.com/assets/1567433/6521279/ae3ee3d4-c379-11e4-840f-3db177862c7a.png" height="44" hspace="2"/>
 </a>
 
 ## License
