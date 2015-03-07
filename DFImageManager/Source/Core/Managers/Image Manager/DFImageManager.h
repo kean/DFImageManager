@@ -92,7 +92,7 @@
 
  - NSURL with schemes http, https, ftp, file and data
  
- - PHAsset and NSURL with scheme com.github.kean.photos-kit
+ - PHAsset and NSURL with scheme com.github.kean.photos-kit (PhotosKit subspec)
  
  - ALAsset, DFALAsset and NSURL with scheme assets-library
  */

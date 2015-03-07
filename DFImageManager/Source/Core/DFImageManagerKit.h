@@ -46,18 +46,6 @@
 #import "DFURLImageDeserializer.h"
 #import "DFURLHTTPImageDeserializer.h"
 
-#import "DFPhotosKitImageFetcher.h"
-#import "DFPhotosKitImageRequestOptions.h"
-#import "NSURL+DFPhotosKit.h"
-#import "DFPhotosKitImageFetchOperation.h"
-
-#import "DFALAsset.h"
-#import "ALAssetsLibrary+DFImageManager.h"
-#import "DFAssetsLibraryImageFetcher.h"
-#import "DFAssetsLibraryImageRequestOptions.h"
-#import "DFAssetsLibraryImageFetchOperation.h"
-#import "DFAssetsLibraryUtilities.h"
-
 #import "DFImageProcessor.h"
 #import "DFProcessingImageFetcher.h"
 #import "DFProcessingInput.h"
@@ -82,8 +70,20 @@
 #import "DFImageManagerBlockValueTransformer.h"
 #import "DFNetworkReachability.h"
 
-// GIF
+
+// Subspec 'PhotosKit'
+#if __has_include("DFImageManager+PhotosKit.h")
+#import "DFImageManager+PhotosKit.h"
+#endif
+
+
+// Subspec 'AssetsLibrary'
+#if __has_include("DFImageManager+AssetsLibrary.h")
+#import "DFImageManager+AssetsLibrary.h"
+#endif
+
+
+// Subspec 'GIF'
 #if __has_include("DFAnimatedImage.h")
 #import "DFAnimatedImage.h"
 #endif
-

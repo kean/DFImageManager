@@ -47,13 +47,6 @@ FOUNDATION_EXPORT const unsigned char DFImageManagerFrameworkVersionString[];
 #import <DFImageManagerKit/NSURL+DFPhotosKit.h>
 #import <DFImageManagerKit/DFPhotosKitImageFetchOperation.h>
 
-#import <DFImageManagerKit/DFALAsset.h>
-#import <DFImageManagerKit/ALAssetsLibrary+DFImageManager.h>
-#import <DFImageManagerKit/DFAssetsLibraryImageFetcher.h>
-#import <DFImageManagerKit/DFAssetsLibraryImageRequestOptions.h>
-#import <DFImageManagerKit/DFAssetsLibraryImageFetchOperation.h>
-#import <DFImageManagerKit/DFAssetsLibraryUtilities.h>
-
 #import <DFImageManagerKit/DFImageProcessor.h>
 #import <DFImageManagerKit/DFProcessingImageFetcher.h>
 #import <DFImageManagerKit/DFProcessingInput.h>
@@ -78,5 +71,11 @@ FOUNDATION_EXPORT const unsigned char DFImageManagerFrameworkVersionString[];
 #import <DFImageManagerKit/DFImageManagerBlockValueTransformer.h>
 #import <DFImageManagerKit/DFNetworkReachability.h>
 
-// GIF
+// Subspec 'PhotosKit'
+#import <DFImageManagerKit/DFImageManager+PhotosKit.h>
+
+// Subspec 'AssetsLibrary'
+#import <DFImageManagerKit/DFImageManager+AssetsLibrary.h>
+
+// Subspec 'GIF'
 #import <DFImageManagerKit/DFAnimatedImage.h>

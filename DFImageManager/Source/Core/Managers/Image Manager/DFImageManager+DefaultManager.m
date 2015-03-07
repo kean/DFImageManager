@@ -20,22 +20,30 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "DFALAsset.h"
-#import "DFAssetsLibraryImageFetcher.h"
 #import "DFCompositeImageManager.h"
 #import "DFImageCache.h"
 #import "DFImageManager.h"
 #import "DFImageManagerConfiguration.h"
 #import "DFImageProcessor.h"
-#import "DFPhotosKitImageFetcher.h"
 #import "DFProxyImageManager.h"
 #import "DFURLImageFetcher.h"
+
+#if __has_include("DFImageManager+PhotosKit.h")
+#import "DFPhotosKitImageFetcher.h"
+#endif
+
+#if __has_include("DFImageManager+AssetsLibrary.h")
+#import "DFALAsset.h"
+#import "DFAssetsLibraryImageFetcher.h"
 #import <AssetsLibrary/AssetsLibrary.h>
+#endif
 
 
 @implementation DFImageManager (DefaultManager)
 
 + (id<DFImageManagingCore>)createDefaultManager {
+    NSMutableArray *managers = [NSMutableArray new];
+    
     DFImageProcessor *processor = [DFImageProcessor new];
     DFImageCache *cache = [DFImageCache new];
     
@@ -46,18 +54,23 @@
         NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
         // See https://github.com/kean/DFImageManager/wiki/Image-Caching-Guide for more info on image caching and NSURLCache
         configuration.URLCache = URLCache;
-            
+        
         DFURLImageFetcher *fetcher = [[DFURLImageFetcher alloc] initWithSessionConfiguration:configuration];
         [[DFImageManager alloc] initWithConfiguration:[DFImageManagerConfiguration configurationWithFetcher:fetcher processor:processor cache:cache]];
     });
+    [managers addObject:URLImageManager];
     
+#if __has_include("DFImageManager+PhotosKit.h")
     DFImageManager *photosKitImageManager = ({
         DFPhotosKitImageFetcher *fetcher = [DFPhotosKitImageFetcher new];
         
         // We don't need image decompression, because PHImageManager does it for us.
         [[DFImageManager alloc] initWithConfiguration:[DFImageManagerConfiguration configurationWithFetcher:fetcher processor:nil cache:cache]];
     });
+    [managers addObject:photosKitImageManager];
+#endif
     
+#if __has_include("DFImageManager+AssetsLibrary.h")
     id<DFImageManagingCore> assetsLibraryImageManager = ({
         DFAssetsLibraryImageFetcher *fetcher = [DFAssetsLibraryImageFetcher new];
         
@@ -74,8 +87,10 @@
         }];
         proxy;
     });
+    [managers addObject:assetsLibraryImageManager];
+#endif
     
-    DFCompositeImageManager *compositeImageManager = [[DFCompositeImageManager alloc] initWithImageManagers:@[ URLImageManager, photosKitImageManager, assetsLibraryImageManager ]];
+    DFCompositeImageManager *compositeImageManager = [[DFCompositeImageManager alloc] initWithImageManagers:managers];
     
     return compositeImageManager;
 }

@@ -12,8 +12,17 @@ Pod::Spec.new do |s|
     s.requires_arc = true
 
     s.subspec "Core" do |ss|
-        ss.source_files  = "DFImageManager/Source/**/*.{h,m}"
-        ss.exclude_files = "DFImageManager/Source/GIF/**/*.{h,m}"
+        ss.source_files  = "DFImageManager/Source/Core/**/*.{h,m}"
+    end
+
+    s.subspec "PhotosKit" do |ss|
+        ss.dependency "DFImageManager/Core"
+        ss.source_files = "DFImageManager/Source/PhotosKit/**/*.{h,m}"
+    end
+
+    s.subspec "AssetsLibrary" do |ss|
+        ss.dependency "DFImageManager/Core"
+        ss.source_files = "DFImageManager/Source/AssetsLibrary/**/*.{h,m}"
     end
 
     s.subspec "GIF" do |ss|

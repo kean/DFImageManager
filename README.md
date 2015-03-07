@@ -7,8 +7,8 @@ Modern iOS framework for fetching images from various sources. It uses latest ad
 
 #### Supported Resources
 - `NSURL` with **http**, **https**, **ftp**, **file**, and **data** schemes
-- `PHAsset`, `NSURL` with **com.github.kean.photos-kit** scheme
-- `DFALAsset`, `ALAsset`, `NSURL` with **assets-library** scheme
+- `PHAsset`, `NSURL` with **com.github.kean.photos-kit** scheme (`PhotosKit` subspec)
+- `DFALAsset`, `ALAsset`, `NSURL` with **assets-library** scheme (`AssetsLibrary` subspec)
 
 ## Features
 - Zero config, yet immense customization and extensibility.
