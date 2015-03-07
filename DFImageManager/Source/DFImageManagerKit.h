@@ -66,7 +66,6 @@
 #import "DFCachedImage.h"
 #import "NSCache+DFImageManager.h"
 
-#import "DFImageFetchOperation.h"
 #import "DFCompositeImageFetchOperation.h"
 
 // UI

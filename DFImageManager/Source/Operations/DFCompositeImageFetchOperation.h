@@ -30,7 +30,6 @@
 
 
 /*! The execution context of the image request inside the composite request.
- @note The DFImageFetchOperation is not used here for performance reasons.
  */
 @interface DFCompositeImageRequestContext : NSObject
 
@@ -43,7 +42,6 @@
 
 /*! The DFCompositeImageFetchOperation manages execution of multiple image requests. Provides a single completion block that gets called multiple times (similar to PHImageManager completion handler for opportunistic requests). All requests are executed concurrently.
  @note By default, DFCompositeImageFetchOperation does not call its completion handler for each of the completed requests. Instead, it does just what you would expect - it treats the array of the requests as if the last request was the final image that you would want to display, while the others were the placeholders. The completion handler is guaranteed to be called at least once, even if all of the requests have failed. It also automatically cancels obsolete requests. The entire behavior can be disabled by setting allowsObsoleteRequests property to NO before starting the composite operation.
-  @note The DFCompositeImageFetchOperation doesn't use DFImageFetchOperation for performance reasons, the overhead of the composite operation should be as low as possible.
  */
 @interface DFCompositeImageFetchOperation : NSObject
 
@@ -83,7 +81,7 @@
  */
 @property (nonatomic, readonly) BOOL isFinished;
 
-/*! Start all the requests. The requests are wrapped into DFImageFetchOperation objects and executed on the receiver's operation queue.
+/*! Start all the requests.
  */
 - (void)start;
 
