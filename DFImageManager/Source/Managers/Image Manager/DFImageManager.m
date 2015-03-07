@@ -40,19 +40,15 @@
 
 #pragma mark - _DFImageRequestID -
 
-/*! Private DFImageRequestID implementation used by DFImageManager.
- */
 @interface _DFImageRequestID : DFImageRequestID
 
 /*! Image manager that originated request ID.
  */
 @property (nonatomic, weak, readonly) id<DFImageManagingCore> imageManager;
-
 @property (nonatomic, readonly) NSUUID *taskID;
 @property (nonatomic, readonly) NSUUID *handlerID;
 
 - (instancetype)initWithImageManager:(id<DFImageManagingCore>)imageManager;
-
 - (void)setTaskID:(NSUUID *)taskID handlerID:(NSUUID *)handlerID;
 
 @end
@@ -134,7 +130,7 @@
 
 @class _DFImageRequestKey;
 
-/*! The implementation of key comparer. Keys are only compared when they have the same delegate instance.
+/*! The delegate that implements key comparing.
  */
 @protocol _DFImageRequestKeyDelegate <NSObject>
 
@@ -149,9 +145,9 @@
 
 @property (nonatomic, readonly) DFImageRequest *request;
 @property (nonatomic, readonly) BOOL isCacheKey;
-@property (nonatomic, weak) id<_DFImageRequestKeyDelegate> delegate;
+@property (nonatomic, weak, readonly) id<_DFImageRequestKeyDelegate> delegate;
 
-- (instancetype)initWithRequest:(DFImageRequest *)request isCacheKey:(BOOL)isCacheKey;
+- (instancetype)initWithRequest:(DFImageRequest *)request isCacheKey:(BOOL)isCacheKey delegate:(id<_DFImageRequestKeyDelegate>)delegate;
 
 @end
 
@@ -159,11 +155,12 @@
     NSUInteger _hash;
 }
 
-- (instancetype)initWithRequest:(DFImageRequest *)request isCacheKey:(BOOL)isCacheKey {
+- (instancetype)initWithRequest:(DFImageRequest *)request isCacheKey:(BOOL)isCacheKey delegate:(id<_DFImageRequestKeyDelegate>)delegate {
     if (self = [super init]) {
         _request = request;
         _hash = [request.resource hash];
         _isCacheKey = isCacheKey;
+        _delegate = delegate;
     }
     return self;
 }
@@ -187,13 +184,6 @@
 }
 
 @end
-
-static inline _DFImageRequestKey *
-_DFImageKeyCreate(DFImageRequest *request, BOOL isCacheKey, id<_DFImageRequestKeyDelegate> delegate) {
-    _DFImageRequestKey *key = [[_DFImageRequestKey alloc] initWithRequest:request isCacheKey:isCacheKey];
-    key.delegate = delegate;
-    return key;
-}
 
 
 #pragma mark - _DFImageManagerTask -
@@ -239,10 +229,7 @@ _DFImageKeyCreate(DFImageRequest *request, BOOL isCacheKey, id<_DFImageRequestKe
 
 @property (nonatomic, weak) id<_DFImageManagerTaskDelegate> delegate;
 
-@property (nonatomic) id<DFImageFetching> fetcher;
-@property (nonatomic) id<DFImageManagingCore> processingManager;
-
-- (instancetype)initWithTaskID:(NSUUID *)taskID request:(DFImageRequest *)request NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithTaskID:(NSUUID *)taskID request:(DFImageRequest *)request fetcher:(id<DFImageFetching>)fecher processingManager:(id<DFImageManagingCore>)processingManager NS_DESIGNATED_INITIALIZER;
 
 - (void)resume;
 - (void)cancel;
@@ -263,6 +250,9 @@ _DFImageKeyCreate(DFImageRequest *request, BOOL isCacheKey, id<_DFImageRequestKe
         unsigned int isReportingProgress:1;
     } _flags;
     
+    id<DFImageFetching> _fetcher;
+    id<DFImageManagingCore> _processingManager;
+    
     // Fetch
     NSOperation *__weak _fetchOperation;
     DFImageResponse *_fetchResponse;
@@ -271,10 +261,12 @@ _DFImageKeyCreate(DFImageRequest *request, BOOL isCacheKey, id<_DFImageRequestKe
     NSMutableDictionary /* NSUUID *handlerID : DFImageRequestID *processingRequestID */ *_processingRequestIDs;
 }
 
-- (instancetype)initWithTaskID:(NSUUID *)taskID request:(DFImageRequest *)request {
+- (instancetype)initWithTaskID:(NSUUID *)taskID request:(DFImageRequest *)request fetcher:(id<DFImageFetching>)fecher processingManager:(id<DFImageManagingCore>)processingManager {
     if (self = [super init]) {
         _taskID = taskID;
         _request = request;
+        _fetcher = fecher;
+        _processingManager = processingManager;
         _handlers = [NSMutableDictionary new];
         _processingRequestIDs = [NSMutableDictionary new];
     }
@@ -348,7 +340,7 @@ _DFImageKeyCreate(DFImageRequest *request, BOOL isCacheKey, id<_DFImageRequestKe
 }
 
 - (void)_didUpdateFetchProgress:(double)progress {
-    /*! Performance optimization for users that are not interested in progress reporting. Lower DFImageManager's internal queue usage.
+    /*! Performance optimization for users that are not interested in progress reporting. Reduces DFImageManager internal queue usage.
      */
     if (_flags.isReportingProgress) {
         [self.delegate task:self didUpdateProgress:progress];
@@ -360,7 +352,7 @@ _DFImageKeyCreate(DFImageRequest *request, BOOL isCacheKey, id<_DFImageRequestKe
         if (shouldContinue) {
             _fetchResponse = response;
             NSAssert(self.handlers.count > 0, @"Internal inconsistency");
-            for (_DFImageManagerHandler *handler in [self.handlers allValues]) {
+            for (_DFImageManagerHandler *handler in self.handlers.allValues) {
                 [self _processResponseForHandler:handler];
             }
         }
@@ -376,7 +368,7 @@ _DFImageKeyCreate(DFImageRequest *request, BOOL isCacheKey, id<_DFImageRequestKe
         shouldProcessResponse = NO;
     }
 #endif
-    if (shouldProcessResponse && self.processingManager && _fetchResponse.image) {
+    if (shouldProcessResponse && _processingManager && _fetchResponse.image) {
         _DFImageManagerTask *__weak weakSelf = self;
         [self _processImage:_fetchResponse.image forHandler:handler completion:^(UIImage *image) {
             DFMutableImageResponse *response = [[DFMutableImageResponse alloc] initWithResponse:_fetchResponse];
@@ -452,7 +444,7 @@ _DFImageKeyCreate(DFImageRequest *request, BOOL isCacheKey, id<_DFImageRequestKe
 }
 
 - (NSString *)description {
-    return [NSString stringWithFormat:@"<%@ %p> { isExecuting = %i, isPreheating = %i }", [self class], self, self.isExecuting, self.isPreheating];
+    return [NSString stringWithFormat:@"<%@ %p> { executing:%i, fetching:%i, preheating:%i }", [self class], self, self.isExecuting, _flags.isFetching, self.isPreheating];
 }
 
 @end
@@ -460,8 +452,8 @@ _DFImageKeyCreate(DFImageRequest *request, BOOL isCacheKey, id<_DFImageRequestKe
 
 #pragma mark - DFImageManager -
 
-#define DFImageCacheKeyCreate(request) _DFImageKeyCreate(request, YES,  self)
-#define DFImageRequestKeyCreate(request) _DFImageKeyCreate(request, NO, self)
+#define DFImageCacheKeyCreate(request) [[_DFImageRequestKey alloc] initWithRequest:request isCacheKey:YES delegate:self]
+#define DFImageRequestKeyCreate(request) [[_DFImageRequestKey alloc] initWithRequest:request isCacheKey:NO delegate:self]
 
 @interface DFImageManager () <_DFImageManagerTaskDelegate, _DFImageRequestKeyDelegate>
 
@@ -561,9 +553,7 @@ _DFImageKeyCreate(DFImageRequest *request, BOOL isCacheKey, id<_DFImageRequestKe
     
     _DFImageManagerTask *task = _tasks[requestID.taskID];
     if (!task) {
-        task = [[_DFImageManagerTask alloc] initWithTaskID:requestID.taskID request:request];
-        task.fetcher = _conf.fetcher;
-        task.processingManager = _processingManager;
+        task = [[_DFImageManagerTask alloc] initWithTaskID:requestID.taskID request:request fetcher:_conf.fetcher processingManager:_processingManager];
         task.delegate = self;
         _tasks[requestID.taskID] = task;
         _taskIDs[DFImageRequestKeyCreate(request)] = task.taskID;
@@ -600,19 +590,19 @@ _DFImageKeyCreate(DFImageRequest *request, BOOL isCacheKey, id<_DFImageRequestKe
     }
 }
 
-/*! Image manager will not execute preheating tasks until there is a least one normal executing tasks. There number of concurrent preheating tasks is limited.
+/*! Image manager will not execute preheating tasks until there is a least one regular executing task left. The number of concurrent preheating tasks is limited.
  */
 - (void)_executePreheatingTasksIfNecesary {
     NSArray *executingTasks = [_tasks.allValues filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"isExecuting = YES"]];
     if (executingTasks.count < _conf.maximumConcurrentPreheatingRequests) {
-        BOOL isExecutingNormalTasks = NO;
+        BOOL isExecutingRegularTasks = NO;
         for (_DFImageManagerTask *task in executingTasks) {
             if (!task.isPreheating) {
-                isExecutingNormalTasks = YES;
+                isExecutingRegularTasks = YES;
                 break;
             }
         }
-        if (!isExecutingNormalTasks) {
+        if (!isExecutingRegularTasks) {
             NSArray *pendingTasks = [_tasks.allValues filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"isExecuting = NO"]];
             NSUInteger executingTaskCount = executingTasks.count;
             for (_DFImageManagerTask *task in pendingTasks) {
@@ -647,9 +637,7 @@ _DFImageKeyCreate(DFImageRequest *request, BOOL isCacheKey, id<_DFImageRequestKe
                 void (^progressHandler)(double) = handler.request.options.progressHandler;
                 if (progressHandler) {
                     dispatch_async(dispatch_get_main_queue(), ^{
-                        if (progressHandler) {
-                            progressHandler(progress);
-                        }
+                        progressHandler(progress);
                     });
                 }
             }];
@@ -664,24 +652,22 @@ _DFImageKeyCreate(DFImageRequest *request, BOOL isCacheKey, id<_DFImageRequestKe
             if (task.handlers.count == 0) {
                 [self _removeTask:task];
             }
-            NSMutableDictionary *mutableInfo = [NSMutableDictionary dictionaryWithDictionary:[self _infoFromResponse:response]];
-            mutableInfo[DFImageInfoRequestIDKey] = handler.requestID;
-            dispatch_async(dispatch_get_main_queue(), ^{
-                if (handler.completion) {
-                    handler.completion(response.image, mutableInfo);
-                }
-            });
+            if (handler.completion) {
+                NSMutableDictionary *responseInfo = ({
+                    NSMutableDictionary *info = [NSMutableDictionary new];
+                    if (response.error) {
+                        info[DFImageInfoErrorKey] = response.error;
+                    }
+                    [info addEntriesFromDictionary:response.userInfo];
+                    info[DFImageInfoRequestIDKey] = handler.requestID;
+                    info;
+                });
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    handler.completion(response.image, responseInfo);
+                });
+            }
         }
     });
-}
-
-- (NSDictionary *)_infoFromResponse:(DFImageResponse *)response {
-    NSMutableDictionary *info = [NSMutableDictionary new];
-    if (response.error) {
-        info[DFImageInfoErrorKey] = response.error;
-    }
-    [info addEntriesFromDictionary:response.userInfo];
-    return [info copy];
 }
 
 - (UIImage *)task:(_DFImageManagerTask *)task cachedImageForRequest:(DFImageRequest *)request {
@@ -749,8 +735,9 @@ _DFImageKeyCreate(DFImageRequest *request, BOOL isCacheKey, id<_DFImageRequestKe
         dispatch_async(_syncQueue, ^{
             _DFImageManagerTask *task = _tasks[requestID.taskID];
             _DFImageManagerHandler *handler = task.handlers[requestID.handlerID];
-            if (handler.request.options.priority != priority) {
-                handler.request.options.priority = priority;
+            DFImageRequestOptions *options = handler.request.options;
+            if (options.priority != priority) {
+                options.priority = priority;
                 [task updatePriority];
             }
         });
@@ -762,11 +749,7 @@ _DFImageKeyCreate(DFImageRequest *request, BOOL isCacheKey, id<_DFImageRequestKe
 - (void)startPreheatingImagesForRequests:(NSArray *)requests {
     if (requests.count > 0) {
         dispatch_async(_syncQueue, ^{
-            NSMutableArray *canonicalRequests = [[NSMutableArray alloc] initWithCapacity:requests.count];
-            for (DFImageRequest *request in requests) {
-                [canonicalRequests addObject:[self _canonicalRequestForRequest:request]];
-            }
-            [self _startPreheatingImageForRequests:canonicalRequests];
+            [self _startPreheatingImageForRequests:[self _canonicalRequestsForRequests:requests]];
         });
     }
 }
@@ -775,7 +758,7 @@ _DFImageKeyCreate(DFImageRequest *request, BOOL isCacheKey, id<_DFImageRequestKe
     for (DFImageRequest *request in requests) {
         NSUUID *taskID = _taskIDs[DFImageRequestKeyCreate(request)];
         _DFImageManagerTask *task = _tasks[taskID];
-        if (task == nil || ![self _preheatingHandlerForRequest:request task:task]) {
+        if (!task || ![self _preheatingHandlerForRequest:request task:task]) {
             _DFImageRequestID *requestID = [[_DFImageRequestID alloc] initWithImageManager:self];
             [requestID setTaskID:taskID ?: [NSUUID UUID] handlerID:[NSUUID UUID]];
             _DFImageManagerPreheatHandler *handler = [[_DFImageManagerPreheatHandler alloc] initWithRequest:request requestID:requestID completion:nil];
@@ -787,11 +770,7 @@ _DFImageKeyCreate(DFImageRequest *request, BOOL isCacheKey, id<_DFImageRequestKe
 - (void)stopPreheatingImagesForRequests:(NSArray *)requests {
     if (requests.count > 0) {
         dispatch_async(_syncQueue, ^{
-            NSMutableArray *canonicalRequests = [[NSMutableArray alloc] initWithCapacity:requests.count];
-            for (DFImageRequest *request in requests) {
-                [canonicalRequests addObject:[self _canonicalRequestForRequest:request]];
-            }
-            [self _stopPreheatingImagesForRequests:canonicalRequests];
+            [self _stopPreheatingImagesForRequests:[self _canonicalRequestsForRequests:requests]];
         });
     }
 }
@@ -805,6 +784,28 @@ _DFImageKeyCreate(DFImageRequest *request, BOOL isCacheKey, id<_DFImageRequestKe
             [self _cancelRequestWithID:handler.requestID];
         }
     }
+}
+
+- (NSArray *)_canonicalRequestsForRequests:(NSArray *)requests {
+    NSMutableArray *canonicalRequests = [[NSMutableArray alloc] initWithCapacity:requests.count];
+    for (DFImageRequest *request in requests) {
+        DFImageRequest *canonicalRequest = [self _canonicalRequestForRequest:request];
+        if (canonicalRequest) {
+            [canonicalRequests addObject:canonicalRequest];
+        }
+    }
+    return canonicalRequests;
+}
+
+- (_DFImageManagerPreheatHandler *)_preheatingHandlerForRequest:(DFImageRequest *)request task:(_DFImageManagerTask *)task {
+    for (_DFImageManagerHandler *handler in task.handlers.allValues) {
+        if ([handler isKindOfClass:[_DFImageManagerPreheatHandler class]]) {
+            if (!_conf.processor || [_conf.processor isProcessingForRequestEquivalent:handler.request toRequest:request]) {
+                return (_DFImageManagerPreheatHandler *)handler;
+            }
+        }
+    }
+    return nil;
 }
 
 - (void)stopPreheatingImagesForAllRequests {
@@ -823,28 +824,15 @@ _DFImageKeyCreate(DFImageRequest *request, BOOL isCacheKey, id<_DFImageRequestKe
     });
 }
 
-- (_DFImageManagerPreheatHandler *)_preheatingHandlerForRequest:(DFImageRequest *)request task:(_DFImageManagerTask *)task {
-    for (_DFImageManagerHandler *handler in task.handlers.allValues) {
-        if ([handler isKindOfClass:[_DFImageManagerPreheatHandler class]]) {
-            if (_conf.processor == nil || [_conf.processor isProcessingForRequestEquivalent:handler.request toRequest:request]) {
-                return (_DFImageManagerPreheatHandler *)handler;
-            }
-        }
-    }
-    return nil;
-}
-
 #pragma mark - Dependency Injectors
 
 static id<DFImageManaging> _sharedManager;
 
++ (void)initialize {
+    _sharedManager = [self createDefaultManager];
+}
+
 + (id<DFImageManaging>)sharedManager {
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        if (!_sharedManager) {
-            _sharedManager = [self createDefaultManager];
-        }
-    });
     return _sharedManager;
 }
 
