@@ -20,13 +20,13 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "DFCompositeImageFetchOperation.h"
+#import "DFImageFetchTask.h"
 #import "DFImageManager.h"
 #import "DFImageRequest.h"
 #import "DFImageRequestID.h"
 
 
-@interface DFCompositeImageRequestContext ()
+@interface DFImageRequestContext ()
 
 @property (nonatomic) DFImageRequestID *requestID;
 
@@ -34,7 +34,7 @@
 
 @end
 
-@implementation DFCompositeImageRequestContext
+@implementation DFImageRequestContext
 
 - (void)completeWithImage:(UIImage *)image info:(NSDictionary *)info {
     _isCompleted = YES;
@@ -45,13 +45,12 @@
 @end
 
 
-@implementation DFCompositeImageFetchOperation {
+@implementation DFImageFetchTask {
     NSMapTable *_contexts;
     void (^_handler)(UIImage *, NSDictionary *, DFImageRequest *);
     
     // Optimization for single request case
-    DFCompositeImageRequestContext *_context;
-    
+    DFImageRequestContext *_context;
 }
 
 - (instancetype)initWithRequests:(NSArray *)requests handler:(void (^)(UIImage *, NSDictionary *, DFImageRequest *))handler {
@@ -68,8 +67,12 @@
     return self;
 }
 
-+ (DFCompositeImageFetchOperation *)requestImageForRequests:(NSArray *)requests handler:(void (^)(UIImage *, NSDictionary *, DFImageRequest *))handler {
-    DFCompositeImageFetchOperation *request = [[DFCompositeImageFetchOperation alloc] initWithRequests:requests handler:handler];
+- (instancetype)initWithRequest:(DFImageRequest *)request handler:(void (^)(UIImage *, NSDictionary *, DFImageRequest *))handler {
+    return [self initWithRequests:(request ? @[request] : nil) handler:handler];
+}
+
++ (DFImageFetchTask *)requestImageForRequests:(NSArray *)requests handler:(void (^)(UIImage *, NSDictionary *, DFImageRequest *))handler {
+    DFImageFetchTask *request = [[DFImageFetchTask alloc] initWithRequests:requests handler:handler];
     [request start];
     return request;
 }
@@ -80,9 +83,9 @@
 
 - (void)start {
     _startTime = CACurrentMediaTime();
-    DFCompositeImageFetchOperation *__weak weakSelf = self;
+    DFImageFetchTask *__weak weakSelf = self;
     for (DFImageRequest *request in _requests) {
-        DFCompositeImageRequestContext *context =[DFCompositeImageRequestContext new];
+        DFImageRequestContext *context = [DFImageRequestContext new];
         if (_contexts) {
             [_contexts setObject:context forKey:request];
         } else {
@@ -103,7 +106,7 @@
     return YES;
 }
 
-- (DFCompositeImageRequestContext *)contextForRequest:(DFImageRequest *)request {
+- (DFImageRequestContext *)contextForRequest:(DFImageRequest *)request {
     if (_contexts) {
         return [_contexts objectForKey:request];
     } else {
@@ -116,17 +119,17 @@
     [self cancelRequests:_requests];
 }
 
-- (void)cancelRequest:(DFImageRequest *)request {
-    DFCompositeImageRequestContext *context = [self contextForRequest:request];
-    if (!context.isCompleted) {
-        [context completeWithImage:nil info:nil];
-        [context.requestID cancel];
-    }
-}
-
 - (void)cancelRequests:(NSArray *)requests {
     for (DFImageRequest *request in requests) {
         [self cancelRequest:request];
+    }
+}
+
+- (void)cancelRequest:(DFImageRequest *)request {
+    DFImageRequestContext *context = [self contextForRequest:request];
+    if (!context.isCompleted) {
+        [context completeWithImage:nil info:nil];
+        [context.requestID cancel];
     }
 }
 
@@ -137,13 +140,13 @@
 }
 
 - (void)_didFinishRequest:(DFImageRequest *)request image:(UIImage *)image info:(NSDictionary *)info {
-    DFCompositeImageRequestContext *context = [self contextForRequest:request];
+    DFImageRequestContext *context = [self contextForRequest:request];
     [context completeWithImage:image info:info];
     
     if (self.allowsObsoleteRequests) {
-        BOOL isSuccess = [self isRequestSuccessful:request];
-        BOOL isObsolete = [self isRequestObsolete:request];
-        BOOL isFinal = [self isRequestFinal:request];
+        BOOL isSuccess = [self _isRequestSuccessful:request];
+        BOOL isObsolete = [self _isRequestObsolete:request];
+        BOOL isFinal = [self _isRequestFinal:request];
         if ((isSuccess && !isObsolete) || isFinal) {
             if (_handler) {
                 _handler(image, info, request);
@@ -153,9 +156,7 @@
             // Iterate through the 'left' subarray and cancel obsolete requests
             for (NSUInteger i = 0; i < [_requests indexOfObject:request]; i++) {
                 DFImageRequest *obsoleteRequest = _requests[i];
-                if ([self shouldCancelObsoleteRequest:obsoleteRequest]) {
-                    [self cancelRequest:obsoleteRequest];
-                }
+                [self cancelRequest:obsoleteRequest];
             }
         }
     } else {
@@ -165,21 +166,30 @@
     }
 }
 
-- (BOOL)isRequestSuccessful:(DFImageRequest *)inputRequest {
+/*! Returns YES if the request is completed successfully. The request is considered successful if the image was fetched.
+ @param request Request should be contained by the receiver's array of the requests.
+ */
+- (BOOL)_isRequestSuccessful:(DFImageRequest *)inputRequest {
     return [self contextForRequest:inputRequest].image != nil;
 }
 
-- (BOOL)isRequestObsolete:(DFImageRequest *)inputRequest {
+/*! Returns YES if the request is obsolete. The request is considered obsolete if there is at least one successfully completed request in the 'right' subarray of the requests.
+ @param request Request should be contained by the receiver's array of the requests.
+ */
+- (BOOL)_isRequestObsolete:(DFImageRequest *)inputRequest {
     // Iterate throught the 'right' subarray of requests
     for (NSUInteger i = [_requests indexOfObject:inputRequest] + 1; i < _requests.count; i++) {
-        if ([self isRequestSuccessful:_requests[i]]) {
+        if ([self _isRequestSuccessful:_requests[i]]) {
             return YES;
         }
     }
     return NO;
 }
 
-- (BOOL)isRequestFinal:(DFImageRequest *)inputRequest {
+/*! Returns YES if all the requests are completed.
+ @param request Request should be contained by the receiver's array of the requests.
+ */
+- (BOOL)_isRequestFinal:(DFImageRequest *)inputRequest {
     for (DFImageRequest *request in _requests) {
         if (request == inputRequest) {
             continue;
@@ -188,10 +198,6 @@
             return NO;
         }
     }
-    return YES;
-}
-
-- (BOOL)shouldCancelObsoleteRequest:(DFImageRequest *)request {
     return YES;
 }
 

@@ -51,7 +51,7 @@
 #import "DFCompositeImageManager.h"
 #import "DFProxyImageManager.h"
 #import "DFNetworkReachability.h"
-#import "DFCompositeImageFetchOperation.h"
+#import "DFImageFetchTask.h"
 
 // Subspec 'UI'
 #if __has_include("DFImageManager+UI.h")

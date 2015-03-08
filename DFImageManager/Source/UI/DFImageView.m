@@ -20,7 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "DFCompositeImageFetchOperation.h"
+#import "DFImageFetchTask.h"
 #import "DFImageManager.h"
 #import "DFImageManaging.h"
 #import "DFImageRequest.h"
@@ -97,7 +97,7 @@ static const NSTimeInterval _kMinimumAutoretryInterval = 8.f;
 
 - (void)prepareForReuse {
     [self _df_cancelFetching];
-    _operation = nil;
+    _task = nil;
     _previousAutoretryTime = 0.0;
     self.image = nil;
 #if __has_include("DFAnimatedImage.h")
@@ -107,7 +107,7 @@ static const NSTimeInterval _kMinimumAutoretryInterval = 8.f;
 }
 
 - (void)_df_cancelFetching {
-    [_operation cancel];
+    [_task cancel];
 }
 
 - (CGSize)imageTargetSize {
@@ -141,26 +141,24 @@ static const NSTimeInterval _kMinimumAutoretryInterval = 8.f;
     if ([self.delegate respondsToSelector:@selector(imageView:willStartFetchingImagesForRequests:)]) {
         [self.delegate imageView:self willStartFetchingImagesForRequests:requests];
     }
-    
     if (requests.count > 0) {
         if (self.managesRequestPriorities) {
             for (DFImageRequest *request in requests) {
                 request.options.priority = (self.window == nil) ? DFImageRequestPriorityNormal : DFImageRequestPriorityVeryHigh;
             }
         }
-        
         DFImageView *__weak weakSelf = self;
-        _operation = [self createCompositeImageFetchOperationForRequests:requests handler:^(UIImage *image, NSDictionary *info, DFImageRequest *request) {
+        _task = [self createImageFetchTaskForRequests:requests handler:^(UIImage *image, NSDictionary *info, DFImageRequest *request) {
             [weakSelf.delegate imageView:weakSelf didCompleteRequest:request withImage:image info:info];
         }];
-        [_operation start];
+        [_task start];
     } else {
         [self.delegate imageView:self didCompleteRequest:nil withImage:nil info:nil];
     }
 }
 
-- (DFCompositeImageFetchOperation *)createCompositeImageFetchOperationForRequests:(NSArray *)requests handler:(void (^)(UIImage *, NSDictionary *, DFImageRequest *))handler {
-    return [[DFCompositeImageFetchOperation alloc] initWithRequests:requests handler:handler];
+- (DFImageFetchTask *)createImageFetchTaskForRequests:(NSArray *)requests handler:(void (^)(UIImage *, NSDictionary *, DFImageRequest *))handler {
+    return [[DFImageFetchTask alloc] initWithRequests:requests handler:handler];
 }
 
 #pragma mark - Priorities
@@ -169,14 +167,14 @@ static const NSTimeInterval _kMinimumAutoretryInterval = 8.f;
     [super willMoveToWindow:newWindow];
     if (self.managesRequestPriorities) {
         DFImageRequestPriority priority = (newWindow == nil) ? DFImageRequestPriorityNormal : DFImageRequestPriorityVeryHigh;
-        [_operation setPriority:priority];
+        [_task setPriority:priority];
     }
 }
 
 #pragma mark - <DFImageViewDelegate>
 
 - (void)imageView:(DFImageView *)imageView didCompleteRequest:(DFImageRequest *)request withImage:(UIImage *)image info:(NSDictionary *)info {
-    BOOL isFastResponse = (_operation.elapsedTime * 1000.0) < 64.f; // Elapsed time is lower then 64 ms, if we miss 4 frames, that's good enough
+    BOOL isFastResponse = (_task.elapsedTime * 1000.0) < 64.f; // Elapsed time is lower then 64 ms, if we miss 4 frames, that's good enough
     if (self.allowsAnimations && !isFastResponse && !self.image) {
         [self displayImage:image];
         [self.layer addAnimation:({
@@ -200,8 +198,8 @@ static const NSTimeInterval _kMinimumAutoretryInterval = 8.f;
         && reachability.isReachable
         && self.window != nil
         && self.hidden != YES
-        && self.operation.isFinished) {
-        DFCompositeImageRequestContext *context = [self.operation contextForRequest:[self.operation.requests lastObject]];
+        && self.task.isFinished) {
+        DFImageRequestContext *context = [self.task contextForRequest:[self.task.requests lastObject]];
         NSError *error = context.info[DFImageInfoErrorKey];
         if (error && [self _isNetworkConnetionError:error]) {
             [self _attemptRetry];
@@ -212,7 +210,7 @@ static const NSTimeInterval _kMinimumAutoretryInterval = 8.f;
 - (void)_attemptRetry {
     if (_previousAutoretryTime == 0.0 || CACurrentMediaTime() > _previousAutoretryTime + _kMinimumAutoretryInterval) {
         _previousAutoretryTime = CACurrentMediaTime();
-        [self setImageWithRequests:self.operation.requests];
+        [self setImageWithRequests:self.task.requests];
     }
 }
 

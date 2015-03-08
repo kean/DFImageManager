@@ -6,7 +6,7 @@
 Modern iOS framework for fetching images from various sources. It uses latest advancements in iOS SDK and doesn't reinvent existing technologies. It provides a powerful API that will extend the capabilities of your app.
 
 #### Supported Resources
-- `NSURL` with **http**, **https**, **ftp**, **file**, and **data** schemes
+- `NSURL` with **http**, **https**, **ftp**, **file**, and **data** schemes (`NSURLSession` subspec)
 - `PHAsset`, `NSURL` with **com.github.kean.photos-kit** scheme (`PhotosKit` subspec)
 - `DFALAsset`, `ALAsset`, `NSURL` with **assets-library** scheme (`AssetsLibrary` subspec)
 
@@ -26,7 +26,7 @@ Modern iOS framework for fetching images from various sources. It uses latest ad
 
 ## Getting Started
 - Download the latest [release](https://github.com/kean/DFImageManager/releases) version
-- Take a look at the comprehensive [demo](https://github.com/kean/DFImageManager/tree/master/Demo), it's easy to install it with `pod try DFImageManager` command
+- Take a look at the comprehensive [demo](https://github.com/kean/DFImageManager/tree/master/Demo), it's easy to install with `pod try DFImageManager` command
 - Check out the complete [documentation](http://cocoadocs.org/docsets/DFImageManager)
 - View the growing project [Wiki](https://github.com/kean/DFImageManager/wiki)
 - Experiment with the APIs in a Swift playground available in the project
@@ -81,18 +81,23 @@ DFImageRequest *request = [[DFImageRequest alloc] initWithResource:[NSURL URLWit
 }];
 ```
 
-#### Create composite requests from multiple `DFImageRequest` objects
+#### Start multiple requests with a single completion handler
+The `DFImageFetchTask` class manages execution of one or many image requests. It also stores execution state for each request.
 ```objective-c
-DFImageRequest *previewRequest = [[DFImageRequest alloc] initWithResource:[NSURL URLWithString:@"http://preview"]];
-DFImageRequest *fullsizeImageRequest = [[DFImageRequest alloc] initWithResource:[NSURL URLWithString:@"http://fullsize_image"]];
+DFImageRequest *previewRequest = [DFImageRequest requestWithResource:[NSURL URLWithString:@"http://preview"]];
+DFImageRequest *fullsizeRequest = [DFImageRequest requestWithResource:[NSURL URLWithString:@"http://fullsize_image"]];
 
-NSArray *requests = @[ previewRequest, fullsizeImageRequest ];
-[DFCompositeImageFetchOperation requestImageForRequests:requests handler:^(UIImage *image, NSDictionary *info, DFImageRequest *request) {
-  // Handler does just what you would expect
-  // For more info see DFCompositeImageFetchOperation docs
+NSArray *requests = @[ previewRequest, fullsizeRequest ];
+DFImageFetchTask *task = [DFImageFetchTask requestImageForRequests:requests handler:^(UIImage *image, NSDictionary *info, DFImageRequest *request) {
+  // Handler is called at least once
+  // For more info see DFImageFetchTask class
 }];
+
+// Track the state of the requests
+DFImageRequestContext *context = [task contextForRequest:previewRequest];
+BOOL isPreviewFetched = context.image != nil;
 ```
-There are many [smart ways](https://github.com/kean/DFImageManager/wiki/Advanced-Image-Caching-Guide#custom-revalidation-using-dfcompositeimagefetchoperation) how composite requests can be used.
+There are many [ways](https://github.com/kean/DFImageManager/wiki/Advanced-Image-Caching-Guide#custom-revalidation-using-dfcompositeimagefetchoperation) how composite requests can be used.
 
 #### Use UI components
 Use methods from `UIImageView` category for simple cases:

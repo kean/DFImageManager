@@ -47,7 +47,7 @@ FOUNDATION_EXPORT const unsigned char DFImageManagerFrameworkVersionString[];
 #import <DFImageManagerKit/DFCompositeImageManager.h>
 #import <DFImageManagerKit/DFProxyImageManager.h>
 #import <DFImageManagerKit/DFNetworkReachability.h>
-#import <DFImageManagerKit/DFCompositeImageFetchOperation.h>
+#import <DFImageManagerKit/DFImageFetchTask.h>
 
 // Subspec 'UI'
 #import <DFImageManagerKit/DFImageManager+UI.h>

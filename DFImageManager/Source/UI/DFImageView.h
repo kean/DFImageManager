@@ -27,7 +27,7 @@
 #import <FLAnimatedImage.h>
 #endif
 
-@class DFCompositeImageFetchOperation;
+@class DFImageFetchTask;
 @class DFImageRequest;
 @class DFImageRequestOptions;
 @class DFImageView;
@@ -38,8 +38,8 @@
  */
 @protocol DFImageViewDelegate <NSObject>
 
-/*! Method gets called every time the completion block of the composite request used by DFImageView is called.
- @note Might be called multiple times depending on the number of requests composite request options.
+/*! Method gets called every time the completion block is called for the current image fetch task.
+ @note Might be called multiple times depending on the number of image requests.
  */
 - (void)imageView:(DFImageView *)imageView didCompleteRequest:(DFImageRequest *)request withImage:(UIImage *)image info:(NSDictionary *)info;
 
@@ -114,9 +114,9 @@
 
 #pragma mark - Fetching
 
-/*! Returns current image fetch operation. The operation stores a lot of information about the running and completed requests that can be retrieved at any time.
+/*! Returns current image fetch task.
  */
-@property (nonatomic, readonly) DFCompositeImageFetchOperation *operation;
+@property (nonatomic, readonly) DFImageFetchTask *task;
 
 /*! Requests an image representation with a target size, image content mode and request options of the receiver. For more info see setImageWithRequests: method.
  */
@@ -131,13 +131,13 @@
 - (void)setImageWithRequest:(DFImageRequest *)request;
 
 /*! Requests an image representation for each of the specified requests.
- @note When the method is called image view cancels current composite request and starts a new composite request with a given image requests. For more info see DFCompositeImageFetchOperation.
+ @note When the method is called image view cancels current image fetch task and starts a new one with a given requests. For more info see DFImageFetchTask.
  @note This method doesn't call -prepareForReuse in case you need to refresh image without invalidating previously displayed image.
  */
 - (void)setImageWithRequests:(NSArray /* DFImageRequest */ *)requests;
 
-/*! Creates composite image fetch operation for given requests. Subclasses may override this method to customize composite request.
+/*! Creates task for a given requests. Subclasses may override this method to return custom DFImageFetchTask instance.
  */
-- (DFCompositeImageFetchOperation *)createCompositeImageFetchOperationForRequests:(NSArray /* DFImageRequest */ *)requests handler:(void (^)(UIImage *image, NSDictionary *info, DFImageRequest *request))handler;
+- (DFImageFetchTask *)createImageFetchTaskForRequests:(NSArray /* DFImageRequest */ *)requests handler:(void (^)(UIImage *image, NSDictionary *info, DFImageRequest *request))handler;
 
 @end

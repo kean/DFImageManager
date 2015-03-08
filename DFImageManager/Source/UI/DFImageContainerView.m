@@ -20,7 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "DFCompositeImageFetchOperation.h"
+#import "DFImageFetchTask.h"
 #import "DFImageContainerView.h"
 
 
@@ -99,7 +99,7 @@
 #pragma mark - <DFImageViewDelegate>
 
 - (void)imageView:(DFImageView *)imageView didCompleteRequest:(DFImageRequest *)request withImage:(UIImage *)image info:(NSDictionary *)info {
-    BOOL isFastResponse = (self.imageView.operation.elapsedTime * 1000.0) < 64.f;
+    BOOL isFastResponse = (self.imageView.task.elapsedTime * 1000.0) < 64.f;
     if (image) {
         DFImageViewAnimation animation = DFImageViewAnimationNone;
         if (self.animation != DFImageViewAnimationNone) {
