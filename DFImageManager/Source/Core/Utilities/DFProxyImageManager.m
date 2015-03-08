@@ -24,50 +24,40 @@
 #import "DFImageRequest.h"
 
 
-/*! The implementation of value transforming that uses a block for transforming.
+/*! The implementation of request transforming that uses a block.
  */
-@interface _DFProxyValueTransformer : NSObject <DFProxyResourceTransforming>
+@interface _DFProxyRequestTransformer : NSObject <DFProxyRequestTransforming>
 
 /*! Returns an DFImageManagerBlockValueTransformer instance initialized with a given block.
  */
-- (instancetype)initWithBlock:(id (^)(id))block NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithBlock:(DFImageRequest *(^)(DFImageRequest *))block NS_DESIGNATED_INITIALIZER;
 
 @end
 
-@implementation _DFProxyValueTransformer {
+@implementation _DFProxyRequestTransformer {
     id (^_block)(id);
 }
 
-- (instancetype)initWithBlock:(id (^)(id))block {
+- (instancetype)initWithBlock:(DFImageRequest *(^)(DFImageRequest *))block {
     if (self = [super init]) {
-        NSParameterAssert(block);
         _block = [block copy];
     }
     return self;
 }
 
-#pragma mark - <DFImageManagerValueTransforming>
+#pragma mark - <DFProxyRequestTransforming>
 
-- (id)transformedResource:(id)resource {
-    return _block(resource);
+- (DFImageRequest *)transformedRequest:(DFImageRequest *)request {
+    return _block(request);
 }
 
 @end
 
 
-#define _DF_TRANSFORMED_REQUEST(request) \
-({ \
-    DFImageRequest *transformedRequest = request; \
-    if (_transformer != nil) { \
-        transformedRequest = [request copy]; \
-        transformedRequest.resource = [_transformer transformedResource:request.resource]; \
-    } \
-    transformedRequest; \
-})
+#define _DF_TRANSFORMED_REQUEST(request) (_transformer ? [_transformer transformedRequest:[(request) copy]] : (request))
 
 @implementation DFProxyImageManager
 
-@synthesize resourceTransformer = _transformer;
 @synthesize imageManager = _manager;
 
 - (instancetype)initWithImageManager:(id<DFImageManagingCore>)imageManager {
@@ -83,8 +73,8 @@
     return [(NSObject *)_manager methodSignatureForSelector:aSelector];
 }
 
-- (void)setResourceTransformerWithBlock:(id (^)(id))block {
-    self.resourceTransformer = [[_DFProxyValueTransformer alloc] initWithBlock:block];
+- (void)setRequestTransformerWithBlock:(DFImageRequest *(^)(DFImageRequest *))block {
+    self.transformer = [[_DFProxyRequestTransformer alloc] initWithBlock:block];
 }
 
 #pragma mark - <DFImageManagingCore>

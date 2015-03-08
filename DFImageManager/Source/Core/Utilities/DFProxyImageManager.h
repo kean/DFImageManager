@@ -21,21 +21,23 @@
 // THE SOFTWARE.
 
 #import "DFImageManaging.h"
+#import "DFImageRequest.h"
 #import <Foundation/Foundation.h>
 
 
-/*! The DFProxyResourceTransforming protocol defines an interface for transforming application-specific classes or protocols to the resources supported by the DFImageManager.
+/*! The DFProxyRequestTransforming protocol defines an interface for transforming application-specific classes or protocols to the resources supported by the DFImageManager.
  */
-@protocol DFProxyResourceTransforming <NSObject>
+@protocol DFProxyRequestTransforming <NSObject>
 
-/*! Returns the result of transforming a given resource.
+/*! Returns the result of transforming a given request.
+ @param request The copy of the original request, users can modify passed request.
  */
-- (id)transformedResource:(id)resource;
+- (DFImageRequest *)transformedRequest:(DFImageRequest *)request;
 
 @end
 
 
-/*! The DFProxyImageManager is used to transform application-specific classes or protocols to the resources supported by the DFImageManager. The DFImageManager that the DFProxyImageManager was initialized with will always receive a transformed resources.
+/*! The DFProxyImageManager is used to modify image requests before they are received by the actual image manager. For example, the users can use it to transform application-specific classes or protocols to the resources supported by the DFImageManager.
  @note Adapts image manager that it was initialized with to <DFImageManaging> protocol.
  */
 @interface DFProxyImageManager : NSProxy <DFImageManaging>
@@ -48,12 +50,12 @@
  */
 - (instancetype)initWithImageManager:(id<DFImageManagingCore>)imageManager;
 
-/*! Set resource transformer in case you need to transform resources before passing them to the image manager factory and to the image managers.
+/*! Sets the request transformer.
  */
-@property (nonatomic) id<DFProxyResourceTransforming> resourceTransformer;
+@property (nonatomic) id<DFProxyRequestTransforming> transformer;
 
-/*! Sets resource transformer with a given block. Overwrites resourceTransformer value.
+/*! Sets request transformer with a given block. Overwrites transformer value.
  */
-- (void)setResourceTransformerWithBlock:(id (^)(id resource))transformer;
+- (void)setRequestTransformerWithBlock:(DFImageRequest *(^)(DFImageRequest *request))block;
 
 @end

@@ -84,11 +84,11 @@
         
         // Create proxy to support ALAsset class.
         DFProxyImageManager *proxy = [[DFProxyImageManager alloc] initWithImageManager:imageManager];
-        [proxy setResourceTransformerWithBlock:^id(id resource) {
-            if ([resource isKindOfClass:[ALAsset class]]) {
-                return [[DFALAsset alloc] initWithAsset:resource];
+        [proxy setRequestTransformerWithBlock:^DFImageRequest *(DFImageRequest *request) {
+            if ([request.resource isKindOfClass:[ALAsset class]]) {
+                request.resource = [[DFALAsset alloc] initWithAsset:request.resource];
             }
-            return resource;
+            return request;
         }];
         proxy;
     });
