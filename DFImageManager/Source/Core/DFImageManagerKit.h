@@ -47,9 +47,6 @@
 #import "DFProcessingInput.h"
 #import "DFImageUtilities.h"
 
-// Networking
-#import "DFImageManager+Networking.h"
-
 // Utilities
 #import "DFCompositeImageManager.h"
 #import "DFProxyImageManager.h"
@@ -61,18 +58,20 @@
 #import "DFImageManager+UI.h"
 #endif
 
+// Subspec 'NSURLSession'
+#if __has_include("DFImageManager+NSURLSession.h")
+#import "DFImageManager+NSURLSession.h"
+#endif
 
 // Subspec 'PhotosKit'
 #if __has_include("DFImageManager+PhotosKit.h")
 #import "DFImageManager+PhotosKit.h"
 #endif
 
-
 // Subspec 'AssetsLibrary'
 #if __has_include("DFImageManager+AssetsLibrary.h")
 #import "DFImageManager+AssetsLibrary.h"
 #endif
-
 
 // Subspec 'GIF'
 #if __has_include("DFAnimatedImage.h")

@@ -43,9 +43,6 @@ FOUNDATION_EXPORT const unsigned char DFImageManagerFrameworkVersionString[];
 #import <DFImageManagerKit/DFProcessingInput.h>
 #import <DFImageManagerKit/DFImageUtilities.h>
 
-// Networking
-#import <DFImageManagerKit/DFImageManager+Networking.h>
-
 // Utilities
 #import <DFImageManagerKit/DFCompositeImageManager.h>
 #import <DFImageManagerKit/DFProxyImageManager.h>
@@ -54,6 +51,9 @@ FOUNDATION_EXPORT const unsigned char DFImageManagerFrameworkVersionString[];
 
 // Subspec 'UI'
 #import <DFImageManagerKit/DFImageManager+UI.h>
+
+// Subspec 'NSURLSession'
+#import <DFImageManagerKit/DFImageManager+NSURLSession.h>
 
 // Subspec 'PhotosKit'
 #import <DFImageManagerKit/DFImageManager+PhotosKit.h>

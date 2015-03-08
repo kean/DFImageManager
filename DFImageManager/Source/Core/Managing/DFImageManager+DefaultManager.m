@@ -26,7 +26,10 @@
 #import "DFImageManagerConfiguration.h"
 #import "DFImageProcessor.h"
 #import "DFProxyImageManager.h"
+
+#if __has_include("DFImageManager+NSURLSession.h")
 #import "DFURLImageFetcher.h"
+#endif
 
 #if __has_include("DFImageManager+PhotosKit.h")
 #import "DFPhotosKitImageFetcher.h"
@@ -47,6 +50,7 @@
     DFImageProcessor *processor = [DFImageProcessor new];
     DFImageCache *cache = [DFImageCache new];
     
+#if __has_include("DFImageManager+NSURLSession.h")
     DFImageManager *URLImageManager = ({
         // Initialize NSURLCache without memory cache because DFImageManager has a dedicated memory cache for processed images (see DFImageCaching protocol).
         NSURLCache *URLCache = [[NSURLCache alloc] initWithMemoryCapacity:0 diskCapacity:1024 * 1024 * 256 diskPath:@"com.github.kean.default_image_cache"];
@@ -59,6 +63,7 @@
         [[DFImageManager alloc] initWithConfiguration:[DFImageManagerConfiguration configurationWithFetcher:fetcher processor:processor cache:cache]];
     });
     [managers addObject:URLImageManager];
+#endif
     
 #if __has_include("DFImageManager+PhotosKit.h")
     DFImageManager *photosKitImageManager = ({
