@@ -94,7 +94,7 @@
  
  - PHAsset and NSURL with scheme com.github.kean.photos-kit (PhotosKit subspec)
  
- - ALAsset, DFALAsset and NSURL with scheme assets-library
+ - ALAsset, DFALAsset and NSURL with scheme assets-library (AssetsLibrary subspec)
  */
 + (id<DFImageManaging>)createDefaultManager;
 

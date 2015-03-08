@@ -20,17 +20,18 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+#import "DFImageFetching.h"
 #import <Foundation/Foundation.h>
-#import <UIKit/UIKit.h>
+
+@protocol DFImageProcessing;
 
 
-/*! Represents image that can be used as an input for DFProcessingImageFetcher.
+/*! Supports image requests with a resources of DFProcessingInput class. It lets client use the DFImageManager class for managing (reusing, canceling, etc) image processing requests.
  */
-@interface DFProcessingInput : NSObject
+@interface DFProcessingImageFetcher : NSObject <DFImageFetching>
 
-@property (nonatomic, readonly) UIImage *image;
-@property (nonatomic, readonly) NSString *imageIdentifier;
-
-- (instancetype)initWithImage:(UIImage *)image identifier:(NSString *)identifier NS_DESIGNATED_INITIALIZER;
+/*! Initializes the DFProcessingImageFetcher with an instance of processor and processing queue.
+ */
+- (instancetype)initWithProcessor:(id<DFImageProcessing>)processor queue:(NSOperationQueue *)queue NS_DESIGNATED_INITIALIZER;
 
 @end

@@ -18,50 +18,39 @@ FOUNDATION_EXPORT const unsigned char DFImageManagerFrameworkVersionString[];
 
 #import <DFImageManagerKit/DFImageManagerDefines.h>
 
-#import <DFImageManagerKit/DFImageCaching.h>
-#import <DFImageManagerKit/DFImageFetching.h>
 #import <DFImageManagerKit/DFImageManaging.h>
+#import <DFImageManagerKit/DFImageFetching.h>
+#import <DFImageManagerKit/DFImageCaching.h>
 #import <DFImageManagerKit/DFImageProcessing.h>
-#import <DFImageManagerKit/DFImageManagerValueTransforming.h>
 
 #import <DFImageManagerKit/DFImageManager.h>
 #import <DFImageManagerKit/DFImageManagerConfiguration.h>
 
-#import <DFImageManagerKit/DFCompositeImageManager.h>
-#import <DFImageManagerKit/DFProxyImageManager.h>
-
+// Support
 #import <DFImageManagerKit/DFImageRequest.h>
 #import <DFImageManagerKit/DFImageRequestID.h>
 #import <DFImageManagerKit/DFImageRequestOptions.h>
 #import <DFImageManagerKit/DFImageResponse.h>
 
-#import <DFImageManagerKit/DFURLImageFetcher.h>
-#import <DFImageManagerKit/DFURLImageRequestOptions.h>
-#import <DFImageManagerKit/DFURLSessionOperation.h>
-#import <DFImageManagerKit/DFURLResponseDeserializing.h>
-#import <DFImageManagerKit/DFURLImageDeserializer.h>
-#import <DFImageManagerKit/DFURLHTTPImageDeserializer.h>
-
-#import <DFImageManagerKit/DFPhotosKitImageFetcher.h>
-#import <DFImageManagerKit/DFPhotosKitImageRequestOptions.h>
-#import <DFImageManagerKit/NSURL+DFPhotosKit.h>
-#import <DFImageManagerKit/DFPhotosKitImageFetchOperation.h>
-
-#import <DFImageManagerKit/DFImageProcessor.h>
-#import <DFImageManagerKit/DFProcessingImageFetcher.h>
-#import <DFImageManagerKit/DFProcessingInput.h>
-
+// Caching (memory cache)
 #import <DFImageManagerKit/DFImageCache.h>
 #import <DFImageManagerKit/DFCachedImage.h>
 #import <DFImageManagerKit/NSCache+DFImageManager.h>
 
-#import <DFImageManagerKit/DFCompositeImageFetchOperation.h>
+// Processing
+#import <DFImageManagerKit/DFImageProcessor.h>
+#import <DFImageManagerKit/DFProcessingImageFetcher.h>
+#import <DFImageManagerKit/DFProcessingInput.h>
+#import <DFImageManagerKit/DFImageUtilities.h>
+
+// Networking
+#import <DFImageManagerKit/DFImageManager+Networking.h>
 
 // Utilities
-
-#import <DFImageManagerKit/DFImageUtilities.h>
-#import <DFImageManagerKit/DFImageManagerBlockValueTransformer.h>
+#import <DFImageManagerKit/DFCompositeImageManager.h>
+#import <DFImageManagerKit/DFProxyImageManager.h>
 #import <DFImageManagerKit/DFNetworkReachability.h>
+#import <DFImageManagerKit/DFCompositeImageFetchOperation.h>
 
 // Subspec 'UI'
 #import <DFImageManagerKit/DFImageManager+UI.h>

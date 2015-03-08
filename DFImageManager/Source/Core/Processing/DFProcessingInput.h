@@ -21,10 +21,19 @@
 // THE SOFTWARE.
 
 #import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
 
-@protocol DFImageManagerValueTransforming <NSObject>
+/*! Represents image that can be used as an input for DFProcessingImageFetcher.
+ */
+@interface DFProcessingInput : NSObject
 
-- (id)transformedResource:(id)resource;
+@property (nonatomic, readonly) UIImage *image;
+@property (nonatomic, readonly) NSString *imageIdentifier;
+
+/*! Initializes the DFProcessingInput with an image and an image identifier.
+ @param identifier Image identifier allowing for reusing processing operations.
+ */
+- (instancetype)initWithImage:(UIImage *)image identifier:(NSString *)identifier NS_DESIGNATED_INITIALIZER;
 
 @end

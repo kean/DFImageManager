@@ -22,46 +22,39 @@
 
 #import "DFImageManagerDefines.h"
 
-#import "DFImageCaching.h"
-#import "DFImageFetching.h"
 #import "DFImageManaging.h"
+#import "DFImageFetching.h"
+#import "DFImageCaching.h"
 #import "DFImageProcessing.h"
-#import "DFImageManagerValueTransforming.h"
 
 #import "DFImageManager.h"
 #import "DFImageManagerConfiguration.h"
 
-#import "DFCompositeImageManager.h"
-#import "DFProxyImageManager.h"
-
+// Support
 #import "DFImageRequest.h"
 #import "DFImageRequestID.h"
 #import "DFImageRequestOptions.h"
 #import "DFImageResponse.h"
 
-#import "DFURLImageFetcher.h"
-#import "DFURLImageRequestOptions.h"
-#import "DFURLSessionOperation.h"
-#import "DFURLResponseDeserializing.h"
-#import "DFURLImageDeserializer.h"
-#import "DFURLHTTPImageDeserializer.h"
-
-#import "DFImageProcessor.h"
-#import "DFProcessingImageFetcher.h"
-#import "DFProcessingInput.h"
-
+// Caching (memory cache)
 #import "DFImageCache.h"
 #import "DFCachedImage.h"
 #import "NSCache+DFImageManager.h"
 
-#import "DFCompositeImageFetchOperation.h"
+// Processing
+#import "DFImageProcessor.h"
+#import "DFProcessingImageFetcher.h"
+#import "DFProcessingInput.h"
+#import "DFImageUtilities.h"
+
+// Networking
+#import "DFImageManager+Networking.h"
 
 // Utilities
-
-#import "DFImageUtilities.h"
-#import "DFImageManagerBlockValueTransformer.h"
+#import "DFCompositeImageManager.h"
+#import "DFProxyImageManager.h"
 #import "DFNetworkReachability.h"
-
+#import "DFCompositeImageFetchOperation.h"
 
 // Subspec 'UI'
 #if __has_include("DFImageManager+UI.h")

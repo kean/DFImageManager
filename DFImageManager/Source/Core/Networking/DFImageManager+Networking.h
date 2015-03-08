@@ -20,16 +20,9 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "DFImageManagerValueTransforming.h"
-#import <Foundation/Foundation.h>
-
-
-/*! The implementation of value transforming that uses a block for transforming.
- */
-@interface DFImageManagerBlockValueTransformer : NSObject <DFImageManagerValueTransforming>
-
-/*! Returns an DFImageManagerBlockValueTransformer instance initialized with a given block.
- */
-- (instancetype)initWithBlock:(id (^)(id))block NS_DESIGNATED_INITIALIZER;
-
-@end
+#import "DFURLHTTPImageDeserializer.h"
+#import "DFURLImageDeserializer.h"
+#import "DFURLImageFetcher.h"
+#import "DFURLImageRequestOptions.h"
+#import "DFURLResponseDeserializing.h"
+#import "DFURLSessionOperation.h"

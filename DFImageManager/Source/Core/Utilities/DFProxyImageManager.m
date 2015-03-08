@@ -20,10 +20,40 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "DFImageManagerBlockValueTransformer.h"
-#import "DFImageManagerValueTransforming.h"
-#import "DFImageRequest.h"
 #import "DFProxyImageManager.h"
+#import "DFImageRequest.h"
+
+
+/*! The implementation of value transforming that uses a block for transforming.
+ */
+@interface _DFProxyValueTransformer : NSObject <DFProxyResourceTransforming>
+
+/*! Returns an DFImageManagerBlockValueTransformer instance initialized with a given block.
+ */
+- (instancetype)initWithBlock:(id (^)(id))block NS_DESIGNATED_INITIALIZER;
+
+@end
+
+@implementation _DFProxyValueTransformer {
+    id (^_block)(id);
+}
+
+- (instancetype)initWithBlock:(id (^)(id))block {
+    if (self = [super init]) {
+        NSParameterAssert(block);
+        _block = [block copy];
+    }
+    return self;
+}
+
+#pragma mark - <DFImageManagerValueTransforming>
+
+- (id)transformedResource:(id)resource {
+    return _block(resource);
+}
+
+@end
+
 
 #define _DF_TRANSFORMED_REQUEST(request) \
 ({ \
@@ -35,10 +65,9 @@
     transformedRequest; \
 })
 
-
 @implementation DFProxyImageManager
 
-@synthesize valueTransformer = _transformer;
+@synthesize resourceTransformer = _transformer;
 @synthesize imageManager = _manager;
 
 - (instancetype)initWithImageManager:(id<DFImageManagingCore>)imageManager {
@@ -54,8 +83,8 @@
     return [(NSObject *)_manager methodSignatureForSelector:aSelector];
 }
 
-- (void)setValueTransformerWithBlock:(id (^)(id))block {
-    self.valueTransformer = [[DFImageManagerBlockValueTransformer alloc] initWithBlock:block];
+- (void)setResourceTransformerWithBlock:(id (^)(id))block {
+    self.resourceTransformer = [[_DFProxyValueTransformer alloc] initWithBlock:block];
 }
 
 #pragma mark - <DFImageManagingCore>

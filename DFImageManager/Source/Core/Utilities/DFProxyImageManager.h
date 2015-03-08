@@ -23,10 +23,19 @@
 #import "DFImageManaging.h"
 #import <Foundation/Foundation.h>
 
-@protocol DFImageManagerValueTransforming;
+
+/*! The DFProxyResourceTransforming protocol defines an interface for transforming application-specific classes or protocols to the resources supported by the DFImageManager.
+ */
+@protocol DFProxyResourceTransforming <NSObject>
+
+/*! Returns the result of transforming a given resource.
+ */
+- (id)transformedResource:(id)resource;
+
+@end
 
 
-/*! Use proxy image manager in case you need to transform application specific interfaces to the interfaces supported by the image manager. Image manager will always receive transformed assets.
+/*! The DFProxyImageManager is used to transform application-specific classes or protocols to the resources supported by the DFImageManager. The DFImageManager that the DFProxyImageManager was initialized with will always receive a transformed resources.
  @note Adapts image manager that it was initialized with to <DFImageManaging> protocol.
  */
 @interface DFProxyImageManager : NSProxy <DFImageManaging>
@@ -39,10 +48,12 @@
  */
 - (instancetype)initWithImageManager:(id<DFImageManagingCore>)imageManager;
 
-/*! Set value transformer in case you need to transform resources before passing them to the image manager factory and to the image managers.
+/*! Set resource transformer in case you need to transform resources before passing them to the image manager factory and to the image managers.
  */
-@property (nonatomic) id<DFImageManagerValueTransforming> valueTransformer;
+@property (nonatomic) id<DFProxyResourceTransforming> resourceTransformer;
 
-- (void)setValueTransformerWithBlock:(id (^)(id resource))valueTransfomer;
+/*! Sets resource transformer with a given block. Overwrites resourceTransformer value.
+ */
+- (void)setResourceTransformerWithBlock:(id (^)(id resource))transformer;
 
 @end
