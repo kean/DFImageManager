@@ -199,7 +199,7 @@ static const NSTimeInterval _kMinimumAutoretryInterval = 8.f;
         && self.window != nil
         && self.hidden != YES
         && self.task.isFinished) {
-        DFImageRequestContext *context = [self.task contextForRequest:[self.task.requests lastObject]];
+        DFImageFetchContext *context = [self.task contextForRequest:[self.task.requests lastObject]];
         NSError *error = context.info[DFImageInfoErrorKey];
         if (error && [self _isNetworkConnetionError:error]) {
             [self _attemptRetry];

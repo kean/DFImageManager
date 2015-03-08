@@ -26,7 +26,7 @@
 #import "DFImageRequestID.h"
 
 
-@interface DFImageRequestContext ()
+@interface DFImageFetchContext ()
 
 @property (nonatomic) DFImageRequestID *requestID;
 
@@ -34,7 +34,7 @@
 
 @end
 
-@implementation DFImageRequestContext
+@implementation DFImageFetchContext
 
 - (void)completeWithImage:(UIImage *)image info:(NSDictionary *)info {
     _isCompleted = YES;
@@ -50,7 +50,7 @@
     void (^_handler)(UIImage *, NSDictionary *, DFImageRequest *);
     
     // Optimization for single request case
-    DFImageRequestContext *_context;
+    DFImageFetchContext *_context;
 }
 
 - (instancetype)initWithRequests:(NSArray *)requests handler:(void (^)(UIImage *, NSDictionary *, DFImageRequest *))handler {
@@ -85,7 +85,7 @@
     _startTime = CACurrentMediaTime();
     DFImageFetchTask *__weak weakSelf = self;
     for (DFImageRequest *request in _requests) {
-        DFImageRequestContext *context = [DFImageRequestContext new];
+        DFImageFetchContext *context = [DFImageFetchContext new];
         if (_contexts) {
             [_contexts setObject:context forKey:request];
         } else {
@@ -106,7 +106,7 @@
     return YES;
 }
 
-- (DFImageRequestContext *)contextForRequest:(DFImageRequest *)request {
+- (DFImageFetchContext *)contextForRequest:(DFImageRequest *)request {
     if (_contexts) {
         return [_contexts objectForKey:request];
     } else {
@@ -126,7 +126,7 @@
 }
 
 - (void)cancelRequest:(DFImageRequest *)request {
-    DFImageRequestContext *context = [self contextForRequest:request];
+    DFImageFetchContext *context = [self contextForRequest:request];
     if (!context.isCompleted) {
         [context completeWithImage:nil info:nil];
         [context.requestID cancel];
@@ -140,7 +140,7 @@
 }
 
 - (void)_didFinishRequest:(DFImageRequest *)request image:(UIImage *)image info:(NSDictionary *)info {
-    DFImageRequestContext *context = [self contextForRequest:request];
+    DFImageFetchContext *context = [self contextForRequest:request];
     [context completeWithImage:image info:info];
     
     if (self.allowsObsoleteRequests) {

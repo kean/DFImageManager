@@ -31,7 +31,7 @@
 
 /*! The execution context of the image request.
  */
-@interface DFImageRequestContext : NSObject
+@interface DFImageFetchContext : NSObject
 
 /*! Returns requestID created for the request.
  */
@@ -51,7 +51,7 @@
 
 @end
 
-/*! The DFImageFetchTask manages execution of one or many image requests and provides a single completion block that gets called multiple times. It also stores execution state for each request (see DFImageRequestContext). All requests are executed concurrently.
+/*! The DFImageFetchTask manages execution of one or many image requests and provides a single completion block that gets called multiple times. It also stores execution state for each request (see DFImageFetchContext). All requests are executed concurrently.
  @note By default, DFImageFetchTask does not call its completion handler for each of the completed requests. It treats the array of the requests as if the last request was the final image that you would want to display, while the others were the placeholders. The completion handler is guaranteed to be called at least once, even if all of the requests have failed. It also automatically cancels obsolete requests. This entire behavior can be disabled by setting allowsObsoleteRequests property to NO.
  @warning This class is not thread safe and is designed to be used on the main thread.
  */
@@ -109,7 +109,7 @@
 /*! Returns context for the given request.
  @param request Request should be contained by the receiver's array of the requests.
  */
-- (DFImageRequestContext *)contextForRequest:(DFImageRequest *)request;
+- (DFImageFetchContext *)contextForRequest:(DFImageRequest *)request;
 
 /*! Sets the priority for all the requests registered with a receiver.
  */
