@@ -65,7 +65,19 @@
  */
 - (instancetype)initWithConfiguration:(DFImageManagerConfiguration *)configuration NS_DESIGNATED_INITIALIZER;
 
-#pragma mark Dependency Injectors
+@end
+
+
+/*! The DFImageManager category that implements convenience methods declared in DFImageManaging protocol.
+ */
+@interface DFImageManager (Convenience) <DFImageManaging>
+
+@end
+
+
+/*! Dependency injectors that set the image manager shared by the application.
+ */
+@interface DFImageManager (SharedManager)
 
 /*! Returns the shared image manager instance. By default returns the image manager instance created using DFImageManager -createDefaultManager method. An application with more specific needs can create a custom image manager and set it as a shared instance.
  */
@@ -74,13 +86,6 @@
 /*! Sets the image manager instance shared by all clients of the current process.
  */
 + (void)setSharedManager:(id<DFImageManaging>)manager;
-
-@end
-
-
-/*! The DFImageManager category that implements convenience methods declared in DFImageManaging protocol.
- */
-@interface DFImageManager (Convenience) <DFImageManaging>
 
 @end
 

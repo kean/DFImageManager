@@ -33,7 +33,6 @@
 #import "DFImageResponse.h"
 #import "DFProcessingImageFetcher.h"
 #import "DFProcessingInput.h"
-#import <libkern/OSAtomic.h>
 
 #if __has_include("DFAnimatedImage.h")
 #import "DFAnimatedImage.h"
@@ -824,30 +823,7 @@
     });
 }
 
-#pragma mark - Dependency Injectors
-
-static id<DFImageManaging> _sharedManager;
-static OSSpinLock _lock = OS_SPINLOCK_INIT;
-
-+ (void)initialize {
-    _sharedManager = [self createDefaultManager];
-}
-
-+ (id<DFImageManaging>)sharedManager {
-    id<DFImageManaging> manager;
-    OSSpinLockLock(&_lock);
-    manager = _sharedManager;
-    OSSpinLockUnlock(&_lock);
-    return manager;
-}
-
-+ (void)setSharedManager:(id<DFImageManaging>)manager {
-    OSSpinLockLock(&_lock);
-    _sharedManager = manager;
-    OSSpinLockUnlock(&_lock);
-}
-
-#pragma mark -
+#pragma mark - 
 
 - (NSString *)description {
     return [NSString stringWithFormat:@"<%@ %p> { name = %@ }", [self class], self, self.name];

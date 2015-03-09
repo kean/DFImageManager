@@ -41,7 +41,6 @@
 #import <AssetsLibrary/AssetsLibrary.h>
 #endif
 
-
 @implementation DFImageManager (DefaultManager)
 
 + (id<DFImageManagingCore>)createDefaultManager {

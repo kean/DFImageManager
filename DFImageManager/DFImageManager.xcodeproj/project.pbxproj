@@ -150,6 +150,8 @@
 		0CEEED341AABE4BC00C212A4 /* DFURLSessionOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 0CEEED241AABE4BC00C212A4 /* DFURLSessionOperation.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0CEEED351AABE4BC00C212A4 /* DFURLSessionOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CEEED251AABE4BC00C212A4 /* DFURLSessionOperation.m */; };
 		0CEEED361AABE4BC00C212A4 /* DFURLSessionOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CEEED251AABE4BC00C212A4 /* DFURLSessionOperation.m */; };
+		0CF011861AAE1BAF0013AD13 /* DFImageManager+SharedManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CF011841AAE1BAF0013AD13 /* DFImageManager+SharedManager.m */; };
+		0CF011871AAE1BAF0013AD13 /* DFImageManager+SharedManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CF011841AAE1BAF0013AD13 /* DFImageManager+SharedManager.m */; };
 		68D055111E51D12C6749D1BC /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FE905C97593137A3540CA56B /* libPods.a */; };
 		902339985D00D098A389D495 /* libPods-DFImageManagerTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 35AEC21DD9AC0DE7AE2AB433 /* libPods-DFImageManagerTests.a */; };
 		DF936E4C31AA3BD40C9009B4 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FE905C97593137A3540CA56B /* libPods.a */; };
@@ -301,6 +303,7 @@
 		0CEEED231AABE4BC00C212A4 /* DFURLResponseDeserializing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFURLResponseDeserializing.h; sourceTree = "<group>"; };
 		0CEEED241AABE4BC00C212A4 /* DFURLSessionOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFURLSessionOperation.h; sourceTree = "<group>"; };
 		0CEEED251AABE4BC00C212A4 /* DFURLSessionOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFURLSessionOperation.m; sourceTree = "<group>"; };
+		0CF011841AAE1BAF0013AD13 /* DFImageManager+SharedManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "DFImageManager+SharedManager.m"; sourceTree = "<group>"; };
 		35AEC21DD9AC0DE7AE2AB433 /* libPods-DFImageManagerTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-DFImageManagerTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		81E7E25367D979E56F0B6377 /* Pods-DFImageManagerTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DFImageManagerTests.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-DFImageManagerTests/Pods-DFImageManagerTests.debug.xcconfig"; sourceTree = "<group>"; };
 		9A1D309E5F55472432AE0B73 /* Pods-DFImageManagerTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DFImageManagerTests.release.xcconfig"; path = "../Pods/Target Support Files/Pods-DFImageManagerTests/Pods-DFImageManagerTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -595,6 +598,7 @@
 				0CEEED0C1AABE36100C212A4 /* DFImageManager.h */,
 				0CEEED0D1AABE36100C212A4 /* DFImageManager.m */,
 				0CEEED0E1AABE36100C212A4 /* DFImageManager+DefaultManager.m */,
+				0CF011841AAE1BAF0013AD13 /* DFImageManager+SharedManager.m */,
 				0CEEED0F1AABE36100C212A4 /* DFImageManagerConfiguration.h */,
 				0CEEED101AABE36100C212A4 /* DFImageManagerConfiguration.m */,
 			);
@@ -965,6 +969,7 @@
 				0C44A8291AAB2AD900900C6A /* DFAssetsLibraryImageFetchOperation.m in Sources */,
 				0CEEED311AABE4BC00C212A4 /* DFURLImageRequestOptions.m in Sources */,
 				0C5BD7501AA32CA5003C0BB6 /* TDFMockImageCache.m in Sources */,
+				0CF011861AAE1BAF0013AD13 /* DFImageManager+SharedManager.m in Sources */,
 				0CEEECD81AABD70400C212A4 /* DFImageResponse.m in Sources */,
 				0CEEEC8B1AABC5FC00C212A4 /* DFImageProcessor.m in Sources */,
 				0C44A8651AAB3CC000900C6A /* UIImageView+DFImageManager.m in Sources */,
@@ -1035,6 +1040,7 @@
 				0CEEED321AABE4BC00C212A4 /* DFURLImageRequestOptions.m in Sources */,
 				0CEEED0A1AABE32E00C212A4 /* DFImageFetchTask.m in Sources */,
 				0C44A8271AAB2AD900900C6A /* DFAssetsLibraryImageFetcher.m in Sources */,
+				0CF011871AAE1BAF0013AD13 /* DFImageManager+SharedManager.m in Sources */,
 				0C44A7421AAB235800900C6A /* DFPhotosKitImageRequestOptions.m in Sources */,
 				0CEEEC921AABC5FC00C212A4 /* DFProcessingImageFetcher.m in Sources */,
 				0CEEECA21AABC84F00C212A4 /* DFImageCache.m in Sources */,
