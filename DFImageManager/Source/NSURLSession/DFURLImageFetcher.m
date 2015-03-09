@@ -269,16 +269,12 @@ static const NSTimeInterval _kCommandExecutionInterval = 0.0025; // 2.5 ms
             progressHandler((double)countOfBytesReceived / (double)countOfBytesExpectedToReceive);
         }
     } completionHandler:^(NSData *data, NSURLResponse *URLResponse, NSError *error) {
-        DFMutableImageResponse *response = [DFMutableImageResponse new];
         if (error) {
-            response.error = error;
-            completion(response);
+            completion([DFImageResponse responseWithError:error]);
         } else {
             id<DFURLResponseDeserializing> deserializer = [self _responseDeserializerForImageRequest:request URLRequest:URLRequest];
             UIImage *image = [deserializer objectFromResponse:URLResponse data:data error:&error];
-            response.error = error;
-            response.image = image;
-            completion(response);
+            completion([[DFImageResponse alloc] initWithImage:image error:error userInfo:nil]);
         }
     }];
     

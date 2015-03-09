@@ -125,10 +125,7 @@
 - (void)_didFetchImage:(UIImage *)result info:(NSDictionary *)info {
     @synchronized(self) {
         if (!self.isCancelled) {
-            DFMutableImageResponse *response = [DFMutableImageResponse new];
-            response.image = result;
-            response.userInfo = info;
-            _response = [response copy];
+            _response = [[DFImageResponse alloc] initWithImage:result error:nil userInfo:info];
             [self finish];
         }
     }

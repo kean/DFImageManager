@@ -65,7 +65,7 @@
     UIImage *image = [((DFProcessingInput *)request.resource) image];
     NSBlockOperation *operation = [NSBlockOperation blockOperationWithBlock:^{
         UIImage *processedImage = [_processor processedImage:image forRequest:request];
-        completion([[DFImageResponse alloc] initWithImage:processedImage ?: image]);
+        completion([DFImageResponse responseWithImage:processedImage ?: image]);
     }];
     [_queue addOperation:operation];
     return operation;

@@ -286,7 +286,7 @@
     UIImage *cachedImage = [self _cachedImageForRequest:handler.request];
     if (cachedImage) {
         // Fulfill request with image from memory cache
-        [self _didProcessResponse:[[DFImageResponse alloc] initWithImage:cachedImage] forHandler:handler];
+        [self _didProcessResponse:[DFImageResponse responseWithImage:cachedImage] forHandler:handler];
     } else if (_fetchResponse) {
         // Start image processing if task already has original image
         [self _processResponseForHandler:handler];
@@ -372,15 +372,14 @@
     if (shouldProcessResponse && _processingManager && _fetchResponse.image) {
         _DFImageManagerTask *__weak weakSelf = self;
         [self _processImage:_fetchResponse.image forHandler:handler completion:^(UIImage *image) {
-            DFMutableImageResponse *response = [[DFMutableImageResponse alloc] initWithResponse:_fetchResponse];
-            response.image = image;
+            DFImageResponse *response = [[DFImageResponse alloc] initWithImage:image error:_fetchResponse.error userInfo:_fetchResponse.userInfo];
             [weakSelf _didProcessResponse:response forHandler:handler];
         }];
     } else {
         if (_fetchResponse.image) {
             [self _storeImage:_fetchResponse.image forRequest:handler.request];
         }
-        [self _didProcessResponse:[_fetchResponse copy] forHandler:handler];
+        [self _didProcessResponse:_fetchResponse forHandler:handler];
     }
 }
 

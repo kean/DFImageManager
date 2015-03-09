@@ -126,10 +126,7 @@ static inline NSURL *_ALAssetURL(id resource) {
     
     DFAssetsLibraryImageFetchOperation *__weak weakOp = operation;
     [operation setCompletionBlock:^{
-        DFMutableImageResponse *response = [DFMutableImageResponse new];
-        response.image = weakOp.image;
-        response.error = weakOp.error;
-        completion(response);
+        completion([[DFImageResponse alloc] initWithImage:weakOp.image error:weakOp.error userInfo:nil]);
     }];
     [_queue addOperation:operation];
     return operation;

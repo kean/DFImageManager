@@ -72,7 +72,7 @@
 /*! Test that image manager response info contains error under DFImageInfoErrorKey key when request fails.
  */
 - (void)testThatResponseInfoContainsError {
-    _fetcher.response = [[DFImageResponse alloc] initWithError:[NSError errorWithDomain:@"TDFErrorDomain" code:14 userInfo:nil]];
+    _fetcher.response = [DFImageResponse responseWithError:[NSError errorWithDomain:@"TDFErrorDomain" code:14 userInfo:nil]];
     
     XCTestExpectation *expectation = [self expectationWithDescription:@"request"];
     [_manager requestImageForResource:[TDFMockResource resourceWithID:@"ID01"] completion:^(UIImage *image, NSDictionary *info) {
@@ -85,9 +85,7 @@
 }
 
 - (void)testThatResponseInfoContainsCustomUserInfo {
-    DFMutableImageResponse *response = [TDFMockImageFetcher successfullResponse];
-    response.userInfo = @{ @"TestKey" : @"TestValue" };
-    _fetcher.response = response;
+    _fetcher.response = [[DFImageResponse alloc] initWithImage:nil error:nil userInfo:@{ @"TestKey" : @"TestValue" }];
     
     XCTestExpectation *expectation = [self expectationWithDescription:@"request"];
     [_manager requestImageForResource:[TDFMockResource resourceWithID:@"ID01"] completion:^(UIImage *image, NSDictionary *info) {

@@ -26,6 +26,6 @@ extern NSString *TDFMockImageFetcherOperationKey;
 // For assertions
 @property (nonatomic, readonly) NSInteger createdOperationCount;
 
-+ (DFMutableImageResponse *)successfullResponse;
++ (DFImageResponse *)successfullResponse;
 
 @end

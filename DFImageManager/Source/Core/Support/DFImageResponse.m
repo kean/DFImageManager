@@ -22,53 +22,23 @@
 
 #import "DFImageResponse.h"
 
-
-@interface DFImageResponse ()
-
-@property (nonatomic) UIImage *image;
-@property (nonatomic) NSError *error;
-@property (nonatomic) NSDictionary *userInfo;
-
-@end
-
 @implementation DFImageResponse
 
-- (instancetype)initWithImage:(UIImage *)image error:(NSError *)error {
+- (instancetype)initWithImage:(UIImage *)image error:(NSError *)error userInfo:(NSDictionary *)userInfo {
     if (self = [super init]) {
         _image = image;
         _error = error;
+        _userInfo = userInfo;
     }
     return self;
 }
 
-- (instancetype)initWithImage:(UIImage *)image {
-    return [self initWithImage:image error:nil];
++ (instancetype)responseWithImage:(UIImage *)image {
+    return [[DFImageResponse alloc] initWithImage:image error:nil userInfo:nil];
 }
 
-- (instancetype)initWithError:(NSError *)error {
-    return [self initWithImage:nil error:error];
++ (instancetype)responseWithError:(NSError *)error {
+    return [[DFImageResponse alloc] initWithImage:nil error:error userInfo:nil];
 }
-
-- (instancetype)initWithResponse:(DFImageResponse *)response {
-    if (self = [super init]) {
-        _image = response.image;
-        _error = response.error;
-        _userInfo = response.userInfo;
-    }
-    return self;
-}
-
-- (id)copyWithZone:(NSZone *)zone {
-    return [[DFImageResponse alloc] initWithResponse:self];
-}
-
-- (id)mutableCopyWithZone:(NSZone *)zone {
-    return [[DFMutableImageResponse alloc] initWithResponse:self];
-}
-
-@end
-
-
-@implementation DFMutableImageResponse
 
 @end

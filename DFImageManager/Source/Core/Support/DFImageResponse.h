@@ -23,24 +23,24 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
-
-@interface DFImageResponse : NSObject <NSCopying, NSMutableCopying>
+/*! The DFImageResponse class represents an immutable image response for a specified resource.
+ */
+@interface DFImageResponse : NSObject
 
 @property (nonatomic, readonly) UIImage *image;
 @property (nonatomic, readonly) NSError *error;
 @property (nonatomic, readonly) NSDictionary *userInfo;
 
-- (instancetype)initWithImage:(UIImage *)image;
-- (instancetype)initWithError:(NSError *)error;
-- (instancetype)initWithResponse:(DFImageResponse *)response;
+/*! Initializes response with a given image, error and userInfo associated with an image load.
+ */
+- (instancetype)initWithImage:(UIImage *)image error:(NSError *)error userInfo:(NSDictionary *)userInfo NS_DESIGNATED_INITIALIZER;
 
-@end
+/*! Returns response initialized with a given image.
+ */
++ (instancetype)responseWithImage:(UIImage *)image;
 
-
-@interface DFMutableImageResponse : DFImageResponse
-
-@property (nonatomic) UIImage *image;
-@property (nonatomic) NSError *error;
-@property (nonatomic) NSDictionary *userInfo;
+/*! Returns response initialized with a given error.
+ */
++ (instancetype)responseWithError:(NSError *)error;
 
 @end
