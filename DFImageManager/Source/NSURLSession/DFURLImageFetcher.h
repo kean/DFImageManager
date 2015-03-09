@@ -28,10 +28,6 @@
 @class DFURLImageFetcher;
 
 
-/*! A URL response received by the URL loading system (NSURLRequest). Clients may use it to retrieve HTTP status code and other metadata associated with a URL load.
- */
-extern NSString *const DFImageInfoURLResponseKey;
-
 /*! The DFURLImageFetcherDelegate protocol describes the methods that DFURLImageFetcher objects call on their delegates to customize its behavior.
  */
 @protocol DFURLImageFetcherDelegate <NSObject>

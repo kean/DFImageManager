@@ -30,8 +30,6 @@
 #import "DFURLResponseDeserializing.h"
 #import "DFURLSessionOperation.h"
 
-NSString *const DFImageInfoURLResponseKey = @"DFImageInfoURLResponseKey";
-
 
 typedef void (^_DFURLSessionDataTaskProgressHandler)(int64_t countOfBytesReceived, int64_t countOfBytesExpectedToReceive);
 typedef void (^_DFURLSessionDataTaskCompletionHandler)(NSData *data, NSURLResponse *response, NSError *error);
@@ -272,7 +270,6 @@ static const NSTimeInterval _kCommandExecutionInterval = 0.0025; // 2.5 ms
         }
     } completionHandler:^(NSData *data, NSURLResponse *URLResponse, NSError *error) {
         DFMutableImageResponse *response = [DFMutableImageResponse new];
-        response.userInfo = URLResponse ? @{ DFImageInfoURLResponseKey : URLResponse } : nil;
         if (error) {
             response.error = error;
             completion(response);
