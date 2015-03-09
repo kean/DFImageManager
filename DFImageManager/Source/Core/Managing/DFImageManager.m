@@ -255,7 +255,7 @@
     id<DFImageManagingCore> _processingManager;
     
     // Fetch
-    NSOperation *__weak _fetchOperation;
+    NSOperation *_fetchOperation;
     DFImageResponse *_fetchResponse;
     
     // Processing

@@ -203,7 +203,6 @@ static const NSTimeInterval _kCommandExecutionInterval = 0.0025; // 2.5 ms
 
 @implementation DFURLImageFetcher {
     NSMutableDictionary *_sessionTaskHandlers;
-    NSMutableDictionary *_operations;
     _DFURLFetcherCommandExecutor *_executor;
 }
 
@@ -214,9 +213,7 @@ static const NSTimeInterval _kCommandExecutionInterval = 0.0025; // 2.5 ms
         _session = session;
         _sessionDelegate = sessionDelegate;
         _sessionTaskHandlers = [NSMutableDictionary new];
-        _operations = [NSMutableDictionary new];
         _executor = [_DFURLFetcherCommandExecutor new];
-        
         _supportedSchemes = [NSSet setWithObjects:@"http", @"https", @"ftp", @"file", @"data", nil];
     }
     return self;
@@ -273,23 +270,18 @@ static const NSTimeInterval _kCommandExecutionInterval = 0.0025; // 2.5 ms
         if (progressHandler) {
             progressHandler((double)countOfBytesReceived / (double)countOfBytesExpectedToReceive);
         }
-    } completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-        @synchronized(self) {
-            [_operations removeObjectForKey:task];
-        }
-        DFMutableImageResponse *imageResponse = [DFMutableImageResponse new];
-        imageResponse.error = error;
-        if (response) {
-            imageResponse.userInfo = @{ DFImageInfoURLResponseKey : response };
-        }
+    } completionHandler:^(NSData *data, NSURLResponse *URLResponse, NSError *error) {
+        DFMutableImageResponse *response = [DFMutableImageResponse new];
+        response.userInfo = URLResponse ? @{ DFImageInfoURLResponseKey : URLResponse } : nil;
         if (error) {
-            completion([imageResponse copy]);
+            response.error = error;
+            completion(response);
         } else {
             id<DFURLResponseDeserializing> deserializer = [self _responseDeserializerForImageRequest:request URLRequest:URLRequest];
-            UIImage *image = [deserializer objectFromResponse:response data:data error:&error];
-            imageResponse.error = error;
-            imageResponse.image = image;
-            completion([imageResponse copy]);
+            UIImage *image = [deserializer objectFromResponse:URLResponse data:data error:&error];
+            response.error = error;
+            response.image = image;
+            completion(response);
         }
     }];
     
@@ -301,10 +293,6 @@ static const NSTimeInterval _kCommandExecutionInterval = 0.0025; // 2.5 ms
     [operation setPriorityHandler:^(NSOperationQueuePriority priority) {
         task.priority = [DFURLImageFetcher _taskPriorityForQueuePriority:priority];
     }];
-    
-    @synchronized(self) {
-        _operations[task] = operation;
-    }
     
     [_executor executeCommand:[[_DFSessionTaskResumeCommand alloc] initWithTask:task]];
     
