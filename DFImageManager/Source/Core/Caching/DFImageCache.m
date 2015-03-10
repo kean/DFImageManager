@@ -28,7 +28,6 @@
 #import "DFImageManagerKit+GIF.h"
 #endif
 
-
 @implementation DFImageCache
 
 - (void)dealloc {
@@ -37,7 +36,6 @@
 
 - (instancetype)initWithCache:(NSCache *)cache {
     if (self = [super init]) {
-        NSParameterAssert(cache);
         _cache = cache;
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_didReceiveMemoryWarning:) name:UIApplicationDidReceiveMemoryWarningNotification object:nil];
     }
@@ -52,7 +50,7 @@
 
 - (DFCachedImage *)cachedImageForKey:(id<NSCopying>)key {
     DFCachedImage *cachedImage = [_cache objectForKey:key];
-    if (cachedImage != nil) {
+    if (cachedImage) {
         if (cachedImage.expirationDate > CACurrentMediaTime()) {
             return cachedImage;
         } else {
@@ -63,7 +61,7 @@
 }
 
 - (void)storeImage:(DFCachedImage *)cachedImage forKey:(id<NSCopying>)key {
-    if (cachedImage != nil && key != nil) {
+    if (cachedImage && key) {
         NSUInteger cost = [self costForImage:cachedImage.image];
         [_cache setObject:cachedImage forKey:key cost:cost];
     }
@@ -79,14 +77,12 @@
     CGImageRef imageRef = image.CGImage;
     NSUInteger bitsPerPixel = CGImageGetBitsPerPixel(imageRef);
     NSUInteger cost = (CGImageGetWidth(imageRef) * CGImageGetHeight(imageRef) * bitsPerPixel) / 8; // Return number of bytes in image bitmap.
-    
 #if __has_include("DFAnimatedImage.h")
     if ([image isKindOfClass:[DFAnimatedImage class]]) {
         DFAnimatedImage *animatedImage = (id)image;
         cost += animatedImage.animatedImage.data.length;
     }
 #endif
-    
     return cost;
 }
 

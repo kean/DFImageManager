@@ -22,7 +22,6 @@
 
 #import "DFImageRequestOptions.h"
 
-
 @implementation DFImageRequestOptions
 
 - (instancetype)init {
@@ -56,20 +55,7 @@
 }
 
 - (NSString *)description {
-    return [NSString stringWithFormat:@"<%@ %p> { priority = %@, network = %i, clip = %i, cache = %i, expires = %0.2f }", [self class], self, [DFImageRequestOptions _descriptionForPriority:_priority], _allowsNetworkAccess, _allowsClipping, (int)_memoryCachePolicy, _expirationAge];
-}
-
-+ (NSString *)_descriptionForPriority:(DFImageRequestPriority)priority {
-    static NSDictionary *table;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        table = @{ @(DFImageRequestPriorityVeryLow) : @".VeryLow",
-                   @(DFImageRequestPriorityLow) : @".Low",
-                   @(DFImageRequestPriorityNormal) : @".Normal",
-                   @(DFImageRequestPriorityHigh) : @".High",
-                   @(DFImageRequestPriorityVeryHigh) : @".VeryHigh" };
-    });
-    return table[@(priority)];
+    return [NSString stringWithFormat:@"<%@ %p> { priority = %i, network = %i, clip = %i, cache = %i, expires = %0.2f }", [self class], self, (int)_priority, _allowsNetworkAccess, _allowsClipping, (int)_memoryCachePolicy, _expirationAge];
 }
 
 @end

@@ -22,7 +22,6 @@
 
 #import "DFImageUtilities.h"
 
-
 @implementation DFImageUtilities
 
 + (UIImage *)croppedImageWithImage:(UIImage *)image normalizedCropRect:(CGRect)inputCropRect {

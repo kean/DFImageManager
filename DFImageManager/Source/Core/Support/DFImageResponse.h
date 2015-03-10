@@ -27,8 +27,16 @@
  */
 @interface DFImageResponse : NSObject
 
+/*! Returns the image from the response.
+ */
 @property (nonatomic, readonly) UIImage *image;
+
+/*! Returns the error associated with the load.
+ */
 @property (nonatomic, readonly) NSError *error;
+
+/*! Returns the metadata associated with the load.
+ */
 @property (nonatomic, readonly) NSDictionary *userInfo;
 
 /*! Initializes response with a given image, error and userInfo associated with an image load.

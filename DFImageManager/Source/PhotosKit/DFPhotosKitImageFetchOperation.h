@@ -29,6 +29,8 @@
  */
 NS_CLASS_AVAILABLE_IOS(8_0) @interface DFPhotosKitImageFetchOperation : NSOperation
 
+/*! Retuns image response.
+ */
 @property (nonatomic, readonly) DFImageResponse *response;
 
 /*! Initializes operation with an image request.

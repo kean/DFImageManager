@@ -22,9 +22,7 @@
 
 #import "DFImageManagerDefines.h"
 
-
 /*! You use a DFImageRequestOptions object to specify options when requesting image representations of resources using classes conforming DFImageManaging protocol.
- @note Some classes that implement DFImageManaging protocol might want to extend the base options by providing subclasses of the DFImageRequestOptions class.
  */
 @interface DFImageRequestOptions : NSObject <NSCopying>
 

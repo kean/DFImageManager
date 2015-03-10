@@ -22,7 +22,6 @@
 
 #import <Foundation/Foundation.h>
 
-
 @interface NSCache (DFImageManager)
 
 /*! Returns shared image cache with a recommended total cost limit (in bytes).

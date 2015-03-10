@@ -21,14 +21,10 @@
 // THE SOFTWARE.
 
 #import <Foundation/Foundation.h>
-#import <SystemConfiguration/SystemConfiguration.h>
-#import <netinet/in.h>
-
 
 /*! Posted when network reachability changes. The notification object is an instance of DFNetworkReachability class.
  */
 extern NSString *DFNetworkReachabilityDidChangeNotification;
-
 
 /*! The DFNetworkReachability monitors network reachability.
  */

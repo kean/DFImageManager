@@ -25,7 +25,6 @@
 
 @protocol DFImageProcessing;
 
-
 /*! Supports image requests with a resources of DFProcessingInput class. It lets client use the DFImageManager class for managing (reusing, canceling, etc) image processing requests.
  */
 @interface DFProcessingImageFetcher : NSObject <DFImageFetching>

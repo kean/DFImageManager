@@ -28,7 +28,6 @@
 #import "NSURL+DFPhotosKit.h"
 #import <Photos/Photos.h>
 
-
 @interface DFPhotosKitImageFetchOperation ()
 
 @property (nonatomic, getter = isExecuting) BOOL executing;
@@ -83,18 +82,16 @@
 }
 
 - (void)_fetch {
-    if (!_asset && _assetURL != nil) {
+    if (!_asset && _assetURL) {
         NSString *localIdentifier = [_assetURL df_assetLocalIdentifier];
-        if (localIdentifier != nil) {
+        if (localIdentifier) {
             _asset = [[PHAsset fetchAssetsWithLocalIdentifiers:@[localIdentifier] options:nil] firstObject];
         }
     }
-    
     if (self.isCancelled) {
         [self finish];
         return;
     }
-    
     PHImageRequestOptions *options = [PHImageRequestOptions new];
     options.networkAccessAllowed = _options.allowsNetworkAccess;
     options.deliveryMode = _options.deliveryMode;

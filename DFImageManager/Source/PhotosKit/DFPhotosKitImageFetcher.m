@@ -43,7 +43,7 @@ static inline NSString *_PHAssetLocalIdentifier(id resource) {
 - (instancetype)init {
     if (self = [super init]) {
         _queue = [NSOperationQueue new];
-        _queue.maxConcurrentOperationCount = 2;
+        _queue.maxConcurrentOperationCount = 3;
     }
     return self;
 }
@@ -56,8 +56,7 @@ static inline NSString *_PHAssetLocalIdentifier(id resource) {
         return YES;
     }
     if ([asset isKindOfClass:[NSURL class]]) {
-        NSURL *URL = asset;
-        if ([URL.scheme isEqualToString:DFPhotosKitURLScheme]) {
+        if ([((NSURL *)asset).scheme isEqualToString:DFPhotosKitURLScheme]) {
             return YES;
         }
     }

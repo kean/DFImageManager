@@ -24,13 +24,24 @@
 
 @class PHAsset;
 
-
+/*! The URL scheme used for accessing PHAsset objects.
+ */
 static NSString *const DFPhotosKitURLScheme = @"com.github.kean.photos-kit";
 
+/*! The NSURL category that adds methods for manipulating URLs with "com.github.kean.photos-kit" scheme.
+ */
 @interface NSURL (DFPhotosKit)
 
+/*! Returns NSURL with a given local identifier for asset.
+ */
 + (NSURL *)df_assetURLWithAssetLocalIdentifier:(NSString *)localIdentifier NS_AVAILABLE_IOS(8_0);
+
+/*! Returns NSURL with a local identifier for a given asset.
+ */
 + (NSURL *)df_assetURLWithAsset:(PHAsset *)asset NS_AVAILABLE_IOS(8_0);
-- (NSString *)df_assetLocalIdentifier;
+
+/*! Returns local identifier from a given URL.
+ */
+- (NSString *)df_assetLocalIdentifier NS_AVAILABLE_IOS(8_0);
 
 @end

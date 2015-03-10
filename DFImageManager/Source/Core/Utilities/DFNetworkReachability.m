@@ -21,21 +21,16 @@
 // THE SOFTWARE.
 
 #import "DFNetworkReachability.h"
-
-#import <arpa/inet.h>
-#import <ifaddrs.h>
-#import <netdb.h>
-#import <sys/socket.h>
+#import <SystemConfiguration/SystemConfiguration.h>
+#import <netinet/in.h>
 
 NSString *DFNetworkReachabilityDidChangeNotification = @"DFNetworkReachabilityDidChangeNotification";
-
 
 @interface DFNetworkReachability ()
 
 @property (nonatomic) SCNetworkReachabilityFlags flags;
 
 @end
-
 
 static void _DFReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkReachabilityFlags flags, void *info) {
     NSCAssert(info != NULL, @"info was NULL in _DFReachabilityCallback");
@@ -118,10 +113,6 @@ static void _DFReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkRe
 
 - (void)_stopNotifier {
     SCNetworkReachabilityUnscheduleFromRunLoop(_reachabilityRef, CFRunLoopGetCurrent(), kCFRunLoopDefaultMode);
-}
-
-- (NSString *)description {
-    return [NSString stringWithFormat:@"<%@ %p> { reachable = %i }", [self class], self, self.isReachable];
 }
 
 @end

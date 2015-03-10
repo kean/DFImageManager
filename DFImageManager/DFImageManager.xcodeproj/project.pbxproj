@@ -606,10 +606,10 @@
 				0CEEECF71AABD9DB00C212A4 /* DFImageFetchTask.m */,
 				0CEEECF81AABD9DB00C212A4 /* DFCompositeImageManager.h */,
 				0CEEECF91AABD9DB00C212A4 /* DFCompositeImageManager.m */,
-				0CEEECFA1AABD9DB00C212A4 /* DFNetworkReachability.h */,
-				0CEEECFB1AABD9DB00C212A4 /* DFNetworkReachability.m */,
 				0CEEECFC1AABD9DB00C212A4 /* DFProxyImageManager.h */,
 				0CEEECFD1AABD9DB00C212A4 /* DFProxyImageManager.m */,
+				0CEEECFA1AABD9DB00C212A4 /* DFNetworkReachability.h */,
+				0CEEECFB1AABD9DB00C212A4 /* DFNetworkReachability.m */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";

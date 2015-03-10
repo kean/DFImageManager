@@ -22,7 +22,6 @@
 
 #import "DFProcessingInput.h"
 
-
 @implementation DFProcessingInput
 
 - (instancetype)initWithImage:(UIImage *)image identifier:(NSString *)identifier {

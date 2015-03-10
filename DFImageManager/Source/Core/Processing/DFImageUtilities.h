@@ -23,7 +23,6 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
-
 static inline CGFloat
 DFAspectFitScale(CGSize imageSize, CGSize boundsSize) {
     CGFloat scaleWidth = boundsSize.width / imageSize.width;
@@ -40,12 +39,6 @@ DFAspectFillScale(CGSize imageSize, CGSize boundsSize) {
 
 static inline CGSize
 DFSizeScaled(CGSize size, CGFloat scale) {
-    return CGSizeMake(size.width * scale, size.height * scale);
-}
-
-static inline CGSize
-DFPixelSizeFromSize(CGSize size) {
-    CGFloat scale = [UIScreen mainScreen].scale;
     return CGSizeMake(size.width * scale, size.height * scale);
 }
 

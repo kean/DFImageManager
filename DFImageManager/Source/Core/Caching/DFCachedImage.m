@@ -22,7 +22,6 @@
 
 #import "DFCachedImage.h"
 
-
 @implementation DFCachedImage
 
 - (instancetype)initWithImage:(UIImage *)image expirationDate:(NSTimeInterval)expirationDate {

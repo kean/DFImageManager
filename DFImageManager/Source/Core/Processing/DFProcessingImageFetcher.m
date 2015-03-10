@@ -27,7 +27,6 @@
 #import "DFProcessingImageFetcher.h"
 #import "DFProcessingInput.h"
 
-
 @implementation DFProcessingImageFetcher {
     id<DFImageProcessing> _processor;
     NSOperationQueue *_queue;
@@ -65,7 +64,9 @@
     UIImage *image = [((DFProcessingInput *)request.resource) image];
     NSBlockOperation *operation = [NSBlockOperation blockOperationWithBlock:^{
         UIImage *processedImage = [_processor processedImage:image forRequest:request];
-        completion([DFImageResponse responseWithImage:processedImage ?: image]);
+        if (completion) {
+            completion([DFImageResponse responseWithImage:processedImage ?: image]);
+        }
     }];
     [_queue addOperation:operation];
     return operation;

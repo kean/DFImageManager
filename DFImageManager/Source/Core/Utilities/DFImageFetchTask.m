@@ -46,11 +46,9 @@
 
 
 @implementation DFImageFetchTask {
-    NSMapTable *_contexts;
     void (^_handler)(UIImage *, NSDictionary *, DFImageRequest *);
-    
-    // Optimization for single request case
-    DFImageFetchContext *_context;
+    NSMapTable *_contexts;
+    DFImageFetchContext *_context; // Optimization for single request case
 }
 
 - (instancetype)initWithRequests:(NSArray *)requests handler:(void (^)(UIImage *, NSDictionary *, DFImageRequest *))handler {
