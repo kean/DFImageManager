@@ -27,10 +27,7 @@
 
 NSString *DFImageProcessingCornerRadiusKey = @"DFImageProcessingCornerRadiusKey";
 
-
 @implementation DFImageProcessor
-
-#pragma mark - <DFImageProcessing>
 
 - (BOOL)isProcessingForRequestEquivalent:(DFImageRequest *)request1 toRequest:(DFImageRequest *)request2 {
     if (request1 == request2) {
@@ -41,12 +38,9 @@ NSString *DFImageProcessingCornerRadiusKey = @"DFImageProcessingCornerRadiusKey"
           request1.options.allowsClipping == request2.options.allowsClipping)) {
         return NO;
     }
-    NSDictionary *userInfo1 = request1.options.userInfo;
-    NSDictionary *userInfo2 = request2.options.userInfo;
-    if (!userInfo1.count && !userInfo2.count) {
-        return YES;
-    }
-    return [userInfo1 isEqualToDictionary:userInfo2];
+    NSNumber *cornerRadius1 = request1.options.userInfo[DFImageProcessingCornerRadiusKey];
+    NSNumber *cornerRadius2 = request2.options.userInfo[DFImageProcessingCornerRadiusKey];
+    return (!cornerRadius1 && !cornerRadius2) || [cornerRadius1 isEqualToNumber:cornerRadius2];
 }
 
 - (UIImage *)processedImage:(UIImage *)image forRequest:(DFImageRequest *)request {

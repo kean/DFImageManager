@@ -29,7 +29,6 @@
  */
 extern NSString *DFImageProcessingCornerRadiusKey;
 
-
 /*! The DFImageProcessor implements image decompression, scaling, cropping and more.
  */
 @interface DFImageProcessor : NSObject <DFImageProcessing>
