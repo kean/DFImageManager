@@ -102,7 +102,9 @@
 - (NSOperation *)startOperationWithRequest:(DFImageRequest *)request progressHandler:(void (^)(double))progressHandler completion:(void (^)(DFImageResponse *))completion {
     NSURLRequest *URLRequest = [self _URLRequestForImageRequest:request];
     NSURLSessionDataTask *task = [self.sessionManager dataTaskWithRequest:URLRequest completionHandler:^(NSURLResponse *URLResponse, UIImage *result, NSError *error) {
-        completion([[DFImageResponse alloc] initWithImage:result error:error userInfo:nil]);
+        if (completion) {
+            completion([[DFImageResponse alloc] initWithImage:result error:error userInfo:nil]);
+        }
     }];
     [task resume];
     

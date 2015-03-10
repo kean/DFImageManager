@@ -257,14 +257,20 @@ static const NSTimeInterval _kCommandExecutionInterval = 0.0025; // 2.5 ms
 - (NSOperation *)startOperationWithRequest:(DFImageRequest *)request progressHandler:(void (^)(double))progressHandler completion:(void (^)(DFImageResponse *))completion {
     NSURLRequest *URLRequest = [self _URLRequestForImageRequest:request];
     NSURLSessionDataTask *__block task = [self.sessionDelegate URLImageFetcher:self dataTaskWithRequest:URLRequest progressHandler:^(int64_t countOfBytesReceived, int64_t countOfBytesExpectedToReceive) {
-        progressHandler((double)countOfBytesReceived / (double)countOfBytesExpectedToReceive);
+        if (progressHandler) {
+            progressHandler((double)countOfBytesReceived / (double)countOfBytesExpectedToReceive);
+        }
     } completionHandler:^(NSData *data, NSURLResponse *URLResponse, NSError *error) {
+        DFImageResponse *response;
         if (error) {
-            completion([DFImageResponse responseWithError:error]);
+            response = [DFImageResponse responseWithError:error];
         } else {
             id<DFURLResponseDeserializing> deserializer = [self _responseDeserializerForImageRequest:request URLRequest:URLRequest];
             UIImage *image = [deserializer objectFromResponse:URLResponse data:data error:&error];
-            completion([[DFImageResponse alloc] initWithImage:image error:error userInfo:nil]);
+            response = [[DFImageResponse alloc] initWithImage:image error:error userInfo:nil];
+        }
+        if (completion) {
+            completion(response);
         }
     }];
     
