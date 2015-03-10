@@ -21,7 +21,7 @@
 // THE SOFTWARE.
 
 #import <UIKit/UIKit.h>
-#import <FLAnimatedImage.h>
+#import <FLAnimatedImage/FLAnimatedImage.h>
 
 
 /*! The DFAnimatedImage subclasses UIImage and represents a poster image for the underlying animated image. It is a regular UIImage that doesn't override any of the native UIImage behaviors it can be used anywhere where a regular `UIImage` can be used.

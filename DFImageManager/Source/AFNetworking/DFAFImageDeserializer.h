@@ -20,7 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "AFURLResponseSerialization.h"
+#import <AFNetworking/AFURLResponseSerialization.h>
 
 /*! Image deserializer for AFNetworking. Supports GIF.
  @note The DFImageManager has a centralized image decompression, so the DFAFImageDeserializer doesn't decompress received images.

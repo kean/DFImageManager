@@ -24,7 +24,7 @@
 #import <UIKit/UIKit.h>
 
 #if __has_include("DFImageManagerKit+GIF.h")
-#import <FLAnimatedImage.h>
+#import <FLAnimatedImage/FLAnimatedImage.h>
 #endif
 
 @class DFImageFetchTask;
