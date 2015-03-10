@@ -23,7 +23,7 @@
 #import "DFImageManaging.h"
 #import <UIKit/UIKit.h>
 
-#if __has_include("DFAnimatedImage.h")
+#if __has_include("DFImageManagerKit+GIF.h")
 #import <FLAnimatedImage.h>
 #endif
 
@@ -52,7 +52,7 @@
 @end
 
 
-#if __has_include("DFAnimatedImage.h")
+#if __has_include("DFImageManagerKit+GIF.h")
 /*! An image view extends UIImageView class with image fetching functionality. It also adds other features like managing request priorities, retrying failed requests and more.
  @note The DFImageView is a FLAnimatedImageView subclass that support animated GIF playback. The playback is enabled by default and can be disabled using allowsGIFPlayback property. The DFImageView doesn't override any of the FLAnimatedImageView methods so should get the same experience as when using the FLAnimatedImageView class directly. The only addition is a new - (void)displayImage:(UIImage *)image method that supports DFAnimatedImage objects and will automatically start GIF playback when passed an object of that class.
  */
@@ -96,7 +96,7 @@
  */
 @property (nonatomic) BOOL allowsAutoRetries;
 
-#if __has_include("DFAnimatedImage.h")
+#if __has_include("DFImageManagerKit+GIF.h")
 /*! If the value is YES the receiver will start a GIF playback as soon as the image is displayed. Default value is YES.
  */
 @property (nonatomic) BOOL allowsGIFPlayback;

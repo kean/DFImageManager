@@ -34,8 +34,8 @@
 #import "DFProcessingImageFetcher.h"
 #import "DFProcessingInput.h"
 
-#if __has_include("DFAnimatedImage.h")
-#import "DFAnimatedImage.h"
+#if __has_include("DFImageManagerKit+GIF.h")
+#import "DFImageManagerKit+GIF.h"
 #endif
 
 #pragma mark - _DFImageRequestID -
@@ -363,7 +363,7 @@
 
 - (void)_processResponseForHandler:(_DFImageManagerHandler *)handler {
     BOOL shouldProcessResponse = YES;
-#if __has_include("DFAnimatedImage.h")
+#if __has_include("DFImageManagerKit+GIF.h")
     if ([_fetchResponse.image isKindOfClass:[DFAnimatedImage class]]) {
         shouldProcessResponse = NO;
     }

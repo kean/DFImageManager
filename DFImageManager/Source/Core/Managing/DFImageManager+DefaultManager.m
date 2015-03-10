@@ -32,16 +32,16 @@
 #import <AFNetworking/AFHTTPSessionManager.h>
 #endif
 
-#if __has_include("DFImageManager+NSURLSession.h")
-#import "DFImageManager+NSURLSession.h"
+#if __has_include("DFImageManagerKit+NSURLSession.h")
+#import "DFImageManagerKit+NSURLSession.h"
 #endif
 
-#if __has_include("DFImageManager+PhotosKit.h")
-#import "DFImageManager+PhotosKit.h"
+#if __has_include("DFImageManagerKit+PhotosKit.h")
+#import "DFImageManagerKit+PhotosKit.h"
 #endif
 
-#if __has_include("DFImageManager+AssetsLibrary.h")
-#import "DFImageManager+AssetsLibrary.h"
+#if __has_include("DFImageManagerKit+AssetsLibrary.h")
+#import "DFImageManagerKit+AssetsLibrary.h"
 #import <AssetsLibrary/AssetsLibrary.h>
 #endif
 
@@ -64,7 +64,7 @@
         [[DFImageManager alloc] initWithConfiguration:[DFImageManagerConfiguration  configurationWithFetcher:fetcher processor:processor cache:cache]];
     });
     [managers addObject:URLImageManager];
-#elif __has_include("DFImageManager+NSURLSession.h")
+#elif __has_include("DFImageManagerKit+NSURLSession.h")
     id<DFImageManaging> URLImageManager = (        
         NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
         configuration.URLCache = [[NSURLCache alloc] initWithMemoryCapacity:0 diskCapacity:1024 * 1024 * 256 diskPath:@"com.github.kean.default_image_cache"];
@@ -75,7 +75,7 @@
     [managers addObject:URLImageManager];
 #endif
     
-#if __has_include("DFImageManager+PhotosKit.h")
+#if __has_include("DFImageManagerKit+PhotosKit.h")
     id<DFImageManaging> photosKitImageManager = ({
         DFPhotosKitImageFetcher *fetcher = [DFPhotosKitImageFetcher new];
         
@@ -85,7 +85,7 @@
     [managers addObject:photosKitImageManager];
 #endif
     
-#if __has_include("DFImageManager+AssetsLibrary.h")
+#if __has_include("DFImageManagerKit+AssetsLibrary.h")
     id<DFImageManaging> assetsLibraryImageManager = ({
         DFAssetsLibraryImageFetcher *fetcher = [DFAssetsLibraryImageFetcher new];
         

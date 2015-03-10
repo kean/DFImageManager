@@ -24,8 +24,8 @@
 #import "DFImageCache.h"
 #import "NSCache+DFImageManager.h"
 
-#if __has_include("DFAnimatedImage.h")
-#import "DFAnimatedImage.h"
+#if __has_include("DFImageManagerKit+GIF.h")
+#import "DFImageManagerKit+GIF.h"
 #endif
 
 

@@ -54,13 +54,13 @@
 #import "DFImageFetchTask.h"
 
 // Subspec 'UI'
-#if __has_include("DFImageManager+UI.h")
-#import "DFImageManager+UI.h"
+#if __has_include("DFImageManagerKit+UI.h")
+#import "DFImageManagerKit+UI.h"
 #endif
 
 // Subspec 'NSURLSession'
-#if __has_include("DFImageManager+NSURLSession.h")
-#import "DFImageManager+NSURLSession.h"
+#if __has_include("DFImageManagerKit+NSURLSession.h")
+#import "DFImageManagerKit+NSURLSession.h"
 #endif
 
 // Subspec 'AFNetworking'
@@ -69,13 +69,13 @@
 #endif
 
 // Subspec 'PhotosKit'
-#if __has_include("DFImageManager+PhotosKit.h")
-#import "DFImageManager+PhotosKit.h"
+#if __has_include("DFImageManagerKit+PhotosKit.h")
+#import "DFImageManagerKit+PhotosKit.h"
 #endif
 
 // Subspec 'AssetsLibrary'
-#if __has_include("DFImageManager+AssetsLibrary.h")
-#import "DFImageManager+AssetsLibrary.h"
+#if __has_include("DFImageManagerKit+AssetsLibrary.h")
+#import "DFImageManagerKit+AssetsLibrary.h"
 #endif
 
 // Subspec 'GIF'

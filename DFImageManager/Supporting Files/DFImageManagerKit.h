@@ -50,16 +50,16 @@ FOUNDATION_EXPORT const unsigned char DFImageManagerFrameworkVersionString[];
 #import <DFImageManagerKit/DFImageFetchTask.h>
 
 // Subspec 'UI'
-#import <DFImageManagerKit/DFImageManager+UI.h>
+#import <DFImageManagerKit/DFImageManagerKit+UI.h>
 
 // Subspec 'NSURLSession'
-#import <DFImageManagerKit/DFImageManager+NSURLSession.h>
+#import <DFImageManagerKit/DFImageManagerKit+NSURLSession.h>
 
 // Subspec 'PhotosKit'
-#import <DFImageManagerKit/DFImageManager+PhotosKit.h>
+#import <DFImageManagerKit/DFImageManagerKit+PhotosKit.h>
 
 // Subspec 'AssetsLibrary'
-#import <DFImageManagerKit/DFImageManager+AssetsLibrary.h>
+#import <DFImageManagerKit/DFImageManagerKit+AssetsLibrary.h>
 
 // Subspec 'GIF'
-#import <DFImageManagerKit/DFAnimatedImage.h>
+#import <DFImageManagerKit/DFImageManagerKit+GIF.h>

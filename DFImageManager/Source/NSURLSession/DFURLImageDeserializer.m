@@ -23,8 +23,8 @@
 #import "DFURLImageDeserializer.h"
 #import <UIKit/UIKit.h>
 
-#if __has_include("DFAnimatedImage.h")
-#import "DFAnimatedImage.h"
+#if __has_include("DFImageManagerKit+GIF.h")
+#import "DFImageManagerKit+GIF.h"
 #endif
 
 
@@ -34,7 +34,7 @@
     if (!data.length) {
         return nil;
     }
-#if __has_include("DFAnimatedImage.h")
+#if __has_include("DFImageManagerKit+GIF.h")
     if ([DFAnimatedImage isAnimatedGIFData:data]) {
         UIImage *image = [[DFAnimatedImage alloc] initWithAnimatedGIFData:data];
         if (image) {
