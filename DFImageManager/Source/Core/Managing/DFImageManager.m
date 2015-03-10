@@ -358,21 +358,22 @@
 #pragma mark - Processing
 
 - (void)_processResponseForHandler:(_DFImageManagerHandler *)handler {
-    BOOL shouldProcessResponse = YES;
+    UIImage *fetchedImage = _fetchResponse.image;
+    BOOL shouldProcessResponse = _processingManager != nil;
 #if __has_include("DFImageManagerKit+GIF.h")
-    if ([_fetchResponse.image isKindOfClass:[DFAnimatedImage class]]) {
+    if ([fetchedImage isKindOfClass:[DFAnimatedImage class]]) {
         shouldProcessResponse = NO;
     }
 #endif
-    if (shouldProcessResponse && _processingManager && _fetchResponse.image) {
+    if (shouldProcessResponse && fetchedImage) {
         _DFImageManagerTask *__weak weakSelf = self;
-        [self _processImage:_fetchResponse.image forHandler:handler completion:^(UIImage *image) {
+        [self _processImage:fetchedImage forHandler:handler completion:^(UIImage *image) {
             DFImageResponse *response = [[DFImageResponse alloc] initWithImage:image error:_fetchResponse.error userInfo:_fetchResponse.userInfo];
             [weakSelf _didProcessResponse:response forHandler:handler];
         }];
     } else {
-        if (_fetchResponse.image) {
-            [self _storeImage:_fetchResponse.image forRequest:handler.request];
+        if (fetchedImage) {
+            [self _storeImage:fetchedImage forRequest:handler.request];
         }
         [self _didProcessResponse:_fetchResponse forHandler:handler];
     }
@@ -513,8 +514,7 @@
     dispatch_async(_syncQueue, ^{
         NSUUID *taskID = _taskIDs[DFImageRequestKeyCreate(canonicalRequest)] ?: [NSUUID UUID];
         [requestID setTaskID:taskID handlerID:[NSUUID UUID]];
-        _DFImageManagerHandler *handler = [[_DFImageManagerHandler alloc] initWithRequest:canonicalRequest requestID:requestID completion:completion];
-        [self _requestImageForHandler:handler];
+        [self _requestImageForHandler:[[_DFImageManagerHandler alloc] initWithRequest:canonicalRequest requestID:requestID completion:completion]];
     });
     return requestID;
 }
@@ -574,23 +574,19 @@
 - (void)_executePreheatingTasksIfNecesary {
     NSArray *executingTasks = [_tasks.allValues filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"isExecuting = YES"]];
     if (executingTasks.count < _conf.maximumConcurrentPreheatingRequests) {
-        BOOL isExecutingRegularTasks = NO;
         for (_DFImageManagerTask *task in executingTasks) {
-            if (!task.isPreheating) {
-                isExecutingRegularTasks = YES;
-                break;
+            if (!task.isPreheating) { // Is executing regular tasks
+                return;
             }
         }
-        if (!isExecutingRegularTasks) {
-            NSArray *pendingTasks = [_tasks.allValues filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"isExecuting = NO"]];
-            NSUInteger executingTaskCount = executingTasks.count;
-            for (_DFImageManagerTask *task in pendingTasks) {
-                if (executingTaskCount >= _conf.maximumConcurrentPreheatingRequests) {
-                    break;
-                }
-                executingTaskCount++;
-                [task resume];
+        NSArray *pendingTasks = [_tasks.allValues filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"isExecuting = NO"]];
+        NSUInteger executingTaskCount = executingTasks.count;
+        for (_DFImageManagerTask *task in pendingTasks) {
+            if (executingTaskCount >= _conf.maximumConcurrentPreheatingRequests) {
+                break;
             }
+            executingTaskCount++;
+            [task resume];
         }
     }
 }
@@ -654,11 +650,10 @@
 }
 
 - (UIImage *)_cachedImageForRequest:(DFImageRequest *)request {
-    if (request.options.memoryCachePolicy == DFImageRequestCachePolicyReloadIgnoringCache) {
-        return nil;
+    if (request.options.memoryCachePolicy != DFImageRequestCachePolicyReloadIgnoringCache) {
+        return [_conf.cache cachedImageForKey:DFImageCacheKeyCreate(request)].image;
     }
-    DFCachedImage *cachedImage = [_conf.cache cachedImageForKey:DFImageCacheKeyCreate(request)];
-    return cachedImage.image;
+    return nil;
 }
 
 - (void)task:(_DFImageManagerTask *)task storeImage:(UIImage *)image forRequest:(DFImageRequest *)request {
@@ -724,7 +719,7 @@
 #pragma mark Preheating
 
 - (void)startPreheatingImagesForRequests:(NSArray *)requests {
-    if (requests.count > 0) {
+    if (requests.count) {
         dispatch_async(_syncQueue, ^{
             [self _startPreheatingImageForRequests:[self _canonicalRequestsForRequests:requests]];
         });
@@ -745,7 +740,7 @@
 }
 
 - (void)stopPreheatingImagesForRequests:(NSArray *)requests {
-    if (requests.count > 0) {
+    if (requests.count) {
         dispatch_async(_syncQueue, ^{
             [self _stopPreheatingImagesForRequests:[self _canonicalRequestsForRequests:requests]];
         });
