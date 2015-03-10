@@ -44,6 +44,10 @@
     return [[DFImageRequest alloc] initWithResource:resource];
 }
 
++ (instancetype)requestWithResource:(id)resource targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options {
+    return [[DFImageRequest alloc] initWithResource:resource targetSize:targetSize contentMode:contentMode options:options];
+}
+
 - (id)copyWithZone:(NSZone *)zone {
     DFImageRequest *request = [[DFImageRequest allocWithZone:zone] init];
     request.resource = self.resource;

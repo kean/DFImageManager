@@ -62,6 +62,10 @@
  */
 + (instancetype)requestWithResource:(id)resource;
 
+/*! Returns a DFImageRequest initialized with a given parameters.
+ */
++ (instancetype)requestWithResource:(id)resource targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options;
+
 @end
 
 
