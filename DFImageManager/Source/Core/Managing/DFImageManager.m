@@ -42,8 +42,6 @@
 
 @interface _DFImageRequestID : DFImageRequestID
 
-/*! Image manager that originated request ID.
- */
 @property (nonatomic, weak, readonly) id<DFImageManagingCore> imageManager;
 @property (nonatomic, readonly) NSUUID *taskID;
 @property (nonatomic, readonly) NSUUID *handlerID;
@@ -63,9 +61,8 @@
 }
 
 - (void)setTaskID:(NSUUID *)taskID handlerID:(NSUUID *)handlerID {
-    if (_taskID || _handlerID) {
-        [NSException raise:NSInternalInconsistencyException format:@"Attempting to rewrite image request state"];
-    }
+    NSAssert(!_taskID, nil);
+    NSAssert(!_handlerID, nil);
     _taskID = taskID;
     _handlerID = handlerID;
 }
@@ -233,7 +230,7 @@
 
 - (void)resume;
 - (void)cancel;
-- (void)updatePriority;
+- (void)updateOperationPriority;
 
 - (void)addHandler:(_DFImageManagerHandler *)handler;
 - (void)removeHandlerForID:(NSUUID *)handlerID;
@@ -242,13 +239,8 @@
 
 @implementation _DFImageManagerTask {
     NSMutableDictionary *_handlers;
-    
-    struct {
-        unsigned int isExecuting:1;
-        unsigned int isFetching:1;
-        unsigned int isPreheating:1;
-        unsigned int isReportingProgress:1;
-    } _flags;
+    BOOL _isReportingProgress;
+    BOOL _isFetching;
     
     id<DFImageFetching> _fetcher;
     id<DFImageManagingCore> _processingManager;
@@ -274,9 +266,9 @@
 }
 
 - (void)resume {
-    NSAssert(_flags.isExecuting == NO, nil);
-    _flags.isExecuting = YES;
-    for (_DFImageManagerHandler *handler in [self.handlers allValues]) {
+    NSAssert(!_isExecuting, nil);
+    _isExecuting = YES;
+    for (_DFImageManagerHandler *handler in self.handlers.allValues) {
         [self _executeHandler:handler];
     }
 }
@@ -289,15 +281,13 @@
     } else if (_fetchResponse) {
         // Start image processing if task already has original image
         [self _processResponseForHandler:handler];
-    } else if (!_flags.isFetching) {
-        _flags.isFetching = YES;
+    } else if (!_isFetching) {
+        _isFetching = YES;
         [self _fetchImage];
     } else {
         // Do nothing, wait for response
     }
 }
-
-#pragma mark - Handlers
 
 - (void)addHandler:(_DFImageManagerHandler *)handler {
     _handlers[handler.requestID.handlerID] = handler;
@@ -314,40 +304,46 @@
 }
 
 - (void)_didUpdateHandlers {
-    _flags.isReportingProgress = NO;
-    _flags.isPreheating = YES;
+    _isReportingProgress = NO;
+    _isPreheating = YES;
     [_handlers enumerateKeysAndObjectsUsingBlock:^(id key, _DFImageManagerHandler *handler, BOOL *stop) {
         if (handler.request.options.progressHandler) {
-            _flags.isReportingProgress = YES;
+            _isReportingProgress = YES;
         }
         if (![handler isKindOfClass:[_DFImageManagerPreheatHandler class]]) {
-            _flags.isPreheating = NO;
+            _isPreheating = NO;
         }
     }];
+    [self updateOperationPriority];
+}
+
+- (void)cancel {
+    [_fetchOperation cancel];
+    self.delegate = nil;
 }
 
 #pragma mark - Fetching
 
 - (void)_fetchImage {
     _DFImageManagerTask *__weak weakSelf = self;
-    NSOperation *operation = [_fetcher startOperationWithRequest:self.request progressHandler:^(double progress) {
+    _fetchOperation = [_fetcher startOperationWithRequest:self.request progressHandler:^(double progress) {
         [weakSelf _didUpdateFetchProgress:progress];
     } completion:^(DFImageResponse *response) {
         [weakSelf _didFetchImageWithResponse:response];
     }];
-    _fetchOperation = operation;
-    [self updatePriority];
+    [self updateOperationPriority];
 }
 
 - (void)_didUpdateFetchProgress:(double)progress {
     /*! Performance optimization for users that are not interested in progress reporting. Reduces DFImageManager internal queue usage.
      */
-    if (_flags.isReportingProgress) {
+    if (_isReportingProgress) {
         [self.delegate task:self didUpdateProgress:progress];
     }
 }
 
 - (void)_didFetchImageWithResponse:(DFImageResponse *)response {
+    _fetchOperation = nil;
     [self.delegate task:self didReceiveResponse:_fetchResponse completion:^(BOOL shouldContinue) {
         if (shouldContinue) {
             _fetchResponse = response;
@@ -406,32 +402,16 @@
 
 #pragma mark -
 
-- (void)cancel {
-    [_fetchOperation cancel];
-    self.delegate = nil;
-}
-
-- (void)updatePriority {
-    NSOperationQueuePriority priority = [self _queuePriority];
-    if (_fetchOperation.queuePriority != priority) {
-        _fetchOperation.queuePriority = priority;
+- (void)updateOperationPriority {
+    if (_fetchOperation && _handlers.count) {
+        DFImageRequestPriority __block priority = DFImageRequestPriorityVeryLow;
+        [_handlers enumerateKeysAndObjectsUsingBlock:^(id key, _DFImageManagerHandler *handler, BOOL *stop) {
+            priority = MAX(handler.request.options.priority, priority);
+        }];
+        if (_fetchOperation.queuePriority != (NSOperationQueuePriority)priority) {
+            _fetchOperation.queuePriority = (NSOperationQueuePriority)priority;
+        }
     }
-}
-
-- (NSOperationQueuePriority)_queuePriority {
-    DFImageRequestPriority __block maxPriority = DFImageRequestPriorityVeryLow;
-    [_handlers enumerateKeysAndObjectsUsingBlock:^(id key, _DFImageManagerHandler *handler, BOOL *stop) {
-        maxPriority = MAX(handler.request.options.priority, maxPriority);
-    }];
-    return (NSOperationQueuePriority)maxPriority;
-}
-
-- (BOOL)isPreheating {
-    return _flags.isPreheating;
-}
-
-- (BOOL)isExecuting {
-    return _flags.isExecuting;
 }
 
 - (UIImage *)_cachedImageForRequest:(DFImageRequest *)request {
@@ -443,7 +423,7 @@
 }
 
 - (NSString *)description {
-    return [NSString stringWithFormat:@"<%@ %p> { executing:%i, fetching:%i, preheating:%i }", [self class], self, self.isExecuting, _flags.isFetching, self.isPreheating];
+    return [NSString stringWithFormat:@"<%@ %p> { executing:%i, fetching:%i, preheating:%i }", [self class], self, self.isExecuting, _isFetching, self.isPreheating];
 }
 
 @end
@@ -721,8 +701,6 @@
         if (task.handlers.count == 0) {
             [task cancel];
             [self _removeTask:task];
-        } else {
-            [task updatePriority];
         }
     }
 }
@@ -737,7 +715,7 @@
             DFImageRequestOptions *options = handler.request.options;
             if (options.priority != priority) {
                 options.priority = priority;
-                [task updatePriority];
+                [task updateOperationPriority];
             }
         });
     }
@@ -823,7 +801,7 @@
     });
 }
 
-#pragma mark - 
+#pragma mark -
 
 - (NSString *)description {
     return [NSString stringWithFormat:@"<%@ %p> { name = %@ }", [self class], self, self.name];
