@@ -10,6 +10,7 @@
 #import "SDFFlickrRecentPhotosModel.h"
 #import "SDFNetworkingDemoCollectionViewController.h"
 #import "UIViewController+SDFImageManager.h"
+#import <AFNetworkActivityIndicatorManager.h>
 #import <DFImageManager/DFImageManagerKit.h>
 #import <DFProxyImageManager.h>
 
@@ -25,7 +26,6 @@ SDFFlickrRecentPhotosModelDelegate>
     UIActivityIndicatorView *_activityIndicatorView;
     NSMutableArray *_photos;
     SDFFlickrRecentPhotosModel *_model;
-    NSURLCache *_cache;
     
     DFCollectionViewPreheatingController *_preheatingController;
     
@@ -46,7 +46,7 @@ static NSString * const reuseIdentifier = @"Cell";
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.collectionView.alwaysBounceVertical = NO;
+    [AFNetworkActivityIndicatorManager sharedManager].enabled = YES;
     
     [self.collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:reuseIdentifier];
     

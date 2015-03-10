@@ -20,29 +20,11 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "DFURLImageDeserializer.h"
-#import <UIKit/UIKit.h>
+#import "AFURLResponseSerialization.h"
 
-#if __has_include("DFAnimatedImage.h")
-#import "DFAnimatedImage.h"
-#endif
-
-
-@implementation DFURLImageDeserializer
-
-- (id)objectFromResponse:(NSURLResponse *)response data:(NSData *)data error:(NSError *__autoreleasing *)error {
-    if (!data.length) {
-        return nil;
-    }
-#if __has_include("DFAnimatedImage.h")
-    if ([DFAnimatedImage isAnimatedGIFData:data]) {
-        UIImage *image = [[DFAnimatedImage alloc] initWithAnimatedGIFData:data];
-        if (image) {
-            return image;
-        }
-    }
-#endif
-    return [[UIImage alloc] initWithData:data scale:[UIScreen mainScreen].scale];
-}
+/*! Image deserializer for AFNetworking. Supports GIF.
+ @note The DFImageManager has a centralized image decompression, so the DFAFImageDeserializer doesn't decompress received images.
+ */
+@interface DFAFImageDeserializer : AFHTTPResponseSerializer
 
 @end

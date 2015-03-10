@@ -20,29 +20,6 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "DFURLImageDeserializer.h"
-#import <UIKit/UIKit.h>
-
-#if __has_include("DFAnimatedImage.h")
-#import "DFAnimatedImage.h"
-#endif
-
-
-@implementation DFURLImageDeserializer
-
-- (id)objectFromResponse:(NSURLResponse *)response data:(NSData *)data error:(NSError *__autoreleasing *)error {
-    if (!data.length) {
-        return nil;
-    }
-#if __has_include("DFAnimatedImage.h")
-    if ([DFAnimatedImage isAnimatedGIFData:data]) {
-        UIImage *image = [[DFAnimatedImage alloc] initWithAnimatedGIFData:data];
-        if (image) {
-            return image;
-        }
-    }
-#endif
-    return [[UIImage alloc] initWithData:data scale:[UIScreen mainScreen].scale];
-}
-
-@end
+#import "DFAFImageFetcher.h"
+#import "DFAFImageRequestOptions.h"
+#import "DFAFImageDeserializer.h"

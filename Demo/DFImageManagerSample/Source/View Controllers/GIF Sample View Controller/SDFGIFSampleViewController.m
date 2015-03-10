@@ -44,7 +44,6 @@ static NSString *const kReuseIdentifierImageCell = @"kReuseIdentifierImageCell";
       [NSURL URLWithString:@"https://cloud.githubusercontent.com/assets/1567433/6505595/def06c06-c2e7-11e4-9cdf-d37d28618af0.gif"],
       [NSURL URLWithString:@"https://cloud.githubusercontent.com/assets/1567433/6505634/26e5dad2-c2e8-11e4-89c3-3c3a63110ac0.gif"],
       [NSURL URLWithString:@"https://cloud.githubusercontent.com/assets/1567433/6505643/42eb3ee8-c2e8-11e4-8666-ac9c8e1dc9b5.gif"]
-      
       ];
     
     UICollectionViewFlowLayout *layout = (id)self.collectionViewLayout;

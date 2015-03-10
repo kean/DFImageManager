@@ -20,17 +20,18 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "DFURLImageDeserializer.h"
-#import <UIKit/UIKit.h>
+#import "DFAFImageDeserializer.h"
 
 #if __has_include("DFAnimatedImage.h")
 #import "DFAnimatedImage.h"
 #endif
 
+@implementation DFAFImageDeserializer
 
-@implementation DFURLImageDeserializer
-
-- (id)objectFromResponse:(NSURLResponse *)response data:(NSData *)data error:(NSError *__autoreleasing *)error {
+- (id)responseObjectForResponse:(NSURLResponse *)response data:(NSData *)data error:(NSError *__autoreleasing *)error {
+    if (![self validateResponse:(NSHTTPURLResponse *)response data:data error:error]) {
+        return nil;
+    }
     if (!data.length) {
         return nil;
     }

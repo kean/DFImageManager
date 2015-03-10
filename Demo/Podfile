@@ -5,3 +5,6 @@ xcodeproj "DFImageManagerSample.xcodeproj"
 source "https://github.com/CocoaPods/Specs.git"
 
 pod "DFImageManager", :path => "../"
+pod "DFImageManager/AFNetworking", :path => "../"
+
+pod "AFNetworking/UIKit", "~> 2.0"

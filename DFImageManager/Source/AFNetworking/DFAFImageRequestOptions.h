@@ -20,29 +20,20 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "DFURLImageDeserializer.h"
-#import <UIKit/UIKit.h>
+#import "DFImageRequestOptions.h"
 
-#if __has_include("DFAnimatedImage.h")
-#import "DFAnimatedImage.h"
-#endif
+/*! Image request options specific for URL loading system.
+ @discussion In some cases, the policies defined in NSURLSessionConfiguration may be overridden by policies specified by an DFURLImageRequestOptions. Any policy specified on the request object is respected unless the session’s policy is more restrictive. For example, if the session configuration specifies that cellular networking should not be allowed, the NSURLRequest object cannot request cellular networking.
+ */
+@interface DFAFImageRequestOptions : DFImageRequestOptions
 
+/*! The receiver’s cache policy. Default value is NSURLRequestUseProtocolCachePolicy.
+ @note In order to completely ignore cached images you should also disable memory caching using memoryCachePolicy property.
+ */
+@property (nonatomic) NSURLRequestCachePolicy cachePolicy;
 
-@implementation DFURLImageDeserializer
-
-- (id)objectFromResponse:(NSURLResponse *)response data:(NSData *)data error:(NSError *__autoreleasing *)error {
-    if (!data.length) {
-        return nil;
-    }
-#if __has_include("DFAnimatedImage.h")
-    if ([DFAnimatedImage isAnimatedGIFData:data]) {
-        UIImage *image = [[DFAnimatedImage alloc] initWithAnimatedGIFData:data];
-        if (image) {
-            return image;
-        }
-    }
-#endif
-    return [[UIImage alloc] initWithData:data scale:[UIScreen mainScreen].scale];
-}
+/*! Initializes DFURLImageRequestOptions with default options.
+ */
+- (instancetype)init NS_DESIGNATED_INITIALIZER;
 
 @end

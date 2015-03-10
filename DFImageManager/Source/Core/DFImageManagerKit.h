@@ -63,6 +63,11 @@
 #import "DFImageManager+NSURLSession.h"
 #endif
 
+// Subspec 'AFNetworking'
+#if __has_include("DFImageManagerKit+AFNetworking.h")
+#import "DFImageManagerKit+AFNetworking.h"
+#endif
+
 // Subspec 'PhotosKit'
 #if __has_include("DFImageManager+PhotosKit.h")
 #import "DFImageManager+PhotosKit.h"

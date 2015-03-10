@@ -44,4 +44,8 @@
  */
 + (instancetype)animatedImageWithGIFData:(NSData *)data;
 
+/*! Returns YES if the data represents an animated GIF.
+ */
++ (BOOL)isAnimatedGIFData:(NSData *)data;
+
 @end

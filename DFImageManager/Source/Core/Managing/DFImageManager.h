@@ -95,7 +95,7 @@
 /*! Creates default image manager that contains all built-in fetchers.
  @note Supported assets:
 
- - NSURL with schemes http, https, ftp, file and data (NSURLSession subspec)
+ - NSURL with schemes http, https, ftp, file and data (AFNetworking or NSURLSession subspec, AFNetworking is used by default when available)
  
  - PHAsset and NSURL with scheme com.github.kean.photos-kit (PhotosKit subspec)
  

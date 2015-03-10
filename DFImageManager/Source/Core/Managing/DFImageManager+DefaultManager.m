@@ -27,17 +27,21 @@
 #import "DFImageProcessor.h"
 #import "DFProxyImageManager.h"
 
+#if __has_include("DFImageManagerKit+AFNetworking.h")
+#import "DFImageManagerKit+AFNetworking.h"
+#import <AFNetworking/AFHTTPSessionManager.h>
+#endif
+
 #if __has_include("DFImageManager+NSURLSession.h")
-#import "DFURLImageFetcher.h"
+#import "DFImageManager+NSURLSession.h"
 #endif
 
 #if __has_include("DFImageManager+PhotosKit.h")
-#import "DFPhotosKitImageFetcher.h"
+#import "DFImageManager+PhotosKit.h"
 #endif
 
 #if __has_include("DFImageManager+AssetsLibrary.h")
-#import "DFALAsset.h"
-#import "DFAssetsLibraryImageFetcher.h"
+#import "DFImageManager+AssetsLibrary.h"
 #import <AssetsLibrary/AssetsLibrary.h>
 #endif
 
@@ -49,14 +53,21 @@
     DFImageProcessor *processor = [DFImageProcessor new];
     DFImageCache *cache = [DFImageCache new];
     
-#if __has_include("DFImageManager+NSURLSession.h")
-    DFImageManager *URLImageManager = ({
-        // Initialize NSURLCache without memory cache because DFImageManager has a dedicated memory cache for processed images (see DFImageCaching protocol).
-        NSURLCache *URLCache = [[NSURLCache alloc] initWithMemoryCapacity:0 diskCapacity:1024 * 1024 * 256 diskPath:@"com.github.kean.default_image_cache"];
-        
+#if __has_include("DFImageManagerKit+AFNetworking.h")
+    id<DFImageManaging> URLImageManager = ({
         NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
-        // See https://github.com/kean/DFImageManager/wiki/Image-Caching-Guide for more info on image caching and NSURLCache
-        configuration.URLCache = URLCache;
+        configuration.URLCache = [[NSURLCache alloc] initWithMemoryCapacity:0 diskCapacity:1024 * 1024 * 256 diskPath:@"com.github.kean.default_image_cache"];
+        
+        AFHTTPSessionManager *httpSessionManager = [[AFHTTPSessionManager alloc] initWithSessionConfiguration:configuration];
+        httpSessionManager.responseSerializer = [DFAFImageDeserializer new];
+        DFAFImageFetcher *fetcher = [[DFAFImageFetcher alloc] initWithSessionManager:httpSessionManager];
+        [[DFImageManager alloc] initWithConfiguration:[DFImageManagerConfiguration  configurationWithFetcher:fetcher processor:processor cache:cache]];
+    });
+    [managers addObject:URLImageManager];
+#elif __has_include("DFImageManager+NSURLSession.h")
+    id<DFImageManaging> URLImageManager = (        
+        NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
+        configuration.URLCache = [[NSURLCache alloc] initWithMemoryCapacity:0 diskCapacity:1024 * 1024 * 256 diskPath:@"com.github.kean.default_image_cache"];
         
         DFURLImageFetcher *fetcher = [[DFURLImageFetcher alloc] initWithSessionConfiguration:configuration];
         [[DFImageManager alloc] initWithConfiguration:[DFImageManagerConfiguration configurationWithFetcher:fetcher processor:processor cache:cache]];
@@ -65,7 +76,7 @@
 #endif
     
 #if __has_include("DFImageManager+PhotosKit.h")
-    DFImageManager *photosKitImageManager = ({
+    id<DFImageManaging> photosKitImageManager = ({
         DFPhotosKitImageFetcher *fetcher = [DFPhotosKitImageFetcher new];
         
         // We don't need image decompression, because PHImageManager does it for us.
@@ -75,7 +86,7 @@
 #endif
     
 #if __has_include("DFImageManager+AssetsLibrary.h")
-    id<DFImageManagingCore> assetsLibraryImageManager = ({
+    id<DFImageManaging> assetsLibraryImageManager = ({
         DFAssetsLibraryImageFetcher *fetcher = [DFAssetsLibraryImageFetcher new];
         
         // Disable image decompression because ALAssetsLibrary blocks main thread anyway.

@@ -40,4 +40,16 @@
     return [[DFAnimatedImage alloc] initWithAnimatedGIFData:data];
 }
 
+/*! Based on http://en.wikipedia.org/wiki/Magic_number_(programming)
+ */
++ (BOOL)isAnimatedGIFData:(NSData *)data {
+    if (data.length) {
+        uint8_t c;
+        [data getBytes:&c length:1];
+        return c == 0x47;
+    } else {
+        return NO;
+    }
+}
+
 @end

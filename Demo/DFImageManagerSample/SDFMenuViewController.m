@@ -7,6 +7,7 @@
 //
 
 #import "SDFAssetsLibraryDemoViewController.h"
+#import "SDFBuiltinNetworkingDemoViewController.h"
 #import "SDFCompositeRequestDemoViewController.h"
 #import "SDFFilesystemDemoViewController.h"
 #import "SDFGIFSampleViewController.h"
@@ -81,6 +82,7 @@
     NSMutableArray *sections = [NSMutableArray new];
     
     SDFMenuViewController *__weak weakSelf = self;
+    /*
     [sections addObject:({
         NSMutableArray *items = [NSMutableArray new];
         [items addObject:[SDFMenuItem itemWithTitle:@"Zero Config Demo" subtitle:nil action:^{
@@ -90,15 +92,23 @@
         }]];
         [SDFMenuSection sectionWithTitle:@"Main" items:items];
     })];
+     */
     
     [sections addObject:({
         NSMutableArray *items = [NSMutableArray new];
-        [items addObject:[SDFMenuItem itemWithTitle:@"Networking Demo" action:^{
+        [items addObject:[SDFMenuItem itemWithTitle:@"Networking Demo" subtitle:@"'AFNetworking' subspec"  action:^{
             UIViewController *controller = [SDFNetworkingDemoCollectionViewController new];
             controller.title = @"Networking Demo";
             [weakSelf.navigationController pushViewController:controller animated:YES];
         }]];
-        [items addObject:[SDFMenuItem itemWithTitle:@"Photos Kit Demo" action:^{
+        
+        [items addObject:[SDFMenuItem itemWithTitle:@"Filesystem Demo" subtitle:@"'AFNetworking' subspec" action:^{
+            SDFFilesystemDemoViewController *controller = [SDFFilesystemDemoViewController new];
+            controller.title = @"Filesystem Demo";
+            [weakSelf.navigationController pushViewController:controller animated:YES];
+        }]];
+        
+        [items addObject:[SDFMenuItem itemWithTitle:@"Photos Kit Demo" subtitle:@"'PhotosKit' subspec" action:^{
             if ([PHPhotoLibrary class] != nil) {
                 SDFPhotosKitDemoViewController *controller =[SDFPhotosKitDemoViewController new];
                 controller.title = @"Photos Kit Demo";
@@ -108,14 +118,16 @@
                 [alert show];
             }
         }]];
-        [items addObject:[SDFMenuItem itemWithTitle:@"ALAssetsLibrary Demo" action:^{
+        
+        [items addObject:[SDFMenuItem itemWithTitle:@"ALAssetsLibrary Demo" subtitle:@"'AssetsLibrary' subspec" action:^{
             SDFAssetsLibraryDemoViewController *controller = [SDFAssetsLibraryDemoViewController new];
             controller.title = @"ALAssetsLibrary Demo";
             [weakSelf.navigationController pushViewController:controller animated:YES];
         }]];
-        [items addObject:[SDFMenuItem itemWithTitle:@"Filesystem Demo" action:^{
-            SDFFilesystemDemoViewController *controller = [SDFFilesystemDemoViewController new];
-            controller.title = @"Filesystem Demo";
+        
+        [items addObject:[SDFMenuItem itemWithTitle:@"Built-in Networking Demo" subtitle:@"Basic built-in networking, 'NSURLSession' subspec" action:^{
+            SDFBuiltinNetworkingDemoViewController *controller = [SDFBuiltinNetworkingDemoViewController new];
+            controller.title = @"Built-in Networking Demo";
             [weakSelf.navigationController pushViewController:controller animated:YES];
         }]];
         [SDFMenuSection sectionWithTitle:@"Image Managers" items:items];
@@ -123,7 +135,7 @@
     
     [sections addObject:({
         NSMutableArray *items = [NSMutableArray new];
-        [items addObject:[SDFMenuItem itemWithTitle:@"GIF Demo" subtitle:nil action:^{
+        [items addObject:[SDFMenuItem itemWithTitle:@"GIF Demo" subtitle:@"'GIF' subspec" action:^{
             SDFGIFSampleViewController *controller = [SDFGIFSampleViewController new];
             controller.title = @"GIF Demo";
             [weakSelf.navigationController pushViewController:controller animated:YES];

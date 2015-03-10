@@ -45,7 +45,7 @@
 }
 
 - (id)copyWithZone:(NSZone *)zone {
-    DFImageRequest *request = [DFImageRequest new];
+    DFImageRequest *request = [[DFImageRequest allocWithZone:zone] init];
     request.resource = self.resource;
     request.targetSize = self.targetSize;
     request.contentMode = self.contentMode;

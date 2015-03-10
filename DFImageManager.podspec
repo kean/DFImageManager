@@ -10,6 +10,7 @@ Pod::Spec.new do |s|
     s.ios.deployment_target = "7.0"
     s.source       = { :git => "https://github.com/kean/DFImageManager.git", :tag => s.version.to_s }
     s.requires_arc = true
+    s.default_subspecs = "Core", "UI", "NSURLSession", "PhotosKit", "AssetsLibrary", "GIF"
 
     s.subspec "Core" do |ss|
         ss.source_files  = "DFImageManager/Source/Core/**/*.{h,m}"
@@ -23,6 +24,12 @@ Pod::Spec.new do |s|
     s.subspec "NSURLSession" do |ss|
         ss.dependency "DFImageManager/Core"
         ss.source_files = "DFImageManager/Source/NSURLSession/**/*.{h,m}"
+    end
+
+    s.subspec "AFNetworking" do |ss|
+        ss.dependency "DFImageManager/Core"
+        ss.dependency "AFNetworking/NSURLSession", "~> 2.0"
+        ss.source_files = "DFImageManager/Source/AFNetworking/**/*.{h,m}"
     end
 
     s.subspec "PhotosKit" do |ss|

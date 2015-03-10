@@ -22,6 +22,7 @@
 		0C8651361A5E80EA000EF271 /* SDFAssetsLibraryDemoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C8651351A5E80EA000EF271 /* SDFAssetsLibraryDemoViewController.m */; };
 		0C97D6BE1A5E51BE0014D8AD /* SDFFilesystemDemoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C97D6BD1A5E51BE0014D8AD /* SDFFilesystemDemoViewController.m */; };
 		0C97D6C21A5E51E80014D8AD /* SDFBaseCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C97D6C11A5E51E80014D8AD /* SDFBaseCollectionViewController.m */; };
+		0CF0118B1AAE7EE90013AD13 /* SDFBuiltinNetworkingDemoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CF0118A1AAE7EE90013AD13 /* SDFBuiltinNetworkingDemoViewController.m */; };
 		0CF593491A4948C4007C5B56 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CF593481A4948C4007C5B56 /* main.m */; };
 		0CF5934C1A4948C4007C5B56 /* SDFAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CF5934B1A4948C4007C5B56 /* SDFAppDelegate.m */; };
 		0CF5934F1A4948C4007C5B56 /* SDFMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CF5934E1A4948C4007C5B56 /* SDFMenuViewController.m */; };
@@ -72,6 +73,8 @@
 		0C97D6BD1A5E51BE0014D8AD /* SDFFilesystemDemoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDFFilesystemDemoViewController.m; sourceTree = "<group>"; };
 		0C97D6C01A5E51E80014D8AD /* SDFBaseCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDFBaseCollectionViewController.h; sourceTree = "<group>"; };
 		0C97D6C11A5E51E80014D8AD /* SDFBaseCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDFBaseCollectionViewController.m; sourceTree = "<group>"; };
+		0CF011891AAE7EE90013AD13 /* SDFBuiltinNetworkingDemoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDFBuiltinNetworkingDemoViewController.h; sourceTree = "<group>"; };
+		0CF0118A1AAE7EE90013AD13 /* SDFBuiltinNetworkingDemoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDFBuiltinNetworkingDemoViewController.m; sourceTree = "<group>"; };
 		0CF593431A4948C4007C5B56 /* DFImageManagerSample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DFImageManagerSample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0CF593471A4948C4007C5B56 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0CF593481A4948C4007C5B56 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -215,6 +218,15 @@
 			path = "Collection View Controller";
 			sourceTree = "<group>";
 		};
+		0CF011881AAE7EE90013AD13 /* NSURLSession Demo View Controller */ = {
+			isa = PBXGroup;
+			children = (
+				0CF011891AAE7EE90013AD13 /* SDFBuiltinNetworkingDemoViewController.h */,
+				0CF0118A1AAE7EE90013AD13 /* SDFBuiltinNetworkingDemoViewController.m */,
+			);
+			path = "NSURLSession Demo View Controller";
+			sourceTree = "<group>";
+		};
 		0CF5933A1A4948C4007C5B56 = {
 			isa = PBXGroup;
 			children = (
@@ -298,6 +310,7 @@
 				0C8651331A5E80D2000EF271 /* Assets Library Demo View Controller */,
 				0C48E4BE1A5BD6E600CD2497 /* Composite Request Demo View Controller */,
 				0C97D6BF1A5E51DE0014D8AD /* Collection View Controller */,
+				0CF011881AAE7EE90013AD13 /* NSURLSession Demo View Controller */,
 				0C0D18F71AA88ACF0046F710 /* GIF Sample View Controller */,
 			);
 			path = "View Controllers";
@@ -507,6 +520,7 @@
 				0C0D18FB1AA88AE80046F710 /* SDFGIFSampleViewController.m in Sources */,
 				0C8651361A5E80EA000EF271 /* SDFAssetsLibraryDemoViewController.m in Sources */,
 				0CF8BE131A5F554400D8FE27 /* DFStickyHeaderCollectionViewFlowLayout.m in Sources */,
+				0CF0118B1AAE7EE90013AD13 /* SDFBuiltinNetworkingDemoViewController.m in Sources */,
 				0CF593491A4948C4007C5B56 /* main.m in Sources */,
 				0C48E4C11A5BD6FB00CD2497 /* SDFCompositeRequestDemoViewController.m in Sources */,
 			);

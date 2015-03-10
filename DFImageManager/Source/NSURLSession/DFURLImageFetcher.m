@@ -227,9 +227,7 @@ static const NSTimeInterval _kCommandExecutionInterval = 0.0025; // 2.5 ms
 
 - (BOOL)canHandleRequest:(DFImageRequest *)request {
     if ([request.resource isKindOfClass:[NSURL class]]) {
-        if ([self.supportedSchemes containsObject:((NSURL *)request.resource).scheme]) {
-            return YES;
-        }
+        return [self.supportedSchemes containsObject:((NSURL *)request.resource).scheme];
     }
     return NO;
 }
@@ -240,17 +238,11 @@ static const NSTimeInterval _kCommandExecutionInterval = 0.0025; // 2.5 ms
     }
     DFURLImageRequestOptions *options1 = (id)request1.options;
     DFURLImageRequestOptions *options2 = (id)request2.options;
-    return (options1.allowsNetworkAccess == options2.allowsNetworkAccess &&
-            options1.cachePolicy == options2.cachePolicy);
+    return (options1.allowsNetworkAccess == options2.allowsNetworkAccess && options1.cachePolicy == options2.cachePolicy);
 }
 
 - (BOOL)isRequestCacheEquivalent:(DFImageRequest *)request1 toRequest:(DFImageRequest *)request2 {
-    if (request1 == request2) {
-        return YES;
-    }
-    NSURL *URL1 = (NSURL *)request1.resource;
-    NSURL *URL2 = (NSURL *)request2.resource;
-    return [URL1 isEqual:URL2];
+    return request1 == request2 || [(NSURL *)request1.resource isEqual:(NSURL *)request2.resource];
 }
 
 - (DFImageRequest *)canonicalRequestForRequest:(DFImageRequest *)request {
@@ -265,9 +257,7 @@ static const NSTimeInterval _kCommandExecutionInterval = 0.0025; // 2.5 ms
 - (NSOperation *)startOperationWithRequest:(DFImageRequest *)request progressHandler:(void (^)(double))progressHandler completion:(void (^)(DFImageResponse *))completion {
     NSURLRequest *URLRequest = [self _URLRequestForImageRequest:request];
     NSURLSessionDataTask *__block task = [self.sessionDelegate URLImageFetcher:self dataTaskWithRequest:URLRequest progressHandler:^(int64_t countOfBytesReceived, int64_t countOfBytesExpectedToReceive) {
-        if (progressHandler) {
-            progressHandler((double)countOfBytesReceived / (double)countOfBytesExpectedToReceive);
-        }
+        progressHandler((double)countOfBytesReceived / (double)countOfBytesExpectedToReceive);
     } completionHandler:^(NSData *data, NSURLResponse *URLResponse, NSError *error) {
         if (error) {
             completion([DFImageResponse responseWithError:error]);
@@ -280,12 +270,12 @@ static const NSTimeInterval _kCommandExecutionInterval = 0.0025; // 2.5 ms
     
     // Passive container, DFURLImageFetcher never even start the operation, it only uses it's -cancel and -setPririty APIs. DFImageManager should probably have a specific protocol instead of NSOperation, because sometimes there is not need in one.
     DFURLSessionOperation *operation = [DFURLSessionOperation new];
-    [operation setCancellationHandler:^{
+    operation.cancellationHandler = ^{
         [_executor executeCommand:[[_DFSessionTaskCancelCommand alloc] initWithTask:task]];
-    }];
-    [operation setPriorityHandler:^(NSOperationQueuePriority priority) {
+    };
+    operation.priorityHandler = ^(NSOperationQueuePriority priority) {
         task.priority = [DFURLImageFetcher _taskPriorityForQueuePriority:priority];
-    }];
+    };
     
     [_executor executeCommand:[[_DFSessionTaskResumeCommand alloc] initWithTask:task]];
     
@@ -311,33 +301,10 @@ static const NSTimeInterval _kCommandExecutionInterval = 0.0025; // 2.5 ms
 }
 
 - (NSURLRequest *)_defaultURLRequestForImageRequest:(DFImageRequest *)imageRequest {
-    NSURL *URL = (NSURL *)imageRequest.resource;
-    DFURLImageRequestOptions *options = (id)imageRequest.options;
-    
-    /*! From NSURLSessionConfiguration class reference:
-     "In some cases, the policies defined in this configuration may be overridden by policies specified by an NSURLRequest object provided for a task. Any policy specified on the request object is respected unless the session’s policy is more restrictive. For example, if the session configuration specifies that cellular networking should not be allowed, the NSURLRequest object cannot request cellular networking."
-     
-     Apple doesn't not provide a complete documentation on what NSURLSessionConfiguration options can be overridden by NSURLRequest and in when. So it's best to copy all the options, because the NSURLSession implementation might change in future versons.
-     */
-    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:URL];
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:(NSURL *)imageRequest.resource];
     [request addValue:@"image/*" forHTTPHeaderField:@"Accept"];
-    
-    /* Set options that can not be configured by DFURLImageRequestOptions.
-     */
-    NSURLSessionConfiguration *conf = self.session.configuration;
-    request.timeoutInterval = conf.timeoutIntervalForRequest;
-    request.networkServiceType = conf.networkServiceType;
-    request.allowsCellularAccess = conf.allowsCellularAccess;
-    request.HTTPShouldHandleCookies = conf.HTTPShouldSetCookies;
-    request.HTTPShouldUsePipelining = conf.HTTPShouldUsePipelining;
-    
-    /* Set options that can be configured by DFURLImageRequestOptions.
-     */
-    request.cachePolicy = options.cachePolicy;
-    if (!options.allowsNetworkAccess) {
-        request.cachePolicy = NSURLRequestReturnCacheDataDontLoad;
-    }
-    
+    DFURLImageRequestOptions *options = (id)imageRequest.options;
+    request.cachePolicy = options.allowsNetworkAccess ? options.cachePolicy : NSURLRequestReturnCacheDataDontLoad;
     return [request copy];
 }
 

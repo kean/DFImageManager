@@ -20,29 +20,21 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "DFURLImageDeserializer.h"
-#import <UIKit/UIKit.h>
+#import "DFAFImageRequestOptions.h"
 
-#if __has_include("DFAnimatedImage.h")
-#import "DFAnimatedImage.h"
-#endif
+@implementation DFAFImageRequestOptions
 
-
-@implementation DFURLImageDeserializer
-
-- (id)objectFromResponse:(NSURLResponse *)response data:(NSData *)data error:(NSError *__autoreleasing *)error {
-    if (!data.length) {
-        return nil;
+- (instancetype)init {
+    if (self = [super init]) {
+        _cachePolicy = NSURLRequestUseProtocolCachePolicy;
     }
-#if __has_include("DFAnimatedImage.h")
-    if ([DFAnimatedImage isAnimatedGIFData:data]) {
-        UIImage *image = [[DFAnimatedImage alloc] initWithAnimatedGIFData:data];
-        if (image) {
-            return image;
-        }
-    }
-#endif
-    return [[UIImage alloc] initWithData:data scale:[UIScreen mainScreen].scale];
+    return self;
+}
+
+- (id)copyWithZone:(NSZone *)zone {
+    DFAFImageRequestOptions *copy = [super copyWithZone:zone];
+    copy.cachePolicy = self.cachePolicy;
+    return copy;
 }
 
 @end
