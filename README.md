@@ -3,7 +3,7 @@
 </p>
 <h1 align="center">DFImageManager</h1>
 
-Modern iOS framework for fetching images from various sources. It uses latest advancements in iOS SDK and doesn't reinvent existing technologies. It provides a powerful API that will extend the capabilities of your app.
+Modern iOS framework for fetching, caching, processing, displaying and preheating images from various sources. It uses latest advancements in iOS SDK and doesn't reinvent existing technologies. It provides a powerful API that will extend the capabilities of your app.
 
 #### Supported Resources
 - `NSURL` with **http**, **https**, **ftp**, **file**, and **data** schemes (`NSURLSession` or `AFNetworking` subspec)
@@ -16,13 +16,14 @@ Modern iOS framework for fetching images from various sources. It uses latest ad
 - Instead of reinventing a caching methodology it relies on HTTP cache as defined in [HTTP specification](https://tools.ietf.org/html/rfc7234) and caching implementation provided by [Foundation URL Loading System](https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/URLLoadingSystem/URLLoadingSystem.html). The caching and revalidation are completely transparent to the client. [Read more](https://github.com/kean/DFImageManager/wiki/Image-Caching-Guide)
 - Common protocols for different resources (`NSURL`, `PHAsset`, `ALAsset` etc).
 - Animated GIF support using best-in-class [FLAnimatedImage](https://github.com/Flipboard/FLAnimatedImage) library.
-- Centralized image decompression. Separate memory cache for decompressed images. Fine grained control over memory cache.
+- Centralized image decompression, resizing and processing. Resizing provides a lack of misaligned images and lower memory footprint. Fully customizable.
+- Separate memory cache for decompressed and processed images. Fine grained control over memory cache.
+- [Compose image managers](https://github.com/kean/DFImageManager/wiki/Extending-Image-Manager-Guide#using-dfcompositeimagemanager) into a tree of responsibility.
 - [Automatic preheating](https://github.com/kean/DFImageManager/wiki/Image-Preheating-Guide) of images that are close to the viewport.
 - Groups similar requests and never executes them twice. This is true for both fetching and processing. Intelligent control over which requests are considered equivalent (both in terms of fetching and processing).
-- [Compose image managers](https://github.com/kean/DFImageManager/wiki/Extending-Image-Manager-Guide#using-dfcompositeimagemanager) into a tree of responsibility.
-- Dependency injection is used throughout.
+- High quality code base. Follows best design principles and patterns, including _dependency injection_ used throughout.
 - Extreme performance even on outdated devices. Asynchronous and thread safe.
-- Unit tested.
+- Unit tests help to maintain the project and ensure its future growth.
 
 ## Getting Started
 - Download the latest [release](https://github.com/kean/DFImageManager/releases) version

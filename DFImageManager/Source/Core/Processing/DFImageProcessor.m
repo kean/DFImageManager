@@ -25,6 +25,8 @@
 #import "DFImageRequestOptions.h"
 #import "DFImageUtilities.h"
 
+NSString *DFImageProcessingCornerRadiusKey = @"DFImageProcessingCornerRadiusKey";
+
 
 @implementation DFImageProcessor
 
@@ -39,10 +41,17 @@
           request1.options.allowsClipping == request2.options.allowsClipping)) {
         return NO;
     }
-    return YES;
+    NSDictionary *userInfo1 = request1.options.userInfo;
+    NSDictionary *userInfo2 = request2.options.userInfo;
+    if (!userInfo1.count && !userInfo2.count) {
+        return YES;
+    }
+    return [userInfo1 isEqualToDictionary:userInfo2];
 }
 
-- (UIImage *)processedImage:(UIImage *)image forRequest:(DFImageRequest *)request {    
+- (UIImage *)processedImage:(UIImage *)image forRequest:(DFImageRequest *)request {
+    NSDictionary *userInfo = request.options.userInfo;
+    
     switch (request.contentMode) {
         case DFImageContentModeAspectFit:
             image = [DFImageUtilities decompressedImageWithImage:image aspectFitPixelSize:request.targetSize];
@@ -56,6 +65,11 @@
             break;
         default:
             break;
+    }
+    NSNumber *normalizedCornerRadius = userInfo[DFImageProcessingCornerRadiusKey];
+    if (normalizedCornerRadius != nil) {
+        CGFloat cornerRadius = [normalizedCornerRadius floatValue] * MIN(image.size.width, image.size.height);
+        image = [DFImageUtilities imageWithImage:image cornerRadius:cornerRadius];
     }
     return image;
 }
