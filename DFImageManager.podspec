@@ -10,7 +10,7 @@ Pod::Spec.new do |s|
     s.ios.deployment_target = "7.0"
     s.source       = { :git => "https://github.com/kean/DFImageManager.git", :tag => s.version.to_s }
     s.requires_arc = true
-    s.default_subspecs = "Core", "UI", "NSURLSession", "PhotosKit", "AssetsLibrary", "GIF"
+    s.default_subspecs = "Core", "UI", "NSURLSession", "PhotosKit", "AssetsLibrary"
 
     s.subspec "Core" do |ss|
         ss.source_files  = "DFImageManager/Source/Core/**/*.{h,m}"
