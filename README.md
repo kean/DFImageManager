@@ -5,25 +5,28 @@
 
 Modern iOS framework for fetching, caching, processing, displaying and preheating images from various sources. It uses latest advancements in iOS SDK and doesn't reinvent existing technologies. It provides a powerful API that will extend the capabilities of your app.
 
+The DFImageManager has a single responsibility of providing a great API for managing image requests, with an ability to easily plug-in everything else that your application might need. It also features [multiple subspecs](#install_using_cocopods) that integrate things like [AFNetworking](https://github.com/AFNetworking/AFNetworking) as a networking stack for fetching images, and [FLAnimatedImage](https://github.com/Flipboard/FLAnimatedImage) as a performant animated GIF engine.
+
 #### Supported Resources
-- `NSURL` with **http**, **https**, **ftp**, **file**, and **data** schemes (`NSURLSession` or `AFNetworking` subspec)
+- `NSURL` with **http**, **https**, **ftp**, **file**, and **data** schemes (`AFNetworking` or `NSURLSession` subspec)
 - `PHAsset`, `NSURL` with **com.github.kean.photos-kit** scheme (`PhotosKit` subspec)
 - `DFALAsset`, `ALAsset`, `NSURL` with **assets-library** scheme (`AssetsLibrary` subspec)
 
 ## Features
 - Zero config, yet immense customization and extensibility.
 - Uses latest advancements in [Foundation URL Loading System](https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/URLLoadingSystem/URLLoadingSystem.html) including [NSURLSession](https://developer.apple.com/library/ios/documentation/Foundation/Reference/NSURLSession_class/) that supports [SPDY](http://en.wikipedia.org/wiki/SPDY) protocol.
-- Instead of reinventing a caching methodology it relies on HTTP cache as defined in [HTTP specification](https://tools.ietf.org/html/rfc7234) and caching implementation provided by [Foundation URL Loading System](https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/URLLoadingSystem/URLLoadingSystem.html). The caching and revalidation are completely transparent to the client. [Read more](https://github.com/kean/DFImageManager/wiki/Image-Caching-Guide)
-- Common protocols for different resources (`NSURL`, `PHAsset`, `ALAsset` etc).
+- Instead of reinventing a caching methodology it relies on HTTP cache as defined in [HTTP specification](https://tools.ietf.org/html/rfc7234) and caching implementation provided by [Foundation URL Loading System](https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/URLLoadingSystem/URLLoadingSystem.html). The caching and revalidation are completely transparent to the client.
+- Has basic built-in networking implementation, and optional [AFNetworking integration](#install_using_cocopods) which should be your primary choice. Combine the power of both frameworks!
 - Animated GIF support using best-in-class [FLAnimatedImage](https://github.com/Flipboard/FLAnimatedImage) library.
-- Centralized image decompression, resizing and processing. Resizing provides a lack of misaligned images and lower memory footprint. Fully customizable.
+- Common APIs for different resources (`NSURL`, `PHAsset`, `ALAsset`, and your custom classes).
+- Centralized image decompression, resizing and processing. Fully customizable.
 - Separate memory cache for decompressed and processed images. Fine grained control over memory cache.
 - [Compose image managers](https://github.com/kean/DFImageManager/wiki/Extending-Image-Manager-Guide#using-dfcompositeimagemanager) into a tree of responsibility.
 - [Automatic preheating](https://github.com/kean/DFImageManager/wiki/Image-Preheating-Guide) of images that are close to the viewport.
-- Groups similar requests and never executes them twice. This is true for both fetching and processing. Intelligent control over which requests are considered equivalent (both in terms of fetching and processing).
-- High quality code base. Follows best design principles and patterns, including _dependency injection_ used throughout.
+- Groups similar requests and never executes them twice. Intelligent control over which requests are considered equivalent (both in terms of fetching and processing).
+- High quality code base. Dependency injection is used throughout.
 - Extreme performance even on outdated devices. Asynchronous and thread safe.
-- Unit tests help to maintain the project and ensure its future growth.
+- Unit tested.
 
 ## Getting Started
 - Download the latest [release](https://github.com/kean/DFImageManager/releases) version
@@ -110,8 +113,6 @@ UIImageView *imageView = ...;
 Use `DFImageView` for more advanced features:
 ```objective-c
 DFImageView *imageView = ...;
-// All options are enabled be default
-imageView.managesRequestPriorities = YES;
 imageView.allowsAnimations = YES; // Animates images when the response isn't fast enough
 imageView.allowsAutoRetries = YES; // Retries when network reachability changes
 
@@ -120,7 +121,7 @@ imageView.allowsAutoRetries = YES; // Retries when network reachability changes
 // Or use other APIs, for example, set multiple requests [imageView setImageWithRequests:@[ ... ]];
 ```
 
-#### Use the same `DFImageManaging` APIs for PHAsset, ALAsset and other classes
+#### Use the same `DFImageManaging` API for PHAsset, ALAsset and your custom classes
 ```objective-c
 PHAsset *asset = ...;
 [[DFImageManager sharedManager] requestImageForResource:asset targetSize:CGSizeMake(100.f, 100.f) contentMode:DFImageContentModeAspectFill options:nil completion:^(UIImage *image, NSDictionary *info) {
@@ -170,11 +171,31 @@ Those were the most common cases. `DFImageManager` is packed with other features
 
 ## <a name="install_using_cocopods"></a>Installation with [CocoaPods](http://cocoapods.org)
 
-CocoaPods is the dependency manager for Cocoa projects, which automates the process of integrating third-party frameworks like DFImageManager. If you are not familiar with CocoaPods the best place to start would be [official CocoaPods guides](http://guides.cocoapods.org).
+CocoaPods is the dependency manager for Cocoa projects, which automates the process of integrating third-party frameworks like DFImageManager. If you are not familiar with CocoaPods the best place to start would be [official CocoaPods guides](http://guides.cocoapods.org). To install DFImageManager add a dependency in your Podfile:
 ```ruby
 # Podfile
 platform :ios, '7.0'
 pod 'DFImageManager'
+```
+
+By default it will install subspecs:
+- `DFImageManager/Core` - core DFImageManager classes
+- `DFImageManager/UI` - UI components
+- `DFImageManager/NSURLSession` - basic networking on top of NSURLSession
+- `DFImageManager/PhotosKit` - Photos Framework support
+- `DFImageManager/AssetsLibrary` - ALAssetsLibrary support
+
+There are two more optional subspecs:
+- `DFImageManager/AFNetworking` - replaces networking stack with [AFNetworking](https://github.com/AFNetworking/AFNetworking)
+- `DFImageManager/GIF` - GIF support with a [FLAnimatedImage](https://github.com/Flipboard/FLAnimatedImage) dependency
+
+To install optional dependencies include them in your Podfile:
+```ruby
+# Podfile
+platform :ios, '7.0'
+pod 'DFImageManager'
+pod 'DFImageManager/AFNetworking'
+pod 'DFImageManager/GIF'
 ```
 
 ## Contribution
