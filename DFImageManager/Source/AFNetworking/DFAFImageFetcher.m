@@ -22,11 +22,13 @@
 
 #import "DFAFImageDeserializer.h"
 #import "DFAFImageFetcher.h"
-#import "DFAFImageRequestOptions.h"
+#import "DFImageRequestOptions.h"
 #import "DFImageManagerDefines.h"
 #import "DFImageRequest.h"
 #import "DFImageResponse.h"
 
+
+NSString *const DFAFRequestCachePolicyKey = @"DFAFRequestCachePolicyKey";
 
 @interface _DFAFOperation : NSOperation
 
@@ -81,22 +83,17 @@
     if (![self isRequestCacheEquivalent:request1 toRequest:request2]) {
         return NO;
     }
-    DFAFImageRequestOptions *options1 = (id)request1.options;
-    DFAFImageRequestOptions *options2 = (id)request2.options;
-    return (options1.allowsNetworkAccess == options2.allowsNetworkAccess && options1.cachePolicy == options2.cachePolicy);
+    if (request1.options.allowsNetworkAccess != request2.options.allowsNetworkAccess) {
+        return NO;
+    }
+    NSURLRequestCachePolicy defaultCachePolicy = self.sessionManager.session.configuration.requestCachePolicy;
+    NSURLRequestCachePolicy requestCachePolicy1 = request1.options.userInfo[DFAFRequestCachePolicyKey] ? [request1.options.userInfo[DFAFRequestCachePolicyKey] unsignedIntegerValue] : defaultCachePolicy;
+    NSURLRequestCachePolicy requestCachePolicy2 = request2.options.userInfo[DFAFRequestCachePolicyKey] ? [request2.options.userInfo[DFAFRequestCachePolicyKey] unsignedIntegerValue] : defaultCachePolicy;
+    return requestCachePolicy1 == requestCachePolicy2;
 }
 
 - (BOOL)isRequestCacheEquivalent:(DFImageRequest *)request1 toRequest:(DFImageRequest *)request2 {
     return request1 == request2 || [(NSURL *)request1.resource isEqual:(NSURL *)request2.resource];
-}
-
-- (DFImageRequest *)canonicalRequestForRequest:(DFImageRequest *)request {
-    if (!request.options || ![request.options isKindOfClass:[DFAFImageRequestOptions class]]) {
-        DFAFImageRequestOptions *options = [[DFAFImageRequestOptions alloc] initWithOptions:request.options];
-        options.cachePolicy = self.sessionManager.session.configuration.requestCachePolicy;
-        request.options = options;
-    }
-    return request;
 }
 
 - (NSOperation *)startOperationWithRequest:(DFImageRequest *)request progressHandler:(void (^)(double))progressHandler completion:(void (^)(DFImageResponse *))completion {
@@ -127,11 +124,15 @@
 }
 
 - (NSURLRequest *)_defaultURLRequestForImageRequest:(DFImageRequest *)imageRequest {
-    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:(NSURL *)imageRequest.resource];
-    [request addValue:@"image/*" forHTTPHeaderField:@"Accept"];
-    DFAFImageRequestOptions *options = (id)imageRequest.options;
-    request.cachePolicy = options.allowsNetworkAccess ? options.cachePolicy : NSURLRequestReturnCacheDataDontLoad;
-    return [request copy];
+    NSMutableURLRequest *URLRequest = [[NSMutableURLRequest alloc] initWithURL:(NSURL *)imageRequest.resource];
+    [URLRequest addValue:@"image/*" forHTTPHeaderField:@"Accept"];
+    DFImageRequestOptions *options = imageRequest.options;
+    if (options.userInfo[DFAFRequestCachePolicyKey]) {
+        URLRequest.cachePolicy = [options.userInfo[DFAFRequestCachePolicyKey] unsignedIntegerValue];
+    } else {
+        URLRequest.cachePolicy = options.allowsNetworkAccess ? self.sessionManager.session.configuration.requestCachePolicy : NSURLRequestReturnCacheDataDontLoad;
+    }
+    return [URLRequest copy];
 }
 
 + (float)_taskPriorityForQueuePriority:(NSOperationQueuePriority)queuePriority {

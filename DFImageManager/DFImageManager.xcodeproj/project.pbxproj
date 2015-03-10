@@ -152,7 +152,6 @@
 		0CEEED341AABE4BC00C212A4 /* DFURLSessionOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 0CEEED241AABE4BC00C212A4 /* DFURLSessionOperation.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0CEEED351AABE4BC00C212A4 /* DFURLSessionOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CEEED251AABE4BC00C212A4 /* DFURLSessionOperation.m */; };
 		0CEEED361AABE4BC00C212A4 /* DFURLSessionOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CEEED251AABE4BC00C212A4 /* DFURLSessionOperation.m */; };
-		0CF011811AADBD930013AD13 /* DFAFImageRequestOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CF0117F1AADBD930013AD13 /* DFAFImageRequestOptions.m */; };
 		0CF011861AAE1BAF0013AD13 /* DFImageManager+SharedManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CF011841AAE1BAF0013AD13 /* DFImageManager+SharedManager.m */; };
 		0CF011871AAE1BAF0013AD13 /* DFImageManager+SharedManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CF011841AAE1BAF0013AD13 /* DFImageManager+SharedManager.m */; };
 		68D055111E51D12C6749D1BC /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FE905C97593137A3540CA56B /* libPods.a */; };
@@ -311,8 +310,6 @@
 		0CEEED231AABE4BC00C212A4 /* DFURLResponseDeserializing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFURLResponseDeserializing.h; sourceTree = "<group>"; };
 		0CEEED241AABE4BC00C212A4 /* DFURLSessionOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFURLSessionOperation.h; sourceTree = "<group>"; };
 		0CEEED251AABE4BC00C212A4 /* DFURLSessionOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFURLSessionOperation.m; sourceTree = "<group>"; };
-		0CF0117E1AADBD930013AD13 /* DFAFImageRequestOptions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFAFImageRequestOptions.h; sourceTree = "<group>"; };
-		0CF0117F1AADBD930013AD13 /* DFAFImageRequestOptions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFAFImageRequestOptions.m; sourceTree = "<group>"; };
 		0CF011841AAE1BAF0013AD13 /* DFImageManager+SharedManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "DFImageManager+SharedManager.m"; sourceTree = "<group>"; };
 		0CF0118C1AAE894E0013AD13 /* DFImageManagerKit+GIF.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "DFImageManagerKit+GIF.h"; sourceTree = "<group>"; };
 		35AEC21DD9AC0DE7AE2AB433 /* libPods-DFImageManagerTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-DFImageManagerTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -487,8 +484,6 @@
 				0C9D40881AAC58FC00854FEC /* DFAFImageFetcher.m */,
 				0C9D408A1AAC5EEC00854FEC /* DFAFImageDeserializer.h */,
 				0C9D408B1AAC5EEC00854FEC /* DFAFImageDeserializer.m */,
-				0CF0117E1AADBD930013AD13 /* DFAFImageRequestOptions.h */,
-				0CF0117F1AADBD930013AD13 /* DFAFImageRequestOptions.m */,
 			);
 			path = AFNetworking;
 			sourceTree = "<group>";
@@ -985,7 +980,6 @@
 				0C9D408D1AAC5EEC00854FEC /* DFAFImageDeserializer.m in Sources */,
 				0CEEED051AABD9DB00C212A4 /* DFNetworkReachability.m in Sources */,
 				0CEEED2E1AABE4BC00C212A4 /* DFURLImageFetcher.m in Sources */,
-				0CF011811AADBD930013AD13 /* DFAFImageRequestOptions.m in Sources */,
 				0C44A8261AAB2AD900900C6A /* DFAssetsLibraryImageFetcher.m in Sources */,
 				0CEEED2B1AABE4BC00C212A4 /* DFURLImageDeserializer.m in Sources */,
 				0C44A73E1AAB235800900C6A /* DFPhotosKitImageFetchOperation.m in Sources */,

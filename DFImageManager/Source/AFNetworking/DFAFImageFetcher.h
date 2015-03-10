@@ -24,6 +24,10 @@
 #import <AFNetworking/AFURLSessionManager.h>
 #import <Foundation/Foundation.h>
 
+/*! The NSNumber with NSURLRequestCachePolicy value that specifies a request cache policy. Should be put into DFImageRequestOptions userInfo dictionary.
+ */
+extern NSString *const DFAFRequestCachePolicyKey;
+
 @class DFAFImageFetcher;
 
 /*! The DFAFImageFetcherDelegate protocol describes the methods that DFAFImageFetcher objects call on their delegates to customize its behavior.

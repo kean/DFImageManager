@@ -25,7 +25,6 @@
 #import <UIKit/UIKit.h>
 
 /*! NSNumber with float value that specifies a normalized image corner radius, where 0.5 is a corner radius that is half of the minimum image side. Should be put into DFImageRequestOptions userInfo dictionary.
- @note In case you just need to display image in a round shape use CALayer's mask property instead. It's easy to construct whatever shape you'd like using UIBezierPath and CAShapeLayer.
  */
 extern NSString *DFImageProcessingCornerRadiusKey;
 

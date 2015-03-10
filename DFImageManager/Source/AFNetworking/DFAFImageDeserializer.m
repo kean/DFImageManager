@@ -29,10 +29,7 @@
 @implementation DFAFImageDeserializer
 
 - (id)responseObjectForResponse:(NSURLResponse *)response data:(NSData *)data error:(NSError *__autoreleasing *)error {
-    if (![self validateResponse:(NSHTTPURLResponse *)response data:data error:error]) {
-        return nil;
-    }
-    if (!data.length) {
+    if (!data.length || ![self validateResponse:(NSHTTPURLResponse *)response data:data error:error]) {
         return nil;
     }
 #if __has_include("DFImageManagerKit+GIF.h")
