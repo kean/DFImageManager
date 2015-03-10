@@ -28,7 +28,36 @@
 #import "DFURLImageFetcher.h"
 #import "DFURLImageRequestOptions.h"
 #import "DFURLResponseDeserializing.h"
-#import "DFURLSessionOperation.h"
+
+
+@interface _DFURLSessionOperation : NSOperation
+
+@property (nonatomic, copy) void (^cancellationHandler)(void);
+@property (nonatomic, copy) void (^priorityHandler)(NSOperationQueuePriority priority);
+
+@end
+
+@implementation _DFURLSessionOperation
+
+- (void)cancel {
+    @synchronized(self) {
+        if (!self.isCancelled) {
+            [super cancel];
+            if (self.cancellationHandler) {
+                self.cancellationHandler();
+            }
+        }
+    }
+}
+
+- (void)setQueuePriority:(NSOperationQueuePriority)queuePriority {
+    [super setQueuePriority:queuePriority];
+    if (self.priorityHandler) {
+        self.priorityHandler(queuePriority);
+    }
+}
+
+@end
 
 
 typedef void (^_DFURLSessionDataTaskProgressHandler)(int64_t countOfBytesReceived, int64_t countOfBytesExpectedToReceive);
@@ -275,7 +304,7 @@ static const NSTimeInterval _kCommandExecutionInterval = 0.0025; // 2.5 ms
     }];
     
     // Passive container, DFURLImageFetcher never even start the operation, it only uses it's -cancel and -setPririty APIs. DFImageManager should probably have a specific protocol instead of NSOperation, because sometimes there is not need in one.
-    DFURLSessionOperation *operation = [DFURLSessionOperation new];
+    _DFURLSessionOperation *operation = [_DFURLSessionOperation new];
     operation.cancellationHandler = ^{
         [_executor executeCommand:[[_DFSessionTaskCancelCommand alloc] initWithTask:task]];
     };

@@ -20,13 +20,11 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "DFURLSessionOperation.h"
 #import "DFImageFetching.h"
 #import <Foundation/Foundation.h>
 
 @protocol DFURLResponseDeserializing;
 @class DFURLImageFetcher;
-
 
 /*! The DFURLImageFetcherDelegate protocol describes the methods that DFURLImageFetcher objects call on their delegates to customize its behavior.
  */
@@ -34,7 +32,7 @@
 
 @optional
 
-/*! Sent before the DFURLImageFetcher creates a DFURLSessionOperation for load.
+/*! Sent to allow delegate to modify the given URL request.
  @param fetcher The image fetcher sending the message.
  @param imageRequest The image request.
  @param URLRequest The proposed URL request to used for image load.

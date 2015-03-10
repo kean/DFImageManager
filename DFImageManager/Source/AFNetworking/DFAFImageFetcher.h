@@ -36,7 +36,7 @@ extern NSString *const DFAFRequestCachePolicyKey;
 
 @optional
 
-/*! Sent before the DFURLImageFetcher creates a DFURLSessionOperation for load.
+/*! Sent to allow delegate to modify the given URL request.
  @param fetcher The image fetcher sending the message.
  @param imageRequest The image request.
  @param URLRequest The proposed URL request to used for image load.
