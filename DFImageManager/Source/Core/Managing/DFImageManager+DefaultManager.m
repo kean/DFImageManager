@@ -50,8 +50,11 @@
 + (id<DFImageManagingCore>)createDefaultManager {
     NSMutableArray *managers = [NSMutableArray new];
     
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunused-variable"
     DFImageProcessor *processor = [DFImageProcessor new];
     DFImageCache *cache = [DFImageCache new];
+#pragma clang diagnostic pop
     
 #if __has_include("DFImageManagerKit+AFNetworking.h")
     id<DFImageManaging> URLImageManager = ({
