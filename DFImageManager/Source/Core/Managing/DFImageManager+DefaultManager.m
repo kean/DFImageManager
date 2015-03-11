@@ -60,6 +60,8 @@
     id<DFImageManaging> URLImageManager = ({
         NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
         configuration.URLCache = [[NSURLCache alloc] initWithMemoryCapacity:0 diskCapacity:1024 * 1024 * 256 diskPath:@"com.github.kean.default_image_cache"];
+        configuration.timeoutIntervalForRequest = 60.f;
+        configuration.timeoutIntervalForResource = 60.f;
         
         AFHTTPSessionManager *httpSessionManager = [[AFHTTPSessionManager alloc] initWithSessionConfiguration:configuration];
         httpSessionManager.responseSerializer = [DFAFImageDeserializer new];
@@ -71,6 +73,8 @@
     id<DFImageManaging> URLImageManager = ({
         NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
         configuration.URLCache = [[NSURLCache alloc] initWithMemoryCapacity:0 diskCapacity:1024 * 1024 * 256 diskPath:@"com.github.kean.default_image_cache"];
+        configuration.timeoutIntervalForRequest = 60.f;
+        configuration.timeoutIntervalForResource = 60.f;
         
         DFURLImageFetcher *fetcher = [[DFURLImageFetcher alloc] initWithSessionConfiguration:configuration];
         [[DFImageManager alloc] initWithConfiguration:[DFImageManagerConfiguration configurationWithFetcher:fetcher processor:processor cache:cache]];
