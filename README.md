@@ -68,16 +68,11 @@ NSURL *imageURL = [NSURL URLWithString:@"http://..."];
 
 #### Options can be specialized and packed into `DFImageRequest`
 
-Use `DFURLImageRequestOptions` (`DFImageRequestOptions` subclass) to set request cache policy. Create instance of `DFImageRequest` to pack all request parameters.
+Use `DFURLRequestCachePolicyKey` to set a request cache policy. Create instance of `DFImageRequest` to pack all request parameters.
 ```objective-c
-DFURLImageRequestOptions *options = [DFURLImageRequestOptions new];
-options.allowsClipping = YES;
-options.cachePolicy = NSURLRequestReturnCacheDataDontLoad;
-options.progressHandler = ^(double progress){
-  // Observe progress
-};
+DFImageRequestOptions *options = [DFImageRequestOptions new];
+options.userInfo = @{ @"DFURLRequestCachePolicyKey" : @(NSURLRequestReturnCacheDataDontLoad) };
     
-// Use universal image request container
 DFImageRequest *request = [[DFImageRequest alloc] initWithResource:[NSURL URLWithString:@"http://..."] targetSize:CGSizeMake(100.f, 100.f) contentMode:DFImageContentModeAspectFill options:options];
     
 [[DFImageManager sharedManager] requestImageForRequest:request completion:^(UIImage *image, NSDictionary *info) {

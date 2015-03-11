@@ -26,6 +26,11 @@
 @protocol DFURLResponseDeserializing;
 @class DFURLImageFetcher;
 
+/*! The NSNumber with NSURLRequestCachePolicy value that specifies a request cache policy. Should be put into DFImageRequestOptions userInfo dictionary.
+ */
+extern NSString *const DFURLRequestCachePolicyKey;
+
+
 /*! The DFURLImageFetcherDelegate protocol describes the methods that DFURLImageFetcher objects call on their delegates to customize its behavior.
  */
 @protocol DFURLImageFetcherDelegate <NSObject>

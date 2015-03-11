@@ -26,8 +26,10 @@
 #import "DFURLHTTPImageDeserializer.h"
 #import "DFURLImageDeserializer.h"
 #import "DFURLImageFetcher.h"
-#import "DFURLImageRequestOptions.h"
 #import "DFURLResponseDeserializing.h"
+
+
+NSString *const DFURLRequestCachePolicyKey = @"DFURLRequestCachePolicyKey";
 
 
 @interface _DFURLSessionOperation : NSOperation
@@ -265,22 +267,14 @@ static const NSTimeInterval _kCommandExecutionInterval = 0.0025; // 2.5 ms
     if (![self isRequestCacheEquivalent:request1 toRequest:request2]) {
         return NO;
     }
-    DFURLImageRequestOptions *options1 = (id)request1.options;
-    DFURLImageRequestOptions *options2 = (id)request2.options;
-    return (options1.allowsNetworkAccess == options2.allowsNetworkAccess && options1.cachePolicy == options2.cachePolicy);
+    NSURLRequestCachePolicy defaultCachePolicy = self.session.configuration.requestCachePolicy;
+    NSURLRequestCachePolicy requestCachePolicy1 = request1.options.userInfo[DFURLRequestCachePolicyKey] ? [request1.options.userInfo[DFURLRequestCachePolicyKey] unsignedIntegerValue] : defaultCachePolicy;
+    NSURLRequestCachePolicy requestCachePolicy2 = request2.options.userInfo[DFURLRequestCachePolicyKey] ? [request2.options.userInfo[DFURLRequestCachePolicyKey] unsignedIntegerValue] : defaultCachePolicy;
+    return requestCachePolicy1 == requestCachePolicy2;
 }
 
 - (BOOL)isRequestCacheEquivalent:(DFImageRequest *)request1 toRequest:(DFImageRequest *)request2 {
     return request1 == request2 || [(NSURL *)request1.resource isEqual:(NSURL *)request2.resource];
-}
-
-- (DFImageRequest *)canonicalRequestForRequest:(DFImageRequest *)request {
-    if (!request.options || ![request.options isKindOfClass:[DFURLImageRequestOptions class]]) {
-        DFURLImageRequestOptions *options = [[DFURLImageRequestOptions alloc] initWithOptions:request.options];
-        options.cachePolicy = self.session.configuration.requestCachePolicy;
-        request.options = options;
-    }
-    return request;
 }
 
 - (NSOperation *)startOperationWithRequest:(DFImageRequest *)request progressHandler:(void (^)(double))progressHandler completion:(void (^)(DFImageResponse *))completion {
@@ -336,11 +330,15 @@ static const NSTimeInterval _kCommandExecutionInterval = 0.0025; // 2.5 ms
 }
 
 - (NSURLRequest *)_defaultURLRequestForImageRequest:(DFImageRequest *)imageRequest {
-    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:(NSURL *)imageRequest.resource];
-    [request addValue:@"image/*" forHTTPHeaderField:@"Accept"];
-    DFURLImageRequestOptions *options = (id)imageRequest.options;
-    request.cachePolicy = options.allowsNetworkAccess ? options.cachePolicy : NSURLRequestReturnCacheDataDontLoad;
-    return [request copy];
+    NSMutableURLRequest *URLRequest = [[NSMutableURLRequest alloc] initWithURL:(NSURL *)imageRequest.resource];
+    [URLRequest addValue:@"image/*" forHTTPHeaderField:@"Accept"];
+    DFImageRequestOptions *options = imageRequest.options;
+    if (options.userInfo[DFURLRequestCachePolicyKey]) {
+        URLRequest.cachePolicy = [options.userInfo[DFURLRequestCachePolicyKey] unsignedIntegerValue];
+    } else {
+        URLRequest.cachePolicy = options.allowsNetworkAccess ? self.session.configuration.requestCachePolicy : NSURLRequestReturnCacheDataDontLoad;
+    }
+    return [URLRequest copy];
 }
 
 - (id<DFURLResponseDeserializing>)_responseDeserializerForImageRequest:(DFImageRequest *)imageRequest URLRequest:(NSURLRequest *)URLRequest {

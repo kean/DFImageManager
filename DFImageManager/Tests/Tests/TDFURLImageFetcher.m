@@ -35,52 +35,41 @@
     [OHHTTPStubs removeAllStubs];
 }
 
-#pragma mark - Canonical Requests
+#pragma mark - Request Fetch Equivalence
 
-- (void)testThatCanonicalRequestCreatesFetcherSpecificOptionsWithoutOverridingInitialOptions {
-    // Create options with non-default parameters.
-    DFImageRequestOptions *options = TDFCreateRequestOptionsWithNotDefaultParameters();
-    DFImageRequest *request = [[DFImageRequest alloc] initWithResource:[NSURL URLWithString:@"http://path/resourse"] targetSize:CGSizeMake(100.f, 100.f) contentMode:DFImageContentModeAspectFit options:options];
+- (void)testThatRequestsAreFetchEquivalentWithSameReloadCachePolicy {
+    NSURL *URL = [NSURL URLWithString:@"http://path/resourse"];
     
-    DFImageRequest *canonicalRequest = [_fetcher canonicalRequestForRequest:[request copy]];
+    DFImageRequestOptions *options1 = [DFImageRequestOptions new];
+    options1.userInfo = @{ DFURLRequestCachePolicyKey : @(NSURLRequestReloadIgnoringCacheData) };
+    DFImageRequest *request1 = [DFImageRequest requestWithResource:URL targetSize:DFImageMaximumSize contentMode:DFImageContentModeAspectFill options:options1];
     
-    XCTAssertTrue([canonicalRequest.resource isEqual:[NSURL URLWithString:@"http://path/resourse"]]);
-    XCTAssertTrue(CGSizeEqualToSize(canonicalRequest.targetSize, CGSizeMake(100.f, 100.f)));
-    XCTAssertTrue(canonicalRequest.contentMode == DFImageContentModeAspectFit);
-    
-    XCTAssertTrue([canonicalRequest.options isKindOfClass:[DFURLImageRequestOptions class]]);
-    
-    DFURLImageRequestOptions *canonicalOptions = (DFURLImageRequestOptions *)canonicalRequest.options;
-    XCTAssertTrue(canonicalOptions.cachePolicy == NSURLRequestUseProtocolCachePolicy);
-    XCTAssertTrue(canonicalOptions != options);
-    TDFAssertBaseOptionsAreEqual(options, canonicalOptions);
+    DFImageRequestOptions *options2 = [DFImageRequestOptions new];
+    options2.userInfo = @{ DFURLRequestCachePolicyKey : @(NSURLRequestReloadIgnoringCacheData) };
+    DFImageRequest *request2 = [DFImageRequest requestWithResource:URL targetSize:DFImageMaximumSize contentMode:   DFImageContentModeAspectFill options:options2];
+    XCTAssertTrue([_fetcher isRequestFetchEquivalent:request1 toRequest:request2]);
 }
 
-- (void)testThatCanonicalRequestCreatesFetcherSpecificOptionsWhenInitialsOptionsAreNil {
-    DFImageRequest *request = [[DFImageRequest alloc] initWithResource:[NSURL URLWithString:@"http://path/resourse"] targetSize:CGSizeMake(100.f, 100.f) contentMode:DFImageContentModeAspectFit options:nil];
+- (void)testThatRequestsAreFetchEquivalentWithDefaultCachePolicy {
+    NSURL *URL = [NSURL URLWithString:@"http://path/resourse"];
     
-    DFImageRequest *canonicalRequest = [_fetcher canonicalRequestForRequest:[request copy]];
-    XCTAssertTrue([canonicalRequest.options isKindOfClass:[DFURLImageRequestOptions class]]);
+    DFImageRequest *request1 = [DFImageRequest requestWithResource:URL targetSize:DFImageMaximumSize contentMode:DFImageContentModeAspectFill options:nil];
     
-    DFURLImageRequestOptions *canonicalOptions = (DFURLImageRequestOptions *)canonicalRequest.options;
-    XCTAssertTrue(canonicalOptions.cachePolicy == NSURLRequestUseProtocolCachePolicy);
-    
-    TDFAssertDefaultOptionsAreValid(canonicalOptions);
+    DFImageRequestOptions *options2 = [DFImageRequestOptions new];
+    options2.userInfo = @{ DFURLRequestCachePolicyKey : @(NSURLRequestUseProtocolCachePolicy) };
+    DFImageRequest *request2 = [DFImageRequest requestWithResource:URL targetSize:DFImageMaximumSize contentMode:   DFImageContentModeAspectFill options:options2];
+    XCTAssertTrue([_fetcher isRequestFetchEquivalent:request1 toRequest:request2]);
 }
 
-- (void)testThatCanonicalRequestDoesntRewriteFetcherSpecificOptions {
-    DFURLImageRequestOptions *options = [DFURLImageRequestOptions new];
-    options.cachePolicy = NSURLRequestReturnCacheDataDontLoad;
+- (void)testThatRequestsAreNotFetchEquivalentWithDifferentReloadCachePolicy {
+    NSURL *URL = [NSURL URLWithString:@"http://path/resourse"];
     
-    DFImageRequest *request = [[DFImageRequest alloc] initWithResource:[NSURL URLWithString:@"http://path/resourse"] targetSize:CGSizeMake(100.f, 100.f) contentMode:   DFImageContentModeAspectFit options:options];
-    
-    DFImageRequest *canonicalRequest = [_fetcher canonicalRequestForRequest:[request copy]];
-    XCTAssertTrue([canonicalRequest.options isKindOfClass:[DFURLImageRequestOptions class]]);
-    
-    DFURLImageRequestOptions *canonicalOptions = (DFURLImageRequestOptions *)canonicalRequest.options;
-    XCTAssertTrue(canonicalOptions.cachePolicy == NSURLRequestReturnCacheDataDontLoad);
-    
-    TDFAssertDefaultOptionsAreValid(options);
+    DFImageRequestOptions *options1 = [DFImageRequestOptions new];
+    options1.userInfo = @{ DFURLRequestCachePolicyKey : @(NSURLRequestReloadIgnoringCacheData) };
+    DFImageRequest *request1 = [DFImageRequest requestWithResource:URL targetSize:DFImageMaximumSize contentMode:DFImageContentModeAspectFill options:options1];
+
+    DFImageRequest *request2 = [DFImageRequest requestWithResource:URL targetSize:DFImageMaximumSize contentMode:   DFImageContentModeAspectFill options:nil];
+    XCTAssertFalse([_fetcher isRequestFetchEquivalent:request1 toRequest:request2]);
 }
 
 #pragma mark - Request Cache Equivalence
@@ -108,7 +97,6 @@
     XCTAssertTrue([_fetcher canHandleRequest:request]);
     
     XCTestExpectation *expectation = [self expectationWithDescription:@"fetch_completed"];
-    request = [_fetcher canonicalRequestForRequest:request];
     [_fetcher startOperationWithRequest:request progressHandler:nil completion:^(DFImageResponse *response) {
         XCTAssertNotNil(response.image);
         [expectation fulfill];
@@ -129,7 +117,7 @@
     XCTAssertTrue([_fetcher canHandleRequest:request]);
     
     XCTestExpectation *expectation = [self expectationWithDescription:@"fetch_completed"];
-    [_fetcher startOperationWithRequest:[_fetcher canonicalRequestForRequest:request] progressHandler:nil completion:^(DFImageResponse *response) {
+    [_fetcher startOperationWithRequest:request progressHandler:nil completion:^(DFImageResponse *response) {
         XCTAssertNotNil(response.image);
         [expectation fulfill];
     }];

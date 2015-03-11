@@ -23,5 +23,4 @@
 #import "DFURLHTTPImageDeserializer.h"
 #import "DFURLImageDeserializer.h"
 #import "DFURLImageFetcher.h"
-#import "DFURLImageRequestOptions.h"
 #import "DFURLResponseDeserializing.h"
