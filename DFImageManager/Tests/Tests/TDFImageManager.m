@@ -98,6 +98,7 @@
 #pragma mark - Cancellation
 
 - (void)testThatCancelsFetchOperationUsingRequestID {
+    _fetcher.queue.suspended = YES;
     DFImageRequestID *requestID = [_manager requestImageForResource:[TDFMockResource resourceWithID:@"ID01"] completion:nil];
     [self expectationForNotification:TDFMockFetchOperationWillCancelNotification object:nil handler:nil];
     [requestID cancel];
