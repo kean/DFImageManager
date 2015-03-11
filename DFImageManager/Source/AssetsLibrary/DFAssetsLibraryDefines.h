@@ -22,7 +22,7 @@
 
 #import <Foundation/Foundation.h>
 
-typedef NS_ENUM(NSUInteger, DFALAssetImageSize) {
+typedef NS_ENUM(NSInteger, DFALAssetImageSize) {
     /*! An image with a square thumbnail of the asset. The size of the thumbnail is the appropriate size for the platform.  The thumbnail will be in the correct orientation.
      */
     DFALAssetImageSizeThumbnail,
@@ -41,7 +41,7 @@ typedef NS_ENUM(NSUInteger, DFALAssetImageSize) {
 };
 
 
-typedef NS_ENUM(NSUInteger, DFALAssetVersion) {
+typedef NS_ENUM(NSInteger, DFALAssetVersion) {
     /*! Version with edits (aka adjustments) rendered or unadjusted version if there is no edits.
      */
     DFALAssetVersionCurrent,

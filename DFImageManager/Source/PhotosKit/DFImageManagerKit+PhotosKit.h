@@ -22,5 +22,4 @@
 
 #import "DFPhotosKitImageFetchOperation.h"
 #import "DFPhotosKitImageFetcher.h"
-#import "DFPhotosKitImageRequestOptions.h"
 #import "NSURL+DFPhotosKit.h"

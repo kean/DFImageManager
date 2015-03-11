@@ -23,12 +23,12 @@
 #import "DFImageFetching.h"
 #import <Foundation/Foundation.h>
 
-/*! The NSNumber with DFALAssetImageSize value that specifies which of the available representations of the ALAsset to use. If the value is not provided then the size is picked automatically by DFAssetsLibraryImageFetcher.
+/*! The DFALAssetImageSize value that specifies which of the available representations of the ALAsset to use. If the value is not provided then the size is picked automatically by DFAssetsLibraryImageFetcher.
  @note Should be put into DFImageRequestOptions userInfo dictionary.
  */
 extern NSString *const DFAssetsLibraryImageSizeKey;
 
-/*! The NSNumber with DFALAssetVersion value that specifies whether an image should be requested with or without adjustments. The default value is DFALAssetVersionCurrent.
+/*! The DFALAssetVersion value that specifies whether an image should be requested with or without adjustments. The default value is DFALAssetVersionCurrent.
  @warning Using DFALAssetVersionUnadjusted will always return the biggest, best representation available, ignoring the value of imageSize property.
  @note Should be put into DFImageRequestOptions userInfo dictionary.
  */

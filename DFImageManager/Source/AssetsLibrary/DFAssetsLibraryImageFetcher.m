@@ -95,9 +95,9 @@ static inline NSURL *_ALAssetURL(id resource) {
     _DFAssetsRequestOptions options;
     NSDictionary *userInfo = request.options.userInfo;
     NSNumber *imageSize = userInfo[DFAssetsLibraryImageSizeKey];
-    options.imageSize = imageSize ? [imageSize unsignedIntegerValue] : [self _assetImageSizeForRequest:request];
+    options.imageSize = imageSize ? [imageSize integerValue] : [self _assetImageSizeForRequest:request];
     NSNumber *version = userInfo[DFAssetsLibraryAssetVersionKey];
-    options.version = version ? [version unsignedIntegerValue] : DFALAssetVersionCurrent;
+    options.version = version ? [version integerValue] : DFALAssetVersionCurrent;
     return options;
 }
 

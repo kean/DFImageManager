@@ -22,6 +22,21 @@
 
 #import "DFImageFetching.h"
 
+/*! The PHImageRequestOptionsVersion value for requesting an image asset with or without adjustments, used by the version property. Default value is PHImageRequestOptionsVersionCurrent.
+ @note Should be put into DFImageRequestOptions userInfo dictionary.
+ */
+extern NSString *const DFPhotosKitVersionKey;
+
+/*! The PHImageRequestOptionsDeliveryMode value. Default value is PHImageRequestOptionsDeliveryModeHighQualityFormat.
+ @note Should be put into DFImageRequestOptions userInfo dictionary.
+ @discussion Using PHImageRequestOptionsDeliveryModeOpportunistic is useless, because DFImageManager doesn't call completion handler twice like PHImageManager does. You should either use PHImageManager directly or use DFImageFetchTask to achieve similar results.
+ */
+extern NSString *const DFPhotosKitDeliveryModeKey;
+
+/*! The PHImageRequestOptionsResizeMode value. Default value is PHImageRequestOptionsResizeModeFast.
+ @note Should be put into DFImageRequestOptions userInfo dictionary.
+ */
+extern NSString *const DFPhotosKitResizeModeKey;
 
 /*! Image fetcher for Photos Kit framework. Supported resources: PHAsset, NSURL with scheme com.github.kean.photos-kit.
  @note Use methods of NSURL+DFPhotosKit category to construct URLs for PHAssets.

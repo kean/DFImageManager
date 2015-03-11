@@ -21,20 +21,25 @@
 // THE SOFTWARE.
 
 #import <Foundation/Foundation.h>
+#import <Photos/Photos.h>
 
-@class DFImageResponse;
-@class DFImageRequest;
+@class PHImageRequestOptions;
 
 /*! The operation the implements fetching of image representation  for images using Photos Kit framework.
  */
 NS_CLASS_AVAILABLE_IOS(8_0) @interface DFPhotosKitImageFetchOperation : NSOperation
 
-/*! Retuns image response.
+/*! Returns the image fetched by the receiver.
  */
-@property (nonatomic, readonly) DFImageResponse *response;
+@property (nonatomic, readonly) UIImage *result;
 
-/*! Initializes operation with an image request.
+/*! Returns the metadata associated with an image load.
  */
-- (instancetype)initWithRequest:(DFImageRequest *)request NS_DESIGNATED_INITIALIZER;
+@property (nonatomic, readonly) NSDictionary *info;
+
+/*! Initializes operation with a resource and options.
+ @param resource PHAsset or PHAsset local identifier (NSString).
+ */
+- (instancetype)initWithResource:(id)resource targetSize:(CGSize)targetSize contentMode:(PHImageContentMode)contentMode options:(PHImageRequestOptions *)options NS_DESIGNATED_INITIALIZER;
 
 @end

@@ -20,12 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "DFImageRequest.h"
-#import "DFImageRequestOptions.h"
-#import "DFImageResponse.h"
 #import "DFPhotosKitImageFetchOperation.h"
-#import "DFPhotosKitImageRequestOptions.h"
-#import "NSURL+DFPhotosKit.h"
 #import <Photos/Photos.h>
 
 @interface DFPhotosKitImageFetchOperation ()
@@ -37,27 +32,26 @@
 
 @implementation DFPhotosKitImageFetchOperation {
     PHAsset *_asset;
-    NSURL *_assetURL;
+    NSString *_localIdentifier;
     CGSize _targetSize;
-    DFImageContentMode _contentMode;
-    DFPhotosKitImageRequestOptions *_options;
+    PHImageContentMode _contentMode;
+    PHImageRequestOptions *_options;
     PHImageRequestID _requestID;
 }
 
 @synthesize executing = _executing;
 @synthesize finished = _finished;
 
-- (instancetype)initWithRequest:(DFImageRequest *)request {
+- (instancetype)initWithResource:(id)resource targetSize:(CGSize)targetSize contentMode:(PHImageContentMode)contentMode options:(PHImageRequestOptions *)options {
     if (self = [super init]) {
-        if ([request.resource isKindOfClass:[PHAsset class]]) {
-            _asset = (PHAsset *)request.resource;
-        } else if ([request.resource isKindOfClass:[NSURL class]]) {
-            _assetURL = (NSURL *)request.resource;
+        if ([resource isKindOfClass:[PHAsset class]]) {
+            _asset = (PHAsset *)resource;
+        } else if ([resource isKindOfClass:[NSString class]]) {
+            _localIdentifier = (NSString *)resource;
         }
-        _targetSize = request.targetSize;
-        _contentMode = request.contentMode;
-        _options = (DFPhotosKitImageRequestOptions *)request.options;
-        NSParameterAssert([request.options isKindOfClass:[DFPhotosKitImageRequestOptions class]]);
+        _targetSize = targetSize;
+        _contentMode = contentMode;
+        _options = options;
         _requestID = PHInvalidImageRequestID;
     }
     return self;
@@ -82,47 +76,27 @@
 }
 
 - (void)_fetch {
-    if (!_asset && _assetURL) {
-        NSString *localIdentifier = [_assetURL df_assetLocalIdentifier];
-        if (localIdentifier) {
-            _asset = [[PHAsset fetchAssetsWithLocalIdentifiers:@[localIdentifier] options:nil] firstObject];
+    if (!_asset && _localIdentifier) {
+        if (_localIdentifier) {
+            _asset = [[PHAsset fetchAssetsWithLocalIdentifiers:@[_localIdentifier] options:nil] firstObject];
         }
     }
-    if (self.isCancelled) {
+    if (!self.isCancelled) {
+        DFPhotosKitImageFetchOperation *__weak weakSelf = self;
+        _requestID = [[PHImageManager defaultManager] requestImageForAsset:_asset targetSize:_targetSize contentMode:_contentMode options:_options resultHandler:^(UIImage *result, NSDictionary *info) {
+            result = result ? [UIImage imageWithCGImage:result.CGImage scale:[UIScreen mainScreen].scale orientation:result.imageOrientation] : nil;
+            [weakSelf _didFetchImage:result info:info];
+        }];
+    } else {
         [self finish];
-        return;
-    }
-    PHImageRequestOptions *options = [PHImageRequestOptions new];
-    options.networkAccessAllowed = _options.allowsNetworkAccess;
-    options.deliveryMode = _options.deliveryMode;
-    if (options.deliveryMode == PHImageRequestOptionsDeliveryModeOpportunistic) {
-        NSLog(@"%@: PHImageRequestOptionsDeliveryModeOpportunistic is unsupported", self);
-        options.deliveryMode = PHImageRequestOptionsDeliveryModeHighQualityFormat;
-    }
-    options.resizeMode = _options.resizeMode;
-    options.version = _options.version;
-    
-    PHImageContentMode contentMode = [self _PHContentModeForDFContentMode:_contentMode];
-    
-    DFPhotosKitImageFetchOperation *__weak weakSelf = self;
-    _requestID = [[PHImageManager defaultManager] requestImageForAsset:_asset targetSize:_targetSize contentMode:contentMode options:options resultHandler:^(UIImage *result, NSDictionary *info) {
-        result = result ? [UIImage imageWithCGImage:result.CGImage scale:[UIScreen mainScreen].scale orientation:result.imageOrientation] : nil;
-        [weakSelf _didFetchImage:result info:info];
-    }];
-}
-
-- (PHImageContentMode)_PHContentModeForDFContentMode:(DFImageContentMode)contentMode {
-    switch (contentMode) {
-        case DFImageContentModeAspectFill: return PHImageContentModeAspectFill;
-        case DFImageContentModeAspectFit: return PHImageContentModeAspectFit;
-        default: return PHImageContentModeDefault;
     }
 }
 
 - (void)_didFetchImage:(UIImage *)result info:(NSDictionary *)info {
     @synchronized(self) {
         if (!self.isCancelled) {
-            _response = [[DFImageResponse alloc] initWithImage:result error:nil userInfo:info];
+            _result = result;
+            _info = info;
             [self finish];
         }
     }

@@ -23,7 +23,6 @@
 #import "NSURL+DFPhotosKit.h"
 #import <Photos/Photos.h>
 
-
 @implementation NSURL (DFPhotosKit)
 
 + (NSURL *)df_assetURLWithAssetLocalIdentifier:(NSString *)localIdentifier {
