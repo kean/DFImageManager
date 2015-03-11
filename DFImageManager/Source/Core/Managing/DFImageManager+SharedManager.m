@@ -20,6 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+#import "DFCompositeImageManager.h"
 #import "DFImageManager.h"
 #import <libkern/OSAtomic.h>
 
@@ -44,6 +45,19 @@ static OSSpinLock _lock = OS_SPINLOCK_INIT;
     OSSpinLockLock(&_lock);
     _sharedManager = manager;
     OSSpinLockUnlock(&_lock);
+}
+
++ (void)addSharedManager:(id<DFImageManaging>)manager {
+    NSParameterAssert(manager);
+    NSMutableArray *managers = [NSMutableArray new];
+    id<DFImageManaging> sharedManager = [self sharedManager];
+    if (manager) {
+        [managers addObject:manager];
+    }
+    if (sharedManager) {
+        [managers addObject:sharedManager];
+    }
+    [self setSharedManager:[[DFCompositeImageManager alloc] initWithImageManagers:managers]];
 }
 
 @end
