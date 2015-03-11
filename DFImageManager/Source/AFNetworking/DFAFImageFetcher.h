@@ -24,7 +24,8 @@
 #import <AFNetworking/AFURLSessionManager.h>
 #import <Foundation/Foundation.h>
 
-/*! The NSNumber with NSURLRequestCachePolicy value that specifies a request cache policy. Should be put into DFImageRequestOptions userInfo dictionary.
+/*! The NSNumber with NSURLRequestCachePolicy value that specifies a request cache policy.
+ @note Should be put into DFImageRequestOptions userInfo dictionary.
  */
 extern NSString *const DFAFRequestCachePolicyKey;
 

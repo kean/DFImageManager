@@ -25,7 +25,6 @@
 #import <AssetsLibrary/AssetsLibrary.h>
 #import <UIKit/UIKit.h>
 
-
 @interface DFAssetsLibraryImageFetchOperation ()
 
 @property (nonatomic, getter = isExecuting) BOOL executing;
@@ -65,7 +64,6 @@
 
 - (void)start {
     self.executing = YES;
-    
     if (self.isCancelled) {
         [self finish];
     } else {
@@ -126,7 +124,6 @@
     ALAssetRepresentation *representation = [_asset defaultRepresentation];
     
     // WARNING: This code doesn't work for iOS 8.0+. Use PhotosKit instead.
-
     CGImageRef imageRef = [representation fullResolutionImage];
     NSString *adjustment = [[representation metadata] objectForKey:@"AdjustmentXMP"];
     if (adjustment != nil) {

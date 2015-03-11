@@ -20,12 +20,11 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "DFAssetsLibraryUtilities.h"
+#import "DFAssetsLibraryDefines.h"
 #import <Foundation/Foundation.h>
 
 @class UIImage;
 @class ALAsset;
-
 
 /*! The operation the implements fetching of image representation of instances of ALAsset class.
  */
@@ -40,7 +39,12 @@
  */
 @property (nonatomic) DFALAssetVersion version;
 
+/*! The image that was fetched by the receiver.
+ */
 @property (nonatomic, readonly) UIImage *image;
+
+/*! The error associated with the image load.
+ */
 @property (nonatomic, readonly) NSError *error;
 
 /*! Initializes operation with instance of ALAsset class.

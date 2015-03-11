@@ -22,7 +22,6 @@
 
 #import "ALAssetsLibrary+DFImageManager.h"
 
-
 @implementation ALAssetsLibrary (DFImageManager)
 
 + (instancetype)df_sharedLibrary {

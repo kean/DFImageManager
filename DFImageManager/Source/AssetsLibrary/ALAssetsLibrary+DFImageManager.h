@@ -22,7 +22,6 @@
 
 #import <AssetsLibrary/ALAssetsLibrary.h>
 
-
 /*! The ALAssetsLibrary category for DFImageManager needs.
  */
 @interface ALAssetsLibrary (DFImageManager)

@@ -22,7 +22,6 @@
 
 #import "ALAssetsLibrary+DFImageManager.h"
 #import "DFALAsset.h"
+#import "DFAssetsLibraryDefines.h"
 #import "DFAssetsLibraryImageFetchOperation.h"
 #import "DFAssetsLibraryImageFetcher.h"
-#import "DFAssetsLibraryImageRequestOptions.h"
-#import "DFAssetsLibraryUtilities.h"

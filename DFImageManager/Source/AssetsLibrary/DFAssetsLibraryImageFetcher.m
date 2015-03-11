@@ -21,15 +21,22 @@
 // THE SOFTWARE.
 
 #import "DFALAsset.h"
+#import "DFAssetsLibraryDefines.h"
 #import "DFAssetsLibraryImageFetchOperation.h"
 #import "DFAssetsLibraryImageFetcher.h"
-#import "DFAssetsLibraryImageRequestOptions.h"
-#import "DFAssetsLibraryUtilities.h"
 #import "DFImageRequest.h"
+#import "DFImageRequestOptions.h"
 #import "DFImageResponse.h"
-#import <AssetsLibrary/AssetsLibrary.h>
 #import <UIKit/UIKit.h>
 
+
+NSString *const DFAssetsLibraryImageSizeKey = @"DFAssetsLibraryImageSizeKey";
+NSString *const DFAssetsLibraryAssetVersionKey = @"DFAssetsLibraryAssetVersionKey";
+
+typedef struct {
+    DFALAssetImageSize imageSize;
+    DFALAssetVersion version;
+} _DFAssetsRequestOptions;
 
 static inline NSURL *_ALAssetURL(id resource) {
     if ([resource isKindOfClass:[DFALAsset class]]) {
@@ -46,7 +53,7 @@ static inline NSURL *_ALAssetURL(id resource) {
 - (instancetype)init {
     if (self = [super init]) {
         _queue = [NSOperationQueue new];
-        _queue.maxConcurrentOperationCount = 2;
+        _queue.maxConcurrentOperationCount = 3;
     }
     return self;
 }
@@ -67,15 +74,6 @@ static inline NSURL *_ALAssetURL(id resource) {
     return NO;
 }
 
-- (DFImageRequest *)canonicalRequestForRequest:(DFImageRequest *)request {
-    if (!request.options || ![request.options isKindOfClass:[DFAssetsLibraryImageRequestOptions class]]) {
-        DFAssetsLibraryImageRequestOptions *options = [[DFAssetsLibraryImageRequestOptions alloc] initWithOptions:request.options];
-        options.imageSize = [self _assetImageSizeForRequest:request];
-        request.options = options;
-    }
-    return request;
-}
-
 - (BOOL)isRequestFetchEquivalent:(DFImageRequest *)request1 toRequest:(DFImageRequest *)request2 {
     return [self isRequestCacheEquivalent:request1 toRequest:request2];
 }
@@ -87,10 +85,20 @@ static inline NSURL *_ALAssetURL(id resource) {
     if (![_ALAssetURL(request1.resource) isEqual:_ALAssetURL(request2.resource)]) {
         return NO;
     }
-    DFAssetsLibraryImageRequestOptions *options1 = (id)request1.options;
-    DFAssetsLibraryImageRequestOptions *options2 = (id)request1.options;
+    _DFAssetsRequestOptions options1 = [self _assetRequestOptionsForRequest:request1];
+    _DFAssetsRequestOptions options2 = [self _assetRequestOptionsForRequest:request2];
     return (options1.imageSize == options2.imageSize &&
             options1.version == options2.version);
+}
+
+- (_DFAssetsRequestOptions)_assetRequestOptionsForRequest:(DFImageRequest *)request {
+    _DFAssetsRequestOptions options;
+    NSDictionary *userInfo = request.options.userInfo;
+    NSNumber *imageSize = userInfo[DFAssetsLibraryImageSizeKey];
+    options.imageSize = imageSize ? [imageSize unsignedIntegerValue] : [self _assetImageSizeForRequest:request];
+    NSNumber *version = userInfo[DFAssetsLibraryAssetVersionKey];
+    options.version = version ? [version unsignedIntegerValue] : DFALAssetVersionCurrent;
+    return options;
 }
 
 - (DFALAssetImageSize)_assetImageSizeForRequest:(DFImageRequest *)request {
@@ -102,14 +110,12 @@ static inline NSURL *_ALAssetURL(id resource) {
         request.targetSize.height <= thumbnailSide) {
         return DFALAssetImageSizeAspectRatioThumbnail;
     }
-    
     CGFloat fullscreenSide = MAX([UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height);
     fullscreenSide *= [UIScreen mainScreen].scale;
     if (request.targetSize.width <= fullscreenSide &&
         request.targetSize.height <= fullscreenSide) {
         return DFALAssetImageSizeFullscreen;
     }
-
     return DFALAssetImageSizeFullsize;
 }
 
@@ -120,13 +126,15 @@ static inline NSURL *_ALAssetURL(id resource) {
     } else {
         operation = [[DFAssetsLibraryImageFetchOperation alloc] initWithAssetURL:(NSURL *)request.resource];
     }
-    DFAssetsLibraryImageRequestOptions *options = (id)request.options;
+    _DFAssetsRequestOptions options = [self _assetRequestOptionsForRequest:request];
     operation.imageSize = options.imageSize;
     operation.version = options.version;
     
     DFAssetsLibraryImageFetchOperation *__weak weakOp = operation;
     [operation setCompletionBlock:^{
-        completion([[DFImageResponse alloc] initWithImage:weakOp.image error:weakOp.error userInfo:nil]);
+        if (completion) {
+            completion([[DFImageResponse alloc] initWithImage:weakOp.image error:weakOp.error userInfo:nil]);
+        }
     }];
     [_queue addOperation:operation];
     return operation;

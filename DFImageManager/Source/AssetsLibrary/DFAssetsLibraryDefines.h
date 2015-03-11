@@ -20,25 +20,33 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "DFImageRequestOptions.h"
-#import "DFAssetsLibraryUtilities.h"
+#import <Foundation/Foundation.h>
+
+typedef NS_ENUM(NSUInteger, DFALAssetImageSize) {
+    /*! An image with a square thumbnail of the asset. The size of the thumbnail is the appropriate size for the platform.  The thumbnail will be in the correct orientation.
+     */
+    DFALAssetImageSizeThumbnail,
+    
+    /*! An image with an aspect ratio thumbnail of the asset. The size of the thumbnail is the appropriate size for the platform. The thumbnail will be in the correct orientation.
+     */
+    DFALAssetImageSizeAspectRatioThumbnail,
+    
+    /*! An image that is appropriate for displaying full screen.
+     */
+    DFALAssetImageSizeFullscreen,
+    
+    /*! The biggest, best representation available.
+     */
+    DFALAssetImageSizeFullsize
+};
 
 
-/*! Image request options specific for ALAssetsLibrary.
- */
-@interface DFAssetsLibraryImageRequestOptions : DFImageRequestOptions
-
-/*! Specifies which of the available representations of the ALAsset to use.
- */
-@property (nonatomic) DFALAssetImageSize imageSize;
-
-/*! Options for requesting an image asset with or without adjustments, used by the version property.
- @warning Using DFALAssetVersionUnadjusted will always return the biggest, best representation available, ignoring the value of imageSize property.
- */
-@property (nonatomic) DFALAssetVersion version;
-
-/*! Initializes DFAssetsLibraryImageRequestOptions with default options.
- */
-- (instancetype)init NS_DESIGNATED_INITIALIZER;
-
-@end
+typedef NS_ENUM(NSUInteger, DFALAssetVersion) {
+    /*! Version with edits (aka adjustments) rendered or unadjusted version if there is no edits.
+     */
+    DFALAssetVersionCurrent,
+    
+    /*! Original version without any adjustments. It always returns the biggest, best representation available.
+     */
+    DFALAssetVersionUnadjusted
+};
