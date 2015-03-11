@@ -195,7 +195,7 @@
     
     [self waitForExpectationsWithTimeout:3.0 handler:^(NSError *error) {
         XCTAssertEqual(_fetcher.createdOperationCount, 2);
-        XCTAssertEqual(_processor.numberOfProcessedImageCalls, 3);
+        XCTAssertEqual(_processor.numberOfProcessedImageCalls, 4);
     }];
 }
 

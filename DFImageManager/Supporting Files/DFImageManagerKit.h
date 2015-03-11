@@ -39,8 +39,6 @@ FOUNDATION_EXPORT const unsigned char DFImageManagerFrameworkVersionString[];
 
 // Processing
 #import <DFImageManagerKit/DFImageProcessor.h>
-#import <DFImageManagerKit/DFProcessingImageFetcher.h>
-#import <DFImageManagerKit/DFProcessingInput.h>
 #import <DFImageManagerKit/DFImageUtilities.h>
 
 // Utilities

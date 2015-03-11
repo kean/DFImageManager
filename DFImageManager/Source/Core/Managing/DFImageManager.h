@@ -34,7 +34,7 @@
  
  @note Reusing Operations
  
- Image manager automatically reuses fetch operations and processing operations. It order to enable this functionality you should implement the -isRequestFetchEquivalent:toRequest: method in your <DFImageFetching> implementation and -isProcessingForRequestEquivalent:toRequest: method in <DFImageProcessing> implementation.
+ Image manager automatically reuses fetch operations. It order to enable this functionality you should implement the -isRequestFetchEquivalent:toRequest: method in your <DFImageFetching> implementation.
  
  @note Cancellation
  

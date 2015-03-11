@@ -43,8 +43,6 @@
 
 // Processing
 #import "DFImageProcessor.h"
-#import "DFProcessingImageFetcher.h"
-#import "DFProcessingInput.h"
 #import "DFImageUtilities.h"
 
 // Utilities
