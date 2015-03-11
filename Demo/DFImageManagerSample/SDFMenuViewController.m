@@ -148,9 +148,9 @@
             controller.title = @"Preheating Demo";
             [weakSelf.navigationController pushViewController:controller animated:YES];
         }]];
-        [items addObject:[SDFMenuItem itemWithTitle:@"Composite Operation Demo" subtitle:@"Request both thumbnail and fullscreen image" action:^{
+        [items addObject:[SDFMenuItem itemWithTitle:@"Composite Request Demo" subtitle:@"Request both thumbnail and fullscreen image" action:^{
             SDFCompositeRequestDemoViewController *controller = [SDFCompositeRequestDemoViewController new];
-            controller.title = @"Composite Operation Demo";
+            controller.title = @"Composite Request Demo";
             [weakSelf.navigationController pushViewController:controller animated:YES];
         }]];
         [SDFMenuSection sectionWithTitle:@"Other" items:items];
