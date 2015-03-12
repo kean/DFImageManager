@@ -386,10 +386,16 @@
     } else {
         _DFImageManagerTask *__weak weakSelf = self;
         NSBlockOperation *operation = [NSBlockOperation blockOperationWithBlock:^{
-            UIImage *processedImage = [_processor processedImage:input forRequest:handler.request];
-            [weakSelf _storeImage:processedImage ?: input forRequest:handler.request];
-            completion(processedImage ?: input);
+            UIImage *processedImage = [weakSelf _cachedImageForRequest:handler.request];
+            if (!processedImage) {
+                processedImage = [_processor processedImage:input forRequest:handler.request];
+                [weakSelf _storeImage:processedImage forRequest:handler.request];
+            }
+            completion(processedImage);
         }];
+        if ([handler isKindOfClass:[_DFImageManagerPreheatHandler class]]) {
+            operation.queuePriority = NSOperationQueuePriorityVeryLow;
+        }
         [_processingQueue addOperation:operation];
         _processingOperations[handler.requestID.handlerID] = operation;
     }

@@ -25,9 +25,8 @@
 
 @class DFImageRequest;
 
-
 /*! Processes fetched images. Might include image decompression, resizing and anything else.
- @note Implementations should not cache processed images and leave it to classes conforming <DFImageCaching> protocol. However, the same class may implement both protocols.
+ @note Implementations should not cache processed images and leave it to classes conforming DFImageCaching protocol.
  */
 @protocol DFImageProcessing <NSObject>
 

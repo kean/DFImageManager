@@ -158,7 +158,6 @@
     // Start two requests. Image manager is initialized without a memory cache, so it will have to use fetcher and processor for both requests.
     
     _fetcher.queue.suspended = YES;
-    _processor.processingTime = 0.05; // Add some processing time so that the processing request doesn't cancel too early
     
     XCTestExpectation *expectation1 = [self expectationWithDescription:@"01"]; { DFImageRequest *request1 = [[DFImageRequest alloc] initWithResource:[TDFMockResource resourceWithID:@"ID01"] targetSize:CGSizeMake(150.f, 150.f) contentMode:DFImageContentModeAspectFill options:nil];
         [_manager requestImageForRequest:request1 completion:^(UIImage *image, NSDictionary *info) {
@@ -168,26 +167,18 @@
     }
     
     XCTestExpectation *expectation2 = [self expectationWithDescription:@"02"]; {
-        DFImageRequest *request2 = [[DFImageRequest alloc] initWithResource:[TDFMockResource resourceWithID:@"ID01"] targetSize:CGSizeMake(150.f, 150.f) contentMode:DFImageContentModeAspectFill options:nil];
+        DFImageRequest *request2 = [[DFImageRequest alloc] initWithResource:[TDFMockResource resourceWithID:@"ID01"] targetSize:CGSizeMake(100.f, 100.f) contentMode:DFImageContentModeAspectFill options:nil];
         [_manager requestImageForRequest:request2 completion:^(UIImage *image, NSDictionary *info) {
             XCTAssertNotNil(image);
             [expectation2 fulfill];
         }];
     }
     
-    XCTestExpectation *expectation3 = [self expectationWithDescription:@"03"]; {
-        DFImageRequest *request3 = [[DFImageRequest alloc] initWithResource:[TDFMockResource resourceWithID:@"ID01"] targetSize:CGSizeMake(100.f, 100.f) contentMode:DFImageContentModeAspectFill options:nil];
+    XCTestExpectation *expectation3 = [self expectationWithDescription:@"04"]; {
+        DFImageRequest *request3 = [[DFImageRequest alloc] initWithResource:[TDFMockResource resourceWithID:@"ID02"] targetSize:CGSizeMake(100.f, 100.f) contentMode:DFImageContentModeAspectFill options:nil];
         [_manager requestImageForRequest:request3 completion:^(UIImage *image, NSDictionary *info) {
             XCTAssertNotNil(image);
             [expectation3 fulfill];
-        }];
-    }
-    
-    XCTestExpectation *expectation4 = [self expectationWithDescription:@"04"]; {
-        DFImageRequest *request4 = [[DFImageRequest alloc] initWithResource:[TDFMockResource resourceWithID:@"ID02"] targetSize:CGSizeMake(100.f, 100.f) contentMode:DFImageContentModeAspectFill options:nil];
-        [_manager requestImageForRequest:request4 completion:^(UIImage *image, NSDictionary *info) {
-            XCTAssertNotNil(image);
-            [expectation4 fulfill];
         }];
     }
     
@@ -195,7 +186,6 @@
     
     [self waitForExpectationsWithTimeout:3.0 handler:^(NSError *error) {
         XCTAssertEqual(_fetcher.createdOperationCount, 2);
-        XCTAssertEqual(_processor.numberOfProcessedImageCalls, 4);
     }];
 }
 
