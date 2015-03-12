@@ -101,13 +101,19 @@
 - (void)imageView:(DFImageView *)imageView didCompleteRequest:(DFImageRequest *)request withImage:(UIImage *)image info:(NSDictionary *)info {
     BOOL isFastResponse = (self.imageView.task.elapsedTime * 1000.0) < 64.f;
     if (image) {
-        DFImageViewAnimation animation = DFImageViewAnimationNone;
-        if (self.animation != DFImageViewAnimationNone) {
-            if (self.imageView.image != nil) {
+        DFImageViewAnimation animation;
+        switch (self.animation) {
+            case DFImageViewAnimationNone:
                 animation = DFImageViewAnimationNone;
-            } else {
-                animation = isFastResponse ? DFImageViewAnimationNone : _animation;
-            }
+                break;
+            case DFImageViewAnimationFade:
+                animation = (isFastResponse || self.imageView.image != nil) ? DFImageViewAnimationFade : DFImageViewAnimationNone;
+                break;
+            case DFImageViewAnimationCrossDissolve:
+                animation = isFastResponse ? DFImageViewAnimationNone : DFImageViewAnimationCrossDissolve;
+                break;
+            default:
+                break;
         }
         [self _setImage:image withAnimation:animation];
     } else {

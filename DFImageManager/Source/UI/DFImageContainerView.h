@@ -32,7 +32,6 @@ typedef NS_ENUM(NSUInteger, DFImageViewAnimation) {
    DFImageViewAnimationCrossDissolve
 };
 
-
 /*! The DFImageContainerView is designed to work in pair with DFImageView to enable several additional features like dynamic  placeholder color, separate failure view and more.
  */
 @interface DFImageContainerView : UIView <DFImageViewDelegate>
