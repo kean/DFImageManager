@@ -22,7 +22,8 @@ The DFImageManager has a single responsibility of providing a great API for mana
 - Centralized image decompression, resizing and processing. Fully customizable.
 - Separate memory cache for decompressed and processed images. Fine grained control over memory cache.
 - [Compose image managers](https://github.com/kean/DFImageManager/wiki/Extending-Image-Manager-Guide#using-dfcompositeimagemanager) into a tree of responsibility.
-- [Automatic preheating](https://github.com/kean/DFImageManager/wiki/Image-Preheating-Guide) of images that are close to the viewport, preheating requests become regular requests when necessary
+- [Automatic preheating](https://github.com/kean/DFImageManager/wiki/Image-Preheating-Guide) of images that are close to the viewport
+- Preheating requests become regular requests when necessary
 - Groups similar requests and never executes them twice. Intelligent control over which requests are considered equivalent.
 - High quality code base. Dependency injection is used throughout.
 - Extreme performance even on outdated devices. Asynchronous and thread safe.
