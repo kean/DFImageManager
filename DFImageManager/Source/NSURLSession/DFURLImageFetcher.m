@@ -303,7 +303,9 @@ static const NSTimeInterval _kCommandExecutionInterval = 0.0025; // 2.5 ms
         [_executor executeCommand:[[_DFSessionTaskCancelCommand alloc] initWithTask:task]];
     };
     operation.priorityHandler = ^(NSOperationQueuePriority priority) {
-        task.priority = [DFURLImageFetcher _taskPriorityForQueuePriority:priority];
+        if ([task respondsToSelector:@selector(setPriority:)]) {
+            task.priority = [DFURLImageFetcher _taskPriorityForQueuePriority:priority];
+        }
     };
     
     [_executor executeCommand:[[_DFSessionTaskResumeCommand alloc] initWithTask:task]];

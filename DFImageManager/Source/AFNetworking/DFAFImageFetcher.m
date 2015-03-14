@@ -110,7 +110,9 @@ NSString *const DFAFRequestCachePolicyKey = @"DFAFRequestCachePolicyKey";
         [task cancel];
     };
     operation.priorityHandler = ^(NSOperationQueuePriority priority){
-        task.priority = [DFAFImageFetcher _taskPriorityForQueuePriority:priority];
+        if ([task respondsToSelector:@selector(setPriority:)]) {
+            task.priority = [DFAFImageFetcher _taskPriorityForQueuePriority:priority];
+        }
     };
     return operation;
 }
