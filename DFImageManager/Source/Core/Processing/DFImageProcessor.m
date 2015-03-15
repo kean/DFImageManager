@@ -40,7 +40,7 @@ NSString *DFImageProcessingCornerRadiusKey = @"DFImageProcessingCornerRadiusKey"
     }
     NSNumber *cornerRadius1 = request1.options.userInfo[DFImageProcessingCornerRadiusKey];
     NSNumber *cornerRadius2 = request2.options.userInfo[DFImageProcessingCornerRadiusKey];
-    return (!cornerRadius1 && !cornerRadius2) || [cornerRadius1 isEqualToNumber:cornerRadius2];
+    return (!cornerRadius1 && !cornerRadius2) || ((!!cornerRadius1 && !!cornerRadius2) && [cornerRadius1 isEqualToNumber:cornerRadius2]);
 }
 
 - (UIImage *)processedImage:(UIImage *)image forRequest:(DFImageRequest *)request {
