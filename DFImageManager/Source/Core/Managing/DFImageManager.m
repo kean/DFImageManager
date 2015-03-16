@@ -36,11 +36,21 @@
 #import "DFImageManagerKit+GIF.h"
 #endif
 
+
+@class _DFImageRequestID;
+
+@interface DFImageManager (_DFImageRequestID)
+
+- (void)cancelRequestWithID:(_DFImageRequestID *)requestID;
+- (void)setPriority:(DFImageRequestPriority)priority forRequestWithID:(_DFImageRequestID *)requestID;
+
+@end
+
 #pragma mark - _DFImageRequestID -
 
 @interface _DFImageRequestID : DFImageRequestID
 
-@property (nonatomic, weak, readonly) id<DFImageManagingCore> imageManager;
+@property (nonatomic, weak, readonly) DFImageManager *imageManager;
 @property (nonatomic, readonly) NSUUID *taskID;
 @property (nonatomic, readonly) NSUUID *handlerID;
 
@@ -51,7 +61,7 @@
 
 @implementation _DFImageRequestID
 
-- (instancetype)initWithImageManager:(id<DFImageManagingCore>)imageManager {
+- (instancetype)initWithImageManager:(DFImageManager *)imageManager {
     if (self = [super init]) {
         _imageManager = imageManager;
     }
@@ -660,43 +670,6 @@
     }
 }
 
-#pragma mark Cancel
-
-- (void)cancelRequestWithID:(DFImageRequestID *)requestID {
-    if (requestID) {
-        dispatch_async(_syncQueue, ^{
-            [self _cancelRequestWithID:(_DFImageRequestID *)requestID];
-        });
-    }
-}
-
-- (void)_cancelRequestWithID:(_DFImageRequestID *)requestID {
-    _DFImageManagerTask *task = _tasks[requestID.taskID];
-    if (task) {
-        [task removeHandlerForID:requestID.handlerID];
-        if (task.handlers.count == 0) {
-            [task cancel];
-            [self _removeTask:task];
-        }
-    }
-}
-
-#pragma mark Priorities
-
-- (void)setPriority:(DFImageRequestPriority)priority forRequestWithID:(_DFImageRequestID *)requestID {
-    if (requestID) {
-        dispatch_async(_syncQueue, ^{
-            _DFImageManagerTask *task = _tasks[requestID.taskID];
-            _DFImageManagerHandler *handler = task.handlers[requestID.handlerID];
-            DFImageRequestOptions *options = handler.request.options;
-            if (options.priority != priority) {
-                options.priority = priority;
-                [task updateOperationPriority];
-            }
-        });
-    }
-}
-
 #pragma mark Preheating
 
 - (void)startPreheatingImagesForRequests:(NSArray *)requests {
@@ -775,6 +748,41 @@
             [self _cancelRequestWithID:requestID];
         }
     });
+}
+
+#pragma mark - DFImageManager (_DFImageRequestID)
+
+- (void)cancelRequestWithID:(_DFImageRequestID *)requestID {
+    if (requestID) {
+        dispatch_async(_syncQueue, ^{
+            [self _cancelRequestWithID:requestID];
+        });
+    }
+}
+
+- (void)_cancelRequestWithID:(_DFImageRequestID *)requestID {
+    _DFImageManagerTask *task = _tasks[requestID.taskID];
+    if (task) {
+        [task removeHandlerForID:requestID.handlerID];
+        if (task.handlers.count == 0) {
+            [task cancel];
+            [self _removeTask:task];
+        }
+    }
+}
+
+- (void)setPriority:(DFImageRequestPriority)priority forRequestWithID:(_DFImageRequestID *)requestID {
+    if (requestID) {
+        dispatch_async(_syncQueue, ^{
+            _DFImageManagerTask *task = _tasks[requestID.taskID];
+            _DFImageManagerHandler *handler = task.handlers[requestID.handlerID];
+            DFImageRequestOptions *options = handler.request.options;
+            if (options.priority != priority) {
+                options.priority = priority;
+                [task updateOperationPriority];
+            }
+        });
+    }
 }
 
 #pragma mark -

@@ -27,11 +27,11 @@
  */
 @interface DFImageRequestID : NSObject
 
-/*! Cancels the request.
+/*! Advices the image manager that the request should be cancelled.
  */
 - (void)cancel;
 
-/*! Changes the request priority.
+/*! Changes the priority of the request.
  */
 - (void)setPriority:(DFImageRequestPriority)priority;
 

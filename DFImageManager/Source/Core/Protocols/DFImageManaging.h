@@ -46,16 +46,6 @@ typedef void (^DFImageRequestCompletion)(UIImage *image, NSDictionary *info);
  */
 - (DFImageRequestID *)requestImageForRequest:(DFImageRequest *)request completion:(void (^)(UIImage *image, NSDictionary *info))completion;
 
-/*! Advices the image manager that the request with a given ID should be cancelled. 
- @note The method has the same effect as calling -cancel method on a request ID itself.
- */
-- (void)cancelRequestWithID:(DFImageRequestID *)requestID;
-
-/*! Changes the priority of a request with a given ID.
- @note The method has the same effect as calling -setPriority: method on a request ID itself.
- */
-- (void)setPriority:(DFImageRequestPriority)priority forRequestWithID:(DFImageRequestID *)requestID;
-
 /*! Prepares image representations of the specified resources and options for later use.
  @note The application is responsible for providing the same requests when preheating the images and when actually requesting them later or else the preheating might be either partially effective or not effective at all.
  */

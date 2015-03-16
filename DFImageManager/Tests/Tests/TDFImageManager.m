@@ -105,14 +105,6 @@
     [self waitForExpectationsWithTimeout:3.0 handler:nil];
 }
 
-- (void)testThatCancelsFetchOperationUsingManager {
-    _fetcher.queue.suspended = YES;
-    DFImageRequestID *requestID = [_manager requestImageForResource:[TDFMockResource resourceWithID:@"ID01"] completion:nil];
-    [self expectationForNotification:TDFMockFetchOperationWillCancelNotification object:nil handler:nil];
-    [_manager cancelRequestWithID:requestID];
-    [self waitForExpectationsWithTimeout:3.0 handler:nil];
-}
-
 /*! > Image manager cancels managed operations only when there are no remaining handlers.
  */
 - (void)testThatDoesntCancelFetchOperationWithRemainingHandlers {

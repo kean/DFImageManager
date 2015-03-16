@@ -38,14 +38,6 @@
     return nil;
 }
 
-- (void)cancelRequestWithID:(DFImageRequestID *)requestID {
-    // Do nothing
-}
-
-- (void)setPriority:(DFImageRequestPriority)priority forRequestWithID:(DFImageRequestID *)requestID {
-    // Do nothing
-}
-
 - (void)startPreheatingImagesForRequests:(NSArray *)requests {
     for (DFImageRequest *request in requests) {
         [self requestImageForRequest:request completion:nil];

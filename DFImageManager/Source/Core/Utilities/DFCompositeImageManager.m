@@ -84,14 +84,6 @@
     }
 }
 
-- (void)cancelRequestWithID:(DFImageRequestID *)requestID {
-    [requestID cancel];
-}
-
-- (void)setPriority:(DFImageRequestPriority)priority forRequestWithID:(DFImageRequestID *)requestID {
-    [requestID setPriority:priority];
-}
-
 - (void)startPreheatingImagesForRequests:(NSArray *)requests {
     for (DFImageRequest *request in requests) {
         [DFManagerForRequest(request) startPreheatingImagesForRequests:@[request]];
