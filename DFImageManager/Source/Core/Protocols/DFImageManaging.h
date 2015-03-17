@@ -79,13 +79,4 @@ typedef void (^DFImageRequestCompletion)(UIImage *image, NSDictionary *info);
  */
 - (DFImageRequestID *)requestImageForResource:(id)resource completion:(void (^)(UIImage *image, NSDictionary *info))completion;
 
-/*! Prepares image representations of the specified resources and options for later use. 
- @note The application is responsible for providing the same requests when preheating the images and when actually requesting them later or else the preheating might be either partially effective or not effective at all.
- */
-- (void)startPreheatingImageForResources:(NSArray *)resources targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options;
-
-/*! Cancels image preparation for the resources assets and options.
- */
-- (void)stopPreheatingImagesForResources:(NSArray *)resources targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options;
-
 @end

@@ -113,20 +113,4 @@
     return [self requestImageForResource:resource targetSize:DFImageMaximumSize contentMode:DFImageContentModeAspectFill options:nil completion:completion];
 }
 
-- (void)startPreheatingImageForResources:(NSArray *)resources targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options {
-    [self startPreheatingImagesForRequests:[self _requestsForResources:resources targetSize:targetSize contentMode:contentMode options:options]];
-}
-
-- (void)stopPreheatingImagesForResources:(NSArray *)resources targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options {
-    [self stopPreheatingImagesForRequests:[self _requestsForResources:resources targetSize:targetSize contentMode:contentMode options:options]];
-}
-
-- (NSArray *)_requestsForResources:(NSArray *)resources targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options {
-    NSMutableArray *requests = [NSMutableArray new];
-    for (id resource in resources) {
-        [requests addObject:[[DFImageRequest alloc] initWithResource:resource targetSize:targetSize contentMode:contentMode options:options]];
-    }
-    return [requests copy];
-}
-
 @end
