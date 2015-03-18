@@ -25,7 +25,6 @@
 
 @class DFImageManagerConfiguration;
 
-
 /*! The DFImageManager and the related classes provides an implementation of the DFImageManaging protocol. The role of the DFImageManager is to manage the execution of image requests by delegating the actual job to a classes, implementing DFImageFetching, DFImageCaching, and DFImageProcessing protocols.
  
  @note Completion Block

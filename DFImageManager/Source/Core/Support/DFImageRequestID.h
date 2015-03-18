@@ -27,7 +27,7 @@
  */
 @interface DFImageRequestID : NSObject <NSCopying>
 
-/*! Advices the image manager that the request should be cancelled.
+/*! Advices the image manager that the request should be cancelled. The completion block will be called with error value of { DFImageManagerErrorDomain, DFImageManagerErrorCancelled }
  */
 - (void)cancel;
 

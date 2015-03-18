@@ -74,3 +74,11 @@ typedef NS_ENUM(NSInteger, DFImageRequestPriority) {
 /*! Progress handler, called on a main thread.
  */
 typedef void (^DFImageRequestProgressHandler)(double progress);
+
+/*! The error domain for DFImageManager.
+ */
+extern NSString *const DFImageManagerErrorDomain;
+
+/*! Returned when an image request is cancelled.
+ */
+static const NSInteger DFImageManagerErrorCancelled = -1;

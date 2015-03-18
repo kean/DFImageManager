@@ -55,7 +55,9 @@ static char *_requestIDKey;
     UIImageView *__weak weakSelf = self;
     DFImageRequest *request = [DFImageRequest requestWithResource:resource targetSize:targetSize contentMode:contentMode options:options];
     [[DFImageManager sharedManager] requestImageForRequest:request completion:^(UIImage *image, NSDictionary *info) {
-        weakSelf.image = image;
+        if (image) {
+            weakSelf.image = image;
+        }
     }];
 }
 

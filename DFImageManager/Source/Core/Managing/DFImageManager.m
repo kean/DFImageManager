@@ -708,6 +708,11 @@
     _DFImageManagerTask *task = handler.task;
     if ([task.handlers containsObject:handler]) {
         [task removeHandler:handler];
+        if (handler.completionHandler) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                handler.completionHandler(nil, @{ DFImageInfoErrorKey: [NSError errorWithDomain:DFImageManagerErrorDomain code:DFImageManagerErrorCancelled userInfo:nil] });
+            });
+        }
         if (task.handlers.count == 0) {
             [task cancel];
             [self _removeTask:task];

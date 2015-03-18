@@ -144,6 +144,21 @@
     [self waitForExpectationsWithTimeout:3.0 handler:nil];
 }
 
+- (void)testThatCompletionHandlerForCancelledRequestIsCalled {
+    _fetcher.queue.suspended = YES;
+    
+    XCTestExpectation *expectation = [self expectationWithDescription:@""];
+    DFImageRequestID *requestID = [_manager requestImageForResource:[TDFMockResource resourceWithID:@"ID01"] completion:^(UIImage *image, NSDictionary *info) {
+        NSError *error = info[DFImageInfoErrorKey];
+        XCTAssertNotNil(error);
+        XCTAssertTrue([error.domain isEqualToString:DFImageManagerErrorDomain]);
+        XCTAssertEqual(error.code, DFImageManagerErrorCancelled);
+        [expectation fulfill];
+    }];
+    [requestID cancel];
+    [self waitForExpectationsWithTimeout:3.0 handler:nil];
+}
+
 #pragma mark - Operation Reuse
 
 - (void)testThatOperationsAreReused {
@@ -325,6 +340,7 @@
         XCTAssertEqual(operation.queuePriority, (NSOperationQueuePriority)DFImageRequestPriorityVeryLow);
         [expectation fulfill];
     }];
+    [NSThread sleepForTimeInterval:0.05]; // Wait till operation is created
     [requestID setPriority:DFImageRequestPriorityVeryLow];
     
     _fetcher.queue.suspended = NO;
