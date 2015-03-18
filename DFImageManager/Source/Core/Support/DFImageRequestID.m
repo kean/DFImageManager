@@ -32,4 +32,12 @@
     [NSException raise:NSInternalInconsistencyException format:@"Abstract method called %@", NSStringFromSelector(_cmd)];
 }
 
+- (id)copyWithZone:(NSZone *)zone {
+    return self;
+}
+
+- (BOOL)isEqual:(id)object {
+    return self == object;
+}
+
 @end

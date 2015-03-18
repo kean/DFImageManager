@@ -25,7 +25,7 @@
 
 /*! Abstract class representing image request identifier.
  */
-@interface DFImageRequestID : NSObject
+@interface DFImageRequestID : NSObject <NSCopying>
 
 /*! Advices the image manager that the request should be cancelled.
  */
