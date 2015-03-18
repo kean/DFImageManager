@@ -32,8 +32,6 @@
 @class DFImageRequestOptions;
 @class DFImageView;
 
-
-
 /*! A class conforming to the DFImageViewDelegate protocol provides method for displaying fetched images and reacting to failures.
  */
 @protocol DFImageViewDelegate <NSObject>

@@ -32,7 +32,6 @@
 #import "DFImageManagerKit+GIF.h"
 #endif
 
-
 static const NSTimeInterval _kMinimumAutoretryInterval = 8.f;
 
 @implementation DFImageView {
@@ -51,8 +50,8 @@ static const NSTimeInterval _kMinimumAutoretryInterval = 8.f;
     return self;
 }
 
-- (id)initWithCoder:(NSCoder *)aDecoder {
-    if (self = [super initWithCoder:aDecoder]) {
+- (id)initWithCoder:(NSCoder *)decoder {
+    if (self = [super initWithCoder:decoder]) {
         [self _df_commonInit];
     }
     return self;

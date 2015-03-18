@@ -37,33 +37,37 @@
 #endif
 
 
-@class _DFImageRequestID;
+@class _DFImageHandler;
 
-@interface DFImageManager (_DFImageRequestID)
+@interface DFImageManager (_DFImageHandler)
 
-- (void)cancelRequestWithID:(_DFImageRequestID *)requestID;
-- (void)setPriority:(DFImageRequestPriority)priority forRequestWithID:(_DFImageRequestID *)requestID;
+- (void)cancelRequestWithHandler:(_DFImageHandler *)handler;
+- (void)setPriority:(DFImageRequestPriority)priority forRequestWithHandler:(_DFImageHandler *)handler;
 
 @end
 
-#pragma mark - _DFImageRequestID -
+#pragma mark - _DFImageHandler -
 
-@interface _DFImageRequestID : DFImageRequestID
+@interface _DFImageHandler : DFImageRequestID
 
 @property (nonatomic, weak, readonly) DFImageManager *imageManager;
+@property (nonatomic, readonly) DFImageRequest *request;
+@property (nonatomic, copy, readonly) DFImageRequestCompletion completionHandler;
 @property (nonatomic, readonly) NSUUID *taskID;
 @property (nonatomic, readonly) NSUUID *handlerID;
 
-- (instancetype)initWithImageManager:(DFImageManager *)imageManager;
+- (instancetype)initWithImageManager:(DFImageManager *)imageManager request:(DFImageRequest *)request completionHandler:(DFImageRequestCompletion)completionHandler;
 - (void)setTaskID:(NSUUID *)taskID handlerID:(NSUUID *)handlerID;
 
 @end
 
-@implementation _DFImageRequestID
+@implementation _DFImageHandler
 
-- (instancetype)initWithImageManager:(DFImageManager *)imageManager {
+- (instancetype)initWithImageManager:(DFImageManager *)imageManager request:(DFImageRequest *)request completionHandler:(DFImageRequestCompletion)completionHandler {
     if (self = [super init]) {
         _imageManager = imageManager;
+        _request = request;
+        _completionHandler = [completionHandler copy];
     }
     return self;
 }
@@ -76,11 +80,11 @@
 }
 
 - (void)cancel {
-    [self.imageManager cancelRequestWithID:self];
+    [self.imageManager cancelRequestWithHandler:self];
 }
 
 - (void)setPriority:(DFImageRequestPriority)priority {
-    [self.imageManager setPriority:priority forRequestWithID:self];
+    [self.imageManager setPriority:priority forRequestWithHandler:self];
 }
 
 - (NSString *)description {
@@ -90,43 +94,13 @@
 @end
 
 
-#pragma mark - _DFImageManagerHandler -
+#pragma mark - _DFPreheatingImageHandler -
 
-@interface _DFImageManagerHandler : NSObject
-
-@property (nonatomic, readonly) DFImageRequest *request;
-@property (nonatomic, readonly) _DFImageRequestID *requestID;
-@property (nonatomic, copy, readonly) DFImageRequestCompletion completion;
-
-- (instancetype)initWithRequest:(DFImageRequest *)request requestID:(DFImageRequestID *)requestID completion:(DFImageRequestCompletion)completion NS_DESIGNATED_INITIALIZER;
+@interface _DFPreheatingImageHandler : _DFImageHandler
 
 @end
 
-@implementation _DFImageManagerHandler
-
-- (instancetype)initWithRequest:(DFImageRequest *)request requestID:(_DFImageRequestID *)requestID completion:(DFImageRequestCompletion)completion {
-    if (self = [super init]) {
-        _request = request;
-        _requestID = requestID;
-        _completion = [completion copy];
-    }
-    return self;
-}
-
-- (NSString *)description {
-    return [NSString stringWithFormat:@"<%@ %p> { handlerID = %@ }", [self class], self, self.requestID.handlerID];
-}
-
-@end
-
-
-#pragma mark - _DFImageManagerPreheatHandler -
-
-@interface _DFImageManagerPreheatHandler : _DFImageManagerHandler
-
-@end
-
-@implementation _DFImageManagerPreheatHandler
+@implementation _DFPreheatingImageHandler
 
 @end
 
@@ -208,7 +182,7 @@
 
 /*! Gets called when task retrieves processed response.
  */
-- (void)task:(_DFImageManagerTask *)task didProcessResponse:(DFImageResponse *)response forHandler:(_DFImageManagerHandler *)handler;
+- (void)task:(_DFImageManagerTask *)task didProcessResponse:(DFImageResponse *)response forHandler:(_DFImageHandler *)handler;
 
 - (UIImage *)task:(_DFImageManagerTask *)task cachedImageForRequest:(DFImageRequest *)request;
 
@@ -240,7 +214,7 @@
 - (void)cancel;
 - (void)updateOperationPriority;
 
-- (void)addHandler:(_DFImageManagerHandler *)handler;
+- (void)addHandler:(_DFImageHandler *)handler;
 - (void)removeHandlerForID:(NSUUID *)handlerID;
 
 @end
@@ -278,12 +252,12 @@
 - (void)resume {
     NSAssert(!_isExecuting, nil);
     _isExecuting = YES;
-    for (_DFImageManagerHandler *handler in self.handlers.allValues) {
+    for (_DFImageHandler *handler in self.handlers.allValues) {
         [self _executeHandler:handler];
     }
 }
 
-- (void)_executeHandler:(_DFImageManagerHandler *)handler {
+- (void)_executeHandler:(_DFImageHandler *)handler {
     UIImage *cachedImage = [self _cachedImageForRequest:handler.request];
     if (cachedImage) {
         // Fulfill request with image from memory cache
@@ -299,8 +273,8 @@
     }
 }
 
-- (void)addHandler:(_DFImageManagerHandler *)handler {
-    _handlers[handler.requestID.handlerID] = handler;
+- (void)addHandler:(_DFImageHandler *)handler {
+    _handlers[handler.handlerID] = handler;
     [self _didUpdateHandlers];
     if (self.isExecuting) {
         [self _executeHandler:handler];
@@ -316,11 +290,11 @@
 - (void)_didUpdateHandlers {
     _isReportingProgress = NO;
     _isPreheating = YES;
-    [_handlers enumerateKeysAndObjectsUsingBlock:^(id key, _DFImageManagerHandler *handler, BOOL *stop) {
+    [_handlers enumerateKeysAndObjectsUsingBlock:^(id key, _DFImageHandler *handler, BOOL *stop) {
         if (handler.request.options.progressHandler) {
             _isReportingProgress = YES;
         }
-        if (![handler isKindOfClass:[_DFImageManagerPreheatHandler class]]) {
+        if (![handler isKindOfClass:[_DFPreheatingImageHandler class]]) {
             _isPreheating = NO;
         }
     }];
@@ -358,7 +332,7 @@
         if (shouldContinue) {
             _fetchResponse = response;
             NSAssert(self.handlers.count > 0, @"Internal inconsistency");
-            for (_DFImageManagerHandler *handler in self.handlers.allValues) {
+            for (_DFImageHandler *handler in self.handlers.allValues) {
                 [self _processResponseForHandler:handler];
             }
         }
@@ -367,7 +341,7 @@
 
 #pragma mark - Processing
 
-- (void)_processResponseForHandler:(_DFImageManagerHandler *)handler {
+- (void)_processResponseForHandler:(_DFImageHandler *)handler {
     UIImage *fetchedImage = _fetchResponse.image;
     BOOL shouldProcessResponse = _processor != nil && _processingQueue != nil;
 #if __has_include("DFImageManagerKit+GIF.h")
@@ -389,7 +363,7 @@
     }
 }
 
-- (void)_processImage:(UIImage *)input forHandler:(_DFImageManagerHandler *)handler completion:(void (^)(UIImage *image))completion {
+- (void)_processImage:(UIImage *)input forHandler:(_DFImageHandler *)handler completion:(void (^)(UIImage *image))completion {
     UIImage *cachedImage = [self _cachedImageForRequest:handler.request];
     if (cachedImage) {
         completion(cachedImage);
@@ -403,15 +377,15 @@
             }
             completion(processedImage);
         }];
-        if ([handler isKindOfClass:[_DFImageManagerPreheatHandler class]]) {
+        if ([handler isKindOfClass:[_DFPreheatingImageHandler class]]) {
             operation.queuePriority = NSOperationQueuePriorityVeryLow;
         }
         [_processingQueue addOperation:operation];
-        _processingOperations[handler.requestID.handlerID] = operation;
+        _processingOperations[handler.handlerID] = operation;
     }
 }
 
-- (void)_didProcessResponse:(DFImageResponse *)response forHandler:(_DFImageManagerHandler *)handler {
+- (void)_didProcessResponse:(DFImageResponse *)response forHandler:(_DFImageHandler *)handler {
     [self.delegate task:self didProcessResponse:response forHandler:handler];
 }
 
@@ -420,7 +394,7 @@
 - (void)updateOperationPriority {
     if (_fetchOperation && _handlers.count) {
         DFImageRequestPriority __block priority = DFImageRequestPriorityVeryLow;
-        [_handlers enumerateKeysAndObjectsUsingBlock:^(id key, _DFImageManagerHandler *handler, BOOL *stop) {
+        [_handlers enumerateKeysAndObjectsUsingBlock:^(id key, _DFImageHandler *handler, BOOL *stop) {
             priority = MAX(handler.request.options.priority, priority);
         }];
         if (_fetchOperation.queuePriority != (NSOperationQueuePriority)priority) {
@@ -508,13 +482,13 @@
             return nil;
         }
     }
-    _DFImageRequestID *requestID = [[_DFImageRequestID alloc] initWithImageManager:self]; // Represents requestID future.
+    _DFImageHandler *handler = [[_DFImageHandler alloc] initWithImageManager:self request:canonicalRequest completionHandler:completion]; // Represents requestID future.
     dispatch_async(_syncQueue, ^{
         NSUUID *taskID = _taskIDs[DFImageRequestKeyCreate(canonicalRequest)] ?: [NSUUID UUID];
-        [requestID setTaskID:taskID handlerID:[NSUUID UUID]];
-        [self _requestImageForHandler:[[_DFImageManagerHandler alloc] initWithRequest:canonicalRequest requestID:requestID completion:completion]];
+        [handler setTaskID:taskID handlerID:[NSUUID UUID]];
+        [self _requestImageForHandler:handler];
     });
-    return requestID;
+    return handler;
 }
 
 - (DFImageRequest *)_canonicalRequestForRequest:(DFImageRequest *)request {
@@ -524,15 +498,14 @@
     return [request copy];
 }
 
-- (void)_requestImageForHandler:(_DFImageManagerHandler *)handler {
+- (void)_requestImageForHandler:(_DFImageHandler *)handler {
     DFImageRequest *request = handler.request;
-    _DFImageRequestID *requestID = handler.requestID;
     
-    _DFImageManagerTask *task = _tasks[requestID.taskID];
+    _DFImageManagerTask *task = _tasks[handler.taskID];
     if (!task) {
-        task = [[_DFImageManagerTask alloc] initWithTaskID:requestID.taskID request:request fetcher:_conf.fetcher processor:_conf.processor processingQueue:_conf.processingQueue];
+        task = [[_DFImageManagerTask alloc] initWithTaskID:handler.taskID request:request fetcher:_conf.fetcher processor:_conf.processor processingQueue:_conf.processingQueue];
         task.delegate = self;
-        _tasks[requestID.taskID] = task;
+        _tasks[handler.taskID] = task;
         _taskIDs[DFImageRequestKeyCreate(request)] = task.taskID;
     }
     [task addHandler:handler];
@@ -543,42 +516,6 @@
         [task resume];
     } else {
         [self _setNeedsExecutePreheatingTasks];
-    }
-}
-
-- (void)_setNeedsExecutePreheatingTasks {
-    if (!_flags.needsToExecutePreheatRequests) {
-        _flags.needsToExecutePreheatRequests = YES;
-        /* Delays serves double purpose:
-         - Image manager won't start executing preheating requests in case you are about to add normal (non-preheating) right after adding preheating ones.
-         - Image manager won't execute relatively -_executePreheatingTasksIfNecesary method too often.
-         */
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), _syncQueue, ^{
-            [self _executePreheatingTasksIfNecesary];
-            _flags.needsToExecutePreheatRequests = NO;
-        });
-    }
-}
-
-/*! Image manager will not execute preheating tasks until there is a least one regular executing task left. The number of concurrent preheating tasks is limited.
- */
-- (void)_executePreheatingTasksIfNecesary {
-    NSArray *executingTasks = [_tasks.allValues filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"isExecuting = YES"]];
-    if (executingTasks.count < _conf.maximumConcurrentPreheatingRequests) {
-        for (_DFImageManagerTask *task in executingTasks) {
-            if (!task.isPreheating) { // Is executing regular tasks
-                return;
-            }
-        }
-        NSArray *pendingTasks = [_tasks.allValues filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"isExecuting = NO"]];
-        NSUInteger executingTaskCount = executingTasks.count;
-        for (_DFImageManagerTask *task in pendingTasks) {
-            if (executingTaskCount >= _conf.maximumConcurrentPreheatingRequests) {
-                break;
-            }
-            executingTaskCount++;
-            [task resume];
-        }
     }
 }
 
@@ -599,7 +536,7 @@
 - (void)task:(_DFImageManagerTask *)task didUpdateProgress:(double)progress {
     dispatch_async(_syncQueue, ^{
         if (_tasks[task.taskID] == task) {
-            [task.handlers enumerateKeysAndObjectsUsingBlock:^(id key, _DFImageManagerHandler *handler, BOOL *stop) {
+            [task.handlers enumerateKeysAndObjectsUsingBlock:^(id key, _DFImageHandler *handler, BOOL *stop) {
                 void (^progressHandler)(double) = handler.request.options.progressHandler;
                 if (progressHandler) {
                     dispatch_async(dispatch_get_main_queue(), ^{
@@ -611,25 +548,25 @@
     });
 }
 
-- (void)task:(_DFImageManagerTask *)task didProcessResponse:(DFImageResponse *)response forHandler:(_DFImageManagerHandler *)handler {
+- (void)task:(_DFImageManagerTask *)task didProcessResponse:(DFImageResponse *)response forHandler:(_DFImageHandler *)handler {
     dispatch_async(_syncQueue, ^{
         if (_tasks[task.taskID] == task) {
-            [task removeHandlerForID:handler.requestID.handlerID];
+            [task removeHandlerForID:handler.handlerID];
             if (task.handlers.count == 0) {
                 [self _removeTask:task];
             }
-            if (handler.completion) {
+            if (handler.completionHandler) {
                 NSMutableDictionary *responseInfo = ({
                     NSMutableDictionary *info = [NSMutableDictionary new];
                     if (response.error) {
                         info[DFImageInfoErrorKey] = response.error;
                     }
                     [info addEntriesFromDictionary:response.userInfo];
-                    info[DFImageInfoRequestIDKey] = handler.requestID;
+                    info[DFImageInfoRequestIDKey] = handler;
                     info;
                 });
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    handler.completion(response.image, responseInfo);
+                    handler.completionHandler(response.image, responseInfo);
                 });
             }
         }
@@ -685,9 +622,8 @@
         NSUUID *taskID = _taskIDs[DFImageRequestKeyCreate(request)];
         _DFImageManagerTask *task = _tasks[taskID];
         if (!task || ![self _preheatingHandlerForRequest:request task:task]) {
-            _DFImageRequestID *requestID = [[_DFImageRequestID alloc] initWithImageManager:self];
-            [requestID setTaskID:taskID ?: [NSUUID UUID] handlerID:[NSUUID UUID]];
-            _DFImageManagerPreheatHandler *handler = [[_DFImageManagerPreheatHandler alloc] initWithRequest:request requestID:requestID completion:nil];
+            _DFPreheatingImageHandler *handler = [[_DFPreheatingImageHandler alloc] initWithImageManager:self request:request completionHandler:nil];
+            [handler setTaskID:taskID ?: [NSUUID UUID] handlerID:[NSUUID UUID]];
             [self _requestImageForHandler:handler];
         }
     }
@@ -705,9 +641,9 @@
     for (DFImageRequest *request in requests) {
         NSUUID *taskID = _taskIDs[DFImageRequestKeyCreate(request)];
         _DFImageManagerTask *task = _tasks[taskID];
-        _DFImageManagerHandler *handler = [self _preheatingHandlerForRequest:request task:task];
+        _DFImageHandler *handler = [self _preheatingHandlerForRequest:request task:task];
         if (handler) {
-            [self _cancelRequestWithID:handler.requestID];
+            [self _cancelRequestWithHandler:handler];
         }
     }
 }
@@ -723,11 +659,11 @@
     return canonicalRequests;
 }
 
-- (_DFImageManagerPreheatHandler *)_preheatingHandlerForRequest:(DFImageRequest *)request task:(_DFImageManagerTask *)task {
-    for (_DFImageManagerHandler *handler in task.handlers.allValues) {
-        if ([handler isKindOfClass:[_DFImageManagerPreheatHandler class]]) {
+- (_DFPreheatingImageHandler *)_preheatingHandlerForRequest:(DFImageRequest *)request task:(_DFImageManagerTask *)task {
+    for (_DFImageHandler *handler in task.handlers.allValues) {
+        if ([handler isKindOfClass:[_DFPreheatingImageHandler class]]) {
             if (!_conf.processor || [_conf.processor isProcessingForRequestEquivalent:handler.request toRequest:request]) {
-                return (_DFImageManagerPreheatHandler *)handler;
+                return (_DFPreheatingImageHandler *)handler;
             }
         }
     }
@@ -736,34 +672,70 @@
 
 - (void)stopPreheatingImagesForAllRequests {
     dispatch_async(_syncQueue, ^{
-        NSMutableArray *requestIDs = [NSMutableArray new];
+        NSMutableArray *handlers = [NSMutableArray new];
         for (_DFImageManagerTask *task in _tasks.allValues) {
-            for (_DFImageManagerHandler *handler in task.handlers.allValues) {
-                if ([handler isKindOfClass:[_DFImageManagerPreheatHandler class]]) {
-                    [requestIDs addObject:handler.requestID];
+            for (_DFImageHandler *handler in task.handlers.allValues) {
+                if ([handler isKindOfClass:[_DFPreheatingImageHandler class]]) {
+                    [handlers addObject:handler];
                 }
             }
         }
-        for (_DFImageRequestID *requestID in requestIDs) {
-            [self _cancelRequestWithID:requestID];
+        for (_DFImageHandler *handler in handlers) {
+            [self _cancelRequestWithHandler:handler];
         }
     });
 }
 
-#pragma mark - DFImageManager (_DFImageRequestID)
-
-- (void)cancelRequestWithID:(_DFImageRequestID *)requestID {
-    if (requestID) {
-        dispatch_async(_syncQueue, ^{
-            [self _cancelRequestWithID:requestID];
+- (void)_setNeedsExecutePreheatingTasks {
+    if (!_flags.needsToExecutePreheatRequests) {
+        _flags.needsToExecutePreheatRequests = YES;
+        /* Delays serves double purpose:
+         - Image manager won't start executing preheating requests in case you are about to add normal (non-preheating) right after adding preheating ones.
+         - Image manager won't execute relatively -_executePreheatingTasksIfNecesary method too often.
+         */
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), _syncQueue, ^{
+            [self _executePreheatingTasksIfNecesary];
+            _flags.needsToExecutePreheatRequests = NO;
         });
     }
 }
 
-- (void)_cancelRequestWithID:(_DFImageRequestID *)requestID {
-    _DFImageManagerTask *task = _tasks[requestID.taskID];
+/*! Image manager will not execute preheating tasks until there is a least one regular executing task left. The number of concurrent preheating tasks is limited.
+ */
+- (void)_executePreheatingTasksIfNecesary {
+    NSArray *executingTasks = [_tasks.allValues filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"isExecuting = YES"]];
+    if (executingTasks.count < _conf.maximumConcurrentPreheatingRequests) {
+        for (_DFImageManagerTask *task in executingTasks) {
+            if (!task.isPreheating) { // Is executing regular tasks
+                return;
+            }
+        }
+        NSArray *pendingTasks = [_tasks.allValues filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"isExecuting = NO"]];
+        NSUInteger executingTaskCount = executingTasks.count;
+        for (_DFImageManagerTask *task in pendingTasks) {
+            if (executingTaskCount >= _conf.maximumConcurrentPreheatingRequests) {
+                break;
+            }
+            executingTaskCount++;
+            [task resume];
+        }
+    }
+}
+
+#pragma mark - DFImageManager (_DFImageHandler)
+
+- (void)cancelRequestWithHandler:(_DFImageHandler *)handler {
+    if (handler) {
+        dispatch_async(_syncQueue, ^{
+            [self _cancelRequestWithHandler:handler];
+        });
+    }
+}
+
+- (void)_cancelRequestWithHandler:(_DFImageHandler *)handler {
+    _DFImageManagerTask *task = _tasks[handler.taskID];
     if (task) {
-        [task removeHandlerForID:requestID.handlerID];
+        [task removeHandlerForID:handler.handlerID];
         if (task.handlers.count == 0) {
             [task cancel];
             [self _removeTask:task];
@@ -771,11 +743,10 @@
     }
 }
 
-- (void)setPriority:(DFImageRequestPriority)priority forRequestWithID:(_DFImageRequestID *)requestID {
-    if (requestID) {
+- (void)setPriority:(DFImageRequestPriority)priority forRequestWithHandler:(_DFImageHandler *)handler {
+    if (handler) {
         dispatch_async(_syncQueue, ^{
-            _DFImageManagerTask *task = _tasks[requestID.taskID];
-            _DFImageManagerHandler *handler = task.handlers[requestID.handlerID];
+            _DFImageManagerTask *task = _tasks[handler.taskID];
             DFImageRequestOptions *options = handler.request.options;
             if (options.priority != priority) {
                 options.priority = priority;
