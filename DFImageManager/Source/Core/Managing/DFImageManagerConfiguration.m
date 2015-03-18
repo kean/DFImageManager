@@ -32,7 +32,6 @@
         _processingQueue = [NSOperationQueue new];
         _processingQueue.maxConcurrentOperationCount = 2;
         _maximumConcurrentPreheatingRequests = 2;
-        _allowsSynchronousMemoryCacheLookup = YES;
     }
     return self;
 }
@@ -54,7 +53,6 @@
     copy.processor = self.processor;
     copy.processingQueue = self.processingQueue;
     copy.maximumConcurrentPreheatingRequests = self.maximumConcurrentPreheatingRequests;
-    copy.allowsSynchronousMemoryCacheLookup = self.allowsSynchronousMemoryCacheLookup;
     return copy;
 }
 

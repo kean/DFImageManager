@@ -456,7 +456,7 @@
 
 - (DFImageRequestID *)requestImageForRequest:(DFImageRequest *)request completion:(DFImageRequestCompletion)completion {
     DFImageRequest *canonicalRequest = [self _canonicalRequestForRequest:request];
-    if (_conf.allowsSynchronousMemoryCacheLookup && [NSThread isMainThread]) {
+    if ([NSThread isMainThread]) {
         UIImage *image = [self _cachedImageForRequest:canonicalRequest];
         if (image) {
             if (completion) {
