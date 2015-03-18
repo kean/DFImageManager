@@ -304,6 +304,34 @@
     [self waitForExpectationsWithTimeout:3.0 handler:nil];
 }
 
+#pragma mark - Priority
+
+- (void)testThatPriorityIsChanged {
+    _fetcher.queue.suspended = YES;
+    
+    DFImageRequestOptions *options = [DFImageRequestOptions new];
+    options.priority = DFImageRequestPriorityVeryHigh;
+    DFImageRequest *request = [DFImageRequest requestWithResource:[TDFMockResource resourceWithID:@"ID"] targetSize:DFImageMaximumSize contentMode:DFImageContentModeAspectFill options:nil];
+    
+    NSOperation *__block operation;
+    [self expectationForNotification:TDFMockImageFetcherDidStartOperationNotification object:_fetcher handler:^BOOL(NSNotification *notification) {
+        operation = notification.userInfo[TDFMockImageFetcherOperationKey];
+        XCTAssertNotNil(operation);
+        return YES;
+    }];
+    
+    XCTestExpectation *expectation = [self expectationWithDescription:@""];
+    DFImageRequestID *requestID = [_manager requestImageForRequest:request completion:^(UIImage *image, NSDictionary *info) {
+        XCTAssertEqual(operation.queuePriority, (NSOperationQueuePriority)DFImageRequestPriorityVeryLow);
+        [expectation fulfill];
+    }];
+    [requestID setPriority:DFImageRequestPriorityVeryLow];
+    
+    _fetcher.queue.suspended = NO;
+    
+    [self waitForExpectationsWithTimeout:3.0 handler:nil];
+}
+
 #pragma mark - Preheating
 
 /*! Test documented feature:
