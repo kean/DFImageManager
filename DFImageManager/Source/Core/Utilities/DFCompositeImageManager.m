@@ -27,8 +27,8 @@
 
 #define DFManagerForRequest(request) \
 ({ \
-    id<DFImageManagingCore> outManager_macro; \
-    for (id<DFImageManagingCore> manager_macro in _managers) { \
+    id<DFImageManaging> outManager_macro; \
+    for (id<DFImageManaging> manager_macro in _managers) { \
         if ([manager_macro canHandleRequest:request]) { \
             outManager_macro = manager_macro; \
             break; \
@@ -38,7 +38,7 @@
 })
 
 @implementation DFCompositeImageManager {
-    NSMutableArray /* id<DFImageManagingCore> */ *_managers;
+    NSMutableArray /* id<DFImageManaging> */ *_managers;
 }
 
 - (instancetype)initWithImageManagers:(NSArray *)imageManagers {
@@ -48,7 +48,7 @@
     return self;
 }
 
-- (void)addImageManager:(id<DFImageManagingCore>)imageManager {
+- (void)addImageManager:(id<DFImageManaging>)imageManager {
     [self addImageManagers:@[imageManager]];
 }
 
@@ -56,7 +56,7 @@
     [_managers addObjectsFromArray:imageManagers];
 }
 
-- (void)removeImageManager:(id<DFImageManagingCore>)imageManager {
+- (void)removeImageManager:(id<DFImageManaging>)imageManager {
     [self removeImageManagers:@[imageManager]];
 }
 
@@ -64,14 +64,18 @@
     [_managers removeObjectsInArray:imageManagers];
 }
 
-#pragma mark - <DFImageManagingCore>
+#pragma mark - <DFImageManaging>
 
 - (BOOL)canHandleRequest:(DFImageRequest *)request {
     return DFManagerForRequest(request) != nil;
 }
 
+- (DFImageRequestID *)requestImageForResource:(id)resource completion:(void (^)(UIImage *, NSDictionary *))completion {
+    return [self requestImageForRequest:[DFImageRequest requestWithResource:resource] completion:completion];
+}
+
 - (DFImageRequestID *)requestImageForRequest:(DFImageRequest *)request completion:(void (^)(UIImage *, NSDictionary *))completion {
-    id<DFImageManagingCore> manager = DFManagerForRequest(request);
+    id<DFImageManaging> manager = DFManagerForRequest(request);
     if (manager) {
         return [manager requestImageForRequest:request completion:completion];
     } else {
@@ -97,19 +101,9 @@
 }
 
 - (void)stopPreheatingImagesForAllRequests {
-    for (id<DFImageManagingCore> manager in _managers) {
+    for (id<DFImageManaging> manager in _managers) {
         [manager stopPreheatingImagesForAllRequests];
     }
-}
-
-#pragma mark - <DFImageManaging>
-
-- (DFImageRequestID *)requestImageForResource:(id)resource targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options completion:(void (^)(UIImage *, NSDictionary *))completion {
-    return [self requestImageForRequest:[[DFImageRequest alloc] initWithResource:resource targetSize:targetSize contentMode:contentMode options:options] completion:completion];
-}
-
-- (DFImageRequestID *)requestImageForResource:(id)resource completion:(void (^)(UIImage *, NSDictionary *))completion {
-    return [self requestImageForResource:resource targetSize:DFImageMaximumSize contentMode:DFImageContentModeAspectFill options:nil completion:completion];
 }
 
 @end

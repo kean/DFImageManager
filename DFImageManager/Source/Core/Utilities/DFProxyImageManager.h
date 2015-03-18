@@ -24,7 +24,6 @@
 #import "DFImageRequest.h"
 #import <Foundation/Foundation.h>
 
-
 /*! The DFProxyRequestTransforming protocol defines an interface for transforming application-specific classes or protocols to the resources supported by the DFImageManager.
  */
 @protocol DFProxyRequestTransforming <NSObject>
@@ -38,17 +37,16 @@
 
 
 /*! The DFProxyImageManager is used to modify image requests before they are received by the actual image manager. For example, the users can use it to transform application-specific classes or protocols to the resources supported by the DFImageManager.
- @note Adapts image manager that it was initialized with to <DFImageManaging> protocol.
  */
 @interface DFProxyImageManager : NSProxy <DFImageManaging>
 
 /*! Image manager that the receiver was initialized with.
  */
-@property (nonatomic) id<DFImageManagingCore> imageManager;
+@property (nonatomic) id<DFImageManaging> imageManager;
 
 /*! Initializes proxy with the image manager.
  */
-- (instancetype)initWithImageManager:(id<DFImageManagingCore>)imageManager;
+- (instancetype)initWithImageManager:(id<DFImageManaging>)imageManager;
 
 /*! Sets the request transformer.
  */

@@ -139,13 +139,8 @@ static NSString * const reuseIdentifier = @"Cell";
 #pragma mark - <DFCollectionViewPreheatingControllerDelegate>
 
 - (void)collectionViewPreheatingController:(DFCollectionViewPreheatingController *)controller didUpdatePreheatRectWithAddedIndexPaths:(NSArray *)addedIndexPaths removedIndexPaths:(NSArray *)removedIndexPaths {
-    CGSize targetSize = [self _imageTargetSize];
-    
-    NSArray *addedAssets = [self _imageAssetsAtIndexPaths:addedIndexPaths];
-    
-    [[DFImageManager sharedManager] startPreheatingImageForResources:addedAssets targetSize:targetSize contentMode:DFImageContentModeAspectFill options:nil];
-    NSArray *removedAssets = [self _imageAssetsAtIndexPaths:removedIndexPaths];
-    [[DFImageManager sharedManager] stopPreheatingImagesForResources:removedAssets targetSize:targetSize contentMode:DFImageContentModeAspectFill options:nil];
+    [[DFImageManager sharedManager] startPreheatingImagesForRequests:[self _imageRequestsAtIndexPaths:addedIndexPaths]];
+    [[DFImageManager sharedManager] stopPreheatingImagesForRequests:[self _imageRequestsAtIndexPaths:removedIndexPaths]];
     
     if (self.displaysPreheatingDetails) {
         _detailsLabel.text = [NSString stringWithFormat:@"Preheat window: %@", NSStringFromCGRect(controller.preheatRect)];
@@ -167,13 +162,15 @@ static NSString * const reuseIdentifier = @"Cell";
     NSLog(@"Did change preheat window. %@", @{ @"removed items" : [removed componentsJoinedByString:@" "], @"added items" : [added componentsJoinedByString:@" "] });
 }
 
-- (NSArray *)_imageAssetsAtIndexPaths:(NSArray *)indexPaths {
-    NSMutableArray *assets = [NSMutableArray new];
+- (NSArray *)_imageRequestsAtIndexPaths:(NSArray *)indexPaths {
+    CGSize targetSize = [self _imageTargetSize];
+    NSMutableArray *requests = [NSMutableArray new];
     for (NSIndexPath *indexPath in indexPaths) {
         SDFFlickrPhoto *photo = _photos[indexPath.row];
-        [assets addObject:[NSURL URLWithString:photo.photoURL]];
+        NSURL *URL = [NSURL URLWithString:photo.photoURL];
+        [requests addObject:[DFImageRequest requestWithResource:URL targetSize:targetSize contentMode:DFImageContentModeAspectFill options:nil]];
     }
-    return assets;
+    return requests;
 }
 
 #pragma mark - <SDFFlickrRecentPhotosModelDelegate>

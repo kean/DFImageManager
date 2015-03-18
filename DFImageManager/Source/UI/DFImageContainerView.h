@@ -20,11 +20,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "DFImageManaging.h"
 #import "DFImageView.h"
 #import <UIKit/UIKit.h>
-
-@class DFImageRequestOptions;
 
 typedef NS_ENUM(NSUInteger, DFImageViewAnimation) {
    DFImageViewAnimationNone,

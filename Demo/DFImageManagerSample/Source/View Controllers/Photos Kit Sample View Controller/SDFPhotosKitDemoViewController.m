@@ -239,23 +239,19 @@ static NSString * const reuseIdentifier = @"Cell";
 #pragma mark - <DFCollectionViewPreheatingControllerDelegate>
 
 - (void)collectionViewPreheatingController:(DFCollectionViewPreheatingController *)controller didUpdatePreheatRectWithAddedIndexPaths:(NSArray *)addedIndexPaths removedIndexPaths:(NSArray *)removedIndexPaths {
-    CGSize targetSize = [self _imageTargetSize];
-    
-    NSArray *addedAssets = [self _imageAssetsAtIndexPaths:addedIndexPaths];
-    
-    [[DFImageManager sharedManager] startPreheatingImageForResources:addedAssets targetSize:targetSize contentMode:DFImageContentModeAspectFill options:nil];
-    NSArray *removedAssets = [self _imageAssetsAtIndexPaths:removedIndexPaths];
-    [[DFImageManager sharedManager] stopPreheatingImagesForResources:removedAssets targetSize:targetSize contentMode:DFImageContentModeAspectFill options:nil];
+    [[DFImageManager sharedManager] startPreheatingImagesForRequests:[self _imageRequestsAtIndexPaths:addedIndexPaths]];
+    [[DFImageManager sharedManager] stopPreheatingImagesForRequests:[self _imageRequestsAtIndexPaths:removedIndexPaths]];
 }
 
-- (NSArray *)_imageAssetsAtIndexPaths:(NSArray *)indexPaths {
-    NSMutableArray *assets = [NSMutableArray new];
+- (NSArray *)_imageRequestsAtIndexPaths:(NSArray *)indexPaths {
+    CGSize targetSize = [self _imageTargetSize];
+    NSMutableArray *requests = [NSMutableArray new];
     for (NSIndexPath *indexPath in indexPaths) {
         PHFetchResult *result = _assets[indexPath.section];
         PHAsset *asset = result[indexPath.row];
-        [assets addObject:asset];
+        [requests addObject:[DFImageRequest requestWithResource:asset targetSize:targetSize contentMode:DFImageContentModeAspectFill options:nil]];
     }
-    return assets;
+    return requests;
 }
 
 @end

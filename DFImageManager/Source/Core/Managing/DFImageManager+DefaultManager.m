@@ -47,7 +47,7 @@
 
 @implementation DFImageManager (DefaultManager)
 
-+ (id<DFImageManagingCore>)createDefaultManager {
++ (id<DFImageManaging>)createDefaultManager {
     NSMutableArray *managers = [NSMutableArray new];
     
 #pragma clang diagnostic push

@@ -23,7 +23,6 @@
 #import "DFImageFetchTask.h"
 #import "DFImageContainerView.h"
 
-
 @implementation DFImageContainerView {
     UIView *_backgroundView;
     UIImageView *_failureImageView;

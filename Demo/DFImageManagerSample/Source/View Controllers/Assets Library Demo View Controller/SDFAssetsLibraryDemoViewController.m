@@ -150,26 +150,22 @@ static NSString * const reuseIdentifier = @"Cell";
 #pragma mark - <DFCollectionViewPreheatingControllerDelegate>
 
 - (void)collectionViewPreheatingController:(DFCollectionViewPreheatingController *)controller didUpdatePreheatRectWithAddedIndexPaths:(NSArray *)addedIndexPaths removedIndexPaths:(NSArray *)removedIndexPaths {
+    [[DFImageManager sharedManager] startPreheatingImagesForRequests:[self _imageRequestsAtIndexPaths:addedIndexPaths]];
+    [[DFImageManager sharedManager] stopPreheatingImagesForRequests:[self _imageRequestsAtIndexPaths:removedIndexPaths]];
+}
+
+- (NSArray *)_imageRequestsAtIndexPaths:(NSArray *)indexPaths {
     UICollectionViewFlowLayout *layout = (id)self.collectionViewLayout;
     CGSize targetSize = ({
         CGFloat scale = [UIScreen mainScreen].scale;
         CGSizeMake(layout.itemSize.width * scale, layout.itemSize.height * scale);
     });
-    
-    NSArray *addedAssets = [self _imageAssetsAtIndexPaths:addedIndexPaths];
-    
-    [[DFImageManager sharedManager] startPreheatingImageForResources:addedAssets targetSize:targetSize contentMode:DFImageContentModeAspectFill options:nil];
-    NSArray *removedAssets = [self _imageAssetsAtIndexPaths:removedIndexPaths];
-    [[DFImageManager sharedManager] stopPreheatingImagesForResources:removedAssets targetSize:targetSize contentMode:DFImageContentModeAspectFill options:nil];
-}
-
-- (NSArray *)_imageAssetsAtIndexPaths:(NSArray *)indexPaths {
-    NSMutableArray *assets = [NSMutableArray new];
+    NSMutableArray *requests = [NSMutableArray new];
     for (NSIndexPath *indexPath in indexPaths) {
         NSURL *assetURL = _photos[indexPath.row];
-        [assets addObject:assetURL];
+        [requests addObject:[DFImageRequest requestWithResource:assetURL targetSize:targetSize contentMode:DFImageContentModeAspectFill options:nil]];
     }
-    return assets;
+    return requests;
 }
 
 @end

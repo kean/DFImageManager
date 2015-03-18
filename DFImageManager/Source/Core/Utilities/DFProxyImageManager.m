@@ -23,7 +23,6 @@
 #import "DFProxyImageManager.h"
 #import "DFImageRequest.h"
 
-
 /*! The implementation of request transforming that uses a block.
  */
 @interface _DFProxyRequestTransformer : NSObject <DFProxyRequestTransforming>
@@ -60,7 +59,7 @@
 
 @synthesize imageManager = _manager;
 
-- (instancetype)initWithImageManager:(id<DFImageManagingCore>)imageManager {
+- (instancetype)initWithImageManager:(id<DFImageManaging>)imageManager {
     self.imageManager = imageManager;
     return self;
 }
@@ -77,10 +76,14 @@
     self.transformer = [[_DFProxyRequestTransformer alloc] initWithBlock:block];
 }
 
-#pragma mark - <DFImageManagingCore>
+#pragma mark - <DFImageManaging>
 
 - (BOOL)canHandleRequest:(DFImageRequest *)request {
     return [_manager canHandleRequest:_DF_TRANSFORMED_REQUEST(request)];
+}
+
+- (DFImageRequestID *)requestImageForResource:(id)resource completion:(void (^)(UIImage *, NSDictionary *))completion {
+    return [self requestImageForRequest:[DFImageRequest requestWithResource:resource] completion:completion];
 }
 
 - (DFImageRequestID *)requestImageForRequest:(DFImageRequest *)request completion:(void (^)(UIImage *, NSDictionary *))completion {
@@ -101,16 +104,6 @@
         [transformedRequests addObject:_DF_TRANSFORMED_REQUEST(request)];
     }
     return [transformedRequests copy];
-}
-
-#pragma mark - <DFImageManaging>
-
-- (DFImageRequestID *)requestImageForResource:(id)resource targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options completion:(void (^)(UIImage *, NSDictionary *))completion {
-    return [self requestImageForRequest:[[DFImageRequest alloc] initWithResource:resource targetSize:targetSize contentMode:contentMode options:options] completion:completion];
-}
-
-- (DFImageRequestID *)requestImageForResource:(id)resource completion:(void (^)(UIImage *, NSDictionary *))completion {
-    return [self requestImageForResource:resource targetSize:DFImageMaximumSize contentMode:DFImageContentModeAspectFill options:nil completion:completion];
 }
 
 @end

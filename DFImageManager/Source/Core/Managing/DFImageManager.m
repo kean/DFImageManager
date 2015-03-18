@@ -54,7 +54,7 @@
 @property (nonatomic, readonly) NSUUID *taskID;
 @property (nonatomic, readonly) NSUUID *handlerID;
 
-- (instancetype)initWithImageManager:(id<DFImageManagingCore>)imageManager;
+- (instancetype)initWithImageManager:(DFImageManager *)imageManager;
 - (void)setTaskID:(NSUUID *)taskID handlerID:(NSUUID *)handlerID;
 
 @end
@@ -467,10 +467,6 @@
         unsigned int needsToExecutePreheatRequests:1;
         unsigned int fetcherRespondsToCanonicalRequest:1;
     } _flags;
-    
-    /*! Read more about processing manager it initWithConfiguration: method.
-     */
-    id<DFImageManagingCore> _processingManager;
 }
 
 @synthesize configuration = _conf;
@@ -489,13 +485,17 @@
     return self;
 }
 
-#pragma mark - <DFImageManagingCore>
+#pragma mark - <DFImageManaging>
 
 - (BOOL)canHandleRequest:(DFImageRequest *)request {
     return [_conf.fetcher canHandleRequest:request];
 }
 
 #pragma mark Fetching
+
+- (DFImageRequestID *)requestImageForResource:(id)resource completion:(void (^)(UIImage *, NSDictionary *))completion {
+    return [self requestImageForRequest:[DFImageRequest requestWithResource:resource] completion:completion];
+}
 
 - (DFImageRequestID *)requestImageForRequest:(DFImageRequest *)request completion:(DFImageRequestCompletion)completion {
     DFImageRequest *canonicalRequest = [self _canonicalRequestForRequest:request];
@@ -789,21 +789,6 @@
 
 - (NSString *)description {
     return [NSString stringWithFormat:@"<%@ %p> { name = %@ }", [self class], self, self.name];
-}
-
-@end
-
-
-#pragma mark - DFImageManager (Convenience) <DFImageManaging> -
-
-@implementation DFImageManager (Convenience)
-
-- (DFImageRequestID *)requestImageForResource:(id)resource targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options completion:(void (^)(UIImage *, NSDictionary *))completion {
-    return [self requestImageForRequest:[[DFImageRequest alloc] initWithResource:resource targetSize:targetSize contentMode:contentMode options:options] completion:completion];
-}
-
-- (DFImageRequestID *)requestImageForResource:(id)resource completion:(void (^)(UIImage *, NSDictionary *))completion {
-    return [self requestImageForResource:resource targetSize:DFImageMaximumSize contentMode:DFImageContentModeAspectFill options:nil completion:completion];
 }
 
 @end

@@ -26,7 +26,7 @@
 
 @class DFImageRequest;
 @class DFImageRequestID;
-@protocol DFImageManagingCore;
+@protocol DFImageManaging;
 
 
 /*! The execution context of the image request.
@@ -76,7 +76,7 @@
 
 /*! Image manager used by the receiver. Set to the shared manager during initialization.
  */
-@property (nonatomic) id<DFImageManagingCore> imageManager;
+@property (nonatomic) id<DFImageManaging> imageManager;
 
 /*! Set to YES to enable special handling of obsolete requests. Default value is YES. For more info see class notes.
  */

@@ -21,11 +21,10 @@
 // THE SOFTWARE.
 
 #import "DFImageManager.h"
-#import "DFImageManaging.h"
+#import "DFImageRequest.h"
 #import "DFImageRequestID.h"
 #import "UIImageView+DFImageManager.h"
 #import <objc/runtime.h>
-
 
 static char *_requestIDKey;
 
@@ -54,7 +53,8 @@ static char *_requestIDKey;
     [self _df_cancelFetching];
     
     UIImageView *__weak weakSelf = self;
-    [[DFImageManager sharedManager] requestImageForResource:resource targetSize:targetSize contentMode:contentMode options:options completion:^(UIImage *image, NSDictionary *info) {
+    DFImageRequest *request = [DFImageRequest requestWithResource:resource targetSize:targetSize contentMode:contentMode options:options];
+    [[DFImageManager sharedManager] requestImageForRequest:request completion:^(UIImage *image, NSDictionary *info) {
         weakSelf.image = image;
     }];
 }

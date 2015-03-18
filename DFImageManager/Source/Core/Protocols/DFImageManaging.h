@@ -25,19 +25,21 @@
 #import "DFImageManagerDefines.h"
 
 @class DFImageRequest;
-@class DFImageRequestOptions;
 @class DFImageRequestID;
 
 typedef void (^DFImageRequestCompletion)(UIImage *image, NSDictionary *info);
 
-
 /*! Provides an API for loading images associated with a given resources. The resources might by anything from a NSURL to a PHAsset objects or even your custom classes.
  */
-@protocol DFImageManagingCore <NSObject>
+@protocol DFImageManaging <NSObject>
 
 /*! Inspects the given request and determines whether or not it can be handled.
  */
 - (BOOL)canHandleRequest:(DFImageRequest *)request;
+
+/*! Requests an image representation with a maximum available size for the specified resource.
+ */
+- (DFImageRequestID *)requestImageForResource:(id)resource completion:(void (^)(UIImage *image, NSDictionary *info))completion;
 
 /*! Requests an image representation for the specified request.
  @param request The request that contains the resource whose image it to be loaded as well as other request options. The implementation should create a deep copy of the request so that it can't be changed underneath it later. The implementation may provide more request options that are available in a base class, so make sure to check the documentation on that.
@@ -58,25 +60,5 @@ typedef void (^DFImageRequestCompletion)(UIImage *image, NSDictionary *info);
 /*! Cancels all image preheating requests registered with a manager.
  */
 - (void)stopPreheatingImagesForAllRequests;
-
-@end
-
-
-/*! Convenience methods for classes that implement <DFImageManagingCore> protocol. In general, implementation should not do anything apart from creating instances of DFImageRequest class for the given resources and options and then dispatching them to the <DFImageManagingCore> methods.
- */
-@protocol DFImageManaging <DFImageManagingCore>
-
-/*! Requests an image representation for the specified resource.
- @param resource The resource whose image data is to be loaded.
- @param targetSize The size in pixels of image to be returned.
- @param contentMode An option for how to fit the image to the aspect ratio of the requested size. For details, see DFImageContentMode.
- @param options Options specifying how image manager should handle the request and process the received image. More options that are provided in a base class may be available, so make sure to check the documentation on that.
- @param completion A block to be called when loading is complete, providing the requested image and information about the status of the request.
- */
-- (DFImageRequestID *)requestImageForResource:(id)resource targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options completion:(void (^)(UIImage *image, NSDictionary *info))completion;
-
-/*! Requests an image representation with a maximum available size for the specified resource.
- */
-- (DFImageRequestID *)requestImageForResource:(id)resource completion:(void (^)(UIImage *image, NSDictionary *info))completion;
 
 @end

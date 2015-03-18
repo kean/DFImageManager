@@ -11,7 +11,7 @@
 #import <XCTest/XCTest.h>
 
 
-@interface _TDFMockImageManagerForComposite : NSObject <DFImageManagingCore>
+@interface _TDFMockImageManagerForComposite : NSObject <DFImageManaging>
 
 @property (nonatomic) NSString *supportedResource;
 @property (nonatomic, readonly) NSArray *submitedRequests;
@@ -31,6 +31,10 @@
 
 - (BOOL)canHandleRequest:(DFImageRequest *)request {
     return [self.supportedResource isEqualToString:request.resource];
+}
+
+- (DFImageRequestID *)requestImageForResource:(id)resource completion:(void (^)(UIImage *, NSDictionary *))completion {
+    return [self requestImageForRequest:[DFImageRequest requestWithResource:resource] completion:completion];
 }
 
 - (DFImageRequestID *)requestImageForRequest:(DFImageRequest *)request completion:(void (^)(UIImage *, NSDictionary *))completion {

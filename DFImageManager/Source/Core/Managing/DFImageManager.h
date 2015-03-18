@@ -50,7 +50,7 @@
  
  The DFImageManager stops multiple similar preheating requests with a single -stopPreheatingImagesForRequests: call.
  */
-@interface DFImageManager : NSObject <DFImageManagingCore>
+@interface DFImageManager : NSObject <DFImageManaging>
 
 /*! A copy of the configuration object for this manager (read only). Changing mutable values within the configuration object has no effect on the current manager.
  */
@@ -64,13 +64,6 @@
  @param configuration A configuration object that specifies certain behaviors, such as fetching, processing, caching and more. Manager copies the configuration object.
  */
 - (instancetype)initWithConfiguration:(DFImageManagerConfiguration *)configuration NS_DESIGNATED_INITIALIZER;
-
-@end
-
-
-/*! The DFImageManager category that implements convenience methods declared in DFImageManaging protocol.
- */
-@interface DFImageManager (Convenience) <DFImageManaging>
 
 @end
 

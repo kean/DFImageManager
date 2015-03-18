@@ -65,7 +65,7 @@
 
 /*! Image manager used by the image view. Set to the shared manager during initialization.
  */
-@property (nonatomic) id<DFImageManagingCore> imageManager;
+@property (nonatomic) id<DFImageManaging> imageManager;
 
 /*! Image view delegate. By default delegate is set to the image view itself. The implementation displays fetched images with animation when necessary.
  */
