@@ -43,7 +43,6 @@
 
 // Processing
 #import "DFImageProcessor.h"
-#import "DFImageUtilities.h"
 
 // Utilities
 #import "DFCompositeImageManager.h"

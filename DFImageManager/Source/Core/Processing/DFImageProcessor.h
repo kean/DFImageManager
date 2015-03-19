@@ -21,6 +21,7 @@
 // THE SOFTWARE.
 
 #import "DFImageProcessing.h"
+#import "DFImageRequestOptions.h"
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
@@ -31,5 +32,27 @@ extern NSString *DFImageProcessingCornerRadiusKey;
 /*! The DFImageProcessor implements image decompression, scaling, cropping and more.
  */
 @interface DFImageProcessor : NSObject <DFImageProcessing>
+
+/*! Returns decompressed image with a given image.
+ */
++ (UIImage *)decompressedWithImage:(UIImage *)image;
+
+/*! Returns decompressed image with a given image.
+ @param targetSize Image target size in pixels.
+ */
++ (UIImage *)decompressedImageWithImage:(UIImage *)image targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode;
+
+/*! Returns scaled decompressed image with a given image.
+ */
++ (UIImage *)decompressedWithImage:(UIImage *)image scale:(CGFloat)scale;
+
+/*! Returns image cropped to a given normalized crop rect.
+ */
++ (UIImage *)croppedImageWithImage:(UIImage *)image normalizedCropRect:(CGRect)cropRect;
+
+/*! Returns image by drawing rounded corners.
+ @param cornerRadius corner radius in points.
+ */
++ (UIImage *)imageWithImage:(UIImage *)image cornerRadius:(CGFloat)cornerRadius;
 
 @end

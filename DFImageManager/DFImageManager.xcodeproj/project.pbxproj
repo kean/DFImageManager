@@ -76,9 +76,6 @@
 		0CEEEC8A1AABC5FC00C212A4 /* DFImageProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = 0CEEEC821AABC5FC00C212A4 /* DFImageProcessor.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0CEEEC8B1AABC5FC00C212A4 /* DFImageProcessor.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CEEEC831AABC5FC00C212A4 /* DFImageProcessor.m */; };
 		0CEEEC8C1AABC5FC00C212A4 /* DFImageProcessor.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CEEEC831AABC5FC00C212A4 /* DFImageProcessor.m */; };
-		0CEEEC8D1AABC5FC00C212A4 /* DFImageUtilities.h in Headers */ = {isa = PBXBuildFile; fileRef = 0CEEEC841AABC5FC00C212A4 /* DFImageUtilities.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		0CEEEC8E1AABC5FC00C212A4 /* DFImageUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CEEEC851AABC5FC00C212A4 /* DFImageUtilities.m */; };
-		0CEEEC8F1AABC5FC00C212A4 /* DFImageUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CEEEC851AABC5FC00C212A4 /* DFImageUtilities.m */; };
 		0CEEEC9D1AABC84F00C212A4 /* DFCachedImage.h in Headers */ = {isa = PBXBuildFile; fileRef = 0CEEEC971AABC84F00C212A4 /* DFCachedImage.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0CEEEC9E1AABC84F00C212A4 /* DFCachedImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CEEEC981AABC84F00C212A4 /* DFCachedImage.m */; };
 		0CEEEC9F1AABC84F00C212A4 /* DFCachedImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CEEEC981AABC84F00C212A4 /* DFCachedImage.m */; };
@@ -241,8 +238,6 @@
 		0CE578531AA4067D00E934FB /* TDFCompositeImageManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDFCompositeImageManager.m; sourceTree = "<group>"; };
 		0CEEEC821AABC5FC00C212A4 /* DFImageProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFImageProcessor.h; sourceTree = "<group>"; };
 		0CEEEC831AABC5FC00C212A4 /* DFImageProcessor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFImageProcessor.m; sourceTree = "<group>"; };
-		0CEEEC841AABC5FC00C212A4 /* DFImageUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFImageUtilities.h; sourceTree = "<group>"; };
-		0CEEEC851AABC5FC00C212A4 /* DFImageUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFImageUtilities.m; sourceTree = "<group>"; };
 		0CEEEC971AABC84F00C212A4 /* DFCachedImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFCachedImage.h; sourceTree = "<group>"; };
 		0CEEEC981AABC84F00C212A4 /* DFCachedImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFCachedImage.m; sourceTree = "<group>"; };
 		0CEEEC991AABC84F00C212A4 /* DFImageCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFImageCache.h; sourceTree = "<group>"; };
@@ -525,8 +520,6 @@
 			children = (
 				0CEEEC821AABC5FC00C212A4 /* DFImageProcessor.h */,
 				0CEEEC831AABC5FC00C212A4 /* DFImageProcessor.m */,
-				0CEEEC841AABC5FC00C212A4 /* DFImageUtilities.h */,
-				0CEEEC851AABC5FC00C212A4 /* DFImageUtilities.m */,
 			);
 			path = Processing;
 			sourceTree = "<group>";
@@ -639,7 +632,6 @@
 				0C44A81F1AAB2AD900900C6A /* ALAssetsLibrary+DFImageManager.h in Headers */,
 				0CEEED011AABD9DB00C212A4 /* DFCompositeImageManager.h in Headers */,
 				0CEEECD41AABD70400C212A4 /* DFImageRequestOptions.h in Headers */,
-				0CEEEC8D1AABC5FC00C212A4 /* DFImageUtilities.h in Headers */,
 				0CEEED331AABE4BC00C212A4 /* DFURLResponseDeserializing.h in Headers */,
 				0CEEED2A1AABE4BC00C212A4 /* DFURLImageDeserializer.h in Headers */,
 				0C44A8281AAB2AD900900C6A /* DFAssetsLibraryImageFetchOperation.h in Headers */,
@@ -953,7 +945,6 @@
 				0C44A8231AAB2AD900900C6A /* DFALAsset.m in Sources */,
 				0CEEECA41AABC84F00C212A4 /* NSCache+DFImageManager.m in Sources */,
 				0CEEED171AABE36100C212A4 /* DFImageManagerConfiguration.m in Sources */,
-				0CEEEC8E1AABC5FC00C212A4 /* DFImageUtilities.m in Sources */,
 				0C6550B31AA738EB00B4805C /* DFAnimatedImage.m in Sources */,
 				0C44A8201AAB2AD900900C6A /* ALAssetsLibrary+DFImageManager.m in Sources */,
 				0C44A86A1AAB3CE800900C6A /* DFCollectionViewPreheatingController.m in Sources */,
@@ -999,7 +990,6 @@
 				0CEEECE81AABD75F00C212A4 /* DFImageRequestID.m in Sources */,
 				0C44A73C1AAB235800900C6A /* DFPhotosKitImageFetcher.m in Sources */,
 				0C6550B61AA82C0000B4805C /* DFAnimatedImage.m in Sources */,
-				0CEEEC8F1AABC5FC00C212A4 /* DFImageUtilities.m in Sources */,
 				0CEEED151AABE36100C212A4 /* DFImageManager+DefaultManager.m in Sources */,
 				0CEEED131AABE36100C212A4 /* DFImageManager.m in Sources */,
 				0C44A8211AAB2AD900900C6A /* ALAssetsLibrary+DFImageManager.m in Sources */,
