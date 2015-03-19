@@ -3,7 +3,7 @@
 </p>
 <h1 align="center">DFImageManager</h1>
 
-Advanced iOS framework for loading, caching, processing, displaying and preheating images. It uses latest advancements in iOS SDK and doesn't reinvent existing technologies. It provides a powerful API that will extend the capabilities of your app.
+Advanced iOS framework for loading, caching, processing, displaying and preheating images. It uses latest features in iOS SDK and doesn't reinvent existing technologies. It provides a powerful API that will extend the capabilities of your app.
 
 The DFImageManager has a single responsibility of providing a great API for managing image requests, with an ability to easily plug-in everything else that your application might need. It also features [multiple subspecs](#install_using_cocopods) that integrate things like [AFNetworking](https://github.com/AFNetworking/AFNetworking) as a networking stack for fetching images, and [FLAnimatedImage](https://github.com/Flipboard/FLAnimatedImage) as a performant animated GIF engine.
 
@@ -30,6 +30,7 @@ The DFImageManager has a single responsibility of providing a great API for mana
 - View the growing project [Wiki](https://github.com/kean/DFImageManager/wiki) and [FAQ](https://github.com/kean/DFImageManager/wiki/FAQ)
 - Experiment with the APIs in a Swift playground available in the project
 - [Install using CocoaPods](#install_using_cocopods), import `<DFImageManager/DFImageManagerKit.h>` and enjoy!
+- Check out [Nuke](https://github.com/kean/Nuke) - experimental Swift framework with similar functionality.
 
 ## Requirements
 iOS 7.0+
