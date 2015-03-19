@@ -63,6 +63,8 @@ typedef NS_ENUM(NSInteger, DFImageRequestCachePolicy) {
     DFImageRequestCachePolicyReloadIgnoringCache
 };
 
+/*! Image request priority.
+ */
 typedef NS_ENUM(NSInteger, DFImageRequestPriority) {
     DFImageRequestPriorityVeryLow = NSOperationQueuePriorityVeryLow,
     DFImageRequestPriorityLow = NSOperationQueuePriorityLow,

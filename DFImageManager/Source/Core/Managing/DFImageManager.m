@@ -212,7 +212,9 @@ typedef NS_ENUM(NSUInteger, _DFImageTaskState) {
 
 - (instancetype)initWithConfiguration:(DFImageManagerConfiguration *)configuration {
     if (self = [super init]) {
-        NSParameterAssert(configuration);
+        if (!configuration) {
+            [NSException raise:NSInternalInconsistencyException format:@"Initialized without configuration"];
+        }
         _conf = [configuration copy];
         
         _queue = dispatch_queue_create([[NSString stringWithFormat:@"%@-queue-%p", [self class], self] UTF8String], DISPATCH_QUEUE_SERIAL);
@@ -236,6 +238,14 @@ typedef NS_ENUM(NSUInteger, _DFImageTaskState) {
 }
 
 - (DFImageRequestID *)requestImageForRequest:(DFImageRequest *)request completion:(DFImageRequestCompletion)completion {
+    if (!request.resource) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (completion) {
+                completion(nil, nil);
+            }
+        });
+        return nil;
+    }
     DFImageRequest *canonicalRequest = [self _canonicalRequestForRequest:request];
     if ([NSThread isMainThread]) {
         UIImage *image = [self _cachedImageForRequest:canonicalRequest];
@@ -497,7 +507,7 @@ typedef NS_ENUM(NSUInteger, _DFImageTaskState) {
     NSMutableArray *canonicalRequests = [[NSMutableArray alloc] initWithCapacity:requests.count];
     for (DFImageRequest *request in requests) {
         DFImageRequest *canonicalRequest = [self _canonicalRequestForRequest:request];
-        if (canonicalRequest) {
+        if (canonicalRequest.resource) {
             [canonicalRequests addObject:canonicalRequest];
         }
     }
