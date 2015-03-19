@@ -436,8 +436,11 @@ typedef NS_ENUM(NSUInteger, _DFImageTaskState) {
     dispatch_async(_queue, ^{
         for (DFImageRequest *request in [self _canonicalRequestsForRequests:requests]) {
             _DFImageRequestKey *key = DFImageCacheKeyCreate(request);
-            [self _setImageTaskState:_DFImageTaskStateCancelled task:_preheatingTasks[key]];
-            [_preheatingTasks removeObjectForKey:key];
+            _DFImageTask *task = _preheatingTasks[key];
+            if (task) {
+                [self _setImageTaskState:_DFImageTaskStateCancelled task:task];
+                [_preheatingTasks removeObjectForKey:key];
+            }
         }
     });
 }
