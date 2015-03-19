@@ -24,7 +24,7 @@
 #import "DFImageCache.h"
 #import "NSCache+DFImageManager.h"
 
-#if __has_include("DFImageManagerKit+GIF.h")
+#if __has_include("DFImageManagerKit+GIF.h") && !(DF_IMAGE_MANAGER_FRAMEWORK_TARGET)
 #import "DFImageManagerKit+GIF.h"
 #endif
 
@@ -77,7 +77,7 @@
     CGImageRef imageRef = image.CGImage;
     NSUInteger bitsPerPixel = CGImageGetBitsPerPixel(imageRef);
     NSUInteger cost = (CGImageGetWidth(imageRef) * CGImageGetHeight(imageRef) * bitsPerPixel) / 8; // Return number of bytes in image bitmap.
-#if __has_include("DFAnimatedImage.h")
+#if __has_include("DFImageManagerKit+GIF.h") && !(DF_IMAGE_MANAGER_FRAMEWORK_TARGET)
     if ([image isKindOfClass:[DFAnimatedImage class]]) {
         DFAnimatedImage *animatedImage = (id)image;
         cost += animatedImage.animatedImage.data.length;

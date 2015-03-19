@@ -61,7 +61,7 @@
 #endif
 
 // Subspec 'AFNetworking'
-#if __has_include("DFImageManagerKit+AFNetworking.h")
+#if __has_include("DFImageManagerKit+AFNetworking.h") && !(DF_IMAGE_MANAGER_FRAMEWORK_TARGET)
 #import "DFImageManagerKit+AFNetworking.h"
 #endif
 
@@ -76,6 +76,6 @@
 #endif
 
 // Subspec 'GIF'
-#if __has_include("DFAnimatedImage.h")
-#import "DFAnimatedImage.h"
+#if __has_include("DFImageManagerKit+GIF.h") && !(DF_IMAGE_MANAGER_FRAMEWORK_TARGET)
+#import "DFImageManagerKit+GIF.h"
 #endif

@@ -28,7 +28,7 @@
 #import "DFImageView.h"
 #import "DFNetworkReachability.h"
 
-#if __has_include("DFImageManagerKit+GIF.h")
+#if __has_include("DFImageManagerKit+GIF.h") && !(DF_IMAGE_MANAGER_FRAMEWORK_TARGET)
 #import "DFImageManagerKit+GIF.h"
 #endif
 
@@ -68,7 +68,7 @@ static const NSTimeInterval _kMinimumAutoretryInterval = 8.f;
     _allowsAnimations = YES;
     _allowsAutoRetries = YES;
     _managesRequestPriorities = NO;
-#if __has_include("DFImageManagerKit+GIF.h")
+#if __has_include("DFImageManagerKit+GIF.h") && !(DF_IMAGE_MANAGER_FRAMEWORK_TARGET)
     _allowsGIFPlayback = YES;
 #endif
     _imageRequestOptions = [DFImageRequestOptions new];
@@ -79,7 +79,7 @@ static const NSTimeInterval _kMinimumAutoretryInterval = 8.f;
 }
 
 - (void)displayImage:(UIImage *)image {
-#if __has_include("DFImageManagerKit+GIF.h")
+#if __has_include("DFImageManagerKit+GIF.h") && !(DF_IMAGE_MANAGER_FRAMEWORK_TARGET)
     if (!image) {
         self.animatedImage = nil;
     }
@@ -99,7 +99,7 @@ static const NSTimeInterval _kMinimumAutoretryInterval = 8.f;
     _task = nil;
     _previousAutoretryTime = 0.0;
     self.image = nil;
-#if __has_include("DFImageManagerKit+GIF.h")
+#if __has_include("DFImageManagerKit+GIF.h") && !(DF_IMAGE_MANAGER_FRAMEWORK_TARGET)
     self.animatedImage = nil;
 #endif
     [self.layer removeAllAnimations];

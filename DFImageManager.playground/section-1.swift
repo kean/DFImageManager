@@ -8,7 +8,7 @@ import XCPlayground
 
 let manager = DFImageManager.sharedManager()
 
-let imageURL = NSURL(string: "https://raw.githubusercontent.com/kean/DFImageManager/master/DFImageManager/Tests/Resources/Image.jpg")
+let imageURL = NSURL(string: "http://farm8.staticflickr.com/7315/16455839655_7d6deb1ebf_z_d.jpg")!
 
 // Request fullsize image
 manager.requestImageForResource(imageURL) { (image: UIImage!, [NSObject : AnyObject]!) -> Void in
@@ -16,7 +16,8 @@ manager.requestImageForResource(imageURL) { (image: UIImage!, [NSObject : AnyObj
 }
 
 // Request scaled image
-manager.requestImageForResource(imageURL, targetSize: CGSize(width: 100, height: 100), contentMode: DFImageContentMode.AspectFill, options: nil) { (image: UIImage!, [NSObject : AnyObject]!) -> Void in
+let request = DFImageRequest(resource: imageURL, targetSize: CGSize(width: 100, height: 100), contentMode: .AspectFill, options: nil)
+manager.requestImageForRequest(request) { (image: UIImage!, [NSObject : AnyObject]!) -> Void in
     var fetchedImage = image
 }
 

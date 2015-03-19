@@ -1196,6 +1196,7 @@
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DF_IMAGE_MANAGER_FRAMEWORK_TARGET=1",
 					"DEBUG=1",
 					"$(inherited)",
 				);
@@ -1222,6 +1223,11 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"COCOAPODS=1",
+					"DF_IMAGE_MANAGER_FRAMEWORK_TARGET=1",
+				);
 				INFOPLIST_FILE = "Supporting Files/DFImageManagerKit-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;

@@ -22,7 +22,6 @@
 
 #import "DFAnimatedImage.h"
 
-
 @implementation DFAnimatedImage
 
 - (instancetype)initWithAnimatedImage:(FLAnimatedImage *)animatedImage {

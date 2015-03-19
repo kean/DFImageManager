@@ -32,7 +32,7 @@
 #import "DFImageRequestOptions.h"
 #import "DFImageResponse.h"
 
-#if __has_include("DFImageManagerKit+GIF.h")
+#if __has_include("DFImageManagerKit+GIF.h") && !(DF_IMAGE_MANAGER_FRAMEWORK_TARGET)
 #import "DFImageManagerKit+GIF.h"
 #endif
 
@@ -222,7 +222,7 @@ typedef NS_ENUM(NSUInteger, _DFImageTaskState) {
         _executingImageTasks = [NSMutableSet new];
         _fetchOperations = [NSMutableDictionary new];
         
-        _fetcherRespondsToCanonicalRequest = (unsigned int)[_conf.fetcher respondsToSelector:@selector(canonicalRequestForRequest:)];
+        _fetcherRespondsToCanonicalRequest = [_conf.fetcher respondsToSelector:@selector(canonicalRequestForRequest:)];
     }
     return self;
 }
@@ -385,7 +385,7 @@ typedef NS_ENUM(NSUInteger, _DFImageTaskState) {
 - (void)_processImage:(UIImage *)image task:(_DFImageTask *)task completion:(void (^)(UIImage *processedImage))completion {
     DFImageRequest *request = task.request;
     BOOL shouldProcessResponse = _conf.processor != nil;
-#if __has_include("DFImageManagerKit+GIF.h")
+#if __has_include("DFImageManagerKit+GIF.h") && !(DF_IMAGE_MANAGER_FRAMEWORK_TARGET)
     if ([image isKindOfClass:[DFAnimatedImage class]]) {
         shouldProcessResponse = NO;
     }

@@ -22,7 +22,7 @@
 
 #import "DFAFImageDeserializer.h"
 
-#if __has_include("DFImageManagerKit+GIF.h")
+#if __has_include("DFImageManagerKit+GIF.h") && !(DF_IMAGE_MANAGER_FRAMEWORK_TARGET)
 #import "DFImageManagerKit+GIF.h"
 #endif
 
@@ -32,7 +32,7 @@
     if (!data.length || ![self validateResponse:(NSHTTPURLResponse *)response data:data error:error]) {
         return nil;
     }
-#if __has_include("DFImageManagerKit+GIF.h")
+#if __has_include("DFImageManagerKit+GIF.h") && !(DF_IMAGE_MANAGER_FRAMEWORK_TARGET)
     if ([DFAnimatedImage isAnimatedGIFData:data]) {
         UIImage *image = [[DFAnimatedImage alloc] initWithAnimatedGIFData:data];
         if (image) {
