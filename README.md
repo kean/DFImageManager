@@ -17,10 +17,9 @@ The DFImageManager has a single responsibility of providing a great API for mana
 - Centralized image decompression, resizing and processing. Fully customizable.
 - Separate memory cache for decompressed and processed images. Fine grained control over memory cache.
 - [Compose image managers](https://github.com/kean/DFImageManager/wiki/Extending-Image-Manager-Guide#using-dfcompositeimagemanager) into a tree of responsibility.
-- [Automatic preheating](https://github.com/kean/DFImageManager/wiki/Image-Preheating-Guide) of images that are close to the viewport
-- Preheating requests become regular requests when necessary
+- [Intelligent preheating](https://github.com/kean/DFImageManager/wiki/Image-Preheating-Guide) of images that are close to the viewport
 - Groups similar requests and never executes them twice. Intelligent control over which requests are considered equivalent.
-- High quality code base. Dependency injection is used throughout.
+- Solid implementation based on finite state machines. High quality code base. Dependency injection is used throughout.
 - Extreme performance even on outdated devices. Asynchronous and thread safe.
 - Unit tested.
 
@@ -50,29 +49,19 @@ DFImageRequestID *requestID = [[DFImageManager sharedManager] requestImageForRes
 #### Add request options
 
 ```objective-c
+NSURL *imageURL = [NSURL URLWithString:@"http://..."];
+
 DFImageRequestOptions *options = [DFImageRequestOptions new];
 options.allowsClipping = YES;
 options.progressHandler = ^(double progress){
-  // Observe progress
+// Observe progress
 };
+options.userInfo = @{ DFURLRequestCachePolicyKey : @(NSURLRequestReturnCacheDataDontLoad) };
 
-NSURL *imageURL = [NSURL URLWithString:@"http://..."];
-[[DFImageManager sharedManager] requestImageForResource:imageURL targetSize:CGSizeMake(100.f, 100.f) contentMode:DFImageContentModeAspectFill options:options completion:^(UIImage *image, NSDictionary *info) {
-  // Image is resized and clipped to fill 100x100px square
-}];
-```
+DFImageRequest *request = [DFImageRequest requestWithResource:imageURL targetSize:CGSizeMake(100.f, 100.f) contentMode:DFImageContentModeAspectFill options:options];
 
-#### Options can be specialized and packed into `DFImageRequest`
-
-Use `DFURLRequestCachePolicyKey` to set a request cache policy. Create instance of `DFImageRequest` to pack all request parameters.
-```objective-c
-DFImageRequestOptions *options = [DFImageRequestOptions new];
-options.userInfo = @{ @"DFURLRequestCachePolicyKey" : @(NSURLRequestReturnCacheDataDontLoad) };
-    
-DFImageRequest *request = [[DFImageRequest alloc] initWithResource:[NSURL URLWithString:@"http://..."] targetSize:CGSizeMake(100.f, 100.f) contentMode:DFImageContentModeAspectFill options:options];
-    
 [[DFImageManager sharedManager] requestImageForRequest:request completion:^(UIImage *image, NSDictionary *info) {
-  // Image is resized and clipped to 100x100 px square
+// Image is resized and clipped to fill 100x100px square
 }];
 ```
 
@@ -115,27 +104,17 @@ imageView.allowsAutoRetries = YES; // Retries when network reachability changes
 #### Use the same `DFImageManaging` API for PHAsset, ALAsset and your custom classes
 ```objective-c
 PHAsset *asset = ...;
-[[DFImageManager sharedManager] requestImageForResource:asset targetSize:CGSizeMake(100.f, 100.f) contentMode:DFImageContentModeAspectFill options:nil completion:^(UIImage *image, NSDictionary *info) {
+DFImageRequest *request = [DFImageRequest requestWithResource:asset targetSize:CGSizeMake(100.f, 100.f) contentMode:DFImageContentModeAspectFill options:nil];
+[[DFImageManager sharedManager] requestImageForRequest:request completion:^(UIImage *image, NSDictionary *info) {
   // Image resized to 100x100px square
   // Photos Kit image manager does most of the hard work
 }];
 ```
 
-```objective-c
-NSURL *assetURL = [NSURL df_assetURLWithAsset:asset];
-    
-// There are Photos Kit specific options as well
-DFPhotosKitImageRequestOptions *options = [DFPhotosKitImageRequestOptions new];
-options.version = PHImageRequestOptionsVersionUnadjusted;
-options.deliveryMode = PHImageRequestOptionsDeliveryModeHighQualityFormat;
-
-DFImageRequest *request = [[DFImageRequest alloc] initWithResource:assetURL targetSize:DFImageMaximumSize contentMode:DFImageContentModeAspectFill options:options];
-```
-
 #### Use composite managers
 The `DFCompositeImageManager` allows clients to construct a tree of responsibility from multiple image managers, where image requests are dynamically dispatched between them. Each manager should conform to `DFImageManaging` protocol. The `DFCompositeImageManager` also conforms to `DFImageManaging` protocol, which lets clients treat individual objects and compositions uniformly. The default `[DFImageManager sharedManager]` is a composite that contains all built in managers: the ones that support `NSURL` fetching, `PHAsset` objects, etc. 
 
-It's easy for clients to add additional managers to the shared manager. You can either add support for new image requests, or intercept existing onces. For more info see [Composing Image Managers](https://github.com/kean/DFImageManager/wiki/Extending-Image-Manager-Guide#using-dfcompositeimagemanager).
+It's easy for clients to add additional managers to the shared manager. You can either add support for new image requests, or intercept existing ones. For more info see [Composing Image Managers](https://github.com/kean/DFImageManager/wiki/Extending-Image-Manager-Guide#using-dfcompositeimagemanager).
 
 ```objective-c
 // Implement custom image fetcher that conforms to DFImageFetching protocol,

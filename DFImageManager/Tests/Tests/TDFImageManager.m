@@ -196,6 +196,20 @@
     }];
 }
 
+#pragma mark - Progress
+
+- (void)testThatProgressHandlerIsCalled {
+    XCTestExpectation *expectation = [self expectationWithDescription:@""];
+    DFImageRequestOptions *options = [DFImageRequestOptions new];
+    options.progressHandler = ^(double progress){
+        XCTAssertEqual(progress, 0.5);
+        [expectation fulfill];
+    };
+    DFImageRequest *request = [DFImageRequest requestWithResource:[TDFMockResource resourceWithID:@"1"] targetSize:DFImageMaximumSize contentMode:DFImageContentModeAspectFill options:options];
+    [_manager requestImageForRequest:request completion:nil];
+    [self waitForExpectationsWithTimeout:3.0 handler:nil];
+}
+
 #pragma mark - Memory Cache
 
 /*! Test that image manager calls completion block synchronously (default configuration).
@@ -371,11 +385,11 @@
     [self expectationForNotification:TDFMockImageFetcherDidStartOperationNotification object:_fetcher handler:nil];
     [_manager startPreheatingImagesForRequests:@[ request, request ]];
     [_manager startPreheatingImagesForRequests:@[ request ]];
-    [self waitForExpectationsWithTimeout:38979.0 handler:nil];
+    [self waitForExpectationsWithTimeout:3.0 handler:nil];
     
     [self expectationForNotification:TDFMockFetchOperationWillCancelNotification object:nil handler:nil];
     [_manager stopPreheatingImagesForRequests:@[ request ]];
-    [self waitForExpectationsWithTimeout:38768.0 handler:^(NSError *error) {
+    [self waitForExpectationsWithTimeout:3.0 handler:^(NSError *error) {
         XCTAssertEqual(_fetcher.queue.operationCount, 1);
     }];
 }
