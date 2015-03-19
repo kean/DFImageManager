@@ -45,7 +45,7 @@
  
  @note Preheating
  
- The DFImageManager does its best to guarantee that preheating requests never interfere with normal (non-preheating) requests. There is a limit of concurrent preheating requests enforced by DFImageManager. Preheating requests don't start executing until there are any non-preheating requests remaining. There is also certain (very small) delay when manager starts executing preheating requests. Given that fact, clients don't need to worry about the order in which they start their requests (preheating or not), which comes really handy when you, for example, reload collection view's data and start preheating and requesting multiple images at the same time.
+ The DFImageManager does its best to guarantee that preheating requests never interfere with regular (non-preheating) requests. There is a limit of concurrent preheating requests enforced by DFImageManager. There is also certain (very small) delay when manager starts executing preheating requests. Given that fact, clients don't need to worry about the order in which they start their requests (preheating or not), which comes really handy when you, for example, reload collection view's data and start preheating and requesting multiple images at the same time.
  
  The DFImageManager stops multiple similar preheating requests with a single -stopPreheatingImagesForRequests: call.
  */

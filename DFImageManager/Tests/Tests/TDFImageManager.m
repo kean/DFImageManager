@@ -219,34 +219,6 @@
     XCTAssertTrue(isCompletionHandlerCalled);
 }
 
-/*! Test that image manager calls completion block asynchronously with a specific configuration option.
- @see DFImageManager class reference
- */
-- (void)testThatSynchronousCallbacksCanBeDisabled {
-    DFImageManagerConfiguration *configuration = [_manager.configuration copy];
-    configuration.allowsSynchronousMemoryCacheLookup = NO;
-    _manager = [[DFImageManager alloc] initWithConfiguration:configuration];
-    
-    _cache.enabled = YES;
-    
-    TDFMockResource *resource = [TDFMockResource resourceWithID:@"ID01"];
-    XCTestExpectation *expectation = [self expectationWithDescription:@"request"];
-    [_manager requestImageForResource:resource completion:^(UIImage *image, NSDictionary *info) {
-        [expectation fulfill];
-    }];
-    [self waitForExpectationsWithTimeout:3.0 handler:nil];
-    
-    XCTestExpectation *expectation2 = [self expectationWithDescription:@"cache"];
-    BOOL __block isCompletionHandlerCalled = NO;
-    [_manager requestImageForResource:resource completion:^(UIImage *image, NSDictionary *info) {
-        XCTAssertNotNil(image);
-        isCompletionHandlerCalled = YES;
-        [expectation2 fulfill];
-    }];
-    XCTAssertFalse(isCompletionHandlerCalled);
-    [self waitForExpectationsWithTimeout:3.0 handler:nil];
-}
-
 /*! Test that callbacks are called on the main thread when the image is in memory cache and the request was made from background thread.
  @see DFImageManager class reference
  */
@@ -305,7 +277,7 @@
         [expectation2 fulfill];
     }];
     [self waitForExpectationsWithTimeout:3.0 handler:nil];
-
+    
     // 3. Test that second manager can't access cached image
     XCTAssertTrue(manager2.configuration.cache == manager1.configuration.cache);
     XCTestExpectation *expectationThatSecondManagerTriggeredCache = [self expectationForNotification:TDFMockImageCacheWillReturnCachedImageNotification object:_cache handler:nil];
@@ -350,10 +322,6 @@
 
 #pragma mark - Preheating
 
-/*! Test documented feature:
- 
- > There is also certain (very small) delay when manager runs out of non-preheating requests and starts executing preheating requests. Given that fact, clients don't need to worry about the order in which they start their requests (preheating or not), which comes really handy when you, for example, reload collection view's data and start preheating and requesting multiple images at the same time.
- */
 - (void)testThatPreheatingRequestsHasLowerExecutionPrirorty {
     TDFMockResource *resource1 = [TDFMockResource resourceWithID:@"ID01"];
     DFImageRequest *request1 = [[DFImageRequest alloc] initWithResource:resource1];
@@ -403,11 +371,11 @@
     [self expectationForNotification:TDFMockImageFetcherDidStartOperationNotification object:_fetcher handler:nil];
     [_manager startPreheatingImagesForRequests:@[ request, request ]];
     [_manager startPreheatingImagesForRequests:@[ request ]];
-    [self waitForExpectationsWithTimeout:3.0 handler:nil];
+    [self waitForExpectationsWithTimeout:38979.0 handler:nil];
     
     [self expectationForNotification:TDFMockFetchOperationWillCancelNotification object:nil handler:nil];
     [_manager stopPreheatingImagesForRequests:@[ request ]];
-    [self waitForExpectationsWithTimeout:3.0 handler:^(NSError *error) {
+    [self waitForExpectationsWithTimeout:38768.0 handler:^(NSError *error) {
         XCTAssertEqual(_fetcher.queue.operationCount, 1);
     }];
 }
@@ -428,6 +396,53 @@
         [self expectationForNotification:TDFMockFetchOperationWillCancelNotification object:operation handler:nil];
     }
     [_manager stopPreheatingImagesForAllRequests];
+    [self waitForExpectationsWithTimeout:3.0 handler:nil];
+}
+
+- (void)testThatPreheatingRequestsAreExecutedInTheOrderTheyWereAdded {
+    DFImageRequest *request1 = [DFImageRequest requestWithResource:[TDFMockResource resourceWithID:@"1"]];
+    DFImageRequest *request2 = [DFImageRequest requestWithResource:[TDFMockResource resourceWithID:@"2"]];
+    
+    BOOL __block isRequest1Started = NO;
+    BOOL __block isRequest2Started = NO;
+    [self expectationForNotification:TDFMockImageFetcherDidStartOperationNotification object:nil handler:^BOOL(NSNotification *notification) {
+        DFImageRequest *request = notification.userInfo[TDFMockImageFetcherRequestKey];
+        XCTAssertNotNil(request);
+        if ([request.resource isEqual:request1.resource]) {
+            XCTAssertFalse(isRequest2Started);
+            isRequest1Started = YES;
+        } else if ([request.resource isEqual:request2.resource]) {
+            XCTAssertTrue(isRequest1Started);
+            isRequest2Started = YES;
+        }
+        return isRequest1Started && isRequest2Started;
+    }];
+    
+    [_manager startPreheatingImagesForRequests:@[ request1, request2 ]];
+    [self waitForExpectationsWithTimeout:3.0 handler:nil];
+}
+
+- (void)testThatPreheatingRequestsAreExecutedInTheOrderTheyWereAddedSwitched {
+    // Switch resources from the previous test.
+    DFImageRequest *request1 = [DFImageRequest requestWithResource:[TDFMockResource resourceWithID:@"2"]];
+    DFImageRequest *request2 = [DFImageRequest requestWithResource:[TDFMockResource resourceWithID:@"1"]];
+    
+    BOOL __block isRequest1Started = NO;
+    BOOL __block isRequest2Started = NO;
+    [self expectationForNotification:TDFMockImageFetcherDidStartOperationNotification object:nil handler:^BOOL(NSNotification *notification) {
+        DFImageRequest *request = notification.userInfo[TDFMockImageFetcherRequestKey];
+        XCTAssertNotNil(request);
+        if ([request.resource isEqual:request1.resource]) {
+            XCTAssertFalse(isRequest2Started);
+            isRequest1Started = YES;
+        } else if ([request.resource isEqual:request2.resource]) {
+            XCTAssertTrue(isRequest1Started);
+            isRequest2Started = YES;
+        }
+        return isRequest1Started && isRequest2Started;
+    }];
+    
+    [_manager startPreheatingImagesForRequests:@[ request1, request2 ]];
     [self waitForExpectationsWithTimeout:3.0 handler:nil];
 }
 
