@@ -1,6 +1,5 @@
-<p align="center"><img src="https://cloud.githubusercontent.com/assets/1567433/5850067/82dd907c-a192-11e4-9735-52401d761b29.png" height="200"/>
+<p align="center"><img src="https://cloud.githubusercontent.com/assets/1567433/6745579/db90e29a-ce5c-11e4-941d-405ab6729811.png" height="200"/></p>
 
-</p>
 <h1 align="center">DFImageManager</h1>
 
 Advanced iOS framework for loading, caching, processing, displaying and preheating images. It uses latest features in iOS SDK and doesn't reinvent existing technologies. It provides a powerful API that will extend the capabilities of your app.

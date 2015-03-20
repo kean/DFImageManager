@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6751" systemVersion="14C1510" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
-        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
-        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -19,30 +17,29 @@
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="DFImageManager" textAlignment="center" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" minimumFontSize="18" translatesAutoresizingMaskIntoConstraints="NO" id="kId-c2-rCX" userLabel="DFImageManager Demo">
-                    <rect key="frame" x="20" y="146.5" width="336" height="43"/>
-                    <fontDescription key="fontDescription" type="boldSystem" pointSize="36"/>
-                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                    <nil key="highlightedColor"/>
-                </label>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="pgg-cJ-Rjs">
-                    <rect key="frame" x="77" y="233.5" width="220" height="173.5"/>
+                    <rect key="frame" x="77.5" y="146" width="220" height="215"/>
                     <constraints>
-                        <constraint firstAttribute="width" secondItem="pgg-cJ-Rjs" secondAttribute="height" multiplier="47 / 37" id="i2k-8T-tRL"/>
+                        <constraint firstAttribute="height" constant="215" id="5si-0l-KOE"/>
                         <constraint firstAttribute="width" constant="220" id="v2C-hr-jjv"/>
                     </constraints>
                 </imageView>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="DFImageManager" textAlignment="center" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" minimumFontSize="18" translatesAutoresizingMaskIntoConstraints="NO" id="kId-c2-rCX" userLabel="DFImageManager Demo">
+                    <rect key="frame" x="50" y="391" width="275" height="43"/>
+                    <fontDescription key="fontDescription" type="system" weight="light" pointSize="36"/>
+                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstItem="kId-c2-rCX" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="bottom" multiplier="1/4" constant="1" id="5cJ-9S-tgC"/>
                 <constraint firstAttribute="centerX" secondItem="kId-c2-rCX" secondAttribute="centerX" id="Koa-jz-hwk"/>
                 <constraint firstAttribute="bottom" secondItem="8ie-xW-0ye" secondAttribute="bottom" constant="20" id="Kzo-t9-V3l"/>
                 <constraint firstItem="8ie-xW-0ye" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="20" symbolic="YES" id="MfP-vx-nX0"/>
-                <constraint firstItem="kId-c2-rCX" firstAttribute="centerX" secondItem="pgg-cJ-Rjs" secondAttribute="centerX" constant="1" id="Thv-BQ-068"/>
                 <constraint firstAttribute="centerX" secondItem="8ie-xW-0ye" secondAttribute="centerX" id="ZEH-qu-HZ9"/>
-                <constraint firstItem="kId-c2-rCX" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="20" symbolic="YES" id="fvb-Df-36g"/>
-                <constraint firstItem="pgg-cJ-Rjs" firstAttribute="top" secondItem="kId-c2-rCX" secondAttribute="bottom" constant="44" id="j5o-7U-ib4"/>
+                <constraint firstAttribute="centerY" secondItem="pgg-cJ-Rjs" secondAttribute="centerY" constant="80" id="gIO-HK-MPu"/>
+                <constraint firstItem="kId-c2-rCX" firstAttribute="top" secondItem="pgg-cJ-Rjs" secondAttribute="bottom" constant="30" id="iez-5E-DUo"/>
+                <constraint firstAttribute="centerX" secondItem="pgg-cJ-Rjs" secondAttribute="centerX" id="yPb-H9-hCj"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
@@ -50,6 +47,6 @@
         </view>
     </objects>
     <resources>
-        <image name="logo" width="220" height="173"/>
+        <image name="logo" width="220" height="215"/>
     </resources>
 </document>
