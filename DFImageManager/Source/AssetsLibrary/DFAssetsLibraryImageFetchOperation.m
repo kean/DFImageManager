@@ -125,7 +125,7 @@
     
     // WARNING: This code doesn't work for iOS 8.0+. Use PhotosKit instead.
     CGImageRef imageRef = [representation fullResolutionImage];
-    NSString *adjustment = [[representation metadata] objectForKey:@"AdjustmentXMP"];
+    NSString *adjustment = [representation metadata][@"AdjustmentXMP"];
     if (adjustment != nil) {
         NSData *xmpData = [adjustment dataUsingEncoding:NSUTF8StringEncoding];
         CIImage *image = [CIImage imageWithCGImage:imageRef];

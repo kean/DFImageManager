@@ -27,7 +27,6 @@
 #import "DFImageRequest.h"
 #import "DFImageResponse.h"
 
-
 NSString *const DFAFRequestCachePolicyKey = @"DFAFRequestCachePolicyKey";
 
 @interface _DFAFOperation : NSOperation
@@ -60,17 +59,42 @@ NSString *const DFAFRequestCachePolicyKey = @"DFAFRequestCachePolicyKey";
 @end
 
 
-@implementation DFAFImageFetcher
+@interface _DFDataTaskDelegate : NSObject
+
+@property (nonatomic, copy) void (^dataTaskDidReceiveDataBlock)(NSURLSession *session, NSURLSessionDataTask *dataTask, NSData *data);
+
+@end
+
+@implementation _DFDataTaskDelegate
+
+@end
+
+
+@implementation DFAFImageFetcher {
+    NSMutableDictionary *_dataTaskDelegates;
+}
 
 - (instancetype)initWithSessionManager:(AFURLSessionManager *)sessionManager {
     if (self = [super init]) {
         _sessionManager = sessionManager;
+        _dataTaskDelegates = [NSMutableDictionary new];
+        DFAFImageFetcher *__weak weakSelf = self;
+        [sessionManager setDataTaskDidReceiveDataBlock:^(NSURLSession *session, NSURLSessionDataTask *dataTask, NSData *data) {
+            DFAFImageFetcher *strongSelf = weakSelf;
+            _DFDataTaskDelegate *delegate;
+            @synchronized(strongSelf) {
+                delegate = strongSelf->_dataTaskDelegates[dataTask];
+            }
+            if (delegate.dataTaskDidReceiveDataBlock) {
+                delegate.dataTaskDidReceiveDataBlock(session, dataTask, data);
+            }
+        }];
         _supportedSchemes = [NSSet setWithObjects:@"http", @"https", @"ftp", @"file", @"data", nil];
     }
     return self;
 }
 
-#pragma mark - <DFImageFetching>
+#pragma mark <DFImageFetching>
 
 - (BOOL)canHandleRequest:(DFImageRequest *)request {
     if ([request.resource isKindOfClass:[NSURL class]]) {
@@ -87,9 +111,9 @@ NSString *const DFAFRequestCachePolicyKey = @"DFAFRequestCachePolicyKey";
         return NO;
     }
     NSURLRequestCachePolicy defaultCachePolicy = self.sessionManager.session.configuration.requestCachePolicy;
-    NSURLRequestCachePolicy requestCachePolicy1 = request1.options.userInfo[DFAFRequestCachePolicyKey] ? [request1.options.userInfo[DFAFRequestCachePolicyKey] unsignedIntegerValue] : defaultCachePolicy;
-    NSURLRequestCachePolicy requestCachePolicy2 = request2.options.userInfo[DFAFRequestCachePolicyKey] ? [request2.options.userInfo[DFAFRequestCachePolicyKey] unsignedIntegerValue] : defaultCachePolicy;
-    return requestCachePolicy1 == requestCachePolicy2;
+    NSURLRequestCachePolicy cachePolicy1 = request1.options.userInfo[DFAFRequestCachePolicyKey] ? [request1.options.userInfo[DFAFRequestCachePolicyKey] unsignedIntegerValue] : defaultCachePolicy;
+    NSURLRequestCachePolicy cachePolicy2 = request2.options.userInfo[DFAFRequestCachePolicyKey] ? [request2.options.userInfo[DFAFRequestCachePolicyKey] unsignedIntegerValue] : defaultCachePolicy;
+    return cachePolicy1 == cachePolicy2;
 }
 
 - (BOOL)isRequestCacheEquivalent:(DFImageRequest *)request1 toRequest:(DFImageRequest *)request2 {
@@ -98,12 +122,28 @@ NSString *const DFAFRequestCachePolicyKey = @"DFAFRequestCachePolicyKey";
 
 - (NSOperation *)startOperationWithRequest:(DFImageRequest *)request progressHandler:(void (^)(double))progressHandler completion:(void (^)(DFImageResponse *))completion {
     NSURLRequest *URLRequest = [self _URLRequestForImageRequest:request];
-    NSURLSessionDataTask *task = [self.sessionManager dataTaskWithRequest:URLRequest completionHandler:^(NSURLResponse *URLResponse, UIImage *result, NSError *error) {
+    DFAFImageFetcher *__weak weakSelf = self;
+    NSURLSessionDataTask *__block task = [self.sessionManager dataTaskWithRequest:URLRequest completionHandler:^(NSURLResponse *URLResponse, UIImage *result, NSError *error) {
+        DFAFImageFetcher *strongSelf = weakSelf;
+        @synchronized(strongSelf) {
+            [strongSelf->_dataTaskDelegates removeObjectForKey:task];
+        }
         if (completion) {
             completion([[DFImageResponse alloc] initWithImage:result error:error userInfo:nil]);
         }
     }];
     [task resume];
+    
+    // Track progress using dataTaskDidReceiveDataBlock exposed by AFURLSessionManager.
+    _DFDataTaskDelegate *dataTaskDelegate = [_DFDataTaskDelegate new];
+    [dataTaskDelegate setDataTaskDidReceiveDataBlock:^(NSURLSession *session, NSURLSessionDataTask *dataTask, NSData *data) {
+        if (progressHandler) {
+            progressHandler((double)dataTask.countOfBytesReceived / (double)dataTask.countOfBytesExpectedToReceive);
+        }
+    }];
+    @synchronized(self) {
+        _dataTaskDelegates[task] = dataTaskDelegate;
+    }
     
     _DFAFOperation *operation = [_DFAFOperation new];
     operation.cancellationHandler = ^{
@@ -116,6 +156,8 @@ NSString *const DFAFRequestCachePolicyKey = @"DFAFRequestCachePolicyKey";
     };
     return operation;
 }
+
+#pragma mark Support
 
 - (NSURLRequest *)_URLRequestForImageRequest:(DFImageRequest *)imageRequest {
     NSURLRequest *URLRequest = [self _defaultURLRequestForImageRequest:imageRequest];
