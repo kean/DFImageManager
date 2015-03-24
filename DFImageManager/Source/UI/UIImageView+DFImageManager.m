@@ -54,11 +54,12 @@ static char *_requestIDKey;
     
     UIImageView *__weak weakSelf = self;
     DFImageRequest *request = [DFImageRequest requestWithResource:resource targetSize:targetSize contentMode:contentMode options:options];
-    [[DFImageManager sharedManager] requestImageForRequest:request completion:^(UIImage *image, NSDictionary *info) {
+    DFImageRequestID *requestID = [[DFImageManager sharedManager] requestImageForRequest:request completion:^(UIImage *image, NSDictionary *info) {
         if (image) {
             weakSelf.image = image;
         }
     }];
+    [self _df_setImageRequestID:requestID];
 }
 
 - (void)_df_cancelFetching {

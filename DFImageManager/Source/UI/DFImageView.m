@@ -40,24 +40,24 @@ static const NSTimeInterval _kMinimumAutoretryInterval = 8.f;
 
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    [self _df_cancelFetching];
+    [self _cancelFetching];
 }
 
 - (instancetype)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {
-        [self _df_commonInit];
+        [self _commonInit];
     }
     return self;
 }
 
 - (instancetype)initWithCoder:(NSCoder *)decoder {
     if (self = [super initWithCoder:decoder]) {
-        [self _df_commonInit];
+        [self _commonInit];
     }
     return self;
 }
 
-- (void)_df_commonInit {
+- (void)_commonInit {
     self.contentMode = UIViewContentModeScaleAspectFill;
     self.clipsToBounds = YES;
     
@@ -95,7 +95,7 @@ static const NSTimeInterval _kMinimumAutoretryInterval = 8.f;
 #pragma mark -
 
 - (void)prepareForReuse {
-    [self _df_cancelFetching];
+    [self _cancelFetching];
     _task = nil;
     _previousAutoretryTime = 0.0;
     self.image = nil;
@@ -105,7 +105,7 @@ static const NSTimeInterval _kMinimumAutoretryInterval = 8.f;
     [self.layer removeAllAnimations];
 }
 
-- (void)_df_cancelFetching {
+- (void)_cancelFetching {
     [_task cancel];
 }
 
@@ -135,7 +135,7 @@ static const NSTimeInterval _kMinimumAutoretryInterval = 8.f;
 }
 
 - (void)setImageWithRequests:(NSArray *)requests {
-    [self _df_cancelFetching];
+    [self _cancelFetching];
     
     if ([self.delegate respondsToSelector:@selector(imageView:willStartFetchingImagesForRequests:)]) {
         [self.delegate imageView:self willStartFetchingImagesForRequests:requests];
