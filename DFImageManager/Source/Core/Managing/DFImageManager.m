@@ -345,7 +345,7 @@ typedef NS_ENUM(NSUInteger, _DFImageTaskState) {
 }
 
 - (void)_imageFetchOperation:(_DFImageFetchOperation *)operation didUpdateProgress:(double)progress {
-    dispatch_sync(_queue, ^{
+    dispatch_async(_queue, ^{
         for (_DFImageTask *task in operation.imageTasks) {
             if (task.request.options.progressHandler) {
                 void (^progressHandler)(double) = task.request.options.progressHandler;
@@ -361,14 +361,14 @@ typedef NS_ENUM(NSUInteger, _DFImageTaskState) {
 }
 
 - (void)_imageFetchOperation:(_DFImageFetchOperation *)operation didCompleteWithResponse:(DFImageResponse *)response {
-    dispatch_sync(_queue, ^{
+    dispatch_async(_queue, ^{
         for (_DFImageTask *task in operation.imageTasks) {
             task.fetchOperation = nil;
             if (response.image) {
                 DFImageManager *__weak weakSelf = self;
                 [self _processImage:response.image task:task completion:^(UIImage *processedImage) {
                     task.response = [[DFImageResponse alloc] initWithImage:processedImage error:nil userInfo:response.userInfo];
-                    dispatch_sync(_queue, ^{
+                    dispatch_async(_queue, ^{
                         [weakSelf _setImageTaskState:_DFImageTaskStateCompleted task:task];
                     });
                 }];
