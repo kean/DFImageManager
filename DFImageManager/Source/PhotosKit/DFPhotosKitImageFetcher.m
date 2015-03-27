@@ -129,7 +129,9 @@ static inline PHImageContentMode _PHContentModeForDFContentMode(DFImageContentMo
         resource = [((NSURL *)resource) df_assetLocalIdentifier];
     }
     
-    DFPhotosKitImageFetchOperation *operation = [[DFPhotosKitImageFetchOperation alloc] initWithResource:resource targetSize:request.targetSize contentMode:_PHContentModeForDFContentMode(request.contentMode) options:requestOptions];
+    CGSize targetSize = CGSizeEqualToSize(DFImageMaximumSize, request.targetSize) ? PHImageManagerMaximumSize : request.targetSize;
+    
+    DFPhotosKitImageFetchOperation *operation = [[DFPhotosKitImageFetchOperation alloc] initWithResource:resource targetSize:targetSize contentMode:_PHContentModeForDFContentMode(request.contentMode) options:requestOptions];
     DFPhotosKitImageFetchOperation *__weak weakOp = operation;
     [operation setCompletionBlock:^{
         if (completion) {
