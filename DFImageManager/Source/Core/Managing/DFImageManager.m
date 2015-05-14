@@ -195,14 +195,13 @@ typedef NS_ENUM(NSUInteger, _DFImageTaskState) {
 
 @interface DFImageManager () <_DFImageRequestKeyDelegate>
 
-@property (nonatomic, readonly) NSMutableSet *executingImageTasks;
-@property (nonatomic, readonly) NSMutableDictionary /* _DFImageRequestKey : _DFImageTask */ *preheatingTasks;
-@property (nonatomic, readonly) NSMutableDictionary /* _DFImageRequestKey : _DFImageFetchOperation */ *fetchOperations;
-
 @end
 
 @implementation DFImageManager {
     dispatch_queue_t _queue;
+    NSMutableSet *_executingImageTasks;
+    NSMutableDictionary /* _DFImageRequestKey : _DFImageFetchOperation */ *_fetchOperations;
+    NSMutableDictionary /* _DFImageRequestKey : _DFImageTask */ *_preheatingTasks;
     NSInteger _preheatingTaskCounter;
     BOOL _needsToExecutePreheatTasks;
     BOOL _fetcherRespondsToCanonicalRequest;
@@ -422,7 +421,12 @@ typedef NS_ENUM(NSUInteger, _DFImageTaskState) {
             if (!_preheatingTasks[key]) {
                 DFImageManager *__weak weakSelf = self;
                 _DFImageTask *handler = [[_DFImageTask alloc] initWithManager:self request:request completionHandler:^(UIImage *image, NSDictionary *info) {
-                    [weakSelf.preheatingTasks removeObjectForKey:key];
+                    DFImageManager *strongSelf = weakSelf;
+                    if (strongSelf) {
+                        dispatch_async(strongSelf->_queue, ^{
+                            [strongSelf->_preheatingTasks removeObjectForKey:key];
+                        });
+                    }
                 }];
                 handler.tag = _preheatingTaskCounter++;
                 _preheatingTasks[key] = handler;
