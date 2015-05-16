@@ -156,7 +156,7 @@ typedef void (^_DFURLSessionDataTaskCompletionHandler)(NSData *data, NSURLRespon
 @end
 
 
-static const NSTimeInterval _kCommandExecutionInterval = 0.0025; // 2.5 ms
+static const NSTimeInterval _kCommandExecutionInterval = 0.005; // 5 ms
 
 /*! The _DFURLFetcherCommandExecutor serves multiple puproses:
  - Prevents NSURLSession trashing
