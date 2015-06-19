@@ -29,7 +29,7 @@
  
  @note Completion Block
  
- Completion block is guaranteed to be called on the main thread. Image manager can call a completion block synchronously if the requested image can be retrieved from the memory cache and the request was made on the main thread. This behavior can be disabled using DFImageManagerConfiguration.
+ Completion block is guaranteed to be called on the main thread. Completion block is called synchronously when the requested image can be retrieved from the memory cache and the request was made on the main thread.
  
  @note Reusing Operations
  
