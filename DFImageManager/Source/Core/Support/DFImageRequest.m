@@ -23,10 +23,9 @@
 #import "DFImageRequest.h"
 #import "DFImageRequestOptions.h"
 
-
 @implementation DFImageRequest
 
-- (instancetype)initWithResource:(id)resource targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options {
+- (nonnull instancetype)initWithResource:(nonnull id)resource targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(nullable DFImageRequestOptions *)options {
     if (self = [super init]) {
         _resource = resource;
         _targetSize = targetSize;
@@ -36,15 +35,15 @@
     return self;
 }
 
-- (instancetype)initWithResource:(id)resource {
+- (nonnull instancetype)initWithResource:(nonnull id)resource {
     return [self initWithResource:resource targetSize:DFImageMaximumSize contentMode:DFImageContentModeAspectFill options:nil];
 }
 
-+ (instancetype)requestWithResource:(id)resource {
++ (nonnull instancetype)requestWithResource:(nonnull id)resource {
     return [[DFImageRequest alloc] initWithResource:resource];
 }
 
-+ (instancetype)requestWithResource:(id)resource targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options {
++ (nonnull instancetype)requestWithResource:(nonnull id)resource targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(nullable DFImageRequestOptions *)options {
     return [[DFImageRequest alloc] initWithResource:resource targetSize:targetSize contentMode:contentMode options:options];
 }
 
@@ -66,7 +65,7 @@
 
 @implementation DFImageRequest (UIKitAdditions)
 
-+ (CGSize)targetSizeForView:(UIView *)view {
++ (CGSize)targetSizeForView:(nonnull UIView *)view {
     CGSize size = view.bounds.size;
     CGFloat scale = [UIScreen mainScreen].scale;
     return CGSizeMake(size.width * scale, size.height * scale);

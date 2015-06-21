@@ -31,7 +31,7 @@
 
 /*! The resource whose image data is to be loaded.
  */
-@property (nonatomic) id resource;
+@property (nonnull, nonatomic) id resource;
 
 /*! The size in pixels of image to be returned.
  */
@@ -43,7 +43,7 @@
 
 /*! Options specifying how image manager should handle the request and process the received image. More options that are provided in a base class may be available, so make sure to check the documentation on that.
  */
-@property (nonatomic) DFImageRequestOptions *options;
+@property (nonnull, nonatomic) DFImageRequestOptions *options;
 
 /*! Initializes request with a given parameters.
  @param resource The resource whose image data is to be loaded.
@@ -51,19 +51,19 @@
  @param contentMode An option for how to fit the image to the aspect ratio of the requested size. For details, see DFImageContentMode.
  @param options Options specifying how image manager should handle the request and process the received image. Default options are created when parameter is nil.
  */
-- (instancetype)initWithResource:(id)resource targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options NS_DESIGNATED_INITIALIZER;
+- (nonnull instancetype)initWithResource:(nonnull id)resource targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(nullable DFImageRequestOptions *)options NS_DESIGNATED_INITIALIZER;
 
 /*! Returns a DFImageRequest initialized with a given resource. Uses DFImageMaximumSize and DFImageContentModeAspectFill as other parameters.
  */
-- (instancetype)initWithResource:(id)resource;
+- (nonnull instancetype)initWithResource:(nonnull id)resource;
 
 /*! Returns a DFImageRequest initialized with a given resource. Uses DFImageMaximumSize and DFImageContentModeAspectFill as other parameters.
  */
-+ (instancetype)requestWithResource:(id)resource;
++ (nonnull instancetype)requestWithResource:(nonnull id)resource;
 
 /*! Returns a DFImageRequest initialized with a given parameters.
  */
-+ (instancetype)requestWithResource:(id)resource targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options;
++ (nonnull instancetype)requestWithResource:(nonnull id)resource targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(nullable DFImageRequestOptions *)options;
 
 @end
 
@@ -72,6 +72,6 @@
 
 /*! Returns image target size (in pixels) for a given view.
  */
-+ (CGSize)targetSizeForView:(UIView *)view;
++ (CGSize)targetSizeForView:(nonnull UIView *)view;
 
 @end

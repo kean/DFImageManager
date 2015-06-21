@@ -18,7 +18,7 @@
 @implementation TDFImageRequest
 
 - (void)testThatDefaultsAreSet {
-    DFImageRequest *request = [[DFImageRequest alloc] initWithResource:nil];
+    DFImageRequest *request = [[DFImageRequest alloc] initWithResource:@"Resourse"];
     XCTAssertTrue(CGSizeEqualToSize(request.targetSize, DFImageMaximumSize));
     XCTAssertTrue(request.contentMode == DFImageContentModeAspectFill);
     TDFAssertDefaultOptionsAreValid(request.options);

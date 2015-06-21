@@ -134,7 +134,6 @@
     manager.supportedResource = @"resourse_01";
     DFCompositeImageManager *compisite = [[DFCompositeImageManager alloc] initWithImageManagers:@[ manager ]];
     XCTAssertThrows([compisite requestImageForRequest:nil completion:nil]);
-    XCTAssertThrows([compisite requestImageForRequest:[DFImageRequest requestWithResource:nil] completion:nil]);
     XCTAssertThrows([compisite requestImageForRequest:[DFImageRequest requestWithResource:@"resourse_02"] completion:nil]);
 }
 

@@ -53,15 +53,13 @@
 }
 
 - (void)testThatCanHandleRequestIsForwardedToFetcher {
-    DFImageRequest *request = [[DFImageRequest alloc] initWithResource:[TDFMockResource resourceWithID:@"ID01"]];
+    DFImageRequest *request = [DFImageRequest requestWithResource:[TDFMockResource resourceWithID:@"ID01"]];
     XCTAssertTrue([_fetcher canHandleRequest:request]);
     XCTAssertTrue([_manager canHandleRequest:request]);
     XCTAssertFalse([_fetcher canHandleRequest:nil]);
     XCTAssertFalse([_manager canHandleRequest:nil]);
     XCTAssertFalse([_fetcher canHandleRequest:[DFImageRequest requestWithResource:@"String"]]);
     XCTAssertFalse([_manager canHandleRequest:[DFImageRequest requestWithResource:@"String"]]);
-    XCTAssertFalse([_fetcher canHandleRequest:[DFImageRequest requestWithResource:nil]]);
-    XCTAssertFalse([_manager canHandleRequest:[DFImageRequest requestWithResource:nil]]);
 }
 
 #pragma mark - Response Info
@@ -382,8 +380,7 @@
 
 - (void)testThatPreheatingRequestsHasLowerExecutionPrirorty {
     TDFMockResource *resource1 = [TDFMockResource resourceWithID:@"ID01"];
-    DFImageRequest *request1 = [[DFImageRequest alloc] initWithResource:resource1];
-    
+    DFImageRequest *request1 = [DFImageRequest requestWithResource:resource1];
     TDFMockResource *resource2 = [TDFMockResource resourceWithID:@"ID02"];
     
     BOOL __block isRequestForResource2Started = NO;
@@ -528,23 +525,6 @@
         [expectation fulfill];
     }];
     [self waitForExpectationsWithTimeout:2.0 handler:nil];
-}
-
-- (void)testThatCompletionBlockIsCalledWhenRequestIsEmpty {
-    XCTestExpectation *expectation = [self expectationWithDescription:@""];
-    [_manager requestImageForRequest:[DFImageRequest requestWithResource:nil] completion:^(UIImage *image, NSDictionary *info) {
-        XCTAssertNil(image);
-        XCTAssertNil(info);
-        [expectation fulfill];
-    }];
-    [self waitForExpectationsWithTimeout:2.0 handler:nil];
-}
-
-- (void)testThatPreheatingImagesWithEmptyRequestsDoesntCrash {
-    [_manager startPreheatingImagesForRequests:@[[DFImageRequest requestWithResource:nil]]];
-    [NSThread sleepForTimeInterval:0.05];
-    [_manager stopPreheatingImagesForRequests:@[[DFImageRequest requestWithResource:nil]]];
-    [NSThread sleepForTimeInterval:0.05];
 }
 
 - (void)testThatImageIsFetchedWhenCompletionHandlerIsNil {
