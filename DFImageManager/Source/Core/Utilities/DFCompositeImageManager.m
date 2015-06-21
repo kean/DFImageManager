@@ -76,16 +76,10 @@
 
 - (DFImageRequestID *)requestImageForRequest:(DFImageRequest *)request completion:(void (^)(UIImage *, NSDictionary *))completion {
     id<DFImageManaging> manager = DFManagerForRequest(request);
-    if (manager) {
-        return [manager requestImageForRequest:request completion:completion];
-    } else {
-        if (completion) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                completion(nil, nil);
-            });
-        }
-        return nil;
+    if (!manager) {
+        [NSException raise:NSInvalidArgumentException format:@"There are no managers that can handle the request %@", request];
     }
+    return [manager requestImageForRequest:request completion:completion];
 }
 
 - (void)startPreheatingImagesForRequests:(NSArray *)requests {

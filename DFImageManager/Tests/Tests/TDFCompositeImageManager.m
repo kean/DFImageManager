@@ -129,42 +129,13 @@
     XCTAssertTrue([manager2.submitedRequests containsObject:request2]);
 }
 
-- (void)testThatIfTheRequestCantBeHandledTheCompletionBlockIsStillCalled {
+- (void)testThatIfTheRequestCantBeHandledTheExceptionIsThrown {
     _TDFMockImageManagerForComposite *manager = [_TDFMockImageManagerForComposite new];
     manager.supportedResource = @"resourse_01";
     DFCompositeImageManager *compisite = [[DFCompositeImageManager alloc] initWithImageManagers:@[ manager ]];
-    
-    {   // Request is nil
-        XCTestExpectation *expectation = [self expectationWithDescription:@"expectation"];
-        [compisite requestImageForRequest:nil completion:^(UIImage *image, NSDictionary *info) {
-            XCTAssertNil(image);
-            XCTAssertNil(info);
-            [expectation fulfill];
-        }];
-        [self waitForExpectationsWithTimeout:0.5 handler:nil];
-    }
-    
-    {   // Request without a resource
-        DFImageRequest *request = [[DFImageRequest alloc] initWithResource:nil];
-        XCTestExpectation *expectation = [self expectationWithDescription:@"expectation"];
-        [compisite requestImageForRequest:request completion:^(UIImage *image, NSDictionary *info) {
-            XCTAssertNil(image);
-            XCTAssertNil(info);
-            [expectation fulfill];
-        }];
-        [self waitForExpectationsWithTimeout:0.5 handler:nil];
-    }
-    
-    {   // Request without a resource
-        DFImageRequest *request = [[DFImageRequest alloc] initWithResource:@"resourse_02"];
-        XCTestExpectation *expectation = [self expectationWithDescription:@"expectation"];
-        [compisite requestImageForRequest:request completion:^(UIImage *image, NSDictionary *info) {
-            XCTAssertNil(image);
-            XCTAssertNil(info);
-            [expectation fulfill];
-        }];
-        [self waitForExpectationsWithTimeout:0.5 handler:nil];
-    }
+    XCTAssertThrows([compisite requestImageForRequest:nil completion:nil]);
+    XCTAssertThrows([compisite requestImageForRequest:[DFImageRequest requestWithResource:nil] completion:nil]);
+    XCTAssertThrows([compisite requestImageForRequest:[DFImageRequest requestWithResource:@"resourse_02"] completion:nil]);
 }
 
 @end
