@@ -20,6 +20,6 @@ static NSString *TDFMockImageCacheImageKey = @"TDFMockImageCacheImageKey";
 /*! Default value is NO.
  */
 @property (nonatomic) BOOL enabled;
-@property (nonatomic, readonly) NSMutableDictionary *images;
+@property (nonatomic, readonly) NSMutableDictionary *responses;
 
 @end

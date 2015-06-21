@@ -20,8 +20,9 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "DFCachedImage.h"
+#import "DFCachedImageResponse.h"
 #import "DFImageCache.h"
+#import "DFImageResponse.h"
 #import "NSCache+DFImageManager.h"
 
 #if __has_include("DFImageManagerKit+GIF.h") && !(DF_IMAGE_MANAGER_FRAMEWORK_TARGET)
@@ -48,8 +49,8 @@
 
 #pragma mark - <DFImageCaching>
 
-- (DFCachedImage *)cachedImageForKey:(id<NSCopying>)key {
-    DFCachedImage *cachedImage = [_cache objectForKey:key];
+- (DFCachedImageResponse *)cachedImageResponseForKey:(id<NSCopying>)key {
+    DFCachedImageResponse *cachedImage = [_cache objectForKey:key];
     if (cachedImage) {
         if (cachedImage.expirationDate > CACurrentMediaTime()) {
             return cachedImage;
@@ -60,10 +61,10 @@
     return nil;
 }
 
-- (void)storeImage:(DFCachedImage *)cachedImage forKey:(id<NSCopying>)key {
-    if (cachedImage && key) {
-        NSUInteger cost = [self costForImage:cachedImage.image];
-        [_cache setObject:cachedImage forKey:key cost:cost];
+- (void)storeImageResponse:(DFCachedImageResponse *)cachedResponse forKey:(id<NSCopying>)key {
+    if (cachedResponse && key) {
+        NSUInteger cost = [self costForImageResponse:cachedResponse];
+        [_cache setObject:cachedResponse forKey:key cost:cost];
     }
 }
 
@@ -73,7 +74,8 @@
 
 #pragma mark -
 
-- (NSUInteger)costForImage:(UIImage *)image {
+- (NSUInteger)costForImageResponse:(DFCachedImageResponse *)cachedResponse {
+    UIImage *image = cachedResponse.response.image;
     CGImageRef imageRef = image.CGImage;
     NSUInteger bitsPerPixel = CGImageGetBitsPerPixel(imageRef);
     NSUInteger cost = (CGImageGetWidth(imageRef) * CGImageGetHeight(imageRef) * bitsPerPixel) / 8; // Return number of bytes in image bitmap.

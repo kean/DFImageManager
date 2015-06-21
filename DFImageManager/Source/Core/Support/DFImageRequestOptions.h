@@ -43,7 +43,7 @@
 @property (nonatomic) DFImageRequestCachePolicy memoryCachePolicy;
 
 /*! The amount of time to elapse before memory-cached images associated with a request are considered to have expired. Default value is 600.0 seconds.
- @warning This property doesn't affect caching implemented in a classes conforming to DFImageFetching protocol (for example, NSURLSession caching)! For more info see DFImageCaching protocol and DFCachedImage class.
+ @warning This property doesn't affect caching implemented in a classes conforming to DFImageFetching protocol (for example, NSURLSession caching)! For more info see DFImageCaching protocol and DFCachedImageResponse class.
  */
 @property (nonatomic) NSTimeInterval expirationAge;
 

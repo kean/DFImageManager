@@ -20,24 +20,24 @@
 - (void)setEnabled:(BOOL)enabled {
     if (_enabled != enabled) {
         _enabled = enabled;
-        _images = enabled ? [NSMutableDictionary new] : nil;
+        _responses = enabled ? [NSMutableDictionary new] : nil;
     }
 }
 
-- (DFCachedImage *)cachedImageForKey:(id<NSCopying>)key {
-    DFCachedImage *cachedImage = [_images objectForKey:key];
-    if (cachedImage) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:TDFMockImageCacheWillReturnCachedImageNotification object:self userInfo:@{ TDFMockImageCacheImageKey : cachedImage.image }];
+- (DFCachedImageResponse *)cachedImageResponseForKey:(id<NSCopying>)key {
+    DFCachedImageResponse *response = [_responses objectForKey:key];
+    if (response) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:TDFMockImageCacheWillReturnCachedImageNotification object:self userInfo:@{ TDFMockImageCacheImageKey : response.response.image }];
     }
-    return cachedImage;
+    return response;
 }
 
-- (void)storeImage:(DFCachedImage *)image forKey:(id<NSCopying>)key {
-    [_images setObject:image forKey:key];
+- (void)storeImageResponse:(DFCachedImageResponse *)cachedResponse forKey:(id<NSCopying>)key {
+    [_responses setObject:cachedResponse forKey:key];
 }
 
 - (void)removeAllObjects {
-    [_images removeAllObjects];
+    [_responses removeAllObjects];
 }
 
 @end

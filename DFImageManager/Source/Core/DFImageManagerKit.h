@@ -38,7 +38,7 @@
 
 // Caching (memory cache)
 #import "DFImageCache.h"
-#import "DFCachedImage.h"
+#import "DFCachedImageResponse.h"
 #import "NSCache+DFImageManager.h"
 
 // Processing

@@ -232,17 +232,48 @@
         [expectation fulfill];
     }];
     [self waitForExpectationsWithTimeout:2.0 handler:nil];
-    XCTAssertEqual(_cache.images.count, 1);
+    XCTAssertEqual(_cache.responses.count, 1);
     
     BOOL __block isCompletionHandlerCalled = NO;
-    DFImageRequestID *requestID = [_manager requestImageForResource:resource completion:^(UIImage *image, NSDictionary *info) {
+    [_manager requestImageForResource:resource completion:^(UIImage *image, NSDictionary *info) {
         XCTAssertNotNil(image);
-        XCTAssertNotNil(info[DFImageInfoRequestIDKey]);
         XCTAssertTrue([NSThread isMainThread]);
         isCompletionHandlerCalled = YES;
     }];
-    XCTAssertNotNil(requestID);
     XCTAssertTrue(isCompletionHandlerCalled);
+}
+
+- (void)testThatMemoryCachingIsTransparentToTheClient {
+    DFImageResponse *response = [[DFImageResponse alloc] initWithImage:[UIImage new] error:[NSError errorWithDomain:@"TDFErrorDomain" code:123 userInfo:nil] userInfo:@{ @"TDFKey" : @"TDFValue" }];
+    _fetcher.response = response;
+    _cache.enabled = YES;
+    
+    TDFMockResource *resource = [TDFMockResource resourceWithID:@"ID01"];
+    XCTestExpectation *expectation = [self expectationWithDescription:@"request"];
+    {
+        DFImageRequestID *requestID = [_manager requestImageForResource:resource completion:^(UIImage *image, NSDictionary *info) {
+            XCTAssertEqual(response.image, image);
+            XCTAssertEqual(response.error, info[DFImageInfoErrorKey]);
+            XCTAssertEqual(response.userInfo[@"TDFKey"], info[@"TDFKey"]);
+            [expectation fulfill];
+        }];
+        XCTAssertNotNil(requestID);
+        [self waitForExpectationsWithTimeout:2.0 handler:nil];
+    }
+    XCTAssertEqual(_cache.responses.count, 1);
+    
+    {
+        BOOL __block isCompletionHandlerCalled = NO;
+        DFImageRequestID *requestID = [_manager requestImageForResource:resource completion:^(UIImage *image, NSDictionary *info) {
+            XCTAssertEqual(response.image, image);
+            XCTAssertEqual(response.error, info[DFImageInfoErrorKey]);
+            XCTAssertEqual(response.userInfo[@"TDFKey"], info[@"TDFKey"]);
+            XCTAssertTrue([NSThread isMainThread]);
+            isCompletionHandlerCalled = YES;
+        }];
+        XCTAssertNotNil(requestID);
+        XCTAssertTrue(isCompletionHandlerCalled);
+    }
 }
 
 /*! Test that callbacks are called on the main thread when the image is in memory cache and the request was made from background thread.
@@ -258,7 +289,7 @@
         [expectation1 fulfill];
     }];
     [self waitForExpectationsWithTimeout:2.0 handler:nil];
-    XCTAssertTrue(_cache.images.count == 1);
+    XCTAssertTrue(_cache.responses.count == 1);
     
     XCTestExpectation *expectation2 = [self expectationWithDescription:@"request2"];
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
@@ -290,7 +321,7 @@
         [expectation1 fulfill];
     }];
     [self waitForExpectationsWithTimeout:2.0 handler:nil];
-    XCTAssertTrue(_cache.images.count == 1);
+    XCTAssertTrue(_cache.responses.count == 1);
     
     // 2. Test that first manager uses cached image
     UIImage *__block cachedImage = nil;

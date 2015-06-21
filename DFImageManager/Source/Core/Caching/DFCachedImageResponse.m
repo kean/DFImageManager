@@ -20,24 +20,16 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import <Foundation/Foundation.h>
-#import <UIKit/UIKit.h>
+#import "DFCachedImageResponse.h"
 
-/*! Wrapper for images stored in the framework's memory caching system.
- */
-@interface DFCachedImage : NSObject
+@implementation DFCachedImageResponse
 
-/*! Returns cached image of the receiver.
- */
-@property (nonatomic, readonly) UIImage *image;
-
-/*! Returns the expiration date of the receiver.
- */
-@property (nonatomic, readonly) NSTimeInterval expirationDate;
-
-/*! Initializes the DFCachedImage with the given image and expiration date.
- @param image An image object, for best performance users should store decompressed images into memory cache.
- */
-- (instancetype)initWithImage:(UIImage *)image expirationDate:(NSTimeInterval)expirationDate NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithResponse:(DFImageResponse *)response expirationDate:(NSTimeInterval)expirationDate {
+    if (self = [super init]) {
+        _response = response;
+        _expirationDate = expirationDate;
+    }
+    return self;
+}
 
 @end

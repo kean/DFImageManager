@@ -20,7 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "DFCachedImage.h"
+#import "DFCachedImageResponse.h"
 #import "DFImageCaching.h"
 #import "DFImageFetching.h"
 #import "DFImageManager.h"
@@ -248,10 +248,10 @@ typedef NS_ENUM(NSUInteger, _DFImageTaskState) {
     DFImageRequest *canonicalRequest = [self _canonicalRequestForRequest:request];
     _DFImageTask *task = [[_DFImageTask alloc] initWithManager:self request:canonicalRequest completionHandler:completion];
     if ([NSThread isMainThread]) {
-        UIImage *image = [self _cachedImageForRequest:canonicalRequest];
-        if (image) {
+        DFImageResponse *response = [self _cachedResponseForRequest:canonicalRequest];
+        if (response.image) {
             if (completion) {
-                completion(image, @{ DFImageInfoRequestIDKey: task });
+                completion(response.image, [self _infoFromResponse:response task:task]);
             }
             return task;
         }
@@ -327,17 +327,9 @@ typedef NS_ENUM(NSUInteger, _DFImageTaskState) {
         
         if (task.completionHandler) {
             DFImageResponse *response = task.response;
-            NSMutableDictionary *responseInfo = ({
-                NSMutableDictionary *info = [NSMutableDictionary new];
-                if (response.error) {
-                    info[DFImageInfoErrorKey] = response.error;
-                }
-                [info addEntriesFromDictionary:response.userInfo];
-                info[DFImageInfoRequestIDKey] = task;
-                info;
-            });
+            NSDictionary *info = [self _infoFromResponse:response task:task];
             dispatch_async(dispatch_get_main_queue(), ^{
-                task.completionHandler(response.image, responseInfo);
+                task.completionHandler(response.image, info);
             });
         }
     }
@@ -365,8 +357,8 @@ typedef NS_ENUM(NSUInteger, _DFImageTaskState) {
             task.fetchOperation = nil;
             if (response.image) {
                 DFImageManager *__weak weakSelf = self;
-                [self _processImage:response.image task:task completion:^(UIImage *processedImage) {
-                    task.response = [[DFImageResponse alloc] initWithImage:processedImage error:nil userInfo:response.userInfo];
+                [self _processResponse:response task:task completion:^(DFImageResponse *processedResponse) {
+                    task.response = processedResponse;
                     dispatch_async(_queue, ^{
                         [weakSelf _setImageTaskState:_DFImageTaskStateCompleted task:task];
                     });
@@ -381,11 +373,11 @@ typedef NS_ENUM(NSUInteger, _DFImageTaskState) {
     });
 }
 
-- (void)_processImage:(UIImage *)image task:(_DFImageTask *)task completion:(void (^)(UIImage *processedImage))completion {
+- (void)_processResponse:(DFImageResponse *)response task:(_DFImageTask *)task completion:(void (^)(DFImageResponse *processedResponse))completion {
     DFImageRequest *request = task.request;
     BOOL shouldProcessResponse = _conf.processor != nil;
 #if __has_include("DFImageManagerKit+GIF.h") && !(DF_IMAGE_MANAGER_FRAMEWORK_TARGET)
-    if ([image isKindOfClass:[DFAnimatedImage class]]) {
+    if ([response.image isKindOfClass:[DFAnimatedImage class]]) {
         shouldProcessResponse = NO;
     }
 #endif
@@ -393,21 +385,20 @@ typedef NS_ENUM(NSUInteger, _DFImageTaskState) {
         DFImageManager *__weak weakSelf = self;
         id<DFImageProcessing> processor = _conf.processor;
         NSOperation *operation = [NSBlockOperation blockOperationWithBlock:^{
-            UIImage *processedImage = [weakSelf _cachedImageForRequest:request];
-            if (processedImage) {
-                completion(processedImage);
-            } else {
-                processedImage = [processor processedImage:image forRequest:request];
-                [weakSelf _storeImage:processedImage forRequest:request];
-                completion(processedImage);
+            DFImageResponse *processedResponse = [weakSelf _cachedResponseForRequest:request];
+            if (!processedResponse) {
+                UIImage *processedImage = [processor processedImage:response.image forRequest:request];
+                processedResponse = [[DFImageResponse alloc] initWithImage:processedImage error:response.error userInfo:response.userInfo];
+                [weakSelf _storeResponse:processedResponse forRequest:request];
             }
+            completion(processedResponse);
         }];
         task.processOperation = operation;
         [_conf.processingQueue addOperation:operation];
     } else {
-        [self _storeImage:image forRequest:request];
+        [self _storeResponse:response forRequest:request];
         dispatch_async(dispatch_get_main_queue(), ^{
-            completion(image);
+            completion(response);
         });
     }
 }
@@ -501,13 +492,13 @@ typedef NS_ENUM(NSUInteger, _DFImageTaskState) {
 
 #pragma mark - Support
 
-- (UIImage *)_cachedImageForRequest:(DFImageRequest *)request {
-    return request.options.memoryCachePolicy != DFImageRequestCachePolicyReloadIgnoringCache ? [_conf.cache cachedImageForKey:DFImageCacheKeyCreate(request)].image : nil;
+- (DFImageResponse *)_cachedResponseForRequest:(DFImageRequest *)request {
+    return request.options.memoryCachePolicy != DFImageRequestCachePolicyReloadIgnoringCache ? [_conf.cache cachedImageResponseForKey:DFImageCacheKeyCreate(request)].response : nil;
 }
 
-- (void)_storeImage:(UIImage *)image forRequest:(DFImageRequest *)request {
-    DFCachedImage *cachedImage = [[DFCachedImage alloc] initWithImage:image expirationDate:(CACurrentMediaTime() + request.options.expirationAge)];
-    [_conf.cache storeImage:cachedImage forKey:DFImageCacheKeyCreate(request)];
+- (void)_storeResponse:(DFImageResponse *)response forRequest:(DFImageRequest *)request {
+    DFCachedImageResponse *cachedResponse = [[DFCachedImageResponse alloc] initWithResponse:response expirationDate:(CACurrentMediaTime() + request.options.expirationAge)];
+    [_conf.cache storeImageResponse:cachedResponse forKey:DFImageCacheKeyCreate(request)];
 }
 
 - (NSArray *)_canonicalRequestsForRequests:(NSArray *)requests {
@@ -526,6 +517,16 @@ typedef NS_ENUM(NSUInteger, _DFImageTaskState) {
         return [[_conf.fetcher canonicalRequestForRequest:[request copy]] copy];
     }
     return [request copy];
+}
+
+- (NSDictionary *)_infoFromResponse:(DFImageResponse *)response task:(_DFImageTask *)task {
+    NSMutableDictionary *info = [NSMutableDictionary new];
+    if (response.error) {
+        info[DFImageInfoErrorKey] = response.error;
+    }
+    [info addEntriesFromDictionary:response.userInfo];
+    info[DFImageInfoRequestIDKey] = task;
+    return info;
 }
 
 - (NSString *)description {
