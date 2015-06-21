@@ -78,7 +78,7 @@
 
 #pragma mark - <DFImageManaging>
 
-- (BOOL)canHandleRequest:(DFImageRequest *)request {
+- (BOOL)canHandleRequest:(nonnull DFImageRequest *)request {
     return [_manager canHandleRequest:_DF_TRANSFORMED_REQUEST(request)];
 }
 

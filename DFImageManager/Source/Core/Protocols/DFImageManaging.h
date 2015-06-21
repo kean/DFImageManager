@@ -27,7 +27,7 @@
 @class DFImageRequest;
 @class DFImageRequestID;
 
-typedef void (^DFImageRequestCompletion)(UIImage *image, NSDictionary *info);
+typedef void (^DFImageRequestCompletion)(UIImage *__nullable image, NSDictionary *__nonnull info);
 
 /*! Provides an API for loading images associated with a given resources. The resources might by anything from a NSURL to a PHAsset objects or even your custom classes.
  */
@@ -35,27 +35,27 @@ typedef void (^DFImageRequestCompletion)(UIImage *image, NSDictionary *info);
 
 /*! Inspects the given request and determines whether or not it can be handled.
  */
-- (BOOL)canHandleRequest:(DFImageRequest *)request;
+- (BOOL)canHandleRequest:(nonnull DFImageRequest *)request;
 
 /*! Requests an image representation with a maximum available size for the specified resource.
  */
-- (DFImageRequestID *)requestImageForResource:(id)resource completion:(void (^)(UIImage *image, NSDictionary *info))completion;
+- (nonnull DFImageRequestID *)requestImageForResource:(nonnull id)resource completion:(void (^__nullable)(UIImage *__nullable image, NSDictionary *__nonnull info))completion;
 
 /*! Requests an image representation for the specified request.
  @param request The request that contains the resource whose image it to be loaded as well as other request options. The implementation should create a deep copy of the request so that it can't be changed underneath it later. The implementation may provide more request options that are available in a base class, so make sure to check the documentation on that.
  @param completion Can be called synchronously. A block to be called when image loading is complete, providing the requested image or information about the status of the request. The info dictionary provides information about the status of the request. See the definitions of DFImageInfo*Key strings for possible keys and values.
  @return An unique identifier for the request, which can be used to cancel the request or change its priority.
  */
-- (DFImageRequestID *)requestImageForRequest:(DFImageRequest *)request completion:(void (^)(UIImage *image, NSDictionary *info))completion;
+- (nonnull DFImageRequestID *)requestImageForRequest:(nonnull DFImageRequest *)request completion:(void (^__nullable)(UIImage *__nullable image, NSDictionary *__nonnull info))completion;
 
 /*! Prepares image representations of the specified resources and options for later use.
  @note The application is responsible for providing the same requests when preheating the images and when actually requesting them later or else the preheating might be either partially effective or not effective at all.
  */
-- (void)startPreheatingImagesForRequests:(NSArray /* DFImageRequest */ *)requests;
+- (void)startPreheatingImagesForRequests:(nonnull NSArray /* DFImageRequest */ *)requests;
 
 /*! Cancels image preparation for the resources assets and options.
  */
-- (void)stopPreheatingImagesForRequests:(NSArray /* DFImageRequest */ *)requests;
+- (void)stopPreheatingImagesForRequests:(nonnull NSArray /* DFImageRequest */ *)requests;
 
 /*! Cancels all image preheating requests registered with a manager.
  */

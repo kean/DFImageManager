@@ -237,14 +237,6 @@ typedef NS_ENUM(NSUInteger, _DFImageTaskState) {
 }
 
 - (DFImageRequestID *)requestImageForRequest:(DFImageRequest *)request completion:(DFImageRequestCompletion)completion {
-    if (!request.resource) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            if (completion) {
-                completion(nil, nil);
-            }
-        });
-        return nil;
-    }
     DFImageRequest *canonicalRequest = [self _canonicalRequestForRequest:request];
     _DFImageTask *task = [[_DFImageTask alloc] initWithManager:self request:canonicalRequest completionHandler:completion];
     if ([NSThread isMainThread]) {
@@ -512,7 +504,7 @@ typedef NS_ENUM(NSUInteger, _DFImageTaskState) {
     return canonicalRequests;
 }
 
-- (DFImageRequest *)_canonicalRequestForRequest:(DFImageRequest *)request {
+- (nonnull DFImageRequest *)_canonicalRequestForRequest:(nonnull DFImageRequest *)request {
     if (_fetcherRespondsToCanonicalRequest) {
         return [[_conf.fetcher canonicalRequestForRequest:[request copy]] copy];
     }

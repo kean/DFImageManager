@@ -29,7 +29,7 @@
     return self;
 }
 
-- (BOOL)canHandleRequest:(DFImageRequest *)request {
+- (BOOL)canHandleRequest:(nonnull DFImageRequest *)request {
     return [self.supportedResource isEqualToString:request.resource];
 }
 
@@ -133,7 +133,6 @@
     _TDFMockImageManagerForComposite *manager = [_TDFMockImageManagerForComposite new];
     manager.supportedResource = @"resourse_01";
     DFCompositeImageManager *compisite = [[DFCompositeImageManager alloc] initWithImageManagers:@[ manager ]];
-    XCTAssertThrows([compisite requestImageForRequest:nil completion:nil]);
     XCTAssertThrows([compisite requestImageForRequest:[DFImageRequest requestWithResource:@"resourse_02"] completion:nil]);
 }
 

@@ -57,7 +57,6 @@
     XCTAssertTrue([_fetcher canHandleRequest:request]);
     XCTAssertTrue([_manager canHandleRequest:request]);
     XCTAssertFalse([_fetcher canHandleRequest:nil]);
-    XCTAssertFalse([_manager canHandleRequest:nil]);
     XCTAssertFalse([_fetcher canHandleRequest:[DFImageRequest requestWithResource:@"String"]]);
     XCTAssertFalse([_manager canHandleRequest:[DFImageRequest requestWithResource:@"String"]]);
 }
@@ -505,26 +504,6 @@
 
 - (void)testThatRaisesExceptionWhenInitializedWithoutConfiguration {
     XCTAssertThrows([[DFImageManager alloc] initWithConfiguration:nil]);
-}
-
-- (void)testThatCompletionBlockIsCalledWhenResourceIsNil {
-    XCTestExpectation *expectation = [self expectationWithDescription:@""];
-    [_manager requestImageForResource:nil completion:^(UIImage *image, NSDictionary *info) {
-        XCTAssertNil(image);
-        XCTAssertNil(info);
-        [expectation fulfill];
-    }];
-    [self waitForExpectationsWithTimeout:2.0 handler:nil];
-}
-
-- (void)testThatCompletionBlockIsCalledWhenRequestIsNil {
-    XCTestExpectation *expectation = [self expectationWithDescription:@""];
-    [_manager requestImageForRequest:nil completion:^(UIImage *image, NSDictionary *info) {
-        XCTAssertNil(image);
-        XCTAssertNil(info);
-        [expectation fulfill];
-    }];
-    [self waitForExpectationsWithTimeout:2.0 handler:nil];
 }
 
 - (void)testThatImageIsFetchedWhenCompletionHandlerIsNil {
