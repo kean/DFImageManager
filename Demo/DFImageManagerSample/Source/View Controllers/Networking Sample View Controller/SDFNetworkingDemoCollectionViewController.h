@@ -13,6 +13,5 @@
 
 @property (nonatomic) BOOL allowsPreheating;
 @property (nonatomic) BOOL displaysPreheatingDetails;
-@property (nonatomic) NSInteger numberOfItemsPerRow;
 
 @end

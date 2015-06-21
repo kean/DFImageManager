@@ -235,11 +235,13 @@
     XCTAssertEqual(_cache.images.count, 1);
     
     BOOL __block isCompletionHandlerCalled = NO;
-    [_manager requestImageForResource:resource completion:^(UIImage *image, NSDictionary *info) {
+    DFImageRequestID *requestID = [_manager requestImageForResource:resource completion:^(UIImage *image, NSDictionary *info) {
         XCTAssertNotNil(image);
+        XCTAssertNotNil(info[DFImageInfoRequestIDKey]);
         XCTAssertTrue([NSThread isMainThread]);
         isCompletionHandlerCalled = YES;
     }];
+    XCTAssertNotNil(requestID);
     XCTAssertTrue(isCompletionHandlerCalled);
 }
 

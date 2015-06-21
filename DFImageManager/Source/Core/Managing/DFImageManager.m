@@ -246,16 +246,16 @@ typedef NS_ENUM(NSUInteger, _DFImageTaskState) {
         return nil;
     }
     DFImageRequest *canonicalRequest = [self _canonicalRequestForRequest:request];
+    _DFImageTask *task = [[_DFImageTask alloc] initWithManager:self request:canonicalRequest completionHandler:completion];
     if ([NSThread isMainThread]) {
         UIImage *image = [self _cachedImageForRequest:canonicalRequest];
         if (image) {
             if (completion) {
-                completion(image, nil);
+                completion(image, @{ DFImageInfoRequestIDKey: task });
             }
-            return nil;
+            return task;
         }
     }
-    _DFImageTask *task = [[_DFImageTask alloc] initWithManager:self request:canonicalRequest completionHandler:completion];
     dispatch_async(_queue, ^{
         [self _setImageTaskState:_DFImageTaskStateRunning task:task];
     });
