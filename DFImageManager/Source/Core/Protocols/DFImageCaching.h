@@ -31,11 +31,11 @@
 
 /*! Returns the cached image response associated with a given key.
  */
-- (DFCachedImageResponse *)cachedImageResponseForKey:(id<NSCopying>)key;
+- (nullable DFCachedImageResponse *)cachedImageResponseForKey:(nullable id<NSCopying>)key;
 
 /*! Stores the cached image response for the given key.
  */
-- (void)storeImageResponse:(DFCachedImageResponse *)cachedResponse forKey:(id<NSCopying>)key;
+- (void)storeImageResponse:(nullable DFCachedImageResponse *)cachedResponse forKey:(nullable id<NSCopying>)key;
 
 /*! Removes all cached image responses.
  */

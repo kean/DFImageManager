@@ -502,10 +502,6 @@
 
 #pragma mark - Fault Tolerance
 
-- (void)testThatRaisesExceptionWhenInitializedWithoutConfiguration {
-    XCTAssertThrows([[DFImageManager alloc] initWithConfiguration:nil]);
-}
-
 - (void)testThatImageIsFetchedWhenCompletionHandlerIsNil {
     [self expectationForNotification:TDFMockImageFetcherDidStartOperationNotification object:nil handler:nil];
     [_manager requestImageForResource:[TDFMockResource resourceWithID:@"1"] completion:nil];

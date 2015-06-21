@@ -48,12 +48,8 @@ static OSSpinLock _lock = OS_SPINLOCK_INIT;
 }
 
 + (void)addSharedManager:(id<DFImageManaging>)manager {
-    NSParameterAssert(manager);
-    NSMutableArray *managers = [NSMutableArray new];
+    NSMutableArray *managers = [NSMutableArray arrayWithObject:manager];
     id<DFImageManaging> sharedManager = [self sharedManager];
-    if (manager) {
-        [managers addObject:manager];
-    }
     if (sharedManager) {
         [managers addObject:sharedManager];
     }

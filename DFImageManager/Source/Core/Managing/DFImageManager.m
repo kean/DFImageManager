@@ -211,9 +211,6 @@ typedef NS_ENUM(NSUInteger, _DFImageTaskState) {
 
 - (instancetype)initWithConfiguration:(DFImageManagerConfiguration *)configuration {
     if (self = [super init]) {
-        if (!configuration) {
-            [NSException raise:NSInternalInconsistencyException format:@"Initialized without configuration"];
-        }
         _conf = [configuration copy];
         
         _queue = dispatch_queue_create([[NSString stringWithFormat:@"%@-queue-%p", [self class], self] UTF8String], DISPATCH_QUEUE_SERIAL);

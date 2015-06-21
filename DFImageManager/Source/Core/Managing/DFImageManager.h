@@ -23,6 +23,8 @@
 #import "DFImageManaging.h"
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class DFImageManagerConfiguration;
 
 /*! The DFImageManager and the related classes provides an implementation of the DFImageManaging protocol. The role of the DFImageManager is to manage the execution of image requests by delegating the actual job to a classes, implementing DFImageFetching, DFImageCaching, and DFImageProcessing protocols.
@@ -57,7 +59,7 @@
 
 /*! The receivers name.
  */
-@property (nonatomic) NSString *name;
+@property (nullable, nonatomic) NSString *name;
 
 /*! Creates image manager with a specified configuration.
  @param configuration A configuration object that specifies certain behaviors, such as fetching, processing, caching and more. Manager copies the configuration object.
@@ -100,3 +102,5 @@
 + (id<DFImageManaging>)createDefaultManager;
 
 @end
+
+NS_ASSUME_NONNULL_END

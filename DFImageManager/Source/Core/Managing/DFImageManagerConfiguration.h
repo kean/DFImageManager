@@ -26,17 +26,19 @@
 @protocol DFImageFetching;
 @protocol DFImageProcessing;
 
+NS_ASSUME_NONNULL_BEGIN
+
 /*! An DFImageManagerConfiguration object defines the behavior and policies to use when retrieving images using DFImageManager object.
  */
 @interface DFImageManagerConfiguration : NSObject <NSCopying>
 
 /*! The image fetcher the receiver was initialized with.
  */
-@property (nonatomic, readonly) id<DFImageFetching> fetcher;
+@property (nonatomic) id<DFImageFetching> fetcher;
 
 /*! The image processor.
  */
-@property (nonatomic) id<DFImageProcessing> processor;
+@property (nullable, nonatomic) id<DFImageProcessing> processor;
 
 /*! Operation queue used for executing image processing operations (see DFImageProcessing protocol).
  */
@@ -45,25 +47,24 @@
 /*! Memory cache that stores processed images.
   @note It's a good idea to implement DFImageProcessing and DFImageCaching in that same object.
  */
-@property (nonatomic) id<DFImageCaching> cache;
+@property (nullable, nonatomic) id<DFImageCaching> cache;
 
 /*! Maximum number of preheating requests that are allowed to execute concurrently.
  */
 @property (nonatomic) NSUInteger maximumConcurrentPreheatingRequests;
 
 /*! Returns a DFImageManagerConfiguration initialized with a given image fetcher.
- @param fetcher Image fetcher, Must not be nil.
  */
 - (instancetype)initWithFetcher:(id<DFImageFetching>)fetcher NS_DESIGNATED_INITIALIZER;
 
 /*! Returns configuration created with a given image fetcher.
-  @param fetcher Image fetcher, Must not be nil.
  */
 + (instancetype)configurationWithFetcher:(id<DFImageFetching>)fetcher;
 
 /*! Returns configuration created with a given fetcher, processor and cache. All parameters except for fetcher might be nil.
-  @param fetcher Image fetcher, Must not be nil.
  */
-+ (instancetype)configurationWithFetcher:(id<DFImageFetching>)fetcher processor:(id<DFImageProcessing>)processor cache:(id<DFImageCaching>)cache;
++ (instancetype)configurationWithFetcher:(id<DFImageFetching>)fetcher processor:(nullable id<DFImageProcessing>)processor cache:(nullable id<DFImageCaching>)cache;
 
 @end
+
+NS_ASSUME_NONNULL_END
