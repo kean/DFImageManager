@@ -56,7 +56,6 @@
     DFImageRequest *request = [DFImageRequest requestWithResource:[TDFMockResource resourceWithID:@"ID01"]];
     XCTAssertTrue([_fetcher canHandleRequest:request]);
     XCTAssertTrue([_manager canHandleRequest:request]);
-    XCTAssertFalse([_fetcher canHandleRequest:nil]);
     XCTAssertFalse([_fetcher canHandleRequest:[DFImageRequest requestWithResource:@"String"]]);
     XCTAssertFalse([_manager canHandleRequest:[DFImageRequest requestWithResource:@"String"]]);
 }

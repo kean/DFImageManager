@@ -24,7 +24,6 @@
 #import "DFImageRequest.h"
 #import "DFImageRequestID.h"
 
-
 #define DFManagerForRequest(request) \
 ({ \
     id<DFImageManaging> outManager_macro; \

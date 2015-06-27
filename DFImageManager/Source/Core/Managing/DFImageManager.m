@@ -479,7 +479,7 @@ typedef NS_ENUM(NSUInteger, _DFImageTaskState) {
     }
 }
 
-#pragma mark - Support
+#pragma mark Support
 
 - (DFImageResponse *)_cachedResponseForRequest:(DFImageRequest *)request {
     return request.options.memoryCachePolicy != DFImageRequestCachePolicyReloadIgnoringCache ? [_conf.cache cachedImageResponseForKey:DFImageCacheKeyCreate(request)].response : nil;
@@ -493,10 +493,7 @@ typedef NS_ENUM(NSUInteger, _DFImageTaskState) {
 - (NSArray *)_canonicalRequestsForRequests:(NSArray *)requests {
     NSMutableArray *canonicalRequests = [[NSMutableArray alloc] initWithCapacity:requests.count];
     for (DFImageRequest *request in requests) {
-        DFImageRequest *canonicalRequest = [self _canonicalRequestForRequest:request];
-        if (canonicalRequest.resource) {
-            [canonicalRequests addObject:canonicalRequest];
-        }
+        [canonicalRequests addObject:[self _canonicalRequestForRequest:request]];
     }
     return canonicalRequests;
 }

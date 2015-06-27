@@ -25,15 +25,15 @@
 @class DFImageRequest;
 @class DFImageResponse;
 
+NS_ASSUME_NONNULL_BEGIN
 
-/*! The DFImageFetching protocol provides the basic structure for performing fetching of images for specific DFImageRequest objects. Classes adopting the protocol handle the specifics associated with one of more types of the image requests. In general the main difference between the requests should be a class of the resource.
+/*! The DFImageFetching protocol provides the basic structure for performing fetching of images for specific DFImageRequest objects. Classes adopting DFImageFetching protocol handle the specifics associated with one of more types of the image requests.
  @note The role and the structure of the DFImageFetching protocol is largely inspired by the NSURLProtocol abstract class.
  */
 @protocol DFImageFetching <NSObject>
 
 /*! Inspects the given request and determines whether the receiver can handle the given request.
- @note This is the first method that is called on the receiver.
- @param request The initial request to be handled. The request is not canonical.
+ @param request The initial request to be handled. The request is not canonical (see canonicalRequestForRequest: method for more info).
  */
 - (BOOL)canHandleRequest:(DFImageRequest *)request;
 
@@ -54,16 +54,17 @@
  @param request The canonical request.
  @param progressHandler Progress handler that can be called on any thread. Image fetcher that don't report progress should ignore this the handler.
  @param completion Completion handler that can be called on any thread.
- @return The operation that implements fetching. The operation might be nil.
+ @return The operation that implements fetching.
  */
-- (NSOperation *)startOperationWithRequest:(DFImageRequest *)request progressHandler:(void (^)(double progress))progressHandler completion:(void (^)(DFImageResponse *response))completion;
+- (NSOperation *)startOperationWithRequest:(DFImageRequest *)request progressHandler:(void (^__nullable)(double progress))progressHandler completion:(void (^)(DFImageResponse *response))completion;
 
 @optional
 
-/*! Returns a canonical form of the given request. All DFImageFetching methods receive requests in a canonical form expect for the -canHandleRequest: method. It is up to each concrete protocol implementation to define what "canonical" means.
- @discussion Some fetcher might support a particular subclass of either DFImageRequest or DFImageRequestOptions. In that case this method might modify the given request to return this subclass in case the base class was used.
- @param request The initial request to be handled. The method can modify the given request.
+/*! Returns a canonical form of the given request. All DFImageFetching methods receive requests in a canonical form expect for the -canHandleRequest: method.
+ @param request The initial request. This method can modify the given request.
  */
 - (DFImageRequest *)canonicalRequestForRequest:(DFImageRequest *)request;
 
 @end
+
+NS_ASSUME_NONNULL_END
