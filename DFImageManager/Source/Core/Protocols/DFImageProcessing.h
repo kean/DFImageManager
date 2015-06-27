@@ -25,6 +25,8 @@
 
 @class DFImageRequest;
 
+NS_ASSUME_NONNULL_BEGIN
+
 /*! Processes fetched images. Might include image decompression, resizing and anything else.
  @note Implementations should not cache processed images and leave it to classes conforming DFImageCaching protocol.
  */
@@ -37,6 +39,8 @@
 
 /*! Returns processed image for a given request.
  */
-- (UIImage *)processedImage:(UIImage *)image forRequest:(DFImageRequest *)request;
+- (nullable UIImage *)processedImage:(UIImage *)image forRequest:(DFImageRequest *)request;
 
 @end
+
+NS_ASSUME_NONNULL_END

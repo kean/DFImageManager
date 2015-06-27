@@ -22,6 +22,8 @@
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /*! Posted when network reachability changes. The notification object is an instance of DFNetworkReachability class.
  */
 extern NSString *DFNetworkReachabilityDidChangeNotification;
@@ -40,3 +42,5 @@ extern NSString *DFNetworkReachabilityDidChangeNotification;
 + (instancetype)shared;
 
 @end
+
+NS_ASSUME_NONNULL_END

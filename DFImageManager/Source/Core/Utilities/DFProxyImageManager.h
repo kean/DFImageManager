@@ -24,6 +24,8 @@
 #import "DFImageRequest.h"
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /*! The DFProxyRequestTransforming protocol defines an interface for transforming application-specific classes or protocols to the resources supported by the DFImageManager.
  */
 @protocol DFProxyRequestTransforming <NSObject>
@@ -50,10 +52,12 @@
 
 /*! Sets the request transformer.
  */
-@property (nonatomic) id<DFProxyRequestTransforming> transformer;
+@property (nullable, nonatomic) id<DFProxyRequestTransforming> transformer;
 
 /*! Sets request transformer with a given block. Overwrites transformer value.
  */
-- (void)setRequestTransformerWithBlock:(DFImageRequest *(^)(DFImageRequest *request))block;
+- (void)setRequestTransformerWithBlock:(DFImageRequest *(^__nullable)(DFImageRequest *request))block;
 
 @end
+
+NS_ASSUME_NONNULL_END

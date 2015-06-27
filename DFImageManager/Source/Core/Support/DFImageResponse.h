@@ -23,32 +23,36 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /*! The DFImageResponse class represents an immutable image response for a specified resource.
  */
 @interface DFImageResponse : NSObject
 
 /*! Returns the image from the response.
  */
-@property (nonatomic, readonly) UIImage *image;
+@property (nullable, nonatomic, readonly) UIImage *image;
 
 /*! Returns the error associated with the load.
  */
-@property (nonatomic, readonly) NSError *error;
+@property (nullable, nonatomic, readonly) NSError *error;
 
 /*! Returns the metadata associated with the load.
  */
-@property (nonatomic, readonly) NSDictionary *userInfo;
+@property (nullable, nonatomic, readonly) NSDictionary *userInfo;
 
 /*! Initializes response with a given image, error and userInfo associated with an image load.
  */
-- (instancetype)initWithImage:(UIImage *)image error:(NSError *)error userInfo:(NSDictionary *)userInfo NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithImage:(nullable UIImage *)image error:(nullable NSError *)error userInfo:(nullable NSDictionary *)userInfo NS_DESIGNATED_INITIALIZER;
 
 /*! Returns response initialized with a given image.
  */
-+ (instancetype)responseWithImage:(UIImage *)image;
++ (instancetype)responseWithImage:(nullable UIImage *)image;
 
 /*! Returns response initialized with a given error.
  */
-+ (instancetype)responseWithError:(NSError *)error;
++ (instancetype)responseWithError:(nullable NSError *)error;
 
 @end
+
+NS_ASSUME_NONNULL_END

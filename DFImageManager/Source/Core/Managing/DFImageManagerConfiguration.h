@@ -61,7 +61,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 + (instancetype)configurationWithFetcher:(id<DFImageFetching>)fetcher;
 
-/*! Returns configuration created with a given fetcher, processor and cache. All parameters except for fetcher might be nil.
+/*! Returns configuration created with a given fetcher, processor and cache.
  */
 + (instancetype)configurationWithFetcher:(id<DFImageFetching>)fetcher processor:(nullable id<DFImageProcessing>)processor cache:(nullable id<DFImageCaching>)cache;
 

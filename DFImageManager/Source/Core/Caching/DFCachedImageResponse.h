@@ -25,6 +25,8 @@
 
 @class DFImageResponse;
 
+NS_ASSUME_NONNULL_BEGIN
+
 /*! Wrapper for image responses stored in the framework's memory caching system.
  */
 @interface DFCachedImageResponse : NSObject
@@ -43,3 +45,5 @@
 - (instancetype)initWithResponse:(DFImageResponse *)response expirationDate:(NSTimeInterval)expirationDate NS_DESIGNATED_INITIALIZER;
 
 @end
+
+NS_ASSUME_NONNULL_END

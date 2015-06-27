@@ -28,6 +28,7 @@
 @class DFImageRequestID;
 @protocol DFImageManaging;
 
+NS_ASSUME_NONNULL_BEGIN
 
 /*! The execution context of the image request.
  */
@@ -43,11 +44,11 @@
 
 /*! Returns image fetched for the requests.
  */
-@property (nonatomic, readonly) UIImage *image;
+@property (nullable, nonatomic, readonly) UIImage *image;
 
 /*! Returns the information about the status of the request.
  */
-@property (nonatomic, readonly) NSDictionary *info;
+@property (nullable, nonatomic, readonly) NSDictionary *info;
 
 @end
 
@@ -61,18 +62,18 @@
  @param requests Array of requests. Must contain at least one request.
  @param handler Completion block that gets called multiple times, for more info see class description. The completion
  */
-- (instancetype)initWithRequests:(NSArray /* DFImageRequest */ *)requests handler:(void (^)(UIImage *image, NSDictionary *info, DFImageRequest *request))handler NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithRequests:(NSArray /* DFImageRequest */ *)requests handler:(void (^__nullable)(UIImage *__nullable image, NSDictionary *info, DFImageRequest *request))handler NS_DESIGNATED_INITIALIZER;
 
 /*! Initializes task with an image request and a completion handler. After you create the task, you must start it by calling start method. 
   @param request request. Must not be nil.
  */
-- (instancetype)initWithRequest:(DFImageRequest *)request handler:(void (^)(UIImage *image, NSDictionary *info, DFImageRequest *request))handler;
+- (instancetype)initWithRequest:(DFImageRequest *)request handler:(void (^__nullable)(UIImage *__nullable image, NSDictionary *info, DFImageRequest *request))handler;
 
 /*! Creates and starts task with an array of image requests.
  @param requests Array of requests. Must contain at least one request.
  @param handler Completion block that gets called multiple times, for more info see class description.
  */
-+ (DFImageFetchTask *)requestImageForRequests:(NSArray /* DFImageRequest */ *)requests handler:(void (^)(UIImage *image, NSDictionary *info, DFImageRequest *request))handler;
++ (DFImageFetchTask *)requestImageForRequests:(NSArray /* DFImageRequest */ *)requests handler:(void (^__nullable)(UIImage *__nullable image, NSDictionary *info, DFImageRequest *request))handler;
 
 /*! Image manager used by the receiver. Set to the shared manager during initialization.
  */
@@ -109,10 +110,12 @@
 /*! Returns context for the given request.
  @param request Request should be contained by the receiver's array of the requests.
  */
-- (DFImageFetchContext *)contextForRequest:(DFImageRequest *)request;
+- (nullable DFImageFetchContext *)contextForRequest:(DFImageRequest *)request;
 
 /*! Sets the priority for all the requests registered with a receiver.
  */
 - (void)setPriority:(DFImageRequestPriority)priority;
 
 @end
+
+NS_ASSUME_NONNULL_END

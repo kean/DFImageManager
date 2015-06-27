@@ -22,6 +22,8 @@
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface NSCache (DFImageManager)
 
 /*! Returns shared image cache with a recommended total cost limit (in bytes).
@@ -34,3 +36,5 @@
 + (NSUInteger)df_recommendedTotalCostLimit;
 
 @end
+
+NS_ASSUME_NONNULL_END

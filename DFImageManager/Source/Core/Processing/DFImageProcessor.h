@@ -27,7 +27,7 @@
 
 /*! NSNumber with float value that specifies a normalized image corner radius, where 0.5 is a corner radius that is half of the minimum image side. Should be put into DFImageRequestOptions userInfo dictionary.
  */
-extern NSString *DFImageProcessingCornerRadiusKey;
+extern NSString *__nonnull DFImageProcessingCornerRadiusKey;
 
 /*! The DFImageProcessor implements image decompression, scaling, cropping and more.
  */
@@ -35,24 +35,24 @@ extern NSString *DFImageProcessingCornerRadiusKey;
 
 /*! Returns decompressed image with a given image.
  */
-+ (UIImage *)decompressedWithImage:(UIImage *)image;
++ (nullable UIImage *)decompressedWithImage:(nullable UIImage *)image;
 
 /*! Returns decompressed image with a given image.
  @param targetSize Image target size in pixels.
  */
-+ (UIImage *)decompressedImageWithImage:(UIImage *)image targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode;
++ (nullable UIImage *)decompressedImageWithImage:(nullable UIImage *)image targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode;
 
 /*! Returns scaled decompressed image with a given image.
  */
-+ (UIImage *)decompressedWithImage:(UIImage *)image scale:(CGFloat)scale;
++ (nullable UIImage *)decompressedWithImage:(nullable UIImage *)image scale:(CGFloat)scale;
 
 /*! Returns image cropped to a given normalized crop rect.
  */
-+ (UIImage *)croppedImageWithImage:(UIImage *)image normalizedCropRect:(CGRect)cropRect;
++ (nullable UIImage *)croppedImageWithImage:(nullable UIImage *)image normalizedCropRect:(CGRect)cropRect;
 
 /*! Returns image by drawing rounded corners.
  @param cornerRadius corner radius in points.
  */
-+ (UIImage *)imageWithImage:(UIImage *)image cornerRadius:(CGFloat)cornerRadius;
++ (nullable UIImage *)imageWithImage:(nullable UIImage *)image cornerRadius:(CGFloat)cornerRadius;
 
 @end

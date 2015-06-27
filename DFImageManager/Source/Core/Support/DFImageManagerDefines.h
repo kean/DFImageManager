@@ -23,6 +23,8 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /* Size to pass when requesting the largest image for resource available (contentMode will be ignored).
  */
 extern CGSize const DFImageMaximumSize;
@@ -84,3 +86,5 @@ extern NSString *const DFImageManagerErrorDomain;
 /*! Returned when an image request is cancelled.
  */
 static const NSInteger DFImageManagerErrorCancelled = -1;
+
+NS_ASSUME_NONNULL_END

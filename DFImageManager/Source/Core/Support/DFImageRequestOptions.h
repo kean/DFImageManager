@@ -22,6 +22,8 @@
 
 #import "DFImageManagerDefines.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 /*! You use a DFImageRequestOptions object to specify options when requesting image representations of resources using classes conforming DFImageManaging protocol.
  */
 @interface DFImageRequestOptions : NSObject <NSCopying>
@@ -49,11 +51,11 @@
 
 /*! A dictionary containing image manager-specific data pertaining to the receiver. Default value is nil.
  */
-@property (nonatomic) NSDictionary *userInfo;
+@property (nullable, nonatomic) NSDictionary *userInfo;
 
 /*! Progress handler, called on a main thread.
  */
-@property (nonatomic, copy) DFImageRequestProgressHandler progressHandler;
+@property (nullable, nonatomic, copy) DFImageRequestProgressHandler progressHandler;
 
 /*! Initializes DFImageRequestOptions with default options.
  */
@@ -62,6 +64,8 @@
 /*! Initializes DFImageRequestOptions with another instance of request options.
  @param options The given options. Options might be nil.
  */
-- (instancetype)initWithOptions:(DFImageRequestOptions *)options;
+- (instancetype)initWithOptions:(nullable DFImageRequestOptions *)options;
 
 @end
+
+NS_ASSUME_NONNULL_END
