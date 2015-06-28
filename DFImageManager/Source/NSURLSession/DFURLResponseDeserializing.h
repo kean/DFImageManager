@@ -22,6 +22,8 @@
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /*! Deserialization error domain.
  */
 static NSString *const DFURLDeserializationErrorDomain = @"DFURLDeserializationErrorDomain";
@@ -36,6 +38,8 @@ static NSString *const DFURLErrorInfoURLResponseKey = @"DFURLErrorInfoURLRespons
 
 /*! The response object decoded from the data associated with a specified response. Response deserializer may also perform validation on the incoming response and data.
  */
-- (id)objectFromResponse:(NSURLResponse *)response data:(NSData *)data error:(NSError *__autoreleasing *)error;
+- (id)objectFromResponse:(NSURLResponse *)response data:(NSData *)data error:(NSError **)error;
 
 @end
+
+NS_ASSUME_NONNULL_END

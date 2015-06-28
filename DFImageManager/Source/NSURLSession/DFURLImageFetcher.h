@@ -26,6 +26,8 @@
 @protocol DFURLResponseDeserializing;
 @class DFURLImageFetcher;
 
+NS_ASSUME_NONNULL_BEGIN
+
 /*! The NSNumber with NSURLRequestCachePolicy value that specifies a request cache policy.
  @note Should be put into DFImageRequestOptions userInfo dictionary.
  */
@@ -63,7 +65,7 @@ extern NSString *const DFURLRequestCachePolicyKey;
 
 /*! Creates NSURLSessionDataTask with a given request.
  */
-- (NSURLSessionDataTask *)URLImageFetcher:(DFURLImageFetcher *)fetcher dataTaskWithRequest:(NSURLRequest *)request progressHandler:(void (^)(int64_t countOfBytesReceived, int64_t countOfBytesExpectedToReceive))progressHandler completionHandler:(void (^)(NSData *data, NSURLResponse *response, NSError *error))completionHandler;
+- (NSURLSessionDataTask *)URLImageFetcher:(DFURLImageFetcher *)fetcher dataTaskWithRequest:(NSURLRequest *)request progressHandler:(void (^__nullable)(int64_t countOfBytesReceived, int64_t countOfBytesExpectedToReceive))progressHandler completionHandler:(void (^__nullable)(NSData *__nullable data, NSURLResponse *__nullable response, NSError *__nullable error))completionHandler;
 
 @end
 
@@ -84,11 +86,11 @@ extern NSString *const DFURLRequestCachePolicyKey;
 
 /*! The delegate of the receiver.
  */
-@property (nonatomic, weak) id<DFURLImageFetcherDelegate> delegate;
+@property (nullable, nonatomic, weak) id<DFURLImageFetcherDelegate> delegate;
 
 /*! The session delegate of the receiver.
  */
-@property (nonatomic, weak) id<DFURLImageFetcherSessionDelegate> sessionDelegate;
+@property (nullable, nonatomic, weak) id<DFURLImageFetcherSessionDelegate> sessionDelegate;
 
 /*! Initializes the DFURLImageFetcher with a given session configuration. The DFURLImageFetcher sets itself as a NSURLSessionDelegate and DFURLImageFetcherSessionDelegate.
  */
@@ -101,3 +103,5 @@ extern NSString *const DFURLRequestCachePolicyKey;
 - (instancetype)initWithSession:(NSURLSession *)session sessionDelegate:(id<DFURLImageFetcherSessionDelegate>)sessionDelegate NS_DESIGNATED_INITIALIZER;
 
 @end
+
+NS_ASSUME_NONNULL_END

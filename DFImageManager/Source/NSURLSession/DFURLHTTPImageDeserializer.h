@@ -22,6 +22,8 @@
 
 #import "DFURLImageDeserializer.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 /*! The DFURLHTTPImageDeserializer implements image deserialization and performs additional response validation based on HTTP status code and content type.
  */
 @interface DFURLHTTPImageDeserializer : DFURLImageDeserializer
@@ -29,15 +31,17 @@
 /*! The acceptable HTTP status codes for responses. For more info see the HTTP specification http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html
  @note All status codes are acceptable in case acceptableStatusCodes is nil.
  */
-@property (nonatomic, copy) NSIndexSet *acceptableStatusCodes;
+@property (nullable, nonatomic, copy) NSIndexSet *acceptableStatusCodes;
 
 /*! The acceptable MIME types for responses. Default value is nil so that all content types are supported. Image initialization never crashes when provided with an invalid data.
  @note All content types are acceptable in case acceptableContentTypes is nil.
  */
-@property (nonatomic, copy) NSSet *acceptableContentTypes;
+@property (nullable, nonatomic, copy) NSSet *acceptableContentTypes;
 
 /*! Validates the given response by inspecting the response status code and content type.
  */
-- (BOOL)isValidResponse:(NSHTTPURLResponse *)response error:(NSError *__autoreleasing *)error;
+- (BOOL)isValidResponse:(NSHTTPURLResponse *)response error:(NSError **)error;
 
 @end
+
+NS_ASSUME_NONNULL_END

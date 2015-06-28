@@ -28,7 +28,7 @@
 
 @implementation DFAFImageDeserializer
 
-- (id)responseObjectForResponse:(NSURLResponse *)response data:(NSData *)data error:(NSError *__autoreleasing *)error {
+- (id)responseObjectForResponse:(NSURLResponse *)response data:(NSData *)data error:(NSError **)error {
     if (!data.length || ![self validateResponse:(NSHTTPURLResponse *)response data:data error:error]) {
         return nil;
     }

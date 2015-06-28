@@ -33,7 +33,7 @@
     return self;
 }
 
-- (id)objectFromResponse:(NSHTTPURLResponse *)response data:(NSData *)data error:(NSError *__autoreleasing *)error {
+- (id)objectFromResponse:(NSHTTPURLResponse *)response data:(NSData *)data error:(NSError **)error {
     if (![self isValidResponse:response error:error]) {
         return nil;
     } else {
@@ -41,7 +41,7 @@
     }
 }
 
-- (BOOL)isValidResponse:(NSHTTPURLResponse *)response error:(NSError *__autoreleasing *)error {
+- (BOOL)isValidResponse:(NSHTTPURLResponse *)response error:(NSError **)error {
     NSParameterAssert(response);
     NSAssert([response isKindOfClass:[NSHTTPURLResponse class]], @"Invalid response");
     if (self.acceptableStatusCodes != nil && ![self.acceptableStatusCodes containsIndex:(NSUInteger)response.statusCode]) {

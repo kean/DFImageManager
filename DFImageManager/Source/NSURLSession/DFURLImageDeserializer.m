@@ -30,7 +30,7 @@
 
 @implementation DFURLImageDeserializer
 
-- (id)objectFromResponse:(NSURLResponse *)response data:(NSData *)data error:(NSError *__autoreleasing *)error {
+- (id)objectFromResponse:(NSURLResponse *)response data:(NSData *)data error:(NSError **)error {
     if (!data.length) {
         return nil;
     }
