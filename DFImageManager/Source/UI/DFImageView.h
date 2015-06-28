@@ -56,11 +56,11 @@ NS_ASSUME_NONNULL_BEGIN
 /*! An image view extends UIImageView class with image fetching functionality. It also adds other features like managing request priorities, retrying failed requests and more.
  @note The DFImageView is a FLAnimatedImageView subclass that support animated GIF playback. The playback is enabled by default and can be disabled using allowsGIFPlayback property. The DFImageView doesn't override any of the FLAnimatedImageView methods so should get the same experience as when using the FLAnimatedImageView class directly. The only addition is a new - (void)displayImage:(UIImage *)image method that supports DFAnimatedImage objects and will automatically start GIF playback when passed an object of that class.
  */
-@interface DFImageView : FLAnimatedImageView <DFImageViewDelegate>
+@interface DFImageView : FLAnimatedImageView
 #else
 /*! An image view extends UIImageView class with image fetching functionality. It also adds other features like managing request priorities, retrying failed requests and more.
  */
-@interface DFImageView : UIImageView <DFImageViewDelegate>
+@interface DFImageView : UIImageView
 #endif
 
 /*! Image manager used by the image view. Set to the shared manager during initialization.
@@ -135,6 +135,11 @@ NS_ASSUME_NONNULL_BEGIN
  @note This method doesn't call -prepareForReuse in case you need to refresh image without invalidating previously displayed image.
  */
 - (void)setImageWithRequests:(NSArray /* DFImageRequest */ *)requests;
+
+/*! Method gets called every time the completion block is called for the current image fetch task.
+ @note Might be called multiple times depending on the number of image requests.
+ */
+- (void)didCompleteRequest:(DFImageRequest *)request withImage:(UIImage *)image info:(NSDictionary *)info;
 
 /*! Creates task for a given requests. Subclasses may override this method to return custom DFImageFetchTask instance.
  */

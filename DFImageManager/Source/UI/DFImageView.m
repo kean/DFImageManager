@@ -73,8 +73,6 @@ static const NSTimeInterval _kMinimumAutoretryInterval = 8.f;
 #endif
     _imageRequestOptions = [DFImageRequestOptions new];
     
-    self.delegate = self;
-    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_reachabilityDidChange:) name:DFNetworkReachabilityDidChangeNotification object:[DFNetworkReachability shared]];
 }
 
@@ -144,7 +142,8 @@ static const NSTimeInterval _kMinimumAutoretryInterval = 8.f;
     }
     DFImageView *__weak weakSelf = self;
     _task = [self createImageFetchTaskForRequests:requests handler:^(UIImage *image, NSDictionary *info, DFImageRequest *request) {
-        [weakSelf.delegate imageView:weakSelf didCompleteRequest:request withImage:image info:info];
+        [weakSelf.delegate imageView:self didCompleteRequest:request withImage:image info:info];
+        [weakSelf didCompleteRequest:request withImage:image info:info];
     }];
     [_task start];
 }
@@ -153,19 +152,7 @@ static const NSTimeInterval _kMinimumAutoretryInterval = 8.f;
     return [[DFImageFetchTask alloc] initWithRequests:requests handler:handler];
 }
 
-#pragma mark - Priorities
-
-- (void)willMoveToWindow:(UIWindow *)newWindow {
-    [super willMoveToWindow:newWindow];
-    if (self.managesRequestPriorities) {
-        DFImageRequestPriority priority = (newWindow == nil) ? DFImageRequestPriorityNormal : DFImageRequestPriorityVeryHigh;
-        [_task setPriority:priority];
-    }
-}
-
-#pragma mark - <DFImageViewDelegate>
-
-- (void)imageView:(DFImageView *)imageView didCompleteRequest:(DFImageRequest *)request withImage:(UIImage *)image info:(NSDictionary *)info {
+- (void)didCompleteRequest:(DFImageRequest *)request withImage:(UIImage *)image info:(NSDictionary *)info {
     BOOL isFastResponse = (_task.elapsedTime * 1000.0) < 64.f; // Elapsed time is lower then 64 ms, if we miss 4 frames, that's good enough
     if (self.allowsAnimations && !isFastResponse && !self.image) {
         [self displayImage:image];
@@ -179,6 +166,16 @@ static const NSTimeInterval _kMinimumAutoretryInterval = 8.f;
         }) forKey:@"opacity"];
     } else {
         [self displayImage:image];
+    }
+}
+
+#pragma mark - Priorities
+
+- (void)willMoveToWindow:(UIWindow *)newWindow {
+    [super willMoveToWindow:newWindow];
+    if (self.managesRequestPriorities) {
+        DFImageRequestPriority priority = (newWindow == nil) ? DFImageRequestPriorityNormal : DFImageRequestPriorityVeryHigh;
+        [_task setPriority:priority];
     }
 }
 
