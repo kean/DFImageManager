@@ -24,7 +24,7 @@ let requestID = manager.requestImageForResource(NSURL(string: "http://farm6.stat
     var fetchedImage = image
     let error = info[DFImageInfoErrorKey] as! NSError
 })
-requestID.setPriority(.High)
-requestID.cancel()
+requestID?.setPriority(.High)
+requestID?.cancel()
 
 XCPSetExecutionShouldContinueIndefinitely()
