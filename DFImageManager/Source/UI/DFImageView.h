@@ -27,6 +27,8 @@
 #import <FLAnimatedImage/FLAnimatedImage.h>
 #endif
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class DFImageFetchTask;
 @class DFImageRequest;
 @class DFImageRequestOptions;
@@ -39,10 +41,10 @@
 /*! Method gets called every time the completion block is called for the current image fetch task.
  @note Might be called multiple times depending on the number of image requests.
  */
-- (void)imageView:(DFImageView *)imageView didCompleteRequest:(DFImageRequest *)request withImage:(UIImage *)image info:(NSDictionary *)info;
+- (void)imageView:(DFImageView *)imageView didCompleteRequest:(DFImageRequest *)request withImage:(nullable UIImage *)image info:(NSDictionary *)info;
 
 @optional
-/*! Method gets called right after the image view receives image requests. The requests array might be either nil or empty.
+/*! Method gets called right after the image view receives image requests.
  @note This method call is always paired with a least one -imageView:didCompleteRequest:withImage:info call.
  */
 - (void)imageView:(DFImageView *)imageView willStartFetchingImagesForRequests:(NSArray /*! DFImageRequest */ *)requests;
@@ -67,7 +69,7 @@
 
 /*! Image view delegate. By default delegate is set to the image view itself. The implementation displays fetched images with animation when necessary.
  */
-@property (nonatomic, weak) id<DFImageViewDelegate> delegate;
+@property (nullable, nonatomic, weak) id<DFImageViewDelegate> delegate;
 
 /*! Image target size  used for image requests when target size is not present in -setImageWith... method that was called.. Returns current view pixel size when the value is CGSizeZero.
  */
@@ -104,7 +106,7 @@
 /*! Displays a given image. Automatically starts GIF playback when given a DFAnimatedImage object and when the GIF playback is enabled. The 'GIF' subspec should be installed to enable this feature.
  @note This method is always included in compilation even if the The 'GIF' subspec is not installed.
  */
-- (void)displayImage:(UIImage *)image;
+- (void)displayImage:(nullable UIImage *)image;
 
 /*! Performs any clean up necessary to prepare the view for use again. Removes currently displayed image and cancels all requests registered with a receiver.
  */
@@ -114,7 +116,7 @@
 
 /*! Returns current image fetch task.
  */
-@property (nonatomic, readonly) DFImageFetchTask *task;
+@property (nullable, nonatomic, readonly) DFImageFetchTask *task;
 
 /*! Requests an image representation with a target size, image content mode and request options of the receiver. For more info see setImageWithRequests: method.
  */
@@ -122,7 +124,7 @@
 
 /*! Requests an image representation for the specified resource. For more info see setImageWithRequests: method.
  */
-- (void)setImageWithResource:(id)resource targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options;
+- (void)setImageWithResource:(id)resource targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(nullable DFImageRequestOptions *)options;
 
 /*! Requests an image representation for the specified request. For more info see setImageWithRequests: method.
  */
@@ -136,6 +138,8 @@
 
 /*! Creates task for a given requests. Subclasses may override this method to return custom DFImageFetchTask instance.
  */
-- (DFImageFetchTask *)createImageFetchTaskForRequests:(NSArray /* DFImageRequest */ *)requests handler:(void (^)(UIImage *image, NSDictionary *info, DFImageRequest *request))handler;
+- (DFImageFetchTask *)createImageFetchTaskForRequests:(NSArray /* DFImageRequest */ *)requests handler:(void (^__nullable)(UIImage *__nullable image, NSDictionary *info, DFImageRequest *request))handler;
 
 @end
+
+NS_ASSUME_NONNULL_END

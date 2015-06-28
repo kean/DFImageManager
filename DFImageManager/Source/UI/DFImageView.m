@@ -123,15 +123,11 @@ static const NSTimeInterval _kMinimumAutoretryInterval = 8.f;
 }
 
 - (void)setImageWithResource:(id)resource targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options {
-    DFImageRequest *request;
-    if (resource != nil) {
-        request = [[DFImageRequest alloc] initWithResource:resource targetSize:targetSize contentMode:contentMode options:options];
-    }
-    [self setImageWithRequest:request];
+    [self setImageWithRequest:[DFImageRequest requestWithResource:resource targetSize:targetSize contentMode:contentMode options:options]];
 }
 
 - (void)setImageWithRequest:(DFImageRequest *)request {
-    [self setImageWithRequests:(request != nil) ? @[request] : nil];
+    [self setImageWithRequests:(@[request])];
 }
 
 - (void)setImageWithRequests:(NSArray *)requests {
@@ -140,20 +136,17 @@ static const NSTimeInterval _kMinimumAutoretryInterval = 8.f;
     if ([self.delegate respondsToSelector:@selector(imageView:willStartFetchingImagesForRequests:)]) {
         [self.delegate imageView:self willStartFetchingImagesForRequests:requests];
     }
-    if (requests.count > 0) {
-        if (self.managesRequestPriorities) {
-            for (DFImageRequest *request in requests) {
-                request.options.priority = (self.window == nil) ? DFImageRequestPriorityNormal : DFImageRequestPriorityVeryHigh;
-            }
+    NSParameterAssert(requests.count > 0);
+    if (self.managesRequestPriorities) {
+        for (DFImageRequest *request in requests) {
+            request.options.priority = (self.window == nil) ? DFImageRequestPriorityNormal : DFImageRequestPriorityVeryHigh;
         }
-        DFImageView *__weak weakSelf = self;
-        _task = [self createImageFetchTaskForRequests:requests handler:^(UIImage *image, NSDictionary *info, DFImageRequest *request) {
-            [weakSelf.delegate imageView:weakSelf didCompleteRequest:request withImage:image info:info];
-        }];
-        [_task start];
-    } else {
-        [self.delegate imageView:self didCompleteRequest:nil withImage:nil info:nil];
     }
+    DFImageView *__weak weakSelf = self;
+    _task = [self createImageFetchTaskForRequests:requests handler:^(UIImage *image, NSDictionary *info, DFImageRequest *request) {
+        [weakSelf.delegate imageView:weakSelf didCompleteRequest:request withImage:image info:info];
+    }];
+    [_task start];
 }
 
 - (DFImageFetchTask *)createImageFetchTaskForRequests:(NSArray *)requests handler:(void (^)(UIImage *, NSDictionary *, DFImageRequest *))handler {

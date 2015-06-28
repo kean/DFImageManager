@@ -88,7 +88,6 @@ static NSString *const kReuseIdentifierImageCell = @"kReuseIdentifierImageCell";
         [imageView prepareForReuse];
         [imageView setImageWithResource:_imageURLs[indexPath.item]];
     }
-    
     return cell;
 }
 

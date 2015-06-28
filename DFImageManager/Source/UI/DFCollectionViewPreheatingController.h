@@ -25,6 +25,7 @@
 
 @class DFCollectionViewPreheatingController;
 
+NS_ASSUME_NONNULL_BEGIN
 
 @protocol DFCollectionViewPreheatingControllerDelegate <NSObject>
 
@@ -48,7 +49,7 @@
 
 /*! The delegate object for the receiver.
  */
-@property (nonatomic, weak) id<DFCollectionViewPreheatingControllerDelegate> delegate;
+@property (nullable, nonatomic, weak) id<DFCollectionViewPreheatingControllerDelegate> delegate;
 
 /*! The proportion of the collection view bounds (either width or height depending on the scroll direction) that is used as a preheat window. Default value is 2.0.
  */
@@ -73,7 +74,7 @@
 @property (nonatomic, readonly) NSSet *preheatIndexPaths;
 
 /*! Initializes preheating controller with a collection view.
- @param collectionView Collection view, must not be nil.
+ @param collectionView Collection view.
  */
 - (instancetype)initWithCollectionView:(UICollectionView *)collectionView NS_DESIGNATED_INITIALIZER;
 
@@ -86,3 +87,5 @@
 - (void)updatePreheatRect;
 
 @end
+
+NS_ASSUME_NONNULL_END

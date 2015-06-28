@@ -23,6 +23,8 @@
 #import "DFImageManagerDefines.h"
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class DFImageRequestOptions;
 
 /*! Adds some very basic image fetching capabilities to the UIImageView. For more features see DFImageView.
@@ -39,6 +41,8 @@
 
 /*! Requests an image representation for the specified resource. For more info see setImageWithRequests: method.
  */
-- (void)df_setImageWithResource:(id)resource targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options;
+- (void)df_setImageWithResource:(id)resource targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(nullable DFImageRequestOptions *)options;
 
 @end
+
+NS_ASSUME_NONNULL_END

@@ -49,7 +49,7 @@
 }
 
 - (void)resetPreheatRect {
-    [self.delegate collectionViewPreheatingController:self didUpdatePreheatRectWithAddedIndexPaths:nil removedIndexPaths:[_preheatIndexPaths allObjects]];
+    [self.delegate collectionViewPreheatingController:self didUpdatePreheatRectWithAddedIndexPaths:@[] removedIndexPaths:[_preheatIndexPaths allObjects]];
     [self _resetPreheatRect];
 }
 
