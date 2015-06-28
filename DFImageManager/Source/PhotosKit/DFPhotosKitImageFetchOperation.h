@@ -25,17 +25,19 @@
 
 @class PHImageRequestOptions;
 
+NS_ASSUME_NONNULL_BEGIN
+
 /*! The operation the implements fetching of image representation  for images using Photos Kit framework.
  */
 NS_CLASS_AVAILABLE_IOS(8_0) @interface DFPhotosKitImageFetchOperation : NSOperation
 
 /*! Returns the image fetched by the receiver.
  */
-@property (nonatomic, readonly) UIImage *result;
+@property (nullable, nonatomic, readonly) UIImage *result;
 
 /*! Returns the metadata associated with an image load.
  */
-@property (nonatomic, readonly) NSDictionary *info;
+@property (nullable, nonatomic, readonly) NSDictionary *info;
 
 /*! Initializes operation with a resource and options.
  @param resource PHAsset or PHAsset local identifier (NSString).
@@ -43,3 +45,5 @@ NS_CLASS_AVAILABLE_IOS(8_0) @interface DFPhotosKitImageFetchOperation : NSOperat
 - (instancetype)initWithResource:(id)resource targetSize:(CGSize)targetSize contentMode:(PHImageContentMode)contentMode options:(PHImageRequestOptions *)options NS_DESIGNATED_INITIALIZER;
 
 @end
+
+NS_ASSUME_NONNULL_END

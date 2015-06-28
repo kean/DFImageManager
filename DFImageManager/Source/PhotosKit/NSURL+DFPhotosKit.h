@@ -24,6 +24,8 @@
 
 @class PHAsset;
 
+NS_ASSUME_NONNULL_BEGIN
+
 /*! The URL scheme used for accessing PHAsset objects.
  */
 static NSString *const DFPhotosKitURLScheme = @"com.github.kean.photos-kit";
@@ -34,14 +36,16 @@ static NSString *const DFPhotosKitURLScheme = @"com.github.kean.photos-kit";
 
 /*! Returns NSURL with a given local identifier for asset.
  */
-+ (NSURL *)df_assetURLWithAssetLocalIdentifier:(NSString *)localIdentifier NS_AVAILABLE_IOS(8_0);
++ (nullable NSURL *)df_assetURLWithAssetLocalIdentifier:(nullable NSString *)localIdentifier NS_AVAILABLE_IOS(8_0);
 
 /*! Returns NSURL with a local identifier for a given asset.
  */
-+ (NSURL *)df_assetURLWithAsset:(PHAsset *)asset NS_AVAILABLE_IOS(8_0);
++ (nullable NSURL *)df_assetURLWithAsset:(nullable PHAsset *)asset NS_AVAILABLE_IOS(8_0);
 
 /*! Returns local identifier from a given URL.
  */
-- (NSString *)df_assetLocalIdentifier NS_AVAILABLE_IOS(8_0);
+- (nullable NSString *)df_assetLocalIdentifier NS_AVAILABLE_IOS(8_0);
 
 @end
+
+NS_ASSUME_NONNULL_END

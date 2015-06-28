@@ -22,6 +22,8 @@
 
 #import "DFImageFetching.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 /*! The PHImageRequestOptionsVersion value for requesting an image asset with or without adjustments, used by the version property. Default value is PHImageRequestOptionsVersionCurrent.
  @note Should be put into DFImageRequestOptions userInfo dictionary.
  */
@@ -44,3 +46,5 @@ extern NSString *const DFPhotosKitResizeModeKey;
 NS_CLASS_AVAILABLE_IOS(8_0) @interface DFPhotosKitImageFetcher : NSObject <DFImageFetching>
 
 @end
+
+NS_ASSUME_NONNULL_END
