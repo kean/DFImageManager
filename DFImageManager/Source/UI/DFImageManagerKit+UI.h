@@ -21,6 +21,5 @@
 // THE SOFTWARE.
 
 #import "DFCollectionViewPreheatingController.h"
-#import "DFImageContainerView.h"
 #import "DFImageView.h"
 #import "UIImageView+DFImageManager.h"
