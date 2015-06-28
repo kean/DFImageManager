@@ -232,10 +232,10 @@ typedef NS_ENUM(NSUInteger, _DFImageTaskState) {
 }
 
 - (DFImageRequestID *)requestImageForRequest:(DFImageRequest *)request completion:(DFImageRequestCompletion)completion {
-    DFImageRequest *canonicalRequest = [self _canonicalRequestForRequest:request];
-    _DFImageTask *task = [[_DFImageTask alloc] initWithManager:self request:canonicalRequest completionHandler:completion];
+    request = [self _canonicalRequestForRequest:request];
+    _DFImageTask *task = [[_DFImageTask alloc] initWithManager:self request:request completionHandler:completion];
     if ([NSThread isMainThread]) {
-        DFImageResponse *response = [self _cachedResponseForRequest:canonicalRequest];
+        DFImageResponse *response = [self _cachedResponseForRequest:request];
         if (response.image) {
             if (completion) {
                 completion(response.image, [self _infoFromResponse:response task:task]);
@@ -441,13 +441,13 @@ typedef NS_ENUM(NSUInteger, _DFImageTaskState) {
         _needsToExecutePreheatTasks = YES;
         // Manager won't start executing preheating tasks in case you are about to add normal (non-preheating) right after adding preheating ones.
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), _queue, ^{
-            [self _executePreheatingTasksIfNecesary];
-            _needsToExecutePreheatTasks = NO;
+            [self _executePreheatingTasksIfNeeded];
         });
     }
 }
 
-- (void)_executePreheatingTasksIfNecesary {
+- (void)_executePreheatingTasksIfNeeded {
+    _needsToExecutePreheatTasks = NO;
     NSUInteger executingTaskCount = _executingImageTasks.count;
     if (executingTaskCount < _conf.maximumConcurrentPreheatingRequests) {
         for (_DFImageTask *task in [_preheatingTasks.allValues sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"tag" ascending:YES]]]) {
