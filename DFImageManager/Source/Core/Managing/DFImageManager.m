@@ -96,11 +96,9 @@ typedef NS_ENUM(NSUInteger, _DFImageTaskState) {
 
 @class _DFImageRequestKey;
 
-/*! The delegate that implements key comparing.
- */
-@protocol _DFImageRequestKeyDelegate <NSObject>
+@protocol _DFImageRequestKeyOwner <NSObject>
 
-- (BOOL)isImageRequestKeyEqual:(_DFImageRequestKey *)key1 toKey:(_DFImageRequestKey *)key2;
+- (BOOL)isImageRequestKey:(_DFImageRequestKey *)key1 equalToKey:(_DFImageRequestKey *)key2;
 
 @end
 
@@ -110,9 +108,9 @@ typedef NS_ENUM(NSUInteger, _DFImageTaskState) {
 
 @property (nonatomic, readonly) DFImageRequest *request;
 @property (nonatomic, readonly) BOOL isCacheKey;
-@property (nonatomic, weak, readonly) id<_DFImageRequestKeyDelegate> delegate;
+@property (nonatomic, weak, readonly) id<_DFImageRequestKeyOwner> owner;
 
-- (instancetype)initWithRequest:(DFImageRequest *)request isCacheKey:(BOOL)isCacheKey delegate:(id<_DFImageRequestKeyDelegate>)delegate;
+- (instancetype)initWithRequest:(DFImageRequest *)request isCacheKey:(BOOL)isCacheKey owner:(id<_DFImageRequestKeyOwner>)owner;
 
 @end
 
@@ -120,12 +118,12 @@ typedef NS_ENUM(NSUInteger, _DFImageTaskState) {
     NSUInteger _hash;
 }
 
-- (instancetype)initWithRequest:(DFImageRequest *)request isCacheKey:(BOOL)isCacheKey delegate:(id<_DFImageRequestKeyDelegate>)delegate {
+- (instancetype)initWithRequest:(DFImageRequest *)request isCacheKey:(BOOL)isCacheKey owner:(id<_DFImageRequestKeyOwner>)owner {
     if (self = [super init]) {
         _request = request;
         _hash = [request.resource hash];
         _isCacheKey = isCacheKey;
-        _delegate = delegate;
+        _owner = owner;
     }
     return self;
 }
@@ -142,10 +140,10 @@ typedef NS_ENUM(NSUInteger, _DFImageTaskState) {
     if (other == self) {
         return YES;
     }
-    if (other.delegate != self.delegate) {
+    if (other.owner != self.owner) {
         return NO;
     }
-    return [self.delegate isImageRequestKeyEqual:self toKey:other];
+    return [self.owner isImageRequestKey:self equalToKey:other];
 }
 
 @end
@@ -190,10 +188,10 @@ typedef NS_ENUM(NSUInteger, _DFImageTaskState) {
 
 #pragma mark - DFImageManager
 
-#define DFImageCacheKeyCreate(request) [[_DFImageRequestKey alloc] initWithRequest:request isCacheKey:YES delegate:self]
-#define DFImageLoadKeyCreate(request) [[_DFImageRequestKey alloc] initWithRequest:request isCacheKey:NO delegate:self]
+#define DFImageCacheKeyCreate(request) [[_DFImageRequestKey alloc] initWithRequest:request isCacheKey:YES owner:self]
+#define DFImageLoadKeyCreate(request) [[_DFImageRequestKey alloc] initWithRequest:request isCacheKey:NO owner:self]
 
-@interface DFImageManager () <_DFImageRequestKeyDelegate>
+@interface DFImageManager () <_DFImageRequestKeyOwner>
 
 @end
 
@@ -464,9 +462,9 @@ typedef NS_ENUM(NSUInteger, _DFImageTaskState) {
     }
 }
 
-#pragma mark <_DFImageRequestKeyDelegate>
+#pragma mark <_DFImageRequestKeyOwner>
 
-- (BOOL)isImageRequestKeyEqual:(_DFImageRequestKey *)key1 toKey:(_DFImageRequestKey *)key2 {
+- (BOOL)isImageRequestKey:(_DFImageRequestKey *)key1 equalToKey:(_DFImageRequestKey *)key2 {
     DFImageRequest *request1 = key1.request;
     DFImageRequest *request2 = key2.request;
     if (key1.isCacheKey) {
