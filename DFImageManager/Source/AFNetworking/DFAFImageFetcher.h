@@ -24,6 +24,8 @@
 #import <AFNetworking/AFURLSessionManager.h>
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /*! The NSNumber with NSURLRequestCachePolicy value that specifies a request cache policy.
  @note Should be put into DFImageRequestOptions userInfo dictionary.
  */
@@ -58,7 +60,7 @@ extern NSString *const DFAFRequestCachePolicyKey;
 
 /*! The delegate of the receiver.
  */
-@property (nonatomic, weak) id<DFAFImageFetcherDelegate> delegate;
+@property (nullable, nonatomic, weak) id<DFAFImageFetcherDelegate> delegate;
 
 /*! A set containing all the supported URL schemes. The default set contains "http", "https", "ftp", "file" and "data" schemes.
  @note The property can be changed in case there are any custom protocols supported by NSURLSession.
@@ -70,3 +72,5 @@ extern NSString *const DFAFRequestCachePolicyKey;
 - (instancetype)initWithSessionManager:(AFURLSessionManager *)sessionManager NS_DESIGNATED_INITIALIZER;
 
 @end
+
+NS_ASSUME_NONNULL_END
