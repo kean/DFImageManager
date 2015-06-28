@@ -22,13 +22,24 @@
 
 #import "DFALAsset.h"
 #import "DFAssetsLibraryDefines.h"
-#import "DFAssetsLibraryImageFetchOperation.h"
 #import "DFAssetsLibraryImageFetcher.h"
 #import "DFImageRequest.h"
 #import "DFImageRequestOptions.h"
 #import "DFImageResponse.h"
+#import <AssetsLibrary/AssetsLibrary.h>
 #import <UIKit/UIKit.h>
 
+@interface _DFAssetsLibraryImageFetchOperation : NSOperation
+
+@property (nonatomic) DFALAssetImageSize imageSize;
+@property (nonatomic) DFALAssetVersion version;
+@property (nonatomic, readonly) UIImage *image;
+@property (nonatomic, readonly) NSError *error;
+
+- (instancetype)initWithAsset:(ALAsset *)asset;
+- (instancetype)initWithAssetURL:(NSURL *)assetURL;
+
+@end
 
 NSString *const DFAssetsLibraryImageSizeKey = @"DFAssetsLibraryImageSizeKey";
 NSString *const DFAssetsLibraryAssetVersionKey = @"DFAssetsLibraryAssetVersionKey";
@@ -56,6 +67,16 @@ static inline NSURL *_ALAssetURL(id resource) {
         _queue.maxConcurrentOperationCount = 3;
     }
     return self;
+}
+
++ (ALAssetsLibrary *)defaulLibrary
+{
+    static ALAssetsLibrary *_shared = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        _shared = [ALAssetsLibrary new];
+    });
+    return _shared;
 }
 
 #pragma mark - <DFImageFetching>
@@ -120,17 +141,17 @@ static inline NSURL *_ALAssetURL(id resource) {
 }
 
 - (NSOperation *)startOperationWithRequest:(DFImageRequest *)request progressHandler:(void (^)(double))progressHandler completion:(void (^)(DFImageResponse *))completion {
-    DFAssetsLibraryImageFetchOperation *operation;
+    _DFAssetsLibraryImageFetchOperation *operation;
     if ([request.resource isKindOfClass:[DFALAsset class]]) {
-        operation = [[DFAssetsLibraryImageFetchOperation alloc] initWithAsset:((DFALAsset *)request.resource).asset];
+        operation = [[_DFAssetsLibraryImageFetchOperation alloc] initWithAsset:((DFALAsset *)request.resource).asset];
     } else {
-        operation = [[DFAssetsLibraryImageFetchOperation alloc] initWithAssetURL:(NSURL *)request.resource];
+        operation = [[_DFAssetsLibraryImageFetchOperation alloc] initWithAssetURL:(NSURL *)request.resource];
     }
     _DFAssetsRequestOptions options = [self _assetRequestOptionsForRequest:request];
     operation.imageSize = options.imageSize;
     operation.version = options.version;
     
-    DFAssetsLibraryImageFetchOperation *__weak weakOp = operation;
+    _DFAssetsLibraryImageFetchOperation *__weak weakOp = operation;
     [operation setCompletionBlock:^{
         if (completion) {
             completion([[DFImageResponse alloc] initWithImage:weakOp.image error:weakOp.error userInfo:nil]);
@@ -138,6 +159,156 @@ static inline NSURL *_ALAssetURL(id resource) {
     }];
     [_queue addOperation:operation];
     return operation;
+}
+
+@end
+
+
+@interface _DFAssetsLibraryImageFetchOperation ()
+
+@property (nonatomic, getter = isExecuting) BOOL executing;
+@property (nonatomic, getter = isFinished) BOOL finished;
+
+@end
+
+@implementation _DFAssetsLibraryImageFetchOperation {
+    ALAsset *_asset;
+    NSURL *_assetURL;
+}
+
+@synthesize executing = _executing;
+@synthesize finished = _finished;
+
+- (instancetype)init {
+    if (self = [super init]) {
+        _imageSize = DFALAssetImageSizeThumbnail;
+        _version = DFALAssetVersionCurrent;
+    }
+    return self;
+}
+
+- (instancetype)initWithAsset:(ALAsset *)asset {
+    if (self = [self init]) {
+        _asset = asset;
+    }
+    return self;
+}
+
+- (instancetype)initWithAssetURL:(NSURL *)assetURL {
+    if (self = [self init]) {
+        _assetURL = assetURL;
+    }
+    return self;
+}
+
+- (void)start {
+    self.executing = YES;
+    if (self.isCancelled) {
+        [self finish];
+    } else {
+        _DFAssetsLibraryImageFetchOperation *__weak weakSelf = self;
+        if (!_asset) {
+            [[DFAssetsLibraryImageFetcher defaulLibrary] assetForURL:_assetURL resultBlock:^(ALAsset *asset) {
+                [weakSelf _didReceiveAsset:asset];
+            } failureBlock:^(NSError *error) {
+                [weakSelf _didFailWithError:error];
+            }];
+        } else {
+            [self _startFetching];
+        }
+    }
+}
+
+- (void)finish {
+    if (_executing) {
+        self.executing = NO;
+    }
+    self.finished = YES;
+}
+
+- (void)_startFetching {
+    if (_version == DFALAssetVersionCurrent) {
+        switch (_imageSize) {
+            case DFALAssetImageSizeAspectRatioThumbnail:
+                _image = [UIImage imageWithCGImage:_asset.aspectRatioThumbnail scale:[UIScreen mainScreen].scale orientation:UIImageOrientationUp];
+                break;
+            case DFALAssetImageSizeThumbnail:
+                _image = [UIImage imageWithCGImage:_asset.thumbnail scale:[UIScreen mainScreen].scale orientation:UIImageOrientationUp];
+                break;
+            case DFALAssetImageSizeFullscreen: {
+                ALAssetRepresentation *assetRepresentation = [_asset defaultRepresentation];
+                _image = [UIImage imageWithCGImage:[assetRepresentation fullScreenImage] scale:[UIScreen mainScreen].scale orientation:UIImageOrientationUp];
+            }
+                break;
+            case DFALAssetImageSizeFullsize:
+                _image = [self _fullResolutionAdjustedImage];
+                break;
+            default:
+                break;
+        }
+    } else {
+        _image = [self _fullResolutionUnadjustedImage];
+    }
+    [self finish];
+}
+
+- (UIImage *)_fullResolutionUnadjustedImage {
+    ALAssetRepresentation *representation = [_asset defaultRepresentation];
+    CGImageRef imageRef = [representation fullResolutionImage];
+    UIImageOrientation orientation = (UIImageOrientation)representation.orientation;
+    return [UIImage imageWithCGImage:imageRef scale:[representation scale] orientation:orientation];
+}
+
+- (UIImage *)_fullResolutionAdjustedImage {
+    ALAssetRepresentation *representation = [_asset defaultRepresentation];
+    
+    // WARNING: This code doesn't work for iOS 8.0+. Use PhotosKit instead.
+    CGImageRef imageRef = [representation fullResolutionImage];
+    NSString *adjustment = [representation metadata][@"AdjustmentXMP"];
+    if (adjustment != nil) {
+        NSData *xmpData = [adjustment dataUsingEncoding:NSUTF8StringEncoding];
+        CIImage *image = [CIImage imageWithCGImage:imageRef];
+        
+        NSError *error = nil;
+        NSArray *filterArray = [CIFilter filterArrayFromSerializedXMP:xmpData inputImageExtent:image.extent error:&error];
+        CIContext *context = [CIContext contextWithOptions:nil];
+        if (filterArray != nil && !error) {
+            for (CIFilter *filter in filterArray) {
+                [filter setValue:image forKey:kCIInputImageKey];
+                image = [filter outputImage];
+            }
+            // TODO: Fix crash when OpenGL calls are made in the background
+            imageRef = [context createCGImage:image fromRect:[image extent]];
+        }
+    }
+    UIImageOrientation orientation = (UIImageOrientation)representation.orientation;
+    return [UIImage imageWithCGImage:imageRef scale:[representation scale] orientation:orientation];
+}
+
+- (void)_didReceiveAsset:(ALAsset *)asset {
+    _asset = asset;
+    if (self.isCancelled) {
+        [self finish];
+        return;
+    }
+    [self _startFetching];
+}
+
+- (void)_didFailWithError:(NSError *)error {
+    _error = error;
+    [self finish];
+}
+
+- (void)setFinished:(BOOL)finished {
+    [self willChangeValueForKey:@"isFinished"];
+    _finished = finished;
+    [self didChangeValueForKey:@"isFinished"];
+}
+
+- (void)setExecuting:(BOOL)executing {
+    [self willChangeValueForKey:@"isExecuting"];
+    _executing = executing;
+    [self didChangeValueForKey:@"isExecuting"];
 }
 
 @end

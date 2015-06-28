@@ -23,6 +23,10 @@
 #import "DFImageFetching.h"
 #import <Foundation/Foundation.h>
 
+@class ALAssetsLibrary;
+
+NS_ASSUME_NONNULL_BEGIN
+
 /*! The DFALAssetImageSize value that specifies which of the available representations of the ALAsset to use. If the value is not provided then the size is picked automatically by DFAssetsLibraryImageFetcher.
  @note Should be put into DFImageRequestOptions userInfo dictionary.
  */
@@ -41,4 +45,10 @@ extern NSString *const DFAssetsLibraryAssetVersionKey;
  */
 @interface DFAssetsLibraryImageFetcher : NSObject <DFImageFetching>
 
+/*! Returns the ALAssetsLibrary instance used by image fetchers.
+ */
++ (ALAssetsLibrary *)defaulLibrary;
+
 @end
+
+NS_ASSUME_NONNULL_END

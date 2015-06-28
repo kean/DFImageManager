@@ -24,6 +24,8 @@
 
 @class ALAsset;
 
+NS_ASSUME_NONNULL_BEGIN
+
 /*! ALAsset wrapper that implements -hash method and memorizes assetURL.
  @note The asset URL is created lazily. In some cases it might be a good idea to warm-up this property.
  */
@@ -46,3 +48,5 @@
 - (void)warmup;
 
 @end
+
+NS_ASSUME_NONNULL_END
