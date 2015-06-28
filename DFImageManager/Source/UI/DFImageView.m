@@ -45,6 +45,9 @@ static const NSTimeInterval _kMinimumAutoretryInterval = 8.f;
 
 - (instancetype)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {
+        self.contentMode = UIViewContentModeScaleAspectFill;
+        self.clipsToBounds = YES;
+        
         [self _commonInit];
     }
     return self;
@@ -58,9 +61,6 @@ static const NSTimeInterval _kMinimumAutoretryInterval = 8.f;
 }
 
 - (void)_commonInit {
-    self.contentMode = UIViewContentModeScaleAspectFill;
-    self.clipsToBounds = YES;
-    
     self.imageManager = [DFImageManager sharedManager];
     
     _imageTargetSize = CGSizeZero;
