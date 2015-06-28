@@ -23,13 +23,15 @@
 #import <UIKit/UIKit.h>
 #import <FLAnimatedImage/FLAnimatedImage.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /*! The DFAnimatedImage subclasses UIImage and represents a poster image for the underlying animated image. It is a regular UIImage that doesn't override any of the native UIImage behaviors it can be used anywhere where a regular `UIImage` can be used.
  */
 @interface DFAnimatedImage : UIImage
 
 /* The animated image that the receiver was initialized with. An `FLAnimatedImage`'s job is to deliver frames in a highly performant way and works in conjunction with `FLAnimatedImageView`.
  */
-@property (nonatomic, readonly) FLAnimatedImage *animatedImage;
+@property (nullable, nonatomic, readonly) FLAnimatedImage *animatedImage;
 
 /*! Initializes the DFAnimatedImage with an instance of FLAnimatedImage class.
  */
@@ -37,14 +39,16 @@
 
 /*! Initializes the DFAnimatedImage with an instance of FLAnimatedImage class created from a given data.
  */
-- (instancetype)initWithAnimatedGIFData:(NSData *)data;
+- (nullable instancetype)initWithAnimatedGIFData:(NSData *)data;
 
 /*! Returns the DFAnimatedImage object with an instance of FLAnimatedImage class created from a given data.
  */
-+ (instancetype)animatedImageWithGIFData:(NSData *)data;
++ (nullable instancetype)animatedImageWithGIFData:(NSData *)data;
 
 /*! Returns YES if the data represents an animated GIF.
  */
 + (BOOL)isAnimatedGIFData:(NSData *)data;
 
 @end
+
+NS_ASSUME_NONNULL_END

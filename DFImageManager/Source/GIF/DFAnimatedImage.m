@@ -32,7 +32,11 @@
 }
 
 - (instancetype)initWithAnimatedGIFData:(NSData *)data {
-    return [self initWithAnimatedImage:[FLAnimatedImage animatedImageWithGIFData:data]];
+    FLAnimatedImage *animatedImage = [FLAnimatedImage animatedImageWithGIFData:data];
+    if (!animatedImage) {
+        return nil;
+    }
+    return [self initWithAnimatedImage:animatedImage];
 }
 
 + (instancetype)animatedImageWithGIFData:(NSData *)data {
