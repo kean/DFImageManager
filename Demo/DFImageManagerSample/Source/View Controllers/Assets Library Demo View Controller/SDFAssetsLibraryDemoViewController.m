@@ -72,7 +72,7 @@ static NSString * const reuseIdentifier = @"Cell";
     
     SDFAssetsLibraryDemoViewController *__weak weakSelf = self;
     NSMutableArray *assets = [NSMutableArray new];
-    [[ALAssetsLibrary df_sharedLibrary] enumerateGroupsWithTypes:ALAssetsGroupSavedPhotos usingBlock:^(ALAssetsGroup *group, BOOL *stop) {
+    [[DFAssetsLibraryImageFetcher defaulLibrary] enumerateGroupsWithTypes:ALAssetsGroupSavedPhotos usingBlock:^(ALAssetsGroup *group, BOOL *stop) {
         [group enumerateAssetsUsingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop) {
             NSString *assetType = [result valueForProperty:ALAssetPropertyType];
             if ([assetType isEqual:ALAssetTypePhoto]) {
