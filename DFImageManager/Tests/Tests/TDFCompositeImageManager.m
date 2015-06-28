@@ -42,6 +42,10 @@
     return nil;
 }
 
+- (void)invalidateAndCancel {
+    // Do nothing
+}
+
 - (void)startPreheatingImagesForRequests:(NSArray *)requests {
     for (DFImageRequest *request in requests) {
         [self requestImageForRequest:request completion:nil];

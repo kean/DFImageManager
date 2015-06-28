@@ -57,7 +57,7 @@ typedef NS_ENUM(NSUInteger, _DFImageTaskState) {
 
 @interface _DFImageTask : DFImageRequestID
 
-@property (nonatomic, readonly, weak) DFImageManager *imageManager;
+@property (nonatomic, readonly) DFImageManager *imageManager;
 @property (nonatomic, readonly) DFImageRequest *request;
 @property (nonatomic, readonly, copy) DFImageRequestCompletion completionHandler;
 @property (nonatomic) DFImageResponse *response;
@@ -197,10 +197,11 @@ typedef NS_ENUM(NSUInteger, _DFImageTaskState) {
 
 @implementation DFImageManager {
     dispatch_queue_t _queue;
-    NSMutableSet *_executingImageTasks;
+    NSMutableSet /* _DFImageTask */ *_executingImageTasks;
     NSMutableDictionary /* _DFImageRequestKey : _DFImageFetchOperation */ *_fetchOperations;
     NSMutableDictionary /* _DFImageRequestKey : _DFImageTask */ *_preheatingTasks;
     NSInteger _preheatingTaskCounter;
+    BOOL _invalidated;
     BOOL _needsToExecutePreheatTasks;
     BOOL _fetcherRespondsToCanonicalRequest;
 }
@@ -232,6 +233,9 @@ typedef NS_ENUM(NSUInteger, _DFImageTaskState) {
 }
 
 - (DFImageRequestID *)requestImageForRequest:(DFImageRequest *)request completion:(DFImageRequestCompletion)completion {
+    if (_invalidated) {
+        return nil;
+    }
     request = [self _canonicalRequestForRequest:request];
     _DFImageTask *task = [[_DFImageTask alloc] initWithManager:self request:request completionHandler:completion];
     if ([NSThread isMainThread]) {
@@ -390,9 +394,24 @@ typedef NS_ENUM(NSUInteger, _DFImageTaskState) {
     }
 }
 
+- (void)invalidateAndCancel {
+    if (!_invalidated) {
+        _invalidated = YES;
+        dispatch_async(_queue, ^{
+            [_preheatingTasks removeAllObjects];
+            for (_DFImageTask *task in _executingImageTasks) {
+                [self _setImageTaskState:_DFImageTaskStateCancelled task:task];
+            }
+        });
+    }
+}
+
 #pragma mark Preheating
 
 - (void)startPreheatingImagesForRequests:(NSArray *)requests {
+    if (_invalidated) {
+        return;
+    }
     dispatch_async(_queue, ^{
         for (DFImageRequest *request in [self _canonicalRequestsForRequests:requests]) {
             _DFImageRequestKey *key = DFImageCacheKeyCreate(request);
@@ -437,7 +456,7 @@ typedef NS_ENUM(NSUInteger, _DFImageTaskState) {
 }
 
 - (void)_setNeedsExecutePreheatingTasks {
-    if (!_needsToExecutePreheatTasks) {
+    if (!_needsToExecutePreheatTasks && !_invalidated) {
         _needsToExecutePreheatTasks = YES;
         // Manager won't start executing preheating tasks in case you are about to add normal (non-preheating) right after adding preheating ones.
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), _queue, ^{

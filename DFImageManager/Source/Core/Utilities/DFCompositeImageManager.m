@@ -81,6 +81,12 @@
     return [manager requestImageForRequest:request completion:completion];
 }
 
+- (void)invalidateAndCancel {
+    for (id<DFImageManaging> manager in _managers) {
+        [manager invalidateAndCancel];
+    }
+}
+
 - (void)startPreheatingImagesForRequests:(NSArray *)requests {
     for (DFImageRequest *request in requests) {
         [DFManagerForRequest(request) startPreheatingImagesForRequests:@[request]];

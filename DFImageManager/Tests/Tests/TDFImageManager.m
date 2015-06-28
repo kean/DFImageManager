@@ -499,6 +499,35 @@
     [self waitForExpectationsWithTimeout:2.0 handler:nil];
 }
 
+#pragma mark - Invalidation
+
+- (void)testThatRequestsFinishWithoutAStrongReferenceToManager {
+    DFImageManager *manager = [[DFImageManager alloc] initWithConfiguration:[DFImageManagerConfiguration configurationWithFetcher:[TDFMockImageFetcher new]]];
+    @autoreleasepool {
+        XCTestExpectation *expectation = [self expectationWithDescription:@"first_request"];
+        [manager requestImageForResource:[TDFMockResource resourceWithID:@"ID01"] completion:^(UIImage *image, NSDictionary *info) {
+            XCTAssertNotNil(image);
+            [expectation fulfill];
+        }];
+        manager = nil;
+    }
+    [self waitForExpectationsWithTimeout:2.0 handler:nil];
+}
+
+- (void)testThatInvalidateAndCancelMethodCancelsOutstandingRequests {
+    _fetcher.queue.suspended = YES;
+    [_manager requestImageForResource:[TDFMockResource resourceWithID:@"ID01"] completion:nil];
+    [self expectationForNotification:TDFMockFetchOperationWillCancelNotification object:nil handler:nil];
+    [_manager invalidateAndCancel];
+    [self waitForExpectationsWithTimeout:2.0 handler:nil];
+}
+
+- (void)testThatNewRequestsCantBeCreated {
+    XCTAssertNotNil([_manager requestImageForResource:[TDFMockResource resourceWithID:@"ID01"] completion:nil]);
+    [_manager invalidateAndCancel];
+    XCTAssertNil([_manager requestImageForResource:[TDFMockResource resourceWithID:@"ID02"] completion:nil]);
+}
+
 #pragma mark - Fault Tolerance
 
 - (void)testThatImageIsFetchedWhenCompletionHandlerIsNil {
