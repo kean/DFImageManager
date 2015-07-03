@@ -8,6 +8,7 @@ The DFImageManager has a single responsibility of providing a great API for mana
 
 ## Features
 - Zero config, yet immense customization and extensibility.
+- Works great with Swift.
 - Uses latest advancements in [Foundation URL Loading System](https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/URLLoadingSystem/URLLoadingSystem.html) including [NSURLSession](https://developer.apple.com/library/ios/documentation/Foundation/Reference/NSURLSession_class/) that supports [SPDY](http://en.wikipedia.org/wiki/SPDY) protocol.
 - Instead of reinventing a caching methodology it relies on HTTP cache as defined in [HTTP specification](https://tools.ietf.org/html/rfc7234) and caching implementation provided by [Foundation URL Loading System](https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/URLLoadingSystem/URLLoadingSystem.html). The caching and revalidation are completely transparent to the client.
 - Has basic built-in networking implementation, and optional [AFNetworking integration](#install_using_cocopods) which should be your primary choice. Combine the power of both frameworks!
