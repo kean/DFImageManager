@@ -40,6 +40,10 @@ extern NSString *const DFImageInfoRequestIDKey;
  */
 extern NSString *const DFImageInfoErrorKey;
 
+/*! A boolean value indicating whether the image was returned from the memory cache.
+ */
+extern NSString *const DFImageInfoIsFromMemoryCacheKey;
+
 
 /*! Options for fitting an image’s aspect ratio to a target size.
  */

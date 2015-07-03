@@ -242,7 +242,9 @@ typedef NS_ENUM(NSUInteger, _DFImageTaskState) {
         DFImageResponse *response = [self _cachedResponseForRequest:request];
         if (response.image) {
             if (completion) {
-                completion(response.image, [self _infoFromResponse:response task:task]);
+                NSMutableDictionary *info = [self _infoFromResponse:response task:task];
+                info[DFImageInfoIsFromMemoryCacheKey] = @YES;
+                completion(response.image, info);
             }
             return task;
         }
@@ -317,10 +319,9 @@ typedef NS_ENUM(NSUInteger, _DFImageTaskState) {
         }
         
         if (task.completionHandler) {
-            DFImageResponse *response = task.response;
-            NSDictionary *info = [self _infoFromResponse:response task:task];
+            NSDictionary *info = [self _infoFromResponse:task.response task:task];
             dispatch_async(dispatch_get_main_queue(), ^{
-                task.completionHandler(response.image, info);
+                task.completionHandler(task.response.image, info);
             });
         }
     }
@@ -329,14 +330,11 @@ typedef NS_ENUM(NSUInteger, _DFImageTaskState) {
 - (void)_imageFetchOperation:(_DFImageFetchOperation *)operation didUpdateProgress:(double)progress {
     dispatch_async(_queue, ^{
         for (_DFImageTask *task in operation.imageTasks) {
-            if (task.request.options.progressHandler) {
-                void (^progressHandler)(double) = task.request.options.progressHandler;
-                if (progressHandler) {
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        progressHandler(progress);
-                    });
-                }
-                
+            void (^progressHandler)(double) = task.request.options.progressHandler;
+            if (progressHandler) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    progressHandler(progress);
+                });
             }
         }
     });
@@ -522,7 +520,7 @@ typedef NS_ENUM(NSUInteger, _DFImageTaskState) {
     return [request copy];
 }
 
-- (NSDictionary *)_infoFromResponse:(DFImageResponse *)response task:(_DFImageTask *)task {
+- (nonnull NSMutableDictionary *)_infoFromResponse:(nonnull DFImageResponse *)response task:(nonnull _DFImageTask *)task {
     NSMutableDictionary *info = [NSMutableDictionary new];
     if (response.error) {
         info[DFImageInfoErrorKey] = response.error;

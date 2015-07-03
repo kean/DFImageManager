@@ -251,6 +251,7 @@
             XCTAssertEqual(response.image, image);
             XCTAssertEqual(response.error, info[DFImageInfoErrorKey]);
             XCTAssertEqual(response.userInfo[@"TDFKey"], info[@"TDFKey"]);
+            XCTAssertFalse([info[DFImageInfoIsFromMemoryCacheKey] boolValue]);
             [expectation fulfill];
         }];
         XCTAssertNotNil(requestID);
@@ -264,7 +265,7 @@
             XCTAssertEqual(response.image, image);
             XCTAssertEqual(response.error, info[DFImageInfoErrorKey]);
             XCTAssertEqual(response.userInfo[@"TDFKey"], info[@"TDFKey"]);
-            XCTAssertTrue([NSThread isMainThread]);
+            XCTAssertTrue([info[DFImageInfoIsFromMemoryCacheKey] boolValue]);
             isCompletionHandlerCalled = YES;
         }];
         XCTAssertNotNil(requestID);

@@ -145,6 +145,7 @@ static const NSTimeInterval _kMinimumAutoretryInterval = 8.f;
         [weakSelf.delegate imageView:self didCompleteRequest:request withImage:image info:info];
         [weakSelf didCompleteRequest:request withImage:image info:info];
     }];
+    [self setNeedsUpdateConstraints];
     [_task start];
 }
 
@@ -153,7 +154,7 @@ static const NSTimeInterval _kMinimumAutoretryInterval = 8.f;
 }
 
 - (void)didCompleteRequest:(DFImageRequest *)request withImage:(UIImage *)image info:(NSDictionary *)info {
-    BOOL isFastResponse = (_task.elapsedTime * 1000.0) < 64.f; // Elapsed time is lower then 64 ms, if we miss 4 frames, that's good enough
+    BOOL isFastResponse = [info[DFImageInfoIsFromMemoryCacheKey] boolValue];
     if (self.allowsAnimations && !isFastResponse && !self.image) {
         [self displayImage:image];
         [self.layer addAnimation:({

@@ -25,6 +25,8 @@
 NSString *const DFImageInfoRequestIDKey = @"DFImageInfoRequestIDKey";
 NSString *const DFImageInfoErrorKey = @"DFImageInfoErrorKey";
 
+NSString *const DFImageInfoIsFromMemoryCacheKey = @"DFImageInfoFromMemoryCacheKey";
+
 CGSize const DFImageMaximumSize = { FLT_MAX, FLT_MAX };
 
 NSString *const DFImageManagerErrorDomain = @"DFImageManagerErrorDomain";
