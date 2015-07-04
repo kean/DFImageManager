@@ -16,7 +16,6 @@
 		0C0D18FB1AA88AE80046F710 /* SDFGIFSampleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C0D18F91AA88AE80046F710 /* SDFGIFSampleViewController.m */; };
 		0C3304B71A4A6CDB001808F3 /* SDFPhotosKitDemoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C3304B61A4A6CDB001808F3 /* SDFPhotosKitDemoViewController.m */; };
 		0C48E4B11A5BD06000CD2497 /* UIViewController+SDFImageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C48E4B01A5BD06000CD2497 /* UIViewController+SDFImageManager.m */; };
-		0C48E4B51A5BD0EF00CD2497 /* SDFMainDemoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C48E4B41A5BD0EF00CD2497 /* SDFMainDemoViewController.m */; };
 		0C48E4BD1A5BD6D800CD2497 /* SDFNetworkingDemoCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C48E4BC1A5BD6D800CD2497 /* SDFNetworkingDemoCollectionViewController.m */; };
 		0C48E4C11A5BD6FB00CD2497 /* SDFCompositeRequestDemoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C48E4C01A5BD6FB00CD2497 /* SDFCompositeRequestDemoViewController.m */; };
 		0C8651361A5E80EA000EF271 /* SDFAssetsLibraryDemoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C8651351A5E80EA000EF271 /* SDFAssetsLibraryDemoViewController.m */; };
@@ -61,8 +60,6 @@
 		0C3304B61A4A6CDB001808F3 /* SDFPhotosKitDemoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDFPhotosKitDemoViewController.m; sourceTree = "<group>"; };
 		0C48E4AF1A5BD06000CD2497 /* UIViewController+SDFImageManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+SDFImageManager.h"; sourceTree = "<group>"; };
 		0C48E4B01A5BD06000CD2497 /* UIViewController+SDFImageManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+SDFImageManager.m"; sourceTree = "<group>"; };
-		0C48E4B31A5BD0EF00CD2497 /* SDFMainDemoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDFMainDemoViewController.h; sourceTree = "<group>"; };
-		0C48E4B41A5BD0EF00CD2497 /* SDFMainDemoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDFMainDemoViewController.m; sourceTree = "<group>"; };
 		0C48E4BB1A5BD6D800CD2497 /* SDFNetworkingDemoCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDFNetworkingDemoCollectionViewController.h; sourceTree = "<group>"; };
 		0C48E4BC1A5BD6D800CD2497 /* SDFNetworkingDemoCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDFNetworkingDemoCollectionViewController.m; sourceTree = "<group>"; };
 		0C48E4BF1A5BD6FB00CD2497 /* SDFCompositeRequestDemoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDFCompositeRequestDemoViewController.h; sourceTree = "<group>"; };
@@ -162,15 +159,6 @@
 				0C48E4B01A5BD06000CD2497 /* UIViewController+SDFImageManager.m */,
 			);
 			path = Other;
-			sourceTree = "<group>";
-		};
-		0C48E4B21A5BD0E400CD2497 /* Main Demo View Controller */ = {
-			isa = PBXGroup;
-			children = (
-				0C48E4B31A5BD0EF00CD2497 /* SDFMainDemoViewController.h */,
-				0C48E4B41A5BD0EF00CD2497 /* SDFMainDemoViewController.m */,
-			);
-			path = "Main Demo View Controller";
 			sourceTree = "<group>";
 		};
 		0C48E4BA1A5BD6D800CD2497 /* Networking Sample View Controller */ = {
@@ -303,7 +291,6 @@
 		0CF593721A494A47007C5B56 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				0C48E4B21A5BD0E400CD2497 /* Main Demo View Controller */,
 				0C48E4BA1A5BD6D800CD2497 /* Networking Sample View Controller */,
 				0C97D6BB1A5E51AB0014D8AD /* Filesystem Demo View Controller */,
 				0C3304B41A4A6C72001808F3 /* Photos Kit Sample View Controller */,
@@ -515,7 +502,6 @@
 				0C48E4BD1A5BD6D800CD2497 /* SDFNetworkingDemoCollectionViewController.m in Sources */,
 				0CF5937D1A494CEB007C5B56 /* SDFFlickrRecentPhotosModel.m in Sources */,
 				0CF5934F1A4948C4007C5B56 /* SDFMenuViewController.m in Sources */,
-				0C48E4B51A5BD0EF00CD2497 /* SDFMainDemoViewController.m in Sources */,
 				0CF5934C1A4948C4007C5B56 /* SDFAppDelegate.m in Sources */,
 				0C0D18FB1AA88AE80046F710 /* SDFGIFSampleViewController.m in Sources */,
 				0C8651361A5E80EA000EF271 /* SDFAssetsLibraryDemoViewController.m in Sources */,

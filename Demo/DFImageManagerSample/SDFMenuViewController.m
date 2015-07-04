@@ -11,7 +11,6 @@
 #import "SDFCompositeRequestDemoViewController.h"
 #import "SDFFilesystemDemoViewController.h"
 #import "SDFGIFSampleViewController.h"
-#import "SDFMainDemoViewController.h"
 #import "SDFMenuViewController.h"
 #import "SDFNetworkingDemoCollectionViewController.h"
 #import "SDFPhotosKitDemoViewController.h"
