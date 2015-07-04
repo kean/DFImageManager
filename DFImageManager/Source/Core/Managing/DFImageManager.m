@@ -317,6 +317,7 @@
             NSDictionary *info = [self _infoFromResponse:task.response task:task];
             dispatch_async(dispatch_get_main_queue(), ^{
                 task.completionHandler(task.response.image, info);
+                task.response = nil;
             });
         }
     }
