@@ -23,9 +23,29 @@
 #import "DFImageManagerDefines.h"
 #import <Foundation/Foundation.h>
 
+@class DFImageRequest;
+
+/*! Constants for determining the current state of a task.
+ */
+typedef NS_ENUM(NSUInteger, DFImageTaskState) {
+    DFImageTaskStateSuspended,
+    DFImageTaskStateRunning,
+    DFImageTaskStateCancelled,
+    DFImageTaskStateCompleted
+};
+
 /*! Abstract class representing image task.
  */
 @interface DFImageTask : NSObject <NSCopying>
+
+/*! The image request that the task was created with.
+ @note Image request is in its canonical form.
+ */
+@property (nonatomic, readonly) DFImageRequest *request;
+
+/*! The current state of the task within the image manager.
+ */
+@property (nonatomic, readonly) DFImageTaskState state;
 
 /*! Advices the image manager that the task should be cancelled. The completion block will be called with error value of { DFImageManagerErrorDomain, DFImageManagerErrorCancelled }
  */

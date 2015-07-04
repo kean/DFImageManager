@@ -41,13 +41,6 @@
 @class _DFImageTask;
 @class _DFImageFetchOperation;
 
-typedef NS_ENUM(NSUInteger, _DFImageTaskState) {
-    _DFImageTaskStateSuspended,
-    _DFImageTaskStateRunning,
-    _DFImageTaskStateCancelled,
-    _DFImageTaskStateCompleted
-};
-
 @interface DFImageManager (_DFImageTask)
 
 - (void)cancelTask:(_DFImageTask *)task;
@@ -57,13 +50,11 @@ typedef NS_ENUM(NSUInteger, _DFImageTaskState) {
 
 @interface _DFImageTask : DFImageTask
 
-@property (nonatomic, readonly) DFImageManager *imageManager;
-@property (nonatomic, readonly) DFImageRequest *request;
+@property (nonatomic, readonly) DFImageManager *manager;
 @property (nonatomic, readonly, copy) DFImageRequestCompletion completionHandler;
+@property (nonatomic) DFImageTaskState state;
 @property (nonatomic) DFImageResponse *response;
-@property (nonatomic) _DFImageTaskState state;
 @property (nonatomic) NSInteger tag;
-
 @property (nonatomic, weak) _DFImageFetchOperation *fetchOperation;
 @property (nonatomic, weak) NSOperation *processOperation;
 
@@ -71,22 +62,25 @@ typedef NS_ENUM(NSUInteger, _DFImageTaskState) {
 
 @implementation _DFImageTask
 
-- (instancetype)initWithManager:(DFImageManager *)imageManager request:(DFImageRequest *)request completionHandler:(DFImageRequestCompletion)completionHandler {
+@synthesize request = _request;
+@synthesize state = _state;
+
+- (instancetype)initWithManager:(DFImageManager *)manager request:(DFImageRequest *)request completionHandler:(DFImageRequestCompletion)completionHandler {
     if (self = [super init]) {
-        _imageManager = imageManager;
+        _manager = manager;
         _request = request;
         _completionHandler = [completionHandler copy];
-        _state = _DFImageTaskStateSuspended;
+        _state = DFImageTaskStateSuspended;
     }
     return self;
 }
 
 - (void)cancel {
-    [self.imageManager cancelTask:self];
+    [self.manager cancelTask:self];
 }
 
 - (void)setPriority:(DFImageRequestPriority)priority {
-    [self.imageManager setPriority:priority forTask:self];
+    [self.manager setPriority:priority forTask:self];
 }
 
 @end
@@ -241,6 +235,7 @@ typedef NS_ENUM(NSUInteger, _DFImageTaskState) {
     if ([NSThread isMainThread]) {
         DFImageResponse *response = [self _cachedResponseForRequest:request];
         if (response.image) {
+            task.state = DFImageTaskStateCompleted;
             if (completion) {
                 NSMutableDictionary *info = [self _infoFromResponse:response task:task];
                 info[DFImageInfoIsFromMemoryCacheKey] = @YES;
@@ -250,12 +245,12 @@ typedef NS_ENUM(NSUInteger, _DFImageTaskState) {
         }
     }
     dispatch_async(_queue, ^{
-        [self _setImageTaskState:_DFImageTaskStateRunning task:task];
+        [self _setImageTaskState:DFImageTaskStateRunning task:task];
     });
     return task;
 }
 
-- (void)_setImageTaskState:(_DFImageTaskState)state task:(_DFImageTask *)task {
+- (void)_setImageTaskState:(DFImageTaskState)state task:(_DFImageTask *)task {
     if ([DFImageManager _isTransitionAllowedFromState:task.state toState:state]) {
         [self _transitionActionFromState:task.state toState:state task:task];
         task.state = state;
@@ -263,20 +258,20 @@ typedef NS_ENUM(NSUInteger, _DFImageTaskState) {
     }
 }
 
-+ (BOOL)_isTransitionAllowedFromState:(_DFImageTaskState)fromState toState:(_DFImageTaskState)toState {
++ (BOOL)_isTransitionAllowedFromState:(DFImageTaskState)fromState toState:(DFImageTaskState)toState {
     static NSDictionary *transitions;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        transitions = @{ @(_DFImageTaskStateSuspended) : @[ @(_DFImageTaskStateRunning),
-                                                            @(_DFImageTaskStateCancelled) ],
-                         @(_DFImageTaskStateRunning) : @[ @(_DFImageTaskStateCompleted),
-                                                          @(_DFImageTaskStateCancelled) ] };
+        transitions = @{ @(DFImageTaskStateSuspended) : @[ @(DFImageTaskStateRunning),
+                                                            @(DFImageTaskStateCancelled) ],
+                         @(DFImageTaskStateRunning) : @[ @(DFImageTaskStateCompleted),
+                                                          @(DFImageTaskStateCancelled) ] };
     });
     return [((NSArray *)transitions[@(fromState)]) containsObject:@(toState)];
 }
 
-- (void)_transitionActionFromState:(_DFImageTaskState)fromState toState:(_DFImageTaskState)toState task:(_DFImageTask *)task {
-    if (fromState == _DFImageTaskStateRunning && toState == _DFImageTaskStateCancelled) {
+- (void)_transitionActionFromState:(DFImageTaskState)fromState toState:(DFImageTaskState)toState task:(_DFImageTask *)task {
+    if (fromState == DFImageTaskStateRunning && toState == DFImageTaskStateCancelled) {
         _DFImageFetchOperation *fetchOperation = task.fetchOperation;
         if (fetchOperation) {
             [fetchOperation.imageTasks removeObject:task];
@@ -289,8 +284,8 @@ typedef NS_ENUM(NSUInteger, _DFImageTaskState) {
     }
 }
 
-- (void)_enterActionForState:(_DFImageTaskState)state task:(_DFImageTask *)task {
-    if (state == _DFImageTaskStateRunning) {
+- (void)_enterActionForState:(DFImageTaskState)state task:(_DFImageTask *)task {
+    if (state == DFImageTaskStateRunning) {
         [_executingImageTasks addObject:task];
         
         _DFImageRequestKey *operationKey = DFImageLoadKeyCreate(task.request);
@@ -309,11 +304,11 @@ typedef NS_ENUM(NSUInteger, _DFImageTaskState) {
         [operation updateOperationPriority];
         task.fetchOperation = operation;
     }
-    if (state == _DFImageTaskStateCompleted || state == _DFImageTaskStateCancelled) {
+    if (state == DFImageTaskStateCompleted || state == DFImageTaskStateCancelled) {
         [_executingImageTasks removeObject:task];
         [self _setNeedsExecutePreheatingTasks];
         
-        if (state == _DFImageTaskStateCancelled) {
+        if (state == DFImageTaskStateCancelled) {
             NSError *error = [NSError errorWithDomain:DFImageManagerErrorDomain code:DFImageManagerErrorCancelled userInfo:nil];
             task.response = [DFImageResponse responseWithError:error];
         }
@@ -349,12 +344,12 @@ typedef NS_ENUM(NSUInteger, _DFImageTaskState) {
                 [self _processResponse:response task:task completion:^(DFImageResponse *processedResponse) {
                     task.response = processedResponse;
                     dispatch_async(_queue, ^{
-                        [weakSelf _setImageTaskState:_DFImageTaskStateCompleted task:task];
+                        [weakSelf _setImageTaskState:DFImageTaskStateCompleted task:task];
                     });
                 }];
             } else {
                 task.response = response;
-                [self _setImageTaskState:_DFImageTaskStateCompleted task:task];
+                [self _setImageTaskState:DFImageTaskStateCompleted task:task];
             }
         }
         operation.imageTasks = nil;
@@ -398,7 +393,7 @@ typedef NS_ENUM(NSUInteger, _DFImageTaskState) {
         dispatch_async(_queue, ^{
             [_preheatingTasks removeAllObjects];
             for (_DFImageTask *task in _executingImageTasks) {
-                [self _setImageTaskState:_DFImageTaskStateCancelled task:task];
+                [self _setImageTaskState:DFImageTaskStateCancelled task:task];
             }
         });
     }
@@ -437,7 +432,7 @@ typedef NS_ENUM(NSUInteger, _DFImageTaskState) {
             _DFImageRequestKey *key = DFImageCacheKeyCreate(request);
             _DFImageTask *task = _preheatingTasks[key];
             if (task) {
-                [self _setImageTaskState:_DFImageTaskStateCancelled task:task];
+                [self _setImageTaskState:DFImageTaskStateCancelled task:task];
                 [_preheatingTasks removeObjectForKey:key];
             }
         }
@@ -447,7 +442,7 @@ typedef NS_ENUM(NSUInteger, _DFImageTaskState) {
 - (void)stopPreheatingImagesForAllRequests {
     dispatch_async(_queue, ^{
         for (_DFImageTask *task in _preheatingTasks.allValues) {
-            [self _setImageTaskState:_DFImageTaskStateCancelled task:task];
+            [self _setImageTaskState:DFImageTaskStateCancelled task:task];
         }
         [_preheatingTasks removeAllObjects];
     });
@@ -471,8 +466,8 @@ typedef NS_ENUM(NSUInteger, _DFImageTaskState) {
             if (executingTaskCount >= _conf.maximumConcurrentPreheatingRequests) {
                 return;
             }
-            if (task.state == _DFImageTaskStateSuspended) {
-                [self _setImageTaskState:_DFImageTaskStateRunning task:task];
+            if (task.state == DFImageTaskStateSuspended) {
+                [self _setImageTaskState:DFImageTaskStateRunning task:task];
                 executingTaskCount++;
             }
         }
@@ -541,7 +536,7 @@ typedef NS_ENUM(NSUInteger, _DFImageTaskState) {
 
 - (void)cancelTask:(_DFImageTask *)task {
     dispatch_async(_queue, ^{
-        [self _setImageTaskState:_DFImageTaskStateCancelled task:task];
+        [self _setImageTaskState:DFImageTaskStateCancelled task:task];
     });
 }
 
