@@ -25,7 +25,7 @@
 #import <UIKit/UIKit.h>
 
 @class DFImageRequest;
-@class DFImageRequestID;
+@class DFImageTask;
 @protocol DFImageManaging;
 
 NS_ASSUME_NONNULL_BEGIN
@@ -34,9 +34,9 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @interface DFImageFetchContext : NSObject
 
-/*! Returns requestID created for the request.
+/*! Returns image task created for the request.
  */
-@property (nonatomic, readonly) DFImageRequestID *requestID;
+@property (nonatomic, readonly) DFImageTask *task;
 
 /*! Returns YES if the request was completed.
  */

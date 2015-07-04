@@ -20,9 +20,9 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "DFImageRequestID.h"
+#import "DFImageTask.h"
 
-@implementation DFImageRequestID
+@implementation DFImageTask
 
 - (void)cancel {
     [NSException raise:NSInternalInconsistencyException format:@"Abstract method called %@", NSStringFromSelector(_cmd)];

@@ -23,12 +23,12 @@
 #import "DFImageFetchTask.h"
 #import "DFImageManager.h"
 #import "DFImageRequest.h"
-#import "DFImageRequestID.h"
+#import "DFImageTask.h"
 
 
 @interface DFImageFetchContext ()
 
-@property (nonatomic) DFImageRequestID *requestID;
+@property (nonatomic) DFImageTask *task;
 
 - (void)completeWithImage:(UIImage *)image info:(NSDictionary *)info;
 
@@ -89,7 +89,7 @@
         } else {
             _context = context;
         }
-        context.requestID = [self.imageManager requestImageForRequest:request completion:^(UIImage *image, NSDictionary *info) {
+        context.task = [self.imageManager requestImageForRequest:request completion:^(UIImage *image, NSDictionary *info) {
             [weakSelf _didFinishRequest:request image:image info:info];
         }];
     }
@@ -127,13 +127,13 @@
     DFImageFetchContext *context = [self contextForRequest:request];
     if (!context.isCompleted) {
         [context completeWithImage:nil info:nil];
-        [context.requestID cancel];
+        [context.task cancel];
     }
 }
 
 - (void)setPriority:(DFImageRequestPriority)priority {
     for (DFImageRequest *request in _requests) {
-        [[self contextForRequest:request].requestID setPriority:priority];
+        [[self contextForRequest:request].task setPriority:priority];
     }
 }
 

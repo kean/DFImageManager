@@ -28,7 +28,7 @@ FOUNDATION_EXPORT const unsigned char DFImageManagerFrameworkVersionString[];
 
 // Support
 #import <DFImageManagerKit/DFImageRequest.h>
-#import <DFImageManagerKit/DFImageRequestID.h>
+#import <DFImageManagerKit/DFImageTask.h>
 #import <DFImageManagerKit/DFImageRequestOptions.h>
 #import <DFImageManagerKit/DFImageResponse.h>
 

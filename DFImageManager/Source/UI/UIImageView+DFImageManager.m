@@ -22,20 +22,20 @@
 
 #import "DFImageManager.h"
 #import "DFImageRequest.h"
-#import "DFImageRequestID.h"
+#import "DFImageTask.h"
 #import "UIImageView+DFImageManager.h"
 #import <objc/runtime.h>
 
-static char *_requestIDKey;
+static char *_imageTaskKey;
 
 @implementation UIImageView (DFImageManager)
 
-- (DFImageRequestID *)_df_imageRequestID {
-    return objc_getAssociatedObject(self, &_requestIDKey);
+- (DFImageTask *)_df_imageTask {
+    return objc_getAssociatedObject(self, &_imageTaskKey);
 }
 
-- (void)_df_setImageRequestID:(DFImageRequestID *)requestID {
-    objc_setAssociatedObject(self, &_requestIDKey, requestID, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+- (void)_df_setImageTask:(DFImageTask *)task {
+    objc_setAssociatedObject(self, &_imageTaskKey, task, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 - (void)df_prepareForReuse {
@@ -54,16 +54,16 @@ static char *_requestIDKey;
     
     UIImageView *__weak weakSelf = self;
     DFImageRequest *request = [DFImageRequest requestWithResource:resource targetSize:targetSize contentMode:contentMode options:options];
-    DFImageRequestID *requestID = [[DFImageManager sharedManager] requestImageForRequest:request completion:^(UIImage *image, NSDictionary *info) {
+    DFImageTask *task = [[DFImageManager sharedManager] requestImageForRequest:request completion:^(UIImage *image, NSDictionary *info) {
         if (image) {
             weakSelf.image = image;
         }
     }];
-    [self _df_setImageRequestID:requestID];
+    [self _df_setImageTask:task];
 }
 
 - (void)_df_cancelFetching {
-    [[self _df_imageRequestID] cancel];
+    [[self _df_imageTask] cancel];
 }
 
 @end

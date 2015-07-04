@@ -62,10 +62,10 @@
 
 #pragma mark - Response Info
 
-- (void)testThatResponseInfoContainsRequestID {
+- (void)testThatResponseInfoContainsImageTask {
     XCTestExpectation *expectation = [self expectationWithDescription:@"request"];
-    DFImageRequestID *__block requestID = [_manager requestImageForResource:[TDFMockResource resourceWithID:@"ID01"] completion:^(UIImage *image, NSDictionary *info) {
-        XCTAssertEqualObjects(info[DFImageInfoRequestIDKey], requestID);
+    DFImageTask *__block task = [_manager requestImageForResource:[TDFMockResource resourceWithID:@"ID01"] completion:^(UIImage *image, NSDictionary *info) {
+        XCTAssertEqualObjects(info[DFImageInfoTaskKey], task);
         [expectation fulfill];
     }];
     [self waitForExpectationsWithTimeout:2.0 handler:nil];
@@ -102,9 +102,9 @@
 
 - (void)testThatCancelsFetchOperation {
     _fetcher.queue.suspended = YES;
-    DFImageRequestID *requestID = [_manager requestImageForResource:[TDFMockResource resourceWithID:@"ID01"] completion:nil];
+    DFImageTask *task = [_manager requestImageForResource:[TDFMockResource resourceWithID:@"ID01"] completion:nil];
     [self expectationForNotification:TDFMockFetchOperationWillCancelNotification object:nil handler:nil];
-    [requestID cancel];
+    [task cancel];
     [self waitForExpectationsWithTimeout:2.0 handler:nil];
 }
 
@@ -114,7 +114,7 @@
     _fetcher.queue.suspended = YES;
     
     TDFMockResource *resource = [TDFMockResource resourceWithID:@"ID01"];
-    DFImageRequestID *requestID1 = [_manager requestImageForResource:resource completion:nil];
+    DFImageTask *task = [_manager requestImageForResource:resource completion:nil];
     
     XCTestExpectation *expectThatOperationIsCancelled = [self expectationForNotification:TDFMockFetchOperationWillCancelNotification object:nil handler:nil];
     
@@ -126,7 +126,7 @@
         [expectThatOperationIsCancelled fulfill];
     }];
     
-    [requestID1 cancel];
+    [task cancel];
     
     _fetcher.queue.suspended = NO;
     [self waitForExpectationsWithTimeout:2.0 handler:nil];
@@ -138,11 +138,11 @@
     [self expectationForNotification:TDFMockFetchOperationWillCancelNotification object:nil handler:nil];
     
     TDFMockResource *resource = [TDFMockResource resourceWithID:@"ID01"];
-    DFImageRequestID *requestID1 = [_manager requestImageForResource:resource completion:nil];
-    DFImageRequestID *requestID2 = [_manager requestImageForResource:resource completion:nil];
+    DFImageTask *task1 = [_manager requestImageForResource:resource completion:nil];
+    DFImageTask *task2 = [_manager requestImageForResource:resource completion:nil];
     
-    [requestID1 cancel];
-    [requestID2 cancel];
+    [task1 cancel];
+    [task2 cancel];
     
     [self waitForExpectationsWithTimeout:2.0 handler:nil];
 }
@@ -151,14 +151,14 @@
     _fetcher.queue.suspended = YES;
     
     XCTestExpectation *expectation = [self expectationWithDescription:@""];
-    DFImageRequestID *requestID = [_manager requestImageForResource:[TDFMockResource resourceWithID:@"ID01"] completion:^(UIImage *image, NSDictionary *info) {
+    DFImageTask *task = [_manager requestImageForResource:[TDFMockResource resourceWithID:@"ID01"] completion:^(UIImage *image, NSDictionary *info) {
         NSError *error = info[DFImageInfoErrorKey];
         XCTAssertNotNil(error);
         XCTAssertTrue([error.domain isEqualToString:DFImageManagerErrorDomain]);
         XCTAssertEqual(error.code, DFImageManagerErrorCancelled);
         [expectation fulfill];
     }];
-    [requestID cancel];
+    [task cancel];
     [self waitForExpectationsWithTimeout:2.0 handler:nil];
 }
 
@@ -247,28 +247,28 @@
     TDFMockResource *resource = [TDFMockResource resourceWithID:@"ID01"];
     XCTestExpectation *expectation = [self expectationWithDescription:@"request"];
     {
-        DFImageRequestID *requestID = [_manager requestImageForResource:resource completion:^(UIImage *image, NSDictionary *info) {
+        DFImageTask *task = [_manager requestImageForResource:resource completion:^(UIImage *image, NSDictionary *info) {
             XCTAssertEqual(response.image, image);
             XCTAssertEqual(response.error, info[DFImageInfoErrorKey]);
             XCTAssertEqual(response.userInfo[@"TDFKey"], info[@"TDFKey"]);
             XCTAssertFalse([info[DFImageInfoIsFromMemoryCacheKey] boolValue]);
             [expectation fulfill];
         }];
-        XCTAssertNotNil(requestID);
+        XCTAssertNotNil(task);
         [self waitForExpectationsWithTimeout:2.0 handler:nil];
     }
     XCTAssertEqual(_cache.responses.count, 1);
     
     {
         BOOL __block isCompletionHandlerCalled = NO;
-        DFImageRequestID *requestID = [_manager requestImageForResource:resource completion:^(UIImage *image, NSDictionary *info) {
+        DFImageTask *task = [_manager requestImageForResource:resource completion:^(UIImage *image, NSDictionary *info) {
             XCTAssertEqual(response.image, image);
             XCTAssertEqual(response.error, info[DFImageInfoErrorKey]);
             XCTAssertEqual(response.userInfo[@"TDFKey"], info[@"TDFKey"]);
             XCTAssertTrue([info[DFImageInfoIsFromMemoryCacheKey] boolValue]);
             isCompletionHandlerCalled = YES;
         }];
-        XCTAssertNotNil(requestID);
+        XCTAssertNotNil(task);
         XCTAssertTrue(isCompletionHandlerCalled);
     }
 }
@@ -363,12 +363,12 @@
     }];
     
     XCTestExpectation *expectation = [self expectationWithDescription:@""];
-    DFImageRequestID *requestID = [_manager requestImageForRequest:request completion:^(UIImage *image, NSDictionary *info) {
+    DFImageTask *task = [_manager requestImageForRequest:request completion:^(UIImage *image, NSDictionary *info) {
         XCTAssertEqual(operation.queuePriority, (NSOperationQueuePriority)DFImageRequestPriorityVeryLow);
         [expectation fulfill];
     }];
     [NSThread sleepForTimeInterval:0.05]; // Wait till operation is created
-    [requestID setPriority:DFImageRequestPriorityVeryLow];
+    [task setPriority:DFImageRequestPriorityVeryLow];
     
     _fetcher.queue.suspended = NO;
     

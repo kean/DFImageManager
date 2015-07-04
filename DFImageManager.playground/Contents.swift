@@ -19,12 +19,12 @@ manager.requestImageForRequest(request) { (image: UIImage?, _) -> Void in
     var fetchedImage = image
 }
 
-//: Image manager returns instance of DFImageRequestID class for each image request. Request ID can be used to cancel request or change its priority.
-let requestID = manager.requestImageForResource(NSURL(string: "http://farm6.staticflickr.com/5311/14244377986_c3c660ef30_k_d.jpg")!, completion: { (image, info) -> Void in
+//: Image manager returns instance of DFImageTask class for each image request. Image task can be used to cancel request or change its priority and more.
+let task = manager.requestImageForResource(NSURL(string: "http://farm6.staticflickr.com/5311/14244377986_c3c660ef30_k_d.jpg")!, completion: { (image, info) -> Void in
     var fetchedImage = image
     let error = info[DFImageInfoErrorKey] as! NSError
 })
-requestID?.setPriority(.High)
-requestID?.cancel()
+task?.setPriority(.High)
+task?.cancel()
 
 XCPSetExecutionShouldContinueIndefinitely()

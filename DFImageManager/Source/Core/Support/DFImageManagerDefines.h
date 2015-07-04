@@ -32,9 +32,9 @@ extern CGSize const DFImageMaximumSize;
 
 // Requests results info keys:
 
-/*! A unique identifier for the image request (DFImageRequestID). 
+/*! An image task (DFImageTask).
  */
-extern NSString *const DFImageInfoRequestIDKey;
+extern NSString *const DFImageInfoTaskKey;
 
 /*! An error that occurred when Photos attempted to load the image (NSError). 
  */

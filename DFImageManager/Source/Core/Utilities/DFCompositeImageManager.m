@@ -22,7 +22,7 @@
 
 #import "DFCompositeImageManager.h"
 #import "DFImageRequest.h"
-#import "DFImageRequestID.h"
+#import "DFImageTask.h"
 
 #define DFManagerForRequest(request) \
 ({ \
@@ -69,11 +69,11 @@
     return DFManagerForRequest(request) != nil;
 }
 
-- (DFImageRequestID *)requestImageForResource:(id)resource completion:(void (^)(UIImage *, NSDictionary *))completion {
+- (DFImageTask *)requestImageForResource:(id)resource completion:(void (^)(UIImage *, NSDictionary *))completion {
     return [self requestImageForRequest:[DFImageRequest requestWithResource:resource] completion:completion];
 }
 
-- (DFImageRequestID *)requestImageForRequest:(DFImageRequest *)request completion:(void (^)(UIImage *, NSDictionary *))completion {
+- (DFImageTask *)requestImageForRequest:(DFImageRequest *)request completion:(void (^)(UIImage *, NSDictionary *))completion {
     id<DFImageManaging> manager = DFManagerForRequest(request);
     if (!manager) {
         [NSException raise:NSInvalidArgumentException format:@"There are no managers that can handle the request %@", request];

@@ -32,7 +32,7 @@
 
 // Support
 #import "DFImageRequest.h"
-#import "DFImageRequestID.h"
+#import "DFImageTask.h"
 #import "DFImageRequestOptions.h"
 #import "DFImageResponse.h"
 

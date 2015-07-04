@@ -40,11 +40,10 @@ iOS 7.0+
 #### Zero config image fetching
 
 ```objective-c
-DFImageRequestID *requestID = [[DFImageManager sharedManager] requestImageForResource:[NSURL URLWithString:@"http://..."] completion:^(UIImage *image, NSDictionary *info) {
+DFImageTask *task = [[DFImageManager sharedManager] requestImageForResource:[NSURL URLWithString:@"http://..."] completion:^(UIImage *image, NSDictionary *info) {
   // Use decompressed image and inspect info
 }];
-
-[requestID cancel]; // requestID can be used to cancel the request
+[task cancel]; // task can be used to cancel the request (and more)
 ```
 
 #### Add request options

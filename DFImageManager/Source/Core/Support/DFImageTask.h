@@ -23,15 +23,15 @@
 #import "DFImageManagerDefines.h"
 #import <Foundation/Foundation.h>
 
-/*! Abstract class representing image request identifier.
+/*! Abstract class representing image task.
  */
-@interface DFImageRequestID : NSObject <NSCopying>
+@interface DFImageTask : NSObject <NSCopying>
 
-/*! Advices the image manager that the request should be cancelled. The completion block will be called with error value of { DFImageManagerErrorDomain, DFImageManagerErrorCancelled }
+/*! Advices the image manager that the task should be cancelled. The completion block will be called with error value of { DFImageManagerErrorDomain, DFImageManagerErrorCancelled }
  */
 - (void)cancel;
 
-/*! Changes the priority of the request.
+/*! Changes the priority of the task.
  */
 - (void)setPriority:(DFImageRequestPriority)priority;
 

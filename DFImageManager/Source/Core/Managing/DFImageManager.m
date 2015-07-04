@@ -28,7 +28,7 @@
 #import "DFImageManagerDefines.h"
 #import "DFImageProcessing.h"
 #import "DFImageRequest.h"
-#import "DFImageRequestID.h"
+#import "DFImageTask.h"
 #import "DFImageRequestOptions.h"
 #import "DFImageResponse.h"
 
@@ -55,7 +55,7 @@ typedef NS_ENUM(NSUInteger, _DFImageTaskState) {
 
 @end
 
-@interface _DFImageTask : DFImageRequestID
+@interface _DFImageTask : DFImageTask
 
 @property (nonatomic, readonly) DFImageManager *imageManager;
 @property (nonatomic, readonly) DFImageRequest *request;
@@ -228,11 +228,11 @@ typedef NS_ENUM(NSUInteger, _DFImageTaskState) {
     return [_conf.fetcher canHandleRequest:request];
 }
 
-- (DFImageRequestID *)requestImageForResource:(id)resource completion:(void (^)(UIImage *, NSDictionary *))completion {
+- (DFImageTask *)requestImageForResource:(id)resource completion:(void (^)(UIImage *, NSDictionary *))completion {
     return [self requestImageForRequest:[DFImageRequest requestWithResource:resource] completion:completion];
 }
 
-- (DFImageRequestID *)requestImageForRequest:(DFImageRequest *)request completion:(DFImageRequestCompletion)completion {
+- (DFImageTask *)requestImageForRequest:(DFImageRequest *)request completion:(DFImageRequestCompletion)completion {
     if (_invalidated) {
         return nil;
     }
@@ -526,7 +526,7 @@ typedef NS_ENUM(NSUInteger, _DFImageTaskState) {
         info[DFImageInfoErrorKey] = response.error;
     }
     [info addEntriesFromDictionary:response.userInfo];
-    info[DFImageInfoRequestIDKey] = task;
+    info[DFImageInfoTaskKey] = task;
     return info;
 }
 
