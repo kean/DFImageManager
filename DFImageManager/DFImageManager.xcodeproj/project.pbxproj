@@ -59,6 +59,8 @@
 		0CD0126E1A6C6B16004F6CD3 /* Image.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0CD012681A6C6B16004F6CD3 /* Image.jpg */; };
 		0CD0126F1A6C6B16004F6CD3 /* TDFTesting.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD0126A1A6C6B16004F6CD3 /* TDFTesting.m */; };
 		0CD012701A6C6B16004F6CD3 /* TDFImageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD0126C1A6C6B16004F6CD3 /* TDFImageManager.m */; };
+		0CD5A0221B5164AF0037D1D4 /* TDFImageFetchTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD5A0211B5164AF0037D1D4 /* TDFImageFetchTask.m */; };
+		0CD5A0251B516F2B0037D1D4 /* TDFMockFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD5A0241B516F2B0037D1D4 /* TDFMockFetcher.m */; };
 		0CE578481AA352B000E934FB /* TDFMockFetchOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CE578471AA352B000E934FB /* TDFMockFetchOperation.m */; };
 		0CE578541AA4067D00E934FB /* TDFCompositeImageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CE578531AA4067D00E934FB /* TDFCompositeImageManager.m */; };
 		0CEEEC8A1AABC5FC00C212A4 /* DFImageProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = 0CEEEC821AABC5FC00C212A4 /* DFImageProcessor.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -213,6 +215,9 @@
 		0CD012691A6C6B16004F6CD3 /* TDFTesting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDFTesting.h; sourceTree = "<group>"; };
 		0CD0126A1A6C6B16004F6CD3 /* TDFTesting.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDFTesting.m; sourceTree = "<group>"; };
 		0CD0126C1A6C6B16004F6CD3 /* TDFImageManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDFImageManager.m; sourceTree = "<group>"; };
+		0CD5A0211B5164AF0037D1D4 /* TDFImageFetchTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDFImageFetchTask.m; sourceTree = "<group>"; };
+		0CD5A0231B516F2B0037D1D4 /* TDFMockFetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDFMockFetcher.h; sourceTree = "<group>"; };
+		0CD5A0241B516F2B0037D1D4 /* TDFMockFetcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDFMockFetcher.m; sourceTree = "<group>"; };
 		0CE578461AA352B000E934FB /* TDFMockFetchOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDFMockFetchOperation.h; sourceTree = "<group>"; };
 		0CE578471AA352B000E934FB /* TDFMockFetchOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDFMockFetchOperation.m; sourceTree = "<group>"; };
 		0CE578531AA4067D00E934FB /* TDFCompositeImageManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDFCompositeImageManager.m; sourceTree = "<group>"; };
@@ -434,6 +439,8 @@
 				0C5BD74F1AA32CA5003C0BB6 /* TDFMockImageCache.m */,
 				0CE578461AA352B000E934FB /* TDFMockFetchOperation.h */,
 				0CE578471AA352B000E934FB /* TDFMockFetchOperation.m */,
+				0CD5A0231B516F2B0037D1D4 /* TDFMockFetcher.h */,
+				0CD5A0241B516F2B0037D1D4 /* TDFMockFetcher.m */,
 			);
 			path = Mocks;
 			sourceTree = "<group>";
@@ -476,13 +483,14 @@
 		0CD0126B1A6C6B16004F6CD3 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				0CAA17F21AAA69B000E82041 /* TDFCommonTests.h */,
 				0CD0126C1A6C6B16004F6CD3 /* TDFImageManager.m */,
 				0CA8F1801A723E1400156090 /* TDFURLImageFetcher.m */,
 				0CE578531AA4067D00E934FB /* TDFCompositeImageManager.m */,
 				0CAA17F01AA9DB1C00E82041 /* TDFImageRequest.m */,
 				0CAA17F31AAA779800E82041 /* TDFImageRequestOptions.m */,
-				0CAA17F21AAA69B000E82041 /* TDFCommonTests.h */,
 				0C8075AC1ABAF3A400A9D88F /* TDFImageCache.m */,
+				0CD5A0211B5164AF0037D1D4 /* TDFImageFetchTask.m */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -927,6 +935,8 @@
 				0C8075AD1ABAF3A400A9D88F /* TDFImageCache.m in Sources */,
 				0CBFD3D01AA300CA00A6A482 /* TDFMockImageFetcher.m in Sources */,
 				0CE578541AA4067D00E934FB /* TDFCompositeImageManager.m in Sources */,
+				0CD5A0221B5164AF0037D1D4 /* TDFImageFetchTask.m in Sources */,
+				0CD5A0251B516F2B0037D1D4 /* TDFMockFetcher.m in Sources */,
 				0CD012701A6C6B16004F6CD3 /* TDFImageManager.m in Sources */,
 				0CBFD3D31AA3017600A6A482 /* TDFMockResource.m in Sources */,
 				0CAA17F41AAA779800E82041 /* TDFImageRequestOptions.m in Sources */,

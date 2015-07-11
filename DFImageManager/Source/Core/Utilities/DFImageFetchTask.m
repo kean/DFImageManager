@@ -49,6 +49,7 @@
     void (^_handler)(UIImage *, NSDictionary *, DFImageRequest *);
     NSMapTable *_contexts;
     DFImageFetchContext *_context; // Optimization for single request case
+    BOOL _isCompletionCalledAtLeastOnce;
 }
 
 - (instancetype)initWithRequests:(NSArray *)requests handler:(void (^)(UIImage *, NSDictionary *, DFImageRequest *))handler {
@@ -146,7 +147,8 @@
         BOOL isSuccess = [self _isRequestSuccessful:request];
         BOOL isObsolete = [self _isRequestObsolete:request];
         BOOL isFinal = [self _isRequestFinal:request];
-        if ((isSuccess && !isObsolete) || isFinal) {
+        if ((isSuccess && !isObsolete) || (isFinal && !_isCompletionCalledAtLeastOnce)) {
+            _isCompletionCalledAtLeastOnce = YES;
             if (_handler) {
                 _handler(image, info, request);
             }

@@ -19,9 +19,7 @@
 
 @end
 
-@implementation TDFImageManager {
-    DFImageManager *_imageManager;
-    
+@implementation TDFImageManager {    
     TDFMockImageFetcher *_fetcher;
     TDFMockImageProcessor *_processor;
     TDFMockImageCache *_cache;
@@ -49,7 +47,7 @@
         XCTAssertNotNil(image);
         [expectation fulfill];
     }] resume];
-    [self waitForExpectationsWithTimeout:2.0 handler:nil];
+    [self waitForExpectationsWithTimeout:1.0 handler:nil];
 }
 
 - (void)testThatCanHandleRequestIsForwardedToFetcher {
@@ -67,7 +65,7 @@
         [expectation fulfill];
     }];
     [task resume];
-    [self waitForExpectationsWithTimeout:2.0 handler:nil];
+    [self waitForExpectationsWithTimeout:1.0 handler:nil];
 }
 
 #pragma mark - Response Info
@@ -79,7 +77,7 @@
         [expectation fulfill];
     }];
     [task resume];
-    [self waitForExpectationsWithTimeout:2.0 handler:nil];
+    [self waitForExpectationsWithTimeout:1.0 handler:nil];
 }
 
 /*! Test that image manager response info contains error under DFImageInfoErrorKey key when request fails.
@@ -95,7 +93,7 @@
         XCTAssertTrue(error.code == 14);
         [expectation fulfill];
     }] resume];
-    [self waitForExpectationsWithTimeout:2.0 handler:nil];
+    [self waitForExpectationsWithTimeout:1.0 handler:nil];
 }
 
 /*! Test that image manager response info contains error under DFImageInfoErrorKey key when request fails.
@@ -112,7 +110,7 @@
         [expectation fulfill];
     }];
     [task resume];
-    [self waitForExpectationsWithTimeout:2.0 handler:nil];
+    [self waitForExpectationsWithTimeout:1.0 handler:nil];
     
     XCTAssertNotNil(task.error);
     XCTAssertTrue([task.error.domain isEqualToString:@"TDFErrorDomain"]);
@@ -131,7 +129,7 @@
         [expectation fulfill];
     }];
     [task resume];
-    [self waitForExpectationsWithTimeout:2.0 handler:nil];
+    [self waitForExpectationsWithTimeout:1.0 handler:nil];
     
     XCTAssertNotNil(task.error);
     XCTAssertTrue([task.error.domain isEqualToString:DFImageManagerErrorDomain]);
@@ -146,7 +144,7 @@
         XCTAssertTrue([info[@"TestKey"] isEqualToString:@"TestValue"]);
         [expectation fulfill];
     }] resume];
-    [self waitForExpectationsWithTimeout:2.0 handler:nil];
+    [self waitForExpectationsWithTimeout:1.0 handler:nil];
 }
 
 #pragma mark - Cancellation
@@ -157,7 +155,7 @@
     [task resume];
     [self expectationForNotification:TDFMockFetchOperationWillCancelNotification object:nil handler:nil];
     [task cancel];
-    [self waitForExpectationsWithTimeout:2.0 handler:nil];
+    [self waitForExpectationsWithTimeout:1.0 handler:nil];
 }
 
 /*! > Image manager cancels managed operations only when there are no remaining handlers.
@@ -182,7 +180,7 @@
     [task cancel];
     
     _fetcher.queue.suspended = NO;
-    [self waitForExpectationsWithTimeout:2.0 handler:nil];
+    [self waitForExpectationsWithTimeout:1.0 handler:nil];
 }
 
 - (void)testThatCancelsFetchOperationWithTwoHandlers {
@@ -199,7 +197,7 @@
     [task1 cancel];
     [task2 cancel];
     
-    [self waitForExpectationsWithTimeout:2.0 handler:nil];
+    [self waitForExpectationsWithTimeout:1.0 handler:nil];
 }
 
 - (void)testThatCompletionHandlerForCancelledRequestIsCalledWithValidError {
@@ -215,7 +213,7 @@
     }];
     [task resume];
     [task cancel];
-    [self waitForExpectationsWithTimeout:2.0 handler:nil];
+    [self waitForExpectationsWithTimeout:1.0 handler:nil];
 }
 
 - (void)testThatCancelledImageTaskHasCancelledState {
@@ -226,7 +224,7 @@
     }];
     [task resume];
     [task cancel];
-    [self waitForExpectationsWithTimeout:2.0 handler:nil];
+    [self waitForExpectationsWithTimeout:1.0 handler:nil];
 }
 
 #pragma mark - Operation Reuse
@@ -261,7 +259,7 @@
     
     _fetcher.queue.suspended = NO;
     
-    [self waitForExpectationsWithTimeout:2.0 handler:^(NSError *error) {
+    [self waitForExpectationsWithTimeout:1.0 handler:^(NSError *error) {
         XCTAssertEqual(_fetcher.createdOperationCount, 2);
     }];
 }
@@ -277,7 +275,7 @@
     };
     DFImageRequest *request = [DFImageRequest requestWithResource:[TDFMockResource resourceWithID:@"1"] targetSize:DFImageMaximumSize contentMode:DFImageContentModeAspectFill options:options];
     [[_manager imageTaskForRequest:request completion:nil] resume];
-    [self waitForExpectationsWithTimeout:2.0 handler:nil];
+    [self waitForExpectationsWithTimeout:1.0 handler:nil];
 }
 
 #pragma mark - Memory Cache
@@ -294,7 +292,7 @@
         XCTAssertNotNil(image);
         [expectation fulfill];
     }] resume];
-    [self waitForExpectationsWithTimeout:2.0 handler:nil];
+    [self waitForExpectationsWithTimeout:1.0 handler:nil];
     XCTAssertEqual(_cache.responses.count, 1);
     
     BOOL __block isCompletionHandlerCalled = NO;
@@ -326,7 +324,7 @@
         }];
         XCTAssertNotNil(task);
         [task resume];
-        [self waitForExpectationsWithTimeout:2.0 handler:nil];
+        [self waitForExpectationsWithTimeout:1.0 handler:nil];
     }
     XCTAssertEqual(_cache.responses.count, 1);
     
@@ -360,7 +358,7 @@
         XCTAssertNotNil(image);
         [expectation1 fulfill];
     }] resume];
-    [self waitForExpectationsWithTimeout:2.0 handler:nil];
+    [self waitForExpectationsWithTimeout:1.0 handler:nil];
     XCTAssertTrue(_cache.responses.count == 1);
     
     XCTestExpectation *expectation2 = [self expectationWithDescription:@"request2"];
@@ -371,7 +369,7 @@
             [expectation2 fulfill];
         }] resume];
     });
-    [self waitForExpectationsWithTimeout:2.0 handler:nil];
+    [self waitForExpectationsWithTimeout:1.0 handler:nil];
 }
 
 /*! Test first memory caching rule:
@@ -392,7 +390,7 @@
         XCTAssertNotNil(image);
         [expectation1 fulfill];
     }] resume];
-    [self waitForExpectationsWithTimeout:2.0 handler:nil];
+    [self waitForExpectationsWithTimeout:1.0 handler:nil];
     XCTAssertTrue(_cache.responses.count == 1);
     
     // 2. Test that first manager uses cached image
@@ -406,7 +404,7 @@
         XCTAssertEqual(image, cachedImage);
         [expectation2 fulfill];
     }] resume];
-    [self waitForExpectationsWithTimeout:2.0 handler:nil];
+    [self waitForExpectationsWithTimeout:1.0 handler:nil];
     
     // 3. Test that second manager can't access cached image
     XCTAssertTrue(manager2.configuration.cache == manager1.configuration.cache);
@@ -418,7 +416,7 @@
         XCTAssertNotNil(image);
         [expectationThatSecondManagerHandledRequest fulfill];
     }] resume];
-    [self waitForExpectationsWithTimeout:2.0 handler:nil];
+    [self waitForExpectationsWithTimeout:1.0 handler:nil];
 }
 
 #pragma mark - Priority
@@ -448,7 +446,7 @@
     
     _fetcher.queue.suspended = NO;
     
-    [self waitForExpectationsWithTimeout:2.0 handler:nil];
+    [self waitForExpectationsWithTimeout:1.0 handler:nil];
 }
 
 #pragma mark - Preheating
@@ -475,7 +473,7 @@
     // Start request after the preheating request, but it always must execute first
     [[_manager imageTaskForResource:resource2 completion:nil] resume];
     
-    [self waitForExpectationsWithTimeout:2.0 handler:nil];
+    [self waitForExpectationsWithTimeout:1.0 handler:nil];
 }
 
 - (void)testThatPreheatingRequestsAreStopped {
@@ -486,11 +484,11 @@
     [self expectationForNotification:TDFMockImageFetcherDidStartOperationNotification object:nil handler:nil];
     [_manager startPreheatingImagesForRequests:@[ request ]];
     // DFImageManager doesn't start preheating operations after a certain delay
-    [self waitForExpectationsWithTimeout:2.0 handler:nil];
+    [self waitForExpectationsWithTimeout:1.0 handler:nil];
     
     [self expectationForNotification:TDFMockFetchOperationWillCancelNotification object:nil handler:nil];
     [_manager stopPreheatingImagesForRequests:@[ request ]];
-    [self waitForExpectationsWithTimeout:2.0 handler:nil];
+    [self waitForExpectationsWithTimeout:1.0 handler:nil];
 }
 
 - (void)testThatSimilarPreheatingRequestsAreStoppedWithSingleStopCall {
@@ -501,11 +499,11 @@
     [self expectationForNotification:TDFMockImageFetcherDidStartOperationNotification object:_fetcher handler:nil];
     [_manager startPreheatingImagesForRequests:@[ request, request ]];
     [_manager startPreheatingImagesForRequests:@[ request ]];
-    [self waitForExpectationsWithTimeout:2.0 handler:nil];
+    [self waitForExpectationsWithTimeout:1.0 handler:nil];
     
     [self expectationForNotification:TDFMockFetchOperationWillCancelNotification object:nil handler:nil];
     [_manager stopPreheatingImagesForRequests:@[ request ]];
-    [self waitForExpectationsWithTimeout:2.0 handler:^(NSError *error) {
+    [self waitForExpectationsWithTimeout:1.0 handler:^(NSError *error) {
         XCTAssertEqual(_fetcher.queue.operationCount, 1);
     }];
 }
@@ -520,13 +518,13 @@
         return operations.count == 2;
     }];
     [_manager startPreheatingImagesForRequests:@[ [DFImageRequest requestWithResource:[TDFMockResource resourceWithID:@"ID01"]], [DFImageRequest requestWithResource:[TDFMockResource resourceWithID:@"ID02"]] ]];
-    [self waitForExpectationsWithTimeout:2.0 handler:nil];
+    [self waitForExpectationsWithTimeout:1.0 handler:nil];
     
     for (TDFMockFetchOperation *operation in operations) {
         [self expectationForNotification:TDFMockFetchOperationWillCancelNotification object:operation handler:nil];
     }
     [_manager stopPreheatingImagesForAllRequests];
-    [self waitForExpectationsWithTimeout:2.0 handler:nil];
+    [self waitForExpectationsWithTimeout:1.0 handler:nil];
 }
 
 - (void)testThatPreheatingRequestsAreExecutedInTheOrderTheyWereAdded {
@@ -549,7 +547,7 @@
     }];
     
     [_manager startPreheatingImagesForRequests:@[ request1, request2 ]];
-    [self waitForExpectationsWithTimeout:2.0 handler:nil];
+    [self waitForExpectationsWithTimeout:1.0 handler:nil];
 }
 
 - (void)testThatPreheatingRequestsAreExecutedInTheOrderTheyWereAddedSwitched {
@@ -573,7 +571,7 @@
     }];
     
     [_manager startPreheatingImagesForRequests:@[ request1, request2 ]];
-    [self waitForExpectationsWithTimeout:2.0 handler:nil];
+    [self waitForExpectationsWithTimeout:1.0 handler:nil];
 }
 
 #pragma mark - Invalidation
@@ -588,7 +586,7 @@
         }] resume];
         manager = nil;
     }
-    [self waitForExpectationsWithTimeout:2.0 handler:nil];
+    [self waitForExpectationsWithTimeout:1.0 handler:nil];
 }
 
 - (void)testThatInvalidateAndCancelMethodCancelsOutstandingRequests {
@@ -596,7 +594,7 @@
     [[_manager imageTaskForResource:[TDFMockResource resourceWithID:@"ID01"] completion:nil] resume];
     [self expectationForNotification:TDFMockFetchOperationWillCancelNotification object:nil handler:nil];
     [_manager invalidateAndCancel];
-    [self waitForExpectationsWithTimeout:2.0 handler:nil];
+    [self waitForExpectationsWithTimeout:1.0 handler:nil];
 }
 
 - (void)testThatNewRequestsCantBeCreated {
@@ -610,7 +608,7 @@
 - (void)testThatImageIsFetchedWhenCompletionHandlerIsNil {
     [self expectationForNotification:TDFMockImageFetcherDidStartOperationNotification object:nil handler:nil];
     [[_manager imageTaskForResource:[TDFMockResource resourceWithID:@"1"] completion:nil] resume];
-    [self waitForExpectationsWithTimeout:2.0 handler:nil];
+    [self waitForExpectationsWithTimeout:1.0 handler:nil];
 }
 
 @end
