@@ -69,16 +69,16 @@
     return DFManagerForRequest(request) != nil;
 }
 
-- (DFImageTask *)requestImageForResource:(id)resource completion:(void (^)(UIImage *, NSDictionary *))completion {
-    return [self requestImageForRequest:[DFImageRequest requestWithResource:resource] completion:completion];
+- (DFImageTask *)imageTaskForResource:(id)resource completion:(void (^)(UIImage *, NSDictionary *))completion {
+    return [self imageTaskForRequest:[DFImageRequest requestWithResource:resource] completion:completion];
 }
 
-- (DFImageTask *)requestImageForRequest:(DFImageRequest *)request completion:(void (^)(UIImage *, NSDictionary *))completion {
+- (DFImageTask *)imageTaskForRequest:(DFImageRequest *)request completion:(void (^)(UIImage *, NSDictionary *))completion {
     id<DFImageManaging> manager = DFManagerForRequest(request);
     if (!manager) {
         [NSException raise:NSInvalidArgumentException format:@"There are no managers that can handle the request %@", request];
     }
-    return [manager requestImageForRequest:request completion:completion];
+    return [manager imageTaskForRequest:request completion:completion];
 }
 
 - (void)invalidateAndCancel {
@@ -104,5 +104,22 @@
         [manager stopPreheatingImagesForAllRequests];
     }
 }
+
+#pragma mark - Deprecated
+
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-implementations"
+
+- (DFImageTask *)requestImageForResource:(id)resource completion:(void (^)(UIImage *, NSDictionary *))completion {
+    return [self requestImageForRequest:[DFImageRequest requestWithResource:resource] completion:completion];
+}
+
+- (DFImageTask *)requestImageForRequest:(DFImageRequest *)request completion:(DFImageRequestCompletion)completion {
+    DFImageTask *task = [self imageTaskForRequest:request completion:completion];
+    [task resume];
+    return task;
+}
+
+#pragma clang diagnostic pop
 
 @end

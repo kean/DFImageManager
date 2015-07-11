@@ -39,6 +39,18 @@ typedef void (^DFImageRequestCompletion)(UIImage *__nullable image, NSDictionary
  */
 - (BOOL)canHandleRequest:(DFImageRequest *)request;
 
+/*! Returns image task with a given resource. 
+ @note An image representation of the resource with a maximum available size is requested.
+ */
+- (nullable DFImageTask *)imageTaskForResource:(id)resource completion:(void (^__nullable)(UIImage *__nullable image, NSDictionary *info))completion;
+
+/*! Returns an image task with a given request.
+ @param request The request that contains the resource whose image it to be loaded as well as other request options. The implementation should create a deep copy of the request so that it can't be changed underneath it later. The implementation may provide more request options that are available in a base class, so make sure to check the documentation on that.
+ @param completion Can be called synchronously. A block to be called when image loading is complete, providing the requested image or information about the status of the request. The info dictionary provides information about the status of the request. See the definitions of DFImageInfo*Key strings for possible keys and values.
+ @return An image task.
+ */
+- (nullable DFImageTask *)imageTaskForRequest:(DFImageRequest *)request completion:(void (^__nullable)(UIImage *__nullable image, NSDictionary *info))completion;
+
 /*! Cancels all outstanding requests, including preheating requests, and then invalidates the image manager. New requests may not be created.
  */
 - (void)invalidateAndCancel;

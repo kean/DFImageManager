@@ -24,6 +24,10 @@
 
 @implementation DFImageTask
 
+- (void)resume {
+    [NSException raise:NSInternalInconsistencyException format:@"Abstract method called %@", NSStringFromSelector(_cmd)];
+}
+
 - (void)cancel {
     [NSException raise:NSInternalInconsistencyException format:@"Abstract method called %@", NSStringFromSelector(_cmd)];
 }

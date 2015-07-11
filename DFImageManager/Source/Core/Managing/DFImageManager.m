@@ -43,6 +43,7 @@
 
 @interface DFImageManager (_DFImageTask)
 
+- (void)resumeTask:(_DFImageTask *)task;
 - (void)cancelTask:(_DFImageTask *)task;
 - (void)setPriority:(DFImageRequestPriority)priority forTask:(_DFImageTask *)task;
 
@@ -75,6 +76,10 @@
         _state = DFImageTaskStateSuspended;
     }
     return self;
+}
+
+- (void)resume {
+    [self.manager resumeTask:self];
 }
 
 - (void)cancel {
@@ -224,32 +229,36 @@
     return [_conf.fetcher canHandleRequest:request];
 }
 
-- (DFImageTask *)requestImageForResource:(id)resource completion:(void (^)(UIImage *, NSDictionary *))completion {
-    return [self requestImageForRequest:[DFImageRequest requestWithResource:resource] completion:completion];
+- (nullable DFImageTask *)imageTaskForResource:(id __nonnull)resource completion:(void (^ __nullable)(UIImage * __nullable, NSDictionary * __nonnull))completion {
+    return [self imageTaskForRequest:[DFImageRequest requestWithResource:resource] completion:completion];
 }
 
-- (DFImageTask *)requestImageForRequest:(DFImageRequest *)request completion:(DFImageRequestCompletion)completion {
+- (nullable DFImageTask *)imageTaskForRequest:(DFImageRequest * __nonnull)request completion:(void (^ __nullable)(UIImage * __nullable, NSDictionary * __nonnull))completion {
     if (_invalidated) {
         return nil;
     }
-    request = [self _canonicalRequestForRequest:request];
-    _DFImageTask *task = [[_DFImageTask alloc] initWithManager:self request:request completionHandler:completion];
+    return [[_DFImageTask alloc] initWithManager:self request:[self _canonicalRequestForRequest:request] completionHandler:completion];
+}
+
+- (void)_resumeImageTask:(_DFImageTask *)task {
+    if (_invalidated) {
+        return;
+    }
     if ([NSThread isMainThread]) {
-        DFImageResponse *response = [self _cachedResponseForRequest:request];
+        DFImageResponse *response = [self _cachedResponseForRequest:task.request];
         if (response.image) {
             task.state = DFImageTaskStateCompleted;
-            if (completion) {
+            if (task.completionHandler) {
                 NSMutableDictionary *info = [self _infoFromResponse:response task:task];
                 info[DFImageInfoIsFromMemoryCacheKey] = @YES;
-                completion(response.image, info);
+                task.completionHandler(response.image, info);
             }
-            return task;
+            return;
         }
     }
     dispatch_async(_queue, ^{
         [self _setImageTaskState:DFImageTaskStateRunning task:task];
     });
-    return task;
 }
 
 - (void)_setImageTaskState:(DFImageTaskState)state task:(_DFImageTask *)task {
@@ -538,10 +547,31 @@
     return [NSString stringWithFormat:@"<%@ %p> { name = %@ }", [self class], self, self.name];
 }
 
+#pragma mark - Deprecated
+
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-implementations"
+
+- (DFImageTask *)requestImageForResource:(id)resource completion:(void (^)(UIImage *, NSDictionary *))completion {
+    return [self requestImageForRequest:[DFImageRequest requestWithResource:resource] completion:completion];
+}
+
+- (DFImageTask *)requestImageForRequest:(DFImageRequest *)request completion:(DFImageRequestCompletion)completion {
+    DFImageTask *task = [self imageTaskForRequest:request completion:completion];
+    [task resume];
+    return task;
+}
+
+#pragma clang diagnostic pop
+
 @end
 
 
 @implementation DFImageManager (_DFImageTask)
+
+- (void)resumeTask:(_DFImageTask *)task {
+    [self _resumeImageTask:task];
+}
 
 - (void)cancelTask:(_DFImageTask *)task {
     dispatch_async(_queue, ^{

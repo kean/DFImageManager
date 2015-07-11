@@ -33,6 +33,15 @@
     return [self.supportedResource isEqualToString:request.resource];
 }
 
+- (DFImageTask *)imageTaskForResource:(id)resource completion:(void (^)(UIImage *, NSDictionary *))completion {
+    return [self imageTaskForRequest:[DFImageRequest requestWithResource:resource] completion:completion];
+}
+
+- (DFImageTask *)imageTaskForRequest:(DFImageRequest *)request completion:(void (^)(UIImage *, NSDictionary *))completion {
+    [_submitedRequests addObject:request];
+    return nil;
+}
+
 - (DFImageTask *)requestImageForResource:(id)resource completion:(void (^)(UIImage *, NSDictionary *))completion {
     return [self requestImageForRequest:[DFImageRequest requestWithResource:resource] completion:completion];
 }

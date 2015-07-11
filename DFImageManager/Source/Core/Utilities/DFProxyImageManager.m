@@ -22,6 +22,7 @@
 
 #import "DFProxyImageManager.h"
 #import "DFImageRequest.h"
+#import "DFImageTask.h"
 
 /*! The implementation of request transforming that uses a block.
  */
@@ -82,12 +83,12 @@
     return [_manager canHandleRequest:_DF_TRANSFORMED_REQUEST(request)];
 }
 
-- (DFImageTask *)requestImageForResource:(id)resource completion:(void (^)(UIImage *, NSDictionary *))completion {
-    return [self requestImageForRequest:[DFImageRequest requestWithResource:resource] completion:completion];
+- (DFImageTask *)imageTaskForResource:(id)resource completion:(void (^)(UIImage *, NSDictionary *))completion {
+    return [self imageTaskForRequest:[DFImageRequest requestWithResource:resource] completion:completion];
 }
 
-- (DFImageTask *)requestImageForRequest:(DFImageRequest *)request completion:(void (^)(UIImage *, NSDictionary *))completion {
-    return [_manager requestImageForRequest:_DF_TRANSFORMED_REQUEST(request) completion:completion];
+- (DFImageTask *)imageTaskForRequest:(DFImageRequest *)request completion:(void (^)(UIImage *, NSDictionary *))completion {
+    return [_manager imageTaskForRequest:_DF_TRANSFORMED_REQUEST(request) completion:completion];
 }
 
 - (void)startPreheatingImagesForRequests:(NSArray *)requests {
@@ -105,5 +106,22 @@
     }
     return [transformedRequests copy];
 }
+
+#pragma mark - Deprecated
+
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-implementations"
+
+- (DFImageTask *)requestImageForResource:(id)resource completion:(void (^)(UIImage *, NSDictionary *))completion {
+    return [self requestImageForRequest:[DFImageRequest requestWithResource:resource] completion:completion];
+}
+
+- (DFImageTask *)requestImageForRequest:(DFImageRequest *)request completion:(DFImageRequestCompletion)completion {
+    DFImageTask *task = [self imageTaskForRequest:request completion:completion];
+    [task resume];
+    return task;
+}
+
+#pragma clang diagnostic pop
 
 @end

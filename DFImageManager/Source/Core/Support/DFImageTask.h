@@ -51,6 +51,10 @@ typedef NS_ENUM(NSUInteger, DFImageTaskState) {
  */
 @property (nonatomic, readonly) NSError *error;
 
+/*! Resumes the task.
+ */
+- (void)resume;
+
 /*! Advices the image manager that the task should be cancelled. The completion block will be called with error value of { DFImageManagerErrorDomain, DFImageManagerErrorCancelled }
  */
 - (void)cancel;
