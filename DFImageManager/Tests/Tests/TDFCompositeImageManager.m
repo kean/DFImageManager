@@ -57,7 +57,7 @@
 
 - (void)startPreheatingImagesForRequests:(NSArray *)requests {
     for (DFImageRequest *request in requests) {
-        [self requestImageForRequest:request completion:nil];
+        [[self imageTaskForRequest:request completion:nil] resume];
     }
 }
 
@@ -106,8 +106,8 @@
     XCTAssertTrue([composite canHandleRequest:request1]);
     XCTAssertTrue([composite canHandleRequest:request2]);
     
-    [composite requestImageForRequest:request1 completion:nil];
-    [composite requestImageForRequest:request2 completion:nil];
+    [[composite imageTaskForRequest:request1 completion:nil] resume];
+    [[composite imageTaskForRequest:request2 completion:nil] resume];
     
     XCTAssertTrue(manager1.submitedRequests.count == 1);
     XCTAssertTrue([manager1.submitedRequests containsObject:request1]);
@@ -133,8 +133,8 @@
     XCTAssertTrue([composite canHandleRequest:request1]);
     XCTAssertTrue([composite canHandleRequest:request2]);
     
-    [composite requestImageForRequest:request1 completion:nil];
-    [composite requestImageForRequest:request2 completion:nil];
+    [[composite imageTaskForRequest:request1 completion:nil] resume];
+    [[composite imageTaskForRequest:request2 completion:nil] resume];
     
     XCTAssertTrue(manager1.submitedRequests.count == 1);
     XCTAssertTrue([manager1.submitedRequests containsObject:request1]);
@@ -146,7 +146,7 @@
     _TDFMockImageManagerForComposite *manager = [_TDFMockImageManagerForComposite new];
     manager.supportedResource = @"resourse_01";
     DFCompositeImageManager *compisite = [[DFCompositeImageManager alloc] initWithImageManagers:@[ manager ]];
-    XCTAssertThrows([compisite requestImageForRequest:[DFImageRequest requestWithResource:@"resourse_02"] completion:nil]);
+    XCTAssertThrows([compisite imageTaskForRequest:[DFImageRequest requestWithResource:@"resourse_02"] completion:nil]);
 }
 
 @end
