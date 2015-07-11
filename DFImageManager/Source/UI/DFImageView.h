@@ -29,7 +29,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class DFImageFetchTask;
+@class DFCompositeImageTask;
 @class DFImageRequest;
 @class DFImageRequestOptions;
 @class DFImageView;
@@ -116,7 +116,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /*! Returns current image fetch task.
  */
-@property (nullable, nonatomic, readonly) DFImageFetchTask *task;
+@property (nullable, nonatomic, readonly) DFCompositeImageTask *task;
 
 /*! Requests an image representation with a target size, image content mode and request options of the receiver. For more info see setImageWithRequests: method.
  */
@@ -131,7 +131,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)setImageWithRequest:(DFImageRequest *)request;
 
 /*! Requests an image representation for each of the specified requests.
- @note When the method is called image view cancels current image fetch task and starts a new one with a given requests. For more info see DFImageFetchTask.
+ @note When the method is called image view cancels current image fetch task and starts a new one with a given requests. For more info see DFCompositeImageTask.
  @note This method doesn't call -prepareForReuse in case you need to refresh image without invalidating previously displayed image.
  */
 - (void)setImageWithRequests:(NSArray /* DFImageRequest */ *)requests;
@@ -141,9 +141,9 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)didCompleteRequest:(DFImageRequest *)request withImage:(UIImage *)image info:(NSDictionary *)info;
 
-/*! Creates task for a given requests. Subclasses may override this method to return custom DFImageFetchTask instance.
+/*! Creates task for a given requests. Subclasses may override this method to return custom DFCompositeImageTask instance.
  */
-- (DFImageFetchTask *)createImageFetchTaskForRequests:(NSArray /* DFImageRequest */ *)requests handler:(void (^__nullable)(UIImage *__nullable image, NSDictionary *info, DFImageRequest *request))handler;
+- (DFCompositeImageTask *)createCompositeImageTaskForRequests:(NSArray /* DFImageRequest */ *)requests handler:(void (^__nullable)(UIImage *__nullable image, NSDictionary *info, DFImageRequest *request))handler;
 
 @end
 

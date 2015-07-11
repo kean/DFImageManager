@@ -20,7 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "DFImageFetchTask.h"
+#import "DFCompositeImageTask.h"
 #import "DFImageManager.h"
 #import "DFImageManaging.h"
 #import "DFImageRequest.h"
@@ -141,7 +141,7 @@ static const NSTimeInterval _kMinimumAutoretryInterval = 8.f;
         }
     }
     DFImageView *__weak weakSelf = self;
-    _task = [self createImageFetchTaskForRequests:requests handler:^(UIImage *image, NSDictionary *info, DFImageRequest *request) {
+    _task = [self createCompositeImageTaskForRequests:requests handler:^(UIImage *image, NSDictionary *info, DFImageRequest *request) {
         [weakSelf.delegate imageView:self didCompleteRequest:request withImage:image info:info];
         [weakSelf didCompleteRequest:request withImage:image info:info];
     }];
@@ -149,8 +149,8 @@ static const NSTimeInterval _kMinimumAutoretryInterval = 8.f;
     [_task start];
 }
 
-- (DFImageFetchTask *)createImageFetchTaskForRequests:(NSArray *)requests handler:(void (^)(UIImage *, NSDictionary *, DFImageRequest *))handler {
-    return [[DFImageFetchTask alloc] initWithRequests:requests handler:handler];
+- (DFCompositeImageTask *)createCompositeImageTaskForRequests:(NSArray *)requests handler:(void (^)(UIImage *, NSDictionary *, DFImageRequest *))handler {
+    return [[DFCompositeImageTask alloc] initWithRequests:requests handler:handler];
 }
 
 - (void)didCompleteRequest:(DFImageRequest *)request withImage:(UIImage *)image info:(NSDictionary *)info {

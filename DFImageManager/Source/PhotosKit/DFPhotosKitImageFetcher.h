@@ -31,7 +31,7 @@ extern NSString *const DFPhotosKitVersionKey;
 
 /*! The PHImageRequestOptionsDeliveryMode value. Default value is PHImageRequestOptionsDeliveryModeHighQualityFormat.
  @note Should be put into DFImageRequestOptions userInfo dictionary.
- @discussion Using PHImageRequestOptionsDeliveryModeOpportunistic is useless, because DFImageManager doesn't call completion handler twice like PHImageManager does. You should either use PHImageManager directly or use DFImageFetchTask to achieve similar results.
+ @discussion Using PHImageRequestOptionsDeliveryModeOpportunistic is useless, because DFImageManager doesn't call completion handler twice like PHImageManager does. You should either use PHImageManager directly or use DFCompositeImageTask to achieve similar results.
  */
 extern NSString *const DFPhotosKitDeliveryModeKey;
 

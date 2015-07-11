@@ -20,7 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "DFImageFetchTask.h"
+#import "DFCompositeImageTask.h"
 #import "DFImageManager.h"
 #import "DFImageRequest.h"
 #import "DFImageTask.h"
@@ -45,7 +45,7 @@
 @end
 
 
-@implementation DFImageFetchTask {
+@implementation DFCompositeImageTask {
     void (^_handler)(UIImage *, NSDictionary *, DFImageRequest *);
     NSMapTable *_contexts;
     DFImageFetchContext *_context; // Optimization for single request case
@@ -70,8 +70,8 @@
     return [self initWithRequests:(request ? @[request] : nil) handler:handler];
 }
 
-+ (DFImageFetchTask *)requestImageForRequests:(NSArray *)requests handler:(void (^)(UIImage *, NSDictionary *, DFImageRequest *))handler {
-    DFImageFetchTask *request = [[DFImageFetchTask alloc] initWithRequests:requests handler:handler];
++ (DFCompositeImageTask *)requestImageForRequests:(NSArray *)requests handler:(void (^)(UIImage *, NSDictionary *, DFImageRequest *))handler {
+    DFCompositeImageTask *request = [[DFCompositeImageTask alloc] initWithRequests:requests handler:handler];
     [request start];
     return request;
 }
@@ -82,7 +82,7 @@
 
 - (void)start {
     _startTime = CACurrentMediaTime();
-    DFImageFetchTask *__weak weakSelf = self;
+    DFCompositeImageTask *__weak weakSelf = self;
     for (DFImageRequest *request in _requests) {
         DFImageFetchContext *context = [DFImageFetchContext new];
         if (_contexts) {

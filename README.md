@@ -68,15 +68,15 @@ DFImageRequest *request = [DFImageRequest requestWithResource:imageURL targetSiz
 ```
 
 #### Start multiple requests with a single completion handler
-The `DFImageFetchTask` class manages execution of one or many image requests. It also stores execution state for each request.
+The `DFCompositeImageTask` class manages execution of one or many image requests. It also stores execution state for each request.
 ```objective-c
 DFImageRequest *previewRequest = [DFImageRequest requestWithResource:[NSURL URLWithString:@"http://preview"]];
 DFImageRequest *fullsizeRequest = [DFImageRequest requestWithResource:[NSURL URLWithString:@"http://fullsize_image"]];
 
 NSArray *requests = @[ previewRequest, fullsizeRequest ];
-DFImageFetchTask *task = [DFImageFetchTask requestImageForRequests:requests handler:^(UIImage *image, NSDictionary *info, DFImageRequest *request) {
+DFCompositeImageTask *task = [DFCompositeImageTask requestImageForRequests:requests handler:^(UIImage *image, NSDictionary *info, DFImageRequest *request) {
   // Handler is called at least once
-  // For more info see DFImageFetchTask class
+  // For more info see DFCompositeImageTask class
 }];
 
 // Track the state of the requests

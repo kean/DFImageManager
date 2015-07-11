@@ -52,11 +52,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
-/*! The DFImageFetchTask manages execution of one or many image requests and provides a single completion block that gets called multiple times. It also stores execution state for each request (see DFImageFetchContext). All requests are executed concurrently.
+/*! The DFCompositeImageTask manages execution of one or many image tasks and provides a single completion block that gets called multiple times. It also stores execution state for each request (see DFImageFetchContext). All requests are executed concurrently.
  @note By default, DFImageFetchTask does not call its completion handler for each of the completed requests. It treats the array of the requests as if the last request was the final image that you would want to display, while the others were the placeholders. The completion handler is guaranteed to be called at least once, even if all of the requests have failed. It also automatically cancels obsolete requests. This entire behavior can be disabled by setting allowsObsoleteRequests property to NO.
  @warning This class is not thread safe and is designed to be used on the main thread.
  */
-@interface DFImageFetchTask : NSObject
+@interface DFCompositeImageTask : NSObject
 
 /*! Initializes composite task with an array of image requests and a completion handler. After you create the task, you must start it by calling start method.
  @param requests Array of requests. Must contain at least one request.
@@ -73,7 +73,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param requests Array of requests. Must contain at least one request.
  @param handler Completion block that gets called multiple times, for more info see class description.
  */
-+ (DFImageFetchTask *)requestImageForRequests:(NSArray /* DFImageRequest */ *)requests handler:(void (^__nullable)(UIImage *__nullable image, NSDictionary *info, DFImageRequest *request))handler;
++ (DFCompositeImageTask *)requestImageForRequests:(NSArray /* DFImageRequest */ *)requests handler:(void (^__nullable)(UIImage *__nullable image, NSDictionary *info, DFImageRequest *request))handler;
 
 /*! Image manager used by the receiver. Set to the shared manager during initialization.
  */

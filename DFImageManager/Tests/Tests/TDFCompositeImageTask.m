@@ -1,5 +1,5 @@
 //
-//  TDFImageFetchTask.m
+//  TDFCompositeImageTask.m
 //  DFImageManager
 //
 //  Created by Alexander Grebenyuk on 11/07/15.
@@ -12,11 +12,11 @@
 #import <XCTest/XCTest.h>
 
 
-@interface TDFImageFetchTask : XCTestCase
+@interface TDFCompositeImageTask : XCTestCase
 
 @end
 
-@implementation TDFImageFetchTask {
+@implementation TDFCompositeImageTask {
     TDFMockFetcher *_fetcher;
     DFImageManager *_manager;
 }
@@ -40,7 +40,7 @@
     
     XCTestExpectation *expectation = [self expectationWithDescription:@"test"];
     DFImageRequest *originalRequest = [DFImageRequest requestWithResource:@"resource"];
-    DFImageFetchTask *task = [[DFImageFetchTask alloc] initWithRequest:originalRequest handler:^(UIImage *image, NSDictionary *info, DFImageRequest *request) {
+    DFCompositeImageTask *task = [[DFCompositeImageTask alloc] initWithRequest:originalRequest handler:^(UIImage *image, NSDictionary *info, DFImageRequest *request) {
         XCTAssertNotNil(info[DFImageInfoTaskKey]);
         XCTAssertEqualObjects(image, originalImage);
         XCTAssertEqualObjects(request, originalRequest);
@@ -65,7 +65,7 @@
     XCTestExpectation *expectation2 = [self expectationWithDescription:@"test2"];
     DFImageRequest *request2 = [DFImageRequest requestWithResource:@"resource2"];
     
-    DFImageFetchTask *task = [[DFImageFetchTask alloc] initWithRequests:@[ request1, request2 ] handler:^(UIImage *image, NSDictionary *info, DFImageRequest *request) {
+    DFCompositeImageTask *task = [[DFCompositeImageTask alloc] initWithRequests:@[ request1, request2 ] handler:^(UIImage *image, NSDictionary *info, DFImageRequest *request) {
         if (request == request1) {
             XCTAssertEqualObjects(image, image1);
             [expectation1 fulfill];
@@ -91,7 +91,7 @@
     XCTestExpectation *expectation2 = [self expectationWithDescription:@"test2"];
     DFImageRequest *request2 = [DFImageRequest requestWithResource:@"resource2"];
     
-    DFImageFetchTask *task = [[DFImageFetchTask alloc] initWithRequests:@[ request1, request2 ] handler:^(UIImage *image, NSDictionary *info, DFImageRequest *request) {
+    DFCompositeImageTask *task = [[DFCompositeImageTask alloc] initWithRequests:@[ request1, request2 ] handler:^(UIImage *image, NSDictionary *info, DFImageRequest *request) {
         if (request == request1) {
             XCTAssertEqualObjects(image, image1);
             [expectation1 fulfill];
@@ -119,7 +119,7 @@
     XCTestExpectation *expectation2 = [self expectationWithDescription:@"test2"];
     DFImageRequest *request2 = [DFImageRequest requestWithResource:@"resource2"];
     
-    DFImageFetchTask *task = [[DFImageFetchTask alloc] initWithRequests:@[ request1, request2 ] handler:^(UIImage *image, NSDictionary *info, DFImageRequest *request) {
+    DFCompositeImageTask *task = [[DFCompositeImageTask alloc] initWithRequests:@[ request1, request2 ] handler:^(UIImage *image, NSDictionary *info, DFImageRequest *request) {
         if (request == request1) {
             XCTFail(@"Unexpected callback");
         }
@@ -146,7 +146,7 @@
     XCTestExpectation *expectation2 = [self expectationWithDescription:@"test2"];
     DFImageRequest *request2 = [DFImageRequest requestWithResource:@"resource2"];
     
-    DFImageFetchTask *task = [[DFImageFetchTask alloc] initWithRequests:@[ request1, request2 ] handler:^(UIImage *image, NSDictionary *info, DFImageRequest *request) {
+    DFCompositeImageTask *task = [[DFCompositeImageTask alloc] initWithRequests:@[ request1, request2 ] handler:^(UIImage *image, NSDictionary *info, DFImageRequest *request) {
         if (request == request1) {
             XCTFail(@"Unexpected callback");
         }
@@ -177,7 +177,7 @@
     XCTestExpectation *expectation2 = [self expectationWithDescription:@"test2"];
     DFImageRequest *request2 = [DFImageRequest requestWithResource:@"resource2"];
     
-    DFImageFetchTask *task = [[DFImageFetchTask alloc] initWithRequests:@[ request1, request2 ] handler:^(UIImage *image, NSDictionary *info, DFImageRequest *request) {
+    DFCompositeImageTask *task = [[DFCompositeImageTask alloc] initWithRequests:@[ request1, request2 ] handler:^(UIImage *image, NSDictionary *info, DFImageRequest *request) {
         if (request == request1) {
             XCTFail(@"Callback should get called once");
         }
@@ -202,7 +202,7 @@
     XCTestExpectation *expectation2 = [self expectationWithDescription:@"test2"];
     DFImageRequest *request2 = [DFImageRequest requestWithResource:@"resource2"];
     
-    DFImageFetchTask *task = [[DFImageFetchTask alloc] initWithRequests:@[ request1, request2 ] handler:^(UIImage *image, NSDictionary *info, DFImageRequest *request) {
+    DFCompositeImageTask *task = [[DFCompositeImageTask alloc] initWithRequests:@[ request1, request2 ] handler:^(UIImage *image, NSDictionary *info, DFImageRequest *request) {
         if (request == request1) {
             XCTAssertEqualObjects(image, image1);
             [expectation1 fulfill];
@@ -229,7 +229,7 @@
     XCTestExpectation *expectation2 = [self expectationWithDescription:@"test2"];
     DFImageRequest *request2 = [DFImageRequest requestWithResource:@"resource2"];
     
-    DFImageFetchTask *task = [[DFImageFetchTask alloc] initWithRequests:@[ request1, request2 ] handler:^(UIImage *image, NSDictionary *info, DFImageRequest *request) {
+    DFCompositeImageTask *task = [[DFCompositeImageTask alloc] initWithRequests:@[ request1, request2 ] handler:^(UIImage *image, NSDictionary *info, DFImageRequest *request) {
         if (request == request1) {
             XCTAssertNil(image);
             [expectation1 fulfill];
