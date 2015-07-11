@@ -312,7 +312,12 @@
             NSError *error = [NSError errorWithDomain:DFImageManagerErrorDomain code:DFImageManagerErrorCancelled userInfo:nil];
             task.response = [DFImageResponse responseWithError:error];
         }
-        
+        if (state == DFImageTaskStateCompleted) {
+            if (!task.response.image && !task.response.error) {
+                NSError *error = [NSError errorWithDomain:DFImageManagerErrorDomain code:DFImageManagerErrorUnknown userInfo:nil];
+                task.response = [[DFImageResponse alloc] initWithImage:nil error:error userInfo:task.response.userInfo];
+            }
+        }
         if (task.completionHandler) {
             NSDictionary *info = [self _infoFromResponse:task.response task:task];
             dispatch_async(dispatch_get_main_queue(), ^{

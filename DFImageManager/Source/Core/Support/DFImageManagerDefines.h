@@ -91,4 +91,8 @@ extern NSString *const DFImageManagerErrorDomain;
  */
 static const NSInteger DFImageManagerErrorCancelled = -1;
 
+/*! Returned when an image request fails without a specific reason.
+ */
+static const NSInteger DFImageManagerErrorUnknown = -2;
+
 NS_ASSUME_NONNULL_END

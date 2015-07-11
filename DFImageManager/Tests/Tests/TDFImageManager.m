@@ -96,6 +96,20 @@
     [self waitForExpectationsWithTimeout:2.0 handler:nil];
 }
 
+- (void)testThatFailedResponseAlwaysGeneratesError {
+    _fetcher.response = [[DFImageResponse alloc] initWithImage:nil error:nil userInfo:nil];
+    
+    XCTestExpectation *expectation = [self expectationWithDescription:@"request"];
+    [_manager requestImageForResource:[TDFMockResource resourceWithID:@"ID01"] completion:^(UIImage *image, NSDictionary *info) {
+        NSError *error = info[DFImageInfoErrorKey];
+        XCTAssertNotNil(error);
+        XCTAssertTrue([error.domain isEqualToString:DFImageManagerErrorDomain]);
+        XCTAssertTrue(error.code == DFImageManagerErrorUnknown);
+        [expectation fulfill];
+    }];
+    [self waitForExpectationsWithTimeout:2.0 handler:nil];
+}
+
 - (void)testThatResponseInfoContainsCustomUserInfo {
     _fetcher.response = [[DFImageResponse alloc] initWithImage:nil error:nil userInfo:@{ @"TestKey" : @"TestValue" }];
     
