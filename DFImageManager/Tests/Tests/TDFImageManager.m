@@ -96,11 +96,31 @@
     [self waitForExpectationsWithTimeout:2.0 handler:nil];
 }
 
+/*! Test that image manager response info contains error under DFImageInfoErrorKey key when request fails.
+ */
+- (void)testThatResponseInfoAndImageTaskContainError {
+    _fetcher.response = [DFImageResponse responseWithError:[NSError errorWithDomain:@"TDFErrorDomain" code:14 userInfo:nil]];
+    
+    XCTestExpectation *expectation = [self expectationWithDescription:@"request"];
+    DFImageTask *task = [_manager requestImageForResource:[TDFMockResource resourceWithID:@"ID01"] completion:^(UIImage *image, NSDictionary *info) {
+        NSError *error = info[DFImageInfoErrorKey];
+        XCTAssertNotNil(error);
+        XCTAssertTrue([error.domain isEqualToString:@"TDFErrorDomain"]);
+        XCTAssertTrue(error.code == 14);
+        [expectation fulfill];
+    }];
+    [self waitForExpectationsWithTimeout:2.0 handler:nil];
+    
+    XCTAssertNotNil(task.error);
+    XCTAssertTrue([task.error.domain isEqualToString:@"TDFErrorDomain"]);
+    XCTAssertTrue(task.error.code == 14);
+}
+
 - (void)testThatFailedResponseAlwaysGeneratesError {
     _fetcher.response = [[DFImageResponse alloc] initWithImage:nil error:nil userInfo:nil];
     
     XCTestExpectation *expectation = [self expectationWithDescription:@"request"];
-    [_manager requestImageForResource:[TDFMockResource resourceWithID:@"ID01"] completion:^(UIImage *image, NSDictionary *info) {
+    DFImageTask *task = [_manager requestImageForResource:[TDFMockResource resourceWithID:@"ID01"] completion:^(UIImage *image, NSDictionary *info) {
         NSError *error = info[DFImageInfoErrorKey];
         XCTAssertNotNil(error);
         XCTAssertTrue([error.domain isEqualToString:DFImageManagerErrorDomain]);
@@ -108,6 +128,10 @@
         [expectation fulfill];
     }];
     [self waitForExpectationsWithTimeout:2.0 handler:nil];
+    
+    XCTAssertNotNil(task.error);
+    XCTAssertTrue([task.error.domain isEqualToString:DFImageManagerErrorDomain]);
+    XCTAssertTrue(task.error.code == DFImageManagerErrorUnknown);
 }
 
 - (void)testThatResponseInfoContainsCustomUserInfo {

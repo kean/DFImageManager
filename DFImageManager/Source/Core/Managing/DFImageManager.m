@@ -53,6 +53,7 @@
 @property (nonatomic, readonly) DFImageManager *manager;
 @property (nonatomic, readonly, copy) DFImageRequestCompletion completionHandler;
 @property (nonatomic) DFImageTaskState state;
+@property (nonatomic) NSError *error;
 @property (nonatomic) DFImageResponse *response;
 @property (nonatomic) NSInteger tag;
 @property (nonatomic, weak) _DFImageFetchOperation *fetchOperation;
@@ -63,6 +64,7 @@
 @implementation _DFImageTask
 
 @synthesize request = _request;
+@synthesize error = _error;
 @synthesize state = _state;
 
 - (instancetype)initWithManager:(DFImageManager *)manager request:(DFImageRequest *)request completionHandler:(DFImageRequestCompletion)completionHandler {
@@ -321,6 +323,7 @@
         if (task.completionHandler) {
             NSDictionary *info = [self _infoFromResponse:task.response task:task];
             dispatch_async(dispatch_get_main_queue(), ^{
+                task.error = task.response.error;
                 task.completionHandler(task.response.image, info);
                 task.response = nil;
             });
