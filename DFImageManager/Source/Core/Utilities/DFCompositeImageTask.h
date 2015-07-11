@@ -87,14 +87,6 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nonatomic, copy, readonly) NSArray /* DFImageRequest */ *requests;
 
-/*! The time when the request was started (in seconds).
- */
-@property (nonatomic, readonly) NSTimeInterval startTime;
-
-/*! The elapsed time from the start of the request (in seconds).
- */
-@property (nonatomic, readonly) NSTimeInterval elapsedTime;
-
 /*! Returns YES if all the requests have completed.
  */
 @property (nonatomic, readonly) BOOL isFinished;

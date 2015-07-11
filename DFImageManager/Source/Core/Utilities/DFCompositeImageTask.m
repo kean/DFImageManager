@@ -67,7 +67,7 @@
 }
 
 - (instancetype)initWithRequest:(DFImageRequest *)request handler:(void (^)(UIImage *, NSDictionary *, DFImageRequest *))handler {
-    return [self initWithRequests:(request ? @[request] : nil) handler:handler];
+    return [self initWithRequests:@[request] handler:handler];
 }
 
 + (DFCompositeImageTask *)requestImageForRequests:(NSArray *)requests handler:(void (^)(UIImage *, NSDictionary *, DFImageRequest *))handler {
@@ -76,12 +76,7 @@
     return request;
 }
 
-- (NSTimeInterval)elapsedTime {
-    return CACurrentMediaTime() - _startTime;
-}
-
 - (void)start {
-    _startTime = CACurrentMediaTime();
     DFCompositeImageTask *__weak weakSelf = self;
     for (DFImageRequest *request in _requests) {
         DFImageFetchContext *context = [DFImageFetchContext new];
