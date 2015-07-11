@@ -89,9 +89,10 @@
         } else {
             _context = context;
         }
-        context.task = [self.imageManager requestImageForRequest:request completion:^(UIImage *image, NSDictionary *info) {
+        context.task = [self.imageManager imageTaskForRequest:request completion:^(UIImage *image, NSDictionary *info) {
             [weakSelf _didFinishRequest:request image:image info:info];
         }];
+        [context.task resume];
     }
 }
 

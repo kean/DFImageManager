@@ -54,11 +54,12 @@ static char *_imageTaskKey;
     
     UIImageView *__weak weakSelf = self;
     DFImageRequest *request = [DFImageRequest requestWithResource:resource targetSize:targetSize contentMode:contentMode options:options];
-    DFImageTask *task = [[DFImageManager sharedManager] requestImageForRequest:request completion:^(UIImage *image, NSDictionary *info) {
+    DFImageTask *task = [[DFImageManager sharedManager] imageTaskForRequest:request completion:^(UIImage *image, NSDictionary *info) {
         if (image) {
             weakSelf.image = image;
         }
     }];
+    [task resume];
     [self _df_setImageTask:task];
 }
 
