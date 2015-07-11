@@ -40,9 +40,11 @@ iOS 7.0+
 #### Zero config image fetching
 
 ```objective-c
-DFImageTask *task = [[DFImageManager sharedManager] requestImageForResource:[NSURL URLWithString:@"http://..."] completion:^(UIImage *image, NSDictionary *info) {
+DFImageTask *task = [[DFImageManager sharedManager] imageTaskForResource:[NSURL URLWithString:@"http://..."] completion:^(UIImage *image, NSDictionary *info) {
   // Use decompressed image and inspect info
 }];
+[task resume];
+
 [task cancel]; // task can be used to cancel the request (and more)
 ```
 
@@ -60,9 +62,9 @@ options.userInfo = @{ DFURLRequestCachePolicyKey : @(NSURLRequestReturnCacheData
 
 DFImageRequest *request = [DFImageRequest requestWithResource:imageURL targetSize:CGSizeMake(100.f, 100.f) contentMode:DFImageContentModeAspectFill options:options];
 
-[[DFImageManager sharedManager] requestImageForRequest:request completion:^(UIImage *image, NSDictionary *info) {
+[[[DFImageManager sharedManager] imageTaskForRequest:request completion:^(UIImage *image, NSDictionary *info) {
 // Image is resized and clipped to fill 100x100px square
-}];
+}] resume];
 ```
 
 #### Start multiple requests with a single completion handler
@@ -105,10 +107,10 @@ imageView.allowsAutoRetries = YES; // Retries when network reachability changes
 ```objective-c
 PHAsset *asset = ...;
 DFImageRequest *request = [DFImageRequest requestWithResource:asset targetSize:CGSizeMake(100.f, 100.f) contentMode:DFImageContentModeAspectFill options:nil];
-[[DFImageManager sharedManager] requestImageForRequest:request completion:^(UIImage *image, NSDictionary *info) {
+[[[DFImageManager sharedManager] imageTaskForRequest:request completion:^(UIImage *image, NSDictionary *info) {
   // Image resized to 100x100px square
   // Photos Kit image manager does most of the hard work
-}];
+}] resume];
 ```
 
 #### Use composite managers
