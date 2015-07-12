@@ -32,31 +32,38 @@ NS_ASSUME_NONNULL_BEGIN
 
 @class DFCompositeImageTask;
 
-typedef void (^DFCompositeImageTaskImageHandler)(UIImage *__nullable image, NSDictionary *info, DFImageRequest *request, DFCompositeImageTask *task);
+typedef void (^DFCompositeImageTaskImageHandler)(UIImage *__nullable image, NSDictionary *info, DFCompositeImageTask *compositeTask);
+typedef void (^DFCompositeImageTaskCompletionHandler)(DFCompositeImageTask *compositeTask);
 
-/*! The DFCompositeImageTask manages execution of one or many image tasks and provides a single completion block that gets called multiple times. All requests are executed concurrently.
- @note By default, DFImageFetchTask does not call its completion handler for each of the completed requests. It treats the array of the requests as if the last request was the final image that you would want to display, while the others were the placeholders. The completion handler is guaranteed to be called at least once, even if all of the requests have failed. It also automatically cancels obsolete requests.
- @warning This class is not thread safe and is designed to be used on the main thread.
+/*! The DFCompositeImageTask manages execution of one or more image tasks and provides a single image handler that gets called multiple times. All requests are executed concurrently.
+ @note DFCompositeImageTask treats an array of image tasks as if the last one was the final image, while the others were the placeholders. The image handler gets called each time the image is successfully fetched, but it doesn't get called for obsolete tasks - when better image is already fetched. It also automatically cancels obsolete tasks.
+ @warning This class is not thread safe and is designed to be used on the main thread. All handlers are called on the main thread too.
  */
 @interface DFCompositeImageTask : NSObject
 
-/*! Initializes composite task with an array of image tasks and a completion handler. After you create the task, you must start it by calling start method.
- @param tasks Array of image tasks. Must contain at least one task.
- @param imageHandler Gets called each time the image is fetched. Doesn't get called for obsolete requests.
+/*! Initializes composite task with an array of image tasks. After you create the task, you must resume it by calling resume method.
+ @param tasks Array of image tasks. Must contain at least one task. All image tasks should be in suspended state.
+ @param imageHandler The image handler gets called each time the image is successfully fetched, but it doesn't get called for obsolete tasks.
+ @param completionHandler Completion handler that is executed after there are no remaining image tasks that are not either completed or cancelled.
  */
-- (instancetype)initWithImageTasks:(NSArray /* DFImageTask */ *)tasks imageHandler:(nullable DFCompositeImageTaskImageHandler)imageHandler NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithImageTasks:(NSArray /* DFImageTask */ *)tasks imageHandler:(nullable DFCompositeImageTaskImageHandler)imageHandler completionHandler:(nullable DFCompositeImageTaskCompletionHandler)completionHandler NS_DESIGNATED_INITIALIZER;
 
-/*! Creates and starts task with an array of image requests.
+/*! Creates image tasks with a given requests by using shared image manager. Then creates and returns composite image task. You must resume it by calling resume method.
  @param requests Array of requests. Must contain at least one request.
- @param imageHandler Gets called each time the image is fetched. Doesn't get called for obsolete requests.
+ @param imageHandler The image handler gets called each time the image is successfully fetched, but it doesn't get called for obsolete tasks.
+ @param completionHandler Completion handler that is executed after there are no remaining image tasks that are not either completed or cancelled.
  */
-+ (DFCompositeImageTask *)compositeImageTaskWithRequests:(NSArray *)requests imageHandler:(DFCompositeImageTaskImageHandler)imageHandler;
++ (nullable DFCompositeImageTask *)compositeImageTaskWithRequests:(NSArray *)requests imageHandler:(nullable DFCompositeImageTaskImageHandler)imageHandler completionHandler:(nullable DFCompositeImageTaskCompletionHandler)completionHandler;
 
-/*! Image handler. Gets called each time the image is fetched. Doesn't get called for obsolete requests.
+/*! Image handler. The image handler gets called each time the image is successfully fetched, but it doesn't get called for obsolete tasks.
  */
-@property (nullable, nonatomic, copy) void (^imageHandler)(UIImage *__nullable image, NSDictionary *info, DFImageRequest *request, DFCompositeImageTask *task);
+@property (nullable, nonatomic, copy) void (^imageHandler)(UIImage *__nullable image, NSDictionary *info, DFCompositeImageTask *compositeTask);
 
-/*! Set to YES to enable special handling of obsolete requests. Default value is YES. For more info see class notes.
+/*! Completion handler that is executed after there are no remaining image tasks that are not either completed or cancelled.
+ */
+@property (nullable, nonatomic, copy) void (^completionHandler)(DFCompositeImageTask *compositeTask);
+
+/*! Set to YES to enable special handling of obsolete requests. Default value is YES.
  */
 @property (nonatomic) BOOL allowsObsoleteRequests;
 
@@ -64,7 +71,7 @@ typedef void (^DFCompositeImageTaskImageHandler)(UIImage *__nullable image, NSDi
  */
 @property (nonatomic, copy, readonly) NSArray /* DFImageTask */ *imageTasks;
 
-/*! Returns image requests from the image tasks that the receiver was initialized with.
+/*! Returns all image requests from the image tasks that the receiver was initialized with.
  */
 @property (nonatomic, copy, readonly) NSArray /* DFImageRequest */ *imageRequests;
 
@@ -76,11 +83,11 @@ typedef void (^DFCompositeImageTaskImageHandler)(UIImage *__nullable image, NSDi
  */
 - (void)resume;
 
-/*! Cancels all the requests registered with the receiver.
+/*! Cancels all image tasks registered with the receiver. Removes image handler and completion handler.
  */
 - (void)cancel;
 
-/*! Sets the priority for all the requests registered with a receiver.
+/*! Sets the priority for all image tasks registered with a receiver.
  */
 - (void)setPriority:(DFImageRequestPriority)priority;
 

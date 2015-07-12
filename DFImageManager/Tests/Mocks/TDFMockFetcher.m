@@ -9,6 +9,8 @@
 #import "TDFMockFetcher.h"
 #import "TDFMockFetchOperation.h"
 
+NSString *TDFMockFetcherDidStartOperationNotification = @"TDFMockFetcherDidStartOperationNotification";
+
 @implementation TDFMockResponse
 
 + (instancetype)mockWithResponse:(DFImageResponse *)response elapsedTime:(NSTimeInterval)elapsedTime {
@@ -67,6 +69,7 @@
     }];
     operation.request = request;
     [_queue addOperation:operation];
+    [[NSNotificationCenter defaultCenter] postNotificationName:TDFMockFetcherDidStartOperationNotification object:self userInfo:nil];
     return operation;
 }
 

@@ -13,6 +13,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+extern NSString *TDFMockFetcherDidStartOperationNotification;
+
 @interface TDFMockResponse : NSObject
 
 @property (nonatomic) NSTimeInterval elapsedTime;

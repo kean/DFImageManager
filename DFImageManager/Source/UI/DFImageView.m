@@ -142,21 +142,22 @@ static const NSTimeInterval _kMinimumAutoretryInterval = 8.f;
         }
     }
     DFImageView *__weak weakSelf = self;
-    _task = [self createCompositeImageTaskForRequests:requests handler:^(UIImage *image, NSDictionary *info, DFImageRequest *request, DFCompositeImageTask *task) {
-        [weakSelf.delegate imageView:self didCompleteRequest:request withImage:image info:info];
-        [weakSelf didCompleteRequest:request withImage:image info:info];
+    _task = [self _createCompositeImageTaskForRequests:requests handler:^(UIImage *image, NSDictionary *info, DFCompositeImageTask *compositeTask) {
+        DFImageTask *task = info[DFImageInfoTaskKey];
+        [weakSelf.delegate imageView:self didCompleteRequest:task.request withImage:image info:info];
+        [weakSelf didCompleteRequest:task.request withImage:image info:info];
     }];
     [self setNeedsUpdateConstraints];
     [_task resume];
 }
 
-- (DFCompositeImageTask *)createCompositeImageTaskForRequests:(NSArray *)requests handler:(void (^)(UIImage *, NSDictionary *, DFImageRequest *, DFCompositeImageTask *))handler {
+- (DFCompositeImageTask *)_createCompositeImageTaskForRequests:(NSArray *)requests handler:(void (^)(UIImage *, NSDictionary *, DFCompositeImageTask *))handler {
     NSMutableArray *tasks = [NSMutableArray new];
     for (DFImageRequest *request in requests) {
         DFImageTask *task = [self.imageManager imageTaskForRequest:request completion:nil];
         [tasks addObject:task];
     }
-    return [[DFCompositeImageTask alloc] initWithImageTasks:tasks imageHandler:handler];
+    return [[DFCompositeImageTask alloc] initWithImageTasks:tasks imageHandler:handler completionHandler:nil];
 }
 
 - (void)didCompleteRequest:(DFImageRequest *)request withImage:(UIImage *)image info:(NSDictionary *)info {

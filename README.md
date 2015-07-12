@@ -77,7 +77,7 @@ NSArray *requests = @[ previewRequest, fullsizeRequest ];
 DFCompositeImageTask *task = [DFCompositeImageTask requestImageForRequests:requests imageHandler:^(UIImage *image, NSDictionary *info, DFImageRequest *request) {
   // Handler is called at least once
   // For more info see DFCompositeImageTask class
-}];
+} completionHandler:nil];
 ```
 There are many [ways](https://github.com/kean/DFImageManager/wiki/Advanced-Image-Caching-Guide#custom-revalidation-using-dfcompositeimagefetchoperation) how composite requests can be used.
 

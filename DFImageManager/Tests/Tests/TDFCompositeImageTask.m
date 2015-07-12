@@ -40,14 +40,23 @@
     UIImage *originalImage = [TDFTesting testImage];
     [_fetcher setResponse:[TDFMockResponse mockWithResponse:[DFImageResponse responseWithImage:originalImage]] forResource:@"resource"];
     
-    XCTestExpectation *expectation = [self expectationWithDescription:@"test"];
+    XCTestExpectation *expectImageHandler = [self expectationWithDescription:@"1"];
+    XCTestExpectation *expectCompletionHandler = [self expectationWithDescription:@"2"];
+    
     DFImageRequest *originalRequest = [DFImageRequest requestWithResource:@"resource"];
-    DFCompositeImageTask *task = [DFCompositeImageTask compositeImageTaskWithRequests:@[originalRequest] imageHandler:^(UIImage *image, NSDictionary *info, DFImageRequest *request, DFCompositeImageTask *innerTask) {
-        XCTAssertNotNil(info[DFImageInfoTaskKey]);
+    BOOL __block isImageHandlerCalled = NO;
+    DFCompositeImageTask *task = [DFCompositeImageTask compositeImageTaskWithRequests:@[originalRequest] imageHandler:^(UIImage *image, NSDictionary *info, DFCompositeImageTask *compositeTask) {
+        isImageHandlerCalled = YES;
+        DFImageTask *completedTask = info[DFImageInfoTaskKey];
+        XCTAssertNotNil(completedTask);
+        XCTAssertTrue([completedTask.request.resource isEqualToString:originalRequest.resource]);
         XCTAssertEqualObjects(image, originalImage);
-        XCTAssertTrue([request.resource isEqualToString:originalRequest.resource]);
-        XCTAssertTrue(innerTask.isFinished);
-        [expectation fulfill];
+        XCTAssertTrue(compositeTask.isFinished);
+        [expectImageHandler fulfill];
+    } completionHandler:^(DFCompositeImageTask *compositeTask) {
+        XCTAssertTrue(isImageHandlerCalled);
+        XCTAssertTrue(compositeTask.isFinished);
+        [expectCompletionHandler fulfill];
     }];
     XCTAssertFalse(task.isFinished);
     [task resume];
@@ -65,22 +74,28 @@
     UIImage *image2 = [TDFTesting testImage];
     [_fetcher setResponse:[TDFMockResponse mockWithResponse:[DFImageResponse responseWithImage:image2] elapsedTime:0.05] forResource:@"resource2"];
     
-    XCTestExpectation *expectation1 = [self expectationWithDescription:@"test1"];
+    XCTestExpectation *expectFirstImage = [self expectationWithDescription:@"1"];
+    XCTestExpectation *expectSecondImage = [self expectationWithDescription:@"2"];
+    XCTestExpectation *expectCompletion = [self expectationWithDescription:@"3"];
+    
     DFImageRequest *request1 = [DFImageRequest requestWithResource:@"resource1"];
-    XCTestExpectation *expectation2 = [self expectationWithDescription:@"test2"];
     DFImageRequest *request2 = [DFImageRequest requestWithResource:@"resource2"];
     
-    DFCompositeImageTask *task = [DFCompositeImageTask compositeImageTaskWithRequests:@[ request1, request2 ] imageHandler:^(UIImage *image, NSDictionary *info, DFImageRequest *request, DFCompositeImageTask *innerTask) {
-        if ([request.resource isEqualToString:request1.resource]) {
+    DFCompositeImageTask *task = [DFCompositeImageTask compositeImageTaskWithRequests:@[ request1, request2 ] imageHandler:^(UIImage *image, NSDictionary *info, DFCompositeImageTask *compositeTask) {
+        DFImageTask *completedTask = info[DFImageInfoTaskKey];
+        if ([completedTask.request.resource isEqualToString:request1.resource]) {
             XCTAssertEqualObjects(image, image1);
-            XCTAssertFalse(innerTask.isFinished);
-            [expectation1 fulfill];
+            XCTAssertFalse(compositeTask.isFinished);
+            [expectFirstImage fulfill];
         }
-        if ([request.resource isEqualToString:request2.resource]) {
+        if ([completedTask.request.resource isEqualToString:request2.resource]) {
             XCTAssertEqualObjects(image, image2);
-            XCTAssertTrue(innerTask.isFinished);
-            [expectation2 fulfill];
+            XCTAssertTrue(compositeTask.isFinished);
+            [expectSecondImage fulfill];
         }
+    } completionHandler:^(DFCompositeImageTask *compositeTask) {
+        XCTAssertTrue(compositeTask.isFinished);
+        [expectCompletion fulfill];
     }];
     XCTAssertFalse(task.isFinished);
     [task resume];
@@ -94,22 +109,28 @@
     [_fetcher setResponse:[TDFMockResponse mockWithResponse:[DFImageResponse responseWithImage:image1] elapsedTime:0] forResource:@"resource1"];
     [_fetcher setResponse:[TDFMockResponse mockWithResponse:[DFImageResponse responseWithImage:nil] elapsedTime:0.05] forResource:@"resource2"];
     
-    XCTestExpectation *expectation1 = [self expectationWithDescription:@"test1"];
+    XCTestExpectation *expectFirstImage = [self expectationWithDescription:@"1"];
+    XCTestExpectation *expectSecondImage = [self expectationWithDescription:@"2"];
+    XCTestExpectation *expectCompletion = [self expectationWithDescription:@"3"];
+    
     DFImageRequest *request1 = [DFImageRequest requestWithResource:@"resource1"];
-    XCTestExpectation *expectation2 = [self expectationWithDescription:@"test2"];
     DFImageRequest *request2 = [DFImageRequest requestWithResource:@"resource2"];
     
-    DFCompositeImageTask *task = [DFCompositeImageTask compositeImageTaskWithRequests:@[ request1, request2 ] imageHandler:^(UIImage *image, NSDictionary *info, DFImageRequest *request, DFCompositeImageTask *innerTask) {
-        if ([request.resource isEqualToString:request1.resource]) {
+    DFCompositeImageTask *task = [DFCompositeImageTask compositeImageTaskWithRequests:@[ request1, request2 ] imageHandler:^(UIImage *image, NSDictionary *info, DFCompositeImageTask *compositeTask) {
+        DFImageTask *completedTask = info[DFImageInfoTaskKey];
+        if ([completedTask.request.resource isEqualToString:request1.resource]) {
             XCTAssertEqualObjects(image, image1);
-            [expectation1 fulfill];
+            [expectFirstImage fulfill];
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                [expectation2 fulfill];
+                [expectSecondImage fulfill];
             });
         }
-        if ([request.resource isEqualToString:request2.resource]) {
+        if ([completedTask.request.resource isEqualToString:request2.resource]) {
             XCTFail(@"Unexpected callback");
         }
+    } completionHandler:^(DFCompositeImageTask *compositeTask) {
+        XCTAssertTrue(compositeTask.isFinished);
+        [expectCompletion fulfill];
     }];
     [task resume];
     [self waitForExpectationsWithTimeout:1 handler:nil];
@@ -122,46 +143,57 @@
     UIImage *image2 = [TDFTesting testImage];
     [_fetcher setResponse:[TDFMockResponse mockWithResponse:[DFImageResponse responseWithImage:image2] elapsedTime:0.05] forResource:@"resource2"];
     
-    XCTestExpectation *expectation1 = [self expectationWithDescription:@"test1"];
+    XCTestExpectation *expectFirstImage = [self expectationWithDescription:@"1"];
+    XCTestExpectation *expectSecondImage = [self expectationWithDescription:@"2"];
+    XCTestExpectation *expectCompletion = [self expectationWithDescription:@"3"];
+    
     DFImageRequest *request1 = [DFImageRequest requestWithResource:@"resource1"];
-    XCTestExpectation *expectation2 = [self expectationWithDescription:@"test2"];
     DFImageRequest *request2 = [DFImageRequest requestWithResource:@"resource2"];
     
-    DFCompositeImageTask *task = [DFCompositeImageTask compositeImageTaskWithRequests:@[ request1, request2 ] imageHandler:^(UIImage *image, NSDictionary *info, DFImageRequest *request, DFCompositeImageTask *innerTask) {
-        if ([request.resource isEqualToString:request1.resource]) {
+    DFCompositeImageTask *task = [DFCompositeImageTask compositeImageTaskWithRequests:@[ request1, request2 ] imageHandler:^(UIImage *image, NSDictionary *info, DFCompositeImageTask *compositeTask) {
+        DFImageTask *completedTask = info[DFImageInfoTaskKey];
+        if ([completedTask.request.resource isEqualToString:request1.resource]) {
             XCTFail(@"Unexpected callback");
         }
-        if ([request.resource isEqualToString:request2.resource]) {
+        if ([completedTask.request.resource isEqualToString:request2.resource]) {
             XCTAssertEqualObjects(image, image2);
-            XCTAssertTrue(innerTask.isFinished);
-            [expectation2 fulfill];
+            XCTAssertTrue(compositeTask.isFinished);
+            [expectSecondImage fulfill];
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                [expectation1 fulfill];
+                [expectFirstImage fulfill];
             });
         }
+    } completionHandler:^(DFCompositeImageTask *compositeTask) {
+        XCTAssertTrue(compositeTask.isFinished);
+        [expectCompletion fulfill];
     }];
     [task resume];
     [self waitForExpectationsWithTimeout:1 handler:nil];
 }
 
-/*! 1f, 2f -> 2f
+/*! 1f, 2f -> [no callback]
  */
-- (void)testThatHandlerCalledOnceWhenFirstTaskFailsThenSecondFails {
+- (void)testThatHandlerNotCalledWhenFirstTaskFailsThenSecondFails {
     [_fetcher setResponse:[TDFMockResponse mockWithResponse:[DFImageResponse responseWithImage:nil] elapsedTime:0] forResource:@"resource1"];
     [_fetcher setResponse:[TDFMockResponse mockWithResponse:[DFImageResponse responseWithImage:nil] elapsedTime:0.05] forResource:@"resource2"];
     
-    XCTestExpectation *expectation1 = [self expectationWithDescription:@"test1"];
+    XCTestExpectation *expectFirstImage = [self expectationWithDescription:@"1"];
+    XCTestExpectation *expectSecondImage = [self expectationWithDescription:@"2"];
+    XCTestExpectation *expectCompletion = [self expectationWithDescription:@"3"];
+    
     DFImageRequest *request1 = [DFImageRequest requestWithResource:@"resource1"];
-    XCTestExpectation *expectation2 = [self expectationWithDescription:@"test2"];
     DFImageRequest *request2 = [DFImageRequest requestWithResource:@"resource2"];
     
-    DFCompositeImageTask *task = [DFCompositeImageTask compositeImageTaskWithRequests:@[ request1, request2 ] imageHandler:^(UIImage *image, NSDictionary *info, DFImageRequest *request, DFCompositeImageTask *innerTask) {
+    DFCompositeImageTask *task = [DFCompositeImageTask compositeImageTaskWithRequests:@[ request1, request2 ] imageHandler:^(UIImage *image, NSDictionary *info, DFCompositeImageTask *compositeTask) {
         XCTFail(@"Unexpected callback");
+    } completionHandler:^(DFCompositeImageTask *compositeTask) {
+        XCTAssertTrue(compositeTask.isFinished);
+        [expectCompletion fulfill];
     }];
     [task resume];
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [expectation1 fulfill];
-        [expectation2 fulfill];
+        [expectFirstImage fulfill];
+        [expectSecondImage fulfill];
     });
     [self waitForExpectationsWithTimeout:1 handler:nil];
 }
@@ -177,18 +209,24 @@
     [_fetcher setResponse:[TDFMockResponse mockWithResponse:[DFImageResponse responseWithImage:image2] elapsedTime:0] forResource:@"resource2"];
     
     [self expectationForNotification:TDFMockFetchOperationWillCancelNotification object:nil handler:nil];
+    XCTestExpectation *expectSecondImage = [self expectationWithDescription:@"1"];
+    XCTestExpectation *expectCompletion = [self expectationWithDescription:@"2"];
+    
     DFImageRequest *request1 = [DFImageRequest requestWithResource:@"resource1"];
-    XCTestExpectation *expectation2 = [self expectationWithDescription:@"test2"];
     DFImageRequest *request2 = [DFImageRequest requestWithResource:@"resource2"];
     
-    DFCompositeImageTask *task = [DFCompositeImageTask compositeImageTaskWithRequests:@[ request1, request2 ] imageHandler:^(UIImage *image, NSDictionary *info, DFImageRequest *request, DFCompositeImageTask *innerTask) {
-        if ([request.resource isEqualToString:request1.resource]) {
+    DFCompositeImageTask *task = [DFCompositeImageTask compositeImageTaskWithRequests:@[ request1, request2 ] imageHandler:^(UIImage *image, NSDictionary *info, DFCompositeImageTask *compositeTask) {
+        DFImageTask *completedTask = info[DFImageInfoTaskKey];
+        if ([completedTask.request.resource isEqualToString:request1.resource]) {
             XCTFail(@"Callback should get called once");
         }
-        if ([request.resource isEqualToString:request2.resource]) {
+        if ([completedTask.request.resource isEqualToString:request2.resource]) {
             XCTAssertEqualObjects(image, image2);
-            [expectation2 fulfill];
+            [expectSecondImage fulfill];
         }
+    } completionHandler:^(DFCompositeImageTask *compositeTask) {
+        XCTAssertTrue(compositeTask.isFinished);
+        [expectCompletion fulfill];
     }];
     [task resume];
     [self waitForExpectationsWithTimeout:1 handler:nil];
@@ -201,51 +239,59 @@
     [_fetcher setResponse:[TDFMockResponse mockWithResponse:[DFImageResponse responseWithImage:image1] elapsedTime:0.05] forResource:@"resource1"];
     [_fetcher setResponse:[TDFMockResponse mockWithResponse:[DFImageResponse responseWithImage:nil] elapsedTime:0] forResource:@"resource2"];
     
-    XCTestExpectation *expectation1 = [self expectationWithDescription:@"test1"];
+    XCTestExpectation *expectFirstImage = [self expectationWithDescription:@"1"];
+    XCTestExpectation *expectSecondImage = [self expectationWithDescription:@"2"];
+    XCTestExpectation *expectCompletion = [self expectationWithDescription:@"3"];
+    
     DFImageRequest *request1 = [DFImageRequest requestWithResource:@"resource1"];
-    XCTestExpectation *expectation2 = [self expectationWithDescription:@"test2"];
     DFImageRequest *request2 = [DFImageRequest requestWithResource:@"resource2"];
     
-    DFCompositeImageTask *task = [DFCompositeImageTask compositeImageTaskWithRequests:@[ request1, request2 ] imageHandler:^(UIImage *image, NSDictionary *info, DFImageRequest *request, DFCompositeImageTask *innerTask) {
-        if ([request.resource isEqualToString:request1.resource]) {
+    DFCompositeImageTask *task = [DFCompositeImageTask compositeImageTaskWithRequests:@[ request1, request2 ] imageHandler:^(UIImage *image, NSDictionary *info, DFCompositeImageTask *compositeTask) {
+        DFImageTask *completedTask = info[DFImageInfoTaskKey];
+        if ([completedTask.request.resource isEqualToString:request1.resource]) {
             XCTAssertEqualObjects(image, image1);
-            [expectation1 fulfill];
+            [expectFirstImage fulfill];
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                [expectation2 fulfill];
+                [expectSecondImage fulfill];
             });
         }
-        if ([request.resource isEqualToString:request2.resource]) {
+        if ([completedTask.request.resource isEqualToString:request2.resource]) {
             XCTFail(@"Unexpected callback");
         }
+    } completionHandler:^(DFCompositeImageTask *compositeTask) {
+        XCTAssertTrue(compositeTask.isFinished);
+        [expectCompletion fulfill];
     }];
     [task resume];
     [self waitForExpectationsWithTimeout:1 handler:nil];
 }
 
-/*! 2f, 1f -> 1f
+/*! 2f, 1f -> [no callback]
  */
 - (void)testThatHandlerCalledOnceWhenSecondTaskFailesThenFirstSuccedes {
     [_fetcher setResponse:[TDFMockResponse mockWithResponse:[DFImageResponse responseWithImage:nil] elapsedTime:0.05] forResource:@"resource1"];
     [_fetcher setResponse:[TDFMockResponse mockWithResponse:[DFImageResponse responseWithImage:nil] elapsedTime:0] forResource:@"resource2"];
     
-    XCTestExpectation *expectation1 = [self expectationWithDescription:@"test1"];
+    XCTestExpectation *expectFirstImage = [self expectationWithDescription:@"1"];
+    XCTestExpectation *expectSecondImage = [self expectationWithDescription:@"2"];
+    XCTestExpectation *expectCompletion = [self expectationWithDescription:@"3"];
+    
     DFImageRequest *request1 = [DFImageRequest requestWithResource:@"resource1"];
-    XCTestExpectation *expectation2 = [self expectationWithDescription:@"test2"];
     DFImageRequest *request2 = [DFImageRequest requestWithResource:@"resource2"];
     
-    DFCompositeImageTask *task = [DFCompositeImageTask compositeImageTaskWithRequests:@[ request1, request2 ] imageHandler:^(UIImage *image, NSDictionary *info, DFImageRequest *request, DFCompositeImageTask *innerTask) {
-        if ([request.resource isEqualToString:request1.resource]) {
-            XCTAssertNil(image);
-            [expectation1 fulfill];
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                [expectation2 fulfill];
-            });
-        }
-        if ([request.resource isEqualToString:request2.resource]) {
-            XCTFail(@"Unexpected callback");
-        }
+    DFCompositeImageTask *task = [DFCompositeImageTask compositeImageTaskWithRequests:@[ request1, request2 ] imageHandler:^(UIImage *image, NSDictionary *info, DFCompositeImageTask *compositeTask) {
+        XCTFail(@"Unexpected callback");
+    } completionHandler:^(DFCompositeImageTask *compositeTask) {
+        XCTAssertTrue(compositeTask.isFinished);
+        [expectCompletion fulfill];
     }];
     [task resume];
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [expectFirstImage fulfill];
+        [expectSecondImage fulfill];
+    });
+    
     [self waitForExpectationsWithTimeout:1 handler:nil];
 }
 
@@ -264,13 +310,15 @@
     UIImage *image4 = [UIImage new];
     [_fetcher setResponse:[TDFMockResponse mockWithResponse:[DFImageResponse responseWithImage:image4] elapsedTime:0.1] forResource:@"resource4"];
     
-    XCTestExpectation *expectation1 = [self expectationWithDescription:@"test1"];
+    XCTestExpectation *expectation1 = [self expectationWithDescription:@"1"];
+    XCTestExpectation *expectation2 = [self expectationWithDescription:@"2"];
+    XCTestExpectation *expectation3 = [self expectationWithDescription:@"3"];
+    XCTestExpectation *expectation4 = [self expectationWithDescription:@"4"];
+    XCTestExpectation *expectCompletion = [self expectationWithDescription:@"5"];
+    
     DFImageRequest *request1 = [DFImageRequest requestWithResource:@"resource1"];
-    XCTestExpectation *expectation2 = [self expectationWithDescription:@"test2"];
     DFImageRequest *request2 = [DFImageRequest requestWithResource:@"resource2"];
-    XCTestExpectation *expectation3 = [self expectationWithDescription:@"test3"];
     DFImageRequest *request3 = [DFImageRequest requestWithResource:@"resource3"];
-    XCTestExpectation *expectation4 = [self expectationWithDescription:@"test4"];
     DFImageRequest *request4 = [DFImageRequest requestWithResource:@"resource4"];
     
     [self expectationForNotification:TDFMockFetchOperationWillCancelNotification object:nil handler:^BOOL(NSNotification *notification) {
@@ -280,19 +328,20 @@
     }];
     
     BOOL __block isThirdCallbackCalled;
-    DFCompositeImageTask *task = [DFCompositeImageTask compositeImageTaskWithRequests:@[ request1, request2, request3, request4 ] imageHandler:^(UIImage *image, NSDictionary *info, DFImageRequest *request, DFCompositeImageTask *innerTask) {
-        if ([request.resource isEqualToString:request3.resource]) {
+    DFCompositeImageTask *task = [DFCompositeImageTask compositeImageTaskWithRequests:@[ request1, request2, request3, request4 ] imageHandler:^(UIImage *image, NSDictionary *info, DFCompositeImageTask *compositeTask) {
+        DFImageTask *completedTask = info[DFImageInfoTaskKey];
+        if ([completedTask.request.resource isEqualToString:request3.resource]) {
             XCTAssertEqualObjects(image, image3);
-            XCTAssertFalse(innerTask.isFinished);
+            XCTAssertFalse(compositeTask.isFinished);
             isThirdCallbackCalled = YES;
             [expectation3 fulfill];
         }
-        if ([request.resource isEqualToString:request1.resource] || [request.resource isEqualToString:request2.resource]) {
+        if ([completedTask.request.resource isEqualToString:request1.resource] || [completedTask.request.resource isEqualToString:request2.resource]) {
             XCTFail(@"Unexpected callback");
         }
-        if ([request.resource isEqualToString:request4.resource]) {
+        if ([completedTask.request.resource isEqualToString:request4.resource]) {
             XCTAssertTrue(isThirdCallbackCalled);
-            XCTAssertTrue(innerTask.isFinished);
+            XCTAssertTrue(compositeTask.isFinished);
             XCTAssertEqualObjects(image, image4);
             [expectation4 fulfill];
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.15 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -300,6 +349,9 @@
                 [expectation2 fulfill];
             });
         }
+    } completionHandler:^(DFCompositeImageTask *compositeTask) {
+        XCTAssertTrue(compositeTask.isFinished);
+        [expectCompletion fulfill];
     }];
     
     XCTAssertFalse(task.isFinished);
@@ -307,6 +359,198 @@
     XCTAssertFalse(task.isFinished);
     
     [self waitForExpectationsWithTimeout:1 handler:nil];
+}
+
+#pragma mark - Cancellation
+
+- (void)testThatCancelledTaskRemovesImageHandlerAndCompletionHandler {
+    DFCompositeImageTask *task = [DFCompositeImageTask compositeImageTaskWithRequests:@[[DFImageRequest requestWithResource:@"resource"]] imageHandler:^(UIImage *image, NSDictionary *info, DFCompositeImageTask *compositeTask) {
+        // Do nothing
+    } completionHandler:^(DFCompositeImageTask *compositeTask) {
+        // Do nothing
+    }];
+    
+    XCTAssertNotNil(task.imageHandler);
+    XCTAssertNotNil(task.completionHandler);
+    
+    [task cancel];
+    
+    XCTAssertNil(task.imageHandler);
+    XCTAssertNil(task.completionHandler);
+}
+
+- (void)testThatCancelMethodCancellsAllTasks {
+    [_fetcher setResponse:[TDFMockResponse mockWithResponse:[DFImageResponse responseWithImage:[UIImage new]] elapsedTime:0.5] forResource:@"resource1"];
+    [_fetcher setResponse:[TDFMockResponse mockWithResponse:[DFImageResponse responseWithImage:[UIImage new]] elapsedTime:0.5] forResource:@"resource2"];
+    
+    DFCompositeImageTask *task = [DFCompositeImageTask compositeImageTaskWithRequests:@[[DFImageRequest requestWithResource:@"resource1"], [DFImageRequest requestWithResource:@"resource2"]] imageHandler:^(UIImage *image, NSDictionary *info, DFCompositeImageTask *compositeTask) {
+        XCTFail(@"Invalid callback");
+    } completionHandler:^(DFCompositeImageTask *compositeTask) {
+        XCTFail(@"Invalid callback");
+    }];
+    
+    
+    NSInteger __block numberOfStartedTasks = 0;
+    [self expectationForNotification:TDFMockFetcherDidStartOperationNotification object:nil handler:^BOOL(NSNotification *notification) {
+        numberOfStartedTasks++;
+        return numberOfStartedTasks == 2;
+    }];
+    
+    [task resume];
+    
+    [self waitForExpectationsWithTimeout:1 handler:nil];
+    
+    
+    NSInteger __block numberOfCancelledTasks = 0;
+    [self expectationForNotification:TDFMockFetchOperationWillCancelNotification object:nil handler:^BOOL(NSNotification *notification) {
+        numberOfCancelledTasks++;
+        return numberOfCancelledTasks == 2;
+    }];
+    
+    [task cancel];
+    
+    [self waitForExpectationsWithTimeout:1 handler:nil];
+}
+
+#pragma mark - Misc
+
+/*! 2s, 1f -> 2s, 1f
+ */
+- (void)testThatAllowsObsoleteRequestPropertyDisablesSpecialHandling {
+    [_fetcher setResponse:[TDFMockResponse mockWithResponse:[DFImageResponse responseWithError:[NSError errorWithDomain:@"ErrorDomain" code:-154 userInfo:nil]] elapsedTime:0.05] forResource:@"resource1"];
+    UIImage *image2 = [TDFTesting testImage];
+    [_fetcher setResponse:[TDFMockResponse mockWithResponse:[DFImageResponse responseWithImage:image2] elapsedTime:0] forResource:@"resource2"];
+    
+    XCTestExpectation *expectFistImage = [self expectationWithDescription:@"1"];
+    XCTestExpectation *expectSecondImage = [self expectationWithDescription:@"2"];
+    XCTestExpectation *expectCompletion = [self expectationWithDescription:@"3"];
+    
+    DFImageRequest *request1 = [DFImageRequest requestWithResource:@"resource1"];
+    DFImageRequest *request2 = [DFImageRequest requestWithResource:@"resource2"];
+    
+    BOOL __block isFirstTaskFinished = NO;
+    BOOL __block isSecondTaskFinished = NO;
+    DFCompositeImageTask *task = [DFCompositeImageTask compositeImageTaskWithRequests:@[ request1, request2 ] imageHandler:^(UIImage *image, NSDictionary *info, DFCompositeImageTask *compositeTask) {
+        DFImageTask *completedTask = info[DFImageInfoTaskKey];
+        if ([completedTask.request.resource isEqualToString:request1.resource]) {
+            isFirstTaskFinished = YES;
+            XCTAssertTrue(isSecondTaskFinished);
+            XCTAssertNil(image);
+            NSError *error = info[DFImageInfoErrorKey];
+            XCTAssertNotNil(error);
+            XCTAssertEqualObjects(error.domain, @"ErrorDomain");
+            XCTAssertEqual(error.code, -154);
+            [expectFistImage fulfill];
+        }
+        if ([completedTask.request.resource isEqualToString:request2.resource]) {
+            isSecondTaskFinished = YES;
+            XCTAssertFalse(isFirstTaskFinished);
+            XCTAssertEqualObjects(image, image2);
+            [expectSecondImage fulfill];
+        }
+    } completionHandler:^(DFCompositeImageTask *compositeTask) {
+        XCTAssertTrue(compositeTask.isFinished);
+        XCTAssertTrue(isFirstTaskFinished);
+        XCTAssertTrue(isSecondTaskFinished);
+        [expectCompletion fulfill];
+    }];
+    
+    XCTAssertTrue(task.allowsObsoleteRequests);
+    task.allowsObsoleteRequests = NO;
+    XCTAssertFalse(task.allowsObsoleteRequests);
+    
+    [task resume];
+    [self waitForExpectationsWithTimeout:1 handler:nil];
+}
+
+- (void)testThatImageTaskHandlerIsNotOverriden {
+    UIImage *originalImage = [TDFTesting testImage];
+    [_fetcher setResponse:[TDFMockResponse mockWithResponse:[DFImageResponse responseWithImage:originalImage]] forResource:@"resource"];
+    
+    XCTestExpectation *expectOriginalImageHandler = [self expectationWithDescription:@"1"];
+    XCTestExpectation *expectCompositeImageHandler = [self expectationWithDescription:@"2"];
+    XCTestExpectation *expectCompletionHandler = [self expectationWithDescription:@"3"];
+    
+    DFImageRequest *originalRequest = [DFImageRequest requestWithResource:@"resource"];
+    BOOL __block isCompositeImageHandlerCalled = NO;
+    
+    DFImageTask *task = [[DFImageManager sharedManager] imageTaskForRequest:originalRequest completion:^(UIImage *image, NSDictionary *info) {
+        XCTAssertNotNil(info);
+        XCTAssertNotNil(info[DFImageInfoTaskKey]);
+        XCTAssertEqualObjects(image, originalImage);
+        [expectOriginalImageHandler fulfill];
+    }];
+    
+    DFCompositeImageTask *compositeTask = [[DFCompositeImageTask alloc] initWithImageTasks:@[task] imageHandler:^(UIImage *image, NSDictionary *info, DFCompositeImageTask *innerCompositeTask) {
+        isCompositeImageHandlerCalled = YES;
+        DFImageTask *completedTask = info[DFImageInfoTaskKey];
+        XCTAssertNotNil(completedTask);
+        XCTAssertTrue([completedTask.request.resource isEqualToString:originalRequest.resource]);
+        XCTAssertEqualObjects(image, originalImage);
+        XCTAssertTrue(innerCompositeTask.isFinished);
+        [expectCompositeImageHandler fulfill];
+    } completionHandler:^(DFCompositeImageTask *compositeTask) {
+        XCTAssertTrue(isCompositeImageHandlerCalled);
+        XCTAssertTrue(compositeTask.isFinished);
+        [expectCompletionHandler fulfill];
+    }];
+    XCTAssertFalse(compositeTask.isFinished);
+    [compositeTask resume];
+    XCTAssertFalse(compositeTask.isFinished);
+    
+    [self waitForExpectationsWithTimeout:1 handler:nil];
+}
+
+- (void)testThatHandlersAreCalledOnTheMainThread {
+    [_fetcher setResponse:[TDFMockResponse mockWithResponse:[DFImageResponse responseWithImage:[UIImage new]]] forResource:@"resource"];
+    
+    XCTestExpectation *expectImageHandler = [self expectationWithDescription:@"1"];
+    XCTestExpectation *expectCompletionHandler = [self expectationWithDescription:@"2"];
+    
+    DFCompositeImageTask *task = [DFCompositeImageTask compositeImageTaskWithRequests:@[[DFImageRequest requestWithResource:@"resource"]] imageHandler:^(UIImage *image, NSDictionary *info, DFCompositeImageTask *compositeTask) {
+        XCTAssertTrue([NSThread isMainThread]);
+        [expectImageHandler fulfill];
+    } completionHandler:^(DFCompositeImageTask *compositeTask) {
+        XCTAssertTrue([NSThread isMainThread]);
+        [expectCompletionHandler fulfill];
+    }];
+    [task resume];
+
+    [self waitForExpectationsWithTimeout:1 handler:nil];
+}
+
+#pragma mark - Fault Tolerence
+
+- (void)testThatImageHandlerIsNullable {
+    [_fetcher setResponse:[TDFMockResponse mockWithResponse:[DFImageResponse responseWithImage:[UIImage new]]] forResource:@"resource"];
+    
+    XCTestExpectation *expectCompletionHandler = [self expectationWithDescription:@"2"];
+    
+    DFCompositeImageTask *task = [DFCompositeImageTask compositeImageTaskWithRequests:@[[DFImageRequest requestWithResource:@"resource"]] imageHandler:nil completionHandler:^(DFCompositeImageTask *compositeTask) {
+        XCTAssertTrue(compositeTask.isFinished);
+        [expectCompletionHandler fulfill];
+    }];
+    [task resume];
+    
+    [self waitForExpectationsWithTimeout:1 handler:nil];
+}
+
+- (void)testThatCompletionHandlerIsNullable {
+    [_fetcher setResponse:[TDFMockResponse mockWithResponse:[DFImageResponse responseWithImage:[UIImage new]]] forResource:@"resource"];
+    
+    XCTestExpectation *expectImageHandler = [self expectationWithDescription:@"1"];
+    
+    DFCompositeImageTask *task = [DFCompositeImageTask compositeImageTaskWithRequests:@[[DFImageRequest requestWithResource:@"resource"]] imageHandler:^(UIImage *image, NSDictionary *info, DFCompositeImageTask *compositeTask) {
+        XCTAssertTrue(compositeTask.isFinished);
+        [expectImageHandler fulfill];
+    } completionHandler:nil];
+    [task resume];
+    
+    [self waitForExpectationsWithTimeout:1 handler:nil];
+}
+
+- (void)testThatExpectionIsRaisedWhenTaskIsInitializedWithEmptyArray {
+    XCTAssertThrows([[DFCompositeImageTask alloc] initWithImageTasks:@[] imageHandler:nil completionHandler:nil]);
 }
 
 @end
