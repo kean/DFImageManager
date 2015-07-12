@@ -611,4 +611,30 @@
     [self waitForExpectationsWithTimeout:1.0 handler:nil];
 }
 
+#pragma mark - Misc
+
+- (void)testThatGetImageTasksReturnsAllTasks {
+    _fetcher.queue.suspended = YES;
+    
+    DFImageTask *task1 = [_manager imageTaskForResource:[TDFMockResource resourceWithID:@"01"] completion:nil];
+    DFImageTask *task2 = [_manager imageTaskForResource:[TDFMockResource resourceWithID:@"02"] completion:nil];
+    
+    [task2 resume];
+    
+    [_manager startPreheatingImagesForRequests:@[ [DFImageRequest requestWithResource:[TDFMockResource resourceWithID:@"03"]] ]];
+    
+    XCTestExpectation *expectTasks = [self expectationWithDescription:@"1"];
+    
+    [_manager getImageTasksWithCompletion:^(NSArray *tasks, NSArray *preheatingTasks) {
+        XCTAssertTrue([NSThread isMainThread]);
+        XCTAssertFalse([tasks containsObject:task1]);
+        XCTAssertTrue([tasks containsObject:task2]);
+        XCTAssertTrue(tasks.count == 1);
+        XCTAssertTrue(preheatingTasks.count == 1);
+        [expectTasks fulfill];
+    }];
+    
+    [self waitForExpectationsWithTimeout:1 handler:nil];
+}
+
 @end

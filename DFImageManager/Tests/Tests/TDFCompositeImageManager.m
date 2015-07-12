@@ -11,20 +11,43 @@
 #import <XCTest/XCTest.h>
 
 
+@interface _TDFMockImageTask : DFImageTask
+
+@property (nonatomic) BOOL preheating;
+
+@end
+
+@implementation _TDFMockImageTask
+
+- (void)resume {
+    // Do nothing
+}
+
+- (void)cancel {
+    // Do nothing
+}
+
+- (void)setPriority:(DFImageRequestPriority)priority {
+    // Do nothing
+}
+
+@end
+
+
 @interface _TDFMockImageManagerForComposite : NSObject <DFImageManaging>
 
 @property (nonatomic) NSString *supportedResource;
-@property (nonatomic, readonly) NSArray *submitedRequests;
+@property (nonatomic, readonly) NSArray *imageTasks;
 
 @end
 
 @implementation _TDFMockImageManagerForComposite {
-    NSMutableArray *_submitedRequests;
+    NSMutableArray *_imageTasks;
 }
 
 - (instancetype)init {
     if (self = [super init]) {
-        _submitedRequests = [NSMutableArray new];
+        _imageTasks = [NSMutableArray new];
     }
     return self;
 }
@@ -38,8 +61,9 @@
 }
 
 - (DFImageTask *)imageTaskForRequest:(DFImageRequest *)request completion:(void (^)(UIImage *, NSDictionary *))completion {
-    [_submitedRequests addObject:request];
-    return nil;
+    _TDFMockImageTask *task = [_TDFMockImageTask new];
+    [_imageTasks addObject:task];
+    return task;
 }
 
 - (DFImageTask *)requestImageForResource:(id)resource completion:(void (^)(UIImage *, NSDictionary *))completion {
@@ -47,8 +71,22 @@
 }
 
 - (DFImageTask *)requestImageForRequest:(DFImageRequest *)request completion:(void (^)(UIImage *, NSDictionary *))completion {
-    [_submitedRequests addObject:request];
-    return nil;
+    return [self imageTaskForRequest:request completion:completion];
+}
+
+- (void)getImageTasksWithCompletion:(void (^)(NSArray *, NSArray *))completion {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        NSMutableSet *tasks = [NSMutableSet new];
+        NSMutableSet *preheatingTasks = [NSMutableSet new];
+        for (_TDFMockImageTask *task in _imageTasks) {
+            if (task.preheating) {
+                [preheatingTasks addObject:task];
+            } else {
+                [tasks addObject:task];
+            }
+        }
+        completion([tasks allObjects], [preheatingTasks allObjects]);
+    });
 }
 
 - (void)invalidateAndCancel {
@@ -57,7 +95,9 @@
 
 - (void)startPreheatingImagesForRequests:(NSArray *)requests {
     for (DFImageRequest *request in requests) {
-        [[self imageTaskForRequest:request completion:nil] resume];
+        _TDFMockImageTask *task = (id)[self imageTaskForRequest:request completion:nil];
+        task.preheating = YES;
+        [task resume];
     }
 }
 
@@ -106,13 +146,13 @@
     XCTAssertTrue([composite canHandleRequest:request1]);
     XCTAssertTrue([composite canHandleRequest:request2]);
     
-    [[composite imageTaskForRequest:request1 completion:nil] resume];
-    [[composite imageTaskForRequest:request2 completion:nil] resume];
+    DFImageTask *task1 = [composite imageTaskForRequest:request1 completion:nil];
+    DFImageTask *task2 = [composite imageTaskForRequest:request2 completion:nil];
     
-    XCTAssertTrue(manager1.submitedRequests.count == 1);
-    XCTAssertTrue([manager1.submitedRequests containsObject:request1]);
-    XCTAssertTrue(manager2.submitedRequests.count == 1);
-    XCTAssertTrue([manager2.submitedRequests containsObject:request2]);
+    XCTAssertTrue(manager1.imageTasks.count == 1);
+    XCTAssertTrue([manager1.imageTasks containsObject:task1]);
+    XCTAssertTrue(manager2.imageTasks.count == 1);
+    XCTAssertTrue([manager2.imageTasks containsObject:task2]);
 }
 
 - (void)testThatCompositesCanFormATreeStructure {
@@ -133,13 +173,13 @@
     XCTAssertTrue([composite canHandleRequest:request1]);
     XCTAssertTrue([composite canHandleRequest:request2]);
     
-    [[composite imageTaskForRequest:request1 completion:nil] resume];
-    [[composite imageTaskForRequest:request2 completion:nil] resume];
+    DFImageTask *task1 = [composite imageTaskForRequest:request1 completion:nil];
+    DFImageTask *task2 = [composite imageTaskForRequest:request2 completion:nil];
     
-    XCTAssertTrue(manager1.submitedRequests.count == 1);
-    XCTAssertTrue([manager1.submitedRequests containsObject:request1]);
-    XCTAssertTrue(manager2.submitedRequests.count == 1);
-    XCTAssertTrue([manager2.submitedRequests containsObject:request2]);
+    XCTAssertTrue(manager1.imageTasks.count == 1);
+    XCTAssertTrue([manager1.imageTasks containsObject:task1]);
+    XCTAssertTrue(manager2.imageTasks.count == 1);
+    XCTAssertTrue([manager2.imageTasks containsObject:task2]);
 }
 
 - (void)testThatIfTheRequestCantBeHandledTheExceptionIsThrown {
@@ -147,6 +187,40 @@
     manager.supportedResource = @"resourse_01";
     DFCompositeImageManager *compisite = [[DFCompositeImageManager alloc] initWithImageManagers:@[ manager ]];
     XCTAssertThrows([compisite imageTaskForRequest:[DFImageRequest requestWithResource:@"resourse_02"] completion:nil]);
+}
+
+- (void)testThatGetImageTasksWithCompletionIsForwarded {
+    NSString *resource1 = @"01";
+    NSString *resource2 = @"02";
+    
+    _TDFMockImageManagerForComposite *manager1 = [_TDFMockImageManagerForComposite new];
+    manager1.supportedResource = resource1;
+    
+    _TDFMockImageManagerForComposite *manager2 = [_TDFMockImageManagerForComposite new];
+    manager2.supportedResource = resource2;
+    
+    DFCompositeImageManager *composite = [[DFCompositeImageManager alloc] initWithImageManagers:@[ manager1, manager2 ]];
+    
+    DFImageRequest *request1 = [[DFImageRequest alloc] initWithResource:resource1];
+    DFImageRequest *request2 = [[DFImageRequest alloc] initWithResource:resource2];
+    
+    DFImageTask *task1 = [composite imageTaskForRequest:request1 completion:nil];
+    DFImageTask *task2 = [composite imageTaskForRequest:request2 completion:nil];
+    
+    [composite startPreheatingImagesForRequests:@[ [DFImageRequest requestWithResource:@"02" ] ]];
+    
+    XCTestExpectation *expectTasks = [self expectationWithDescription:@"1"];
+    
+    [composite getImageTasksWithCompletion:^(NSArray *tasks, NSArray *preheatingTasks) {
+        XCTAssertTrue([NSThread isMainThread]);
+        XCTAssertTrue(tasks.count == 2);
+        XCTAssertTrue([tasks containsObject:task1]);
+        XCTAssertTrue([tasks containsObject:task2]);
+        XCTAssertTrue(preheatingTasks.count == 1);
+        [expectTasks fulfill];
+    }];
+    
+    [self waitForExpectationsWithTimeout:1 handler:nil];
 }
 
 @end

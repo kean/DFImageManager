@@ -56,6 +56,7 @@
 @property (nonatomic) NSError *error;
 @property (nonatomic) DFImageResponse *response;
 @property (nonatomic) NSInteger tag;
+@property (nonatomic) BOOL preheating;
 @property (nonatomic, weak) _DFImageFetchOperation *fetchOperation;
 @property (nonatomic, weak) NSOperation *processOperation;
 
@@ -273,9 +274,9 @@
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         transitions = @{ @(DFImageTaskStateSuspended) : @[ @(DFImageTaskStateRunning),
-                                                            @(DFImageTaskStateCancelled) ],
+                                                           @(DFImageTaskStateCancelled) ],
                          @(DFImageTaskStateRunning) : @[ @(DFImageTaskStateCompleted),
-                                                          @(DFImageTaskStateCancelled) ] };
+                                                         @(DFImageTaskStateCancelled) ] };
     });
     return [((NSArray *)transitions[@(fromState)]) containsObject:@(toState)];
 }
@@ -404,6 +405,26 @@
     }
 }
 
+- (void)getImageTasksWithCompletion:(void (^)(NSArray *, NSArray *))completion {
+    dispatch_async(_queue, ^{
+        NSMutableSet *tasks = [NSMutableSet new];
+        NSMutableSet *preheatingTasks = [NSMutableSet new];
+        for (_DFImageTask *task in _executingImageTasks) {
+            if (task.preheating) {
+                [preheatingTasks addObject:task];
+            } else {
+                [tasks addObject:task];
+            }
+        }
+        for (_DFImageTask *task in _preheatingTasks.allValues) {
+            [preheatingTasks addObject:task];
+        }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            completion([tasks allObjects], [preheatingTasks allObjects]);
+        });
+    });
+}
+
 - (void)invalidateAndCancel {
     if (!_invalidated) {
         _invalidated = YES;
@@ -427,7 +448,7 @@
             _DFImageRequestKey *key = DFImageCacheKeyCreate(request);
             if (!_preheatingTasks[key]) {
                 DFImageManager *__weak weakSelf = self;
-                _DFImageTask *handler = [[_DFImageTask alloc] initWithManager:self request:request completionHandler:^(UIImage *image, NSDictionary *info) {
+                _DFImageTask *task = [[_DFImageTask alloc] initWithManager:self request:request completionHandler:^(UIImage *image, NSDictionary *info) {
                     DFImageManager *strongSelf = weakSelf;
                     if (strongSelf) {
                         dispatch_async(strongSelf->_queue, ^{
@@ -435,8 +456,9 @@
                         });
                     }
                 }];
-                handler.tag = _preheatingTaskCounter++;
-                _preheatingTasks[key] = handler;
+                task.preheating = YES;
+                task.tag = _preheatingTaskCounter++;
+                _preheatingTasks[key] = task;
             }
         }
         [self _setNeedsExecutePreheatingTasks];

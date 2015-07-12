@@ -81,6 +81,22 @@
     return [manager imageTaskForRequest:request completion:completion];
 }
 
+- (void)getImageTasksWithCompletion:(void (^)(NSArray *, NSArray *))completion {
+    NSMutableArray *allTasks = [NSMutableArray new];
+    NSMutableArray *allPreheatingTasks = [NSMutableArray new];
+    NSInteger __block numberOfCallbacks = 0;
+    for (id<DFImageManaging> manager in _managers) {
+        [manager getImageTasksWithCompletion:^(NSArray *tasks, NSArray *preheatingTasks) {
+            [allTasks addObjectsFromArray:tasks];
+            [allPreheatingTasks addObjectsFromArray:preheatingTasks];
+            numberOfCallbacks++;
+            if (numberOfCallbacks == _managers.count) {
+                completion(allTasks, allPreheatingTasks);
+            }
+        }];
+    }
+}
+
 - (void)invalidateAndCancel {
     for (id<DFImageManaging> manager in _managers) {
         [manager invalidateAndCancel];
