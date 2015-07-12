@@ -25,40 +25,25 @@
 #import "DFImageRequest.h"
 #import "DFImageTask.h"
 
-
-@interface DFImageFetchContext ()
-
-@property (nonatomic) DFImageTask *task;
-
-- (void)completeWithImage:(UIImage *)image info:(NSDictionary *)info;
-
-@end
-
-@implementation DFImageFetchContext
-
-- (void)completeWithImage:(UIImage *)image info:(NSDictionary *)info {
-    _isCompleted = YES;
-    _image = image;
-    _info = info;
-}
-
-@end
-
-
 @implementation DFCompositeImageTask {
-    void (^_handler)(UIImage *, NSDictionary *, DFImageRequest *);
-    NSMapTable *_contexts;
-    DFImageFetchContext *_context; // Optimization for single request case
+    void (^_handler)(UIImage *, NSDictionary *, DFImageRequest *, DFCompositeImageTask *task);
+    
+    BOOL _isStarted;
     BOOL _isCompletionCalledAtLeastOnce;
+    NSMutableArray *_remainingTasks;
+    
+    DFImageTask *_task; // Optimization for single request case
+    NSMapTable *_tasks;
 }
 
-- (instancetype)initWithRequests:(NSArray *)requests handler:(void (^)(UIImage *, NSDictionary *, DFImageRequest *))handler {
+- (instancetype)initWithRequests:(NSArray *)requests handler:(void (^)(UIImage *, NSDictionary *, DFImageRequest *, DFCompositeImageTask *))handler {
     if (self = [super init]) {
         NSParameterAssert(requests.count > 0);
         _requests = [requests copy];
         _handler = [handler copy];
+        _remainingTasks = [NSMutableArray new];
         if (requests.count > 1) {
-            _contexts = [NSMapTable strongToStrongObjectsMapTable];
+            _tasks = [NSMapTable strongToStrongObjectsMapTable];
         }
         _imageManager = [DFImageManager sharedManager];
         _allowsObsoleteRequests = YES;
@@ -66,107 +51,105 @@
     return self;
 }
 
-- (instancetype)initWithRequest:(DFImageRequest *)request handler:(void (^)(UIImage *, NSDictionary *, DFImageRequest *))handler {
+- (instancetype)initWithRequest:(DFImageRequest *)request handler:(void (^)(UIImage *, NSDictionary *, DFImageRequest *, DFCompositeImageTask *))handler {
     return [self initWithRequests:@[request] handler:handler];
 }
 
-+ (DFCompositeImageTask *)requestImageForRequests:(NSArray *)requests handler:(void (^)(UIImage *, NSDictionary *, DFImageRequest *))handler {
++ (DFCompositeImageTask *)requestImageForRequests:(NSArray *)requests handler:(void (^)(UIImage *, NSDictionary *, DFImageRequest *, DFCompositeImageTask *))handler {
     DFCompositeImageTask *request = [[DFCompositeImageTask alloc] initWithRequests:requests handler:handler];
-    [request start];
+    [request resume];
     return request;
 }
 
-- (void)start {
+- (void)resume {
+    if (_isStarted) {
+        return;
+    }
+    _isStarted = YES;
     DFCompositeImageTask *__weak weakSelf = self;
     for (DFImageRequest *request in _requests) {
-        DFImageFetchContext *context = [DFImageFetchContext new];
-        if (_contexts) {
-            [_contexts setObject:context forKey:request];
-        } else {
-            _context = context;
-        }
-        context.task = [self.imageManager imageTaskForRequest:request completion:^(UIImage *image, NSDictionary *info) {
+        DFImageTask *task = [self.imageManager imageTaskForRequest:request completion:^(UIImage *image, NSDictionary *info) {
             [weakSelf _didFinishRequest:request image:image info:info];
         }];
-        [context.task resume];
+        if (_tasks) {
+            [_tasks setObject:task forKey:request];
+        } else {
+            _task = task;
+        }
+        [_remainingTasks addObject:task];
+    }
+    for (DFImageTask *task in _remainingTasks) {
+        [task resume];
     }
 }
 
 - (BOOL)isFinished {
-    for (DFImageRequest *request in _requests) {
-        if (![self contextForRequest:request].isCompleted) {
-            return NO;
-        }
-    }
-    return YES;
+    return _isStarted && _remainingTasks.count == 0;
 }
 
-- (DFImageFetchContext *)contextForRequest:(DFImageRequest *)request {
-    if (_contexts) {
-        return [_contexts objectForKey:request];
+- (DFImageTask *)imageTaskForRequest:(DFImageRequest *)request {
+    if (_tasks) {
+        return [_tasks objectForKey:request];
     } else {
-        return request == [_requests firstObject] ? _context : nil;
+        return request == [_requests firstObject] ? _task : nil;
     }
 }
 
 - (void)cancel {
     _handler = nil;
-    [self cancelRequests:_requests];
-}
-
-- (void)cancelRequests:(NSArray *)requests {
-    for (DFImageRequest *request in requests) {
-        [self cancelRequest:request];
+    for (DFImageTask *task in _remainingTasks) {
+        [self _cancelTask:task];
     }
 }
 
-- (void)cancelRequest:(DFImageRequest *)request {
-    DFImageFetchContext *context = [self contextForRequest:request];
-    if (!context.isCompleted) {
-        [context completeWithImage:nil info:nil];
-        [context.task cancel];
-    }
+- (void)_cancelTask:(DFImageTask *)task {
+    [_remainingTasks removeObject:task];
+    [task cancel];
 }
 
 - (void)setPriority:(DFImageRequestPriority)priority {
     for (DFImageRequest *request in _requests) {
-        [[self contextForRequest:request].task setPriority:priority];
+        [[self imageTaskForRequest:request] setPriority:priority];
     }
 }
 
 - (void)_didFinishRequest:(DFImageRequest *)request image:(UIImage *)image info:(NSDictionary *)info {
-    DFImageFetchContext *context = [self contextForRequest:request];
-    [context completeWithImage:image info:info];
-    
+    DFImageTask *task = info[DFImageInfoTaskKey];
+    if (![_remainingTasks containsObject:task]) {
+        return;
+    }
     if (self.allowsObsoleteRequests) {
         BOOL isSuccess = [self _isRequestSuccessful:request];
         BOOL isObsolete = [self _isRequestObsolete:request];
-        BOOL isFinal = [self _isRequestFinal:request];
+        BOOL isFinal = _remainingTasks.count == 1;
+        if (isSuccess) {
+            // Iterate through the 'left' subarray and cancel obsolete requests
+            NSArray *obsoleteTasks = [_remainingTasks objectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, [_remainingTasks indexOfObject:task])]];
+            for (DFImageTask *obsoleteTask in obsoleteTasks) {
+                [self _cancelTask:obsoleteTask];
+            }
+        }
+        [_remainingTasks removeObject:task];
         if ((isSuccess && !isObsolete) || (isFinal && !_isCompletionCalledAtLeastOnce)) {
             _isCompletionCalledAtLeastOnce = YES;
             if (_handler) {
-                _handler(image, info, request);
-            }
-        }
-        if (isSuccess) {
-            // Iterate through the 'left' subarray and cancel obsolete requests
-            for (NSUInteger i = 0; i < [_requests indexOfObject:request]; i++) {
-                DFImageRequest *obsoleteRequest = _requests[i];
-                [self cancelRequest:obsoleteRequest];
+                _handler(image, info, request, self);
             }
         }
     } else {
+        [_remainingTasks removeObject:task];
         if (_handler) {
-            _handler(image, info, request);
+            _handler(image, info, request, self);
         }
     }
 }
 
-/*! Returns YES if the request is completed successfully. The request is considered successful if the image was fetched.
+/*! Returns YES if the request is completed successfully.
  @param request Request should be contained by the receiver's array of the requests.
  */
 - (BOOL)_isRequestSuccessful:(DFImageRequest *)inputRequest {
-    return [self contextForRequest:inputRequest].image != nil;
+    DFImageTask *task = [self imageTaskForRequest:inputRequest];
+    return task.state == DFImageTaskStateCompleted && task.error == nil;
 }
 
 /*! Returns YES if the request is obsolete. The request is considered obsolete if there is at least one successfully completed request in the 'right' subarray of the requests.
@@ -180,21 +163,6 @@
         }
     }
     return NO;
-}
-
-/*! Returns YES if all the requests are completed.
- @param request Request should be contained by the receiver's array of the requests.
- */
-- (BOOL)_isRequestFinal:(DFImageRequest *)inputRequest {
-    for (DFImageRequest *request in _requests) {
-        if (request == inputRequest) {
-            continue;
-        }
-        if (![self contextForRequest:request].isCompleted) {
-            return NO;
-        }
-    }
-    return YES;
 }
 
 @end

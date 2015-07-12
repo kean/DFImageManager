@@ -25,6 +25,7 @@
 #import "DFImageManaging.h"
 #import "DFImageRequest.h"
 #import "DFImageRequestOptions.h"
+#import "DFImageTask.h"
 #import "DFImageView.h"
 #import "DFNetworkReachability.h"
 
@@ -141,15 +142,15 @@ static const NSTimeInterval _kMinimumAutoretryInterval = 8.f;
         }
     }
     DFImageView *__weak weakSelf = self;
-    _task = [self createCompositeImageTaskForRequests:requests handler:^(UIImage *image, NSDictionary *info, DFImageRequest *request) {
+    _task = [self createCompositeImageTaskForRequests:requests handler:^(UIImage *image, NSDictionary *info, DFImageRequest *request, DFCompositeImageTask *task) {
         [weakSelf.delegate imageView:self didCompleteRequest:request withImage:image info:info];
         [weakSelf didCompleteRequest:request withImage:image info:info];
     }];
     [self setNeedsUpdateConstraints];
-    [_task start];
+    [_task resume];
 }
 
-- (DFCompositeImageTask *)createCompositeImageTaskForRequests:(NSArray *)requests handler:(void (^)(UIImage *, NSDictionary *, DFImageRequest *))handler {
+- (DFCompositeImageTask *)createCompositeImageTaskForRequests:(NSArray *)requests handler:(void (^)(UIImage *, NSDictionary *, DFImageRequest *, DFCompositeImageTask *))handler {
     return [[DFCompositeImageTask alloc] initWithRequests:requests handler:handler];
 }
 
@@ -189,8 +190,8 @@ static const NSTimeInterval _kMinimumAutoretryInterval = 8.f;
         && self.window != nil
         && self.hidden != YES
         && self.task.isFinished) {
-        DFImageFetchContext *context = [self.task contextForRequest:[self.task.requests lastObject]];
-        NSError *error = context.info[DFImageInfoErrorKey];
+        DFImageTask *task = [self.task imageTaskForRequest:[self.task.requests lastObject]];
+        NSError *error = task.error;
         if (error && [self _isNetworkConnetionError:error]) {
             [self _attemptRetry];
         }

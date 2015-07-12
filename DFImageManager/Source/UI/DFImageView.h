@@ -143,7 +143,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /*! Creates task for a given requests. Subclasses may override this method to return custom DFCompositeImageTask instance.
  */
-- (DFCompositeImageTask *)createCompositeImageTaskForRequests:(NSArray /* DFImageRequest */ *)requests handler:(void (^__nullable)(UIImage *__nullable image, NSDictionary *info, DFImageRequest *request))handler;
+- (DFCompositeImageTask *)createCompositeImageTaskForRequests:(NSArray /* DFImageRequest */ *)requests handler:(void (^__nullable)(UIImage *__nullable image, NSDictionary *info, DFImageRequest *request, DFCompositeImageTask *task))handler;
 
 @end
 

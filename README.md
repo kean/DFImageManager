@@ -78,10 +78,6 @@ DFCompositeImageTask *task = [DFCompositeImageTask requestImageForRequests:reque
   // Handler is called at least once
   // For more info see DFCompositeImageTask class
 }];
-
-// Track the state of the requests
-DFImageFetchContext *context = [task contextForRequest:previewRequest];
-BOOL isPreviewFetched = context.image != nil;
 ```
 There are many [ways](https://github.com/kean/DFImageManager/wiki/Advanced-Image-Caching-Guide#custom-revalidation-using-dfcompositeimagefetchoperation) how composite requests can be used.
 
