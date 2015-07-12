@@ -26,39 +26,30 @@
 #import "DFImageTask.h"
 
 @implementation DFCompositeImageTask {
-    void (^_handler)(UIImage *, NSDictionary *, DFImageRequest *, DFCompositeImageTask *task);
-    
     BOOL _isStarted;
     BOOL _isCompletionCalledAtLeastOnce;
     NSMutableArray *_remainingTasks;
-    
-    DFImageTask *_task; // Optimization for single request case
-    NSMapTable *_tasks;
 }
 
-- (instancetype)initWithRequests:(NSArray *)requests handler:(void (^)(UIImage *, NSDictionary *, DFImageRequest *, DFCompositeImageTask *))handler {
+- (instancetype)initWithImageTasks:(NSArray *)tasks imageHandler:(DFCompositeImageTaskImageHandler)imageHandler {
     if (self = [super init]) {
-        NSParameterAssert(requests.count > 0);
-        _requests = [requests copy];
-        _handler = [handler copy];
+        NSParameterAssert(tasks.count > 0);
+        _imageTasks = [tasks copy];
+        _imageHandler = [imageHandler copy];
         _remainingTasks = [NSMutableArray new];
-        if (requests.count > 1) {
-            _tasks = [NSMapTable strongToStrongObjectsMapTable];
-        }
-        _imageManager = [DFImageManager sharedManager];
         _allowsObsoleteRequests = YES;
     }
     return self;
 }
 
-- (instancetype)initWithRequest:(DFImageRequest *)request handler:(void (^)(UIImage *, NSDictionary *, DFImageRequest *, DFCompositeImageTask *))handler {
-    return [self initWithRequests:@[request] handler:handler];
-}
-
-+ (DFCompositeImageTask *)requestImageForRequests:(NSArray *)requests handler:(void (^)(UIImage *, NSDictionary *, DFImageRequest *, DFCompositeImageTask *))handler {
-    DFCompositeImageTask *request = [[DFCompositeImageTask alloc] initWithRequests:requests handler:handler];
-    [request resume];
-    return request;
++ (DFCompositeImageTask *)compositeImageTaskWithRequests:(NSArray *)requests imageHandler:(DFCompositeImageTaskImageHandler)imageHandler {
+    NSParameterAssert(requests.count > 0);
+    NSMutableArray *tasks = [NSMutableArray new];
+    for (DFImageRequest *request in requests) {
+        DFImageTask *task = [[DFImageManager sharedManager] imageTaskForRequest:request completion:nil];
+        [tasks addObject:task];
+    }
+    return [[DFCompositeImageTask alloc] initWithImageTasks:tasks imageHandler:imageHandler];
 }
 
 - (void)resume {
@@ -67,15 +58,11 @@
     }
     _isStarted = YES;
     DFCompositeImageTask *__weak weakSelf = self;
-    for (DFImageRequest *request in _requests) {
-        DFImageTask *task = [self.imageManager imageTaskForRequest:request completion:^(UIImage *image, NSDictionary *info) {
+    for (DFImageTask *task in _imageTasks) {
+        DFImageRequest *request = task.request;
+        [task setCompletionHandler:^(UIImage *image, NSDictionary *info) {
             [weakSelf _didFinishRequest:request image:image info:info];
         }];
-        if (_tasks) {
-            [_tasks setObject:task forKey:request];
-        } else {
-            _task = task;
-        }
         [_remainingTasks addObject:task];
     }
     for (DFImageTask *task in _remainingTasks) {
@@ -83,20 +70,20 @@
     }
 }
 
+- (NSArray *)imageRequests {
+    NSMutableArray *requests = [NSMutableArray new];
+    for (DFImageTask *task in _imageTasks) {
+        [requests addObject:task.request];
+    }
+    return [requests copy];
+}
+
 - (BOOL)isFinished {
     return _isStarted && _remainingTasks.count == 0;
 }
 
-- (DFImageTask *)imageTaskForRequest:(DFImageRequest *)request {
-    if (_tasks) {
-        return [_tasks objectForKey:request];
-    } else {
-        return request == [_requests firstObject] ? _task : nil;
-    }
-}
-
 - (void)cancel {
-    _handler = nil;
+    _imageHandler = nil;
     for (DFImageTask *task in _remainingTasks) {
         [self _cancelTask:task];
     }
@@ -108,8 +95,8 @@
 }
 
 - (void)setPriority:(DFImageRequestPriority)priority {
-    for (DFImageRequest *request in _requests) {
-        [[self imageTaskForRequest:request] setPriority:priority];
+    for (DFImageTask *task in _remainingTasks) {
+        [task setPriority:priority];
     }
 }
 
@@ -119,8 +106,8 @@
         return;
     }
     if (self.allowsObsoleteRequests) {
-        BOOL isSuccess = [self _isRequestSuccessful:request];
-        BOOL isObsolete = [self _isRequestObsolete:request];
+        BOOL isSuccess = [self _isTaskSuccessfull:task];
+        BOOL isObsolete = [self _isTaskObsolete:task];
         BOOL isFinal = _remainingTasks.count == 1;
         if (isSuccess) {
             // Iterate through the 'left' subarray and cancel obsolete requests
@@ -132,33 +119,30 @@
         [_remainingTasks removeObject:task];
         if ((isSuccess && !isObsolete) || (isFinal && !_isCompletionCalledAtLeastOnce)) {
             _isCompletionCalledAtLeastOnce = YES;
-            if (_handler) {
-                _handler(image, info, request, self);
+            if (_imageHandler) {
+                _imageHandler(image, info, request, self);
             }
         }
     } else {
         [_remainingTasks removeObject:task];
-        if (_handler) {
-            _handler(image, info, request, self);
+        if (_imageHandler) {
+            _imageHandler(image, info, request, self);
         }
     }
 }
 
-/*! Returns YES if the request is completed successfully.
- @param request Request should be contained by the receiver's array of the requests.
- */
-- (BOOL)_isRequestSuccessful:(DFImageRequest *)inputRequest {
-    DFImageTask *task = [self imageTaskForRequest:inputRequest];
+- (BOOL)_isTaskSuccessfull:(DFImageTask *)task {
     return task.state == DFImageTaskStateCompleted && task.error == nil;
+
 }
 
 /*! Returns YES if the request is obsolete. The request is considered obsolete if there is at least one successfully completed request in the 'right' subarray of the requests.
  @param request Request should be contained by the receiver's array of the requests.
  */
-- (BOOL)_isRequestObsolete:(DFImageRequest *)inputRequest {
-    // Iterate throught the 'right' subarray of requests
-    for (NSUInteger i = [_requests indexOfObject:inputRequest] + 1; i < _requests.count; i++) {
-        if ([self _isRequestSuccessful:_requests[i]]) {
+- (BOOL)_isTaskObsolete:(DFImageTask *)task {
+    // Iterate throught the 'right' subarray of tasks
+    for (NSUInteger i = [_imageTasks indexOfObject:task] + 1; i < _imageTasks.count; i++) {
+        if ([self _isTaskSuccessfull:_imageTasks[i]]) {
             return YES;
         }
     }

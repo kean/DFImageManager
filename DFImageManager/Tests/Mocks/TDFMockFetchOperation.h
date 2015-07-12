@@ -8,8 +8,12 @@
 
 #import <Foundation/Foundation.h>
 
+@class DFImageRequest;
+
 static NSString *const TDFMockFetchOperationWillCancelNotification = @"TDFMockFetchOperationWillCancelNotification";
 
 @interface TDFMockFetchOperation : NSBlockOperation
+
+@property (nonatomic) DFImageRequest *request;
 
 @end

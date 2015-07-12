@@ -25,6 +25,8 @@
 
 @class DFImageRequest;
 
+NS_ASSUME_NONNULL_BEGIN
+
 /*! Constants for determining the current state of a task.
  */
 typedef NS_ENUM(NSUInteger, DFImageTaskState) {
@@ -51,6 +53,10 @@ typedef NS_ENUM(NSUInteger, DFImageTaskState) {
  */
 @property (nonatomic, readonly) NSError *error;
 
+/*! Completion block to execute when image task is either cancelled or completed.
+ */
+@property (nullable, atomic, copy) void (^completionHandler)(UIImage *__nullable image, NSDictionary *info);
+
 /*! Resumes the task.
  */
 - (void)resume;
@@ -64,3 +70,5 @@ typedef NS_ENUM(NSUInteger, DFImageTaskState) {
 - (void)setPriority:(DFImageRequestPriority)priority;
 
 @end
+
+NS_ASSUME_NONNULL_END

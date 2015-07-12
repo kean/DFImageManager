@@ -65,6 +65,7 @@
             }
         });
     }];
+    operation.request = request;
     [_queue addOperation:operation];
     return operation;
 }

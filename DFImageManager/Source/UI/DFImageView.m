@@ -151,7 +151,12 @@ static const NSTimeInterval _kMinimumAutoretryInterval = 8.f;
 }
 
 - (DFCompositeImageTask *)createCompositeImageTaskForRequests:(NSArray *)requests handler:(void (^)(UIImage *, NSDictionary *, DFImageRequest *, DFCompositeImageTask *))handler {
-    return [[DFCompositeImageTask alloc] initWithRequests:requests handler:handler];
+    NSMutableArray *tasks = [NSMutableArray new];
+    for (DFImageRequest *request in requests) {
+        DFImageTask *task = [self.imageManager imageTaskForRequest:request completion:nil];
+        [tasks addObject:task];
+    }
+    return [[DFCompositeImageTask alloc] initWithImageTasks:tasks imageHandler:handler];
 }
 
 - (void)didCompleteRequest:(DFImageRequest *)request withImage:(UIImage *)image info:(NSDictionary *)info {
@@ -190,7 +195,7 @@ static const NSTimeInterval _kMinimumAutoretryInterval = 8.f;
         && self.window != nil
         && self.hidden != YES
         && self.task.isFinished) {
-        DFImageTask *task = [self.task imageTaskForRequest:[self.task.requests lastObject]];
+        DFImageTask *task = [self.task.imageTasks lastObject];
         NSError *error = task.error;
         if (error && [self _isNetworkConnetionError:error]) {
             [self _attemptRetry];
@@ -201,7 +206,7 @@ static const NSTimeInterval _kMinimumAutoretryInterval = 8.f;
 - (void)_attemptRetry {
     if (_previousAutoretryTime == 0.0 || CACurrentMediaTime() > _previousAutoretryTime + _kMinimumAutoretryInterval) {
         _previousAutoretryTime = CACurrentMediaTime();
-        [self setImageWithRequests:self.task.requests];
+        [self setImageWithRequests:self.task.imageRequests];
     }
 }
 

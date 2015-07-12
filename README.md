@@ -74,7 +74,7 @@ DFImageRequest *previewRequest = [DFImageRequest requestWithResource:[NSURL URLW
 DFImageRequest *fullsizeRequest = [DFImageRequest requestWithResource:[NSURL URLWithString:@"http://fullsize_image"]];
 
 NSArray *requests = @[ previewRequest, fullsizeRequest ];
-DFCompositeImageTask *task = [DFCompositeImageTask requestImageForRequests:requests handler:^(UIImage *image, NSDictionary *info, DFImageRequest *request) {
+DFCompositeImageTask *task = [DFCompositeImageTask requestImageForRequests:requests imageHandler:^(UIImage *image, NSDictionary *info, DFImageRequest *request) {
   // Handler is called at least once
   // For more info see DFCompositeImageTask class
 }];

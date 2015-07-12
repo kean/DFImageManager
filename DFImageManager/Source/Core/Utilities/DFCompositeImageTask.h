@@ -30,40 +30,43 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@class DFCompositeImageTask;
+
+typedef void (^DFCompositeImageTaskImageHandler)(UIImage *__nullable image, NSDictionary *info, DFImageRequest *request, DFCompositeImageTask *task);
+
 /*! The DFCompositeImageTask manages execution of one or many image tasks and provides a single completion block that gets called multiple times. All requests are executed concurrently.
- @note By default, DFImageFetchTask does not call its completion handler for each of the completed requests. It treats the array of the requests as if the last request was the final image that you would want to display, while the others were the placeholders. The completion handler is guaranteed to be called at least once, even if all of the requests have failed. It also automatically cancels obsolete requests. This entire behavior can be disabled by setting allowsObsoleteRequests property to NO.
+ @note By default, DFImageFetchTask does not call its completion handler for each of the completed requests. It treats the array of the requests as if the last request was the final image that you would want to display, while the others were the placeholders. The completion handler is guaranteed to be called at least once, even if all of the requests have failed. It also automatically cancels obsolete requests.
  @warning This class is not thread safe and is designed to be used on the main thread.
  */
 @interface DFCompositeImageTask : NSObject
 
-/*! Initializes composite task with an array of image requests and a completion handler. After you create the task, you must start it by calling start method.
- @param requests Array of requests. Must contain at least one request.
- @param handler Completion block that gets called multiple times, for more info see class description. The completion
+/*! Initializes composite task with an array of image tasks and a completion handler. After you create the task, you must start it by calling start method.
+ @param tasks Array of image tasks. Must contain at least one task.
+ @param imageHandler Gets called each time the image is fetched. Doesn't get called for obsolete requests.
  */
-- (instancetype)initWithRequests:(NSArray /* DFImageRequest */ *)requests handler:(void (^__nullable)(UIImage *__nullable image, NSDictionary *info, DFImageRequest *request, DFCompositeImageTask *task))handler NS_DESIGNATED_INITIALIZER;
-
-/*! Initializes task with an image request and a completion handler. After you create the task, you must start it by calling start method. 
-  @param request request. Must not be nil.
- */
-- (instancetype)initWithRequest:(DFImageRequest *)request handler:(void (^__nullable)(UIImage *__nullable image, NSDictionary *info, DFImageRequest *request, DFCompositeImageTask *task))handler;
+- (instancetype)initWithImageTasks:(NSArray /* DFImageTask */ *)tasks imageHandler:(nullable DFCompositeImageTaskImageHandler)imageHandler NS_DESIGNATED_INITIALIZER;
 
 /*! Creates and starts task with an array of image requests.
  @param requests Array of requests. Must contain at least one request.
- @param handler Completion block that gets called multiple times, for more info see class description.
+ @param imageHandler Gets called each time the image is fetched. Doesn't get called for obsolete requests.
  */
-+ (DFCompositeImageTask *)requestImageForRequests:(NSArray /* DFImageRequest */ *)requests handler:(void (^__nullable)(UIImage *__nullable image, NSDictionary *info, DFImageRequest *request, DFCompositeImageTask *task))handler;
++ (DFCompositeImageTask *)compositeImageTaskWithRequests:(NSArray *)requests imageHandler:(DFCompositeImageTaskImageHandler)imageHandler;
 
-/*! Image manager used by the receiver. Set to the shared manager during initialization.
+/*! Image handler. Gets called each time the image is fetched. Doesn't get called for obsolete requests.
  */
-@property (nonatomic) id<DFImageManaging> imageManager;
+@property (nullable, nonatomic, copy) void (^imageHandler)(UIImage *__nullable image, NSDictionary *info, DFImageRequest *request, DFCompositeImageTask *task);
 
 /*! Set to YES to enable special handling of obsolete requests. Default value is YES. For more info see class notes.
  */
 @property (nonatomic) BOOL allowsObsoleteRequests;
 
-/*! Array of requests that the receiver was initialized with.
+/*! Array of image tasks that the receiver was initialized with.
  */
-@property (nonatomic, copy, readonly) NSArray /* DFImageRequest */ *requests;
+@property (nonatomic, copy, readonly) NSArray /* DFImageTask */ *imageTasks;
+
+/*! Returns image requests from the image tasks that the receiver was initialized with.
+ */
+@property (nonatomic, copy, readonly) NSArray /* DFImageRequest */ *imageRequests;
 
 /*! Returns YES if all the requests have completed.
  */
@@ -76,11 +79,6 @@ NS_ASSUME_NONNULL_BEGIN
 /*! Cancels all the requests registered with the receiver.
  */
 - (void)cancel;
-
-/*! Returns image task for the given request.
- @param request Request should be contained by the receiver's array of the requests.
- */
-- (nullable DFImageTask *)imageTaskForRequest:(DFImageRequest *)request;
 
 /*! Sets the priority for all the requests registered with a receiver.
  */

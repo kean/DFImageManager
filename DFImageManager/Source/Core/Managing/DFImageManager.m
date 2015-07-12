@@ -52,7 +52,6 @@
 @interface _DFImageTask : DFImageTask
 
 @property (nonatomic, readonly) DFImageManager *manager;
-@property (nonatomic, readonly, copy) DFImageRequestCompletion completionHandler;
 @property (nonatomic) DFImageTaskState state;
 @property (nonatomic) NSError *error;
 @property (nonatomic) DFImageResponse *response;
@@ -72,7 +71,7 @@
     if (self = [super init]) {
         _manager = manager;
         _request = request;
-        _completionHandler = [completionHandler copy];
+        self.completionHandler = completionHandler;
         _state = DFImageTaskStateSuspended;
     }
     return self;
