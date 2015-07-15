@@ -69,11 +69,11 @@
     return DFManagerForRequest(request) != nil;
 }
 
-- (DFImageTask *)imageTaskForResource:(id)resource completion:(void (^)(UIImage *, NSDictionary *))completion {
+- (DFImageTask *)imageTaskForResource:(id)resource completion:(DFImageRequestCompletion)completion {
     return [self imageTaskForRequest:[DFImageRequest requestWithResource:resource] completion:completion];
 }
 
-- (DFImageTask *)imageTaskForRequest:(DFImageRequest *)request completion:(void (^)(UIImage *, NSDictionary *))completion {
+- (DFImageTask *)imageTaskForRequest:(DFImageRequest *)request completion:(DFImageRequestCompletion)completion {
     id<DFImageManaging> manager = DFManagerForRequest(request);
     if (!manager) {
         [NSException raise:NSInvalidArgumentException format:@"There are no managers that can handle the request %@", request];
@@ -126,7 +126,7 @@
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-implementations"
 
-- (DFImageTask *)requestImageForResource:(id)resource completion:(void (^)(UIImage *, NSDictionary *))completion {
+- (DFImageTask *)requestImageForResource:(id)resource completion:(DFImageRequestCompletion)completion {
     return [self requestImageForRequest:[DFImageRequest requestWithResource:resource] completion:completion];
 }
 

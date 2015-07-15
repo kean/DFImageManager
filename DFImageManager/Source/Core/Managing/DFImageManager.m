@@ -64,6 +64,7 @@
 
 @implementation _DFImageTask
 
+@synthesize completionHandler = _completionHandler;
 @synthesize request = _request;
 @synthesize error = _error;
 @synthesize state = _state;
@@ -72,7 +73,7 @@
     if (self = [super init]) {
         _manager = manager;
         _request = request;
-        self.completionHandler = completionHandler;
+        _completionHandler = completionHandler;
         _state = DFImageTaskStateSuspended;
     }
     return self;
@@ -209,8 +210,9 @@
 
 @synthesize configuration = _conf;
 
-- (instancetype)initWithConfiguration:(DFImageManagerConfiguration *)configuration {
+- (nonnull instancetype)initWithConfiguration:(nonnull DFImageManagerConfiguration *)configuration {
     if (self = [super init]) {
+        NSParameterAssert(configuration);
         _conf = [configuration copy];
         
         _queue = dispatch_queue_create([[NSString stringWithFormat:@"%@-queue-%p", [self class], self] UTF8String], DISPATCH_QUEUE_SERIAL);
@@ -225,15 +227,18 @@
 
 #pragma mark <DFImageManaging>
 
-- (BOOL)canHandleRequest:(DFImageRequest *)request {
+- (BOOL)canHandleRequest:(nonnull DFImageRequest *)request {
+    NSParameterAssert(request);
     return [_conf.fetcher canHandleRequest:request];
 }
 
-- (nullable DFImageTask *)imageTaskForResource:(id __nonnull)resource completion:(void (^ __nullable)(UIImage * __nullable, NSDictionary * __nonnull))completion {
+- (nullable DFImageTask *)imageTaskForResource:(nonnull id)resource completion:(nullable DFImageRequestCompletion)completion {
+    NSParameterAssert(resource);
     return [self imageTaskForRequest:[DFImageRequest requestWithResource:resource] completion:completion];
 }
 
-- (nullable DFImageTask *)imageTaskForRequest:(DFImageRequest * __nonnull)request completion:(void (^ __nullable)(UIImage * __nullable, NSDictionary * __nonnull))completion {
+- (nullable DFImageTask *)imageTaskForRequest:(nonnull DFImageRequest *)request completion:(nullable DFImageRequestCompletion)completion {
+    NSParameterAssert(request);
     if (_invalidated) {
         return nil;
     }
@@ -573,11 +578,11 @@
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-implementations"
 
-- (DFImageTask *)requestImageForResource:(id)resource completion:(void (^)(UIImage *, NSDictionary *))completion {
+- (nullable DFImageTask *)requestImageForResource:(id __nonnull)resource completion:(nullable DFImageRequestCompletion)completion {
     return [self requestImageForRequest:[DFImageRequest requestWithResource:resource] completion:completion];
 }
 
-- (DFImageTask *)requestImageForRequest:(DFImageRequest *)request completion:(DFImageRequestCompletion)completion {
+- (nullable DFImageTask *)requestImageForRequest:(DFImageRequest * __nonnull)request completion:(nullable DFImageRequestCompletion)completion {
     DFImageTask *task = [self imageTaskForRequest:request completion:completion];
     [task resume];
     return task;
