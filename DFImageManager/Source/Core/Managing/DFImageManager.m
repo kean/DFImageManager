@@ -91,6 +91,19 @@
     [self.manager setPriority:priority forTask:self];
 }
 
+- (BOOL)isValidNextState:(DFImageTaskState)nextState {
+    switch (self.state) {
+        case DFImageTaskStateSuspended:
+            return (nextState == DFImageTaskStateRunning ||
+                    nextState == DFImageTaskStateCancelled);
+        case DFImageTaskStateRunning:
+            return (nextState == DFImageTaskStateCompleted ||
+                    nextState == DFImageTaskStateCancelled);
+        default:
+            return NO;
+    }
+}
+
 @end
 
 
@@ -267,23 +280,11 @@
 }
 
 - (void)_setImageTaskState:(DFImageTaskState)state task:(_DFImageTask *)task {
-    if ([DFImageManager _isTransitionAllowedFromState:task.state toState:state]) {
+    if ([task isValidNextState:state]) {
         [self _transitionActionFromState:task.state toState:state task:task];
         task.state = state;
         [self _enterActionForState:state task:task];
     }
-}
-
-+ (BOOL)_isTransitionAllowedFromState:(DFImageTaskState)fromState toState:(DFImageTaskState)toState {
-    static NSDictionary *transitions;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        transitions = @{ @(DFImageTaskStateSuspended) : @[ @(DFImageTaskStateRunning),
-                                                           @(DFImageTaskStateCancelled) ],
-                         @(DFImageTaskStateRunning) : @[ @(DFImageTaskStateCompleted),
-                                                         @(DFImageTaskStateCancelled) ] };
-    });
-    return [((NSArray *)transitions[@(fromState)]) containsObject:@(toState)];
 }
 
 - (void)_transitionActionFromState:(DFImageTaskState)fromState toState:(DFImageTaskState)toState task:(_DFImageTask *)task {
