@@ -4,24 +4,35 @@
 
 Advanced iOS framework for loading, caching, processing, displaying and preheating images. It uses latest features in iOS SDK and doesn't reinvent existing technologies. It provides a powerful API that will extend the capabilities of your app.
 
-The DFImageManager has a single responsibility of providing a great API for managing image requests, with an ability to easily plug-in everything else that your application might need. It also features [multiple subspecs](#install_using_cocopods) that integrate things like [AFNetworking](https://github.com/AFNetworking/AFNetworking) as a networking stack for fetching images, and [FLAnimatedImage](https://github.com/Flipboard/FLAnimatedImage) as a performant animated GIF engine.
+The DFImageManager is not just a loader, it is a pipeline with a great API for managing image requests, and an ability to easily plug-in everything that your application might need. It features [multiple subspecs](#install_using_cocopods) that integrate things like [AFNetworking](https://github.com/AFNetworking/AFNetworking) as a networking stack for fetching images, and [FLAnimatedImage](https://github.com/Flipboard/FLAnimatedImage) as a performant animated GIF engine, and more.
 
 ## Features
-- Zero config, yet immense customization and extensibility.
-- Works great with Swift.
-- Uses latest advancements in [Foundation URL Loading System](https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/URLLoadingSystem/URLLoadingSystem.html) including [NSURLSession](https://developer.apple.com/library/ios/documentation/Foundation/Reference/NSURLSession_class/) that supports [SPDY](http://en.wikipedia.org/wiki/SPDY) protocol.
-- Instead of reinventing a caching methodology it relies on HTTP cache as defined in [HTTP specification](https://tools.ietf.org/html/rfc7234) and caching implementation provided by [Foundation URL Loading System](https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/URLLoadingSystem/URLLoadingSystem.html). The caching and revalidation are completely transparent to the client.
-- Has basic built-in networking implementation, and optional [AFNetworking integration](#install_using_cocopods) which should be your primary choice. Combine the power of both frameworks!
-- Animated GIF support using best-in-class [FLAnimatedImage](https://github.com/Flipboard/FLAnimatedImage) library.
-- Common APIs for different resources (`NSURL`, `PHAsset`, `ALAsset`, and your custom classes).
-- Centralized image decompression, resizing and processing. Fully customizable.
-- Separate memory cache for decompressed and processed images. Fine grained control over memory cache.
-- [Compose image managers](https://github.com/kean/DFImageManager/wiki/Extending-Image-Manager-Guide#using-dfcompositeimagemanager) into a tree of responsibility.
+
+- Zero config, yet immense customization and extensibility
+- Works great with Swift
+- Common APIs for different resources (`NSURL`, `PHAsset`, `ALAsset`, and your custom classes)
+- Extreme performance even on outdated devices, asynchronous and thread safe
+- Unit tested
+
+##### Loading
+- Uses latest advancements in [Foundation URL Loading System](https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/URLLoadingSystem/URLLoadingSystem.html) including [NSURLSession](https://developer.apple.com/library/ios/documentation/Foundation/Reference/NSURLSession_class/) that supports [HTTP/2](https://en.wikipedia.org/wiki/HTTP/2)
+- Has basic built-in networking implementation, and optional [AFNetworking integration](#install_using_cocopods) which should be your primary choice. Combine the power of both frameworks! 
+- Show a low-resolution placeholder(s) first and swap to higher-res one when it is loaded
+- Groups similar tasks and never executes them twice
+
+##### Caching
+- Instead of reinventing a caching methodology it relies on HTTP cache as defined in [HTTP specification](https://tools.ietf.org/html/rfc7234) and caching implementation provided by [Foundation URL Loading System](https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/URLLoadingSystem/URLLoadingSystem.html). The caching and revalidation are completely transparent to the client
+- Separate memory cache for decompressed and processed images. Fine grained control over memory cache
+
+##### Image Formats
+- Install subspecs to support additional image formats
+- Animated GIF support using best-in-class [FLAnimatedImage](https://github.com/Flipboard/FLAnimatedImage) library
+- [WebP](https://developers.google.com/speed/webp/) support
+
+##### Advanced
 - [Intelligent preheating](https://github.com/kean/DFImageManager/wiki/Image-Preheating-Guide) of images that are close to the viewport
-- Groups similar requests and never executes them twice. Intelligent control over which requests are considered equivalent.
-- Solid implementation based on finite state machines. High quality code base. Dependency injection is used throughout.
-- Extreme performance even on outdated devices. Asynchronous and thread safe.
-- Unit tested.
+- [Compose image managers](https://github.com/kean/DFImageManager/wiki/Extending-Image-Manager-Guide#using-dfcompositeimagemanager) into a tree of responsibility
+- Customize different parts of the framework using dependency injection
 
 ## Getting Started
 - Download the latest [release](https://github.com/kean/DFImageManager/releases) version
@@ -30,7 +41,7 @@ The DFImageManager has a single responsibility of providing a great API for mana
 - View the growing project [Wiki](https://github.com/kean/DFImageManager/wiki) and [FAQ](https://github.com/kean/DFImageManager/wiki/FAQ)
 - Experiment with the APIs in a Swift playground available in the project
 - [Install using CocoaPods](#install_using_cocopods), import `<DFImageManager/DFImageManagerKit.h>` and enjoy!
-- Check out [Nuke](https://github.com/kean/Nuke) - experimental Swift framework with similar functionality.
+- Check out [Nuke](https://github.com/kean/Nuke) - experimental Swift framework with similar functionality
 
 ## Requirements
 iOS 7.0+
@@ -67,20 +78,6 @@ DFImageRequest *request = [DFImageRequest requestWithResource:imageURL targetSiz
 }] resume];
 ```
 
-#### Start multiple requests with a single completion handler
-The `DFCompositeImageTask` class manages execution of one or many image requests. It also stores execution state for each request.
-```objective-c
-DFImageRequest *previewRequest = [DFImageRequest requestWithResource:[NSURL URLWithString:@"http://preview"]];
-DFImageRequest *fullsizeRequest = [DFImageRequest requestWithResource:[NSURL URLWithString:@"http://fullsize_image"]];
-
-NSArray *requests = @[ previewRequest, fullsizeRequest ];
-DFCompositeImageTask *task = [DFCompositeImageTask requestImageForRequests:requests imageHandler:^(UIImage *image, NSDictionary *info, DFImageRequest *request) {
-  // Handler is called at least once
-  // For more info see DFCompositeImageTask class
-} completionHandler:nil];
-```
-There are many [ways](https://github.com/kean/DFImageManager/wiki/Advanced-Image-Caching-Guide#custom-revalidation-using-dfcompositeimagefetchoperation) how composite requests can be used.
-
 #### Use UI components
 Use methods from `UIImageView` category for simple cases:
 ```objective-c
@@ -98,6 +95,20 @@ imageView.allowsAutoRetries = YES; // Retries when network reachability changes
 [imageView setImageWithResource:[NSURL URLWithString:@"http://..."]];
 // Or use other APIs, for example, set multiple requests [imageView setImageWithRequests:@[ ... ]];
 ```
+
+#### Start multiple requests with a single completion handler
+The `DFCompositeImageTask` class manages execution of one or many image requests. It also stores execution state for each request.
+```objective-c
+DFImageRequest *previewRequest = [DFImageRequest requestWithResource:[NSURL URLWithString:@"http://preview"]];
+DFImageRequest *fullsizeRequest = [DFImageRequest requestWithResource:[NSURL URLWithString:@"http://fullsize_image"]];
+
+NSArray *requests = @[ previewRequest, fullsizeRequest ];
+DFCompositeImageTask *task = [DFCompositeImageTask requestImageForRequests:requests imageHandler:^(UIImage *image, NSDictionary *info, DFImageRequest *request) {
+  // Handler is called at least once
+  // For more info see DFCompositeImageTask class
+} completionHandler:nil];
+```
+There are many [ways](https://github.com/kean/DFImageManager/wiki/Advanced-Image-Caching-Guide#custom-revalidation-using-dfcompositeimagefetchoperation) how composite requests can be used.
 
 #### Use the same `DFImageManaging` API for PHAsset, ALAsset and your custom classes
 ```objective-c
@@ -158,9 +169,10 @@ By default it will install subspecs:
 - `DFImageManager/PhotosKit` - Photos Framework support
 - `DFImageManager/AssetsLibrary` - ALAssetsLibrary support
 
-There are two more optional subspecs:
+There are three more optional subspecs:
 - `DFImageManager/AFNetworking` - replaces networking stack with [AFNetworking](https://github.com/AFNetworking/AFNetworking)
 - `DFImageManager/GIF` - GIF support with a [FLAnimatedImage](https://github.com/Flipboard/FLAnimatedImage) dependency
+- `DFImageManager/WebP` - WebP support with a [libwebp](https://cocoapods.org/pods/libwebp) dependency
 
 To install optional dependencies include them in your Podfile:
 ```ruby
@@ -169,6 +181,7 @@ platform :ios, '7.0'
 pod 'DFImageManager'
 pod 'DFImageManager/AFNetworking'
 pod 'DFImageManager/GIF'
+pod 'DFImageManager/WebP'
 ```
 
 ## Contribution
