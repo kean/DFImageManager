@@ -70,7 +70,7 @@
             }
         }];
     }
-    for (DFImageTask *task in _remainingTasks) {
+    for (DFImageTask *task in [_remainingTasks copy]) {
         [task resume];
     }
 }
