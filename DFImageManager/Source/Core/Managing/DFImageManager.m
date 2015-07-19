@@ -521,16 +521,14 @@
 
 #pragma mark <_DFImageRequestKeyOwner>
 
-- (BOOL)isImageRequestKey:(_DFImageRequestKey *)key1 equalToKey:(_DFImageRequestKey *)key2 {
-    DFImageRequest *request1 = key1.request;
-    DFImageRequest *request2 = key2.request;
-    if (key1.isCacheKey) {
-        if (![_conf.fetcher isRequestCacheEquivalent:request1 toRequest:request2]) {
+- (BOOL)isImageRequestKey:(_DFImageRequestKey *)lhs equalToKey:(_DFImageRequestKey *)rhs {
+    if (lhs.isCacheKey) {
+        if (![_conf.fetcher isRequestCacheEquivalent:lhs.request toRequest:rhs.request]) {
             return NO;
         }
-        return _conf.processor ? [_conf.processor isProcessingForRequestEquivalent:request1 toRequest:request2] : YES;
+        return _conf.processor ? [_conf.processor isProcessingForRequestEquivalent:lhs.request toRequest:rhs.request] : YES;
     } else {
-        return [_conf.fetcher isRequestFetchEquivalent:request1 toRequest:request2];
+        return [_conf.fetcher isRequestFetchEquivalent:lhs.request toRequest:rhs.request];
     }
 }
 

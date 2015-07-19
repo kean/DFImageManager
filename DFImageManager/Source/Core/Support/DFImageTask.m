@@ -44,4 +44,8 @@
     return self == object;
 }
 
+- (NSString *)description {
+    return [NSString stringWithFormat:@"<%@ %p> { state = %lu, error = %@ }", [self class], self, (unsigned long)self.state, self.error];
+}
+
 @end

@@ -27,27 +27,23 @@ NS_ASSUME_NONNULL_BEGIN
 
 @class DFImageManagerConfiguration;
 
-/*! The DFImageManager and the related classes provides an implementation of the DFImageManaging protocol. The role of the DFImageManager is to manage the execution of image requests by delegating the actual job to a classes, implementing DFImageFetching, DFImageCaching, and DFImageProcessing protocols.
- 
- @note Completion Block
- 
- Completion block is guaranteed to be called on the main thread. Completion block is called synchronously when the requested image can be retrieved from the memory cache and the request was made on the main thread.
+/*! The DFImageManager and the related classes provide an implementation of the DFImageManaging protocol. The role of the DFImageManager is to manage the execution of image tasks by delegating the actual job to the objects, implementing DFImageFetching, DFImageCaching, and DFImageProcessing protocols.
  
  @note Reusing Operations
  
- Image manager automatically reuses fetch operations. It order to enable this functionality you should implement the -isRequestFetchEquivalent:toRequest: method in your <DFImageFetching> implementation.
+ Image manager automatically reuses fetch operations. It order to enable this functionality you should implement the -isRequestFetchEquivalent:toRequest: method in your DFImageFetching implementation.
  
  @note Cancellation
  
- Image manager cancels managed operations only when there are no remaining handlers. This rule applies for both fetch and processing operations.
+ Image manager cancels fetch operations only when there are no remaining image tasks registered with a given operation.
  
  @note  Memory Caching
  
- Image manager uses cache (object conforming to DFImageCaching protocol) specified in the configuration for memory caching. It should be able to lookup cached images based on the image request, but it doesn't know anything about the resources, specific request options, and the way the requests are interpreted and handled. There are three simple rules how image manager stores and retrieves cached images. First, image manager can't use cached images stored by other managers if they share the same cache instance. Second, all resources must implement -hash method. Third, image manager has an intelligent way of creating cache keys that delegate the comparison of image requests to the image fetcher (<DFImageFetching>) and the image processor (<DFImageProcessing>). Make sure to implement al least -isRequestCacheEquivalent:toRequest: method in your <DFImageFetching> implementation and -isProcessingForRequestEquivalent:toRequest: method in <DFImageProcessing> implementation.
+ Image manager uses cache (object conforming to DFImageCaching protocol) for memory caching. It should be able to lookup cached images based on the image request, but it doesn't know anything about the resources, specific request options, and the way the requests are interpreted and handled. There are three simple rules how image manager stores and retrieves cached images. First, image manager can't use cached images stored by other managers. Second, all resources must implement -hash method. Third, image manager has an intelligent way of creating cache keys that delegate the comparison of image requests to the image fetcher (DFImageFetching) and the image processor (DFImageProcessing). Make sure to implement -isRequestCacheEquivalent:toRequest: method in your DFImageFetching implementation and -isProcessingForRequestEquivalent:toRequest: method in DFImageProcessing implementation.
  
  @note Preheating
  
- The DFImageManager does its best to guarantee that preheating requests never interfere with regular (non-preheating) requests. There is a limit of concurrent preheating requests enforced by DFImageManager. There is also certain (very small) delay when manager starts executing preheating requests. Given that fact, clients don't need to worry about the order in which they start their requests (preheating or not), which comes really handy when you, for example, reload collection view's data and start preheating and requesting multiple images at the same time.
+ The DFImageManager does its best to guarantee that preheating tasks never interfere with regular (non-preheating) tasks. There is a limit of concurrent preheating tasks enforced by DFImageManager. There is also certain (very small) delay when manager starts executing preheating requests. Given that fact, clients don't need to worry about the order in which they start their requests (preheating or not), which comes really handy when you, for example, reload collection view's data and start preheating images at the same time.
  
  The DFImageManager stops multiple similar preheating requests with a single -stopPreheatingImagesForRequests: call.
  */
@@ -62,14 +58,14 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nullable, nonatomic) NSString *name;
 
 /*! Creates image manager with a specified configuration.
- @param configuration A configuration object that specifies certain behaviors, such as fetching, processing, caching and more. Manager copies the configuration object.
+ @param configuration A configuration object that specifies certain behaviours, such as fetching, processing, caching and more. Manager copies the configuration object.
  */
 - (instancetype)initWithConfiguration:(DFImageManagerConfiguration *)configuration NS_DESIGNATED_INITIALIZER;
 
 @end
 
 
-/*! Dependency injectors that set the image manager shared by the application.
+/*! Dependency injectors for the image manager shared by the application.
  */
 @interface DFImageManager (SharedManager)
 
@@ -77,7 +73,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 + (id<DFImageManaging>)sharedManager;
 
-/*! Sets the image manager instance shared by all clients of the current process.
+/*! Sets the image manager instance shared by all clients of the current application.
  */
 + (void)setSharedManager:(id<DFImageManaging>)manager;
 
@@ -91,7 +87,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface DFImageManager (DefaultManager)
 
 /*! Creates default image manager that contains all built-in fetchers.
- @note Supported assets:
+ @note Supported resources:
 
  - NSURL with schemes http, https, ftp, file and data (AFNetworking or NSURLSession subspec, AFNetworking is used by default when available)
  

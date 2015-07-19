@@ -33,7 +33,7 @@ extern NSString *const DFAFRequestCachePolicyKey;
 
 @class DFAFImageFetcher;
 
-/*! The DFAFImageFetcherDelegate protocol describes the methods that DFAFImageFetcher objects call on their delegates to customize its behavior.
+/*! The DFAFImageFetcherDelegate protocol describes the methods that DFAFImageFetcher objects call on their delegates to customize its behaviour.
  */
 @protocol DFAFImageFetcherDelegate <NSObject>
 

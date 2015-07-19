@@ -158,7 +158,7 @@
     [self waitForExpectationsWithTimeout:1.0 handler:nil];
 }
 
-/*! > Image manager cancels managed operations only when there are no remaining handlers.
+/*! > Image manager cancels fetch operations only when there are no remaining image tasks registered with a given operation.
  */
 - (void)testThatDoesntCancelFetchOperationWithRemainingHandlers {
     _fetcher.queue.suspended = YES;

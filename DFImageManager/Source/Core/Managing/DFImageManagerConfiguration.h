@@ -28,7 +28,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/*! An DFImageManagerConfiguration object defines the behavior and policies to use when retrieving images using DFImageManager object.
+/*! An DFImageManagerConfiguration object defines the behaviour and policies to use when retrieving images using DFImageManager object.
  */
 @interface DFImageManagerConfiguration : NSObject <NSCopying>
 

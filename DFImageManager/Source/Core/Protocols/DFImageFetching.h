@@ -37,7 +37,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (BOOL)canHandleRequest:(DFImageRequest *)request;
 
-/*! Compares two requests for equivalence with regard to fetching the image. Requests should be considered equivalent if image fetcher can handle both requests by the same operation.
+/*! Compares two requests for equivalence with regard to fetching the image. Requests should be considered equivalent if the image fetcher can handle both requests with a single operation.
  @param request1 The first canonical request.
  @param request2 The second canonical request.
  */
@@ -50,10 +50,10 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (BOOL)isRequestCacheEquivalent:(DFImageRequest *)request1 toRequest:(DFImageRequest *)request2;
 
-/*! Starts fetching an image for the request. The completion block should always be called, even for the cancelled request. The completion block may be called in any fashion (asynchronously or not) and on any thread.
+/*! Starts fetching an image for the request.
  @param request The canonical request.
  @param progressHandler Progress handler that can be called on any thread. Image fetcher that don't report progress should ignore this the handler.
- @param completion Completion handler that can be called on any thread.
+ @param completion Completion handler, can be called on any thread.
  @return The operation that implements fetching.
  */
 - (NSOperation *)startOperationWithRequest:(DFImageRequest *)request progressHandler:(void (^__nullable)(double progress))progressHandler completion:(void (^)(DFImageResponse *response))completion;

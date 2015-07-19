@@ -35,23 +35,24 @@ typedef void (^DFImageRequestCompletion)(UIImage *__nullable image, NSDictionary
  */
 @protocol DFImageManaging <NSObject>
 
-/*! Inspects the given request and determines whether or not it can be handled.
+/*! Inspects the given request and determines whether it can be handled.
  */
 - (BOOL)canHandleRequest:(DFImageRequest *)request;
 
-/*! Returns image task with a given resource.
- @note An image representation of the resource with a maximum available size is requested.
+/*! Creates an image task with a given resource. After you create the task, you must start it by calling its resume method.
+ @note Creates image request with a DFImageMaximumSize, DFImageContentModeAspectFill and no options.
+ @param resource The resource whose image data is to be loaded.
  */
 - (nullable DFImageTask *)imageTaskForResource:(id)resource completion:(nullable DFImageRequestCompletion)completion;
 
-/*! Returns an image task with a given request.
- @param request The request that contains the resource whose image it to be loaded as well as other request options. The implementation should create a deep copy of the request so that it can't be changed underneath it later. The implementation may provide more request options that are available in a base class, so make sure to check the documentation on that.
- @param completion Can be called synchronously. A block to be called when image loading is complete, providing the requested image or information about the status of the request. The info dictionary provides information about the status of the request. See the definitions of DFImageInfo*Key strings for possible keys and values.
+/*! Creates an image task with a given request. After you create the task, you must start it by calling its resume method.
+ @param request The request that contains the resource whose image is to be loaded, and request options. Image manager creates a deep copy of the request.
+ @param completion Completion block to be called on the main thread when loading is complete. Completion block is called synchronously when the requested image can be retrieved from the memory cache and the request was made on the main thread. The info dictionary provides information about the status of the request. See the definitions of DFImageInfo*Key strings for possible keys and values. For more info see DFImageManager class reference.
  @return An image task.
  */
 - (nullable DFImageTask *)imageTaskForRequest:(DFImageRequest *)request completion:(nullable DFImageRequestCompletion)completion;
 
-/*! Asynchronously calls a completion block on the main thread with all outstanding resumed image tasks and separate array with all preheating tasks.
+/*! Asynchronously calls a completion block on the main thread with all resumed outstanding image tasks and separate array with all preheating tasks.
  */
 - (void)getImageTasksWithCompletion:(void (^)(NSArray *tasks, NSArray *preheatingTasks))completion;
 
@@ -59,16 +60,16 @@ typedef void (^DFImageRequestCompletion)(UIImage *__nullable image, NSDictionary
  */
 - (void)invalidateAndCancel;
 
-/*! Prepares image representations of the specified resources and options for later use.
- @note The application is responsible for providing the same requests when preheating the images and when actually requesting them later or else the preheating might be either partially effective or not effective at all.
+/*! Prepares images for the given requests for later use.
+ @note The application is responsible for providing the same requests when preheating the images and when actually requesting them later or else the preheating might not be effective.
  */
 - (void)startPreheatingImagesForRequests:(NSArray /* DFImageRequest */ *)requests;
 
-/*! Cancels image preparation for the resources assets and options.
+/*! Cancels preheating for the given requests.
  */
 - (void)stopPreheatingImagesForRequests:(NSArray /* DFImageRequest */ *)requests;
 
-/*! Cancels all image preheating requests registered with a manager.
+/*! Cancels all image preheating tasks registered with a manager.
  */
 - (void)stopPreheatingImagesForAllRequests;
 
