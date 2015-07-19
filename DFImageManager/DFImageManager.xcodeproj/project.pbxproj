@@ -58,6 +58,8 @@
 		0CBAA6801B5BB4D3002A5E59 /* UIImage+DFImageUtilities.h in Headers */ = {isa = PBXBuildFile; fileRef = 0CBAA67E1B5BB4D3002A5E59 /* UIImage+DFImageUtilities.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0CBAA6811B5BB4D3002A5E59 /* UIImage+DFImageUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CBAA67F1B5BB4D3002A5E59 /* UIImage+DFImageUtilities.m */; };
 		0CBAA6821B5BB4D3002A5E59 /* UIImage+DFImageUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CBAA67F1B5BB4D3002A5E59 /* UIImage+DFImageUtilities.m */; };
+		0CBAA6851B5BBBA3002A5E59 /* TDFImageFormats.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CBAA6841B5BBBA3002A5E59 /* TDFImageFormats.m */; };
+		0CBAA6871B5BBBD3002A5E59 /* lhfer5lguvi76a9uedez.webp in Resources */ = {isa = PBXBuildFile; fileRef = 0CBAA6861B5BBBD3002A5E59 /* lhfer5lguvi76a9uedez.webp */; };
 		0CBFD3D01AA300CA00A6A482 /* TDFMockImageFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CBFD3CF1AA300CA00A6A482 /* TDFMockImageFetcher.m */; };
 		0CBFD3D31AA3017600A6A482 /* TDFMockResource.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CBFD3D21AA3017600A6A482 /* TDFMockResource.m */; };
 		0CD0126E1A6C6B16004F6CD3 /* Image.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0CD012681A6C6B16004F6CD3 /* Image.jpg */; };
@@ -215,6 +217,8 @@
 		0CBAA6771B5B96B3002A5E59 /* UIImage+DFImageManagerWebP.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+DFImageManagerWebP.m"; sourceTree = "<group>"; };
 		0CBAA67E1B5BB4D3002A5E59 /* UIImage+DFImageUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+DFImageUtilities.h"; sourceTree = "<group>"; };
 		0CBAA67F1B5BB4D3002A5E59 /* UIImage+DFImageUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+DFImageUtilities.m"; sourceTree = "<group>"; };
+		0CBAA6841B5BBBA3002A5E59 /* TDFImageFormats.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDFImageFormats.m; sourceTree = "<group>"; };
+		0CBAA6861B5BBBD3002A5E59 /* lhfer5lguvi76a9uedez.webp */ = {isa = PBXFileReference; lastKnownFileType = file; path = lhfer5lguvi76a9uedez.webp; sourceTree = "<group>"; };
 		0CBFD3CE1AA300CA00A6A482 /* TDFMockImageFetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDFMockImageFetcher.h; sourceTree = "<group>"; };
 		0CBFD3CF1AA300CA00A6A482 /* TDFMockImageFetcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDFMockImageFetcher.m; sourceTree = "<group>"; };
 		0CBFD3D11AA3017600A6A482 /* TDFMockResource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDFMockResource.h; sourceTree = "<group>"; };
@@ -496,6 +500,7 @@
 			isa = PBXGroup;
 			children = (
 				0CD012681A6C6B16004F6CD3 /* Image.jpg */,
+				0CBAA6861B5BBBD3002A5E59 /* lhfer5lguvi76a9uedez.webp */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -511,6 +516,7 @@
 				0CAA17F31AAA779800E82041 /* TDFImageRequestOptions.m */,
 				0C8075AC1ABAF3A400A9D88F /* TDFImageCache.m */,
 				0CD5A0211B5164AF0037D1D4 /* TDFCompositeImageTask.m */,
+				0CBAA6841B5BBBA3002A5E59 /* TDFImageFormats.m */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -795,6 +801,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0CBAA6871B5BBBD3002A5E59 /* lhfer5lguvi76a9uedez.webp in Resources */,
 				0CD0126E1A6C6B16004F6CD3 /* Image.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -960,6 +967,7 @@
 				0C8075AD1ABAF3A400A9D88F /* TDFImageCache.m in Sources */,
 				0CBFD3D01AA300CA00A6A482 /* TDFMockImageFetcher.m in Sources */,
 				0CE578541AA4067D00E934FB /* TDFCompositeImageManager.m in Sources */,
+				0CBAA6851B5BBBA3002A5E59 /* TDFImageFormats.m in Sources */,
 				0CD5A0221B5164AF0037D1D4 /* TDFCompositeImageTask.m in Sources */,
 				0CD5A0251B516F2B0037D1D4 /* TDFMockFetcher.m in Sources */,
 				0CD012701A6C6B16004F6CD3 /* TDFImageManager.m in Sources */,

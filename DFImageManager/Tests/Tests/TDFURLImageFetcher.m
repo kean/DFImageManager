@@ -12,7 +12,6 @@
 #import <UIKit/UIKit.h>
 #import <XCTest/XCTest.h>
 
-
 /*! The TDFURLImageFetcher is a test suite for DFURLImageFetcher class.
  */
 @interface TDFURLImageFetcher : XCTestCase
