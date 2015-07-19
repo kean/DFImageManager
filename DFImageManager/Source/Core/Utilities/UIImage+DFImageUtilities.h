@@ -20,14 +20,37 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "DFURLImageDeserializer.h"
-#import "UIImage+DFImageUtilities.h"
+#import "DFImageManagerDefines.h"
 #import <UIKit/UIKit.h>
 
-@implementation DFURLImageDeserializer
+/*! Image utilities.
+ */
+@interface UIImage (DFImageUtilities)
 
-- (id)objectFromResponse:(NSURLResponse *)response data:(NSData *)data error:(NSError **)error {
-    return [UIImage df_decodedImageWithData:data];
-}
+/*! Returns an image that uses a specified image data. Adds support for additional data formats not supported by Cocoa.
+ */
++ (nullable UIImage *)df_decodedImageWithData:(nonnull NSData *)data;
+
+/*! Returns decompressed image with a given image.
+ */
++ (nullable UIImage *)df_decompressedImage:(nullable UIImage *)image;
+
+/*! Returns decompressed image with a given image.
+ @param targetSize Image target size in pixels.
+ */
++ (nullable UIImage *)df_decompressedImage:(nullable UIImage *)image targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode;
+
+/*! Returns scaled decompressed image with a given image.
+ */
++ (nullable UIImage *)df_decompressedImage:(nullable UIImage *)image scale:(CGFloat)scale;
+
+/*! Returns image cropped to a given normalized crop rect.
+ */
++ (nullable UIImage *)df_croppedImage:(nullable UIImage *)image normalizedCropRect:(CGRect)cropRect;
+
+/*! Returns image by drawing rounded corners.
+ @param cornerRadius corner radius in points.
+ */
++ (nullable UIImage *)df_imageWithImage:(nullable UIImage *)image cornerRadius:(CGFloat)cornerRadius;
 
 @end

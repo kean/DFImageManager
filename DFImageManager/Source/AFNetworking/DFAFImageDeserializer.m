@@ -21,10 +21,7 @@
 // THE SOFTWARE.
 
 #import "DFAFImageDeserializer.h"
-
-#if __has_include("DFImageManagerKit+GIF.h") && !(DF_IMAGE_MANAGER_FRAMEWORK_TARGET)
-#import "DFImageManagerKit+GIF.h"
-#endif
+#import "UIImage+DFImageUtilities.h"
 
 @implementation DFAFImageDeserializer
 
@@ -32,15 +29,7 @@
     if (!data.length || ![self validateResponse:(NSHTTPURLResponse *)response data:data error:error]) {
         return nil;
     }
-#if __has_include("DFImageManagerKit+GIF.h") && !(DF_IMAGE_MANAGER_FRAMEWORK_TARGET)
-    if ([DFAnimatedImage isAnimatedGIFData:data]) {
-        UIImage *image = [[DFAnimatedImage alloc] initWithAnimatedGIFData:data];
-        if (image) {
-            return image;
-        }
-    }
-#endif
-    return [[UIImage alloc] initWithData:data scale:[UIScreen mainScreen].scale];
+    return [UIImage df_decodedImageWithData:data];
 }
 
 @end

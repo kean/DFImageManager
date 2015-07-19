@@ -96,3 +96,7 @@ static const NSInteger DFImageManagerErrorCancelled = -1;
 static const NSInteger DFImageManagerErrorUnknown = -2;
 
 NS_ASSUME_NONNULL_END
+
+#define DF_IMAGE_MANAGER_GIF_AVAILABLE __has_include("DFImageManagerKit+GIF.h") && !(DF_IMAGE_MANAGER_FRAMEWORK_TARGET)
+#define DF_IMAGE_MANAGER_WEBP_AVAILABLE __has_include("DFImageManagerKit+WebP.h") && !(DF_IMAGE_MANAGER_FRAMEWORK_TARGET)
+#define DF_IMAGE_MANAGER_AFNETWORKING_AVAILABLE __has_include("DFImageManagerKit+AFNetworking.h") && !(DF_IMAGE_MANAGER_FRAMEWORK_TARGET)

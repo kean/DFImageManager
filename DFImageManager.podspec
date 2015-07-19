@@ -48,4 +48,9 @@ Pod::Spec.new do |s|
         ss.source_files = "DFImageManager/Source/GIF/**/*.{h,m}"
     end
 
+    s.subspec "WebP" do |ss|
+        ss.dependency "libwebp"
+        ss.source_files = "DFImageManager/Source/WebP/**/*.{h,m}"
+    end
+
 end

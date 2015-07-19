@@ -20,14 +20,10 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "DFURLImageDeserializer.h"
-#import "UIImage+DFImageUtilities.h"
 #import <UIKit/UIKit.h>
 
-@implementation DFURLImageDeserializer
+@interface UIImage (DFImageManagerWebP)
 
-- (id)objectFromResponse:(NSURLResponse *)response data:(NSData *)data error:(NSError **)error {
-    return [UIImage df_decodedImageWithData:data];
-}
++ (UIImage *)df_imageWithWebPData:(NSData *)data;
 
 @end

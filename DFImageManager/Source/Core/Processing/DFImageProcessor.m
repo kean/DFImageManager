@@ -23,6 +23,7 @@
 #import "DFImageProcessor.h"
 #import "DFImageRequest.h"
 #import "DFImageRequestOptions.h"
+#import "UIImage+DFImageUtilities.h"
 
 NSString *DFImageProcessingCornerRadiusKey = @"DFImageProcessingCornerRadiusKey";
 
@@ -46,96 +47,18 @@ NSString *DFImageProcessingCornerRadiusKey = @"DFImageProcessingCornerRadiusKey"
 
 - (UIImage *)processedImage:(UIImage *)image forRequest:(DFImageRequest *)request {
     if (request.contentMode == DFImageContentModeAspectFill && request.options.allowsClipping) {
-        image = [DFImageProcessor croppedImageWithImage:image aspectFillPixelSize:request.targetSize];
+        image = [DFImageProcessor _croppedImage:image aspectFillPixelSize:request.targetSize];
     }
-    image = [DFImageProcessor decompressedImageWithImage:image targetSize:request.targetSize contentMode:request.contentMode];
+    image = [UIImage df_decompressedImage:image targetSize:request.targetSize contentMode:request.contentMode];
     NSNumber *normalizedCornerRadius = request.options.userInfo[DFImageProcessingCornerRadiusKey];
     if (normalizedCornerRadius) {
         CGFloat cornerRadius = [normalizedCornerRadius floatValue] * MIN(image.size.width, image.size.height);
-        image = [DFImageProcessor imageWithImage:image cornerRadius:cornerRadius];
+        image = [UIImage df_imageWithImage:image cornerRadius:cornerRadius];
     }
     return image;
 }
 
-#pragma mark Utilities
-
-+ (UIImage *)decompressedWithImage:(UIImage *)image {
-    return [self decompressedWithImage:image scale:1.f];
-}
-
-+ (UIImage *)decompressedImageWithImage:(UIImage *)image targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode {
-    CGSize bitmapSize = CGSizeMake(CGImageGetWidth(image.CGImage), CGImageGetHeight(image.CGImage));
-    CGFloat scaleWidth = targetSize.width / bitmapSize.width;
-    CGFloat scaleHeight = targetSize.height / bitmapSize.height;
-    CGFloat scale = contentMode == DFImageContentModeAspectFill ? MAX(scaleWidth, scaleHeight) : MIN(scaleWidth, scaleHeight);
-    return [self decompressedWithImage:image scale:scale];
-}
-
-+ (UIImage *)decompressedWithImage:(UIImage *)image scale:(CGFloat)scale {
-    if (!image) {
-        return nil;
-    }
-    if (image.images) {
-        return image;
-    }
-    CGImageRef imageRef = image.CGImage;
-    CGSize imageSize = CGSizeMake(CGImageGetWidth(imageRef), CGImageGetHeight(imageRef));
-    if (scale < 1.f) {
-        imageSize = CGSizeMake(imageSize.width * scale, imageSize.height * scale);
-    }
-    
-    CGRect imageRect = (CGRect){.origin = CGPointZero, .size = imageSize};
-    
-    CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
-    CGBitmapInfo bitmapInfo = CGImageGetBitmapInfo(imageRef);
-    
-    int infoMask = (bitmapInfo & kCGBitmapAlphaInfoMask);
-    BOOL anyNonAlpha = (infoMask == kCGImageAlphaNone ||
-                        infoMask == kCGImageAlphaNoneSkipFirst ||
-                        infoMask == kCGImageAlphaNoneSkipLast);
-    
-    // CGBitmapContextCreate doesn't support kCGImageAlphaNone with RGB.
-    // https://developer.apple.com/library/mac/#qa/qa1037/_index.html
-    if (infoMask == kCGImageAlphaNone && CGColorSpaceGetNumberOfComponents(colorSpace) > 1) {
-        // Unset the old alpha info.
-        bitmapInfo &= ~kCGBitmapAlphaInfoMask;
-        
-        // Set noneSkipFirst.
-        bitmapInfo |= kCGImageAlphaNoneSkipFirst;
-    }
-    // Some PNGs tell us they have alpha but only 3 components. Odd.
-    else if (!anyNonAlpha && CGColorSpaceGetNumberOfComponents(colorSpace) == 3) {
-        // Unset the old alpha info.
-        bitmapInfo &= ~kCGBitmapAlphaInfoMask;
-        bitmapInfo |= kCGImageAlphaPremultipliedFirst;
-    }
-    
-    // It calculates the bytes-per-row based on the bitsPerComponent and width arguments.
-    CGContextRef context = CGBitmapContextCreate(NULL,
-                                                 (size_t)imageSize.width,
-                                                 (size_t)imageSize.height,
-                                                 CGImageGetBitsPerComponent(imageRef),
-                                                 0,
-                                                 colorSpace,
-                                                 bitmapInfo);
-    CGColorSpaceRelease(colorSpace);
-    
-    // If failed, return original image
-    if (!context) {
-        return image;
-    }
-    
-    CGContextDrawImage(context, imageRect, imageRef);
-    CGImageRef decompressedImageRef = CGBitmapContextCreateImage(context);
-    
-    CGContextRelease(context);
-    
-    UIImage *decompressedImage = [UIImage imageWithCGImage:decompressedImageRef scale:image.scale orientation:image.imageOrientation];
-    CGImageRelease(decompressedImageRef);
-    return decompressedImage;
-}
-
-+ (UIImage *)croppedImageWithImage:(UIImage *)image aspectFillPixelSize:(CGSize)targetSize {
++ (UIImage *)_croppedImage:(UIImage *)image aspectFillPixelSize:(CGSize)targetSize {
     CGSize imageSize = CGSizeMake(CGImageGetWidth(image.CGImage), CGImageGetHeight(image.CGImage));
     CGFloat scale = ({
         CGFloat scaleWidth = targetSize.width / imageSize.width;
@@ -145,59 +68,7 @@ NSString *DFImageProcessingCornerRadiusKey = @"DFImageProcessingCornerRadiusKey"
     CGSize sizeScaled = CGSizeMake(imageSize.width * scale, imageSize.height * scale);
     CGRect cropRect = CGRectMake((sizeScaled.width - targetSize.width) / 2.f, (sizeScaled.height - targetSize.height) / 2.f, targetSize.width, targetSize.height);
     CGRect normalizedCropRect = CGRectMake(cropRect.origin.x / sizeScaled.width, cropRect.origin.y / sizeScaled.height, cropRect.size.width / sizeScaled.width, cropRect.size.height / sizeScaled.height);
-    return [self croppedImageWithImage:image normalizedCropRect:normalizedCropRect];
-}
-
-+ (UIImage *)croppedImageWithImage:(UIImage *)image normalizedCropRect:(CGRect)inputCropRect {
-    CGRect cropRect = inputCropRect;
-    
-    switch (image.imageOrientation) {
-        case UIImageOrientationUp:
-        case UIImageOrientationUpMirrored:
-            // do nothing
-            break;
-        case UIImageOrientationLeft:
-        case UIImageOrientationLeftMirrored:
-            cropRect.origin.y = inputCropRect.origin.x;
-            cropRect.origin.x = 1.f - inputCropRect.origin.y - inputCropRect.size.height;
-            cropRect.size.width = inputCropRect.size.height;
-            cropRect.size.height = inputCropRect.size.width;
-            break;
-        case UIImageOrientationDown:
-        case UIImageOrientationDownMirrored:
-            cropRect.origin.x = 1.f - inputCropRect.origin.x - inputCropRect.size.width;
-            cropRect.origin.y = 1.f - inputCropRect.origin.y - inputCropRect.size.height;
-            break;
-        case UIImageOrientationRight:
-        case UIImageOrientationRightMirrored:
-            cropRect.origin.x = inputCropRect.origin.y;
-            cropRect.origin.y = 1.f - inputCropRect.origin.x - inputCropRect.size.width;
-            cropRect.size.width = inputCropRect.size.height;
-            cropRect.size.height = inputCropRect.size.width;
-            break;
-        default:
-            break;
-    }
-    
-    CGSize imagePixelSize = CGSizeMake(CGImageGetWidth(image.CGImage), CGImageGetHeight(image.CGImage));
-    CGRect imageCropRect = CGRectMake((CGFloat)floor(cropRect.origin.x * imagePixelSize.width),
-                                      (CGFloat)floor(cropRect.origin.y * imagePixelSize.height),
-                                      (CGFloat)floor(cropRect.size.width * imagePixelSize.width),
-                                      (CGFloat)floor(cropRect.size.height * imagePixelSize.height));
-    
-    CGImageRef croppedImageRef = CGImageCreateWithImageInRect(image.CGImage, imageCropRect);
-    UIImage *croppedImage = [UIImage imageWithCGImage:croppedImageRef scale:image.scale orientation:image.imageOrientation];
-    CGImageRelease(croppedImageRef);
-    return croppedImage;
-}
-
-+ (UIImage *)imageWithImage:(UIImage *)image cornerRadius:(CGFloat)cornerRadius {
-    UIGraphicsBeginImageContextWithOptions(image.size, NO, 0);
-    [[UIBezierPath bezierPathWithRoundedRect:(CGRect){CGPointZero, image.size} cornerRadius:cornerRadius] addClip];
-    [image drawInRect:(CGRect){CGPointZero, image.size}];
-    UIImage *processedImage = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    return processedImage;
+    return [UIImage df_croppedImage:image normalizedCropRect:normalizedCropRect];
 }
 
 @end

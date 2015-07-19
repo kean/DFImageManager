@@ -27,7 +27,7 @@
 #import "DFImageProcessor.h"
 #import "DFProxyImageManager.h"
 
-#if __has_include("DFImageManagerKit+AFNetworking.h") && !(DF_IMAGE_MANAGER_FRAMEWORK_TARGET)
+#if DF_IMAGE_MANAGER_AFNETWORKING_AVAILABLE
 #import "DFImageManagerKit+AFNetworking.h"
 #import <AFNetworking/AFHTTPSessionManager.h>
 #endif
@@ -56,7 +56,7 @@
     DFImageCache *cache = [DFImageCache new];
 #pragma clang diagnostic pop
     
-#if __has_include("DFImageManagerKit+AFNetworking.h") && !(DF_IMAGE_MANAGER_FRAMEWORK_TARGET)
+#if DF_IMAGE_MANAGER_AFNETWORKING_AVAILABLE
     id<DFImageManaging> URLImageManager = ({
         NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
         configuration.URLCache = [[NSURLCache alloc] initWithMemoryCapacity:0 diskCapacity:1024 * 1024 * 200 diskPath:@"com.github.kean.default_image_cache"];

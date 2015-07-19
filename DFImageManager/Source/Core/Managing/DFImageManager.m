@@ -32,7 +32,7 @@
 #import "DFImageRequestOptions.h"
 #import "DFImageResponse.h"
 
-#if __has_include("DFImageManagerKit+GIF.h") && !(DF_IMAGE_MANAGER_FRAMEWORK_TARGET)
+#if DF_IMAGE_MANAGER_GIF_AVAILABLE
 #import "DFImageManagerKit+GIF.h"
 #endif
 
@@ -384,7 +384,7 @@
 - (void)_processResponse:(DFImageResponse *)response task:(_DFImageTask *)task completion:(void (^)(DFImageResponse *processedResponse))completion {
     DFImageRequest *request = task.request;
     BOOL shouldProcessResponse = _conf.processor != nil;
-#if __has_include("DFImageManagerKit+GIF.h") && !(DF_IMAGE_MANAGER_FRAMEWORK_TARGET)
+#if DF_IMAGE_MANAGER_GIF_AVAILABLE
     if ([response.image isKindOfClass:[DFAnimatedImage class]]) {
         shouldProcessResponse = NO;
     }
