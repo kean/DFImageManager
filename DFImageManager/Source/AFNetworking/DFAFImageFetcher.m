@@ -169,7 +169,11 @@ NSString *const DFAFRequestCachePolicyKey = @"DFAFRequestCachePolicyKey";
 
 - (NSURLRequest *)_defaultURLRequestForImageRequest:(DFImageRequest *)imageRequest {
     NSMutableURLRequest *URLRequest = [[NSMutableURLRequest alloc] initWithURL:(NSURL *)imageRequest.resource];
+#ifdef DF_IMAGE_MANAGER_WEBP_AVAILABLE
+    [URLRequest addValue:@"image/webp,image/*;q=0.8" forHTTPHeaderField:@"Accept"];
+#else
     [URLRequest addValue:@"image/*" forHTTPHeaderField:@"Accept"];
+#endif
     DFImageRequestOptions *options = imageRequest.options;
     if (options.userInfo[DFAFRequestCachePolicyKey]) {
         URLRequest.cachePolicy = [options.userInfo[DFAFRequestCachePolicyKey] unsignedIntegerValue];

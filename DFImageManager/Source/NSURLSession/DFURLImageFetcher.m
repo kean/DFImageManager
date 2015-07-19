@@ -333,7 +333,11 @@ static const NSTimeInterval _kCommandExecutionInterval = 0.005; // 5 ms
 
 - (NSURLRequest *)_defaultURLRequestForImageRequest:(DFImageRequest *)imageRequest {
     NSMutableURLRequest *URLRequest = [[NSMutableURLRequest alloc] initWithURL:(NSURL *)imageRequest.resource];
+#ifdef DF_IMAGE_MANAGER_WEBP_AVAILABLE
+    [URLRequest addValue:@"image/webp,image/*;q=0.8" forHTTPHeaderField:@"Accept"];
+#else
     [URLRequest addValue:@"image/*" forHTTPHeaderField:@"Accept"];
+#endif
     DFImageRequestOptions *options = imageRequest.options;
     if (options.userInfo[DFURLRequestCachePolicyKey]) {
         URLRequest.cachePolicy = [options.userInfo[DFURLRequestCachePolicyKey] unsignedIntegerValue];
