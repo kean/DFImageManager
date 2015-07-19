@@ -81,6 +81,6 @@
 #endif
 
 // Subspec 'WebP'
-#if DF_IMAGE_MANAGER_GIF_AVAILABLE
+#if DF_IMAGE_MANAGER_WEBP_AVAILABLE
 #import "DFImageManagerKit+WebP.h"
 #endif
