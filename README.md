@@ -4,14 +4,14 @@
 
 Advanced iOS framework for loading, caching, processing, displaying and preheating images. It uses latest features in iOS SDK and doesn't reinvent existing technologies. It provides a powerful API that will extend the capabilities of your app.
 
-The DFImageManager is not just a loader, it is a pipeline with a great API for managing image requests, and an ability to easily plug-in everything that your application might need. It features [multiple subspecs](#install_using_cocopods) that integrate things like [AFNetworking](https://github.com/AFNetworking/AFNetworking) as a networking stack for fetching images, and [FLAnimatedImage](https://github.com/Flipboard/FLAnimatedImage) as a performant animated GIF engine, and more.
+The DFImageManager is not just a loader, it's a pipeline for for managing image requests, and an ability to easily plug-in everything that your application might need. It features [multiple subspecs](#install_using_cocopods) that integrate things like [AFNetworking](https://github.com/AFNetworking/AFNetworking) as a networking stack for fetching images, and [FLAnimatedImage](https://github.com/Flipboard/FLAnimatedImage) as a performant animated GIF engine, and more.
 
 ## Features
 
 - Zero config, yet immense customization and extensibility
 - Works great with Swift
 - Common APIs for different resources (`NSURL`, `PHAsset`, `ALAsset`, and your custom classes)
-- Extreme performance even on outdated devices, asynchronous and thread safe
+- Great performance even on outdated devices, asynchronous and thread safe
 - Unit tested
 
 ##### Loading
