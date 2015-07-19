@@ -153,6 +153,11 @@ Those were the most common cases. `DFImageManager` is packed with other features
 - `PHAsset`, `NSURL` with **com.github.kean.photos-kit** scheme (`PhotosKit` subspec)
 - `DFALAsset`, `ALAsset`, `NSURL` with **assets-library** scheme (`AssetsLibrary` subspec)
 
+## Supported Image Formats
+- Everything supported by `UIImage` (jpg, png, bmp, [and more](https://developer.apple.com/library/ios/documentation/UIKit/Reference/UIImage_Class/))
+- gif (`GIF` subspec)
+- webp (`WebP` subspec)
+
 ## <a name="install_using_cocopods"></a>Installation with [CocoaPods](http://cocoapods.org)
 
 CocoaPods is the dependency manager for Cocoa projects, which automates the process of integrating third-party frameworks like DFImageManager. If you are not familiar with CocoaPods the best place to start would be [official CocoaPods guides](http://guides.cocoapods.org). To install DFImageManager add a dependency in your Podfile:
