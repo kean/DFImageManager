@@ -7,11 +7,13 @@
 //
 
 #import "SDFGIFSampleViewController.h"
+#import "SDFImageCollectionViewCell.h"
 #import <DFImageManagerKit.h>
 
 
 static NSString *const kReuseIdentifierTextViewCell = @"kReuseIdentifierTextViewCell";
 static NSString *const kReuseIdentifierImageCell = @"kReuseIdentifierImageCell";
+
 
 @interface SDFGIFSampleViewController () <UICollectionViewDelegateFlowLayout>
 
@@ -29,7 +31,7 @@ static NSString *const kReuseIdentifierImageCell = @"kReuseIdentifierImageCell";
     [super viewDidLoad];
     
     [self.collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:kReuseIdentifierTextViewCell];
-    [self.collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:kReuseIdentifierImageCell];
+    [self.collectionView registerClass:[SDFImageCollectionViewCell class] forCellWithReuseIdentifier:kReuseIdentifierImageCell];
     self.collectionView.alwaysBounceVertical = YES;
     self.view.backgroundColor = [UIColor whiteColor];
     self.collectionView.backgroundColor = self.view.backgroundColor;
@@ -77,16 +79,8 @@ static NSString *const kReuseIdentifierImageCell = @"kReuseIdentifierImageCell";
         cell = [collectionView dequeueReusableCellWithReuseIdentifier:kReuseIdentifierImageCell forIndexPath:indexPath];
         cell.backgroundColor = [UIColor colorWithWhite:235.f/255.f alpha:1.f];
         
-        DFImageView *imageView = (id)[cell viewWithTag:15];
-        if (!imageView) {
-            imageView = [[DFImageView alloc] initWithFrame:cell.bounds];
-            imageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-            imageView.tag = 15;
-            [cell addSubview:imageView];
-        }
-        
-        [imageView prepareForReuse];
-        [imageView setImageWithResource:_imageURLs[indexPath.item]];
+        SDFImageCollectionViewCell *imageCell = (id)cell;
+        [imageCell setImageWithURL:_imageURLs[indexPath.item]];
     }
     return cell;
 }
