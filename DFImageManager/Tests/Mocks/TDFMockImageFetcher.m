@@ -48,6 +48,11 @@ NSString *TDFMockImageFetcherOperationKey = @"TDFMockImageFetcherOperationKey";
             }
         });
         dispatch_async(dispatch_get_main_queue(), ^{
+            if (progressHandler) {
+                progressHandler(1.0);
+            }
+        });
+        dispatch_async(dispatch_get_main_queue(), ^{
             if (completion) {
                 completion(self.response);
             }

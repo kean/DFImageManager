@@ -68,6 +68,7 @@
 @synthesize request = _request;
 @synthesize error = _error;
 @synthesize state = _state;
+@synthesize progress = _progress;
 
 - (instancetype)initWithManager:(DFImageManager *)manager request:(DFImageRequest *)request completionHandler:(DFImageRequestCompletion)completionHandler {
     if (self = [super init]) {
@@ -75,6 +76,13 @@
         _request = request;
         _completionHandler = completionHandler;
         _state = DFImageTaskStateSuspended;
+        
+        _progress = [NSProgress new];
+        _progress.totalUnitCount = 1000;
+        _DFImageTask *__weak weakSelf = self;
+        _progress.cancellationHandler = ^{
+            [weakSelf cancel];
+        };
     }
     return self;
 }
@@ -348,14 +356,12 @@
 
 - (void)_imageFetchOperation:(_DFImageFetchOperation *)operation didUpdateProgress:(double)progress {
     dispatch_async(_queue, ^{
-        for (_DFImageTask *task in operation.imageTasks) {
-            void (^progressHandler)(double) = task.request.options.progressHandler;
-            if (progressHandler) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    progressHandler(progress);
-                });
+        NSSet *imageTasks = [operation.imageTasks copy];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            for (_DFImageTask *task in imageTasks) {
+                task.progress.completedUnitCount = (int64_t)(task.progress.totalUnitCount * progress);
             }
-        }
+        });
     });
 }
 

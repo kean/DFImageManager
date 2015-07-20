@@ -53,10 +53,6 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nullable, nonatomic) NSDictionary *userInfo;
 
-/*! Progress handler, called on a main thread.
- */
-@property (nullable, nonatomic, copy) DFImageRequestProgressHandler progressHandler;
-
 /*! Initializes DFImageRequestOptions with default options.
  */
 - (instancetype)init NS_DESIGNATED_INITIALIZER;

@@ -18,7 +18,6 @@
     XCTAssertEqual(opt.memoryCachePolicy, DFImageRequestCachePolicyDefault); \
     XCTAssertEqual(opt.expirationAge, 600.); \
     XCTAssertNil(opt.userInfo); \
-    XCTAssertNil(opt.progressHandler); \
 })
 
 __unused static DFImageRequestOptions *
@@ -30,9 +29,6 @@ TDFCreateRequestOptionsWithNotDefaultParameters() {
     options.memoryCachePolicy = DFImageRequestCachePolicyReloadIgnoringCache;
     options.expirationAge = 300.0;
     options.userInfo = @{ @"TestKey" : @YES };
-    options.progressHandler = ^(double progress){
-        // do nothing
-    };
     return options;
 }
 
@@ -49,6 +45,5 @@ TDFCreateRequestOptionsWithNotDefaultParameters() {
     XCTAssertEqual(opt1.expirationAge, opt2.expirationAge); \
     XCTAssertEqual(opt1.userInfo, opt2.userInfo); \
     XCTAssertTrue((opt1.userInfo == nil && opt2.userInfo == nil) || [opt1.userInfo isEqualToDictionary:opt2.userInfo]); \
-    XCTAssertTrue((opt1.progressHandler == nil && opt2.progressHandler == nil) || (opt1.progressHandler != nil && opt2.progressHandler != nil)); \
 })
 

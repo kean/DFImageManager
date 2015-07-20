@@ -19,6 +19,7 @@ The DFImageManager is not just a loader, it is a pipeline API for managing image
 - Has basic built-in networking implementation, and optional [AFNetworking integration](#install_using_cocopods) which should be your primary choice. Combine the power of both frameworks! 
 - Show a low-resolution placeholder(s) first and swap to higher-res one when it is loaded
 - Groups similar tasks and never executes them twice
+- Supports progress tracking and cancellation using `NSProgress`
 
 ##### Caching
 - Instead of reinventing a caching methodology it relies on HTTP cache as defined in [HTTP specification](https://tools.ietf.org/html/rfc7234) and caching implementation provided by [Foundation URL Loading System](https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/URLLoadingSystem/URLLoadingSystem.html). The caching and revalidation are completely transparent to the client
@@ -56,7 +57,7 @@ DFImageTask *task = [[DFImageManager sharedManager] imageTaskForResource:[NSURL 
 }];
 [task resume];
 
-[task cancel]; // task can be used to cancel the request (and more)
+[task cancel]; // task can be used to cancel the request
 ```
 
 #### Add request options
@@ -66,9 +67,6 @@ NSURL *imageURL = [NSURL URLWithString:@"http://..."];
 
 DFImageRequestOptions *options = [DFImageRequestOptions new];
 options.allowsClipping = YES;
-options.progressHandler = ^(double progress){
-// Observe progress
-};
 options.userInfo = @{ DFURLRequestCachePolicyKey : @(NSURLRequestReturnCacheDataDontLoad) };
 
 DFImageRequest *request = [DFImageRequest requestWithResource:imageURL targetSize:CGSizeMake(100.f, 100.f) contentMode:DFImageContentModeAspectFill options:options];

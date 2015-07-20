@@ -266,15 +266,43 @@
 
 #pragma mark - Progress
 
-- (void)testThatProgressHandlerIsCalled {
-    XCTestExpectation *expectation = [self expectationWithDescription:@""];
-    DFImageRequestOptions *options = [DFImageRequestOptions new];
-    options.progressHandler = ^(double progress){
-        XCTAssertEqual(progress, 0.5);
-        [expectation fulfill];
-    };
-    DFImageRequest *request = [DFImageRequest requestWithResource:[TDFMockResource resourceWithID:@"1"] targetSize:DFImageMaximumSize contentMode:DFImageContentModeAspectFill options:options];
-    [[_manager imageTaskForRequest:request completion:nil] resume];
+- (void)testThatProgressObjectIsUpdated {
+    DFImageRequest *request = [DFImageRequest requestWithResource:[TDFMockResource resourceWithID:@"1"]];
+    DFImageTask *task = [_manager imageTaskForRequest:request completion:nil];
+    
+    NSProgress *progress = task.progress;
+    XCTAssertNotNil(progress);
+    
+    BOOL __block _isHalfCompleted;
+    [self keyValueObservingExpectationForObject:progress keyPath:@"fractionCompleted" handler:^BOOL(NSProgress *observedObject, NSDictionary *change) {
+        XCTAssertTrue([NSThread isMainThread]);
+        if (!_isHalfCompleted) {
+            XCTAssertEqual(observedObject.fractionCompleted, 0.5);
+            _isHalfCompleted = YES;
+        } else {
+            XCTAssertEqual(observedObject.fractionCompleted, 1);
+            return YES;
+        }
+        return NO;
+    }];
+    
+    [task resume];
+    
+    [self waitForExpectationsWithTimeout:1 handler:nil];
+}
+
+- (void)testThatProgressObjectCancelsTask {
+    _fetcher.queue.suspended = YES;
+    
+    DFImageTask *task = [_manager imageTaskForResource:[TDFMockResource resourceWithID:@"ID01"] completion:nil];
+    [task resume];
+    [self expectationForNotification:TDFMockFetchOperationWillCancelNotification object:nil handler:nil];
+    
+    NSProgress *progress = task.progress;
+    XCTAssertNotNil(progress);
+    XCTAssertTrue(progress.isCancellable);
+    [progress cancel];
+    
     [self waitForExpectationsWithTimeout:1.0 handler:nil];
 }
 

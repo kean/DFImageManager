@@ -43,7 +43,6 @@
             _allowsClipping = options.allowsClipping;
             _memoryCachePolicy = options.memoryCachePolicy;
             _expirationAge = options.expirationAge;
-            _progressHandler = [options.progressHandler copy];
             _userInfo = [options.userInfo copy];
         }
     }
