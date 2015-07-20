@@ -77,8 +77,7 @@
         _completionHandler = completionHandler;
         _state = DFImageTaskStateSuspended;
         
-        _progress = [NSProgress new];
-        _progress.totalUnitCount = 1000;
+        _progress = [NSProgress progressWithTotalUnitCount:1000];
         _DFImageTask *__weak weakSelf = self;
         _progress.cancellationHandler = ^{
             [weakSelf cancel];

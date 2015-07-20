@@ -272,6 +272,7 @@
     
     NSProgress *progress = task.progress;
     XCTAssertNotNil(progress);
+    XCTAssertFalse(progress.isIndeterminate);
     
     BOOL __block _isHalfCompleted;
     [self keyValueObservingExpectationForObject:progress keyPath:@"fractionCompleted" handler:^BOOL(NSProgress *observedObject, NSDictionary *change) {
@@ -304,6 +305,54 @@
     [progress cancel];
     
     [self waitForExpectationsWithTimeout:1.0 handler:nil];
+}
+
+- (void)testThatImplicitProgressCompositionWorks {
+    DFImageRequest *request = [DFImageRequest requestWithResource:[TDFMockResource resourceWithID:@"1"]];
+    
+    NSProgress *progress = [NSProgress progressWithTotalUnitCount:100];
+    [progress becomeCurrentWithPendingUnitCount:100];
+    DFImageTask *task = [_manager imageTaskForRequest:request completion:nil];
+    [progress resignCurrent];
+    
+    BOOL __block _isHalfCompleted;
+    [self keyValueObservingExpectationForObject:progress keyPath:@"fractionCompleted" handler:^BOOL(NSProgress *observedObject, NSDictionary *change) {
+        XCTAssertTrue([NSThread isMainThread]);
+        if (!_isHalfCompleted) {
+            XCTAssertEqual(observedObject.fractionCompleted, 0.5);
+            _isHalfCompleted = YES;
+        } else {
+            XCTAssertEqual(observedObject.fractionCompleted, 1);
+            return YES;
+        }
+        return NO;
+    }];
+    
+    [task resume];
+    
+    [self waitForExpectationsWithTimeout:1 handler:nil];
+}
+
+- (void)testThatImplicitProgressCompositionConstructsProgressTree {
+    NSProgress *progress = [NSProgress progressWithTotalUnitCount:100];
+    
+    [progress becomeCurrentWithPendingUnitCount:50];
+    [[_manager imageTaskForRequest:[DFImageRequest requestWithResource:[TDFMockResource resourceWithID:@"1"]] completion:nil] resume];
+    [progress resignCurrent];
+    
+    [progress becomeCurrentWithPendingUnitCount:50];
+    [[_manager imageTaskForRequest:[DFImageRequest requestWithResource:[TDFMockResource resourceWithID:@"2"]] completion:nil] resume];
+    [progress resignCurrent];
+    
+    double __block fractionCompleted = 0;
+    [self keyValueObservingExpectationForObject:progress keyPath:@"fractionCompleted" handler:^BOOL(NSProgress *observedObject, NSDictionary *change) {
+        XCTAssertTrue([NSThread isMainThread]);
+        fractionCompleted += 0.25;
+        XCTAssertEqual(fractionCompleted, observedObject.fractionCompleted);
+        return observedObject.fractionCompleted == 1;
+    }];
+    
+    [self waitForExpectationsWithTimeout:1 handler:nil];
 }
 
 #pragma mark - Memory Cache
