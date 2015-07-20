@@ -56,7 +56,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param completion Completion handler, can be called on any thread.
  @return The operation that implements fetching.
  */
-- (NSOperation *)startOperationWithRequest:(DFImageRequest *)request progressHandler:(void (^__nullable)(double progress))progressHandler completion:(void (^)(DFImageResponse *response))completion;
+- (NSOperation *)startOperationWithRequest:(DFImageRequest *)request progressHandler:(void (^__nullable)(int64_t completedUnitCount, int64_t totalUnitCount))progressHandler completion:(void (^)(DFImageResponse *response))completion;
 
 @optional
 

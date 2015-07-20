@@ -272,19 +272,16 @@
     
     NSProgress *progress = task.progress;
     XCTAssertNotNil(progress);
-    XCTAssertFalse(progress.isIndeterminate);
     
-    BOOL __block _isHalfCompleted;
+    double __block fractionCompleted = 0;
     [self keyValueObservingExpectationForObject:progress keyPath:@"fractionCompleted" handler:^BOOL(NSProgress *observedObject, NSDictionary *change) {
         XCTAssertTrue([NSThread isMainThread]);
-        if (!_isHalfCompleted) {
-            XCTAssertEqual(observedObject.fractionCompleted, 0.5);
-            _isHalfCompleted = YES;
-        } else {
-            XCTAssertEqual(observedObject.fractionCompleted, 1);
-            return YES;
-        }
-        return NO;
+        XCTAssertTrue([NSThread isMainThread]);
+        XCTAssertEqual(fractionCompleted, observedObject.fractionCompleted);
+        
+        // We increment fraction completed afterwards, because NSProgress on DFImageTask doesn't have a totalUnitCount until first progress callback
+        fractionCompleted += 0.5;
+        return observedObject.fractionCompleted == 1;
     }];
     
     [task resume];
@@ -337,11 +334,11 @@
     NSProgress *progress = [NSProgress progressWithTotalUnitCount:100];
     
     [progress becomeCurrentWithPendingUnitCount:50];
-    [[_manager imageTaskForRequest:[DFImageRequest requestWithResource:[TDFMockResource resourceWithID:@"1"]] completion:nil] resume];
+    DFImageTask *task1 = [_manager imageTaskForRequest:[DFImageRequest requestWithResource:[TDFMockResource resourceWithID:@"1"]] completion:nil];
     [progress resignCurrent];
     
     [progress becomeCurrentWithPendingUnitCount:50];
-    [[_manager imageTaskForRequest:[DFImageRequest requestWithResource:[TDFMockResource resourceWithID:@"2"]] completion:nil] resume];
+    DFImageTask *task2 = [_manager imageTaskForRequest:[DFImageRequest requestWithResource:[TDFMockResource resourceWithID:@"2"]] completion:nil];
     [progress resignCurrent];
     
     double __block fractionCompleted = 0;
@@ -351,6 +348,9 @@
         XCTAssertEqual(fractionCompleted, observedObject.fractionCompleted);
         return observedObject.fractionCompleted == 1;
     }];
+    
+    [task1 resume];
+    [task2 resume];
     
     [self waitForExpectationsWithTimeout:1 handler:nil];
 }

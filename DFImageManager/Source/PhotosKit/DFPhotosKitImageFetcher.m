@@ -123,7 +123,7 @@ static inline PHImageContentMode _PHContentModeForDFContentMode(DFImageContentMo
             options1.resizeMode == options2.resizeMode);
 }
 
-- (NSOperation *)startOperationWithRequest:(DFImageRequest *)request progressHandler:(void (^)(double))progressHandler completion:(void (^)(DFImageResponse *))completion {
+- (NSOperation *)startOperationWithRequest:(DFImageRequest *)request progressHandler:(void (^)(int64_t, int64_t))progressHandler completion:(void (^)(DFImageResponse *))completion {
     _DFPhotosKitRequestOptions options = [self _requestOptionsFromUserInfo:request.options.userInfo];
     PHImageRequestOptions *requestOptions = [PHImageRequestOptions new];
     requestOptions.networkAccessAllowed = request.options.allowsNetworkAccess;
@@ -134,6 +134,12 @@ static inline PHImageContentMode _PHContentModeForDFContentMode(DFImageContentMo
     }
     requestOptions.resizeMode = options.resizeMode;
     requestOptions.version = options.version;
+    requestOptions.progressHandler = ^(double progress, NSError *error, BOOL *stop, NSDictionary *info){
+        if (progressHandler) {
+            int64_t totalUnitCount = 1000;
+            progressHandler((int64_t)progress * totalUnitCount, totalUnitCount);
+        }
+    };
     
     id resource = request.resource;
     if ([resource isKindOfClass:[NSURL class]]) {

@@ -140,7 +140,7 @@ static inline NSURL *_ALAssetURL(id resource) {
     return DFALAssetImageSizeFullsize;
 }
 
-- (NSOperation *)startOperationWithRequest:(DFImageRequest *)request progressHandler:(void (^)(double))progressHandler completion:(void (^)(DFImageResponse *))completion {
+- (NSOperation *)startOperationWithRequest:(DFImageRequest *)request progressHandler:(void (^)(int64_t, int64_t))progressHandler completion:(void (^)(DFImageResponse *))completion {
     _DFAssetsLibraryImageFetchOperation *operation;
     if ([request.resource isKindOfClass:[DFALAsset class]]) {
         operation = [[_DFAssetsLibraryImageFetchOperation alloc] initWithAsset:((DFALAsset *)request.resource).asset];

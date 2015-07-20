@@ -277,11 +277,11 @@ static const NSTimeInterval _kCommandExecutionInterval = 0.005; // 5 ms
     return request1 == request2 || [(NSURL *)request1.resource isEqual:(NSURL *)request2.resource];
 }
 
-- (NSOperation *)startOperationWithRequest:(DFImageRequest *)request progressHandler:(void (^)(double))progressHandler completion:(void (^)(DFImageResponse *))completion {
+- (NSOperation *)startOperationWithRequest:(DFImageRequest *)request progressHandler:(void (^)(int64_t, int64_t))progressHandler completion:(void (^)(DFImageResponse *))completion {
     NSURLRequest *URLRequest = [self _URLRequestForImageRequest:request];
     NSURLSessionDataTask *__block task = [self.sessionDelegate URLImageFetcher:self dataTaskWithRequest:URLRequest progressHandler:^(int64_t countOfBytesReceived, int64_t countOfBytesExpectedToReceive) {
         if (progressHandler) {
-            progressHandler((double)countOfBytesReceived / (double)countOfBytesExpectedToReceive);
+            progressHandler(countOfBytesReceived, countOfBytesExpectedToReceive);
         }
     } completionHandler:^(NSData *data, NSURLResponse *URLResponse, NSError *error) {
         DFImageResponse *response;

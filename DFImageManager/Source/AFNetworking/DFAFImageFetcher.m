@@ -120,7 +120,7 @@ NSString *const DFAFRequestCachePolicyKey = @"DFAFRequestCachePolicyKey";
     return request1 == request2 || [(NSURL *)request1.resource isEqual:(NSURL *)request2.resource];
 }
 
-- (NSOperation *)startOperationWithRequest:(DFImageRequest *)request progressHandler:(void (^)(double))progressHandler completion:(void (^)(DFImageResponse *))completion {
+- (NSOperation *)startOperationWithRequest:(DFImageRequest *)request progressHandler:(void (^)(int64_t, int64_t))progressHandler completion:(void (^)(DFImageResponse *))completion {
     NSURLRequest *URLRequest = [self _URLRequestForImageRequest:request];
     DFAFImageFetcher *__weak weakSelf = self;
     NSURLSessionDataTask *__block task = [self.sessionManager dataTaskWithRequest:URLRequest completionHandler:^(NSURLResponse *URLResponse, UIImage *result, NSError *error) {
@@ -138,7 +138,7 @@ NSString *const DFAFRequestCachePolicyKey = @"DFAFRequestCachePolicyKey";
     _DFDataTaskDelegate *dataTaskDelegate = [_DFDataTaskDelegate new];
     [dataTaskDelegate setDataTaskDidReceiveDataBlock:^(NSURLSession *session, NSURLSessionDataTask *dataTask, NSData *data) {
         if (progressHandler) {
-            progressHandler((double)dataTask.countOfBytesReceived / (double)dataTask.countOfBytesExpectedToReceive);
+            progressHandler(dataTask.countOfBytesReceived, dataTask.countOfBytesExpectedToReceive);
         }
     }];
     @synchronized(self) {

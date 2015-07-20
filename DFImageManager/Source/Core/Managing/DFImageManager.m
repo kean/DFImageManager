@@ -77,7 +77,7 @@
         _completionHandler = completionHandler;
         _state = DFImageTaskStateSuspended;
         
-        _progress = [NSProgress progressWithTotalUnitCount:1000];
+        _progress = [NSProgress progressWithTotalUnitCount:0];
         _DFImageTask *__weak weakSelf = self;
         _progress.cancellationHandler = ^{
             [weakSelf cancel];
@@ -317,8 +317,8 @@
         if (!operation) {
             operation = [[_DFImageFetchOperation alloc] initWithRequest:task.request key:operationKey];
             DFImageManager *__weak weakSelf = self;
-            operation.operation = [_conf.fetcher startOperationWithRequest:task.request progressHandler:^(double progress) {
-                [weakSelf _imageFetchOperation:operation didUpdateProgress:progress];
+            operation.operation = [_conf.fetcher startOperationWithRequest:task.request progressHandler:^(int64_t completedUnitCount, int64_t totalUnitCount) {
+                [weakSelf _imageFetchOperation:operation didUpdateProgressWithCompletedUnitCount:completedUnitCount totalUnitCount:totalUnitCount];
             } completion:^(DFImageResponse *response) {
                 [weakSelf _imageFetchOperation:operation didCompleteWithResponse:response];
             }];
@@ -353,12 +353,13 @@
     }
 }
 
-- (void)_imageFetchOperation:(_DFImageFetchOperation *)operation didUpdateProgress:(double)progress {
+- (void)_imageFetchOperation:(_DFImageFetchOperation *)operation didUpdateProgressWithCompletedUnitCount:(int64_t)completedUnitCount totalUnitCount:(int64_t)totalUnitCount {
     dispatch_async(_queue, ^{
         NSSet *imageTasks = [operation.imageTasks copy];
         dispatch_async(dispatch_get_main_queue(), ^{
             for (_DFImageTask *task in imageTasks) {
-                task.progress.completedUnitCount = (int64_t)(task.progress.totalUnitCount * progress);
+                task.progress.totalUnitCount = totalUnitCount;
+                task.progress.completedUnitCount = completedUnitCount;
             }
         });
     });
