@@ -139,7 +139,7 @@ NS_ASSUME_NONNULL_BEGIN
 /*! Method gets called every time the completion block is called for the current image fetch task.
  @note Might be called multiple times depending on the number of image requests.
  */
-- (void)didCompleteRequest:(DFImageRequest *)request withImage:(UIImage *)image info:(NSDictionary *)info;
+- (void)didCompleteRequest:(DFImageRequest *)request withImage:(nullable UIImage *)image info:(NSDictionary *)info;
 
 @end
 
