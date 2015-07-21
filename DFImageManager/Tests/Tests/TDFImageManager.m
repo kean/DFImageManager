@@ -272,7 +272,7 @@
     
     NSProgress *progress = task.progress;
     XCTAssertNotNil(progress);
-    XCTAssertFalse(progress.isIndeterminate);
+    XCTAssertTrue(progress.isIndeterminate);
     
     double __block fractionCompleted = 0;
     [self keyValueObservingExpectationForObject:progress keyPath:@"fractionCompleted" handler:^BOOL(NSProgress *observedObject, NSDictionary *change) {
