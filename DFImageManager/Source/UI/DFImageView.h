@@ -116,7 +116,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /*! Returns current image fetch task.
  */
-@property (nullable, nonatomic, readonly) DFCompositeImageTask *task;
+@property (nullable, nonatomic, readonly) DFCompositeImageTask *imageTask;
 
 /*! Requests an image representation with a target size, image content mode and request options of the receiver. For more info see setImageWithRequests: method.
  */

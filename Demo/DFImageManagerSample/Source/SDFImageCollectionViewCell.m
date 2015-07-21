@@ -54,7 +54,7 @@
 
 - (void)setImageWithURL:(NSURL *)imageURL {
     [_imageView setImageWithResource:imageURL];
-    DFImageTask *task = [_imageView.task.imageTasks lastObject];
+    DFImageTask *task = [_imageView.imageTask.imageTasks lastObject];
     self.currentProgress = task.progress;
 }
 
