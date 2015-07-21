@@ -179,6 +179,8 @@
 @property (nonatomic, readonly) _DFImageRequestKey *key;
 @property (nonatomic) NSOperation *operation;
 @property (nonatomic) NSMutableSet *imageTasks;
+@property (nonatomic) int64_t completedUnitCount;
+@property (nonatomic) int64_t totalUnitCount;
 
 @end
 
@@ -323,6 +325,9 @@
                 [weakSelf _imageFetchOperation:operation didCompleteWithResponse:response];
             }];
             _fetchOperations[operationKey] = operation;
+        } else {
+            task.progress.totalUnitCount = operation.totalUnitCount;
+            task.progress.completedUnitCount = operation.completedUnitCount;
         }
         [operation.imageTasks addObject:task];
         [operation updateOperationPriority];
@@ -355,6 +360,8 @@
 
 - (void)_imageFetchOperation:(_DFImageFetchOperation *)operation didUpdateProgressWithCompletedUnitCount:(int64_t)completedUnitCount totalUnitCount:(int64_t)totalUnitCount {
     dispatch_async(_queue, ^{
+        operation.totalUnitCount = totalUnitCount;
+        operation.completedUnitCount = completedUnitCount;
         for (_DFImageTask *task in operation.imageTasks) {
             task.progress.totalUnitCount = totalUnitCount;
             task.progress.completedUnitCount = completedUnitCount;
