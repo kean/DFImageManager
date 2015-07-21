@@ -272,13 +272,12 @@
     
     NSProgress *progress = task.progress;
     XCTAssertNotNil(progress);
+    XCTAssertFalse(progress.isIndeterminate);
     
     double __block fractionCompleted = 0;
     [self keyValueObservingExpectationForObject:progress keyPath:@"fractionCompleted" handler:^BOOL(NSProgress *observedObject, NSDictionary *change) {
-        XCTAssertEqual(fractionCompleted, observedObject.fractionCompleted);
-        
-        // We increment fraction completed afterwards, because NSProgress on DFImageTask doesn't have a totalUnitCount until first progress callback
         fractionCompleted += 0.5;
+        XCTAssertEqual(fractionCompleted, observedObject.fractionCompleted);
         return observedObject.fractionCompleted == 1;
     }];
     
