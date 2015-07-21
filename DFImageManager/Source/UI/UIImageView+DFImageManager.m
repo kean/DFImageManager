@@ -43,17 +43,20 @@ static char *_imageTaskKey;
     [self _df_cancelFetching];
 }
 
-- (void)df_setImageWithResource:(id)resource {
+- (nullable DFImageTask *)df_setImageWithResource:(nonnull id)resource {
     CGFloat scale = [UIScreen mainScreen].scale;
     CGSize targetSize = CGSizeMake(self.bounds.size.width * scale, self.bounds.size.height * scale);
-    [self df_setImageWithResource:resource targetSize:targetSize contentMode:DFImageContentModeAspectFill options:nil];
+    return [self df_setImageWithResource:resource targetSize:targetSize contentMode:DFImageContentModeAspectFill options:nil];
 }
 
-- (void)df_setImageWithResource:(id)resource targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options {
+- (nullable DFImageTask *)df_setImageWithResource:(nonnull id)resource targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(nullable DFImageRequestOptions *)options {
+    return [self df_setImageWithRequest:[DFImageRequest requestWithResource:resource targetSize:targetSize contentMode:contentMode options:options]];
+}
+
+- (nullable DFImageTask *)df_setImageWithRequest:(nonnull DFImageRequest *)request {
     [self _df_cancelFetching];
     
     UIImageView *__weak weakSelf = self;
-    DFImageRequest *request = [DFImageRequest requestWithResource:resource targetSize:targetSize contentMode:contentMode options:options];
     DFImageTask *task = [[DFImageManager sharedManager] imageTaskForRequest:request completion:^(UIImage *image, NSDictionary *info) {
         if (image) {
             weakSelf.image = image;
@@ -61,6 +64,8 @@ static char *_imageTaskKey;
     }];
     [task resume];
     [self _df_setImageTask:task];
+    
+    return task;
 }
 
 - (void)_df_cancelFetching {
