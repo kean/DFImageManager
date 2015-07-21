@@ -355,13 +355,10 @@
 
 - (void)_imageFetchOperation:(_DFImageFetchOperation *)operation didUpdateProgressWithCompletedUnitCount:(int64_t)completedUnitCount totalUnitCount:(int64_t)totalUnitCount {
     dispatch_async(_queue, ^{
-        NSSet *imageTasks = [operation.imageTasks copy];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            for (_DFImageTask *task in imageTasks) {
-                task.progress.totalUnitCount = totalUnitCount;
-                task.progress.completedUnitCount = completedUnitCount;
-            }
-        });
+        for (_DFImageTask *task in operation.imageTasks) {
+            task.progress.totalUnitCount = totalUnitCount;
+            task.progress.completedUnitCount = completedUnitCount;
+        }
     });
 }
 

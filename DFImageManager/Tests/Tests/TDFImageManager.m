@@ -275,8 +275,6 @@
     
     double __block fractionCompleted = 0;
     [self keyValueObservingExpectationForObject:progress keyPath:@"fractionCompleted" handler:^BOOL(NSProgress *observedObject, NSDictionary *change) {
-        XCTAssertTrue([NSThread isMainThread]);
-        XCTAssertTrue([NSThread isMainThread]);
         XCTAssertEqual(fractionCompleted, observedObject.fractionCompleted);
         
         // We increment fraction completed afterwards, because NSProgress on DFImageTask doesn't have a totalUnitCount until first progress callback
@@ -314,7 +312,6 @@
     
     BOOL __block _isHalfCompleted;
     [self keyValueObservingExpectationForObject:progress keyPath:@"fractionCompleted" handler:^BOOL(NSProgress *observedObject, NSDictionary *change) {
-        XCTAssertTrue([NSThread isMainThread]);
         if (!_isHalfCompleted) {
             XCTAssertEqual(observedObject.fractionCompleted, 0.5);
             _isHalfCompleted = YES;
@@ -343,7 +340,6 @@
     
     double __block fractionCompleted = 0;
     [self keyValueObservingExpectationForObject:progress keyPath:@"fractionCompleted" handler:^BOOL(NSProgress *observedObject, NSDictionary *change) {
-        XCTAssertTrue([NSThread isMainThread]);
         fractionCompleted += 0.25;
         XCTAssertEqual(fractionCompleted, observedObject.fractionCompleted);
         return observedObject.fractionCompleted == 1;

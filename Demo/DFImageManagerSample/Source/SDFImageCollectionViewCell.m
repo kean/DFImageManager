@@ -69,12 +69,14 @@
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
     if (object == _currentProgress) {
-        [self.progressView setProgress:_currentProgress.fractionCompleted animated:YES];
-        if (_currentProgress.fractionCompleted == 1) {
-            [UIView animateWithDuration:0.2 animations:^{
-                self.progressView.alpha = 0;
-            }];
-        }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.progressView setProgress:_currentProgress.fractionCompleted animated:YES];
+            if (_currentProgress.fractionCompleted == 1) {
+                [UIView animateWithDuration:0.2 animations:^{
+                    self.progressView.alpha = 0;
+                }];
+            }
+        });
     } else {
         [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
     }
