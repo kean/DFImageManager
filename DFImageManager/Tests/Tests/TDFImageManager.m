@@ -491,6 +491,18 @@
     [self waitForExpectationsWithTimeout:1.0 handler:nil];
 }
 
+#pragma mark - Processing
+
+- (void)testThatImageIsProcessed {
+    XCTestExpectation *expectation = [self expectationWithDescription:@"first_request"];
+    [[_manager imageTaskForResource:[TDFMockResource resourceWithID:@"ID01"] completion:^(UIImage *image, NSDictionary *info) {
+        XCTAssertNotNil(image);
+        XCTAssertTrue([image tdf_isImageProcessed]);
+        [expectation fulfill];
+    }] resume];
+    [self waitForExpectationsWithTimeout:1.0 handler:nil];
+}
+
 #pragma mark - Priority
 
 - (void)testThatPriorityIsChanged {

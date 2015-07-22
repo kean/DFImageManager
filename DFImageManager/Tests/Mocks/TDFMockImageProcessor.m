@@ -7,6 +7,19 @@
 //
 
 #import "TDFMockImageProcessor.h"
+#import <objc/runtime.h>
+
+static char *_imageProcessedKey;
+
+@implementation UIImage (TDFMockImageProcessor)
+
+- (BOOL)tdf_isImageProcessed {
+    return [objc_getAssociatedObject(self, &_imageProcessedKey) boolValue];
+}
+
+@end
+
+
 
 @implementation TDFMockImageProcessor
 
@@ -15,6 +28,7 @@
 }
 
 - (UIImage *)processedImage:(UIImage *)image forRequest:(DFImageRequest *)request {
+    objc_setAssociatedObject(image, &_imageProcessedKey, @YES, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     return image;
 }
 

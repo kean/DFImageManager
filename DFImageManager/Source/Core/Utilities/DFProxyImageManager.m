@@ -83,11 +83,11 @@
     return [_manager canHandleRequest:_DF_TRANSFORMED_REQUEST(request)];
 }
 
-- (DFImageTask *)imageTaskForResource:(id)resource completion:(DFImageRequestCompletion)completion {
+- (DFImageTask *)imageTaskForResource:(id)resource completion:(DFImageTaskCompletion)completion {
     return [self imageTaskForRequest:[DFImageRequest requestWithResource:resource] completion:completion];
 }
 
-- (DFImageTask *)imageTaskForRequest:(DFImageRequest *)request completion:(DFImageRequestCompletion)completion {
+- (DFImageTask *)imageTaskForRequest:(DFImageRequest *)request completion:(DFImageTaskCompletion)completion {
     return [_manager imageTaskForRequest:_DF_TRANSFORMED_REQUEST(request) completion:completion];
 }
 
@@ -112,11 +112,11 @@
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-implementations"
 
-- (DFImageTask *)requestImageForResource:(id)resource completion:(DFImageRequestCompletion)completion {
+- (DFImageTask *)requestImageForResource:(id)resource completion:(DFImageTaskCompletion)completion {
     return [self requestImageForRequest:[DFImageRequest requestWithResource:resource] completion:completion];
 }
 
-- (DFImageTask *)requestImageForRequest:(DFImageRequest *)request completion:(DFImageRequestCompletion)completion {
+- (DFImageTask *)requestImageForRequest:(DFImageRequest *)request completion:(DFImageTaskCompletion)completion {
     DFImageTask *task = [self imageTaskForRequest:request completion:completion];
     [task resume];
     return task;

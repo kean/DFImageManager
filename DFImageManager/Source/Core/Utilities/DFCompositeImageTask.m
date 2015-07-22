@@ -62,7 +62,7 @@
     DFCompositeImageTask *__weak weakSelf = self;
     for (DFImageTask *task in _remainingTasks) {
         DFImageTask *__weak weakTask = task;
-        DFImageRequestCompletion completionHandler = task.completionHandler;
+        DFImageTaskCompletion completionHandler = task.completionHandler;
         [task setCompletionHandler:^(UIImage *image, NSDictionary *info) {
             [weakSelf _didFinishImageTask:weakTask withImage:image info:info];
             if (completionHandler) {

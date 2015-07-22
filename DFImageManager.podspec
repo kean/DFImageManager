@@ -14,6 +14,7 @@ Pod::Spec.new do |s|
 
     s.subspec "Core" do |ss|
         ss.source_files  = "DFImageManager/Source/Core/**/*.{h,m}"
+        ss.private_header_files = "DFImageManager/Source/Core/Private/*.h"
     end
 
     s.subspec "UI" do |ss|

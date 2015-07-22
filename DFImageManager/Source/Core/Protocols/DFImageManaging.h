@@ -29,7 +29,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-typedef void (^DFImageRequestCompletion)(UIImage *__nullable image, NSDictionary *info);
+typedef void (^DFImageTaskCompletion)(UIImage *__nullable image, NSDictionary *info);
 
 /*! Provides an API for loading images associated with a given resources. The resources might by anything from a NSURL to a PHAsset objects or even your custom classes.
  */
@@ -43,14 +43,14 @@ typedef void (^DFImageRequestCompletion)(UIImage *__nullable image, NSDictionary
  @note Creates image request with a DFImageMaximumSize, DFImageContentModeAspectFill and no options.
  @param resource The resource whose image data is to be loaded.
  */
-- (nullable DFImageTask *)imageTaskForResource:(id)resource completion:(nullable DFImageRequestCompletion)completion;
+- (nullable DFImageTask *)imageTaskForResource:(id)resource completion:(nullable DFImageTaskCompletion)completion;
 
 /*! Creates an image task with a given request. After you create the task, you must start it by calling its resume method.
  @param request The request that contains the resource whose image is to be loaded, and request options. Image manager creates a deep copy of the request.
  @param completion Completion block to be called on the main thread when loading is complete. Completion block is called synchronously when the requested image can be retrieved from the memory cache and the request was made on the main thread. The info dictionary provides information about the status of the request. See the definitions of DFImageInfo*Key strings for possible keys and values. For more info see DFImageManager class reference.
  @return An image task.
  */
-- (nullable DFImageTask *)imageTaskForRequest:(DFImageRequest *)request completion:(nullable DFImageRequestCompletion)completion;
+- (nullable DFImageTask *)imageTaskForRequest:(DFImageRequest *)request completion:(nullable DFImageTaskCompletion)completion;
 
 /*! Asynchronously calls a completion block on the main thread with all resumed outstanding image tasks and separate array with all preheating tasks.
  */
@@ -77,11 +77,11 @@ typedef void (^DFImageRequestCompletion)(UIImage *__nullable image, NSDictionary
 
 /*! Deprecated. Use -imageTaskForResource:completion: instead.
  */
-- (nullable DFImageTask *)requestImageForResource:(id)resource completion:(nullable DFImageRequestCompletion)completion DEPRECATED_ATTRIBUTE;
+- (nullable DFImageTask *)requestImageForResource:(id)resource completion:(nullable DFImageTaskCompletion)completion DEPRECATED_ATTRIBUTE;
 
 /*! Deprecated. Use -imageTaskForRequest:completion: instead.
  */
-- (nullable DFImageTask *)requestImageForRequest:(DFImageRequest *)request completion:(nullable DFImageRequestCompletion)completion DEPRECATED_ATTRIBUTE;
+- (nullable DFImageTask *)requestImageForRequest:(DFImageRequest *)request completion:(nullable DFImageTaskCompletion)completion DEPRECATED_ATTRIBUTE;
 
 @end
 
