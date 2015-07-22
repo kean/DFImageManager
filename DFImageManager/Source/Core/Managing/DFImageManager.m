@@ -39,21 +39,21 @@
 
 @interface DFImageManager (_DFImageTask)
 
-- (void)resumeTask:(_DFImageTask *)task;
-- (void)cancelTask:(_DFImageTask *)task;
-- (void)setPriority:(DFImageRequestPriority)priority forTask:(_DFImageTask *)task;
+- (void)resumeTask:(nonnull _DFImageTask *)task;
+- (void)cancelTask:(nonnull _DFImageTask *)task;
+- (void)setPriority:(DFImageRequestPriority)priority forTask:(nonnull _DFImageTask *)task;
 
 @end
 
 @interface _DFImageTask : DFImageTask
 
-@property (nonatomic, readonly) DFImageManager *manager;
+@property (nonnull, nonatomic, readonly) DFImageManager *manager;
 @property (nonatomic) DFImageTaskState state;
-@property (nonatomic) NSError *error;
-@property (nonatomic) DFImageResponse *response;
+@property (nullable, nonatomic) NSError *error;
+@property (nullable, nonatomic) DFImageResponse *response;
 @property (nonatomic) NSInteger tag;
 @property (nonatomic) BOOL preheating;
-@property (nonatomic, weak) DFImageManagerImageLoaderTask *imageLoaderTask;
+@property (nullable, nonatomic, weak) DFImageManagerImageLoaderTask *imageLoaderTask;
 
 @end
 
@@ -65,7 +65,7 @@
 @synthesize state = _state;
 @synthesize progress = _progress;
 
-- (instancetype)initWithManager:(DFImageManager *)manager request:(DFImageRequest *)request completionHandler:(DFImageTaskCompletion)completionHandler {
+- (instancetype)initWithManager:(nonnull DFImageManager *)manager request:(nonnull DFImageRequest *)request completionHandler:(nullable DFImageTaskCompletion)completionHandler {
     if (self = [super init]) {
         _manager = manager;
         _request = request;
@@ -157,7 +157,7 @@
     return [[_DFImageTask alloc] initWithManager:self request:[_imageLoder canonicalRequestForRequest:request] completionHandler:completion];
 }
 
-- (void)_resumeImageTask:(_DFImageTask *)task {
+- (void)_resumeImageTask:(nonnull _DFImageTask *)task {
     if (_invalidated) {
         return;
     }
@@ -179,7 +179,7 @@
     });
 }
 
-- (void)_setImageTaskState:(DFImageTaskState)state task:(_DFImageTask *)task {
+- (void)_setImageTaskState:(DFImageTaskState)state task:(nonnull _DFImageTask *)task {
     if ([task isValidNextState:state]) {
         [self _transitionActionFromState:task.state toState:state task:task];
         task.state = state;
@@ -187,13 +187,13 @@
     }
 }
 
-- (void)_transitionActionFromState:(DFImageTaskState)fromState toState:(DFImageTaskState)toState task:(_DFImageTask *)task {
+- (void)_transitionActionFromState:(DFImageTaskState)fromState toState:(DFImageTaskState)toState task:(nonnull _DFImageTask *)task {
     if (fromState == DFImageTaskStateRunning && toState == DFImageTaskStateCancelled) {
         [_imageLoder cancelImageLoaderTask:task.imageLoaderTask];
     }
 }
 
-- (void)_enterActionForState:(DFImageTaskState)state task:(_DFImageTask *)task {
+- (void)_enterActionForState:(DFImageTaskState)state task:(nonnull _DFImageTask *)task {
     if (state == DFImageTaskStateRunning) {
         [_executingImageTasks addObject:task];
         
@@ -235,7 +235,7 @@
     }
 }
 
-- (void)getImageTasksWithCompletion:(void (^)(NSArray *, NSArray *))completion {
+- (void)getImageTasksWithCompletion:(void (^ __nullable)(NSArray * __nonnull, NSArray * __nonnull))completion {
     dispatch_async(_queue, ^{
         NSMutableSet *tasks = [NSMutableSet new];
         NSMutableSet *preheatingTasks = [NSMutableSet new];
@@ -269,7 +269,7 @@
 
 #pragma mark Preheating
 
-- (void)startPreheatingImagesForRequests:(NSArray *)requests {
+- (void)startPreheatingImagesForRequests:(nonnull NSArray *)requests {
     if (_invalidated) {
         return;
     }
@@ -295,7 +295,7 @@
     });
 }
 
-- (void)stopPreheatingImagesForRequests:(NSArray *)requests {
+- (void)stopPreheatingImagesForRequests:(nonnull NSArray *)requests {
     dispatch_async(_queue, ^{
         for (DFImageRequest *request in [self _canonicalRequestsForRequests:requests]) {
             id<NSCopying> key = [_imageLoder processingKeyForRequest:request];
@@ -345,7 +345,7 @@
 
 #pragma mark Support
 
-- (NSArray *)_canonicalRequestsForRequests:(NSArray *)requests {
+- (nonnull NSArray *)_canonicalRequestsForRequests:(nonnull NSArray *)requests {
     NSMutableArray *canonicalRequests = [[NSMutableArray alloc] initWithCapacity:requests.count];
     for (DFImageRequest *request in requests) {
         [canonicalRequests addObject:[_imageLoder canonicalRequestForRequest:request]];
@@ -389,17 +389,17 @@
 
 @implementation DFImageManager (_DFImageTask)
 
-- (void)resumeTask:(_DFImageTask *)task {
+- (void)resumeTask:(nonnull _DFImageTask *)task {
     [self _resumeImageTask:task];
 }
 
-- (void)cancelTask:(_DFImageTask *)task {
+- (void)cancelTask:(nonnull _DFImageTask *)task {
     dispatch_async(_queue, ^{
         [self _setImageTaskState:DFImageTaskStateCancelled task:task];
     });
 }
 
-- (void)setPriority:(DFImageRequestPriority)priority forTask:(_DFImageTask *)task {
+- (void)setPriority:(DFImageRequestPriority)priority forTask:(nonnull _DFImageTask *)task {
     dispatch_async(_queue, ^{
         if (task.request.options.priority != priority) {
             task.request.options.priority = priority;
