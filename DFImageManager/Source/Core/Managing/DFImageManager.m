@@ -71,7 +71,7 @@
         _request = request;
         _completionHandler = completionHandler;
         _state = DFImageTaskStateSuspended;
-
+        
         _progress = [NSProgress progressWithTotalUnitCount:-1];
         _DFImageTask *__weak weakSelf = self;
         _progress.cancellationHandler = ^{
@@ -110,6 +110,10 @@
 
 
 #pragma mark - DFImageManager
+
+static inline void DFDispatchAsync(dispatch_block_t block) {
+    ([NSThread isMainThread]) ? block() : dispatch_async(dispatch_get_main_queue(), block);
+}
 
 @interface DFImageManager () <NSLocking>
 @end
@@ -159,26 +163,9 @@
 }
 
 - (void)_resumeImageTask:(nonnull _DFImageTask *)task {
-    if (_invalidated) {
-        return;
+    if (!_invalidated) {
+        [self _setImageTaskState:DFImageTaskStateRunning task:task];
     }
-    if ([NSThread isMainThread]) {
-        DFImageResponse *response = [_imageLoder cachedResponseForRequest:task.request];
-        if (response.image) {
-            task.state = DFImageTaskStateCompleted;
-            DFImageTaskCompletion completion = task.completionHandler;
-            if (completion) {
-                NSMutableDictionary *info = [self _infoFromResponse:response task:task];
-                info[DFImageInfoIsFromMemoryCacheKey] = @YES;
-                completion(response.image, info);
-            }
-            return;
-        }
-    }
-    [self lock];
-    [self _setImageTaskState:DFImageTaskStateRunning task:task];
-    [self unlock];
-    
 }
 
 - (void)_setImageTaskState:(DFImageTaskState)state task:(nonnull _DFImageTask *)task {
@@ -197,15 +184,20 @@
 
 - (void)_enterActionForState:(DFImageTaskState)state task:(nonnull _DFImageTask *)task {
     if (state == DFImageTaskStateRunning) {
+        DFImageResponse *response = [self _cachedResponseForRequest:task.request];
+        if (response) { // fast path
+            task.response = response;
+            [self _setImageTaskState:DFImageTaskStateCompleted task:task];
+            return;
+        }
         [_executingImageTasks addObject:task];
-        
         DFImageManager *__weak weakSelf = self;
         task.loadTask = [_imageLoder startTaskForRequest:task.request progressHandler:^(int64_t completedUnitCount, int64_t totalUnitCount) {
             task.progress.totalUnitCount = totalUnitCount;
             task.progress.completedUnitCount = completedUnitCount;
-        } completion:^(DFImageResponse * __nullable response) {
+        } completion:^(DFImageResponse * __nullable loadResponse) {
             task.loadTask = nil;
-            task.response = response;
+            task.response = loadResponse;
             [weakSelf lock];
             [weakSelf _setImageTaskState:DFImageTaskStateCompleted task:task];
             [weakSelf unlock];
@@ -228,7 +220,7 @@
         DFImageTaskCompletion completion = task.completionHandler;
         if (completion) {
             NSDictionary *info = [self _infoFromResponse:task.response task:task];
-            dispatch_async(dispatch_get_main_queue(), ^{
+            DFDispatchAsync(^{
                 task.error = task.response.error;
                 completion(task.response.image, info);
                 task.response = nil;
@@ -377,6 +369,18 @@
     return info;
 }
 
+- (nullable DFImageResponse *)_cachedResponseForRequest:(nonnull DFImageRequest *)request {
+    DFImageResponse *response = [_imageLoder cachedResponseForRequest:request];
+    if (response.image) {
+        return [[DFImageResponse alloc] initWithImage:response.image error:response.error userInfo:({
+            NSMutableDictionary *info = [[NSMutableDictionary alloc] initWithDictionary:response.userInfo];
+            info[DFImageInfoIsFromMemoryCacheKey] = @YES;
+            info;
+        })];
+    }
+    return nil;
+}
+
 - (NSString *)description {
     return [NSString stringWithFormat:@"<%@ %p> { name = %@ }", [self class], self, self.name];
 }
@@ -404,7 +408,9 @@
 @implementation DFImageManager (_DFImageTask)
 
 - (void)resumeTask:(nonnull _DFImageTask *)task {
+    [self lock];
     [self _resumeImageTask:task];
+    [self unlock];
 }
 
 - (void)cancelTask:(nonnull _DFImageTask *)task {
