@@ -124,7 +124,7 @@
 @interface _DFImageLoadOperation : NSObject
 
 @property (nonnull, nonatomic, readonly) _DFImageRequestKey *key;
-@property (nullable, nonatomic, weak) NSOperation *operation;
+@property (nullable, nonatomic) NSOperation *operation;
 @property (nonnull, nonatomic, readonly) NSMutableArray *tasks;
 @property (nonatomic) int64_t totalUnitCount;
 @property (nonatomic) int64_t completedUnitCount;

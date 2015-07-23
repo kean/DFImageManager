@@ -375,6 +375,23 @@
     [self waitForExpectationsWithTimeout:1 handler:nil];
 }
 
+- (void)testThatImplicitProgressCompositionWorksForPreheating {
+    NSProgress *progress = [NSProgress progressWithTotalUnitCount:100];
+    [progress becomeCurrentWithPendingUnitCount:100];
+    NSArray *requests = @[ [DFImageRequest requestWithResource:[TDFMockResource resourceWithID:@"1"]], [DFImageRequest requestWithResource:[TDFMockResource resourceWithID:@"2"]] ];
+    [_manager startPreheatingImagesForRequests:requests];
+    [progress resignCurrent];
+    
+    double __block fractionCompleted = 0;
+    [self keyValueObservingExpectationForObject:progress keyPath:@"fractionCompleted" handler:^BOOL(NSProgress *observedObject, NSDictionary *change) {
+        fractionCompleted += 0.25;
+        XCTAssertEqual(fractionCompleted, observedObject.fractionCompleted);
+        return observedObject.fractionCompleted == 1;
+    }];
+    
+    [self waitForExpectationsWithTimeout:1 handler:nil];
+}
+
 #pragma mark - Memory Cache
 
 /*! Test that image manager calls completion block synchronously (default configuration).

@@ -71,7 +71,7 @@
         _request = request;
         _completionHandler = completionHandler;
         _state = DFImageTaskStateSuspended;
-        
+
         _progress = [NSProgress progressWithTotalUnitCount:-1];
         _DFImageTask *__weak weakSelf = self;
         _progress.cancellationHandler = ^{
@@ -111,14 +111,17 @@
 
 #pragma mark - DFImageManager
 
+@interface DFImageManager () <NSLocking>
+@end
+
 @implementation DFImageManager {
     DFImageManagerImageLoader *_imageLoder;
-    dispatch_queue_t _queue;
     NSMutableSet /* _DFImageTask */ *_executingImageTasks;
     NSMutableDictionary /* _DFImageCacheKey : _DFImageTask */ *_preheatingTasks;
     NSInteger _preheatingTaskCounter;
     BOOL _invalidated;
     BOOL _needsToExecutePreheatTasks;
+    NSRecursiveLock *_lock;
 }
 
 @synthesize configuration = _conf;
@@ -128,9 +131,9 @@
         NSParameterAssert(configuration);
         _conf = [configuration copy];
         _imageLoder = [[DFImageManagerImageLoader alloc] initWithFetcher:_conf.fetcher cache:_conf.cache processor:_conf.processor processingQueue:_conf.processingQueue];
-        _queue = dispatch_queue_create([[NSString stringWithFormat:@"%@-queue-%p", [self class], self] UTF8String], DISPATCH_QUEUE_SERIAL);
         _preheatingTasks = [NSMutableDictionary new];
         _executingImageTasks = [NSMutableSet new];
+        _lock = [NSRecursiveLock new];
     }
     return self;
 }
@@ -172,9 +175,10 @@
             return;
         }
     }
-    dispatch_async(_queue, ^{
-        [self _setImageTaskState:DFImageTaskStateRunning task:task];
-    });
+    [self lock];
+    [self _setImageTaskState:DFImageTaskStateRunning task:task];
+    [self unlock];
+    
 }
 
 - (void)_setImageTaskState:(DFImageTaskState)state task:(nonnull _DFImageTask *)task {
@@ -202,9 +206,9 @@
         } completion:^(DFImageResponse * __nullable response) {
             task.loadTask = nil;
             task.response = response;
-            dispatch_async(_queue, ^{
-                [weakSelf _setImageTaskState:DFImageTaskStateCompleted task:task];
-            });
+            [weakSelf lock];
+            [weakSelf _setImageTaskState:DFImageTaskStateCompleted task:task];
+            [weakSelf unlock];
         }];
     }
     if (state == DFImageTaskStateCompleted || state == DFImageTaskStateCancelled) {
@@ -234,93 +238,95 @@
 }
 
 - (void)getImageTasksWithCompletion:(void (^ __nullable)(NSArray * __nonnull, NSArray * __nonnull))completion {
-    dispatch_async(_queue, ^{
-        NSMutableSet *tasks = [NSMutableSet new];
-        NSMutableSet *preheatingTasks = [NSMutableSet new];
-        for (_DFImageTask *task in _executingImageTasks) {
-            if (task.preheating) {
-                [preheatingTasks addObject:task];
-            } else {
-                [tasks addObject:task];
-            }
-        }
-        for (_DFImageTask *task in _preheatingTasks.allValues) {
+    [self lock];
+    NSMutableSet *tasks = [NSMutableSet new];
+    NSMutableSet *preheatingTasks = [NSMutableSet new];
+    for (_DFImageTask *task in _executingImageTasks) {
+        if (task.preheating) {
             [preheatingTasks addObject:task];
+        } else {
+            [tasks addObject:task];
         }
-        dispatch_async(dispatch_get_main_queue(), ^{
-            completion([tasks allObjects], [preheatingTasks allObjects]);
-        });
+    }
+    for (_DFImageTask *task in _preheatingTasks.allValues) {
+        [preheatingTasks addObject:task];
+    }
+    dispatch_async(dispatch_get_main_queue(), ^{
+        completion([tasks allObjects], [preheatingTasks allObjects]);
     });
+    [self unlock];
 }
 
 - (void)invalidateAndCancel {
+    [self lock];
     if (!_invalidated) {
         _invalidated = YES;
-        dispatch_async(_queue, ^{
-            [_preheatingTasks removeAllObjects];
-            for (_DFImageTask *task in _executingImageTasks) {
-                [self _setImageTaskState:DFImageTaskStateCancelled task:task];
-            }
-        });
+        [_preheatingTasks removeAllObjects];
+        for (_DFImageTask *task in _executingImageTasks) {
+            [self _setImageTaskState:DFImageTaskStateCancelled task:task];
+        }
     }
+    [self unlock];
 }
 
 #pragma mark <DFImageManaging> Preheating
 
 - (void)startPreheatingImagesForRequests:(nonnull NSArray *)requests {
+    [self lock];
     if (_invalidated) {
         return;
     }
-    dispatch_async(_queue, ^{
-        for (DFImageRequest *request in [self _canonicalRequestsForRequests:requests]) {
-            id<NSCopying> key = [_imageLoder processingKeyForRequest:request];
-            if (!_preheatingTasks[key]) {
-                DFImageManager *__weak weakSelf = self;
-                _DFImageTask *task = [[_DFImageTask alloc] initWithManager:self request:request completionHandler:^(UIImage *image, NSDictionary *info) {
-                    DFImageManager *strongSelf = weakSelf;
-                    if (strongSelf) {
-                        dispatch_async(strongSelf->_queue, ^{
-                            [strongSelf->_preheatingTasks removeObjectForKey:key];
-                        });
+    for (DFImageRequest *request in [self _canonicalRequestsForRequests:requests]) {
+        id<NSCopying> key = [_imageLoder processingKeyForRequest:request];
+        if (!_preheatingTasks[key]) {
+            DFImageManager *__weak weakSelf = self;
+            _DFImageTask *task = [[_DFImageTask alloc] initWithManager:self request:request completionHandler:^(UIImage *image, NSDictionary *info) {
+                DFImageManager *strongSelf = weakSelf;
+                if (strongSelf) {
+                    @synchronized(self) {
+                        [strongSelf->_preheatingTasks removeObjectForKey:key];
                     }
-                }];
-                task.preheating = YES;
-                task.tag = _preheatingTaskCounter++;
-                _preheatingTasks[key] = task;
-            }
+                }
+            }];
+            task.preheating = YES;
+            task.tag = _preheatingTaskCounter++;
+            _preheatingTasks[key] = task;
         }
-        [self _setNeedsExecutePreheatingTasks];
-    });
+    }
+    [self _setNeedsExecutePreheatingTasks];
+    [self unlock];
 }
 
 - (void)stopPreheatingImagesForRequests:(nonnull NSArray *)requests {
-    dispatch_async(_queue, ^{
-        for (DFImageRequest *request in [self _canonicalRequestsForRequests:requests]) {
-            id<NSCopying> key = [_imageLoder processingKeyForRequest:request];
-            _DFImageTask *task = _preheatingTasks[key];
-            if (task) {
-                [self _setImageTaskState:DFImageTaskStateCancelled task:task];
-                [_preheatingTasks removeObjectForKey:key];
-            }
+    [self lock];
+    for (DFImageRequest *request in [self _canonicalRequestsForRequests:requests]) {
+        id<NSCopying> key = [_imageLoder processingKeyForRequest:request];
+        _DFImageTask *task = _preheatingTasks[key];
+        if (task) {
+            [self _setImageTaskState:DFImageTaskStateCancelled task:task];
+            [_preheatingTasks removeObjectForKey:key];
         }
-    });
+    }
+    [self unlock];
 }
 
 - (void)stopPreheatingImagesForAllRequests {
-    dispatch_async(_queue, ^{
-        for (_DFImageTask *task in _preheatingTasks.allValues) {
-            [self _setImageTaskState:DFImageTaskStateCancelled task:task];
-        }
-        [_preheatingTasks removeAllObjects];
-    });
+    [self lock];
+    for (_DFImageTask *task in _preheatingTasks.allValues) {
+        [self _setImageTaskState:DFImageTaskStateCancelled task:task];
+    }
+    [_preheatingTasks removeAllObjects];
+    [self unlock];
 }
 
 - (void)_setNeedsExecutePreheatingTasks {
     if (!_needsToExecutePreheatTasks && !_invalidated) {
         _needsToExecutePreheatTasks = YES;
         // Manager won't start executing preheating tasks in case you are about to add normal (non-preheating) right after adding preheating ones.
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), _queue, ^{
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.15 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [self lock];
             [self _executePreheatingTasksIfNeeded];
+            [self unlock];
         });
     }
 }
@@ -339,6 +345,16 @@
             }
         }
     }
+}
+
+#pragma mark <NSLocking>
+
+- (void)lock {
+    [_lock lock];
+}
+
+- (void)unlock {
+    [_lock unlock];
 }
 
 #pragma mark Support
@@ -392,18 +408,18 @@
 }
 
 - (void)cancelTask:(nonnull _DFImageTask *)task {
-    dispatch_async(_queue, ^{
-        [self _setImageTaskState:DFImageTaskStateCancelled task:task];
-    });
+    [self lock];
+    [self _setImageTaskState:DFImageTaskStateCancelled task:task];
+    [self unlock];
 }
 
 - (void)setPriority:(DFImageRequestPriority)priority forTask:(nonnull _DFImageTask *)task {
-    dispatch_async(_queue, ^{
-        if (task.request.options.priority != priority) {
-            task.request.options.priority = priority;
-            [_imageLoder updatePriorityForTask:task.loadTask];
-        }
-    });
+    [self lock];
+    if (task.request.options.priority != priority) {
+        task.request.options.priority = priority;
+        [_imageLoder updatePriorityForTask:task.loadTask];
+    }
+    [self unlock];
 }
 
 @end
