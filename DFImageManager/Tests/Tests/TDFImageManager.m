@@ -147,6 +147,31 @@
     [self waitForExpectationsWithTimeout:1.0 handler:nil];
 }
 
+#pragma mark - Image Task
+
+- (void)testThatImageTaskStateChangedOnCallersThread {
+    DFImageTask *task = [_manager imageTaskForResource:[TDFMockResource resourceWithID:@"ID01"] completion:nil];
+    XCTAssertEqual(task.state, DFImageTaskStateSuspended);
+    [task resume];
+    XCTAssertEqual(task.state, DFImageTaskStateRunning);
+    [task cancel];
+    XCTAssertEqual(task.state, DFImageTaskStateCancelled);
+}
+
+- (void)testThatImageTaskStateChangedOnCallersBackgroundThread {
+    XCTestExpectation *expectation = [self expectationWithDescription:@"1"];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        DFImageTask *task = [_manager imageTaskForResource:[TDFMockResource resourceWithID:@"ID01"] completion:nil];
+        XCTAssertEqual(task.state, DFImageTaskStateSuspended);
+        [task resume];
+        XCTAssertEqual(task.state, DFImageTaskStateRunning);
+        [task cancel];
+        XCTAssertEqual(task.state, DFImageTaskStateCancelled);
+        [expectation fulfill];
+    });
+    [self waitForExpectationsWithTimeout:1 handler:nil];
+}
+
 #pragma mark - Cancellation
 
 - (void)testThatFetchOperationIsCancelledWhenTaskIs {
