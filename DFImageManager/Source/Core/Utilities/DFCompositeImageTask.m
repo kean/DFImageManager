@@ -27,16 +27,16 @@
 
 @implementation DFCompositeImageTask {
     BOOL _isStarted;
-    NSMutableOrderedSet *_remainingTasks;
+    NSMutableArray *_remainingTasks;
 }
 
 - (instancetype)initWithImageTasks:(NSArray *)tasks imageHandler:(DFCompositeImageTaskImageHandler)imageHandler completionHandler:(nullable DFCompositeImageTaskCompletionHandler)completionHandler {
     if (self = [super init]) {
         NSParameterAssert(tasks.count > 0);
         _imageTasks = [tasks copy];
-        _remainingTasks = [NSMutableOrderedSet orderedSetWithArray:tasks];
-        _imageHandler = [imageHandler copy];
-        _completionHandler = [completionHandler copy];
+        _remainingTasks = [NSMutableArray arrayWithArray:tasks];
+        _imageHandler = imageHandler;
+        _completionHandler = completionHandler;
         _allowsObsoleteRequests = YES;
     }
     return self;
