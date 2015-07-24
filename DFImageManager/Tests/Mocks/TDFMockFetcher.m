@@ -13,15 +13,24 @@ NSString *TDFMockFetcherDidStartOperationNotification = @"TDFMockFetcherDidStart
 
 @implementation TDFMockResponse
 
-+ (instancetype)mockWithResponse:(DFImageResponse *)response elapsedTime:(NSTimeInterval)elapsedTime {
-    TDFMockResponse *mock = [TDFMockResponse new];
-    mock.response = response;
-    mock.elapsedTime = elapsedTime;
-    return mock;
++ (instancetype)mockWithImage:(UIImage *)image {
+    TDFMockResponse *response = [TDFMockResponse new];
+    response.image = image;
+    return response;
 }
 
-+ (instancetype)mockWithResponse:(DFImageResponse *)response {
-    return [self mockWithResponse:response elapsedTime:0.01];
++ (instancetype)mockWithImage:(UIImage *)image elapsedTime:(NSTimeInterval)elapsedTime {
+    TDFMockResponse *response = [TDFMockResponse new];
+    response.image = image;
+    response.elapsedTime = elapsedTime;
+    return response;
+}
+
++ (instancetype)mockWithError:(NSError *)error elapsedTime:(NSTimeInterval)elapsedTime {
+    TDFMockResponse *response = [TDFMockResponse new];
+    response.error = error;
+    response.elapsedTime = elapsedTime;
+    return response;
 }
 
 @end
@@ -57,13 +66,13 @@ NSString *TDFMockFetcherDidStartOperationNotification = @"TDFMockFetcherDidStart
     return [request1.resource isEqual:request2.resource];
 }
 
-- (NSOperation *)startOperationWithRequest:(DFImageRequest *)request progressHandler:(void (^)(int64_t, int64_t))progressHandler completion:(void (^)(DFImageResponse *))completion {
+- (nonnull NSOperation *)startOperationWithRequest:(nonnull DFImageRequest *)request progressHandler:(nullable DFImageFetchingProgressHandler)progressHandler completion:(nullable DFImageFetchingCompletionHandler)completion {
     TDFMockFetchOperation *operation = [TDFMockFetchOperation blockOperationWithBlock:^{
-        TDFMockResponse *mock = _responses[request.resource];
-        [NSThread sleepForTimeInterval:mock.elapsedTime];
+        TDFMockResponse *response = _responses[request.resource];
+        [NSThread sleepForTimeInterval:response.elapsedTime];
         dispatch_async(dispatch_get_main_queue(), ^{
             if (completion) {
-                completion(mock.response);
+                completion(response.image, response.info, response.error);
             }
         });
     }];

@@ -22,7 +22,6 @@
 
 #import "DFCachedImageResponse.h"
 #import "DFImageCache.h"
-#import "DFImageResponse.h"
 #import "NSCache+DFImageManager.h"
 
 #if DF_IMAGE_MANAGER_GIF_AVAILABLE
@@ -75,7 +74,7 @@
 #pragma mark -
 
 - (NSUInteger)costForImageResponse:(DFCachedImageResponse *)cachedResponse {
-    UIImage *image = cachedResponse.response.image;
+    UIImage *image = cachedResponse.image;
     CGImageRef imageRef = image.CGImage;
     NSUInteger bitsPerPixel = CGImageGetBitsPerPixel(imageRef);
     NSUInteger cost = (CGImageGetWidth(imageRef) * CGImageGetHeight(imageRef) * bitsPerPixel) / 8; // Return number of bytes in image bitmap.

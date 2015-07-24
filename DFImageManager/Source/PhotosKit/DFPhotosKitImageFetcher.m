@@ -22,7 +22,6 @@
 
 #import "DFImageRequest.h"
 #import "DFImageRequestOptions.h"
-#import "DFImageResponse.h"
 #import "DFPhotosKitImageFetcher.h"
 #import "NSURL+DFPhotosKit.h"
 #import <Photos/Photos.h>
@@ -123,7 +122,7 @@ static inline PHImageContentMode _PHContentModeForDFContentMode(DFImageContentMo
             options1.resizeMode == options2.resizeMode);
 }
 
-- (NSOperation *)startOperationWithRequest:(DFImageRequest *)request progressHandler:(void (^)(int64_t, int64_t))progressHandler completion:(void (^)(DFImageResponse *))completion {
+- (nonnull NSOperation *)startOperationWithRequest:(nonnull DFImageRequest *)request progressHandler:(nullable DFImageFetchingProgressHandler)progressHandler completion:(nullable DFImageFetchingCompletionHandler)completion {
     _DFPhotosKitRequestOptions options = [self _requestOptionsFromUserInfo:request.options.userInfo];
     PHImageRequestOptions *requestOptions = [PHImageRequestOptions new];
     requestOptions.networkAccessAllowed = request.options.allowsNetworkAccess;
@@ -152,7 +151,7 @@ static inline PHImageContentMode _PHContentModeForDFContentMode(DFImageContentMo
     _DFPhotosKitImageFetchOperation *__weak weakOp = operation;
     [operation setCompletionBlock:^{
         if (completion) {
-            completion([[DFImageResponse alloc] initWithImage:weakOp.result error:nil userInfo:weakOp.info]);
+            completion(weakOp.result, weakOp.info, nil);
         }
     }];
     [_queue addOperation:operation];

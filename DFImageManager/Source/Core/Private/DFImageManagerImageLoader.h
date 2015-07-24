@@ -24,13 +24,12 @@
 #import <Foundation/Foundation.h>
 
 @class DFImageRequest;
-@class DFImageResponse;
 @protocol DFImageFetching;
 @protocol DFImageProcessing;
 @protocol DFImageCaching;
 
 typedef void (^DFImageLoaderProgressHandler)(int64_t completedUnitCount, int64_t totalUnitCount);
-typedef void (^DFImageLoaderCompletionHandler)(DFImageResponse *__nullable response);
+typedef void (^DFImageLoaderCompletionHandler)(UIImage *__nullable image, NSDictionary *__nullable info, NSError *__nullable error);
 
 @interface DFImageManagerImageLoaderTask : NSObject
 
@@ -51,7 +50,7 @@ typedef void (^DFImageLoaderCompletionHandler)(DFImageResponse *__nullable respo
 
 - (void)updatePriorityForTask:(nullable DFImageManagerImageLoaderTask *)task;
 
-- (nullable DFImageResponse *)cachedResponseForRequest:(nonnull DFImageRequest *)request;
+- (nullable DFCachedImageResponse *)cachedResponseForRequest:(nonnull DFImageRequest *)request;
 
 - (nonnull DFImageRequest *)canonicalRequestForRequest:(nonnull DFImageRequest *)request;
 

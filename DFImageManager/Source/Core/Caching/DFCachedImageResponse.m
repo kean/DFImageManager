@@ -24,9 +24,10 @@
 
 @implementation DFCachedImageResponse
 
-- (instancetype)initWithResponse:(DFImageResponse *)response expirationDate:(NSTimeInterval)expirationDate {
+- (nullable instancetype)initWithImage:(nonnull UIImage *)image info:(nullable NSDictionary *)info expirationDate:(NSTimeInterval)expirationDate {
     if (self = [super init]) {
-        _response = response;
+        _image = image;
+        _info = info;
         _expirationDate = expirationDate;
     }
     return self;

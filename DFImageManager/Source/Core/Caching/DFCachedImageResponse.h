@@ -23,27 +23,25 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
-@class DFImageResponse;
-
-NS_ASSUME_NONNULL_BEGIN
-
 /*! Wrapper for image responses stored in the framework's memory caching system.
  */
 @interface DFCachedImageResponse : NSObject
 
-/*! Returns cached image response of the receiver.
+/*! Returns response image.
  */
-@property (nonatomic, readonly) DFImageResponse *response;
+@property (nonnull, nonatomic, readonly) UIImage *image;
+
+/*! Returns response info.
+ */
+@property (nullable, nonatomic, readonly) NSDictionary *info;
 
 /*! Returns the expiration date of the receiver.
  */
 @property (nonatomic, readonly) NSTimeInterval expirationDate;
 
-/*! Initializes the DFCachedImageResponse with the given image response and expiration date.
- @param response An image response object, for best performance users should store decompressed images into memory cache.
+/*! Initializes the DFCachedImageResponse with the given image, info and expiration date.
+  @param image An image, for best performance users should store decompressed images into memory cache.
  */
-- (instancetype)initWithResponse:(DFImageResponse *)response expirationDate:(NSTimeInterval)expirationDate NS_DESIGNATED_INITIALIZER;
+- (nullable instancetype)initWithImage:(nonnull UIImage *)image info:( nullable NSDictionary *)info expirationDate:(NSTimeInterval)expirationDate NS_DESIGNATED_INITIALIZER;
 
 @end
-
-NS_ASSUME_NONNULL_END

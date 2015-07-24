@@ -83,7 +83,7 @@
 /*! Test that image manager response info contains error under DFImageInfoErrorKey key when request fails.
  */
 - (void)testThatResponseInfoContainsError {
-    _fetcher.response = [DFImageResponse responseWithError:[NSError errorWithDomain:@"TDFErrorDomain" code:14 userInfo:nil]];
+    _fetcher.error = [NSError errorWithDomain:@"TDFErrorDomain" code:14 userInfo:nil];
     
     XCTestExpectation *expectation = [self expectationWithDescription:@"request"];
     [[_manager imageTaskForResource:[TDFMockResource resourceWithID:@"ID01"] completion:^(UIImage *image, NSDictionary *info) {
@@ -99,7 +99,7 @@
 /*! Test that image manager response info contains error under DFImageInfoErrorKey key when request fails.
  */
 - (void)testThatResponseInfoAndImageTaskContainError {
-    _fetcher.response = [DFImageResponse responseWithError:[NSError errorWithDomain:@"TDFErrorDomain" code:14 userInfo:nil]];
+    _fetcher.error = [NSError errorWithDomain:@"TDFErrorDomain" code:14 userInfo:nil];
     
     XCTestExpectation *expectation = [self expectationWithDescription:@"request"];
     DFImageTask *task = [_manager imageTaskForResource:[TDFMockResource resourceWithID:@"ID01"] completion:^(UIImage *image, NSDictionary *info) {
@@ -118,7 +118,7 @@
 }
 
 - (void)testThatFailedResponseAlwaysGeneratesError {
-    _fetcher.response = [[DFImageResponse alloc] initWithImage:nil error:nil userInfo:nil];
+    _fetcher.image = nil;
     
     XCTestExpectation *expectation = [self expectationWithDescription:@"request"];
     DFImageTask *task = [_manager imageTaskForResource:[TDFMockResource resourceWithID:@"ID01"] completion:^(UIImage *image, NSDictionary *info) {
@@ -137,7 +137,8 @@
 }
 
 - (void)testThatResponseInfoContainsCustomUserInfo {
-    _fetcher.response = [[DFImageResponse alloc] initWithImage:nil error:nil userInfo:@{ @"TestKey" : @"TestValue" }];
+    _fetcher.image = nil;
+    _fetcher.info = @{ @"TestKey" : @"TestValue" };
     
     XCTestExpectation *expectation = [self expectationWithDescription:@"request"];
     [[_manager imageTaskForResource:[TDFMockResource resourceWithID:@"ID01"] completion:^(UIImage *image, NSDictionary *info) {
@@ -419,8 +420,11 @@
 }
 
 - (void)testThatMemoryCachingIsTransparentToTheClient {
-    DFImageResponse *response = [[DFImageResponse alloc] initWithImage:[UIImage new] error:[NSError errorWithDomain:@"TDFErrorDomain" code:123 userInfo:nil] userInfo:@{ @"TDFKey" : @"TDFValue" }];
-    _fetcher.response = response;
+    UIImage *initialImage = [UIImage new];
+    NSDictionary *initialInfo = @{ @"TDFKey" : @"TDFValue" };
+    _fetcher.image = initialImage;
+    _fetcher.info = initialInfo;
+    
     _cache.enabled = YES;
     
     // 1. Fetch image and store it into memory cache
@@ -429,9 +433,8 @@
     {
         DFImageTask *task = [_manager imageTaskForResource:resource completion:^(UIImage *image, NSDictionary *info) {
             DFImageTask *task = info[DFImageInfoTaskKey];
-            XCTAssertEqual(response.image, image);
-            XCTAssertEqual(response.error, info[DFImageInfoErrorKey]);
-            XCTAssertEqual(response.userInfo[@"TDFKey"], info[@"TDFKey"]);
+            XCTAssertEqual(initialImage, image);
+            XCTAssertEqual(initialInfo[@"TDFKey"], info[@"TDFKey"]);
             XCTAssertFalse([info[DFImageInfoIsFromMemoryCacheKey] boolValue]);
             XCTAssertTrue(task.state == DFImageTaskStateCompleted);
             [expectation fulfill];
@@ -447,9 +450,8 @@
         BOOL __block isCompletionHandlerCalled = NO;
         DFImageTask *task = [_manager imageTaskForResource:resource completion:^(UIImage *image, NSDictionary *info) {
             DFImageTask *task = info[DFImageInfoTaskKey];
-            XCTAssertEqual(response.image, image);
-            XCTAssertEqual(response.error, info[DFImageInfoErrorKey]);
-            XCTAssertEqual(response.userInfo[@"TDFKey"], info[@"TDFKey"]);
+            XCTAssertEqual(initialImage, image);
+            XCTAssertEqual(initialInfo[@"TDFKey"], info[@"TDFKey"]);
             XCTAssertTrue([info[DFImageInfoIsFromMemoryCacheKey] boolValue]);
             XCTAssertTrue(task.state == DFImageTaskStateCompleted);
             isCompletionHandlerCalled = YES;

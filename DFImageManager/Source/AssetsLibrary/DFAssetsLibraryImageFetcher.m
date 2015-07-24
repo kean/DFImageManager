@@ -25,7 +25,6 @@
 #import "DFAssetsLibraryImageFetcher.h"
 #import "DFImageRequest.h"
 #import "DFImageRequestOptions.h"
-#import "DFImageResponse.h"
 #import <AssetsLibrary/AssetsLibrary.h>
 #import <UIKit/UIKit.h>
 
@@ -140,7 +139,7 @@ static inline NSURL *_ALAssetURL(id resource) {
     return DFALAssetImageSizeFullsize;
 }
 
-- (NSOperation *)startOperationWithRequest:(DFImageRequest *)request progressHandler:(void (^)(int64_t, int64_t))progressHandler completion:(void (^)(DFImageResponse *))completion {
+- (nonnull NSOperation *)startOperationWithRequest:(nonnull DFImageRequest *)request progressHandler:(nullable DFImageFetchingProgressHandler)progressHandler completion:(nullable DFImageFetchingCompletionHandler)completion {
     _DFAssetsLibraryImageFetchOperation *operation;
     if ([request.resource isKindOfClass:[DFALAsset class]]) {
         operation = [[_DFAssetsLibraryImageFetchOperation alloc] initWithAsset:((DFALAsset *)request.resource).asset];
@@ -154,7 +153,7 @@ static inline NSURL *_ALAssetURL(id resource) {
     _DFAssetsLibraryImageFetchOperation *__weak weakOp = operation;
     [operation setCompletionBlock:^{
         if (completion) {
-            completion([[DFImageResponse alloc] initWithImage:weakOp.image error:weakOp.error userInfo:nil]);
+            completion(weakOp.image, nil, weakOp.error);
         }
     }];
     [_queue addOperation:operation];

@@ -305,9 +305,9 @@ static inline void DFDispatchAsync(dispatch_block_t block) {
         task.loadTask = [_imageLoader startTaskForRequest:task.request progressHandler:^(int64_t completedUnitCount, int64_t totalUnitCount) {
             task.progress.totalUnitCount = totalUnitCount;
             task.progress.completedUnitCount = completedUnitCount;
-        } completion:^(DFImageResponse * __nullable loadResponse) {
+        } completion:^(UIImage *__nullable image, NSDictionary *__nullable info, NSError *__nullable error) {
             task.loadTask = nil;
-            task.response = loadResponse;
+            task.response = [[DFImageResponse alloc] initWithImage:image error:error userInfo:info];
             DFImageManager *strongSelf = weakSelf;
             if (strongSelf) {
                 [strongSelf lock];
@@ -372,10 +372,10 @@ static inline void DFDispatchAsync(dispatch_block_t block) {
 }
 
 - (nullable DFImageResponse *)_cachedResponseForRequest:(nonnull DFImageRequest *)request {
-    DFImageResponse *response = [_imageLoader cachedResponseForRequest:request];
+    DFCachedImageResponse *response = [_imageLoader cachedResponseForRequest:request];
     if (response.image) {
-        return [[DFImageResponse alloc] initWithImage:response.image error:response.error userInfo:({
-            NSMutableDictionary *info = [[NSMutableDictionary alloc] initWithDictionary:response.userInfo];
+        return [[DFImageResponse alloc] initWithImage:response.image error:nil userInfo:({
+            NSMutableDictionary *info = [[NSMutableDictionary alloc] initWithDictionary:response.info];
             info[DFImageInfoIsFromMemoryCacheKey] = @YES;
             info;
         })];

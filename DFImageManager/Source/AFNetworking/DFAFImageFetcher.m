@@ -25,7 +25,6 @@
 #import "DFImageRequestOptions.h"
 #import "DFImageManagerDefines.h"
 #import "DFImageRequest.h"
-#import "DFImageResponse.h"
 
 NSString *const DFAFRequestCachePolicyKey = @"DFAFRequestCachePolicyKey";
 
@@ -120,7 +119,7 @@ NSString *const DFAFRequestCachePolicyKey = @"DFAFRequestCachePolicyKey";
     return request1 == request2 || [(NSURL *)request1.resource isEqual:(NSURL *)request2.resource];
 }
 
-- (NSOperation *)startOperationWithRequest:(DFImageRequest *)request progressHandler:(void (^)(int64_t, int64_t))progressHandler completion:(void (^)(DFImageResponse *))completion {
+- (nonnull NSOperation *)startOperationWithRequest:(nonnull DFImageRequest *)request progressHandler:(nullable DFImageFetchingProgressHandler)progressHandler completion:(nullable DFImageFetchingCompletionHandler)completion {
     NSURLRequest *URLRequest = [self _URLRequestForImageRequest:request];
     DFAFImageFetcher *__weak weakSelf = self;
     NSURLSessionDataTask *__block task = [self.sessionManager dataTaskWithRequest:URLRequest completionHandler:^(NSURLResponse *URLResponse, UIImage *result, NSError *error) {
@@ -129,7 +128,7 @@ NSString *const DFAFRequestCachePolicyKey = @"DFAFRequestCachePolicyKey";
             [strongSelf->_dataTaskDelegates removeObjectForKey:task];
         }
         if (completion) {
-            completion([[DFImageResponse alloc] initWithImage:result error:error userInfo:nil]);
+            completion(result, nil, error);
         }
     }];
     [task resume];

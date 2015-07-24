@@ -28,7 +28,6 @@
 #import "DFImageProcessing.h"
 #import "DFImageRequest.h"
 #import "DFImageRequestOptions.h"
-#import "DFImageResponse.h"
 
 #if DF_IMAGE_MANAGER_GIF_AVAILABLE
 #import "DFImageManagerKit+GIF.h"
@@ -203,8 +202,8 @@
         DFImageManagerImageLoader *__weak weakSelf = self;
         operation.operation = [_fetcher startOperationWithRequest:task.request progressHandler:^(int64_t completedUnitCount, int64_t totalUnitCount) {
             [weakSelf _loadOperation:operation didUpdateProgressWithCompletedUnitCount:completedUnitCount totalUnitCount:totalUnitCount];
-        } completion:^(DFImageResponse * __nonnull response) {
-            [weakSelf _loadOperation:operation didCompleteWithResponse:response];
+        } completion:^(UIImage *__nullable image, NSDictionary *__nullable info, NSError *__nullable error) {
+            [weakSelf _loadOperation:operation didCompleteWithImage:image info:info error:error];
         }];
         _loadOperations[key] = operation;
     } else {
@@ -225,24 +224,36 @@
     });
 }
 
-- (void)_loadOperation:(nonnull _DFImageLoadOperation *)operation didCompleteWithResponse:(nullable DFImageResponse *)response {
+- (void)_loadOperation:(nonnull _DFImageLoadOperation *)operation didCompleteWithImage:(nullable UIImage *)image info:(nullable NSDictionary *)info error:(nullable NSError *)error {
     dispatch_async(_queue, ^{
-        DFImageManagerImageLoader *__weak weakSelf = self;
         for (DFImageManagerImageLoaderTask *task in operation.tasks) {
-            if ([self _shouldProcessResponse:response]) {
-                task.processOperation = [self _processResponse:response forRequest:task.request completion:^(DFImageResponse *processedResponse) {
-                    dispatch_async(_queue, ^{
-                        task.completionHandler(response);
-                    });
-                }];
-            } else {
-                [weakSelf _storeResponse:response forRequest:task.request];
-                task.completionHandler(response);
-            }
+            [self _loadTask:task didCompleteWithImage:image info:info error:error];
         }
         [operation.tasks removeAllObjects];
         [_loadOperations removeObjectForKey:operation.key];
     });
+}
+
+- (void)_loadTask:(nonnull DFImageManagerImageLoaderTask *)task didCompleteWithImage:(nullable UIImage *)image info:(nullable NSDictionary *)info error:(nullable NSError *)error {
+    DFImageManagerImageLoader *__weak weakSelf = self;
+    if (image && [self _shouldProcessImage:image]) {
+        id<DFImageProcessing> processor = _processor;
+        NSOperation *operation = [NSBlockOperation blockOperationWithBlock:^{
+            UIImage *processedImage = [weakSelf cachedResponseForRequest:task.request].image;
+            if (!processedImage) {
+                processedImage = [processor processedImage:image forRequest:task.request];
+                [weakSelf _storeImage:processedImage info:info forRequest:task.request];
+            }
+            dispatch_async(_queue, ^{
+                task.completionHandler(processedImage, info, error);
+            });
+        }];
+        [_processingQueue addOperation:operation];
+        task.processOperation = operation;
+    } else {
+        [weakSelf _storeImage:image info:info forRequest:task.request];
+        task.completionHandler(image, info, error);
+    }
 }
 
 - (void)cancelTask:(nullable DFImageManagerImageLoaderTask *)task {
@@ -269,28 +280,12 @@
 
 #pragma mark Processing
 
-- (NSOperation *)_processResponse:(DFImageResponse *)response forRequest:(nonnull DFImageRequest *)request completion:(void (^__nonnull)(DFImageResponse *processedResponse))completion {
-    DFImageManagerImageLoader *__weak weakSelf = self;
-    id<DFImageProcessing> processor = _processor;
-    NSOperation *operation = [NSBlockOperation blockOperationWithBlock:^{
-        DFImageResponse *processedResponse = [weakSelf cachedResponseForRequest:request];
-        if (!processedResponse) {
-            UIImage *processedImage = [processor processedImage:response.image forRequest:request];
-            processedResponse = [[DFImageResponse alloc] initWithImage:processedImage error:response.error userInfo:response.userInfo];
-            [weakSelf _storeResponse:processedResponse forRequest:request];
-        }
-        completion(processedResponse);
-    }];
-    [_processingQueue addOperation:operation];
-    return operation;
-}
-
-- (BOOL)_shouldProcessResponse:(DFImageResponse *)response {
-    if (!response.image || !_processor || !_processingQueue) {
+- (BOOL)_shouldProcessImage:(nonnull UIImage *)image {
+    if (!_processor || !_processingQueue) {
         return NO;
     }
 #if DF_IMAGE_MANAGER_GIF_AVAILABLE
-    if ([response.image isKindOfClass:[DFAnimatedImage class]]) {
+    if ([image isKindOfClass:[DFAnimatedImage class]]) {
         return NO;
     }
 #endif
@@ -299,13 +294,13 @@
 
 #pragma mark Caching
 
-- (nullable DFImageResponse *)cachedResponseForRequest:(nonnull DFImageRequest *)request {
-    return request.options.memoryCachePolicy != DFImageRequestCachePolicyReloadIgnoringCache ? [_cache cachedImageResponseForKey:DFImageCacheKeyCreate(request)].response : nil;
+- (nullable DFCachedImageResponse *)cachedResponseForRequest:(nonnull DFImageRequest *)request {
+    return request.options.memoryCachePolicy != DFImageRequestCachePolicyReloadIgnoringCache ? [_cache cachedImageResponseForKey:DFImageCacheKeyCreate(request)] : nil;
 }
 
-- (void)_storeResponse:(nullable DFImageResponse *)response forRequest:(nonnull DFImageRequest *)request {
-    if (response.image) {
-        DFCachedImageResponse *cachedResponse = [[DFCachedImageResponse alloc] initWithResponse:response expirationDate:(CACurrentMediaTime() + request.options.expirationAge)];
+- (void)_storeImage:(nullable UIImage *)image info:(nullable NSDictionary *)info forRequest:(nonnull DFImageRequest *)request {
+    if (image) {
+        DFCachedImageResponse *cachedResponse = [[DFCachedImageResponse alloc] initWithImage:image info:info expirationDate:(CACurrentMediaTime() + request.options.expirationAge)];
         [_cache storeImageResponse:cachedResponse forKey:DFImageCacheKeyCreate(request)];
     }
 }
