@@ -29,22 +29,6 @@ NS_ASSUME_NONNULL_BEGIN
  */
 extern CGSize const DFImageMaximumSize;
 
-
-// Requests results info keys:
-
-/*! An image task (DFImageTask).
- */
-extern NSString *const DFImageInfoTaskKey;
-
-/*! An error that occurred when Photos attempted to load the image (NSError). 
- */
-extern NSString *const DFImageInfoErrorKey;
-
-/*! A boolean value indicating whether the image was returned from the memory cache.
- */
-extern NSString *const DFImageInfoIsFromMemoryCacheKey;
-
-
 /*! Options for fitting an image’s aspect ratio to a target size.
  */
 typedef NS_ENUM(NSInteger, DFImageContentMode) {

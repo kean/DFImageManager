@@ -23,8 +23,6 @@
 #import "DFImageManaging.h"
 #import <Foundation/Foundation.h>
 
-NS_ASSUME_NONNULL_BEGIN
-
 @class DFImageManagerConfiguration;
 
 /*! The DFImageManager and the related classes provide an implementation of the DFImageManaging protocol. The role of the DFImageManager is to manage the execution of image tasks by delegating the actual job to the objects, implementing DFImageFetching, DFImageCaching, and DFImageProcessing protocols.
@@ -51,7 +49,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /*! A copy of the configuration object for this manager (read only). Changing mutable values within the configuration object has no effect on the current manager.
  */
-@property (nonatomic, copy, readonly) DFImageManagerConfiguration *configuration;
+@property (nonnull, nonatomic, copy, readonly) DFImageManagerConfiguration *configuration;
 
 /*! The receivers name.
  */
@@ -60,7 +58,7 @@ NS_ASSUME_NONNULL_BEGIN
 /*! Creates image manager with a specified configuration.
  @param configuration A configuration object that specifies certain behaviours, such as fetching, processing, caching and more. Manager copies the configuration object.
  */
-- (instancetype)initWithConfiguration:(DFImageManagerConfiguration *)configuration NS_DESIGNATED_INITIALIZER;
+- (nonnull instancetype)initWithConfiguration:(nonnull DFImageManagerConfiguration *)configuration NS_DESIGNATED_INITIALIZER;
 
 @end
 
@@ -71,15 +69,15 @@ NS_ASSUME_NONNULL_BEGIN
 
 /*! Returns the shared image manager instance. By default returns the image manager instance created using DFImageManager -createDefaultManager method. An application with more specific needs can create a custom image manager and set it as a shared instance.
  */
-+ (id<DFImageManaging>)sharedManager;
++ (nonnull id<DFImageManaging>)sharedManager;
 
 /*! Sets the image manager instance shared by all clients of the current application.
  */
-+ (void)setSharedManager:(id<DFImageManaging>)manager;
++ (void)setSharedManager:(nonnull id<DFImageManaging>)manager;
 
 /*! Adds the image manager to the current shared manager by composing them together. The added image manager will be the first one to respond to the image requests.
  */
-+ (void)addSharedManager:(id<DFImageManaging>)manager;
++ (void)addSharedManager:(nonnull id<DFImageManaging>)manager;
 
 @end
 
@@ -95,8 +93,6 @@ NS_ASSUME_NONNULL_BEGIN
  
  - ALAsset, DFALAsset and NSURL with scheme assets-library (AssetsLibrary subspec)
  */
-+ (id<DFImageManaging>)createDefaultManager;
++ (nonnull id<DFImageManaging>)createDefaultManager;
 
 @end
-
-NS_ASSUME_NONNULL_END

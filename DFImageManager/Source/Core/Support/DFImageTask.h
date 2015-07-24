@@ -24,6 +24,7 @@
 #import <Foundation/Foundation.h>
 
 @class DFImageRequest;
+@class DFImageResponse;
 
 /*! Constants for determining the current state of a task.
  */
@@ -51,6 +52,10 @@ typedef NS_ENUM(NSUInteger, DFImageTaskState) {
  */
 @property (nullable, atomic, readonly) NSError *error;
 
+/*! Returns image response with metadata associated with a load.
+ */
+@property (nullable, atomic, readonly) DFImageResponse *response;
+
 /*! A progress object monitoring the current task progress.
  @note Progress object can be used to cancel image task.
  */
@@ -58,7 +63,7 @@ typedef NS_ENUM(NSUInteger, DFImageTaskState) {
 
 /*! Completion block to execute when image task is either cancelled or completed.
  */
-@property (nullable, atomic, copy) void (^completionHandler)(UIImage *__nullable image, NSDictionary *__nonnull info);
+@property (nullable, atomic, copy) void (^completionHandler)(UIImage *__nullable image, NSError *__nullable error, DFImageResponse *__nullable response, DFImageTask *__nonnull completedTask);
 
 /*! Resumes the task.
  */

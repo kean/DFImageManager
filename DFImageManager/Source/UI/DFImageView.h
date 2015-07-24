@@ -41,13 +41,13 @@ NS_ASSUME_NONNULL_BEGIN
 /*! Method gets called every time the completion block is called for the current image fetch task.
  @note Might be called multiple times depending on the number of image requests.
  */
-- (void)imageView:(DFImageView *)imageView didCompleteRequest:(DFImageRequest *)request withImage:(nullable UIImage *)image info:(NSDictionary *)info;
+- (void)imageView:(nonnull DFImageView *)imageView didCompleteImageTask:(nonnull DFImageTask *)imageTask withImage:(nullable UIImage *)image;
 
 @optional
 /*! Method gets called right after the image view receives image requests.
  @note This method call is always paired with a least one -imageView:didCompleteRequest:withImage:info call.
  */
-- (void)imageView:(DFImageView *)imageView willStartFetchingImagesForRequests:(NSArray /*! DFImageRequest */ *)requests;
+- (void)imageView:(nonnull DFImageView *)imageView willStartFetchingImagesForRequests:(nonnull NSArray /*! DFImageRequest */ *)requests;
 
 @end
 
@@ -139,7 +139,7 @@ NS_ASSUME_NONNULL_BEGIN
 /*! Method gets called every time the completion block is called for the current image fetch task.
  @note Might be called multiple times depending on the number of image requests.
  */
-- (void)didCompleteRequest:(DFImageRequest *)request withImage:(nullable UIImage *)image info:(NSDictionary *)info;
+- (void)didCompleteImageTask:(nonnull DFImageTask *)task withImage:(nullable UIImage *)image;
 
 @end
 

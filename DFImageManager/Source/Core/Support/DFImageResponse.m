@@ -24,21 +24,12 @@
 
 @implementation DFImageResponse
 
-- (instancetype)initWithImage:(UIImage *)image error:(NSError *)error userInfo:(NSDictionary *)userInfo {
+- (nonnull instancetype)initWithInfo:(nullable NSDictionary *)info isFastResponse:(BOOL)isFastResponse {
     if (self = [super init]) {
-        _image = image;
-        _error = error;
-        _userInfo = userInfo;
+        _info = info;
+        _isFastResponse = isFastResponse;
     }
     return self;
-}
-
-+ (instancetype)responseWithImage:(UIImage *)image {
-    return [[DFImageResponse alloc] initWithImage:image error:nil userInfo:nil];
-}
-
-+ (instancetype)responseWithError:(NSError *)error {
-    return [[DFImageResponse alloc] initWithImage:nil error:error userInfo:nil];
 }
 
 @end

@@ -25,6 +25,7 @@
 #import "DFImageManaging.h"
 #import "DFImageRequest.h"
 #import "DFImageRequestOptions.h"
+#import "DFImageResponse.h"
 #import "DFImageTask.h"
 #import "DFImageView.h"
 #import "DFNetworkReachability.h"
@@ -142,15 +143,14 @@ static const NSTimeInterval _kMinimumAutoretryInterval = 8.f;
         }
     }
     DFImageView *__weak weakSelf = self;
-    _imageTask = [self _createCompositeImageTaskForRequests:requests handler:^(UIImage *image, NSDictionary *info, DFCompositeImageTask *compositeTask) {
-        DFImageTask *task = info[DFImageInfoTaskKey];
-        [weakSelf.delegate imageView:self didCompleteRequest:task.request withImage:image info:info];
-        [weakSelf didCompleteRequest:task.request withImage:image info:info];
+    _imageTask = [self _createCompositeImageTaskForRequests:requests handler:^(UIImage *__nullable image, DFImageTask *__nonnull completedTask, DFCompositeImageTask *__nonnull task) {
+        [weakSelf.delegate imageView:self didCompleteImageTask:completedTask withImage:image];
+        [weakSelf didCompleteImageTask:completedTask withImage:image];
     }];
     [_imageTask resume];
 }
 
-- (DFCompositeImageTask *)_createCompositeImageTaskForRequests:(NSArray *)requests handler:(void (^)(UIImage *, NSDictionary *, DFCompositeImageTask *))handler {
+- (nonnull DFCompositeImageTask *)_createCompositeImageTaskForRequests:(nonnull NSArray *)requests handler:(nullable DFCompositeImageTaskImageHandler)handler {
     NSMutableArray *tasks = [NSMutableArray new];
     for (DFImageRequest *request in requests) {
         DFImageTask *task = [self.imageManager imageTaskForRequest:request completion:nil];
@@ -159,8 +159,8 @@ static const NSTimeInterval _kMinimumAutoretryInterval = 8.f;
     return [[DFCompositeImageTask alloc] initWithImageTasks:tasks imageHandler:handler completionHandler:nil];
 }
 
-- (void)didCompleteRequest:(DFImageRequest *)request withImage:(UIImage *)image info:(NSDictionary *)info {
-    BOOL isFastResponse = [info[DFImageInfoIsFromMemoryCacheKey] boolValue];
+- (void)didCompleteImageTask:(nonnull DFImageTask *)task withImage:(nullable UIImage *)image {
+    BOOL isFastResponse = task.response.isFastResponse;
     if (self.allowsAnimations && !isFastResponse && !self.image) {
         [self displayImage:image];
         [self.layer addAnimation:({

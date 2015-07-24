@@ -57,7 +57,7 @@ static char *_imageTaskKey;
     [self _df_cancelFetching];
     
     UIImageView *__weak weakSelf = self;
-    DFImageTask *task = [[DFImageManager sharedManager] imageTaskForRequest:request completion:^(UIImage *image, NSDictionary *info) {
+    DFImageTask *task = [[DFImageManager sharedManager] imageTaskForRequest:request completion:^(UIImage *__nullable image, NSError *__nullable error, DFImageResponse *__nullable response, DFImageTask *__nonnull completedTask) {
         if (image) {
             weakSelf.image = image;
         }
