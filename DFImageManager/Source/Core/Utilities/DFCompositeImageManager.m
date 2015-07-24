@@ -40,40 +40,40 @@
     NSMutableArray /* id<DFImageManaging> */ *_managers;
 }
 
-- (instancetype)initWithImageManagers:(NSArray *)imageManagers {
+- (nonnull instancetype)initWithImageManagers:(nonnull NSArray *)imageManagers {
     if (self = [super init]) {
         _managers = [NSMutableArray arrayWithArray:imageManagers];
     }
     return self;
 }
 
-- (void)addImageManager:(id<DFImageManaging>)imageManager {
+- (void)addImageManager:(nonnull id<DFImageManaging>)imageManager {
     [self addImageManagers:@[imageManager]];
 }
 
-- (void)addImageManagers:(NSArray *)imageManagers {
+- (void)addImageManagers:(nonnull NSArray *)imageManagers {
     [_managers addObjectsFromArray:imageManagers];
 }
 
-- (void)removeImageManager:(id<DFImageManaging>)imageManager {
+- (void)removeImageManager:(nonnull id<DFImageManaging>)imageManager {
     [self removeImageManagers:@[imageManager]];
 }
 
-- (void)removeImageManagers:(NSArray *)imageManagers {
+- (void)removeImageManagers:(nonnull NSArray *)imageManagers {
     [_managers removeObjectsInArray:imageManagers];
 }
 
 #pragma mark - <DFImageManaging>
 
-- (BOOL)canHandleRequest:(DFImageRequest *)request {
+- (BOOL)canHandleRequest:(nonnull DFImageRequest *)request {
     return DFManagerForRequest(request) != nil;
 }
 
-- (DFImageTask *)imageTaskForResource:(id)resource completion:(DFImageTaskCompletion)completion {
+- (nullable DFImageTask *)imageTaskForResource:(nonnull id)resource completion:(nullable DFImageTaskCompletion)completion {
     return [self imageTaskForRequest:[DFImageRequest requestWithResource:resource] completion:completion];
 }
 
-- (DFImageTask *)imageTaskForRequest:(DFImageRequest *)request completion:(DFImageTaskCompletion)completion {
+- (nullable DFImageTask *)imageTaskForRequest:(nonnull DFImageRequest *)request completion:(nullable DFImageTaskCompletion)completion {
     id<DFImageManaging> manager = DFManagerForRequest(request);
     if (!manager) {
         [NSException raise:NSInvalidArgumentException format:@"There are no managers that can handle the request %@", request];
@@ -81,7 +81,7 @@
     return [manager imageTaskForRequest:request completion:completion];
 }
 
-- (void)getImageTasksWithCompletion:(void (^)(NSArray *, NSArray *))completion {
+- (void)getImageTasksWithCompletion:(void (^ __nullable)(NSArray * __nonnull, NSArray * __nonnull))completion {
     NSMutableArray *allTasks = [NSMutableArray new];
     NSMutableArray *allPreheatingTasks = [NSMutableArray new];
     NSInteger __block numberOfCallbacks = 0;
@@ -103,13 +103,13 @@
     }
 }
 
-- (void)startPreheatingImagesForRequests:(NSArray *)requests {
+- (void)startPreheatingImagesForRequests:(nonnull NSArray *)requests {
     for (DFImageRequest *request in requests) {
         [DFManagerForRequest(request) startPreheatingImagesForRequests:@[request]];
     }
 }
 
-- (void)stopPreheatingImagesForRequests:(NSArray *)requests {
+- (void)stopPreheatingImagesForRequests:(nonnull NSArray *)requests {
     for (DFImageRequest *request in requests) {
         [DFManagerForRequest(request) stopPreheatingImagesForRequests:@[request]];
     }

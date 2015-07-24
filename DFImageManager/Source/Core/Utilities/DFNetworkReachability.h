@@ -22,11 +22,9 @@
 
 #import <Foundation/Foundation.h>
 
-NS_ASSUME_NONNULL_BEGIN
-
 /*! Posted when network reachability changes. The notification object is an instance of DFNetworkReachability class.
  */
-extern NSString *DFNetworkReachabilityDidChangeNotification;
+extern NSString *__nonnull DFNetworkReachabilityDidChangeNotification;
 
 /*! The DFNetworkReachability monitors network reachability.
  */
@@ -39,8 +37,6 @@ extern NSString *DFNetworkReachabilityDidChangeNotification;
 
 /*! Returns shared reachability for internet connection.
  */
-+ (instancetype)shared;
++ (nonnull instancetype)shared;
 
 @end
-
-NS_ASSUME_NONNULL_END

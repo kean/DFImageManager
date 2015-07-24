@@ -25,7 +25,7 @@
 
 @implementation NSCache (DFImageManager)
 
-+ (NSCache *)df_sharedImageCache {
++ (nonnull NSCache *)df_sharedImageCache {
     static NSCache *cache;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{

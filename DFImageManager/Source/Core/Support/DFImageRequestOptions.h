@@ -22,8 +22,6 @@
 
 #import "DFImageManagerDefines.h"
 
-NS_ASSUME_NONNULL_BEGIN
-
 /*! You use a DFImageRequestOptions object to specify options when requesting image representations of resources using classes conforming DFImageManaging protocol.
  */
 @interface DFImageRequestOptions : NSObject <NSCopying>
@@ -55,13 +53,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 /*! Initializes DFImageRequestOptions with default options.
  */
-- (instancetype)init NS_DESIGNATED_INITIALIZER;
+- (nonnull instancetype)init NS_DESIGNATED_INITIALIZER;
 
 /*! Initializes DFImageRequestOptions with another instance of request options.
  @param options The given options. Options might be nil.
  */
-- (instancetype)initWithOptions:(nullable DFImageRequestOptions *)options;
+- (nonnull instancetype)initWithOptions:(nullable DFImageRequestOptions *)options;
 
 @end
-
-NS_ASSUME_NONNULL_END

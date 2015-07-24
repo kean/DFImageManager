@@ -53,7 +53,7 @@ static void _DFReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkRe
     }
 }
 
-- (instancetype)initWithReachability:(SCNetworkReachabilityRef)reachabilityRef {
+- (nonnull instancetype)initWithReachability:(SCNetworkReachabilityRef)reachabilityRef {
     if (self = [super init]) {
         _reachabilityRef = reachabilityRef;
         if (_reachabilityRef != NULL) {
@@ -64,7 +64,7 @@ static void _DFReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkRe
     return self;
 }
 
-+ (instancetype)shared {
++ (nonnull instancetype)shared {
     static DFNetworkReachability *shared;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
@@ -74,7 +74,7 @@ static void _DFReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkRe
     return shared;
 }
 
-+ (instancetype)_reachabilityForInternetConnection {
++ (nonnull instancetype)_reachabilityForInternetConnection {
     struct sockaddr_in zeroAddress;
     bzero(&zeroAddress, sizeof(zeroAddress));
     zeroAddress.sin_len = sizeof(zeroAddress);
@@ -82,7 +82,7 @@ static void _DFReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkRe
     return [self _reachabilityWithAddress:&zeroAddress];
 }
 
-+ (instancetype)_reachabilityWithAddress:(const struct sockaddr_in *)hostAddress; {
++ (nonnull instancetype)_reachabilityWithAddress:(const struct sockaddr_in *)hostAddress; {
     SCNetworkReachabilityRef reachabilityRef = SCNetworkReachabilityCreateWithAddress(kCFAllocatorDefault, (const struct sockaddr *)hostAddress);
     return [[DFNetworkReachability alloc] initWithReachability:reachabilityRef];
 }

@@ -24,7 +24,7 @@
 
 @implementation DFImageRequestOptions
 
-- (instancetype)init {
+- (nonnull instancetype)init {
     if (self = [super init]) {
         _priority = DFImageRequestPriorityNormal;
         _allowsNetworkAccess = YES;
@@ -35,7 +35,7 @@
     return self;
 }
 
-- (instancetype)initWithOptions:(DFImageRequestOptions *)options {
+- (nonnull instancetype)initWithOptions:(nullable DFImageRequestOptions *)options {
     if (self = [self init]) {
         if (options) {
             _priority = options.priority;

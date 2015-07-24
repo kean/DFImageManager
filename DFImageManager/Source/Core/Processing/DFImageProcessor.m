@@ -31,7 +31,7 @@ NSString *DFImageProcessingCornerRadiusKey = @"DFImageProcessingCornerRadiusKey"
 
 #pragma mark <DFImageProcessing>
 
-- (BOOL)isProcessingForRequestEquivalent:(DFImageRequest *)request1 toRequest:(DFImageRequest *)request2 {
+- (BOOL)isProcessingForRequestEquivalent:(nonnull DFImageRequest *)request1 toRequest:(nonnull DFImageRequest *)request2 {
     if (request1 == request2) {
         return YES;
     }
@@ -45,7 +45,7 @@ NSString *DFImageProcessingCornerRadiusKey = @"DFImageProcessingCornerRadiusKey"
     return (!cornerRadius1 && !cornerRadius2) || ((!!cornerRadius1 && !!cornerRadius2) && [cornerRadius1 isEqualToNumber:cornerRadius2]);
 }
 
-- (UIImage *)processedImage:(UIImage *)image forRequest:(DFImageRequest *)request {
+- (nullable UIImage *)processedImage:(nonnull UIImage *)image forRequest:(nonnull DFImageRequest *)request {
     if (request.contentMode == DFImageContentModeAspectFill && request.options.allowsClipping) {
         image = [DFImageProcessor _croppedImage:image aspectFillPixelSize:request.targetSize];
     }
@@ -58,7 +58,7 @@ NSString *DFImageProcessingCornerRadiusKey = @"DFImageProcessingCornerRadiusKey"
     return image;
 }
 
-+ (UIImage *)_croppedImage:(UIImage *)image aspectFillPixelSize:(CGSize)targetSize {
++ (nullable UIImage *)_croppedImage:(nonnull UIImage *)image aspectFillPixelSize:(CGSize)targetSize {
     CGSize imageSize = CGSizeMake(CGImageGetWidth(image.CGImage), CGImageGetHeight(image.CGImage));
     CGFloat scale = ({
         CGFloat scaleWidth = targetSize.width / imageSize.width;
