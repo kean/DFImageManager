@@ -367,23 +367,6 @@ static inline void DFDispatchAsync(dispatch_block_t block) {
     return [NSString stringWithFormat:@"<%@ %p> { name = %@ }", [self class], self, self.name];
 }
 
-#pragma mark - Deprecated
-
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-implementations"
-
-- (nullable DFImageTask *)requestImageForResource:(id __nonnull)resource completion:(nullable DFImageTaskCompletion)completion {
-    return [self requestImageForRequest:[DFImageRequest requestWithResource:resource] completion:completion];
-}
-
-- (nullable DFImageTask *)requestImageForRequest:(DFImageRequest * __nonnull)request completion:(nullable DFImageTaskCompletion)completion {
-    DFImageTask *task = [self imageTaskForRequest:request completion:completion];
-    [task resume];
-    return task;
-}
-
-#pragma clang diagnostic pop
-
 @end
 
 

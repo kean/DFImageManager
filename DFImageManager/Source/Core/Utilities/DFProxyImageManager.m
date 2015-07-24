@@ -107,21 +107,4 @@
     return [transformedRequests copy];
 }
 
-#pragma mark - Deprecated
-
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-implementations"
-
-- (DFImageTask *)requestImageForResource:(id)resource completion:(DFImageTaskCompletion)completion {
-    return [self requestImageForRequest:[DFImageRequest requestWithResource:resource] completion:completion];
-}
-
-- (DFImageTask *)requestImageForRequest:(DFImageRequest *)request completion:(DFImageTaskCompletion)completion {
-    DFImageTask *task = [self imageTaskForRequest:request completion:completion];
-    [task resume];
-    return task;
-}
-
-#pragma clang diagnostic pop
-
 @end

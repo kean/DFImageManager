@@ -72,14 +72,4 @@ typedef void (^DFImageTaskCompletion)(UIImage *__nullable image, NSError *__null
  */
 - (void)stopPreheatingImagesForAllRequests;
 
-#pragma mark - Deprecated
-
-/*! Deprecated. Use -imageTaskForResource:completion: instead.
- */
-- (nullable DFImageTask *)requestImageForResource:(nonnull id)resource completion:(nullable DFImageTaskCompletion)completion DEPRECATED_ATTRIBUTE;
-
-/*! Deprecated. Use -imageTaskForRequest:completion: instead.
- */
-- (nullable DFImageTask *)requestImageForRequest:(nonnull DFImageRequest *)request completion:(nullable DFImageTaskCompletion)completion DEPRECATED_ATTRIBUTE;
-
 @end
