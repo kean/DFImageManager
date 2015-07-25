@@ -61,6 +61,10 @@ typedef NS_ENUM(NSUInteger, DFImageTaskState) {
  */
 @property (nonnull, atomic, readonly) NSProgress *progress;
 
+/*! Priority of the task. Can be changed during the execution of the task.
+ */
+@property (nonatomic) DFImageRequestPriority priority;
+
 /*! Completion block to execute when image task is either cancelled or completed.
  */
 @property (nullable, atomic, copy) void (^completionHandler)(UIImage *__nullable image, NSError *__nullable error, DFImageResponse *__nullable response, DFImageTask *__nonnull completedTask);
@@ -72,9 +76,5 @@ typedef NS_ENUM(NSUInteger, DFImageTaskState) {
 /*! Advices the image manager that the task should be cancelled. The completion block will be called with error value of { DFImageManagerErrorDomain, DFImageManagerErrorCancelled }
  */
 - (void)cancel;
-
-/*! Changes the priority of the task.
- */
-- (void)setPriority:(DFImageRequestPriority)priority;
 
 @end

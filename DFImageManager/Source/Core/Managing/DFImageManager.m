@@ -63,6 +63,7 @@
 
 @synthesize completionHandler = _completionHandler;
 @synthesize request = _request;
+@synthesize priority = _priority;
 @synthesize error = _error;
 @synthesize response = _response;
 @synthesize state = _state;
@@ -72,6 +73,7 @@
     if (self = [super init]) {
         _manager = manager;
         _request = request;
+        _priority = request.options.priority;
         _completionHandler = completionHandler;
         _state = DFImageTaskStateSuspended;
     }
@@ -87,7 +89,10 @@
 }
 
 - (void)setPriority:(DFImageRequestPriority)priority {
-    [self.manager setPriority:priority forTask:self];
+    if (_priority != priority) {
+        _priority = priority;
+        [self.manager setPriority:priority forTask:self];
+    }
 }
 
 - (BOOL)isValidNextState:(DFImageTaskState)nextState {
@@ -397,10 +402,7 @@ static inline void DFDispatchAsync(dispatch_block_t block) {
         return;
     }
     [self lock];
-    if (task.request.options.priority != priority) {
-        task.request.options.priority = priority;
-        [_imageLoader updatePriorityForTask:task.loadTask];
-    }
+    [_imageLoader setPriority:priority forTask:task.loadTask];
     [self unlock];
 }
 

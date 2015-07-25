@@ -40,6 +40,7 @@
 @interface DFImageManagerImageLoaderTask ()
 
 @property (nonnull, nonatomic, readonly) DFImageRequest *request;
+@property (nonatomic) DFImageRequestPriority priority;
 @property (nonnull, nonatomic, copy, readonly) DFImageLoaderProgressHandler progressHandler;
 @property (nonnull, nonatomic, copy, readonly) DFImageLoaderCompletionHandler completionHandler;
 @property (nullable, nonatomic, weak) _DFImageLoadOperation *loadOperation;
@@ -54,6 +55,7 @@
 - (nonnull instancetype)initWithRequest:(nonnull DFImageRequest *)request progressHandler:(nonnull DFImageLoaderProgressHandler)progressHandler completionHandler:(nonnull DFImageLoaderCompletionHandler)completionHandler {
     if (self = [super init]) {
         _request = request;
+        _priority = request.options.priority;
         _progressHandler = progressHandler;
         _completionHandler = completionHandler;
     }
@@ -144,7 +146,7 @@
     if (_operation && _tasks.count) {
         DFImageRequestPriority priority = DFImageRequestPriorityVeryLow;
         for (DFImageManagerImageLoaderTask *task in _tasks) {
-            priority = MAX(task.request.options.priority, priority);
+            priority = MAX(task.priority, priority);
         }
         if (_operation.queuePriority != (NSOperationQueuePriority)priority) {
             _operation.queuePriority = (NSOperationQueuePriority)priority;
@@ -272,8 +274,9 @@
     });
 }
 
-- (void)updatePriorityForTask:(nullable DFImageManagerImageLoaderTask *)task {
+- (void)setPriority:(DFImageRequestPriority)priority forTask:(nullable DFImageManagerImageLoaderTask *)task {
     dispatch_async(_queue, ^{
+        task.priority = priority;
         [task.loadOperation updateOperationPriority];
     });
 }

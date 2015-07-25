@@ -48,7 +48,7 @@ typedef void (^DFImageLoaderCompletionHandler)(UIImage *__nullable image, NSDict
 
 - (void)cancelTask:(nullable DFImageManagerImageLoaderTask *)task;
 
-- (void)updatePriorityForTask:(nullable DFImageManagerImageLoaderTask *)task;
+- (void)setPriority:(DFImageRequestPriority)priority forTask:(nullable DFImageManagerImageLoaderTask *)task;
 
 - (nullable DFCachedImageResponse *)cachedResponseForRequest:(nonnull DFImageRequest *)request;
 
