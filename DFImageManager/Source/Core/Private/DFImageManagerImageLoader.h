@@ -57,6 +57,8 @@ typedef void (^DFImageLoaderCompletionHandler)(UIImage *__nullable image, NSDict
 
 - (nonnull DFImageRequest *)canonicalRequestForRequest:(nonnull DFImageRequest *)request;
 
+- (nonnull NSArray *)canonicalRequestsForRequests:(nonnull NSArray *)requests;
+
 - (nonnull id<NSCopying>)processingKeyForRequest:(nonnull DFImageRequest *)request;
 
 @end

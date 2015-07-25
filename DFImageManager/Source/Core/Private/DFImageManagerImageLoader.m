@@ -318,6 +318,17 @@
     return _fetcherRespondsToCanonicalRequest ? [_fetcher canonicalRequestForRequest:request] : request;
 }
 
+- (nonnull NSArray *)canonicalRequestsForRequests:(nonnull NSArray *)requests {
+    if (!_fetcherRespondsToCanonicalRequest) {
+        return requests;
+    }
+    NSMutableArray *canonicalRequests = [[NSMutableArray alloc] initWithCapacity:requests.count];
+    for (DFImageRequest *request in requests) {
+        [canonicalRequests addObject:[self canonicalRequestForRequest:request]];
+    }
+    return canonicalRequests;
+}
+
 - (nonnull id<NSCopying>)processingKeyForRequest:(nonnull DFImageRequest *)request {
     return DFImageCacheKeyCreate(request);
 }

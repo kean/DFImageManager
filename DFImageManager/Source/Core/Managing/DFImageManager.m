@@ -210,7 +210,7 @@ static inline void DFDispatchAsync(dispatch_block_t block) {
     if (_invalidated) {
         return;
     }
-    requests = [self _canonicalRequestsForRequests:requests];
+    requests = [_imageLoader canonicalRequestsForRequests:requests];
     [self lock];
     for (DFImageRequest *request in requests) {
         id<NSCopying> key = [_imageLoader processingKeyForRequest:request];
@@ -226,7 +226,7 @@ static inline void DFDispatchAsync(dispatch_block_t block) {
 }
 
 - (void)stopPreheatingImagesForRequests:(nonnull NSArray *)requests {
-    requests = [self _canonicalRequestsForRequests:requests];
+    requests = [_imageLoader canonicalRequestsForRequests:requests];
     [self lock];
     for (DFImageRequest *request in requests) {
         id<NSCopying> key = [_imageLoader processingKeyForRequest:request];
@@ -408,14 +408,6 @@ static inline void DFDispatchAsync(dispatch_block_t block) {
 }
 
 #pragma mark Support
-
-- (nonnull NSArray *)_canonicalRequestsForRequests:(nonnull NSArray *)requests {
-    NSMutableArray *canonicalRequests = [[NSMutableArray alloc] initWithCapacity:requests.count];
-    for (DFImageRequest *request in requests) {
-        [canonicalRequests addObject:[_imageLoader canonicalRequestForRequest:request]];
-    }
-    return canonicalRequests;
-}
 
 - (NSString *)description {
     return [NSString stringWithFormat:@"<%@ %p> { name = %@ }", [self class], self, self.name];
