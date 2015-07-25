@@ -47,15 +47,6 @@
     return [[DFImageRequest alloc] initWithResource:resource targetSize:targetSize contentMode:contentMode options:options];
 }
 
-- (id)copyWithZone:(NSZone *)zone {
-    DFImageRequest *request = [[DFImageRequest allocWithZone:zone] init];
-    request.resource = self.resource;
-    request.targetSize = self.targetSize;
-    request.contentMode = self.contentMode;
-    request.options = self.options;
-    return request;
-}
-
 - (NSString *)description {
     return [NSString stringWithFormat:@"<%@ %p> { resource = %@, targetSize = %@, contentMode = %i, options = %@ }", [self class], self, self.resource, NSStringFromCGSize(self.targetSize), (int)self.contentMode, self.options];
 }

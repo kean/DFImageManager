@@ -54,7 +54,7 @@
 @end
 
 
-#define _DF_TRANSFORMED_REQUEST(request) (_transformer ? [_transformer transformedRequest:[(request) copy]] : (request))
+#define _DF_TRANSFORMED_REQUEST(request) (_transformer ? [_transformer transformedRequest:request] : (request))
 
 @implementation DFProxyImageManager
 

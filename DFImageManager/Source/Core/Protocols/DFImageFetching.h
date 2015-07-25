@@ -61,8 +61,7 @@ typedef void (^DFImageFetchingCompletionHandler)(UIImage *__nullable image, NSDi
 
 @optional
 
-/*! Returns a canonical form of the given request. All DFImageFetching methods receive requests in a canonical form expect for the -canHandleRequest: method.
- @param request The initial request. This method can modify the given request.
+/*! Returns a canonical form of the given request. All DFImageFetching methods receive requests in a canonical form except for the -canHandleRequest: method.
  */
 - (nonnull DFImageRequest *)canonicalRequestForRequest:(nonnull DFImageRequest *)request;
 

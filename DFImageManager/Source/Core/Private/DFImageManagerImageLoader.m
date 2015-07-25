@@ -311,10 +311,7 @@
 #pragma mark Misc
 
 - (nonnull DFImageRequest *)canonicalRequestForRequest:(nonnull DFImageRequest *)request {
-    if (_fetcherRespondsToCanonicalRequest) {
-        return [[_fetcher canonicalRequestForRequest:[request copy]] copy];
-    }
-    return [request copy];
+    return _fetcherRespondsToCanonicalRequest ? [_fetcher canonicalRequestForRequest:request] : request;
 }
 
 - (nonnull id<NSCopying>)processingKeyForRequest:(nonnull DFImageRequest *)request {

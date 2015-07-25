@@ -27,23 +27,23 @@
 
 /*! The DFImageRequest class represents an image request for a specified resource. The request also contains options on how to retrieve and (optionally) process the image.
  */
-@interface DFImageRequest : NSObject <NSCopying>
+@interface DFImageRequest : NSObject
 
 /*! The resource whose image data is to be loaded.
  */
-@property (nonnull, nonatomic) id resource;
+@property (nonnull, nonatomic, readonly) id resource;
 
 /*! The size in pixels of image to be returned.
  */
-@property (nonatomic) CGSize targetSize;
+@property (nonatomic, readonly) CGSize targetSize;
 
 /*! An option for how to fit the image to the aspect ratio of the requested size. For details, see DFImageContentMode.
  */
-@property (nonatomic) DFImageContentMode contentMode;
+@property (nonatomic, readonly) DFImageContentMode contentMode;
 
 /*! Options specifying how image manager should handle the request and process the received image. More options that are provided in a base class may be available, so make sure to check the documentation on that.
  */
-@property (nonnull, nonatomic) DFImageRequestOptions *options;
+@property (nonnull, nonatomic, readonly) DFImageRequestOptions *options;
 
 /*! Initializes request with a given parameters.
  @param resource The resource whose image data is to be loaded.
