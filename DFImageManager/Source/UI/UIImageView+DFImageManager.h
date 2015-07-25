@@ -36,14 +36,14 @@
 
 /*! Requests an image representation with a target size computed based on the image view size, default content mode (aspect fill) and default options. Uses shared image manager for fetching.
  */
-- (nullable DFImageTask *)df_setImageWithResource:(nonnull id)resource;
+- (nullable DFImageTask *)df_setImageWithResource:(nullable id)resource;
 
 /*! Requests an image representation for the specified resource.
  */
-- (nullable DFImageTask *)df_setImageWithResource:(nonnull id)resource targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(nullable DFImageRequestOptions *)options;
+- (nullable DFImageTask *)df_setImageWithResource:(nullable id)resource targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(nullable DFImageRequestOptions *)options;
 
 /*! Requests an image representation for the specified requests.
  */
-- (nullable DFImageTask *)df_setImageWithRequest:(nonnull DFImageRequest *)request;
+- (nullable DFImageTask *)df_setImageWithRequest:(nullable DFImageRequest *)request;
 
 @end

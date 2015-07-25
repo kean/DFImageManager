@@ -313,7 +313,6 @@ static inline void DFDispatchAsync(dispatch_block_t block) {
             progress.totalUnitCount = totalUnitCount;
             progress.completedUnitCount = completedUnitCount;
         } completion:^(UIImage *__nullable image, NSDictionary *__nullable info, NSError *__nullable error) {
-            task.loadTask = nil;
             task.image = image;
             task.response = [[DFImageResponse alloc] initWithInfo:info isFastResponse:NO];
             task.error = error;

@@ -111,10 +111,10 @@
     if (other == self) {
         return YES;
     }
-    if (other.owner != self.owner) {
+    if (other.owner != _owner) {
         return NO;
     }
-    return [self.owner isImageRequestKey:self equalToKey:other];
+    return [_owner isImageRequestKey:self equalToKey:other];
 }
 
 @end

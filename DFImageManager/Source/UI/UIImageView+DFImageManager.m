@@ -43,18 +43,20 @@ static char *_imageTaskKey;
     [self _df_cancelFetching];
 }
 
-- (nullable DFImageTask *)df_setImageWithResource:(nonnull id)resource {
-    CGFloat scale = [UIScreen mainScreen].scale;
-    CGSize targetSize = CGSizeMake(self.bounds.size.width * scale, self.bounds.size.height * scale);
-    return [self df_setImageWithResource:resource targetSize:targetSize contentMode:DFImageContentModeAspectFill options:nil];
+- (nullable DFImageTask *)df_setImageWithResource:(nullable id)resource {
+    return [self df_setImageWithResource:resource targetSize:[DFImageRequest targetSizeForView:self] contentMode:DFImageContentModeAspectFill options:nil];
 }
 
-- (nullable DFImageTask *)df_setImageWithResource:(nonnull id)resource targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(nullable DFImageRequestOptions *)options {
-    return [self df_setImageWithRequest:[DFImageRequest requestWithResource:resource targetSize:targetSize contentMode:contentMode options:options]];
+- (nullable DFImageTask *)df_setImageWithResource:(nullable id)resource targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(nullable DFImageRequestOptions *)options {
+    return [self df_setImageWithRequest:resource ? [DFImageRequest requestWithResource:resource targetSize:targetSize contentMode:contentMode options:options] : nil];
 }
 
-- (nullable DFImageTask *)df_setImageWithRequest:(nonnull DFImageRequest *)request {
+- (nullable DFImageTask *)df_setImageWithRequest:(nullable DFImageRequest *)request {
     [self _df_cancelFetching];
+    
+    if (!request) {
+        return nil;
+    }
     
     UIImageView *__weak weakSelf = self;
     DFImageTask *task = [[DFImageManager sharedManager] imageTaskForRequest:request completion:^(UIImage *__nullable image, NSError *__nullable error, DFImageResponse *__nullable response, DFImageTask *__nonnull completedTask) {
@@ -70,6 +72,7 @@ static char *_imageTaskKey;
 
 - (void)_df_cancelFetching {
     [[self _df_imageTask] cancel];
+    [self _df_setImageTask:nil];
 }
 
 @end
