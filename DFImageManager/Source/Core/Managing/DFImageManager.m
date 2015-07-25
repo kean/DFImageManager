@@ -204,9 +204,10 @@ static inline void DFDispatchAsync(dispatch_block_t block) {
     if (_invalidated) {
         return;
     }
-    for (DFImageRequest *request in [self _canonicalRequestsForRequests:requests]) {
+    requests = [self _canonicalRequestsForRequests:requests];
+    [self lock];
+    for (DFImageRequest *request in requests) {
         id<NSCopying> key = [_imageLoader processingKeyForRequest:request];
-        [self lock];
         if (!_preheatingTasks[key]) {
             DFImageManager *__weak weakSelf = self;
             _DFImageTask *task = [[_DFImageTask alloc] initWithManager:self request:request completionHandler:^(UIImage *__nullable image, NSError *__nullable error, DFImageResponse *__nullable response, DFImageTask *__nonnull completedTask) {
@@ -221,24 +222,23 @@ static inline void DFDispatchAsync(dispatch_block_t block) {
             task.tag = _preheatingTaskCounter++;
             _preheatingTasks[key] = task;
         }
-        [self unlock];
     }
-    [self lock];
     [self _setNeedsExecutePreheatingTasks];
     [self unlock];
 }
 
 - (void)stopPreheatingImagesForRequests:(nonnull NSArray *)requests {
-    for (DFImageRequest *request in [self _canonicalRequestsForRequests:requests]) {
+    requests = [self _canonicalRequestsForRequests:requests];
+    [self lock];
+    for (DFImageRequest *request in requests) {
         id<NSCopying> key = [_imageLoader processingKeyForRequest:request];
-        [self lock];
         _DFImageTask *task = _preheatingTasks[key];
         if (task) {
             [self _setImageTaskState:DFImageTaskStateCancelled task:task];
             [_preheatingTasks removeObjectForKey:key];
         }
-        [self unlock];
     }
+    [self unlock];
 }
 
 - (void)stopPreheatingImagesForAllRequests {
