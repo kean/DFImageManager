@@ -45,7 +45,7 @@ static const NSTimeInterval _kMinimumAutoretryInterval = 8.f;
     [self _cancelFetching];
 }
 
-- (instancetype)initWithFrame:(CGRect)frame {
+- (nonnull instancetype)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {
         self.contentMode = UIViewContentModeScaleAspectFill;
         self.clipsToBounds = YES;
@@ -55,7 +55,7 @@ static const NSTimeInterval _kMinimumAutoretryInterval = 8.f;
     return self;
 }
 
-- (instancetype)initWithCoder:(NSCoder *)decoder {
+- (nonnull instancetype)initWithCoder:(NSCoder *)decoder {
     if (self = [super initWithCoder:decoder]) {
         [self _commonInit];
     }
@@ -78,7 +78,7 @@ static const NSTimeInterval _kMinimumAutoretryInterval = 8.f;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_reachabilityDidChange:) name:DFNetworkReachabilityDidChangeNotification object:[DFNetworkReachability shared]];
 }
 
-- (void)displayImage:(UIImage *)image {
+- (void)displayImage:(nullable UIImage *)image {
 #if DF_IMAGE_MANAGER_GIF_AVAILABLE
     if (!image) {
         self.animatedImage = nil;
@@ -118,20 +118,24 @@ static const NSTimeInterval _kMinimumAutoretryInterval = 8.f;
     return _imageTargetSize;
 }
 
-- (void)setImageWithResource:(id)resource {
+- (void)setImageWithResource:(nullable id)resource {
     [self setImageWithResource:resource targetSize:self.imageTargetSize contentMode:self.imageContentMode options:self.imageRequestOptions];
 }
 
-- (void)setImageWithResource:(id)resource targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options {
-    [self setImageWithRequest:[DFImageRequest requestWithResource:resource targetSize:targetSize contentMode:contentMode options:options]];
+- (void)setImageWithResource:(nullable id)resource targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(nullable DFImageRequestOptions *)options {
+    [self setImageWithRequest:(resource ? [DFImageRequest requestWithResource:resource targetSize:targetSize contentMode:contentMode options:options] : nil)];
 }
 
 - (void)setImageWithRequest:(DFImageRequest *)request {
-    [self setImageWithRequests:(@[request])];
+    [self setImageWithRequests:(request ? @[request] : nil)];
 }
 
-- (void)setImageWithRequests:(NSArray *)requests {
+- (void)setImageWithRequests:(nullable NSArray *)requests {
     [self _cancelFetching];
+    
+    if (!requests.count) {
+        return;
+    }
     
     if ([self.delegate respondsToSelector:@selector(imageView:willStartFetchingImagesForRequests:)]) {
         [self.delegate imageView:self willStartFetchingImagesForRequests:requests];

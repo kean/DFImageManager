@@ -27,8 +27,6 @@
 #import <FLAnimatedImage/FLAnimatedImage.h>
 #endif
 
-NS_ASSUME_NONNULL_BEGIN
-
 @class DFCompositeImageTask;
 @class DFImageRequest;
 @class DFImageRequestOptions;
@@ -65,7 +63,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /*! Image manager used by the image view. Set to the shared manager during initialization.
  */
-@property (nonatomic) id<DFImageManaging> imageManager;
+@property (nonnull, nonatomic) id<DFImageManaging> imageManager;
 
 /*! Image view delegate. By default delegate is set to the image view itself. The implementation displays fetched images with animation when necessary.
  */
@@ -81,7 +79,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /*! Image request options used for image requests when options are no present in -setImageWith... method that was called.
  */
-@property (nonatomic) DFImageRequestOptions *imageRequestOptions;
+@property (nullable, nonatomic) DFImageRequestOptions *imageRequestOptions;
 
 /*! Automatically changes current request priority when image view gets added/removed from the window. Default value is NO.
  */
@@ -120,21 +118,21 @@ NS_ASSUME_NONNULL_BEGIN
 
 /*! Requests an image representation with a target size, image content mode and request options of the receiver. For more info see setImageWithRequests: method.
  */
-- (void)setImageWithResource:(id)resource;
+- (void)setImageWithResource:(nullable id)resource;
 
 /*! Requests an image representation for the specified resource. For more info see setImageWithRequests: method.
  */
-- (void)setImageWithResource:(id)resource targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(nullable DFImageRequestOptions *)options;
+- (void)setImageWithResource:(nullable id)resource targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(nullable DFImageRequestOptions *)options;
 
 /*! Requests an image representation for the specified request. For more info see setImageWithRequests: method.
  */
-- (void)setImageWithRequest:(DFImageRequest *)request;
+- (void)setImageWithRequest:(nullable DFImageRequest *)request;
 
 /*! Requests an image representation for each of the specified requests.
  @note When the method is called image view cancels current image fetch task and starts a new one with a given requests. For more info see DFCompositeImageTask.
  @note This method doesn't call -prepareForReuse in case you need to refresh image without invalidating previously displayed image.
  */
-- (void)setImageWithRequests:(NSArray /* DFImageRequest */ *)requests;
+- (void)setImageWithRequests:(nullable NSArray /* DFImageRequest */ *)requests;
 
 /*! Method gets called every time the completion block is called for the current image fetch task.
  @note Might be called multiple times depending on the number of image requests.
@@ -142,5 +140,3 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)didCompleteImageTask:(nonnull DFImageTask *)task withImage:(nullable UIImage *)image;
 
 @end
-
-NS_ASSUME_NONNULL_END
