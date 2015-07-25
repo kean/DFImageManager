@@ -49,6 +49,7 @@
 
 @property (nonnull, nonatomic, readonly) DFImageManager *manager;
 @property (nonatomic) DFImageTaskState state;
+@property (nullable, atomic) NSProgress *progress;
 @property (nullable, atomic) UIImage *image;
 @property (nullable, atomic) NSError *error;
 @property (nullable, atomic) DFImageResponse *response;
@@ -73,12 +74,6 @@
         _request = request;
         _completionHandler = completionHandler;
         _state = DFImageTaskStateSuspended;
-        
-        _progress = [NSProgress progressWithTotalUnitCount:-1];
-        _DFImageTask *__weak weakSelf = self;
-        _progress.cancellationHandler = ^{
-            [weakSelf cancel];
-        };
     }
     return self;
 }
@@ -163,7 +158,16 @@ static inline void DFDispatchAsync(dispatch_block_t block) {
     if (_invalidated) {
         return nil;
     }
-    return [[_DFImageTask alloc] initWithManager:self request:[_imageLoader canonicalRequestForRequest:request] completionHandler:completion];
+    _DFImageTask *task = [[_DFImageTask alloc] initWithManager:self request:[_imageLoader canonicalRequestForRequest:request] completionHandler:completion];
+    
+    NSProgress *progress = [NSProgress progressWithTotalUnitCount:-1];
+    _DFImageTask *__weak weakTask = task;
+    progress.cancellationHandler = ^{
+        [weakTask cancel];
+    };
+    task.progress = progress;
+    
+    return task;
 }
 
 - (void)getImageTasksWithCompletion:(void (^ __nullable)(NSArray * __nonnull, NSArray * __nonnull))completion {
@@ -188,12 +192,13 @@ static inline void DFDispatchAsync(dispatch_block_t block) {
 
 - (void)invalidateAndCancel {
     [self lock];
-    if (!_invalidated) {
-        _invalidated = YES;
-        [_preheatingTasks removeAllObjects];
-        for (_DFImageTask *task in _executingImageTasks) {
-            [self _setImageTaskState:DFImageTaskStateCancelled task:task];
-        }
+    if (_invalidated) {
+        return;
+    }
+    _invalidated = YES;
+    [_preheatingTasks removeAllObjects];
+    for (_DFImageTask *task in _executingImageTasks) {
+        [self _setImageTaskState:DFImageTaskStateCancelled task:task];
     }
     [self unlock];
 }
@@ -209,15 +214,7 @@ static inline void DFDispatchAsync(dispatch_block_t block) {
     for (DFImageRequest *request in requests) {
         id<NSCopying> key = [_imageLoader processingKeyForRequest:request];
         if (!_preheatingTasks[key]) {
-            DFImageManager *__weak weakSelf = self;
-            _DFImageTask *task = [[_DFImageTask alloc] initWithManager:self request:request completionHandler:^(UIImage *__nullable image, NSError *__nullable error, DFImageResponse *__nullable response, DFImageTask *__nonnull completedTask) {
-                DFImageManager *strongSelf = weakSelf;
-                if (strongSelf) {
-                    [strongSelf lock];
-                    [strongSelf.preheatingTasks removeObjectForKey:key];
-                    [strongSelf unlock];
-                }
-            }];
+            _DFImageTask *task = [[_DFImageTask alloc] initWithManager:self request:request completionHandler:nil];
             task.preheating = YES;
             task.tag = _preheatingTaskCounter++;
             _preheatingTasks[key] = task;
@@ -235,7 +232,6 @@ static inline void DFDispatchAsync(dispatch_block_t block) {
         _DFImageTask *task = _preheatingTasks[key];
         if (task) {
             [self _setImageTaskState:DFImageTaskStateCancelled task:task];
-            [_preheatingTasks removeObjectForKey:key];
         }
     }
     [self unlock];
@@ -246,7 +242,6 @@ static inline void DFDispatchAsync(dispatch_block_t block) {
     for (_DFImageTask *task in _preheatingTasks.allValues) {
         [self _setImageTaskState:DFImageTaskStateCancelled task:task];
     }
-    [_preheatingTasks removeAllObjects];
     [self unlock];
 }
 
@@ -275,6 +270,12 @@ static inline void DFDispatchAsync(dispatch_block_t block) {
                 executingTaskCount++;
             }
         }
+    }
+}
+
+- (void)_imageTaskDidComplete:(_DFImageTask *)task {
+    if (_preheatingTasks.count) {
+        [_preheatingTasks removeObjectForKey:[_imageLoader processingKeyForRequest:task.request]];
     }
 }
 
@@ -340,6 +341,7 @@ static inline void DFDispatchAsync(dispatch_block_t block) {
                 task.image = nil;
             });
         }
+        [self _imageTaskDidComplete:task];
     }
 }
 
