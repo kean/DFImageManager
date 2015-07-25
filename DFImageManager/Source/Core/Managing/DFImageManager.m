@@ -276,7 +276,9 @@ static inline void DFDispatchAsync(dispatch_block_t block) {
 
 - (void)_imageTaskDidComplete:(_DFImageTask *)task {
     if (_preheatingTasks.count) {
-        [_preheatingTasks removeObjectForKey:[_imageLoader processingKeyForRequest:task.request]];
+        if (task.preheating || !task.error) {
+            [_preheatingTasks removeObjectForKey:[_imageLoader processingKeyForRequest:task.request]];
+        }
     }
 }
 
