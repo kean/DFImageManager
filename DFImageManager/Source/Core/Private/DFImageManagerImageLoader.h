@@ -33,6 +33,9 @@ typedef void (^DFImageLoaderCompletionHandler)(UIImage *__nullable image, NSDict
 
 @interface DFImageManagerImageLoaderTask : NSObject
 
+@property (nonatomic, readonly) int64_t totalUnitCount;
+@property (nonatomic, readonly) int64_t completedUnitCount;
+
 @end
 
 /*! Private image loader:

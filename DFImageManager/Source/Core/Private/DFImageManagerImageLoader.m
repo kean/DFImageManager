@@ -209,6 +209,8 @@
         }];
         _loadOperations[key] = operation;
     } else {
+        task.totalUnitCount = operation.totalUnitCount;
+        task.completedUnitCount = operation.completedUnitCount;
         task.progressHandler(task.completedUnitCount, task.totalUnitCount);
     }
     task.loadOperation = operation;
@@ -221,7 +223,9 @@
         operation.totalUnitCount = totalUnitCount;
         operation.completedUnitCount = completedUnitCount;
         for (DFImageManagerImageLoaderTask *task in operation.tasks) {
-            task.progressHandler(completedUnitCount, totalUnitCount);
+            task.totalUnitCount = operation.totalUnitCount;
+            task.completedUnitCount = operation.completedUnitCount;
+            task.progressHandler(task.completedUnitCount, task.totalUnitCount);
         }
     });
 }
