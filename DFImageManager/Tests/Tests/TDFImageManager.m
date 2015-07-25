@@ -329,6 +329,7 @@
     NSProgress *progress = [NSProgress progressWithTotalUnitCount:100];
     [progress becomeCurrentWithPendingUnitCount:100];
     DFImageTask *task = [_manager imageTaskForRequest:request completion:nil];
+    [task progress];
     [progress resignCurrent];
     
     BOOL __block _isHalfCompleted;
@@ -353,10 +354,12 @@
     
     [progress becomeCurrentWithPendingUnitCount:50];
     DFImageTask *task1 = [_manager imageTaskForRequest:[DFImageRequest requestWithResource:[TDFMockResource resourceWithID:@"1"]] completion:nil];
+    [task1 progress];
     [progress resignCurrent];
     
     [progress becomeCurrentWithPendingUnitCount:50];
     DFImageTask *task2 = [_manager imageTaskForRequest:[DFImageRequest requestWithResource:[TDFMockResource resourceWithID:@"2"]] completion:nil];
+    [task2 progress];
     [progress resignCurrent];
     
     double __block fractionCompleted = 0;

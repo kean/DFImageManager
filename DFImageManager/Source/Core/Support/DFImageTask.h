@@ -56,7 +56,7 @@ typedef NS_ENUM(NSUInteger, DFImageTaskState) {
  */
 @property (nullable, atomic, readonly) DFImageResponse *response;
 
-/*! A progress object monitoring the current task progress.
+/*! A progress object monitoring the current task progress. Progress is created lazily.
  @note Progress object can be used to cancel image task.
  */
 @property (nonnull, atomic, readonly) NSProgress *progress;

@@ -42,6 +42,7 @@
 - (void)resumeManagedTask:(nonnull _DFImageTask *)task;
 - (void)cancelManagedTask:(nonnull _DFImageTask *)task;
 - (void)managedTaskDidChangePriority:(nonnull _DFImageTask *)task;
+- (nonnull NSProgress *)progressForManagedTask:(nonnull _DFImageTask *)task;
 
 @end
 
@@ -49,7 +50,7 @@
 
 @property (nonnull, nonatomic, readonly) id<_DFImageTaskManaging> manager;
 @property (nonatomic) DFImageTaskState state;
-@property (nullable, atomic) NSProgress *progress;
+@property (nullable, atomic) NSProgress *internalProgress;
 @property (nullable, atomic) UIImage *image;
 @property (nullable, atomic) NSError *error;
 @property (nullable, atomic) DFImageResponse *response;
@@ -93,6 +94,10 @@
         _priority = priority;
         [self.manager managedTaskDidChangePriority:self];
     }
+}
+
+- (NSProgress * __nonnull)progress {
+    return [self.manager progressForManagedTask:self];
 }
 
 - (BOOL)isValidNextState:(DFImageTaskState)nextState {
@@ -163,16 +168,7 @@ static inline void DFDispatchAsync(dispatch_block_t block) {
     if (_invalidated) {
         return nil;
     }
-    _DFImageTask *task = [[_DFImageTask alloc] initWithManager:self request:[_imageLoader canonicalRequestForRequest:request] completionHandler:completion];
-    
-    NSProgress *progress = [NSProgress progressWithTotalUnitCount:-1];
-    _DFImageTask *__weak weakTask = task;
-    progress.cancellationHandler = ^{
-        [weakTask cancel];
-    };
-    task.progress = progress;
-    
-    return task;
+    return [[_DFImageTask alloc] initWithManager:self request:[_imageLoader canonicalRequestForRequest:request] completionHandler:completion];
 }
 
 - (void)getImageTasksWithCompletion:(void (^ __nullable)(NSArray * __nonnull, NSArray * __nonnull))completion {
@@ -312,8 +308,9 @@ static inline void DFDispatchAsync(dispatch_block_t block) {
         [_executingImageTasks addObject:task];
         DFImageManager *__weak weakSelf = self;
         task.loadTask = [_imageLoader startTaskForRequest:task.request progressHandler:^(int64_t completedUnitCount, int64_t totalUnitCount) {
-            task.progress.totalUnitCount = totalUnitCount;
-            task.progress.completedUnitCount = completedUnitCount;
+            NSProgress *progress = task.internalProgress;
+            progress.totalUnitCount = totalUnitCount;
+            progress.completedUnitCount = completedUnitCount;
         } completion:^(UIImage *__nullable image, NSDictionary *__nullable info, NSError *__nullable error) {
             task.loadTask = nil;
             task.image = image;
@@ -387,6 +384,25 @@ static inline void DFDispatchAsync(dispatch_block_t block) {
     [self lock];
     [_imageLoader setPriority:task.priority forTask:task.loadTask];
     [self unlock];
+}
+
+- (NSProgress *)progressForManagedTask:(nonnull _DFImageTask *)task {
+    [self lock];
+    NSProgress *progress = task.internalProgress;
+    if (!progress) {
+        progress = [NSProgress progressWithTotalUnitCount:-1];
+        _DFImageTask *__weak weakTask = task;
+        progress.cancellationHandler = ^{
+            [weakTask cancel];
+        };
+        if (task.loadTask.totalUnitCount != 0) {
+            progress.totalUnitCount = task.loadTask.totalUnitCount;
+            progress.completedUnitCount = task.loadTask.completedUnitCount;
+        }
+        task.internalProgress = progress;
+    }
+    [self unlock];
+    return progress;
 }
 
 #pragma mark Support
