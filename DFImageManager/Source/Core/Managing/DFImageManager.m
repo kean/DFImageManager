@@ -37,17 +37,17 @@
 
 @class _DFImageTask;
 
-@interface DFImageManager (_DFImageTask)
+@protocol _DFImageTaskManaging
 
-- (void)resumeTask:(nonnull _DFImageTask *)task;
-- (void)cancelTask:(nonnull _DFImageTask *)task;
-- (void)setPriority:(DFImageRequestPriority)priority forTask:(nonnull _DFImageTask *)task;
+- (void)resumeManagedTask:(nonnull _DFImageTask *)task;
+- (void)cancelManagedTask:(nonnull _DFImageTask *)task;
+- (void)managedTaskDidChangePriority:(nonnull _DFImageTask *)task;
 
 @end
 
 @interface _DFImageTask : DFImageTask
 
-@property (nonnull, nonatomic, readonly) DFImageManager *manager;
+@property (nonnull, nonatomic, readonly) id<_DFImageTaskManaging> manager;
 @property (nonatomic) DFImageTaskState state;
 @property (nullable, atomic) NSProgress *progress;
 @property (nullable, atomic) UIImage *image;
@@ -69,7 +69,7 @@
 @synthesize state = _state;
 @synthesize progress = _progress;
 
-- (instancetype)initWithManager:(nonnull DFImageManager *)manager request:(nonnull DFImageRequest *)request completionHandler:(nullable DFImageTaskCompletion)completionHandler {
+- (instancetype)initWithManager:(nonnull id<_DFImageTaskManaging>)manager request:(nonnull DFImageRequest *)request completionHandler:(nullable DFImageTaskCompletion)completionHandler {
     if (self = [super init]) {
         _manager = manager;
         _request = request;
@@ -81,17 +81,17 @@
 }
 
 - (void)resume {
-    [self.manager resumeTask:self];
+    [self.manager resumeManagedTask:self];
 }
 
 - (void)cancel {
-    [self.manager cancelTask:self];
+    [self.manager cancelManagedTask:self];
 }
 
 - (void)setPriority:(DFImageRequestPriority)priority {
     if (_priority != priority) {
         _priority = priority;
-        [self.manager setPriority:priority forTask:self];
+        [self.manager managedTaskDidChangePriority:self];
     }
 }
 
@@ -117,7 +117,7 @@ static inline void DFDispatchAsync(dispatch_block_t block) {
     ([NSThread isMainThread]) ? block() : dispatch_async(dispatch_get_main_queue(), block);
 }
 
-@interface DFImageManager () <NSLocking>
+@interface DFImageManager () <NSLocking, _DFImageTaskManaging>
 
 @property (nonnull, nonatomic, readonly) DFImageManagerImageLoader *imageLoader;
 @property (nonnull, nonatomic, readonly) NSMutableSet /* _DFImageTask */ *executingImageTasks;
@@ -360,6 +360,35 @@ static inline void DFDispatchAsync(dispatch_block_t block) {
     [_recursiveLock unlock];
 }
 
+#pragma mark - <_DFImageTaskManaging>
+
+- (void)resumeManagedTask:(nonnull _DFImageTask *)task {
+    if (_invalidated) {
+        return;
+    }
+    [self lock];
+    [self _setImageTaskState:DFImageTaskStateRunning task:task];
+    [self unlock];
+}
+
+- (void)cancelManagedTask:(nonnull _DFImageTask *)task {
+    if (_invalidated) {
+        return;
+    }
+    [self lock];
+    [self _setImageTaskState:DFImageTaskStateCancelled task:task];
+    [self unlock];
+}
+
+- (void)managedTaskDidChangePriority:(nonnull _DFImageTask *)task {
+    if (_invalidated) {
+        return;
+    }
+    [self lock];
+    [_imageLoader setPriority:task.priority forTask:task.loadTask];
+    [self unlock];
+}
+
 #pragma mark Support
 
 - (nonnull NSArray *)_canonicalRequestsForRequests:(nonnull NSArray *)requests {
@@ -372,38 +401,6 @@ static inline void DFDispatchAsync(dispatch_block_t block) {
 
 - (NSString *)description {
     return [NSString stringWithFormat:@"<%@ %p> { name = %@ }", [self class], self, self.name];
-}
-
-@end
-
-
-@implementation DFImageManager (_DFImageTask)
-
-- (void)resumeTask:(nonnull _DFImageTask *)task {
-    if (_invalidated) {
-        return;
-    }
-    [self lock];
-    [self _setImageTaskState:DFImageTaskStateRunning task:task];
-    [self unlock];
-}
-
-- (void)cancelTask:(nonnull _DFImageTask *)task {
-    if (_invalidated) {
-        return;
-    }
-    [self lock];
-    [self _setImageTaskState:DFImageTaskStateCancelled task:task];
-    [self unlock];
-}
-
-- (void)setPriority:(DFImageRequestPriority)priority forTask:(nonnull _DFImageTask *)task {
-    if (_invalidated) {
-        return;
-    }
-    [self lock];
-    [_imageLoader setPriority:priority forTask:task.loadTask];
-    [self unlock];
 }
 
 @end
