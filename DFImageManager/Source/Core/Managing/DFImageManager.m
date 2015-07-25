@@ -68,7 +68,6 @@
 @synthesize error = _error;
 @synthesize response = _response;
 @synthesize state = _state;
-@synthesize progress = _progress;
 
 - (instancetype)initWithManager:(nonnull id<_DFImageTaskManaging>)manager request:(nonnull DFImageRequest *)request completionHandler:(nullable DFImageTaskCompletion)completionHandler {
     if (self = [super init]) {
@@ -134,7 +133,7 @@ static inline void DFDispatchAsync(dispatch_block_t block) {
 @implementation DFImageManager {
     NSInteger _preheatingTaskCounter;
     BOOL _invalidated;
-    BOOL _needsToExecutePreheatTasks;
+    BOOL _needsToExecutePreheatingTasks;
 }
 
 @synthesize configuration = _conf;
@@ -247,8 +246,8 @@ static inline void DFDispatchAsync(dispatch_block_t block) {
 }
 
 - (void)_setNeedsExecutePreheatingTasks {
-    if (!_needsToExecutePreheatTasks && !_invalidated) {
-        _needsToExecutePreheatTasks = YES;
+    if (!_needsToExecutePreheatingTasks && !_invalidated) {
+        _needsToExecutePreheatingTasks = YES;
         // Manager won't start executing preheating tasks in case you are about to add normal (non-preheating) right after adding preheating ones.
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.15 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [self lock];
@@ -259,7 +258,7 @@ static inline void DFDispatchAsync(dispatch_block_t block) {
 }
 
 - (void)_executePreheatingTasksIfNeeded {
-    _needsToExecutePreheatTasks = NO;
+    _needsToExecutePreheatingTasks = NO;
     NSUInteger executingTaskCount = _executingImageTasks.count;
     if (executingTaskCount < _conf.maximumConcurrentPreheatingRequests) {
         for (_DFImageTask *task in [_preheatingTasks.allValues sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"tag" ascending:YES]]]) {

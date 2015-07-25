@@ -104,15 +104,41 @@
 }
 
 - (void)startPreheatingImagesForRequests:(nonnull NSArray *)requests {
-    for (DFImageRequest *request in requests) {
-        [DFManagerForRequest(request) startPreheatingImagesForRequests:@[request]];
+    NSMapTable *table = [self _dispatchTableForRequests:requests];
+    for (id<DFImageManaging> manager in table) {
+        [manager startPreheatingImagesForRequests:[table objectForKey:manager]];
     }
 }
 
 - (void)stopPreheatingImagesForRequests:(nonnull NSArray *)requests {
-    for (DFImageRequest *request in requests) {
-        [DFManagerForRequest(request) stopPreheatingImagesForRequests:@[request]];
+    NSMapTable *table = [self _dispatchTableForRequests:requests];
+    for (id<DFImageManaging> manager in table) {
+        [manager stopPreheatingImagesForRequests:[table objectForKey:manager]];
     }
+}
+
+- (nonnull NSMapTable *)_dispatchTableForRequests:(nonnull NSArray *)inputRequests {
+    if (!inputRequests.count) {
+        return nil;
+    }
+    id<DFImageManaging> manager;
+    NSMutableArray *requests;
+    NSMapTable *table = [NSMapTable strongToStrongObjectsMapTable];
+    for (DFImageRequest *request in inputRequests) {
+        if (![manager canHandleRequest:request]) {
+            manager = DFManagerForRequest(request);
+            if (!manager) {
+                [NSException raise:NSInvalidArgumentException format:@"There are no managers that can handle the request %@", request];
+            }
+            requests = [table objectForKey:manager];
+            if (!requests) {
+                requests = [NSMutableArray new];
+                [table setObject:requests forKey:manager];
+            }
+        }
+        [requests addObject:request];
+    }
+    return table;
 }
 
 - (void)stopPreheatingImagesForAllRequests {
