@@ -28,8 +28,9 @@
     TDFMockResource *resource = [TDFMockResource resourceWithID:@"ID"];
     CGSize targetSize = CGSizeMake(20.f, 20.f);
     DFImageContentMode contentMode = DFImageContentModeAspectFit;
-    DFImageRequestOptions *options = [DFImageRequestOptions new];
-    options.allowsNetworkAccess = NO;
+    DFMutableImageRequestOptions *optionsBuilder = [DFMutableImageRequestOptions new];
+    optionsBuilder.allowsNetworkAccess = NO;
+    DFImageRequestOptions *options = optionsBuilder.options;
     
     DFImageRequest *request = [[DFImageRequest alloc] initWithResource:resource targetSize:targetSize contentMode:contentMode options:options];
     XCTAssertTrue(request.resource == resource);
@@ -40,8 +41,8 @@
     XCTAssertTrue(copy != request);
     XCTAssertTrue(copy.resource == resource);
     XCTAssertEqual(copy.contentMode, contentMode);
-    // Test that options are copied
-    XCTAssertTrue(copy.options != options);
+    // Options should no be copied, there are strongly immutable
+    XCTAssertTrue(copy.options == options);
     XCTAssertEqual(copy.options.allowsNetworkAccess, NO);
 }
 

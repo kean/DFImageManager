@@ -25,6 +25,31 @@
 @implementation DFImageRequestOptions
 
 - (nonnull instancetype)init {
+    return [self initWithOptions:[DFMutableImageRequestOptions new]];
+}
+
+- (nonnull instancetype)initWithOptions:(nonnull DFImageRequestOptions *)options {
+    if (self = [super init]) {
+        _priority = options.priority;
+        _allowsNetworkAccess = options.allowsNetworkAccess;
+        _allowsClipping = options.allowsClipping;
+        _memoryCachePolicy = options.memoryCachePolicy;
+        _expirationAge = options.expirationAge;
+        _userInfo = options.userInfo;
+    }
+    return self;
+}
+
+- (NSString *)description {
+    return [NSString stringWithFormat:@"<%@ %p> { priority = %i, network = %i, clip = %i, cache = %i, expires = %0.2f }", [self class], self, (int)_priority, _allowsNetworkAccess, _allowsClipping, _memoryCachePolicy == DFImageRequestCachePolicyDefault ? 1 : 0, _expirationAge];
+}
+
+@end
+
+
+@implementation DFMutableImageRequestOptions
+
+- (nonnull instancetype)init {
     if (self = [super init]) {
         _priority = DFImageRequestPriorityNormal;
         _allowsNetworkAccess = YES;
@@ -35,26 +60,8 @@
     return self;
 }
 
-- (nonnull instancetype)initWithOptions:(nullable DFImageRequestOptions *)options {
-    if (self = [self init]) {
-        if (options) {
-            _priority = options.priority;
-            _allowsNetworkAccess = options.allowsNetworkAccess;
-            _allowsClipping = options.allowsClipping;
-            _memoryCachePolicy = options.memoryCachePolicy;
-            _expirationAge = options.expirationAge;
-            _userInfo = [options.userInfo copy];
-        }
-    }
-    return self;
-}
-
-- (id)copyWithZone:(NSZone *)zone {
-    return [((DFImageRequestOptions *)[[self class] allocWithZone:zone]) initWithOptions:self];
-}
-
-- (NSString *)description {
-    return [NSString stringWithFormat:@"<%@ %p> { priority = %i, network = %i, clip = %i, cache = %i, expires = %0.2f }", [self class], self, (int)_priority, _allowsNetworkAccess, _allowsClipping, _memoryCachePolicy == DFImageRequestCachePolicyDefault ? 1 : 0, _expirationAge];
+- (DFImageRequestOptions * __nonnull)options {
+    return [[DFImageRequestOptions alloc] initWithOptions:self];
 }
 
 @end

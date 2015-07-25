@@ -52,7 +52,7 @@
     request.resource = self.resource;
     request.targetSize = self.targetSize;
     request.contentMode = self.contentMode;
-    request.options = [self.options copy];
+    request.options = self.options;
     return request;
 }
 

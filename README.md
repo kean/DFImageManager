@@ -65,11 +65,11 @@ DFImageTask *task = [[DFImageManager sharedManager] imageTaskForResource:[NSURL 
 ```objective-c
 NSURL *imageURL = [NSURL URLWithString:@"http://..."];
 
-DFImageRequestOptions *options = [DFImageRequestOptions new];
+DFMutableImageRequestOptions *options = [DFMutableImageRequestOptions new]; // builder
 options.allowsClipping = YES;
 options.userInfo = @{ DFURLRequestCachePolicyKey : @(NSURLRequestReturnCacheDataDontLoad) };
 
-DFImageRequest *request = [DFImageRequest requestWithResource:imageURL targetSize:CGSizeMake(100.f, 100.f) contentMode:DFImageContentModeAspectFill options:options];
+DFImageRequest *request = [DFImageRequest requestWithResource:imageURL targetSize:CGSizeMake(100.f, 100.f) contentMode:DFImageContentModeAspectFill options:options.options];
 
 [[[DFImageManager sharedManager] imageTaskForRequest:request completion:^(UIImage *image, NSDictionary *info) {
 // Image is resized and clipped to fill 100x100px square

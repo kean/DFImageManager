@@ -529,9 +529,9 @@
 - (void)testThatPriorityIsChanged {
     _fetcher.queue.suspended = YES;
     
-    DFImageRequestOptions *options = [DFImageRequestOptions new];
+    DFMutableImageRequestOptions *options = [DFMutableImageRequestOptions new];
     options.priority = DFImageRequestPriorityVeryHigh;
-    DFImageRequest *request = [DFImageRequest requestWithResource:[TDFMockResource resourceWithID:@"ID"] targetSize:DFImageMaximumSize contentMode:DFImageContentModeAspectFill options:options];
+    DFImageRequest *request = [DFImageRequest requestWithResource:[TDFMockResource resourceWithID:@"ID"] targetSize:DFImageMaximumSize contentMode:DFImageContentModeAspectFill options:options.options];
     
     NSOperation *__block operation;
     [self expectationForNotification:TDFMockImageFetcherDidStartOperationNotification object:_fetcher handler:^BOOL(NSNotification *notification) {

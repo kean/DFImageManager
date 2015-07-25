@@ -137,11 +137,6 @@ static const NSTimeInterval _kMinimumAutoretryInterval = 8.f;
         [self.delegate imageView:self willStartFetchingImagesForRequests:requests];
     }
     NSParameterAssert(requests.count > 0);
-    if (self.managesRequestPriorities) {
-        for (DFImageRequest *request in requests) {
-            request.options.priority = (self.window == nil) ? DFImageRequestPriorityNormal : DFImageRequestPriorityVeryHigh;
-        }
-    }
     DFImageView *__weak weakSelf = self;
     _imageTask = [self _createCompositeImageTaskForRequests:requests handler:^(UIImage *__nullable image, DFImageTask *__nonnull completedTask, DFCompositeImageTask *__nonnull task) {
         [weakSelf.delegate imageView:self didCompleteImageTask:completedTask withImage:image];

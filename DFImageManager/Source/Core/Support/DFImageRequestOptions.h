@@ -22,9 +22,60 @@
 
 #import "DFImageManagerDefines.h"
 
-/*! You use a DFImageRequestOptions object to specify options when requesting image representations of resources using classes conforming DFImageManaging protocol.
+@class DFMutableImageRequestOptions;
+
+/*! You use a DFImageRequestOptions object to specify options when requesting image representations of resources using classes conforming DFImageManaging protocol. This class is strongly immutable.
  */
-@interface DFImageRequestOptions : NSObject <NSCopying>
+@interface DFImageRequestOptions : NSObject
+
+/*! Image request priority.
+ */
+@property (nonatomic, readonly) DFImageRequestPriority priority;
+
+/*! A Boolean value that specifies whether image manager can download the requested image using network connection.
+ */
+@property (nonatomic, readonly) BOOL allowsNetworkAccess;
+
+/*! If YES allows some portion of the image content to be clipped when filling the content to target size. Only works with DFImageContentModeAspectFill.
+ */
+@property (nonatomic, readonly) BOOL allowsClipping;
+
+/*! The request cache policy used for memory caching.
+ */
+@property (nonatomic, readonly) DFImageRequestCachePolicy memoryCachePolicy;
+
+/*! The amount of time to elapse before memory-cached images associated with a request are considered to have expired.
+ @warning This property doesn't affect caching implemented in a classes conforming to DFImageFetching protocol (for example, NSURLSession caching). For more info see DFImageCaching protocol and DFCachedImageResponse class.
+ */
+@property (nonatomic, readonly) NSTimeInterval expirationAge;
+
+/*! A dictionary containing image manager-specific data pertaining to the receiver. Default value is nil.
+ */
+@property (nullable, nonatomic, readonly) NSDictionary *userInfo;
+
+/*! Initializes DFImageRequestOptions with another instance of request options.
+ @param options The given options. Options might be nil.
+ */
+- (nonnull instancetype)initWithOptions:(nonnull DFMutableImageRequestOptions *)options NS_DESIGNATED_INITIALIZER;
+
+/*! Initializes DFImageRequestOptions with default options.
+ */
+- (nonnull instancetype)init;
+
+@end
+
+
+/*! DFImageRequestOptions builder. Use options property of the builder to create DFImageRequestOptions object.
+ */
+@interface DFMutableImageRequestOptions : NSObject
+
+/*! Creates request options from the receiver.
+ */
+@property (nonnull, nonatomic, readonly) DFImageRequestOptions *options;
+
+/*! Initializes DFMutableImageRequestOptions with default options.
+ */
+- (nonnull instancetype)init NS_DESIGNATED_INITIALIZER;
 
 /*! Image request priority. Default value is DFImageRequestPriorityNormal.
  */
@@ -49,15 +100,6 @@
 
 /*! A dictionary containing image manager-specific data pertaining to the receiver. Default value is nil.
  */
-@property (nullable, nonatomic) NSDictionary *userInfo;
-
-/*! Initializes DFImageRequestOptions with default options.
- */
-- (nonnull instancetype)init NS_DESIGNATED_INITIALIZER;
-
-/*! Initializes DFImageRequestOptions with another instance of request options.
- @param options The given options. Options might be nil.
- */
-- (nonnull instancetype)initWithOptions:(nullable DFImageRequestOptions *)options;
+@property (nullable, copy, nonatomic) NSDictionary *userInfo;
 
 @end
