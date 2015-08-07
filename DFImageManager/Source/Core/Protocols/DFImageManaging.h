@@ -39,6 +39,10 @@ typedef void (^DFImageRequestCompletion)(UIImage *__nullable image, NSDictionary
  */
 - (BOOL)canHandleRequest:(DFImageRequest *)request;
 
+/*! Determines whether cache response is available
+ */
+- (BOOL)hasCacheWithRequest:(nonnull DFImageRequest *)request;
+
 /*! Creates an image task with a given resource. After you create the task, you must start it by calling its resume method.
  @note Creates image request with a DFImageMaximumSize, DFImageContentModeAspectFill and no options.
  @param resource The resource whose image data is to be loaded.
