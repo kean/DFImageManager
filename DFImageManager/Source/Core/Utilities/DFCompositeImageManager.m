@@ -69,6 +69,14 @@
     return DFManagerForRequest(request) != nil;
 }
 
+- (BOOL)hasCacheWithRequest:(DFImageRequest *)request {
+    id<DFImageManaging> manager = DFManagerForRequest(request);
+    if (manager) {
+        return [manager hasCacheWithRequest:request];
+    }
+    return NO;
+}
+
 - (DFImageTask *)imageTaskForResource:(id)resource completion:(DFImageRequestCompletion)completion {
     return [self imageTaskForRequest:[DFImageRequest requestWithResource:resource] completion:completion];
 }
