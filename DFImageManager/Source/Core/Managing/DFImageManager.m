@@ -245,6 +245,11 @@
     return [_conf.fetcher canHandleRequest:request];
 }
 
+- (BOOL)hasCacheWithRequest:(nonnull DFImageRequest *)request {
+    NSParameterAssert(request);
+    return [self _cachedResponseForRequest:request];
+}
+
 - (nullable DFImageTask *)imageTaskForResource:(nonnull id)resource completion:(nullable DFImageRequestCompletion)completion {
     NSParameterAssert(resource);
     return [self imageTaskForRequest:[DFImageRequest requestWithResource:resource] completion:completion];

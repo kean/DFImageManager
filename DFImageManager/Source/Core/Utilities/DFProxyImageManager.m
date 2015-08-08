@@ -83,6 +83,11 @@
     return [_manager canHandleRequest:_DF_TRANSFORMED_REQUEST(request)];
 }
 
+- (BOOL)hasCacheWithRequest:(nonnull DFImageRequest *)request {
+    NSParameterAssert(request);
+    return [_manager hasCacheWithRequest:request];
+}
+
 - (DFImageTask *)imageTaskForResource:(id)resource completion:(DFImageRequestCompletion)completion {
     return [self imageTaskForRequest:[DFImageRequest requestWithResource:resource] completion:completion];
 }
