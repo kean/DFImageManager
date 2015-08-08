@@ -53,7 +53,7 @@
 
 /*! The receivers name.
  */
-@property (nullable, nonatomic) NSString *name;
+@property (nullable, nonatomic, copy) NSString *name;
 
 /*! Creates image manager with a specified configuration.
  @param configuration A configuration object that specifies certain behaviours, such as fetching, processing, caching and more. Manager copies the configuration object.

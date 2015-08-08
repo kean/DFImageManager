@@ -49,7 +49,7 @@ NSString *const DFAFRequestCachePolicyKey = @"DFAFRequestCachePolicyKey";
 }
 
 - (void)setQueuePriority:(NSOperationQueuePriority)queuePriority {
-    [super setQueuePriority:queuePriority];
+    super.queuePriority = queuePriority;
     if (self.priorityHandler) {
         self.priorityHandler(queuePriority);
     }
@@ -135,11 +135,11 @@ NSString *const DFAFRequestCachePolicyKey = @"DFAFRequestCachePolicyKey";
     
     // Track progress using dataTaskDidReceiveDataBlock exposed by AFURLSessionManager.
     _DFDataTaskDelegate *dataTaskDelegate = [_DFDataTaskDelegate new];
-    [dataTaskDelegate setDataTaskDidReceiveDataBlock:^(NSURLSession *session, NSURLSessionDataTask *dataTask, NSData *data) {
+    dataTaskDelegate.dataTaskDidReceiveDataBlock = ^(NSURLSession *session, NSURLSessionDataTask *dataTask, NSData *data) {
         if (progressHandler) {
             progressHandler(dataTask.countOfBytesReceived, dataTask.countOfBytesExpectedToReceive);
         }
-    }];
+    };
     @synchronized(self) {
         _dataTaskDelegates[task] = dataTaskDelegate;
     }

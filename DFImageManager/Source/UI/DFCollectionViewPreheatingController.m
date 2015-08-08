@@ -49,7 +49,7 @@
 }
 
 - (void)resetPreheatRect {
-    [self.delegate collectionViewPreheatingController:self didUpdatePreheatRectWithAddedIndexPaths:@[] removedIndexPaths:[_preheatIndexPaths allObjects]];
+    [self.delegate collectionViewPreheatingController:self didUpdatePreheatRectWithAddedIndexPaths:@[] removedIndexPaths:_preheatIndexPaths.allObjects];
     [self _resetPreheatRect];
 }
 
@@ -99,11 +99,11 @@
         
         _preheatIndexPaths = newIndexPaths;
         
-        NSArray *sortedAddedIndexPaths = [[addedIndexPaths allObjects] sortedArrayUsingDescriptors:@[ [NSSortDescriptor sortDescriptorWithKey:@"section" ascending:isScrollingForward], [NSSortDescriptor sortDescriptorWithKey:@"item" ascending:isScrollingForward] ]];
+        NSArray *sortedAddedIndexPaths = [addedIndexPaths.allObjects sortedArrayUsingDescriptors:@[ [NSSortDescriptor sortDescriptorWithKey:@"section" ascending:isScrollingForward], [NSSortDescriptor sortDescriptorWithKey:@"item" ascending:isScrollingForward] ]];
         
         _preheatRect = preheatRect;
         
-        [self.delegate collectionViewPreheatingController:self didUpdatePreheatRectWithAddedIndexPaths:sortedAddedIndexPaths removedIndexPaths:[removedIndexPaths allObjects]];
+        [self.delegate collectionViewPreheatingController:self didUpdatePreheatRectWithAddedIndexPaths:sortedAddedIndexPaths removedIndexPaths:removedIndexPaths.allObjects];
     }
 }
 

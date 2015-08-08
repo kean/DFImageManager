@@ -62,12 +62,12 @@
     DFCompositeImageTask *__weak weakSelf = self;
     for (DFImageTask *task in _remainingTasks) {
         DFImageTaskCompletion completionHandler = task.completionHandler;
-        [task setCompletionHandler:^(UIImage *__nullable image, NSError *__nullable error, DFImageResponse *__nullable response, DFImageTask *__nonnull completedTask) {
+        task.completionHandler = ^(UIImage *__nullable image, NSError *__nullable error, DFImageResponse *__nullable response, DFImageTask *__nonnull completedTask) {
             [weakSelf _didFinishImageTask:completedTask withImage:image];
             if (completionHandler) {
                 completionHandler(image, error, response, completedTask);
             }
-        }];
+        };
     }
     for (DFImageTask *task in [_remainingTasks copy]) {
         [task resume];
@@ -88,7 +88,7 @@
 
 - (void)setPriority:(DFImageRequestPriority)priority {
     for (DFImageTask *task in _remainingTasks) {
-        [task setPriority:priority];
+        task.priority = priority;
     }
 }
 

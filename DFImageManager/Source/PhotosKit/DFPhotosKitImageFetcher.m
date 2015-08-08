@@ -149,11 +149,11 @@ static inline PHImageContentMode _PHContentModeForDFContentMode(DFImageContentMo
     
     _DFPhotosKitImageFetchOperation *operation = [[_DFPhotosKitImageFetchOperation alloc] initWithResource:resource targetSize:targetSize contentMode:_PHContentModeForDFContentMode(request.contentMode) options:requestOptions];
     _DFPhotosKitImageFetchOperation *__weak weakOp = operation;
-    [operation setCompletionBlock:^{
+    operation.completionBlock = ^{
         if (completion) {
             completion(weakOp.result, weakOp.info, nil);
         }
-    }];
+    };
     [_queue addOperation:operation];
     return operation;
 }
@@ -161,11 +161,11 @@ static inline PHImageContentMode _PHContentModeForDFContentMode(DFImageContentMo
 - (_DFPhotosKitRequestOptions)_requestOptionsFromUserInfo:(NSDictionary *)info {
     _DFPhotosKitRequestOptions options;
     NSNumber *version = info[DFPhotosKitVersionKey];
-    options.version = version ? [version integerValue] : PHImageRequestOptionsVersionCurrent;
+    options.version = version ? version.integerValue : PHImageRequestOptionsVersionCurrent;
     NSNumber *deliveryMode = info[DFPhotosKitDeliveryModeKey];
-    options.deliveryMode = deliveryMode ? [deliveryMode integerValue] : PHImageRequestOptionsDeliveryModeHighQualityFormat;
+    options.deliveryMode = deliveryMode ? deliveryMode.integerValue : PHImageRequestOptionsDeliveryModeHighQualityFormat;
     NSNumber *resizeMode = info[DFPhotosKitResizeModeKey];
-    options.resizeMode = resizeMode ? [resizeMode integerValue] : PHImageRequestOptionsResizeModeFast;
+    options.resizeMode = resizeMode ? resizeMode.integerValue : PHImageRequestOptionsResizeModeFast;
     return options;
 }
 
@@ -227,7 +227,7 @@ static inline PHImageContentMode _PHContentModeForDFContentMode(DFImageContentMo
 - (void)_fetch {
     if (!_asset && _localIdentifier) {
         if (_localIdentifier) {
-            _asset = [[PHAsset fetchAssetsWithLocalIdentifiers:@[_localIdentifier] options:nil] firstObject];
+            _asset = [PHAsset fetchAssetsWithLocalIdentifiers:@[_localIdentifier] options:nil].firstObject;
         }
     }
     if (!self.isCancelled) {

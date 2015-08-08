@@ -52,7 +52,7 @@ NSString *DFImageProcessingCornerRadiusKey = @"DFImageProcessingCornerRadiusKey"
     image = [UIImage df_decompressedImage:image targetSize:request.targetSize contentMode:request.contentMode];
     NSNumber *normalizedCornerRadius = request.options.userInfo[DFImageProcessingCornerRadiusKey];
     if (normalizedCornerRadius) {
-        CGFloat cornerRadius = [normalizedCornerRadius floatValue] * MIN(image.size.width, image.size.height);
+        CGFloat cornerRadius = normalizedCornerRadius.floatValue * MIN(image.size.width, image.size.height);
         image = [UIImage df_imageWithImage:image cornerRadius:cornerRadius];
     }
     return image;

@@ -51,7 +51,7 @@ NSString *const DFURLRequestCachePolicyKey = @"DFURLRequestCachePolicyKey";
 }
 
 - (void)setQueuePriority:(NSOperationQueuePriority)queuePriority {
-    [super setQueuePriority:queuePriority];
+    super.queuePriority = queuePriority;
     if (self.priorityHandler) {
         self.priorityHandler(queuePriority);
     }
@@ -213,7 +213,7 @@ static const NSTimeInterval _kCommandExecutionInterval = 0.005; // 5 ms
             return;
         }
     }
-    _DFSessionTaskCommand *command = [_commands firstObject];
+    _DFSessionTaskCommand *command = _commands.firstObject;
     if (command) {
         [_commands removeObject:command];
         [command execute];

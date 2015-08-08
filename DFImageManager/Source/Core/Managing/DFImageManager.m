@@ -190,7 +190,7 @@ static inline void DFDispatchAsync(dispatch_block_t block) {
     }
     [self unlock];
     dispatch_async(dispatch_get_main_queue(), ^{
-        completion([tasks allObjects], [preheatingTasks allObjects]);
+        completion(tasks.allObjects, preheatingTasks.allObjects);
     });
 }
 

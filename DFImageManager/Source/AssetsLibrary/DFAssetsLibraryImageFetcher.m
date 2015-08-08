@@ -50,7 +50,7 @@ typedef struct {
 
 static inline NSURL *_ALAssetURL(id resource) {
     if ([resource isKindOfClass:[DFALAsset class]]) {
-        return [((DFALAsset *)resource) assetURL];
+        return ((DFALAsset *)resource).assetURL;
     } else {
         return (NSURL *)resource;
     }
@@ -115,9 +115,9 @@ static inline NSURL *_ALAssetURL(id resource) {
     _DFAssetsRequestOptions options;
     NSDictionary *userInfo = request.options.userInfo;
     NSNumber *imageSize = userInfo[DFAssetsLibraryImageSizeKey];
-    options.imageSize = imageSize ? [imageSize integerValue] : [self _assetImageSizeForRequest:request];
+    options.imageSize = imageSize ? imageSize.integerValue : [self _assetImageSizeForRequest:request];
     NSNumber *version = userInfo[DFAssetsLibraryAssetVersionKey];
-    options.version = version ? [version integerValue] : DFALAssetVersionCurrent;
+    options.version = version ? version.integerValue : DFALAssetVersionCurrent;
     return options;
 }
 
@@ -151,11 +151,11 @@ static inline NSURL *_ALAssetURL(id resource) {
     operation.version = options.version;
     
     _DFAssetsLibraryImageFetchOperation *__weak weakOp = operation;
-    [operation setCompletionBlock:^{
+    operation.completionBlock = ^{
         if (completion) {
             completion(weakOp.image, nil, weakOp.error);
         }
-    }];
+    };
     [_queue addOperation:operation];
     return operation;
 }
@@ -229,10 +229,10 @@ static inline NSURL *_ALAssetURL(id resource) {
     if (_version == DFALAssetVersionCurrent) {
         switch (_imageSize) {
             case DFALAssetImageSizeAspectRatioThumbnail:
-                _image = [UIImage imageWithCGImage:_asset.aspectRatioThumbnail scale:[UIScreen mainScreen].scale orientation:UIImageOrientationUp];
+                _image = [UIImage imageWithCGImage:[_asset aspectRatioThumbnail] scale:[UIScreen mainScreen].scale orientation:UIImageOrientationUp];
                 break;
             case DFALAssetImageSizeThumbnail:
-                _image = [UIImage imageWithCGImage:_asset.thumbnail scale:[UIScreen mainScreen].scale orientation:UIImageOrientationUp];
+                _image = [UIImage imageWithCGImage:[_asset thumbnail] scale:[UIScreen mainScreen].scale orientation:UIImageOrientationUp];
                 break;
             case DFALAssetImageSizeFullscreen: {
                 ALAssetRepresentation *assetRepresentation = [_asset defaultRepresentation];
@@ -254,7 +254,7 @@ static inline NSURL *_ALAssetURL(id resource) {
 - (UIImage *)_fullResolutionUnadjustedImage {
     ALAssetRepresentation *representation = [_asset defaultRepresentation];
     CGImageRef imageRef = [representation fullResolutionImage];
-    UIImageOrientation orientation = (UIImageOrientation)representation.orientation;
+    UIImageOrientation orientation = (UIImageOrientation)[representation orientation];
     return [UIImage imageWithCGImage:imageRef scale:[representation scale] orientation:orientation];
 }
 
@@ -269,18 +269,18 @@ static inline NSURL *_ALAssetURL(id resource) {
         CIImage *image = [CIImage imageWithCGImage:imageRef];
         
         NSError *error = nil;
-        NSArray *filterArray = [CIFilter filterArrayFromSerializedXMP:xmpData inputImageExtent:image.extent error:&error];
+        NSArray *filterArray = [CIFilter filterArrayFromSerializedXMP:xmpData inputImageExtent:[image extent] error:&error];
         CIContext *context = [CIContext contextWithOptions:nil];
         if (filterArray != nil && !error) {
             for (CIFilter *filter in filterArray) {
                 [filter setValue:image forKey:kCIInputImageKey];
-                image = [filter outputImage];
+                image = filter.outputImage;
             }
             // TODO: Fix crash when OpenGL calls are made in the background
             imageRef = [context createCGImage:image fromRect:[image extent]];
         }
     }
-    UIImageOrientation orientation = (UIImageOrientation)representation.orientation;
+    UIImageOrientation orientation = (UIImageOrientation)[representation orientation];
     return [UIImage imageWithCGImage:imageRef scale:[representation scale] orientation:orientation];
 }
 

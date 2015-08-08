@@ -40,11 +40,11 @@
 }
 
 + (nonnull instancetype)requestWithResource:(nonnull id)resource {
-    return [[DFImageRequest alloc] initWithResource:resource];
+    return [[[self class] alloc] initWithResource:resource];
 }
 
 + (nonnull instancetype)requestWithResource:(nonnull id)resource targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(nullable DFImageRequestOptions *)options {
-    return [[DFImageRequest alloc] initWithResource:resource targetSize:targetSize contentMode:contentMode options:options];
+    return [[[self class] alloc] initWithResource:resource targetSize:targetSize contentMode:contentMode options:options];
 }
 
 - (NSString *)description {
