@@ -21,7 +21,7 @@
 // THE SOFTWARE.
 
 #import "UIImage+DFImageManagerWebP.h"
-#import <webp/decode.h>
+#import <libwebp/webp/decode.h>
 
 @implementation UIImage (DFImageManagerWebP)
 
