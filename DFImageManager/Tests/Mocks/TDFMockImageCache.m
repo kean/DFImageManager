@@ -27,7 +27,7 @@
 - (DFCachedImageResponse *)cachedImageResponseForKey:(id<NSCopying>)key {
     DFCachedImageResponse *response = [_responses objectForKey:key];
     if (response) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:TDFMockImageCacheWillReturnCachedImageNotification object:self userInfo:@{ TDFMockImageCacheImageKey : response.response.image }];
+        [[NSNotificationCenter defaultCenter] postNotificationName:TDFMockImageCacheWillReturnCachedImageNotification object:self userInfo:@{ TDFMockImageCacheImageKey : response.image }];
     }
     return response;
 }

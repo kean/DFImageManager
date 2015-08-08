@@ -22,7 +22,7 @@ NSString *TDFMockImageFetcherOperationKey = @"TDFMockImageFetcherOperationKey";
 - (instancetype)init {
     if (self = [super init]) {
         _queue = [NSOperationQueue new];
-        _response = [TDFMockImageFetcher successfullResponse];
+        _image = [TDFTesting testImage];
     }
     return self;
 }
@@ -39,27 +39,28 @@ NSString *TDFMockImageFetcherOperationKey = @"TDFMockImageFetcherOperationKey";
     return [request1.resource isEqual:request2.resource];
 }
 
-- (NSOperation *)startOperationWithRequest:(DFImageRequest *)request progressHandler:(void (^)(double))progressHandler completion:(void (^)(DFImageResponse *))completion {
+- (nonnull NSOperation *)startOperationWithRequest:(nonnull DFImageRequest *)request progressHandler:(nullable DFImageFetchingProgressHandler)progressHandler completion:(nullable DFImageFetchingCompletionHandler)completion {
     _createdOperationCount++;
     TDFMockFetchOperation *operation = [TDFMockFetchOperation blockOperationWithBlock:^{
         dispatch_async(dispatch_get_main_queue(), ^{
             if (progressHandler) {
-                progressHandler(0.5);
+                progressHandler(50, 100);
+            }
+        });
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (progressHandler) {
+                progressHandler(100, 100);
             }
         });
         dispatch_async(dispatch_get_main_queue(), ^{
             if (completion) {
-                completion(self.response);
+                completion(self.image, self.info, self.error);
             }
         });
     }];
     [_queue addOperation:operation];
     [[NSNotificationCenter defaultCenter] postNotificationName:TDFMockImageFetcherDidStartOperationNotification object:self userInfo:@{ TDFMockImageFetcherRequestKey : request, TDFMockImageFetcherOperationKey : operation }];
     return operation;
-}
-
-+ (DFImageResponse *)successfullResponse {
-    return [DFImageResponse responseWithImage:[TDFTesting testImage]];
 }
 
 @end

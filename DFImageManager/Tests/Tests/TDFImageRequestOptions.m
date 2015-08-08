@@ -22,17 +22,4 @@
     TDFAssertDefaultOptionsAreValid(options);
 }
 
-- (void)testThatOptionsAreCopied {
-    DFImageRequestOptions *options = TDFCreateRequestOptionsWithNotDefaultParameters();
-    DFImageRequestOptions *copy = [options copy];
-    XCTAssertTrue(copy != options); // New instance is created
-    TDFAssertBaseOptionsAreEqual(options, copy);
-}
-
-- (void)testThatOptionsInitWithOptionsMethodsWorks {
-    DFImageRequestOptions *options = TDFCreateRequestOptionsWithNotDefaultParameters();
-    DFImageRequestOptions *copy = [[DFImageRequestOptions alloc] initWithOptions:options];
-    TDFAssertBaseOptionsAreEqual(options, copy);
-}
-
 @end

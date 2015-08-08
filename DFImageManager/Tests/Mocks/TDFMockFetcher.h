@@ -9,19 +9,18 @@
 #import "DFImageManagerKit.h"
 #import <Foundation/Foundation.h>
 
-@class DFImageResponse;
-
-NS_ASSUME_NONNULL_BEGIN
-
 extern NSString *TDFMockFetcherDidStartOperationNotification;
 
 @interface TDFMockResponse : NSObject
 
 @property (nonatomic) NSTimeInterval elapsedTime;
-@property (nonatomic) DFImageResponse *response;
+@property (nonatomic) UIImage *image;
+@property (nonatomic) NSError *error;
+@property (nonatomic) NSDictionary *info;
 
-+ (instancetype)mockWithResponse:(DFImageResponse *)response;
-+ (instancetype)mockWithResponse:(DFImageResponse *)response elapsedTime:(NSTimeInterval)elapsedTime;
++ (instancetype)mockWithImage:(UIImage *)image;
++ (instancetype)mockWithImage:(UIImage *)image elapsedTime:(NSTimeInterval)elapsedTime;
++ (instancetype)mockWithError:(NSError *)error elapsedTime:(NSTimeInterval)elapsedTime;
 
 @end
 
@@ -34,5 +33,3 @@ extern NSString *TDFMockFetcherDidStartOperationNotification;
 - (void)setResponse:(TDFMockResponse *)response forResource:(NSString *)resource;
 
 @end
-
-NS_ASSUME_NONNULL_END

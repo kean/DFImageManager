@@ -30,7 +30,7 @@
 
 /*! Returns an DFImageManagerBlockValueTransformer instance initialized with a given block.
  */
-- (instancetype)initWithBlock:(DFImageRequest *(^)(DFImageRequest *))block NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithBlock:(DFImageRequest *__nonnull (^__nonnull)(DFImageRequest *__nonnull))block NS_DESIGNATED_INITIALIZER;
 
 @end
 
@@ -38,7 +38,7 @@
     id (^_block)(id);
 }
 
-- (instancetype)initWithBlock:(DFImageRequest *(^)(DFImageRequest *))block {
+- (instancetype)initWithBlock:(DFImageRequest * __nonnull (^ __nonnull)(DFImageRequest * __nonnull))block {
     if (self = [super init]) {
         _block = [block copy];
     }
@@ -47,20 +47,20 @@
 
 #pragma mark - <DFProxyRequestTransforming>
 
-- (DFImageRequest *)transformedRequest:(DFImageRequest *)request {
+- (nonnull DFImageRequest *)transformedRequest:(nonnull DFImageRequest *)request {
     return _block(request);
 }
 
 @end
 
 
-#define _DF_TRANSFORMED_REQUEST(request) (_transformer ? [_transformer transformedRequest:[(request) copy]] : (request))
+#define _DF_TRANSFORMED_REQUEST(request) (_transformer ? [_transformer transformedRequest:request] : (request))
 
 @implementation DFProxyImageManager
 
 @synthesize imageManager = _manager;
 
-- (instancetype)initWithImageManager:(id<DFImageManaging>)imageManager {
+- (nonnull instancetype)initWithImageManager:(nonnull id<DFImageManaging>)imageManager {
     self.imageManager = imageManager;
     return self;
 }
@@ -73,7 +73,7 @@
     return [(NSObject *)_manager methodSignatureForSelector:aSelector];
 }
 
-- (void)setRequestTransformerWithBlock:(DFImageRequest *(^)(DFImageRequest *))block {
+- (void)setRequestTransformerWithBlock:(DFImageRequest * __nonnull (^ __nullable)(DFImageRequest * __nonnull))block {
     self.transformer = [[_DFProxyRequestTransformer alloc] initWithBlock:block];
 }
 
@@ -83,45 +83,28 @@
     return [_manager canHandleRequest:_DF_TRANSFORMED_REQUEST(request)];
 }
 
-- (DFImageTask *)imageTaskForResource:(id)resource completion:(DFImageRequestCompletion)completion {
+- (nullable DFImageTask *)imageTaskForResource:(nonnull id)resource completion:(nullable DFImageTaskCompletion)completion {
     return [self imageTaskForRequest:[DFImageRequest requestWithResource:resource] completion:completion];
 }
 
-- (DFImageTask *)imageTaskForRequest:(DFImageRequest *)request completion:(DFImageRequestCompletion)completion {
+- (nullable DFImageTask *)imageTaskForRequest:(nonnull DFImageRequest *)request completion:(nullable DFImageTaskCompletion)completion {
     return [_manager imageTaskForRequest:_DF_TRANSFORMED_REQUEST(request) completion:completion];
 }
 
-- (void)startPreheatingImagesForRequests:(NSArray *)requests {
+- (void)startPreheatingImagesForRequests:(nonnull NSArray *)requests {
     [_manager startPreheatingImagesForRequests:[self _transformedRequests:requests]];
 }
 
-- (void)stopPreheatingImagesForRequests:(NSArray *)requests {
+- (void)stopPreheatingImagesForRequests:(nonnull NSArray *)requests {
     [_manager stopPreheatingImagesForRequests:[self _transformedRequests:requests]];
 }
 
-- (NSArray *)_transformedRequests:(NSArray *)requests {
+- (nonnull NSArray *)_transformedRequests:(nonnull NSArray *)requests {
     NSMutableArray *transformedRequests = [NSMutableArray new];
     for (DFImageRequest *request in requests) {
         [transformedRequests addObject:_DF_TRANSFORMED_REQUEST(request)];
     }
     return [transformedRequests copy];
 }
-
-#pragma mark - Deprecated
-
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-implementations"
-
-- (DFImageTask *)requestImageForResource:(id)resource completion:(DFImageRequestCompletion)completion {
-    return [self requestImageForRequest:[DFImageRequest requestWithResource:resource] completion:completion];
-}
-
-- (DFImageTask *)requestImageForRequest:(DFImageRequest *)request completion:(DFImageRequestCompletion)completion {
-    DFImageTask *task = [self imageTaskForRequest:request completion:completion];
-    [task resume];
-    return task;
-}
-
-#pragma clang diagnostic pop
 
 @end

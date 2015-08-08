@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
     s.name         = "DFImageManager"
-    s.version      = "0.5.0"
+    s.version      = "0.6.0"
     s.summary      = "Advanced iOS framework for loading images. Zero config, yet immense customization and extensibility."
     s.homepage     = "https://github.com/kean/DFImageManager"
     s.license      = { :type => "MIT", :file => "LICENSE" }
@@ -14,6 +14,7 @@ Pod::Spec.new do |s|
 
     s.subspec "Core" do |ss|
         ss.source_files  = "DFImageManager/Source/Core/**/*.{h,m}"
+        ss.private_header_files = "DFImageManager/Source/Core/Private/*.h"
     end
 
     s.subspec "UI" do |ss|

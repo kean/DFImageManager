@@ -47,7 +47,7 @@
 
 @implementation DFImageManager (DefaultManager)
 
-+ (id<DFImageManaging>)createDefaultManager {
++ (nonnull id<DFImageManaging>)createDefaultManager {
     NSMutableArray *managers = [NSMutableArray new];
     
 #pragma clang diagnostic push
@@ -103,7 +103,8 @@
         DFProxyImageManager *proxy = [[DFProxyImageManager alloc] initWithImageManager:imageManager];
         [proxy setRequestTransformerWithBlock:^DFImageRequest *(DFImageRequest *request) {
             if ([request.resource isKindOfClass:[ALAsset class]]) {
-                request.resource = [[DFALAsset alloc] initWithAsset:request.resource];
+                id resource = [[DFALAsset alloc] initWithAsset:request.resource];
+                return [[DFImageRequest alloc] initWithResource:resource targetSize:request.targetSize contentMode:request.contentMode options:request.options];
             }
             return request;
         }];

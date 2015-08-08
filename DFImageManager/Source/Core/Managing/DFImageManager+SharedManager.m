@@ -29,11 +29,7 @@
 static id<DFImageManaging> _sharedManager;
 static OSSpinLock _lock = OS_SPINLOCK_INIT;
 
-+ (void)initialize {
-    _sharedManager = [self createDefaultManager];
-}
-
-+ (id<DFImageManaging>)sharedManager {
++ (nonnull id<DFImageManaging>)sharedManager {
     id<DFImageManaging> manager;
     OSSpinLockLock(&_lock);
     manager = _sharedManager;
@@ -41,13 +37,13 @@ static OSSpinLock _lock = OS_SPINLOCK_INIT;
     return manager;
 }
 
-+ (void)setSharedManager:(id<DFImageManaging>)manager {
++ (void)setSharedManager:(nonnull id<DFImageManaging>)manager {
     OSSpinLockLock(&_lock);
     _sharedManager = manager;
     OSSpinLockUnlock(&_lock);
 }
 
-+ (void)addSharedManager:(id<DFImageManaging>)manager {
++ (void)addSharedManager:(nonnull id<DFImageManaging>)manager {
     NSMutableArray *managers = [NSMutableArray arrayWithObject:manager];
     id<DFImageManaging> sharedManager = [self sharedManager];
     if (sharedManager) {

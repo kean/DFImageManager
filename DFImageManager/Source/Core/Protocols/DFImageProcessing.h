@@ -25,8 +25,6 @@
 
 @class DFImageRequest;
 
-NS_ASSUME_NONNULL_BEGIN
-
 /*! Processes fetched images. Might include image decompression, resizing and anything else.
  @note Implementations should not cache processed images and leave it to classes conforming DFImageCaching protocol.
  */
@@ -35,12 +33,10 @@ NS_ASSUME_NONNULL_BEGIN
 /*! Compares two requests for equivalence with regard to processing the image. Requests should be considered equivalent if image processor will produce the same result for both requests when given the same input image. 
  @warning Implementation should not inspect a resource object of the request!
  */
-- (BOOL)isProcessingForRequestEquivalent:(DFImageRequest *)request1 toRequest:(DFImageRequest *)request2;
+- (BOOL)isProcessingForRequestEquivalent:(nonnull DFImageRequest *)request1 toRequest:(nonnull DFImageRequest *)request2;
 
 /*! Returns processed image for a given request.
  */
-- (nullable UIImage *)processedImage:(UIImage *)image forRequest:(DFImageRequest *)request;
+- (nullable UIImage *)processedImage:(nonnull UIImage *)image forRequest:(nonnull DFImageRequest *)request;
 
 @end
-
-NS_ASSUME_NONNULL_END

@@ -38,7 +38,7 @@ static NSString *const DFURLErrorInfoURLResponseKey = @"DFURLErrorInfoURLRespons
 
 /*! The response object decoded from the data associated with a specified response. Response deserializer may also perform validation on the incoming response and data.
  */
-- (id)objectFromResponse:(nullable NSURLResponse *)response data:(nullable NSData *)data error:(NSError **)error;
+- (nullable id)objectFromResponse:(nullable NSURLResponse *)response data:(nullable NSData *)data error:(NSError **)error;
 
 @end
 

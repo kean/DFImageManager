@@ -9,6 +9,12 @@
 #import "DFImageManagerKit.h"
 #import <Foundation/Foundation.h>
 
+@interface UIImage (TDFMockImageProcessor)
+
+- (BOOL)tdf_isImageProcessed;
+
+@end
+
 /*! The mock implementation of DFImageProcessing protocol.
  */
 @interface TDFMockImageProcessor : NSObject <DFImageProcessing>

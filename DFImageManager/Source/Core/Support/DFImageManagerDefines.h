@@ -23,27 +23,9 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
-NS_ASSUME_NONNULL_BEGIN
-
 /* Size to pass when requesting the largest image for resource available (contentMode will be ignored).
  */
 extern CGSize const DFImageMaximumSize;
-
-
-// Requests results info keys:
-
-/*! An image task (DFImageTask).
- */
-extern NSString *const DFImageInfoTaskKey;
-
-/*! An error that occurred when Photos attempted to load the image (NSError). 
- */
-extern NSString *const DFImageInfoErrorKey;
-
-/*! A boolean value indicating whether the image was returned from the memory cache.
- */
-extern NSString *const DFImageInfoIsFromMemoryCacheKey;
-
 
 /*! Options for fitting an image’s aspect ratio to a target size.
  */
@@ -85,7 +67,7 @@ typedef void (^DFImageRequestProgressHandler)(double progress);
 
 /*! The error domain for DFImageManager.
  */
-extern NSString *const DFImageManagerErrorDomain;
+extern NSString *__nonnull const DFImageManagerErrorDomain;
 
 /*! Returned when an image request is cancelled.
  */
@@ -94,8 +76,6 @@ static const NSInteger DFImageManagerErrorCancelled = -1;
 /*! Returned when an image request fails without a specific reason.
  */
 static const NSInteger DFImageManagerErrorUnknown = -2;
-
-NS_ASSUME_NONNULL_END
 
 #define DF_IMAGE_MANAGER_GIF_AVAILABLE __has_include("DFImageManagerKit+GIF.h") && !(DF_IMAGE_MANAGER_FRAMEWORK_TARGET)
 #define DF_IMAGE_MANAGER_WEBP_AVAILABLE __has_include("DFImageManagerKit+WebP.h") && !(DF_IMAGE_MANAGER_FRAMEWORK_TARGET)

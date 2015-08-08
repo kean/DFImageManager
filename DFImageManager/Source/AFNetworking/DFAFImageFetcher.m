@@ -25,7 +25,6 @@
 #import "DFImageRequestOptions.h"
 #import "DFImageManagerDefines.h"
 #import "DFImageRequest.h"
-#import "DFImageResponse.h"
 
 NSString *const DFAFRequestCachePolicyKey = @"DFAFRequestCachePolicyKey";
 
@@ -50,7 +49,7 @@ NSString *const DFAFRequestCachePolicyKey = @"DFAFRequestCachePolicyKey";
 }
 
 - (void)setQueuePriority:(NSOperationQueuePriority)queuePriority {
-    [super setQueuePriority:queuePriority];
+    super.queuePriority = queuePriority;
     if (self.priorityHandler) {
         self.priorityHandler(queuePriority);
     }
@@ -120,7 +119,7 @@ NSString *const DFAFRequestCachePolicyKey = @"DFAFRequestCachePolicyKey";
     return request1 == request2 || [(NSURL *)request1.resource isEqual:(NSURL *)request2.resource];
 }
 
-- (NSOperation *)startOperationWithRequest:(DFImageRequest *)request progressHandler:(void (^)(double))progressHandler completion:(void (^)(DFImageResponse *))completion {
+- (nonnull NSOperation *)startOperationWithRequest:(nonnull DFImageRequest *)request progressHandler:(nullable DFImageFetchingProgressHandler)progressHandler completion:(nullable DFImageFetchingCompletionHandler)completion {
     NSURLRequest *URLRequest = [self _URLRequestForImageRequest:request];
     DFAFImageFetcher *__weak weakSelf = self;
     NSURLSessionDataTask *__block task = [self.sessionManager dataTaskWithRequest:URLRequest completionHandler:^(NSURLResponse *URLResponse, UIImage *result, NSError *error) {
@@ -129,18 +128,18 @@ NSString *const DFAFRequestCachePolicyKey = @"DFAFRequestCachePolicyKey";
             [strongSelf->_dataTaskDelegates removeObjectForKey:task];
         }
         if (completion) {
-            completion([[DFImageResponse alloc] initWithImage:result error:error userInfo:nil]);
+            completion(result, nil, error);
         }
     }];
     [task resume];
     
     // Track progress using dataTaskDidReceiveDataBlock exposed by AFURLSessionManager.
     _DFDataTaskDelegate *dataTaskDelegate = [_DFDataTaskDelegate new];
-    [dataTaskDelegate setDataTaskDidReceiveDataBlock:^(NSURLSession *session, NSURLSessionDataTask *dataTask, NSData *data) {
+    dataTaskDelegate.dataTaskDidReceiveDataBlock = ^(NSURLSession *session, NSURLSessionDataTask *dataTask, NSData *data) {
         if (progressHandler) {
-            progressHandler((double)dataTask.countOfBytesReceived / (double)dataTask.countOfBytesExpectedToReceive);
+            progressHandler(dataTask.countOfBytesReceived, dataTask.countOfBytesExpectedToReceive);
         }
-    }];
+    };
     @synchronized(self) {
         _dataTaskDelegates[task] = dataTaskDelegate;
     }

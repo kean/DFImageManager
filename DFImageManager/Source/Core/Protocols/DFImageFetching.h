@@ -20,12 +20,13 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+#import <UIKit/UIKit.h>
 #import <Foundation/Foundation.h>
 
 @class DFImageRequest;
-@class DFImageResponse;
 
-NS_ASSUME_NONNULL_BEGIN
+typedef void (^DFImageFetchingProgressHandler)(int64_t completedUnitCount, int64_t totalUnitCount);
+typedef void (^DFImageFetchingCompletionHandler)(UIImage *__nullable image, NSDictionary *__nullable info, NSError *__nullable error);
 
 /*! The DFImageFetching protocol provides the basic structure for performing fetching of images for specific DFImageRequest objects. Classes adopting DFImageFetching protocol handle the specifics associated with one of more types of the image requests.
  @note The role and the structure of the DFImageFetching protocol is largely inspired by the NSURLProtocol abstract class.
@@ -35,20 +36,20 @@ NS_ASSUME_NONNULL_BEGIN
 /*! Inspects the given request and determines whether the receiver can handle the given request.
  @param request The initial request to be handled. The request is not canonical (see canonicalRequestForRequest: method for more info).
  */
-- (BOOL)canHandleRequest:(DFImageRequest *)request;
+- (BOOL)canHandleRequest:(nonnull DFImageRequest *)request;
 
 /*! Compares two requests for equivalence with regard to fetching the image. Requests should be considered equivalent if the image fetcher can handle both requests with a single operation.
  @param request1 The first canonical request.
  @param request2 The second canonical request.
  */
-- (BOOL)isRequestFetchEquivalent:(DFImageRequest *)request1 toRequest:(DFImageRequest *)request2;
+- (BOOL)isRequestFetchEquivalent:(nonnull DFImageRequest *)request1 toRequest:(nonnull DFImageRequest *)request2;
 
 /*! Compares two requests for equivalence with regard to caching the image. 
  @note The DFImageManager uses this method for memory caching only, which means that there is no need for filtering out the dynamic part of the request (is there is any). For example, the dynamic part might be a username and password in a URL.
  @param request1 The first canonical request.
  @param request2 The second canonical request.
  */
-- (BOOL)isRequestCacheEquivalent:(DFImageRequest *)request1 toRequest:(DFImageRequest *)request2;
+- (BOOL)isRequestCacheEquivalent:(nonnull DFImageRequest *)request1 toRequest:(nonnull DFImageRequest *)request2;
 
 /*! Starts fetching an image for the request.
  @param request The canonical request.
@@ -56,15 +57,12 @@ NS_ASSUME_NONNULL_BEGIN
  @param completion Completion handler, can be called on any thread.
  @return The operation that implements fetching.
  */
-- (NSOperation *)startOperationWithRequest:(DFImageRequest *)request progressHandler:(void (^__nullable)(double progress))progressHandler completion:(void (^)(DFImageResponse *response))completion;
+- (nonnull NSOperation *)startOperationWithRequest:(nonnull DFImageRequest *)request progressHandler:(nullable DFImageFetchingProgressHandler)progressHandler completion:(nullable DFImageFetchingCompletionHandler)completion;
 
 @optional
 
-/*! Returns a canonical form of the given request. All DFImageFetching methods receive requests in a canonical form expect for the -canHandleRequest: method.
- @param request The initial request. This method can modify the given request.
+/*! Returns a canonical form of the given request. All DFImageFetching methods receive requests in a canonical form except for the -canHandleRequest: method.
  */
-- (DFImageRequest *)canonicalRequestForRequest:(DFImageRequest *)request;
+- (nonnull DFImageRequest *)canonicalRequestForRequest:(nonnull DFImageRequest *)request;
 
 @end
-
-NS_ASSUME_NONNULL_END

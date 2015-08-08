@@ -24,25 +24,4 @@
     TDFAssertDefaultOptionsAreValid(request.options);
 }
 
-- (void)testThatRequestIsCopied {
-    TDFMockResource *resource = [TDFMockResource resourceWithID:@"ID"];
-    CGSize targetSize = CGSizeMake(20.f, 20.f);
-    DFImageContentMode contentMode = DFImageContentModeAspectFit;
-    DFImageRequestOptions *options = [DFImageRequestOptions new];
-    options.allowsNetworkAccess = NO;
-    
-    DFImageRequest *request = [[DFImageRequest alloc] initWithResource:resource targetSize:targetSize contentMode:contentMode options:options];
-    XCTAssertTrue(request.resource == resource);
-    XCTAssertTrue(request.contentMode == contentMode);
-    XCTAssertTrue(request.options == options);
-    
-    DFImageRequest *copy = [request copy];
-    XCTAssertTrue(copy != request);
-    XCTAssertTrue(copy.resource == resource);
-    XCTAssertEqual(copy.contentMode, contentMode);
-    // Test that options are copied
-    XCTAssertTrue(copy.options != options);
-    XCTAssertEqual(copy.options.allowsNetworkAccess, NO);
-}
-
 @end

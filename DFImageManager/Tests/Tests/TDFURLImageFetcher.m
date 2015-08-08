@@ -39,13 +39,13 @@
 - (void)testThatRequestsAreFetchEquivalentWithSameReloadCachePolicy {
     NSURL *URL = [NSURL URLWithString:@"http://path/resourse"];
     
-    DFImageRequestOptions *options1 = [DFImageRequestOptions new];
+    DFMutableImageRequestOptions *options1 = [DFMutableImageRequestOptions new];
     options1.userInfo = @{ DFURLRequestCachePolicyKey : @(NSURLRequestReloadIgnoringCacheData) };
-    DFImageRequest *request1 = [DFImageRequest requestWithResource:URL targetSize:DFImageMaximumSize contentMode:DFImageContentModeAspectFill options:options1];
+    DFImageRequest *request1 = [DFImageRequest requestWithResource:URL targetSize:DFImageMaximumSize contentMode:DFImageContentModeAspectFill options:options1.options];
     
-    DFImageRequestOptions *options2 = [DFImageRequestOptions new];
+    DFMutableImageRequestOptions *options2 = [DFMutableImageRequestOptions new];
     options2.userInfo = @{ DFURLRequestCachePolicyKey : @(NSURLRequestReloadIgnoringCacheData) };
-    DFImageRequest *request2 = [DFImageRequest requestWithResource:URL targetSize:DFImageMaximumSize contentMode:   DFImageContentModeAspectFill options:options2];
+    DFImageRequest *request2 = [DFImageRequest requestWithResource:URL targetSize:DFImageMaximumSize contentMode:   DFImageContentModeAspectFill options:options2.options];
     XCTAssertTrue([_fetcher isRequestFetchEquivalent:request1 toRequest:request2]);
 }
 
@@ -54,18 +54,18 @@
     
     DFImageRequest *request1 = [DFImageRequest requestWithResource:URL targetSize:DFImageMaximumSize contentMode:DFImageContentModeAspectFill options:nil];
     
-    DFImageRequestOptions *options2 = [DFImageRequestOptions new];
-    options2.userInfo = @{ DFURLRequestCachePolicyKey : @(NSURLRequestUseProtocolCachePolicy) };
-    DFImageRequest *request2 = [DFImageRequest requestWithResource:URL targetSize:DFImageMaximumSize contentMode:   DFImageContentModeAspectFill options:options2];
+    DFMutableImageRequestOptions *options = [DFMutableImageRequestOptions new];
+    options.userInfo = @{ DFURLRequestCachePolicyKey : @(NSURLRequestUseProtocolCachePolicy) };
+    DFImageRequest *request2 = [DFImageRequest requestWithResource:URL targetSize:DFImageMaximumSize contentMode:   DFImageContentModeAspectFill options:options.options];
     XCTAssertTrue([_fetcher isRequestFetchEquivalent:request1 toRequest:request2]);
 }
 
 - (void)testThatRequestsAreNotFetchEquivalentWithDifferentReloadCachePolicy {
     NSURL *URL = [NSURL URLWithString:@"http://path/resourse"];
     
-    DFImageRequestOptions *options1 = [DFImageRequestOptions new];
-    options1.userInfo = @{ DFURLRequestCachePolicyKey : @(NSURLRequestReloadIgnoringCacheData) };
-    DFImageRequest *request1 = [DFImageRequest requestWithResource:URL targetSize:DFImageMaximumSize contentMode:DFImageContentModeAspectFill options:options1];
+    DFMutableImageRequestOptions *options = [DFMutableImageRequestOptions new];
+    options.userInfo = @{ DFURLRequestCachePolicyKey : @(NSURLRequestReloadIgnoringCacheData) };
+    DFImageRequest *request1 = [DFImageRequest requestWithResource:URL targetSize:DFImageMaximumSize contentMode:DFImageContentModeAspectFill options:options.options];
 
     DFImageRequest *request2 = [DFImageRequest requestWithResource:URL targetSize:DFImageMaximumSize contentMode:   DFImageContentModeAspectFill options:nil];
     XCTAssertFalse([_fetcher isRequestFetchEquivalent:request1 toRequest:request2]);
@@ -96,8 +96,8 @@
     XCTAssertTrue([_fetcher canHandleRequest:request]);
     
     XCTestExpectation *expectation = [self expectationWithDescription:@"fetch_completed"];
-    [_fetcher startOperationWithRequest:request progressHandler:nil completion:^(DFImageResponse *response) {
-        XCTAssertNotNil(response.image);
+    [_fetcher startOperationWithRequest:request progressHandler:nil completion:^(UIImage *__nullable image, NSDictionary *__nullable info, NSError *__nullable error) {
+        XCTAssertNotNil(image);
         [expectation fulfill];
     }];
     
@@ -116,8 +116,8 @@
     XCTAssertTrue([_fetcher canHandleRequest:request]);
     
     XCTestExpectation *expectation = [self expectationWithDescription:@"fetch_completed"];
-    [_fetcher startOperationWithRequest:request progressHandler:nil completion:^(DFImageResponse *response) {
-        XCTAssertNotNil(response.image);
+    [_fetcher startOperationWithRequest:request progressHandler:nil completion:^(UIImage *__nullable image, NSDictionary *__nullable info, NSError *__nullable error) {
+        XCTAssertNotNil(image);
         [expectation fulfill];
     }];
     

@@ -23,24 +23,20 @@
 #import "DFImageCaching.h"
 #import <Foundation/Foundation.h>
 
-NS_ASSUME_NONNULL_BEGIN
-
 /*! Memory cache implementation that is built on top of NSCache and adds more functionality to it, like expiration of cached entries, automatic cleanup on memory warnings and more.
  */
 @interface DFImageCache : NSObject <DFImageCaching>
 
 /*! Returns the cache that the DFImageCache was initialized with.
  */
-@property (nonatomic, readonly) NSCache *cache;
+@property (nonnull, nonatomic, readonly) NSCache *cache;
 
 /*! Initializes image cache with an instance of NSCache class.
  */
-- (instancetype)initWithCache:(NSCache *)cache NS_DESIGNATED_INITIALIZER;
+- (nonnull instancetype)initWithCache:(nonnull NSCache *)cache NS_DESIGNATED_INITIALIZER;
 
 /*! Returns cost for a given image response.
  */
-- (NSUInteger)costForImageResponse:(DFCachedImageResponse *)cachedResponse;
+- (NSUInteger)costForImageResponse:(nonnull DFCachedImageResponse *)cachedResponse;
 
 @end
-
-NS_ASSUME_NONNULL_END

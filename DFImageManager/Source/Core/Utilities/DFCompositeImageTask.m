@@ -27,22 +27,22 @@
 
 @implementation DFCompositeImageTask {
     BOOL _isStarted;
-    NSMutableOrderedSet *_remainingTasks;
+    NSMutableArray *_remainingTasks;
 }
 
-- (instancetype)initWithImageTasks:(NSArray *)tasks imageHandler:(DFCompositeImageTaskImageHandler)imageHandler completionHandler:(nullable DFCompositeImageTaskCompletionHandler)completionHandler {
+- (nonnull instancetype)initWithImageTasks:(nonnull NSArray *)tasks imageHandler:(nullable DFCompositeImageTaskImageHandler)imageHandler completionHandler:(nullable DFCompositeImageTaskCompletionHandler)completionHandler {
     if (self = [super init]) {
         NSParameterAssert(tasks.count > 0);
         _imageTasks = [tasks copy];
-        _remainingTasks = [NSMutableOrderedSet orderedSetWithArray:tasks];
-        _imageHandler = [imageHandler copy];
-        _completionHandler = [completionHandler copy];
+        _remainingTasks = [NSMutableArray arrayWithArray:tasks];
+        _imageHandler = imageHandler;
+        _completionHandler = completionHandler;
         _allowsObsoleteRequests = YES;
     }
     return self;
 }
 
-+ (DFCompositeImageTask *)compositeImageTaskWithRequests:(NSArray *)requests imageHandler:(DFCompositeImageTaskImageHandler)imageHandler completionHandler:(nullable DFCompositeImageTaskCompletionHandler)completionHandler {
++ (nullable DFCompositeImageTask *)compositeImageTaskWithRequests:(nonnull NSArray *)requests imageHandler:(nullable DFCompositeImageTaskImageHandler)imageHandler completionHandler:(nullable DFCompositeImageTaskCompletionHandler)completionHandler {
     NSParameterAssert(requests.count > 0);
     NSMutableArray *tasks = [NSMutableArray new];
     for (DFImageRequest *request in requests) {
@@ -51,7 +51,7 @@
             [tasks addObject:task];
         }
     }
-    return tasks.count ? [[DFCompositeImageTask alloc] initWithImageTasks:tasks imageHandler:imageHandler completionHandler:completionHandler] : nil;
+    return tasks.count ? [[[self class] alloc] initWithImageTasks:tasks imageHandler:imageHandler completionHandler:completionHandler] : nil;
 }
 
 - (void)resume {
@@ -61,14 +61,13 @@
     _isStarted = YES;
     DFCompositeImageTask *__weak weakSelf = self;
     for (DFImageTask *task in _remainingTasks) {
-        DFImageTask *__weak weakTask = task;
-        DFImageRequestCompletion completionHandler = task.completionHandler;
-        [task setCompletionHandler:^(UIImage *image, NSDictionary *info) {
-            [weakSelf _didFinishImageTask:weakTask withImage:image info:info];
+        DFImageTaskCompletion completionHandler = task.completionHandler;
+        task.completionHandler = ^(UIImage *__nullable image, NSError *__nullable error, DFImageResponse *__nullable response, DFImageTask *__nonnull completedTask) {
+            [weakSelf _didFinishImageTask:completedTask withImage:image];
             if (completionHandler) {
-                completionHandler(image, info);
+                completionHandler(image, error, response, completedTask);
             }
-        }];
+        };
     }
     for (DFImageTask *task in [_remainingTasks copy]) {
         [task resume];
@@ -89,11 +88,11 @@
 
 - (void)setPriority:(DFImageRequestPriority)priority {
     for (DFImageTask *task in _remainingTasks) {
-        [task setPriority:priority];
+        task.priority = priority;
     }
 }
 
-- (void)_didFinishImageTask:(DFImageTask *)task withImage:(UIImage *)image info:(NSDictionary *)info {
+- (void)_didFinishImageTask:(nonnull DFImageTask *)task withImage:(nullable UIImage *)image {
     if (![_remainingTasks containsObject:task]) {
         return;
     }
@@ -110,13 +109,13 @@
         [_remainingTasks removeObject:task];
         if (isSuccess && !isObsolete) {
             if (_imageHandler) {
-                _imageHandler(image, info, self);
+                _imageHandler(image, task, self);
             }
         }
     } else {
         [_remainingTasks removeObject:task];
         if (_imageHandler) {
-            _imageHandler(image, info, self);
+            _imageHandler(image, task, self);
         }
     }
     if (self.isFinished) {
@@ -126,19 +125,19 @@
     }
 }
 
-- (void)_cancelTask:(DFImageTask *)task {
+- (void)_cancelTask:(nonnull DFImageTask *)task {
     [_remainingTasks removeObject:task];
     [task cancel];
 }
 
-- (BOOL)_isTaskSuccessfull:(DFImageTask *)task {
+- (BOOL)_isTaskSuccessfull:(nonnull DFImageTask *)task {
     return task.state == DFImageTaskStateCompleted && task.error == nil;
 
 }
 
 /*! Returns YES if the request is obsolete. The request is considered obsolete if there is at least one successfully completed request in the 'right' subarray of the requests.
  */
-- (BOOL)_isTaskObsolete:(DFImageTask *)task {
+- (BOOL)_isTaskObsolete:(nonnull DFImageTask *)task {
     // Iterate throught the 'right' subarray of tasks
     for (NSUInteger i = [_imageTasks indexOfObject:task] + 1; i < _imageTasks.count; i++) {
         if ([self _isTaskSuccessfull:_imageTasks[i]]) {
@@ -148,7 +147,7 @@
     return NO;
 }
 
-- (NSArray *)imageRequests {
+- (nonnull NSArray *)imageRequests {
     NSMutableArray *requests = [NSMutableArray new];
     for (DFImageTask *task in _imageTasks) {
         [requests addObject:task.request];

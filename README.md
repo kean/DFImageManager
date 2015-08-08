@@ -4,7 +4,7 @@
 
 Advanced iOS framework for loading, caching, processing, displaying and preheating images. It uses latest features in iOS SDK and doesn't reinvent existing technologies. It provides a powerful API that will extend the capabilities of your app.
 
-The DFImageManager is not just a loader, it is a pipeline API for managing image requests with an ability to easily plug-in everything that your application might need. It features [multiple subspecs](#install_using_cocopods) that integrate things like [AFNetworking](https://github.com/AFNetworking/AFNetworking) as a networking stack for fetching images, and [FLAnimatedImage](https://github.com/Flipboard/FLAnimatedImage) as a performant animated GIF engine, and more.
+The DFImageManager is not just a loader, it is a pipeline for executing image requests using pluggable components. It features [multiple subspecs](#install_using_cocopods) that automatically integrate things like [AFNetworking](https://github.com/AFNetworking/AFNetworking), [FLAnimatedImage](https://github.com/Flipboard/FLAnimatedImage) as a performant animated GIF engine, and more.
 
 ## Features
 
@@ -16,23 +16,30 @@ The DFImageManager is not just a loader, it is a pipeline API for managing image
 
 ##### Loading
 - Uses latest advancements in [Foundation URL Loading System](https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/URLLoadingSystem/URLLoadingSystem.html) including [NSURLSession](https://developer.apple.com/library/ios/documentation/Foundation/Reference/NSURLSession_class/) that supports [HTTP/2](https://en.wikipedia.org/wiki/HTTP/2)
-- Has basic built-in networking implementation, and optional [AFNetworking integration](#install_using_cocopods) which should be your primary choice. Combine the power of both frameworks! 
-- Show a low-resolution placeholder(s) first and swap to higher-res one when it is loaded
-- Groups similar tasks and never executes them twice
+- Has basic built-in networking implementation, and optional [AFNetworking integration](#install_using_cocopods) (which should be your primary choice). Combine the power of both frameworks! 
+- Groups similar requests and never executes them twice
+- Progress tracking using `NSProgress`
 
 ##### Caching
 - Instead of reinventing a caching methodology it relies on HTTP cache as defined in [HTTP specification](https://tools.ietf.org/html/rfc7234) and caching implementation provided by [Foundation URL Loading System](https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/URLLoadingSystem/URLLoadingSystem.html). The caching and revalidation are completely transparent to the client
-- Separate memory cache for decompressed and processed images. Fine grained control over memory cache
+- Two levels of cache, including top level memory cache for decompressed and processed images
 
-##### Image Formats
-- Install subspecs to support additional image formats
+##### Decoding and Processing
 - Animated GIF support using best-in-class [FLAnimatedImage](https://github.com/Flipboard/FLAnimatedImage) library
 - [WebP](https://developers.google.com/speed/webp/) support
+- Background image decompression
+- Resize and crop loaded images, add rounded corners or circle
+
+##### Displaying
+- Use UI components and UIKit categories
+- Automatically retry load if the network load failes
 
 ##### Advanced
 - [Intelligent preheating](https://github.com/kean/DFImageManager/wiki/Image-Preheating-Guide) of images that are close to the viewport
-- [Compose image managers](https://github.com/kean/DFImageManager/wiki/Extending-Image-Manager-Guide#using-dfcompositeimagemanager) into a tree of responsibility
+- Use `DFCompositeImageTask` to execute and handle multiple image requests. You might show a low-resolution placeholder first and swap to a higher-res one when it is loaded. Or implement some custom [revalidation policies](https://github.com/kean/DFImageManager/wiki/Advanced-Image-Caching-Guide#custom-revalidation-using-dfcompositeimagetask)
 - Customize different parts of the framework using dependency injection
+- Add support for custom image requests by [composing image managers](https://github.com/kean/DFImageManager/wiki/Extending-Image-Manager-Guide#using-dfcompositeimagemanager) into a tree of responsibility
+- Add support for custom image requests using `DFProxyImageManager`
 
 ## Getting Started
 - Download the latest [release](https://github.com/kean/DFImageManager/releases) version
@@ -56,7 +63,7 @@ DFImageTask *task = [[DFImageManager sharedManager] imageTaskForResource:[NSURL 
 }];
 [task resume];
 
-[task cancel]; // task can be used to cancel the request (and more)
+[task cancel]; // task can be used to cancel the request
 ```
 
 #### Add request options
@@ -64,14 +71,11 @@ DFImageTask *task = [[DFImageManager sharedManager] imageTaskForResource:[NSURL 
 ```objective-c
 NSURL *imageURL = [NSURL URLWithString:@"http://..."];
 
-DFImageRequestOptions *options = [DFImageRequestOptions new];
+DFMutableImageRequestOptions *options = [DFMutableImageRequestOptions new]; // builder
 options.allowsClipping = YES;
-options.progressHandler = ^(double progress){
-// Observe progress
-};
 options.userInfo = @{ DFURLRequestCachePolicyKey : @(NSURLRequestReturnCacheDataDontLoad) };
 
-DFImageRequest *request = [DFImageRequest requestWithResource:imageURL targetSize:CGSizeMake(100.f, 100.f) contentMode:DFImageContentModeAspectFill options:options];
+DFImageRequest *request = [DFImageRequest requestWithResource:imageURL targetSize:CGSizeMake(100.f, 100.f) contentMode:DFImageContentModeAspectFill options:options.options];
 
 [[[DFImageManager sharedManager] imageTaskForRequest:request completion:^(UIImage *image, NSDictionary *info) {
 // Image is resized and clipped to fill 100x100px square

@@ -24,8 +24,7 @@
 #import <Foundation/Foundation.h>
 
 @class DFImageRequest;
-
-NS_ASSUME_NONNULL_BEGIN
+@class DFImageResponse;
 
 /*! Constants for determining the current state of a task.
  */
@@ -43,7 +42,7 @@ typedef NS_ENUM(NSUInteger, DFImageTaskState) {
 /*! The image request that the task was created with.
  @note Image request is in its canonical form.
  */
-@property (nonatomic, readonly) DFImageRequest *request;
+@property (nonnull, atomic, readonly) DFImageRequest *request;
 
 /*! The current state of the task within the image manager.
  */
@@ -51,11 +50,24 @@ typedef NS_ENUM(NSUInteger, DFImageTaskState) {
 
 /*! An error object that indicates why the task failed.
  */
-@property (nonatomic, readonly) NSError *error;
+@property (nullable, atomic, readonly) NSError *error;
+
+/*! Returns image response with metadata associated with a load.
+ */
+@property (nullable, atomic, readonly) DFImageResponse *response;
+
+/*! A progress object monitoring the current task progress. Progress is created lazily.
+ @note Progress object can be used to cancel image task.
+ */
+@property (nonnull, atomic, readonly) NSProgress *progress;
+
+/*! Priority of the task. Can be changed during the execution of the task.
+ */
+@property (nonatomic) DFImageRequestPriority priority;
 
 /*! Completion block to execute when image task is either cancelled or completed.
  */
-@property (nullable, atomic, copy) void (^completionHandler)(UIImage *__nullable image, NSDictionary *info);
+@property (nullable, atomic, copy) void (^completionHandler)(UIImage *__nullable image, NSError *__nullable error, DFImageResponse *__nullable response, DFImageTask *__nonnull completedTask);
 
 /*! Resumes the task.
  */
@@ -65,10 +77,4 @@ typedef NS_ENUM(NSUInteger, DFImageTaskState) {
  */
 - (void)cancel;
 
-/*! Changes the priority of the task.
- */
-- (void)setPriority:(DFImageRequestPriority)priority;
-
 @end
-
-NS_ASSUME_NONNULL_END

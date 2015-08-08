@@ -40,20 +40,11 @@
 }
 
 + (nonnull instancetype)requestWithResource:(nonnull id)resource {
-    return [[DFImageRequest alloc] initWithResource:resource];
+    return [[[self class] alloc] initWithResource:resource];
 }
 
 + (nonnull instancetype)requestWithResource:(nonnull id)resource targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(nullable DFImageRequestOptions *)options {
-    return [[DFImageRequest alloc] initWithResource:resource targetSize:targetSize contentMode:contentMode options:options];
-}
-
-- (id)copyWithZone:(NSZone *)zone {
-    DFImageRequest *request = [[DFImageRequest allocWithZone:zone] init];
-    request.resource = self.resource;
-    request.targetSize = self.targetSize;
-    request.contentMode = self.contentMode;
-    request.options = [self.options copy];
-    return request;
+    return [[[self class] alloc] initWithResource:resource targetSize:targetSize contentMode:contentMode options:options];
 }
 
 - (NSString *)description {

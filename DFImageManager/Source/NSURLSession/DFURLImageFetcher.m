@@ -22,12 +22,10 @@
 
 #import "DFImageRequest.h"
 #import "DFImageRequestOptions.h"
-#import "DFImageResponse.h"
 #import "DFURLHTTPImageDeserializer.h"
 #import "DFURLImageDeserializer.h"
 #import "DFURLImageFetcher.h"
 #import "DFURLResponseDeserializing.h"
-
 
 NSString *const DFURLRequestCachePolicyKey = @"DFURLRequestCachePolicyKey";
 
@@ -53,7 +51,7 @@ NSString *const DFURLRequestCachePolicyKey = @"DFURLRequestCachePolicyKey";
 }
 
 - (void)setQueuePriority:(NSOperationQueuePriority)queuePriority {
-    [super setQueuePriority:queuePriority];
+    super.queuePriority = queuePriority;
     if (self.priorityHandler) {
         self.priorityHandler(queuePriority);
     }
@@ -215,7 +213,7 @@ static const NSTimeInterval _kCommandExecutionInterval = 0.005; // 5 ms
             return;
         }
     }
-    _DFSessionTaskCommand *command = [_commands firstObject];
+    _DFSessionTaskCommand *command = _commands.firstObject;
     if (command) {
         [_commands removeObject:command];
         [command execute];
@@ -256,7 +254,7 @@ static const NSTimeInterval _kCommandExecutionInterval = 0.005; // 5 ms
 
 #pragma mark - <DFImageFetching>
 
-- (BOOL)canHandleRequest:(DFImageRequest *)request {
+- (BOOL)canHandleRequest:(nonnull DFImageRequest *)request {
     if ([request.resource isKindOfClass:[NSURL class]]) {
         return [self.supportedSchemes containsObject:((NSURL *)request.resource).scheme];
     }
@@ -277,23 +275,20 @@ static const NSTimeInterval _kCommandExecutionInterval = 0.005; // 5 ms
     return request1 == request2 || [(NSURL *)request1.resource isEqual:(NSURL *)request2.resource];
 }
 
-- (NSOperation *)startOperationWithRequest:(DFImageRequest *)request progressHandler:(void (^)(double))progressHandler completion:(void (^)(DFImageResponse *))completion {
+- (nonnull NSOperation *)startOperationWithRequest:(nonnull DFImageRequest *)request progressHandler:(nullable DFImageFetchingProgressHandler)progressHandler completion:(nullable DFImageFetchingCompletionHandler)completion {
     NSURLRequest *URLRequest = [self _URLRequestForImageRequest:request];
     NSURLSessionDataTask *__block task = [self.sessionDelegate URLImageFetcher:self dataTaskWithRequest:URLRequest progressHandler:^(int64_t countOfBytesReceived, int64_t countOfBytesExpectedToReceive) {
         if (progressHandler) {
-            progressHandler((double)countOfBytesReceived / (double)countOfBytesExpectedToReceive);
+            progressHandler(countOfBytesReceived, countOfBytesExpectedToReceive);
         }
     } completionHandler:^(NSData *data, NSURLResponse *URLResponse, NSError *error) {
-        DFImageResponse *response;
-        if (error) {
-            response = [DFImageResponse responseWithError:error];
-        } else {
+        UIImage *image;
+        if (data) {
             id<DFURLResponseDeserializing> deserializer = [self _responseDeserializerForImageRequest:request URLRequest:URLRequest];
-            UIImage *image = [deserializer objectFromResponse:URLResponse data:data error:&error];
-            response = [[DFImageResponse alloc] initWithImage:image error:error userInfo:nil];
+            image = [deserializer objectFromResponse:URLResponse data:data error:&error];
         }
         if (completion) {
-            completion(response);
+            completion(image, nil, error);
         }
     }];
     

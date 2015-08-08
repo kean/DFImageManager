@@ -21,11 +21,11 @@ extern NSString *TDFMockImageFetcherOperationKey;
 
 @property (nonatomic) NSOperationQueue *queue;
 
-@property (nonatomic) DFImageResponse *response;
+@property (nonatomic) UIImage *image;
+@property (nonatomic) NSError *error;
+@property (nonatomic) NSDictionary *info;
 
 // For assertions
 @property (nonatomic, readonly) NSInteger createdOperationCount;
-
-+ (DFImageResponse *)successfullResponse;
 
 @end

@@ -56,21 +56,21 @@
     return [self.supportedResource isEqualToString:request.resource];
 }
 
-- (DFImageTask *)imageTaskForResource:(id)resource completion:(void (^)(UIImage *, NSDictionary *))completion {
+- (nullable DFImageTask *)imageTaskForResource:(nonnull id)resource completion:(nullable DFImageTaskCompletion)completion {
     return [self imageTaskForRequest:[DFImageRequest requestWithResource:resource] completion:completion];
 }
 
-- (DFImageTask *)imageTaskForRequest:(DFImageRequest *)request completion:(void (^)(UIImage *, NSDictionary *))completion {
+- (nullable DFImageTask *)imageTaskForRequest:(nonnull DFImageRequest *)request completion:(nullable DFImageTaskCompletion)completion {
     _TDFMockImageTask *task = [_TDFMockImageTask new];
     [_imageTasks addObject:task];
     return task;
 }
 
-- (DFImageTask *)requestImageForResource:(id)resource completion:(void (^)(UIImage *, NSDictionary *))completion {
+- (nullable DFImageTask *)requestImageForResource:(nonnull id)resource completion:(nullable DFImageTaskCompletion)completion {
     return [self requestImageForRequest:[DFImageRequest requestWithResource:resource] completion:completion];
 }
 
-- (DFImageTask *)requestImageForRequest:(DFImageRequest *)request completion:(void (^)(UIImage *, NSDictionary *))completion {
+- (nullable DFImageTask *)requestImageForRequest:(nonnull DFImageRequest *)request completion:(nullable DFImageTaskCompletion)completion {
     return [self imageTaskForRequest:request completion:completion];
 }
 

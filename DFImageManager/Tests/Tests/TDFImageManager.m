@@ -43,7 +43,7 @@
 
 - (void)testThatImageRequestIsFulfilled {
     XCTestExpectation *expectation = [self expectationWithDescription:@"first_request"];
-    [[_manager imageTaskForResource:[TDFMockResource resourceWithID:@"ID01"] completion:^(UIImage *image, NSDictionary *info) {
+    [[_manager imageTaskForResource:[TDFMockResource resourceWithID:@"ID01"] completion:^(UIImage *__nullable image, NSError *__nullable error, DFImageResponse *__nullable response, DFImageTask *__nonnull completedTask) {
         XCTAssertNotNil(image);
         [expectation fulfill];
     }] resume];
@@ -60,7 +60,7 @@
 
 - (void)testThatCompletedImageTaskHasCompletedState {
     XCTestExpectation *expectation = [self expectationWithDescription:@"request"];
-    DFImageTask *__block task = [_manager imageTaskForResource:[TDFMockResource resourceWithID:@"ID01"] completion:^(UIImage *image, NSDictionary *info) {
+    DFImageTask *__block task = [_manager imageTaskForResource:[TDFMockResource resourceWithID:@"ID01"] completion:^(UIImage *__nullable image, NSError *__nullable error, DFImageResponse *__nullable response, DFImageTask *__nonnull completedTask) {
         XCTAssertTrue(task.state == DFImageTaskStateCompleted);
         [expectation fulfill];
     }];
@@ -68,12 +68,12 @@
     [self waitForExpectationsWithTimeout:1.0 handler:nil];
 }
 
-#pragma mark - Response Info
+#pragma mark - Completion Block
 
-- (void)testThatResponseInfoContainsImageTask {
+- (void)testThatCompletionBlockContainsImageTask {
     XCTestExpectation *expectation = [self expectationWithDescription:@"request"];
-    DFImageTask *__block task = [_manager imageTaskForResource:[TDFMockResource resourceWithID:@"ID01"] completion:^(UIImage *image, NSDictionary *info) {
-        XCTAssertEqualObjects(info[DFImageInfoTaskKey], task);
+    DFImageTask *__block task = [_manager imageTaskForResource:[TDFMockResource resourceWithID:@"ID01"] completion:^(UIImage *__nullable image, NSError *__nullable error, DFImageResponse *__nullable response, DFImageTask *__nonnull completedTask) {
+        XCTAssertEqualObjects(completedTask, task);
         [expectation fulfill];
     }];
     [task resume];
@@ -82,12 +82,11 @@
 
 /*! Test that image manager response info contains error under DFImageInfoErrorKey key when request fails.
  */
-- (void)testThatResponseInfoContainsError {
-    _fetcher.response = [DFImageResponse responseWithError:[NSError errorWithDomain:@"TDFErrorDomain" code:14 userInfo:nil]];
+- (void)testThatCompletionBlockContainsError {
+    _fetcher.error = [NSError errorWithDomain:@"TDFErrorDomain" code:14 userInfo:nil];
     
     XCTestExpectation *expectation = [self expectationWithDescription:@"request"];
-    [[_manager imageTaskForResource:[TDFMockResource resourceWithID:@"ID01"] completion:^(UIImage *image, NSDictionary *info) {
-        NSError *error = info[DFImageInfoErrorKey];
+    [[_manager imageTaskForResource:[TDFMockResource resourceWithID:@"ID01"] completion:^(UIImage *__nullable image, NSError *__nullable error, DFImageResponse *__nullable response, DFImageTask *__nonnull completedTask) {
         XCTAssertNotNil(error);
         XCTAssertTrue([error.domain isEqualToString:@"TDFErrorDomain"]);
         XCTAssertTrue(error.code == 14);
@@ -98,12 +97,11 @@
 
 /*! Test that image manager response info contains error under DFImageInfoErrorKey key when request fails.
  */
-- (void)testThatResponseInfoAndImageTaskContainError {
-    _fetcher.response = [DFImageResponse responseWithError:[NSError errorWithDomain:@"TDFErrorDomain" code:14 userInfo:nil]];
+- (void)testThatCompletionBlockAndImageTaskContainError {
+    _fetcher.error = [NSError errorWithDomain:@"TDFErrorDomain" code:14 userInfo:nil];
     
     XCTestExpectation *expectation = [self expectationWithDescription:@"request"];
-    DFImageTask *task = [_manager imageTaskForResource:[TDFMockResource resourceWithID:@"ID01"] completion:^(UIImage *image, NSDictionary *info) {
-        NSError *error = info[DFImageInfoErrorKey];
+    DFImageTask *task = [_manager imageTaskForResource:[TDFMockResource resourceWithID:@"ID01"] completion:^(UIImage *__nullable image, NSError *__nullable error, DFImageResponse *__nullable response, DFImageTask *__nonnull completedTask) {
         XCTAssertNotNil(error);
         XCTAssertTrue([error.domain isEqualToString:@"TDFErrorDomain"]);
         XCTAssertTrue(error.code == 14);
@@ -118,11 +116,10 @@
 }
 
 - (void)testThatFailedResponseAlwaysGeneratesError {
-    _fetcher.response = [[DFImageResponse alloc] initWithImage:nil error:nil userInfo:nil];
+    _fetcher.image = nil;
     
     XCTestExpectation *expectation = [self expectationWithDescription:@"request"];
-    DFImageTask *task = [_manager imageTaskForResource:[TDFMockResource resourceWithID:@"ID01"] completion:^(UIImage *image, NSDictionary *info) {
-        NSError *error = info[DFImageInfoErrorKey];
+    DFImageTask *task = [_manager imageTaskForResource:[TDFMockResource resourceWithID:@"ID01"] completion:^(UIImage *__nullable image, NSError *__nullable error, DFImageResponse *__nullable response, DFImageTask *__nonnull completedTask) {
         XCTAssertNotNil(error);
         XCTAssertTrue([error.domain isEqualToString:DFImageManagerErrorDomain]);
         XCTAssertTrue(error.code == DFImageManagerErrorUnknown);
@@ -136,15 +133,41 @@
     XCTAssertTrue(task.error.code == DFImageManagerErrorUnknown);
 }
 
-- (void)testThatResponseInfoContainsCustomUserInfo {
-    _fetcher.response = [[DFImageResponse alloc] initWithImage:nil error:nil userInfo:@{ @"TestKey" : @"TestValue" }];
+- (void)testThatCompletionBlockContainsCustomUserInfo {
+    _fetcher.image = nil;
+    _fetcher.info = @{ @"TestKey" : @"TestValue" };
     
     XCTestExpectation *expectation = [self expectationWithDescription:@"request"];
-    [[_manager imageTaskForResource:[TDFMockResource resourceWithID:@"ID01"] completion:^(UIImage *image, NSDictionary *info) {
-        XCTAssertTrue([info[@"TestKey"] isEqualToString:@"TestValue"]);
+    [[_manager imageTaskForResource:[TDFMockResource resourceWithID:@"ID01"] completion:^(UIImage *__nullable image, NSError *__nullable error, DFImageResponse *__nullable response, DFImageTask *__nonnull completedTask) {
+        XCTAssertTrue([response.info[@"TestKey"] isEqualToString:@"TestValue"]);
         [expectation fulfill];
     }] resume];
     [self waitForExpectationsWithTimeout:1.0 handler:nil];
+}
+
+#pragma mark - Image Task
+
+- (void)testThatImageTaskStateChangedOnCallersThread {
+    DFImageTask *task = [_manager imageTaskForResource:[TDFMockResource resourceWithID:@"ID01"] completion:nil];
+    XCTAssertEqual(task.state, DFImageTaskStateSuspended);
+    [task resume];
+    XCTAssertEqual(task.state, DFImageTaskStateRunning);
+    [task cancel];
+    XCTAssertEqual(task.state, DFImageTaskStateCancelled);
+}
+
+- (void)testThatImageTaskStateChangedOnCallersBackgroundThread {
+    XCTestExpectation *expectation = [self expectationWithDescription:@"1"];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        DFImageTask *task = [_manager imageTaskForResource:[TDFMockResource resourceWithID:@"ID01"] completion:nil];
+        XCTAssertEqual(task.state, DFImageTaskStateSuspended);
+        [task resume];
+        XCTAssertEqual(task.state, DFImageTaskStateRunning);
+        [task cancel];
+        XCTAssertEqual(task.state, DFImageTaskStateCancelled);
+        [expectation fulfill];
+    });
+    [self waitForExpectationsWithTimeout:1 handler:nil];
 }
 
 #pragma mark - Cancellation
@@ -170,7 +193,7 @@
     XCTestExpectation *expectThatOperationIsCancelled = [self expectationForNotification:TDFMockFetchOperationWillCancelNotification object:nil handler:nil];
     
     XCTestExpectation *expectSecondRequestToSucceed = [self expectationWithDescription:@"seconds_request"];
-    [[_manager imageTaskForResource:resource completion:^(UIImage *image, NSDictionary *info) {
+    [[_manager imageTaskForResource:resource completion:^(UIImage *__nullable image, NSError *__nullable error, DFImageResponse *__nullable response, DFImageTask *__nonnull completedTask) {
         XCTAssertNotNil(image);
         [expectSecondRequestToSucceed fulfill];
         // Raises exception if fullfilled twice.
@@ -204,8 +227,7 @@
     _fetcher.queue.suspended = YES;
     
     XCTestExpectation *expectation = [self expectationWithDescription:@""];
-    DFImageTask *task = [_manager imageTaskForResource:[TDFMockResource resourceWithID:@"ID01"] completion:^(UIImage *image, NSDictionary *info) {
-        NSError *error = info[DFImageInfoErrorKey];
+    DFImageTask *task = [_manager imageTaskForResource:[TDFMockResource resourceWithID:@"ID01"] completion:^(UIImage *__nullable image, NSError *__nullable error, DFImageResponse *__nullable response, DFImageTask *__nonnull completedTask) {
         XCTAssertNotNil(error);
         XCTAssertTrue([error.domain isEqualToString:DFImageManagerErrorDomain]);
         XCTAssertEqual(error.code, DFImageManagerErrorCancelled);
@@ -218,7 +240,7 @@
 
 - (void)testThatCancelledImageTaskHasCancelledState {
     XCTestExpectation *expectation = [self expectationWithDescription:@"request"];
-    DFImageTask *__block task = [_manager imageTaskForResource:[TDFMockResource resourceWithID:@"ID01"] completion:^(UIImage *image, NSDictionary *info) {
+    DFImageTask *__block task = [_manager imageTaskForResource:[TDFMockResource resourceWithID:@"ID01"] completion:^(UIImage *__nullable image, NSError *__nullable error, DFImageResponse *__nullable response, DFImageTask *__nonnull completedTask) {
         XCTAssertTrue(task.state == DFImageTaskStateCancelled);
         [expectation fulfill];
     }];
@@ -235,7 +257,7 @@
     _fetcher.queue.suspended = YES;
     
     XCTestExpectation *expectation1 = [self expectationWithDescription:@"01"]; { DFImageRequest *request1 = [[DFImageRequest alloc] initWithResource:[TDFMockResource resourceWithID:@"ID01"] targetSize:CGSizeMake(150.f, 150.f) contentMode:DFImageContentModeAspectFill options:nil];
-        [[_manager imageTaskForRequest:request1 completion:^(UIImage *image, NSDictionary *info) {
+        [[_manager imageTaskForRequest:request1 completion:^(UIImage *__nullable image, NSError *__nullable error, DFImageResponse *__nullable response, DFImageTask *__nonnull completedTask) {
             XCTAssertNotNil(image);
             [expectation1 fulfill];
         }] resume];
@@ -243,7 +265,7 @@
     
     XCTestExpectation *expectation2 = [self expectationWithDescription:@"02"]; {
         DFImageRequest *request2 = [[DFImageRequest alloc] initWithResource:[TDFMockResource resourceWithID:@"ID01"] targetSize:CGSizeMake(100.f, 100.f) contentMode:DFImageContentModeAspectFill options:nil];
-        [[_manager imageTaskForRequest:request2 completion:^(UIImage *image, NSDictionary *info) {
+        [[_manager imageTaskForRequest:request2 completion:^(UIImage *__nullable image, NSError *__nullable error, DFImageResponse *__nullable response, DFImageTask *__nonnull completedTask) {
             XCTAssertNotNil(image);
             [expectation2 fulfill];
         }] resume];
@@ -251,7 +273,7 @@
     
     XCTestExpectation *expectation3 = [self expectationWithDescription:@"04"]; {
         DFImageRequest *request3 = [[DFImageRequest alloc] initWithResource:[TDFMockResource resourceWithID:@"ID02"] targetSize:CGSizeMake(100.f, 100.f) contentMode:DFImageContentModeAspectFill options:nil];
-        [[_manager imageTaskForRequest:request3 completion:^(UIImage *image, NSDictionary *info) {
+        [[_manager imageTaskForRequest:request3 completion:^(UIImage *__nullable image, NSError *__nullable error, DFImageResponse *__nullable response, DFImageTask *__nonnull completedTask) {
             XCTAssertNotNil(image);
             [expectation3 fulfill];
         }] resume];
@@ -266,16 +288,91 @@
 
 #pragma mark - Progress
 
-- (void)testThatProgressHandlerIsCalled {
-    XCTestExpectation *expectation = [self expectationWithDescription:@""];
-    DFImageRequestOptions *options = [DFImageRequestOptions new];
-    options.progressHandler = ^(double progress){
-        XCTAssertEqual(progress, 0.5);
-        [expectation fulfill];
-    };
-    DFImageRequest *request = [DFImageRequest requestWithResource:[TDFMockResource resourceWithID:@"1"] targetSize:DFImageMaximumSize contentMode:DFImageContentModeAspectFill options:options];
-    [[_manager imageTaskForRequest:request completion:nil] resume];
+- (void)testThatProgressObjectIsUpdated {
+    DFImageRequest *request = [DFImageRequest requestWithResource:[TDFMockResource resourceWithID:@"1"]];
+    DFImageTask *task = [_manager imageTaskForRequest:request completion:nil];
+    
+    NSProgress *progress = task.progress;
+    XCTAssertNotNil(progress);
+    XCTAssertTrue(progress.isIndeterminate);
+    
+    double __block fractionCompleted = 0;
+    [self keyValueObservingExpectationForObject:progress keyPath:@"fractionCompleted" handler:^BOOL(NSProgress *observedObject, NSDictionary *change) {
+        fractionCompleted += 0.5;
+        XCTAssertEqual(fractionCompleted, observedObject.fractionCompleted);
+        return observedObject.fractionCompleted == 1;
+    }];
+    
+    [task resume];
+    
+    [self waitForExpectationsWithTimeout:1 handler:nil];
+}
+
+- (void)testThatProgressObjectCancelsTask {
+    _fetcher.queue.suspended = YES;
+    
+    DFImageTask *task = [_manager imageTaskForResource:[TDFMockResource resourceWithID:@"ID01"] completion:nil];
+    [task resume];
+    [self expectationForNotification:TDFMockFetchOperationWillCancelNotification object:nil handler:nil];
+    
+    NSProgress *progress = task.progress;
+    XCTAssertNotNil(progress);
+    XCTAssertTrue(progress.isCancellable);
+    [progress cancel];
+    
     [self waitForExpectationsWithTimeout:1.0 handler:nil];
+}
+
+- (void)testThatImplicitProgressCompositionWorks {
+    DFImageRequest *request = [DFImageRequest requestWithResource:[TDFMockResource resourceWithID:@"1"]];
+    
+    NSProgress *progress = [NSProgress progressWithTotalUnitCount:100];
+    [progress becomeCurrentWithPendingUnitCount:100];
+    DFImageTask *task = [_manager imageTaskForRequest:request completion:nil];
+    [task progress];
+    [progress resignCurrent];
+    
+    BOOL __block _isHalfCompleted;
+    [self keyValueObservingExpectationForObject:progress keyPath:@"fractionCompleted" handler:^BOOL(NSProgress *observedObject, NSDictionary *change) {
+        if (!_isHalfCompleted) {
+            XCTAssertEqual(observedObject.fractionCompleted, 0.5);
+            _isHalfCompleted = YES;
+        } else {
+            XCTAssertEqual(observedObject.fractionCompleted, 1);
+            return YES;
+        }
+        return NO;
+    }];
+    
+    [task resume];
+    
+    [self waitForExpectationsWithTimeout:1 handler:nil];
+}
+
+- (void)testThatImplicitProgressCompositionConstructsProgressTree {
+    NSProgress *progress = [NSProgress progressWithTotalUnitCount:100];
+    
+    [progress becomeCurrentWithPendingUnitCount:50];
+    DFImageTask *task1 = [_manager imageTaskForRequest:[DFImageRequest requestWithResource:[TDFMockResource resourceWithID:@"1"]] completion:nil];
+    [task1 progress];
+    [progress resignCurrent];
+    
+    [progress becomeCurrentWithPendingUnitCount:50];
+    DFImageTask *task2 = [_manager imageTaskForRequest:[DFImageRequest requestWithResource:[TDFMockResource resourceWithID:@"2"]] completion:nil];
+    [task2 progress];
+    [progress resignCurrent];
+    
+    double __block fractionCompleted = 0;
+    [self keyValueObservingExpectationForObject:progress keyPath:@"fractionCompleted" handler:^BOOL(NSProgress *observedObject, NSDictionary *change) {
+        fractionCompleted += 0.25;
+        XCTAssertEqual(fractionCompleted, observedObject.fractionCompleted);
+        return observedObject.fractionCompleted == 1;
+    }];
+    
+    [task1 resume];
+    [task2 resume];
+    
+    [self waitForExpectationsWithTimeout:1 handler:nil];
 }
 
 #pragma mark - Memory Cache
@@ -288,7 +385,7 @@
     
     TDFMockResource *resource = [TDFMockResource resourceWithID:@"ID01"];
     XCTestExpectation *expectation = [self expectationWithDescription:@"request"];
-    [[_manager imageTaskForResource:resource completion:^(UIImage *image, NSDictionary *info) {
+    [[_manager imageTaskForResource:resource completion:^(UIImage *__nullable image, NSError *__nullable error, DFImageResponse *__nullable response, DFImageTask *__nonnull completedTask) {
         XCTAssertNotNil(image);
         [expectation fulfill];
     }] resume];
@@ -296,7 +393,7 @@
     XCTAssertEqual(_cache.responses.count, 1);
     
     BOOL __block isCompletionHandlerCalled = NO;
-    [[_manager imageTaskForResource:resource completion:^(UIImage *image, NSDictionary *info) {
+    [[_manager imageTaskForResource:resource completion:^(UIImage *__nullable image, NSError *__nullable error, DFImageResponse *__nullable response, DFImageTask *__nonnull completedTask) {
         XCTAssertNotNil(image);
         XCTAssertTrue([NSThread isMainThread]);
         isCompletionHandlerCalled = YES;
@@ -305,21 +402,22 @@
 }
 
 - (void)testThatMemoryCachingIsTransparentToTheClient {
-    DFImageResponse *response = [[DFImageResponse alloc] initWithImage:[UIImage new] error:[NSError errorWithDomain:@"TDFErrorDomain" code:123 userInfo:nil] userInfo:@{ @"TDFKey" : @"TDFValue" }];
-    _fetcher.response = response;
+    UIImage *initialImage = [UIImage new];
+    NSDictionary *initialInfo = @{ @"TDFKey" : @"TDFValue" };
+    _fetcher.image = initialImage;
+    _fetcher.info = initialInfo;
+    
     _cache.enabled = YES;
     
     // 1. Fetch image and store it into memory cache
     TDFMockResource *resource = [TDFMockResource resourceWithID:@"ID01"];
     XCTestExpectation *expectation = [self expectationWithDescription:@"request"];
     {
-        DFImageTask *task = [_manager imageTaskForResource:resource completion:^(UIImage *image, NSDictionary *info) {
-            DFImageTask *task = info[DFImageInfoTaskKey];
-            XCTAssertEqual(response.image, image);
-            XCTAssertEqual(response.error, info[DFImageInfoErrorKey]);
-            XCTAssertEqual(response.userInfo[@"TDFKey"], info[@"TDFKey"]);
-            XCTAssertFalse([info[DFImageInfoIsFromMemoryCacheKey] boolValue]);
-            XCTAssertTrue(task.state == DFImageTaskStateCompleted);
+        DFImageTask *task = [_manager imageTaskForResource:resource completion:^(UIImage *__nullable image, NSError *__nullable error, DFImageResponse *__nullable response, DFImageTask *__nonnull completedTask) {
+            XCTAssertEqual(initialImage, image);
+            XCTAssertEqual(initialInfo[@"TDFKey"], response.info[@"TDFKey"]);
+            XCTAssertFalse(response.isFastResponse);
+            XCTAssertTrue(completedTask.state == DFImageTaskStateCompleted);
             [expectation fulfill];
         }];
         XCTAssertNotNil(task);
@@ -331,13 +429,11 @@
     // 2. Fetch image from the memory cache
     {
         BOOL __block isCompletionHandlerCalled = NO;
-        DFImageTask *task = [_manager imageTaskForResource:resource completion:^(UIImage *image, NSDictionary *info) {
-            DFImageTask *task = info[DFImageInfoTaskKey];
-            XCTAssertEqual(response.image, image);
-            XCTAssertEqual(response.error, info[DFImageInfoErrorKey]);
-            XCTAssertEqual(response.userInfo[@"TDFKey"], info[@"TDFKey"]);
-            XCTAssertTrue([info[DFImageInfoIsFromMemoryCacheKey] boolValue]);
-            XCTAssertTrue(task.state == DFImageTaskStateCompleted);
+        DFImageTask *task = [_manager imageTaskForResource:resource completion:^(UIImage *__nullable image, NSError *__nullable error, DFImageResponse *__nullable response, DFImageTask *__nonnull completedTask) {
+            XCTAssertEqual(initialImage, image);
+            XCTAssertEqual(initialInfo[@"TDFKey"], response.info[@"TDFKey"]);
+            XCTAssertTrue(response.isFastResponse);
+            XCTAssertTrue(completedTask.state == DFImageTaskStateCompleted);
             isCompletionHandlerCalled = YES;
         }];
         XCTAssertNotNil(task);
@@ -354,7 +450,7 @@
     
     TDFMockResource *resource = [TDFMockResource resourceWithID:@"ID01"];
     XCTestExpectation *expectation1 = [self expectationWithDescription:@"request1"];
-    [[_manager imageTaskForResource:resource completion:^(UIImage *image, NSDictionary *info) {
+    [[_manager imageTaskForResource:resource completion:^(UIImage *__nullable image, NSError *__nullable error, DFImageResponse *__nullable response, DFImageTask *__nonnull completedTask) {
         XCTAssertNotNil(image);
         [expectation1 fulfill];
     }] resume];
@@ -363,7 +459,7 @@
     
     XCTestExpectation *expectation2 = [self expectationWithDescription:@"request2"];
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        [[_manager imageTaskForResource:resource completion:^(UIImage *image, NSDictionary *info) {
+        [[_manager imageTaskForResource:resource completion:^(UIImage *__nullable image, NSError *__nullable error, DFImageResponse *__nullable response, DFImageTask *__nonnull completedTask) {
             XCTAssertNotNil(image);
             XCTAssertTrue([NSThread isMainThread]);
             [expectation2 fulfill];
@@ -386,7 +482,7 @@
     // 1. Store image in cache
     TDFMockResource *resource = [TDFMockResource resourceWithID:@"ID01"];
     XCTestExpectation *expectation1 = [self expectationWithDescription:@"request"];
-    [[manager1 imageTaskForResource:resource completion:^(UIImage *image, NSDictionary *info) {
+    [[manager1 imageTaskForResource:resource completion:^(UIImage *__nullable image, NSError *__nullable error, DFImageResponse *__nullable response, DFImageTask *__nonnull completedTask) {
         XCTAssertNotNil(image);
         [expectation1 fulfill];
     }] resume];
@@ -400,7 +496,7 @@
         return YES;
     }];
     XCTestExpectation *expectation2 = [self expectationWithDescription:@"lookup_first_manager"];
-    [[manager1 imageTaskForResource:resource completion:^(UIImage *image, NSDictionary *info) {
+    [[manager1 imageTaskForResource:resource completion:^(UIImage *__nullable image, NSError *__nullable error, DFImageResponse *__nullable response, DFImageTask *__nonnull completedTask) {
         XCTAssertEqual(image, cachedImage);
         [expectation2 fulfill];
     }] resume];
@@ -410,11 +506,23 @@
     XCTAssertTrue(manager2.configuration.cache == manager1.configuration.cache);
     XCTestExpectation *expectationThatSecondManagerTriggeredCache = [self expectationForNotification:TDFMockImageCacheWillReturnCachedImageNotification object:_cache handler:nil];
     XCTestExpectation *expectationThatSecondManagerHandledRequest = [self expectationWithDescription:@"request_on_second_manager"];
-    [[manager2 imageTaskForResource:resource completion:^(UIImage *image, NSDictionary *info) {
+    [[manager2 imageTaskForResource:resource completion:^(UIImage *__nullable image, NSError *__nullable error, DFImageResponse *__nullable response, DFImageTask *__nonnull completedTask) {
         // Raises exception if fullfilled twice.
         [expectationThatSecondManagerTriggeredCache fulfill];
         XCTAssertNotNil(image);
         [expectationThatSecondManagerHandledRequest fulfill];
+    }] resume];
+    [self waitForExpectationsWithTimeout:1.0 handler:nil];
+}
+
+#pragma mark - Processing
+
+- (void)testThatImageIsProcessed {
+    XCTestExpectation *expectation = [self expectationWithDescription:@"first_request"];
+    [[_manager imageTaskForResource:[TDFMockResource resourceWithID:@"ID01"] completion:^(UIImage *__nullable image, NSError *__nullable error, DFImageResponse *__nullable response, DFImageTask *__nonnull completedTask) {
+        XCTAssertNotNil(image);
+        XCTAssertTrue([image tdf_isImageProcessed]);
+        [expectation fulfill];
     }] resume];
     [self waitForExpectationsWithTimeout:1.0 handler:nil];
 }
@@ -424,9 +532,9 @@
 - (void)testThatPriorityIsChanged {
     _fetcher.queue.suspended = YES;
     
-    DFImageRequestOptions *options = [DFImageRequestOptions new];
+    DFMutableImageRequestOptions *options = [DFMutableImageRequestOptions new];
     options.priority = DFImageRequestPriorityVeryHigh;
-    DFImageRequest *request = [DFImageRequest requestWithResource:[TDFMockResource resourceWithID:@"ID"] targetSize:DFImageMaximumSize contentMode:DFImageContentModeAspectFill options:nil];
+    DFImageRequest *request = [DFImageRequest requestWithResource:[TDFMockResource resourceWithID:@"ID"] targetSize:DFImageMaximumSize contentMode:DFImageContentModeAspectFill options:options.options];
     
     NSOperation *__block operation;
     [self expectationForNotification:TDFMockImageFetcherDidStartOperationNotification object:_fetcher handler:^BOOL(NSNotification *notification) {
@@ -436,14 +544,15 @@
     }];
     
     XCTestExpectation *expectation = [self expectationWithDescription:@""];
-    DFImageTask *task = [_manager imageTaskForRequest:request completion:^(UIImage *image, NSDictionary *info) {
+    DFImageTask *task = [_manager imageTaskForRequest:request completion:^(UIImage *__nullable image, NSError *__nullable error, DFImageResponse *__nullable response, DFImageTask *__nonnull completedTask) {
         XCTAssertEqual(operation.queuePriority, (NSOperationQueuePriority)DFImageRequestPriorityVeryLow);
         [expectation fulfill];
     }];
+    XCTAssertEqual(task.priority, options.priority);
     [task resume];
     [NSThread sleepForTimeInterval:0.05]; // Wait till operation is created
     [task setPriority:DFImageRequestPriorityVeryLow];
-    
+    XCTAssertEqual(task.priority, DFImageRequestPriorityVeryLow);
     _fetcher.queue.suspended = NO;
     
     [self waitForExpectationsWithTimeout:1.0 handler:nil];
@@ -580,7 +689,7 @@
     DFImageManager *manager = [[DFImageManager alloc] initWithConfiguration:[DFImageManagerConfiguration configurationWithFetcher:[TDFMockImageFetcher new]]];
     @autoreleasepool {
         XCTestExpectation *expectation = [self expectationWithDescription:@"first_request"];
-        [[manager imageTaskForResource:[TDFMockResource resourceWithID:@"ID01"] completion:^(UIImage *image, NSDictionary *info) {
+        [[manager imageTaskForResource:[TDFMockResource resourceWithID:@"ID01"] completion:^(UIImage *__nullable image, NSError *__nullable error, DFImageResponse *__nullable response, DFImageTask *__nonnull completedTask) {
             XCTAssertNotNil(image);
             [expectation fulfill];
         }] resume];

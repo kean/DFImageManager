@@ -23,36 +23,20 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
-NS_ASSUME_NONNULL_BEGIN
-
-/*! The DFImageResponse class represents an immutable image response for a specified resource.
+/*! The DFImageResponse class represents an image response for a specified resource. DFImageResponse encapsulates the metadata associated with a load.
  */
 @interface DFImageResponse : NSObject
 
-/*! Returns the image from the response.
+/*! Returns YES if response was returned using fast path, for instance from the memory cache.
  */
-@property (nullable, nonatomic, readonly) UIImage *image;
-
-/*! Returns the error associated with the load.
- */
-@property (nullable, nonatomic, readonly) NSError *error;
+@property (nonatomic, readonly) BOOL isFastResponse;
 
 /*! Returns the metadata associated with the load.
  */
-@property (nullable, nonatomic, readonly) NSDictionary *userInfo;
+@property (nullable, nonatomic, readonly) NSDictionary *info;
 
-/*! Initializes response with a given image, error and userInfo associated with an image load.
+/*! Initializes response with a given parameters.
  */
-- (instancetype)initWithImage:(nullable UIImage *)image error:(nullable NSError *)error userInfo:(nullable NSDictionary *)userInfo NS_DESIGNATED_INITIALIZER;
-
-/*! Returns response initialized with a given image.
- */
-+ (instancetype)responseWithImage:(nullable UIImage *)image;
-
-/*! Returns response initialized with a given error.
- */
-+ (instancetype)responseWithError:(nullable NSError *)error;
+- (nonnull instancetype)initWithInfo:(nullable NSDictionary *)info isFastResponse:(BOOL)isFastResponse;
 
 @end
-
-NS_ASSUME_NONNULL_END

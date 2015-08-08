@@ -25,7 +25,7 @@
 
 @implementation DFURLHTTPImageDeserializer
 
-- (instancetype)init {
+- (nonnull instancetype)init {
     if (self = [super init]) {
         _acceptableStatusCodes = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(200, 100)];
         _acceptableContentTypes = nil;
@@ -33,15 +33,14 @@
     return self;
 }
 
-- (id)objectFromResponse:(NSHTTPURLResponse *)response data:(NSData *)data error:(NSError **)error {
-    if (![self isValidResponse:response error:error]) {
+- (nullable id)objectFromResponse:(nullable NSURLResponse *)response data:(nullable NSData *)data error:(NSError * __nullable __autoreleasing * __nullable)error {
+    if (!response || ![self isValidResponse:(NSHTTPURLResponse *)response error:error]) {
         return nil;
-    } else {
-        return [super objectFromResponse:response data:data error:error];
     }
+    return [super objectFromResponse:response data:data error:error];
 }
 
-- (BOOL)isValidResponse:(NSHTTPURLResponse *)response error:(NSError **)error {
+- (BOOL)isValidResponse:(NSHTTPURLResponse * __nonnull)response error:(NSError * __nullable __autoreleasing * __nullable)error {
     NSParameterAssert(response);
     NSAssert([response isKindOfClass:[NSHTTPURLResponse class]], @"Invalid response");
     if (self.acceptableStatusCodes != nil && ![self.acceptableStatusCodes containsIndex:(NSUInteger)response.statusCode]) {
@@ -61,13 +60,11 @@
     return YES;
 }
 
-- (NSMutableDictionary *)_errorInfoWithResponse:(NSURLResponse *)response {
+- (nonnull NSMutableDictionary *)_errorInfoWithResponse:(nonnull NSURLResponse *)response {
     NSMutableDictionary *userInfo = [NSMutableDictionary new];
+    userInfo[DFURLErrorInfoURLResponseKey] = response;
     if (response.URL != nil) {
         userInfo[NSURLErrorFailingURLErrorKey] = response.URL;
-    }
-    if (response != nil) {
-        userInfo[DFURLErrorInfoURLResponseKey] = response;
     }
     return userInfo;
 }

@@ -96,7 +96,8 @@
     [sections addObject:({
         NSMutableArray *items = [NSMutableArray new];
         [items addObject:[SDFMenuItem itemWithTitle:@"Networking Demo" subtitle:@"'AFNetworking' subspec"  action:^{
-            UIViewController *controller = [SDFNetworkingDemoCollectionViewController new];
+            SDFNetworkingDemoCollectionViewController *controller = [SDFNetworkingDemoCollectionViewController new];
+            controller.allowsPreheating = NO;
             controller.title = @"Networking Demo";
             [weakSelf.navigationController pushViewController:controller animated:YES];
         }]];

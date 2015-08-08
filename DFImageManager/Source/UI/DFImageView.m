@@ -25,6 +25,7 @@
 #import "DFImageManaging.h"
 #import "DFImageRequest.h"
 #import "DFImageRequestOptions.h"
+#import "DFImageResponse.h"
 #import "DFImageTask.h"
 #import "DFImageView.h"
 #import "DFNetworkReachability.h"
@@ -44,7 +45,7 @@ static const NSTimeInterval _kMinimumAutoretryInterval = 8.f;
     [self _cancelFetching];
 }
 
-- (instancetype)initWithFrame:(CGRect)frame {
+- (nonnull instancetype)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {
         self.contentMode = UIViewContentModeScaleAspectFill;
         self.clipsToBounds = YES;
@@ -54,7 +55,7 @@ static const NSTimeInterval _kMinimumAutoretryInterval = 8.f;
     return self;
 }
 
-- (instancetype)initWithCoder:(NSCoder *)decoder {
+- (nonnull instancetype)initWithCoder:(NSCoder *)decoder {
     if (self = [super initWithCoder:decoder]) {
         [self _commonInit];
     }
@@ -77,7 +78,7 @@ static const NSTimeInterval _kMinimumAutoretryInterval = 8.f;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_reachabilityDidChange:) name:DFNetworkReachabilityDidChangeNotification object:[DFNetworkReachability shared]];
 }
 
-- (void)displayImage:(UIImage *)image {
+- (void)displayImage:(nullable UIImage *)image {
 #if DF_IMAGE_MANAGER_GIF_AVAILABLE
     if (!image) {
         self.animatedImage = nil;
@@ -95,7 +96,7 @@ static const NSTimeInterval _kMinimumAutoretryInterval = 8.f;
 
 - (void)prepareForReuse {
     [self _cancelFetching];
-    _task = nil;
+    _imageTask = nil;
     _previousAutoretryTime = 0.0;
     self.image = nil;
 #if DF_IMAGE_MANAGER_GIF_AVAILABLE
@@ -105,7 +106,7 @@ static const NSTimeInterval _kMinimumAutoretryInterval = 8.f;
 }
 
 - (void)_cancelFetching {
-    [_task cancel];
+    [_imageTask cancel];
 }
 
 - (CGSize)imageTargetSize {
@@ -117,41 +118,38 @@ static const NSTimeInterval _kMinimumAutoretryInterval = 8.f;
     return _imageTargetSize;
 }
 
-- (void)setImageWithResource:(id)resource {
+- (void)setImageWithResource:(nullable id)resource {
     [self setImageWithResource:resource targetSize:self.imageTargetSize contentMode:self.imageContentMode options:self.imageRequestOptions];
 }
 
-- (void)setImageWithResource:(id)resource targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(DFImageRequestOptions *)options {
-    [self setImageWithRequest:[DFImageRequest requestWithResource:resource targetSize:targetSize contentMode:contentMode options:options]];
+- (void)setImageWithResource:(nullable id)resource targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(nullable DFImageRequestOptions *)options {
+    [self setImageWithRequest:(resource ? [DFImageRequest requestWithResource:resource targetSize:targetSize contentMode:contentMode options:options] : nil)];
 }
 
 - (void)setImageWithRequest:(DFImageRequest *)request {
-    [self setImageWithRequests:(@[request])];
+    [self setImageWithRequests:(request ? @[request] : nil)];
 }
 
-- (void)setImageWithRequests:(NSArray *)requests {
+- (void)setImageWithRequests:(nullable NSArray *)requests {
     [self _cancelFetching];
+    
+    if (!requests.count) {
+        return;
+    }
     
     if ([self.delegate respondsToSelector:@selector(imageView:willStartFetchingImagesForRequests:)]) {
         [self.delegate imageView:self willStartFetchingImagesForRequests:requests];
     }
     NSParameterAssert(requests.count > 0);
-    if (self.managesRequestPriorities) {
-        for (DFImageRequest *request in requests) {
-            request.options.priority = (self.window == nil) ? DFImageRequestPriorityNormal : DFImageRequestPriorityVeryHigh;
-        }
-    }
     DFImageView *__weak weakSelf = self;
-    _task = [self _createCompositeImageTaskForRequests:requests handler:^(UIImage *image, NSDictionary *info, DFCompositeImageTask *compositeTask) {
-        DFImageTask *task = info[DFImageInfoTaskKey];
-        [weakSelf.delegate imageView:self didCompleteRequest:task.request withImage:image info:info];
-        [weakSelf didCompleteRequest:task.request withImage:image info:info];
+    _imageTask = [self _createCompositeImageTaskForRequests:requests handler:^(UIImage *__nullable image, DFImageTask *__nonnull completedTask, DFCompositeImageTask *__nonnull task) {
+        [weakSelf.delegate imageView:self didCompleteImageTask:completedTask withImage:image];
+        [weakSelf didCompleteImageTask:completedTask withImage:image];
     }];
-    [self setNeedsUpdateConstraints];
-    [_task resume];
+    [_imageTask resume];
 }
 
-- (DFCompositeImageTask *)_createCompositeImageTaskForRequests:(NSArray *)requests handler:(void (^)(UIImage *, NSDictionary *, DFCompositeImageTask *))handler {
+- (nonnull DFCompositeImageTask *)_createCompositeImageTaskForRequests:(nonnull NSArray *)requests handler:(nullable DFCompositeImageTaskImageHandler)handler {
     NSMutableArray *tasks = [NSMutableArray new];
     for (DFImageRequest *request in requests) {
         DFImageTask *task = [self.imageManager imageTaskForRequest:request completion:nil];
@@ -160,8 +158,8 @@ static const NSTimeInterval _kMinimumAutoretryInterval = 8.f;
     return [[DFCompositeImageTask alloc] initWithImageTasks:tasks imageHandler:handler completionHandler:nil];
 }
 
-- (void)didCompleteRequest:(DFImageRequest *)request withImage:(UIImage *)image info:(NSDictionary *)info {
-    BOOL isFastResponse = [info[DFImageInfoIsFromMemoryCacheKey] boolValue];
+- (void)didCompleteImageTask:(nonnull DFImageTask *)task withImage:(nullable UIImage *)image {
+    BOOL isFastResponse = task.response.isFastResponse;
     if (self.allowsAnimations && !isFastResponse && !self.image) {
         [self displayImage:image];
         [self.layer addAnimation:({
@@ -183,7 +181,7 @@ static const NSTimeInterval _kMinimumAutoretryInterval = 8.f;
     [super willMoveToWindow:newWindow];
     if (self.managesRequestPriorities) {
         DFImageRequestPriority priority = (newWindow == nil) ? DFImageRequestPriorityNormal : DFImageRequestPriorityVeryHigh;
-        [_task setPriority:priority];
+        [_imageTask setPriority:priority];
     }
 }
 
@@ -195,8 +193,8 @@ static const NSTimeInterval _kMinimumAutoretryInterval = 8.f;
         && reachability.isReachable
         && self.window != nil
         && self.hidden != YES
-        && self.task.isFinished) {
-        DFImageTask *task = [self.task.imageTasks lastObject];
+        && self.imageTask.isFinished) {
+        DFImageTask *task = [self.imageTask.imageTasks lastObject];
         NSError *error = task.error;
         if (error && [self _isNetworkConnetionError:error]) {
             [self _attemptRetry];
@@ -207,7 +205,7 @@ static const NSTimeInterval _kMinimumAutoretryInterval = 8.f;
 - (void)_attemptRetry {
     if (_previousAutoretryTime == 0.0 || CACurrentMediaTime() > _previousAutoretryTime + _kMinimumAutoretryInterval) {
         _previousAutoretryTime = CACurrentMediaTime();
-        [self setImageWithRequests:self.task.imageRequests];
+        [self setImageWithRequests:self.imageTask.imageRequests];
     }
 }
 
