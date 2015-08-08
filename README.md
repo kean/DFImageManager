@@ -195,9 +195,7 @@ pod 'DFImageManager/WebP'
 - If you'd like to **ask a general question**, use [Stack Overflow](http://stackoverflow.com/questions/tagged/dfimagemanager).
 - If you **found a bug**, and can provide steps to reproduce it, open an issue.
 - If you **have a feature request**, open an issue.
-- If you **want to contribute**, submit a pull request.
-
-`DFImageManager` is constantly improving. Help to make it better!
+- If you **want to contribute**, branch of the `develop` branch and submit a pull request.
 
 ## Contacts
 
