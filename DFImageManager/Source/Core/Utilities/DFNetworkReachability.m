@@ -84,7 +84,7 @@ static void _DFReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkRe
 
 + (nonnull instancetype)_reachabilityWithAddress:(const struct sockaddr_in *)hostAddress; {
     SCNetworkReachabilityRef reachabilityRef = SCNetworkReachabilityCreateWithAddress(kCFAllocatorDefault, (const struct sockaddr *)hostAddress);
-    return [[DFNetworkReachability alloc] initWithReachability:reachabilityRef];
+    return [[[self class] alloc] initWithReachability:reachabilityRef];
 }
 
 - (void)_determineCurrentReachabilityFlags {

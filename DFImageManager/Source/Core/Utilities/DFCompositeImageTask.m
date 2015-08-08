@@ -51,7 +51,7 @@
             [tasks addObject:task];
         }
     }
-    return tasks.count ? [[DFCompositeImageTask alloc] initWithImageTasks:tasks imageHandler:imageHandler completionHandler:completionHandler] : nil;
+    return tasks.count ? [[[self class] alloc] initWithImageTasks:tasks imageHandler:imageHandler completionHandler:completionHandler] : nil;
 }
 
 - (void)resume {

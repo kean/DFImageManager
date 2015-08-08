@@ -50,7 +50,7 @@ typedef void (^DFCompositeImageTaskCompletionHandler)(DFCompositeImageTask *__no
  @param imageHandler The image handler gets called each time the image is successfully fetched, but it doesn't get called for obsolete tasks.
  @param completionHandler Completion handler that is executed after there are no remaining image tasks that are not either completed or cancelled.
  */
-+ (nullable DFCompositeImageTask *)compositeImageTaskWithRequests:(nonnull NSArray *)requests imageHandler:(nullable DFCompositeImageTaskImageHandler)imageHandler completionHandler:(nullable DFCompositeImageTaskCompletionHandler)completionHandler;
++ (nullable instancetype)compositeImageTaskWithRequests:(nonnull NSArray *)requests imageHandler:(nullable DFCompositeImageTaskImageHandler)imageHandler completionHandler:(nullable DFCompositeImageTaskCompletionHandler)completionHandler;
 
 /*! Image handler. The image handler gets called each time the image is successfully fetched, but it doesn't get called for obsolete tasks.
  */
