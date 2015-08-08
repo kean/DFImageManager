@@ -150,6 +150,10 @@ static inline void DFDispatchAsync(dispatch_block_t block) {
     return self;
 }
 
++ (void)initialize {
+    [self setSharedManager:[self createDefaultManager]];
+}
+
 #pragma mark <DFImageManaging>
 
 - (BOOL)canHandleRequest:(nonnull DFImageRequest *)request {

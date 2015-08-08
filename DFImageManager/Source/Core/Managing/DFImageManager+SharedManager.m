@@ -29,10 +29,6 @@
 static id<DFImageManaging> _sharedManager;
 static OSSpinLock _lock = OS_SPINLOCK_INIT;
 
-+ (void)initialize {
-    _sharedManager = [self createDefaultManager];
-}
-
 + (nonnull id<DFImageManaging>)sharedManager {
     id<DFImageManaging> manager;
     OSSpinLockLock(&_lock);
