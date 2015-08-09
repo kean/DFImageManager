@@ -19,7 +19,6 @@
 		0C48E4BD1A5BD6D800CD2497 /* SDFNetworkingDemoCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C48E4BC1A5BD6D800CD2497 /* SDFNetworkingDemoCollectionViewController.m */; };
 		0C48E4C11A5BD6FB00CD2497 /* SDFCompositeRequestDemoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C48E4C01A5BD6FB00CD2497 /* SDFCompositeRequestDemoViewController.m */; };
 		0C7A23BA1B5D651A00AFACFE /* SDFImageCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C7A23B91B5D651A00AFACFE /* SDFImageCollectionViewCell.m */; };
-		0C8651361A5E80EA000EF271 /* SDFAssetsLibraryDemoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C8651351A5E80EA000EF271 /* SDFAssetsLibraryDemoViewController.m */; };
 		0C97D6BE1A5E51BE0014D8AD /* SDFFilesystemDemoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C97D6BD1A5E51BE0014D8AD /* SDFFilesystemDemoViewController.m */; };
 		0C97D6C21A5E51E80014D8AD /* SDFBaseCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C97D6C11A5E51E80014D8AD /* SDFBaseCollectionViewController.m */; };
 		0CF0118B1AAE7EE90013AD13 /* SDFBuiltinNetworkingDemoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CF0118A1AAE7EE90013AD13 /* SDFBuiltinNetworkingDemoViewController.m */; };
@@ -67,8 +66,6 @@
 		0C48E4C01A5BD6FB00CD2497 /* SDFCompositeRequestDemoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDFCompositeRequestDemoViewController.m; sourceTree = "<group>"; };
 		0C7A23B81B5D651A00AFACFE /* SDFImageCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDFImageCollectionViewCell.h; sourceTree = "<group>"; };
 		0C7A23B91B5D651A00AFACFE /* SDFImageCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDFImageCollectionViewCell.m; sourceTree = "<group>"; };
-		0C8651341A5E80EA000EF271 /* SDFAssetsLibraryDemoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDFAssetsLibraryDemoViewController.h; sourceTree = "<group>"; };
-		0C8651351A5E80EA000EF271 /* SDFAssetsLibraryDemoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDFAssetsLibraryDemoViewController.m; sourceTree = "<group>"; };
 		0C97D6BC1A5E51BE0014D8AD /* SDFFilesystemDemoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDFFilesystemDemoViewController.h; sourceTree = "<group>"; };
 		0C97D6BD1A5E51BE0014D8AD /* SDFFilesystemDemoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDFFilesystemDemoViewController.m; sourceTree = "<group>"; };
 		0C97D6C01A5E51E80014D8AD /* SDFBaseCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDFBaseCollectionViewController.h; sourceTree = "<group>"; };
@@ -191,15 +188,6 @@
 			name = Views;
 			sourceTree = "<group>";
 		};
-		0C8651331A5E80D2000EF271 /* Assets Library Demo View Controller */ = {
-			isa = PBXGroup;
-			children = (
-				0C8651341A5E80EA000EF271 /* SDFAssetsLibraryDemoViewController.h */,
-				0C8651351A5E80EA000EF271 /* SDFAssetsLibraryDemoViewController.m */,
-			);
-			path = "Assets Library Demo View Controller";
-			sourceTree = "<group>";
-		};
 		0C97D6BB1A5E51AB0014D8AD /* Filesystem Demo View Controller */ = {
 			isa = PBXGroup;
 			children = (
@@ -307,7 +295,6 @@
 				0C48E4BA1A5BD6D800CD2497 /* Networking Sample View Controller */,
 				0C97D6BB1A5E51AB0014D8AD /* Filesystem Demo View Controller */,
 				0C3304B41A4A6C72001808F3 /* Photos Kit Sample View Controller */,
-				0C8651331A5E80D2000EF271 /* Assets Library Demo View Controller */,
 				0C48E4BE1A5BD6E600CD2497 /* Composite Request Demo View Controller */,
 				0C97D6BF1A5E51DE0014D8AD /* Collection View Controller */,
 				0CF011881AAE7EE90013AD13 /* NSURLSession Demo View Controller */,
@@ -517,7 +504,6 @@
 				0CF5934F1A4948C4007C5B56 /* SDFMenuViewController.m in Sources */,
 				0CF5934C1A4948C4007C5B56 /* SDFAppDelegate.m in Sources */,
 				0C0D18FB1AA88AE80046F710 /* SDFGIFSampleViewController.m in Sources */,
-				0C8651361A5E80EA000EF271 /* SDFAssetsLibraryDemoViewController.m in Sources */,
 				0C7A23BA1B5D651A00AFACFE /* SDFImageCollectionViewCell.m in Sources */,
 				0CF8BE131A5F554400D8FE27 /* DFStickyHeaderCollectionViewFlowLayout.m in Sources */,
 				0CF0118B1AAE7EE90013AD13 /* SDFBuiltinNetworkingDemoViewController.m in Sources */,

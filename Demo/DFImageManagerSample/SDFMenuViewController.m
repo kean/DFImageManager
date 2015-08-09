@@ -6,7 +6,6 @@
 //  Copyright (c) 2014 Alexander Grebenyuk. All rights reserved.
 //
 
-#import "SDFAssetsLibraryDemoViewController.h"
 #import "SDFBuiltinNetworkingDemoViewController.h"
 #import "SDFCompositeRequestDemoViewController.h"
 #import "SDFFilesystemDemoViewController.h"
@@ -118,13 +117,7 @@
                 [alert show];
             }
         }]];
-        
-        [items addObject:[SDFMenuItem itemWithTitle:@"ALAssetsLibrary Demo" subtitle:@"'AssetsLibrary' subspec" action:^{
-            SDFAssetsLibraryDemoViewController *controller = [SDFAssetsLibraryDemoViewController new];
-            controller.title = @"ALAssetsLibrary Demo";
-            [weakSelf.navigationController pushViewController:controller animated:YES];
-        }]];
-        
+                
         [items addObject:[SDFMenuItem itemWithTitle:@"Built-in Networking Demo" subtitle:@"Basic built-in networking, 'NSURLSession' subspec" action:^{
             SDFBuiltinNetworkingDemoViewController *controller = [SDFBuiltinNetworkingDemoViewController new];
             controller.title = @"Built-in Networking Demo";
