@@ -54,6 +54,3 @@ FOUNDATION_EXPORT const unsigned char DFImageManagerFrameworkVersionString[];
 
 // Subspec 'PhotosKit'
 #import <DFImageManagerKit/DFImageManagerKit+PhotosKit.h>
-
-// Subspec 'AssetsLibrary'
-#import <DFImageManagerKit/DFImageManagerKit+AssetsLibrary.h>

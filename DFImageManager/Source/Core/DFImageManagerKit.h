@@ -70,11 +70,6 @@
 #import "DFImageManagerKit+PhotosKit.h"
 #endif
 
-// Subspec 'AssetsLibrary'
-#if __has_include("DFImageManagerKit+AssetsLibrary.h")
-#import "DFImageManagerKit+AssetsLibrary.h"
-#endif
-
 // Subspec 'GIF'
 #if DF_IMAGE_MANAGER_GIF_AVAILABLE
 #import "DFImageManagerKit+GIF.h"

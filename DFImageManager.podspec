@@ -38,11 +38,6 @@ Pod::Spec.new do |s|
         ss.source_files = "DFImageManager/Source/PhotosKit/**/*.{h,m}"
     end
 
-    s.subspec "AssetsLibrary" do |ss|
-        ss.dependency "DFImageManager/Core"
-        ss.source_files = "DFImageManager/Source/AssetsLibrary/**/*.{h,m}"
-    end
-
     s.subspec "GIF" do |ss|
         ss.dependency "DFImageManager/Core"
         ss.dependency "FLAnimatedImage", "~> 1.0"

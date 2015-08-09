@@ -40,11 +40,6 @@
 #import "DFImageManagerKit+PhotosKit.h"
 #endif
 
-#if __has_include("DFImageManagerKit+AssetsLibrary.h")
-#import "DFImageManagerKit+AssetsLibrary.h"
-#import <AssetsLibrary/AssetsLibrary.h>
-#endif
-
 @implementation DFImageManager (DefaultManager)
 
 + (nonnull id<DFImageManaging>)createDefaultManager {
@@ -90,27 +85,6 @@
         [[DFImageManager alloc] initWithConfiguration:[DFImageManagerConfiguration configurationWithFetcher:fetcher processor:nil cache:cache]];
     });
     [managers addObject:photosKitImageManager];
-#endif
-    
-#if __has_include("DFImageManagerKit+AssetsLibrary.h")
-    id<DFImageManaging> assetsLibraryImageManager = ({
-        DFAssetsLibraryImageFetcher *fetcher = [DFAssetsLibraryImageFetcher new];
-        
-        // Disable image decompression because ALAssetsLibrary blocks main thread anyway.
-        DFImageManager *imageManager = [[DFImageManager alloc] initWithConfiguration:[DFImageManagerConfiguration configurationWithFetcher:fetcher processor:nil cache:cache]];
-        
-        // Create proxy to support ALAsset class.
-        DFProxyImageManager *proxy = [[DFProxyImageManager alloc] initWithImageManager:imageManager];
-        [proxy setRequestTransformerWithBlock:^DFImageRequest *(DFImageRequest *request) {
-            if ([request.resource isKindOfClass:[ALAsset class]]) {
-                id resource = [[DFALAsset alloc] initWithAsset:request.resource];
-                return [[DFImageRequest alloc] initWithResource:resource targetSize:request.targetSize contentMode:request.contentMode options:request.options];
-            }
-            return request;
-        }];
-        proxy;
-    });
-    [managers addObject:assetsLibraryImageManager];
 #endif
     
     DFCompositeImageManager *compositeImageManager = [[DFCompositeImageManager alloc] initWithImageManagers:managers];

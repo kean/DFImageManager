@@ -10,7 +10,7 @@ The DFImageManager is not just a loader, it is a pipeline for executing image re
 
 - Zero config, yet immense customization and extensibility
 - Works great with Swift
-- Common APIs for different resources (`NSURL`, `PHAsset`, `ALAsset`, and your custom classes)
+- Common APIs for different resources (`NSURL`, `PHAsset`, and your custom classes)
 - Great performance even on outdated devices, asynchronous and thread safe
 - Unit tested
 
@@ -114,7 +114,7 @@ DFCompositeImageTask *task = [DFCompositeImageTask requestImageForRequests:reque
 ```
 There are many [ways](https://github.com/kean/DFImageManager/wiki/Advanced-Image-Caching-Guide#custom-revalidation-using-dfcompositeimagefetchoperation) how composite requests can be used.
 
-#### Use the same `DFImageManaging` API for PHAsset, ALAsset and your custom classes
+#### Use the same `DFImageManaging` API for PHAsset and your custom classes
 ```objective-c
 PHAsset *asset = ...;
 DFImageRequest *request = [DFImageRequest requestWithResource:asset targetSize:CGSizeMake(100.f, 100.f) contentMode:DFImageContentModeAspectFill options:nil];
@@ -155,7 +155,6 @@ Those were the most common cases. `DFImageManager` is packed with other features
 ## Supported Resources
 - `NSURL` with **http**, **https**, **ftp**, **file**, and **data** schemes (`AFNetworking` or `NSURLSession` subspec)
 - `PHAsset`, `NSURL` with **com.github.kean.photos-kit** scheme (`PhotosKit` subspec)
-- `DFALAsset`, `ALAsset`, `NSURL` with **assets-library** scheme (`AssetsLibrary` subspec)
 
 ## Supported Image Formats
 - Everything supported by `UIImage` (jpg, png, bmp, [and more](https://developer.apple.com/library/ios/documentation/UIKit/Reference/UIImage_Class/))
@@ -176,7 +175,6 @@ By default it will install subspecs:
 - `DFImageManager/UI` - UI components
 - `DFImageManager/NSURLSession` - basic networking on top of NSURLSession
 - `DFImageManager/PhotosKit` - Photos Framework support
-- `DFImageManager/AssetsLibrary` - ALAssetsLibrary support
 
 There are three more optional subspecs:
 - `DFImageManager/AFNetworking` - replaces networking stack with [AFNetworking](https://github.com/AFNetworking/AFNetworking)
