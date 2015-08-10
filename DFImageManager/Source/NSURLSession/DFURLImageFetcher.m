@@ -282,13 +282,11 @@ static const NSTimeInterval _kCommandExecutionInterval = 0.005; // 5 ms
             progressHandler(countOfBytesReceived, countOfBytesExpectedToReceive);
         }
     } completionHandler:^(NSData *data, NSURLResponse *URLResponse, NSError *error) {
-        UIImage *image;
         if (data) {
-            id<DFURLResponseDeserializing> deserializer = [self _responseDeserializerForImageRequest:request URLRequest:URLRequest];
-            image = [deserializer objectFromResponse:URLResponse data:data error:&error];
+            // TODO: Validate data
         }
         if (completion) {
-            completion(image, nil, error);
+            completion(data, nil, error);
         }
     }];
     

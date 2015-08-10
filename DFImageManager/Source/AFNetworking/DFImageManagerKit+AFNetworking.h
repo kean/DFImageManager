@@ -21,4 +21,3 @@
 // THE SOFTWARE.
 
 #import "DFAFImageFetcher.h"
-#import "DFAFImageDeserializer.h"

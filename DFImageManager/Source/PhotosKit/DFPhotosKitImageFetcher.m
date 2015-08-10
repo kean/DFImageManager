@@ -29,23 +29,18 @@
 
 NS_CLASS_AVAILABLE_IOS(8_0) @interface _DFPhotosKitImageFetchOperation : NSOperation
 
-@property (nonatomic, readonly) UIImage *result;
+@property (nonatomic, readonly) NSData *result;
 @property (nonatomic, readonly) NSDictionary *info;
 
-- (instancetype)initWithResource:(id)resource targetSize:(CGSize)targetSize contentMode:(PHImageContentMode)contentMode options:(PHImageRequestOptions *)options NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithResource:(id)resource options:(PHImageRequestOptions *)options NS_DESIGNATED_INITIALIZER;
 
 @end
 
 
-
 NSString *const DFPhotosKitVersionKey = @"DFPhotosKitVersionKey";
-NSString *const DFPhotosKitDeliveryModeKey = @"DFPhotosKitDeliveryModeKey";
-NSString *const DFPhotosKitResizeModeKey = @"DFPhotosKitResizeModeKey";
 
 typedef struct {
     PHImageRequestOptionsVersion version;
-    PHImageRequestOptionsDeliveryMode deliveryMode;
-    PHImageRequestOptionsResizeMode resizeMode;
 } _DFPhotosKitRequestOptions;
 
 static inline NSString *_PHAssetLocalIdentifier(id resource) {
@@ -56,14 +51,6 @@ static inline NSString *_PHAssetLocalIdentifier(id resource) {
     }
 }
 
-static inline PHImageContentMode _PHContentModeForDFContentMode(DFImageContentMode mode) {
-    switch (mode) {
-        case DFImageContentModeAspectFill: return PHImageContentModeAspectFill;
-        case DFImageContentModeAspectFit: return PHImageContentModeAspectFit;
-        default: return PHImageContentModeDefault;
-    }
-}
-
 @implementation DFPhotosKitImageFetcher {
     NSOperationQueue *_queue;
 }
@@ -71,7 +58,7 @@ static inline PHImageContentMode _PHContentModeForDFContentMode(DFImageContentMo
 - (instancetype)init {
     if (self = [super init]) {
         _queue = [NSOperationQueue new];
-        _queue.maxConcurrentOperationCount = 3;
+        _queue.maxConcurrentOperationCount = 2;
     }
     return self;
 }
@@ -117,21 +104,13 @@ static inline PHImageContentMode _PHContentModeForDFContentMode(DFImageContentMo
     }
     _DFPhotosKitRequestOptions options1 = [self _requestOptionsFromUserInfo:request1.options.userInfo];
     _DFPhotosKitRequestOptions options2 = [self _requestOptionsFromUserInfo:request2.options.userInfo];
-    return (options1.version == options2.version &&
-            options1.deliveryMode == options2.deliveryMode &&
-            options1.resizeMode == options2.resizeMode);
+    return (options1.version == options2.version);
 }
 
 - (nonnull NSOperation *)startOperationWithRequest:(nonnull DFImageRequest *)request progressHandler:(nullable DFImageFetchingProgressHandler)progressHandler completion:(nullable DFImageFetchingCompletionHandler)completion {
     _DFPhotosKitRequestOptions options = [self _requestOptionsFromUserInfo:request.options.userInfo];
     PHImageRequestOptions *requestOptions = [PHImageRequestOptions new];
     requestOptions.networkAccessAllowed = request.options.allowsNetworkAccess;
-    requestOptions.deliveryMode = options.deliveryMode;
-    if (options.deliveryMode == PHImageRequestOptionsDeliveryModeOpportunistic) {
-        NSLog(@"%@: PHImageRequestOptionsDeliveryModeOpportunistic is unsupported", self);
-        options.deliveryMode = PHImageRequestOptionsDeliveryModeHighQualityFormat;
-    }
-    requestOptions.resizeMode = options.resizeMode;
     requestOptions.version = options.version;
     requestOptions.progressHandler = ^(double progress, NSError *error, BOOL *stop, NSDictionary *info){
         if (progressHandler) {
@@ -145,9 +124,7 @@ static inline PHImageContentMode _PHContentModeForDFContentMode(DFImageContentMo
         resource = [((NSURL *)resource) df_assetLocalIdentifier];
     }
     
-    CGSize targetSize = CGSizeEqualToSize(DFImageMaximumSize, request.targetSize) ? PHImageManagerMaximumSize : request.targetSize;
-    
-    _DFPhotosKitImageFetchOperation *operation = [[_DFPhotosKitImageFetchOperation alloc] initWithResource:resource targetSize:targetSize contentMode:_PHContentModeForDFContentMode(request.contentMode) options:requestOptions];
+    _DFPhotosKitImageFetchOperation *operation = [[_DFPhotosKitImageFetchOperation alloc] initWithResource:resource options:requestOptions];
     _DFPhotosKitImageFetchOperation *__weak weakOp = operation;
     operation.completionBlock = ^{
         if (completion) {
@@ -162,10 +139,6 @@ static inline PHImageContentMode _PHContentModeForDFContentMode(DFImageContentMo
     _DFPhotosKitRequestOptions options;
     NSNumber *version = info[DFPhotosKitVersionKey];
     options.version = version ? version.integerValue : PHImageRequestOptionsVersionCurrent;
-    NSNumber *deliveryMode = info[DFPhotosKitDeliveryModeKey];
-    options.deliveryMode = deliveryMode ? deliveryMode.integerValue : PHImageRequestOptionsDeliveryModeHighQualityFormat;
-    NSNumber *resizeMode = info[DFPhotosKitResizeModeKey];
-    options.resizeMode = resizeMode ? resizeMode.integerValue : PHImageRequestOptionsResizeModeFast;
     return options;
 }
 
@@ -182,8 +155,6 @@ static inline PHImageContentMode _PHContentModeForDFContentMode(DFImageContentMo
 @implementation _DFPhotosKitImageFetchOperation {
     PHAsset *_asset;
     NSString *_localIdentifier;
-    CGSize _targetSize;
-    PHImageContentMode _contentMode;
     PHImageRequestOptions *_options;
     PHImageRequestID _requestID;
 }
@@ -191,15 +162,13 @@ static inline PHImageContentMode _PHContentModeForDFContentMode(DFImageContentMo
 @synthesize executing = _executing;
 @synthesize finished = _finished;
 
-- (instancetype)initWithResource:(id)resource targetSize:(CGSize)targetSize contentMode:(PHImageContentMode)contentMode options:(PHImageRequestOptions *)options {
+- (instancetype)initWithResource:(id)resource options:(PHImageRequestOptions *)options {
     if (self = [super init]) {
         if ([resource isKindOfClass:[PHAsset class]]) {
             _asset = (PHAsset *)resource;
         } else if ([resource isKindOfClass:[NSString class]]) {
             _localIdentifier = (NSString *)resource;
         }
-        _targetSize = targetSize;
-        _contentMode = contentMode;
         _options = options;
         _requestID = PHInvalidImageRequestID;
     }
@@ -231,17 +200,16 @@ static inline PHImageContentMode _PHContentModeForDFContentMode(DFImageContentMo
         }
     }
     if (!self.isCancelled) {
-        _DFPhotosKitImageFetchOperation *__weak weakSelf = self;
-        _requestID = [[PHImageManager defaultManager] requestImageForAsset:_asset targetSize:_targetSize contentMode:_contentMode options:_options resultHandler:^(UIImage *result, NSDictionary *info) {
-            result = result ? [UIImage imageWithCGImage:result.CGImage scale:[UIScreen mainScreen].scale orientation:result.imageOrientation] : nil;
-            [weakSelf _didFetchImage:result info:info];
+        typeof(self) __weak weakSelf = self;
+        _requestID = [[PHImageManager defaultManager] requestImageDataForAsset:_asset options:_options resultHandler:^(NSData *imageData, NSString *dataUTI, UIImageOrientation orientation, NSDictionary *info) {
+            [weakSelf _didFetchImageData:imageData info:info];
         }];
     } else {
         [self finish];
     }
 }
 
-- (void)_didFetchImage:(UIImage *)result info:(NSDictionary *)info {
+- (void)_didFetchImageData:(NSData *)result info:(NSDictionary *)info {
     @synchronized(self) {
         if (!self.isCancelled) {
             _result = result;

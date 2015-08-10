@@ -117,7 +117,7 @@ static NSString * const reuseIdentifier = @"Cell";
     UICollectionViewFlowLayout *layout = (id)self.collectionViewLayout;
     layout.minimumLineSpacing = 2.f;
     layout.minimumInteritemSpacing = 2.f;
-    CGFloat side = (self.collectionView.bounds.size.width - 3.0 * 2.0) / 4.0;
+    CGFloat side = (self.collectionView.bounds.size.width - 3.0 * 2.0) / 2.0;
     layout.itemSize = CGSizeMake(side, side);
     
     layout.sectionInset = UIEdgeInsetsMake(0.f, 0.f, 14.f, 0.f);

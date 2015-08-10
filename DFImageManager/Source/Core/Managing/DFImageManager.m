@@ -311,7 +311,7 @@ static inline void DFDispatchAsync(dispatch_block_t block) {
             return;
         }
         [_executingImageTasks addObject:task];
-        DFImageManager *__weak weakSelf = self;
+        typeof(self) __weak weakSelf = self;
         task.loadTask = [_imageLoader startTaskForRequest:task.request progressHandler:^(int64_t completedUnitCount, int64_t totalUnitCount) {
             NSProgress *progress = task.internalProgress;
             progress.totalUnitCount = totalUnitCount;

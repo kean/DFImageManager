@@ -59,7 +59,7 @@
         configuration.timeoutIntervalForResource = 360.f;
         
         AFHTTPSessionManager *httpSessionManager = [[AFHTTPSessionManager alloc] initWithSessionConfiguration:configuration];
-        httpSessionManager.responseSerializer = [DFAFImageDeserializer new];
+        httpSessionManager.responseSerializer = [AFHTTPResponseSerializer new];
         DFAFImageFetcher *fetcher = [[DFAFImageFetcher alloc] initWithSessionManager:httpSessionManager];
         [[DFImageManager alloc] initWithConfiguration:[DFImageManagerConfiguration  configurationWithFetcher:fetcher processor:processor cache:cache]];
     });
@@ -80,9 +80,7 @@
 #if __has_include("DFImageManagerKit+PhotosKit.h")
     id<DFImageManaging> photosKitImageManager = ({
         DFPhotosKitImageFetcher *fetcher = [DFPhotosKitImageFetcher new];
-        
-        // We don't need image decompression, because PHImageManager does it for us.
-        [[DFImageManager alloc] initWithConfiguration:[DFImageManagerConfiguration configurationWithFetcher:fetcher processor:nil cache:cache]];
+        [[DFImageManager alloc] initWithConfiguration:[DFImageManagerConfiguration configurationWithFetcher:fetcher processor:processor cache:cache]];
     });
     [managers addObject:photosKitImageManager];
 #endif

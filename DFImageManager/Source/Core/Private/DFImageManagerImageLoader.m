@@ -28,6 +28,7 @@
 #import "DFImageProcessing.h"
 #import "DFImageRequest.h"
 #import "DFImageRequestOptions.h"
+#import "UIImage+DFImageUtilities.h"
 
 #if DF_IMAGE_MANAGER_GIF_AVAILABLE
 #import "DFImageManagerKit+GIF.h"
@@ -181,6 +182,10 @@
         _cache = cache;
         _processor = processor;
         _processingQueue = processingQueue;
+        if (!_processingQueue) {
+            _processingQueue = [NSOperationQueue new];
+            _processingQueue.maxConcurrentOperationCount = 1;
+        }
         _loadOperations = [NSMutableDictionary new];
         _queue = dispatch_queue_create([[NSString stringWithFormat:@"%@-queue-%p", [self class], self] UTF8String], DISPATCH_QUEUE_SERIAL);
         _fetcherRespondsToCanonicalRequest = [_fetcher respondsToSelector:@selector(canonicalRequestForRequest:)];
@@ -201,11 +206,11 @@
     _DFImageLoadOperation *operation = _loadOperations[key];
     if (!operation) {
         operation = [[_DFImageLoadOperation alloc] initWithKey:key];
-        DFImageManagerImageLoader *__weak weakSelf = self;
+        typeof(self) __weak weakSelf = self;
         operation.operation = [_fetcher startOperationWithRequest:task.request progressHandler:^(int64_t completedUnitCount, int64_t totalUnitCount) {
             [weakSelf _loadOperation:operation didUpdateProgressWithCompletedUnitCount:completedUnitCount totalUnitCount:totalUnitCount];
-        } completion:^(UIImage *__nullable image, NSDictionary *__nullable info, NSError *__nullable error) {
-            [weakSelf _loadOperation:operation didCompleteWithImage:image info:info error:error];
+        } completion:^(NSData *__nullable data, NSDictionary *__nullable info, NSError *__nullable error) {
+            [weakSelf _loadOperation:operation didCompleteWithData:data info:info error:error];
         }];
         _loadOperations[key] = operation;
     } else {
@@ -230,6 +235,14 @@
     });
 }
 
+- (void)_loadOperation:(nonnull _DFImageLoadOperation *)operation didCompleteWithData:(nullable NSData *)data info:(nullable NSDictionary *)info error:(nullable NSError *)error {
+    typeof(self) __weak weakSelf = self;
+    [_processingQueue addOperationWithBlock:^{
+        UIImage *image = data ? [UIImage df_decodedImageWithData:data] : nil;
+        [weakSelf _loadOperation:operation didCompleteWithImage:image info:info error:error];
+    }];
+}
+
 - (void)_loadOperation:(nonnull _DFImageLoadOperation *)operation didCompleteWithImage:(nullable UIImage *)image info:(nullable NSDictionary *)info error:(nullable NSError *)error {
     dispatch_async(_queue, ^{
         for (DFImageManagerImageLoaderTask *task in operation.tasks) {
@@ -241,7 +254,7 @@
 }
 
 - (void)_loadTask:(nonnull DFImageManagerImageLoaderTask *)task didCompleteWithImage:(nullable UIImage *)image info:(nullable NSDictionary *)info error:(nullable NSError *)error {
-    DFImageManagerImageLoader *__weak weakSelf = self;
+    typeof(self) __weak weakSelf = self;
     if (image && [self _shouldProcessImage:image]) {
         id<DFImageProcessing> processor = _processor;
         NSOperation *operation = [NSBlockOperation blockOperationWithBlock:^{
