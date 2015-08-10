@@ -96,8 +96,8 @@
     XCTAssertTrue([_fetcher canHandleRequest:request]);
     
     XCTestExpectation *expectation = [self expectationWithDescription:@"fetch_completed"];
-    [_fetcher startOperationWithRequest:request progressHandler:nil completion:^(UIImage *__nullable image, NSDictionary *__nullable info, NSError *__nullable error) {
-        XCTAssertNotNil(image);
+    [_fetcher startOperationWithRequest:request progressHandler:nil completion:^(NSData *__nullable data, NSDictionary *__nullable info, NSError *__nullable error) {
+        XCTAssertNotNil(data);
         [expectation fulfill];
     }];
     
@@ -116,8 +116,8 @@
     XCTAssertTrue([_fetcher canHandleRequest:request]);
     
     XCTestExpectation *expectation = [self expectationWithDescription:@"fetch_completed"];
-    [_fetcher startOperationWithRequest:request progressHandler:nil completion:^(UIImage *__nullable image, NSDictionary *__nullable info, NSError *__nullable error) {
-        XCTAssertNotNil(image);
+    [_fetcher startOperationWithRequest:request progressHandler:nil completion:^(NSData *__nullable data, NSDictionary *__nullable info, NSError *__nullable error) {
+        XCTAssertNotNil(data);
         [expectation fulfill];
     }];
     

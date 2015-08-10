@@ -13,15 +13,15 @@ NSString *TDFMockFetcherDidStartOperationNotification = @"TDFMockFetcherDidStart
 
 @implementation TDFMockResponse
 
-+ (instancetype)mockWithImage:(UIImage *)image {
++ (instancetype)mockWithData:(NSData *)data {
     TDFMockResponse *response = [TDFMockResponse new];
-    response.image = image;
+    response.data = data;
     return response;
 }
 
-+ (instancetype)mockWithImage:(UIImage *)image elapsedTime:(NSTimeInterval)elapsedTime {
++ (instancetype)mockWithData:(NSData *)data elapsedTime:(NSTimeInterval)elapsedTime {
     TDFMockResponse *response = [TDFMockResponse new];
-    response.image = image;
+    response.data = data;
     response.elapsedTime = elapsedTime;
     return response;
 }
@@ -72,7 +72,7 @@ NSString *TDFMockFetcherDidStartOperationNotification = @"TDFMockFetcherDidStart
         [NSThread sleepForTimeInterval:response.elapsedTime];
         dispatch_async(dispatch_get_main_queue(), ^{
             if (completion) {
-                completion(response.image, response.info, response.error);
+                completion(response.data, response.info, response.error);
             }
         });
     }];

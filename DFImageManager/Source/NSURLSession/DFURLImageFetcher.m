@@ -285,7 +285,7 @@ static const NSTimeInterval _kCommandExecutionInterval = 0.005; // 5 ms
         NSData *receivedData = data;
         if (receivedData) {
             id<DFURLResponseValidating> validator = [weakSelf _responseValidatorForImageRequest:request URLRequest:URLRequest];
-            if (![validator isValidResponse:URLResponse data:data error:&error]) {
+            if (validator && ![validator isValidResponse:URLResponse data:data error:&error]) {
                 receivedData = nil;
             }
         }

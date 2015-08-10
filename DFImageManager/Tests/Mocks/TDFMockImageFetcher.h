@@ -21,7 +21,7 @@ extern NSString *TDFMockImageFetcherOperationKey;
 
 @property (nonatomic) NSOperationQueue *queue;
 
-@property (nonatomic) UIImage *image;
+@property (nonatomic) NSData *data;
 @property (nonatomic) NSError *error;
 @property (nonatomic) NSDictionary *info;
 

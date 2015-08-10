@@ -11,18 +11,30 @@
 
 @implementation TDFTesting
 
-+ (id)testImage {
++ (UIImage *)testImage {
     return [[UIImage alloc] initWithData:[self testImageData] scale:[UIScreen mainScreen].scale];
 }
 
 + (NSURL *)testImageURL {
+    return [self _testImageURLForName:@"Image"];
+}
+
++ (NSURL *)_testImageURLForName:(NSString *)name {
     NSBundle *bundle = [NSBundle bundleForClass:[self class]];
-    NSString *path = [bundle pathForResource:@"Image" ofType:@"jpg"];
+    NSString *path = [bundle pathForResource:name ofType:@"jpg"];
     return [NSURL fileURLWithPath:path];
 }
 
 + (NSData *)testImageData {
     return [NSData dataWithContentsOfURL:[self testImageURL]];
+}
+
++ (UIImage *)testImage2 {
+    return [[UIImage alloc] initWithData:[self testImageData2] scale:[UIScreen mainScreen].scale];
+}
+
++ (NSData *)testImageData2 {
+    return [NSData dataWithContentsOfURL:[self _testImageURLForName:@"Image2"]];
 }
 
 + (void)stubRequestWithURL:(NSURL *)imageURL {

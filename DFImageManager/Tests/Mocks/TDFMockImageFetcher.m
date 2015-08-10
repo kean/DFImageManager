@@ -22,7 +22,7 @@ NSString *TDFMockImageFetcherOperationKey = @"TDFMockImageFetcherOperationKey";
 - (instancetype)init {
     if (self = [super init]) {
         _queue = [NSOperationQueue new];
-        _image = [TDFTesting testImage];
+        _data = [TDFTesting testImageData];
     }
     return self;
 }
@@ -54,7 +54,7 @@ NSString *TDFMockImageFetcherOperationKey = @"TDFMockImageFetcherOperationKey";
         });
         dispatch_async(dispatch_get_main_queue(), ^{
             if (completion) {
-                completion(self.image, self.info, self.error);
+                completion(self.data, self.info, self.error);
             }
         });
     }];

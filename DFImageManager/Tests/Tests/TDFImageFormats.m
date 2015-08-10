@@ -25,26 +25,6 @@
     XCTAssertEqual(image.size.height, 768);
 }
 
-- (void)testThatDFURLImageDeserializerSupportsWebP {
-    DFURLImageDeserializer *deserializer = [DFURLImageDeserializer new];
-    NSData *data = [self _webpImageData];
-    XCTAssertEqual(data.length, 118042);
-    UIImage *image = [deserializer objectFromResponse:nil data:data error:nil];
-    XCTAssertNotNil(image);
-    XCTAssertEqual(image.size.width, 768);
-    XCTAssertEqual(image.size.height, 768);
-}
-
-- (void)testThatDFAFImageDeserializerSupportsWebP {
-    DFAFImageDeserializer *deserializer = [DFAFImageDeserializer new];
-    NSData *data = [self _webpImageData];
-    XCTAssertEqual(data.length, 118042);
-    UIImage *image = [deserializer responseObjectForResponse:nil data:data error:nil];
-    XCTAssertNotNil(image);
-    XCTAssertEqual(image.size.width, 768);
-    XCTAssertEqual(image.size.height, 768);
-}
-
 #pragma mark -
 
 - (NSData *)_webpImageData {

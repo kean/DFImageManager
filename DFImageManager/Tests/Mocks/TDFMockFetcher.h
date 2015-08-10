@@ -14,12 +14,12 @@ extern NSString *TDFMockFetcherDidStartOperationNotification;
 @interface TDFMockResponse : NSObject
 
 @property (nonatomic) NSTimeInterval elapsedTime;
-@property (nonatomic) UIImage *image;
+@property (nonatomic) NSData *data;
 @property (nonatomic) NSError *error;
 @property (nonatomic) NSDictionary *info;
 
-+ (instancetype)mockWithImage:(UIImage *)image;
-+ (instancetype)mockWithImage:(UIImage *)image elapsedTime:(NSTimeInterval)elapsedTime;
++ (instancetype)mockWithData:(NSData *)data;
++ (instancetype)mockWithData:(NSData *)data elapsedTime:(NSTimeInterval)elapsedTime;
 + (instancetype)mockWithError:(NSError *)error elapsedTime:(NSTimeInterval)elapsedTime;
 
 @end

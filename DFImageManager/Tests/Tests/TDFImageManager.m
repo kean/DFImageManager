@@ -116,7 +116,7 @@
 }
 
 - (void)testThatFailedResponseAlwaysGeneratesError {
-    _fetcher.image = nil;
+    _fetcher.data = nil;
     
     XCTestExpectation *expectation = [self expectationWithDescription:@"request"];
     DFImageTask *task = [_manager imageTaskForResource:[TDFMockResource resourceWithID:@"ID01"] completion:^(UIImage *__nullable image, NSError *__nullable error, DFImageResponse *__nullable response, DFImageTask *__nonnull completedTask) {
@@ -134,7 +134,7 @@
 }
 
 - (void)testThatCompletionBlockContainsCustomUserInfo {
-    _fetcher.image = nil;
+    _fetcher.data = nil;
     _fetcher.info = @{ @"TestKey" : @"TestValue" };
     
     XCTestExpectation *expectation = [self expectationWithDescription:@"request"];
@@ -402,9 +402,9 @@
 }
 
 - (void)testThatMemoryCachingIsTransparentToTheClient {
-    UIImage *initialImage = [UIImage new];
+    UIImage *initialImage = [TDFTesting testImage];
     NSDictionary *initialInfo = @{ @"TDFKey" : @"TDFValue" };
-    _fetcher.image = initialImage;
+    _fetcher.data = [TDFTesting testImageData];
     _fetcher.info = initialInfo;
     
     _cache.enabled = YES;
@@ -414,7 +414,7 @@
     XCTestExpectation *expectation = [self expectationWithDescription:@"request"];
     {
         DFImageTask *task = [_manager imageTaskForResource:resource completion:^(UIImage *__nullable image, NSError *__nullable error, DFImageResponse *__nullable response, DFImageTask *__nonnull completedTask) {
-            XCTAssertEqual(initialImage, image);
+            XCTAssertTrue(CGSizeEqualToSize(initialImage.size, image.size));
             XCTAssertEqual(initialInfo[@"TDFKey"], response.info[@"TDFKey"]);
             XCTAssertFalse(response.isFastResponse);
             XCTAssertTrue(completedTask.state == DFImageTaskStateCompleted);
@@ -430,7 +430,7 @@
     {
         BOOL __block isCompletionHandlerCalled = NO;
         DFImageTask *task = [_manager imageTaskForResource:resource completion:^(UIImage *__nullable image, NSError *__nullable error, DFImageResponse *__nullable response, DFImageTask *__nonnull completedTask) {
-            XCTAssertEqual(initialImage, image);
+            XCTAssertTrue(CGSizeEqualToSize(initialImage.size, image.size));
             XCTAssertEqual(initialInfo[@"TDFKey"], response.info[@"TDFKey"]);
             XCTAssertTrue(response.isFastResponse);
             XCTAssertTrue(completedTask.state == DFImageTaskStateCompleted);
