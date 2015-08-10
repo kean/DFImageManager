@@ -33,11 +33,11 @@
     return self;
 }
 
-- (nullable id)objectFromResponse:(nullable NSURLResponse *)response data:(nullable NSData *)data error:(NSError * __nullable __autoreleasing * __nullable)error {
+- (nullable NSData *)dataFromResponse:(nullable NSURLResponse *)response data:(nullable NSData *)data error:(NSError * __nullable __autoreleasing * __nullable)error {
     if (!response || ![self isValidResponse:(NSHTTPURLResponse *)response error:error]) {
         return nil;
     }
-    return [super objectFromResponse:response data:data error:error];
+    return data;
 }
 
 - (BOOL)isValidResponse:(NSHTTPURLResponse * __nonnull)response error:(NSError * __nullable __autoreleasing * __nullable)error {

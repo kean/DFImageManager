@@ -20,13 +20,13 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "DFURLImageDeserializer.h"
+#import "DFURLResponseDeserializing.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-/*! The DFURLHTTPImageDeserializer implements image deserialization and performs additional response validation based on HTTP status code and content type.
+/*! The DFURLHTTPImageDeserializer performs response validation based on HTTP status code and content type.
  */
-@interface DFURLHTTPImageDeserializer : DFURLImageDeserializer
+@interface DFURLHTTPImageDeserializer : NSObject <DFURLResponseDeserializing>
 
 /*! The acceptable HTTP status codes for responses. For more info see the HTTP specification http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html
  @note All status codes are acceptable in case acceptableStatusCodes is nil.

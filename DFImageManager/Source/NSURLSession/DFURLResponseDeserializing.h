@@ -32,13 +32,13 @@ static NSString *const DFURLDeserializationErrorDomain = @"DFURLDeserializationE
  */
 static NSString *const DFURLErrorInfoURLResponseKey = @"DFURLErrorInfoURLResponseKey";
 
-/*! The DFURLResponseDeserializing protocol is adopted by an object that decodes response data into an object representation used by the application.
+/*! The DFURLResponseDeserializing protocol is adopted by an object that validates response and (optionally) transforms response data.
 */
 @protocol DFURLResponseDeserializing <NSObject>
 
-/*! The response object decoded from the data associated with a specified response. Response deserializer may also perform validation on the incoming response and data.
+/*! Validates response and data associated with it. May optionally transform response data.
  */
-- (nullable id)objectFromResponse:(nullable NSURLResponse *)response data:(nullable NSData *)data error:(NSError **)error;
+- (nullable NSData *)dataFromResponse:(nullable NSURLResponse *)response data:(nullable NSData *)data error:(NSError **)error;
 
 @end
 

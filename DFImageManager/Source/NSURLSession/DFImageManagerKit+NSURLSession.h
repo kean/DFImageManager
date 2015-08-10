@@ -21,6 +21,5 @@
 // THE SOFTWARE.
 
 #import "DFURLHTTPImageDeserializer.h"
-#import "DFURLImageDeserializer.h"
 #import "DFURLImageFetcher.h"
 #import "DFURLResponseDeserializing.h"

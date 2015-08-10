@@ -23,7 +23,6 @@
 #import "DFImageRequest.h"
 #import "DFImageRequestOptions.h"
 #import "DFURLHTTPImageDeserializer.h"
-#import "DFURLImageDeserializer.h"
 #import "DFURLImageFetcher.h"
 #import "DFURLResponseDeserializing.h"
 
@@ -276,17 +275,20 @@ static const NSTimeInterval _kCommandExecutionInterval = 0.005; // 5 ms
 }
 
 - (nonnull NSOperation *)startOperationWithRequest:(nonnull DFImageRequest *)request progressHandler:(nullable DFImageFetchingProgressHandler)progressHandler completion:(nullable DFImageFetchingCompletionHandler)completion {
+    typeof(self) __weak weakSelf = self;
     NSURLRequest *URLRequest = [self _URLRequestForImageRequest:request];
     NSURLSessionDataTask *__block task = [self.sessionDelegate URLImageFetcher:self dataTaskWithRequest:URLRequest progressHandler:^(int64_t countOfBytesReceived, int64_t countOfBytesExpectedToReceive) {
         if (progressHandler) {
             progressHandler(countOfBytesReceived, countOfBytesExpectedToReceive);
         }
     } completionHandler:^(NSData *data, NSURLResponse *URLResponse, NSError *error) {
+        NSData *processedData;
         if (data) {
-            // TODO: Validate data
+            id<DFURLResponseDeserializing> deserializer = [weakSelf _responseDeserializerForImageRequest:request URLRequest:URLRequest];
+            processedData = [deserializer dataFromResponse:URLResponse data:data error:&error];
         }
         if (completion) {
-            completion(data, nil, error);
+            completion(processedData ?: data, nil, error);
         }
     }];
     
@@ -340,14 +342,14 @@ static const NSTimeInterval _kCommandExecutionInterval = 0.005; // 5 ms
     return [URLRequest copy];
 }
 
-- (id<DFURLResponseDeserializing>)_responseDeserializerForImageRequest:(DFImageRequest *)imageRequest URLRequest:(NSURLRequest *)URLRequest {
+- (nullable id<DFURLResponseDeserializing>)_responseDeserializerForImageRequest:(nonnull DFImageRequest *)imageRequest URLRequest:(nonnull NSURLRequest *)URLRequest {
     if ([self.delegate respondsToSelector:@selector(URLImageFetcher:responseDeserializerForImageRequest:URLRequest:)]) {
         return [self.delegate URLImageFetcher:self responseDeserializerForImageRequest:imageRequest URLRequest:URLRequest];
     }
     if ([URLRequest.URL.scheme hasPrefix:@"http"]) {
         return [DFURLHTTPImageDeserializer new];
     } else {
-        return [DFURLImageDeserializer new];
+        return nil;
     }
 }
 
