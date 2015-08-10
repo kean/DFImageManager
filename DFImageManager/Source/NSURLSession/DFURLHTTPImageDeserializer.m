@@ -20,10 +20,10 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "DFURLHTTPImageDeserializer.h"
+#import "DFURLHTTPResponseValidator.h"
 
 
-@implementation DFURLHTTPImageDeserializer
+@implementation DFURLHTTPResponseValidator
 
 - (nonnull instancetype)init {
     if (self = [super init]) {
@@ -33,27 +33,21 @@
     return self;
 }
 
-- (nullable NSData *)dataFromResponse:(nullable NSURLResponse *)response data:(nullable NSData *)data error:(NSError * __nullable __autoreleasing * __nullable)error {
-    if (!response || ![self isValidResponse:(NSHTTPURLResponse *)response error:error]) {
-        return nil;
+- (BOOL)isValidResponse:(nullable NSHTTPURLResponse *)response data:(nullable NSData *)data error:(NSError * __nullable __autoreleasing * __nullable)error {
+    if (![response isKindOfClass:[NSHTTPURLResponse class]]) {
+        return NO;
     }
-    return data;
-}
-
-- (BOOL)isValidResponse:(NSHTTPURLResponse * __nonnull)response error:(NSError * __nullable __autoreleasing * __nullable)error {
-    NSParameterAssert(response);
-    NSAssert([response isKindOfClass:[NSHTTPURLResponse class]], @"Invalid response");
     if (self.acceptableStatusCodes != nil && ![self.acceptableStatusCodes containsIndex:(NSUInteger)response.statusCode]) {
         if (error != nil) {
             NSDictionary *userInfo = [self _errorInfoWithResponse:response];
-            *error = [NSError errorWithDomain:DFURLDeserializationErrorDomain code:NSURLErrorBadServerResponse userInfo:[userInfo copy]];
+            *error = [NSError errorWithDomain:DFURLValidationErrorDomain code:NSURLErrorBadServerResponse userInfo:[userInfo copy]];
         }
         return NO;
     }
     if (self.acceptableContentTypes != nil && ![self.acceptableContentTypes containsObject:[response MIMEType]]) {
         if (error != nil) {
             NSDictionary *userInfo = [self _errorInfoWithResponse:response];
-            *error = [NSError errorWithDomain:DFURLDeserializationErrorDomain code:NSURLErrorCannotDecodeContentData userInfo:[userInfo copy]];
+            *error = [NSError errorWithDomain:DFURLValidationErrorDomain code:NSURLErrorCannotDecodeContentData userInfo:[userInfo copy]];
         }
         return NO;
     }

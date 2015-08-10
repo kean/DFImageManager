@@ -23,7 +23,7 @@
 #import "DFImageFetching.h"
 #import <Foundation/Foundation.h>
 
-@protocol DFURLResponseDeserializing;
+@protocol DFURLResponseValidating;
 @class DFURLImageFetcher;
 
 NS_ASSUME_NONNULL_BEGIN
@@ -48,9 +48,9 @@ extern NSString *const DFURLRequestCachePolicyKey;
  */
 - (NSURLRequest *)URLImageFetcher:(DFURLImageFetcher *)fetcher URLRequestForImageRequest:(DFImageRequest *)imageRequest URLRequest:(NSURLRequest *)URLRequest;
 
-/*! Creates response deserializer for a given request.
+/*! Creates response validator for a given request.
  */
-- (nullable id<DFURLResponseDeserializing>)URLImageFetcher:(DFURLImageFetcher *)fetcher responseDeserializerForImageRequest:(DFImageRequest *)imageRequest URLRequest:(NSURLRequest *)URLRequest;
+- (nullable id<DFURLResponseValidating>)URLImageFetcher:(DFURLImageFetcher *)fetcher responseValidatorForImageRequest:(DFImageRequest *)imageRequest URLRequest:(NSURLRequest *)URLRequest;
 
 /*! Sent every time image fetcher encounters error. Doesn't get called if image fetcher isn't set as NSURLSession delegate.
  */

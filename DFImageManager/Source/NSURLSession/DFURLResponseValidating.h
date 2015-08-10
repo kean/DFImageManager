@@ -24,21 +24,21 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/*! Deserialization error domain.
+/*! Validation error domain.
  */
-static NSString *const DFURLDeserializationErrorDomain = @"DFURLDeserializationErrorDomain";
+static NSString *const DFURLValidationErrorDomain = @"DFURLValidationErrorDomain";
 
 /*! A URL response (NSURLResponse).
  */
 static NSString *const DFURLErrorInfoURLResponseKey = @"DFURLErrorInfoURLResponseKey";
 
-/*! The DFURLResponseDeserializing protocol is adopted by an object that validates response and (optionally) transforms response data.
+/*! The DFURLResponseValidating protocol is adopted by an object that validates image response.
 */
-@protocol DFURLResponseDeserializing <NSObject>
+@protocol DFURLResponseValidating <NSObject>
 
-/*! Validates response and data associated with it. May optionally transform response data.
+/*! Validates response and data associated with it.
  */
-- (nullable NSData *)dataFromResponse:(nullable NSURLResponse *)response data:(nullable NSData *)data error:(NSError **)error;
+- (BOOL)isValidResponse:(nullable NSURLResponse *)response data:(nullable NSData *)data error:(NSError **)error;
 
 @end
 
