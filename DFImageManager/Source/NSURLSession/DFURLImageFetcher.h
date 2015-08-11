@@ -65,7 +65,7 @@ extern NSString *const DFURLRequestCachePolicyKey;
 
 /*! Creates NSURLSessionDataTask with a given request.
  */
-- (NSURLSessionDataTask *)URLImageFetcher:(DFURLImageFetcher *)fetcher dataTaskWithRequest:(NSURLRequest *)request progressHandler:(void (^__nullable)(int64_t countOfBytesReceived, int64_t countOfBytesExpectedToReceive))progressHandler completionHandler:(void (^__nullable)(NSData *__nullable data, NSURLResponse *__nullable response, NSError *__nullable error))completionHandler;
+- (NSURLSessionDataTask *)URLImageFetcher:(DFURLImageFetcher *)fetcher dataTaskWithRequest:(NSURLRequest *)request progressHandler:(void (^__nullable)(NSData *__nullable data, int64_t countOfBytesReceived, int64_t countOfBytesExpectedToReceive))progressHandler completionHandler:(void (^__nullable)(NSData *__nullable data, NSURLResponse *__nullable response, NSError *__nullable error))completionHandler;
 
 @end
 

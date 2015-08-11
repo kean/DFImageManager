@@ -115,7 +115,7 @@ static inline NSString *_PHAssetLocalIdentifier(id resource) {
     requestOptions.progressHandler = ^(double progress, NSError *error, BOOL *stop, NSDictionary *info){
         if (progressHandler) {
             int64_t totalUnitCount = 1000;
-            progressHandler((int64_t)progress * totalUnitCount, totalUnitCount);
+            progressHandler(nil, (int64_t)progress * totalUnitCount, totalUnitCount);
         }
     };
     

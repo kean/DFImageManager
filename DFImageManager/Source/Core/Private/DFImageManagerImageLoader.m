@@ -207,7 +207,7 @@
     if (!operation) {
         operation = [[_DFImageLoadOperation alloc] initWithKey:key];
         typeof(self) __weak weakSelf = self;
-        operation.operation = [_fetcher startOperationWithRequest:task.request progressHandler:^(int64_t completedUnitCount, int64_t totalUnitCount) {
+        operation.operation = [_fetcher startOperationWithRequest:task.request progressHandler:^(NSData *__nullable data, int64_t completedUnitCount, int64_t totalUnitCount) {
             [weakSelf _loadOperation:operation didUpdateProgressWithCompletedUnitCount:completedUnitCount totalUnitCount:totalUnitCount];
         } completion:^(NSData *__nullable data, NSDictionary *__nullable info, NSError *__nullable error) {
             [weakSelf _loadOperation:operation didCompleteWithData:data info:info error:error];

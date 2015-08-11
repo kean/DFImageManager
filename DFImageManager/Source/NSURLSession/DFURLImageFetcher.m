@@ -59,7 +59,7 @@ NSString *const DFURLRequestCachePolicyKey = @"DFURLRequestCachePolicyKey";
 @end
 
 
-typedef void (^_DFURLSessionDataTaskProgressHandler)(int64_t countOfBytesReceived, int64_t countOfBytesExpectedToReceive);
+typedef void (^_DFURLSessionDataTaskProgressHandler)(NSData *data, int64_t countOfBytesReceived, int64_t countOfBytesExpectedToReceive);
 typedef void (^_DFURLSessionDataTaskCompletionHandler)(NSData *data, NSURLResponse *response, NSError *error);
 
 @interface _DFURLSessionDataTaskHandler : NSObject
@@ -277,9 +277,9 @@ static const NSTimeInterval _kCommandExecutionInterval = 0.005; // 5 ms
 - (nonnull NSOperation *)startOperationWithRequest:(nonnull DFImageRequest *)request progressHandler:(nullable DFImageFetchingProgressHandler)progressHandler completion:(nullable DFImageFetchingCompletionHandler)completion {
     typeof(self) __weak weakSelf = self;
     NSURLRequest *URLRequest = [self _URLRequestForImageRequest:request];
-    NSURLSessionDataTask *__block task = [self.sessionDelegate URLImageFetcher:self dataTaskWithRequest:URLRequest progressHandler:^(int64_t countOfBytesReceived, int64_t countOfBytesExpectedToReceive) {
+    NSURLSessionDataTask *__block task = [self.sessionDelegate URLImageFetcher:self dataTaskWithRequest:URLRequest progressHandler:^(NSData *data, int64_t countOfBytesReceived, int64_t countOfBytesExpectedToReceive) {
         if (progressHandler) {
-            progressHandler(countOfBytesReceived, countOfBytesExpectedToReceive);
+            progressHandler(data, countOfBytesReceived, countOfBytesExpectedToReceive);
         }
     } completionHandler:^(NSData *data, NSURLResponse *URLResponse, NSError *error) {
         NSData *receivedData = data;
@@ -361,7 +361,7 @@ static const NSTimeInterval _kCommandExecutionInterval = 0.005; // 5 ms
     @synchronized(self) {
         _DFURLSessionDataTaskHandler *handler = _sessionTaskHandlers[dataTask];
         if (handler.progressHandler) {
-            handler.progressHandler(dataTask.countOfBytesReceived, dataTask.countOfBytesExpectedToReceive);
+            handler.progressHandler(data, dataTask.countOfBytesReceived, dataTask.countOfBytesExpectedToReceive);
         }
         [handler.data appendData:data];
     }

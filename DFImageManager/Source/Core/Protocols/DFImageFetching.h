@@ -25,7 +25,7 @@
 
 @class DFImageRequest;
 
-typedef void (^DFImageFetchingProgressHandler)(int64_t completedUnitCount, int64_t totalUnitCount);
+typedef void (^DFImageFetchingProgressHandler)(NSData *__nullable data, int64_t completedUnitCount, int64_t totalUnitCount);
 typedef void (^DFImageFetchingCompletionHandler)(NSData *__nullable data, NSDictionary *__nullable info, NSError *__nullable error);
 
 /*! The DFImageFetching protocol provides the basic structure for performing fetching of image data for specific DFImageRequest objects. Classes adopting DFImageFetching protocol handle the specifics associated with one of more types of the image requests.

@@ -136,7 +136,7 @@ NSString *const DFAFRequestCachePolicyKey = @"DFAFRequestCachePolicyKey";
     _DFDataTaskDelegate *dataTaskDelegate = [_DFDataTaskDelegate new];
     dataTaskDelegate.dataTaskDidReceiveDataBlock = ^(NSURLSession *session, NSURLSessionDataTask *dataTask, NSData *data) {
         if (progressHandler) {
-            progressHandler(dataTask.countOfBytesReceived, dataTask.countOfBytesExpectedToReceive);
+            progressHandler(data, dataTask.countOfBytesReceived, dataTask.countOfBytesExpectedToReceive);
         }
     };
     @synchronized(self) {
