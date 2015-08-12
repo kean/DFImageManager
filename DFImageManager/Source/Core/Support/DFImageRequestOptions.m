@@ -33,6 +33,7 @@
         _priority = options.priority;
         _allowsNetworkAccess = options.allowsNetworkAccess;
         _allowsClipping = options.allowsClipping;
+        _allowsProgressiveImage = options.allowsProgressiveImage;
         _memoryCachePolicy = options.memoryCachePolicy;
         _expirationAge = options.expirationAge;
         _userInfo = options.userInfo;
@@ -41,7 +42,7 @@
 }
 
 - (NSString *)description {
-    return [NSString stringWithFormat:@"<%@ %p> { priority = %i, network = %i, clip = %i, cache = %i, expires = %0.2f }", [self class], self, (int)_priority, _allowsNetworkAccess, _allowsClipping, _memoryCachePolicy == DFImageRequestCachePolicyDefault ? 1 : 0, _expirationAge];
+    return [NSString stringWithFormat:@"<%@ %p> { priority = %i, network = %i, clip = %i, progressive = %i, cache = %i, expires = %0.2f }", [self class], self, (int)_priority, _allowsNetworkAccess, _allowsClipping, _allowsProgressiveImage, _memoryCachePolicy == DFImageRequestCachePolicyDefault ? 1 : 0, _expirationAge];
 }
 
 @end
@@ -54,6 +55,7 @@
         _priority = DFImageRequestPriorityNormal;
         _allowsNetworkAccess = YES;
         _allowsClipping = NO;
+        _allowsProgressiveImage = NO;
         _memoryCachePolicy = DFImageRequestCachePolicyDefault;
         _expirationAge = 60.0 * 10.0; // 600.0 seconds
     }

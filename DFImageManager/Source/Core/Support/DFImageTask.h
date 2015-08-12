@@ -65,9 +65,13 @@ typedef NS_ENUM(NSUInteger, DFImageTaskState) {
  */
 @property (nonatomic) DFImageRequestPriority priority;
 
-/*! Completion block to execute when image task is either cancelled or completed.
+/*! Completion block to execute on the main thread when image task is either cancelled or completed.
  */
-@property (nullable, atomic, copy) void (^completionHandler)(UIImage *__nullable image, NSError *__nullable error, DFImageResponse *__nullable response, DFImageTask *__nonnull completedTask);
+@property (nullable, atomic, copy) void (^completionHandler)(UIImage *__nullable image, NSError *__nullable error, DFImageResponse *__nullable response, DFImageTask *__nonnull imageTask);
+
+/*! Progressive image handler which gets called on the main thread when partial image data is decoded.
+ */
+@property (nullable, atomic, copy) void (^progressiveImageHandler)(UIImage *__nonnull image);
 
 /*! Resumes the task.
  */

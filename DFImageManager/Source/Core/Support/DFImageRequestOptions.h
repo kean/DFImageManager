@@ -40,6 +40,10 @@
  */
 @property (nonatomic, readonly) BOOL allowsClipping;
 
+/*! If YES allows progressive image decoding.
+ */
+@property (nonatomic, readonly) BOOL allowsProgressiveImage;
+
 /*! The request cache policy used for memory caching.
  */
 @property (nonatomic, readonly) DFImageRequestCachePolicy memoryCachePolicy;
@@ -88,6 +92,10 @@
 /*! If YES allows some portion of the image content to be clipped when filling the content to target size. Only works with DFImageContentModeAspectFill. Default value is NO.
  */
 @property (nonatomic) BOOL allowsClipping;
+
+/*! If YES allows progressive image decoding. Default value is NO.
+ */
+@property (nonatomic) BOOL allowsProgressiveImage;
 
 /*! The request cache policy used for memory caching. Default value is DFImageRequestCachePolicyDefault.
  */

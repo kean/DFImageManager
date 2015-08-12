@@ -28,7 +28,8 @@
 @class DFImageResponse;
 @class DFImageTask;
 
-typedef void (^DFImageTaskCompletion)(UIImage *__nullable image, NSError *__nullable error, DFImageResponse *__nullable response, DFImageTask *__nonnull completedTask);
+typedef void (^DFImageTaskProgressiveImageHandler)(UIImage *__nonnull image);
+typedef void (^DFImageTaskCompletion)(UIImage *__nullable image, NSError *__nullable error, DFImageResponse *__nullable response, DFImageTask *__nonnull imageTask);
 
 /*! Provides an API for loading images associated with a given resources. The resources might by anything from a NSURL to a PHAsset objects or even your custom classes.
  */

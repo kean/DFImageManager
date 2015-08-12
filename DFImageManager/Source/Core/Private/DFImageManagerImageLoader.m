@@ -208,7 +208,7 @@
         operation = [[_DFImageLoadOperation alloc] initWithKey:key];
         typeof(self) __weak weakSelf = self;
         operation.operation = [_fetcher startOperationWithRequest:task.request progressHandler:^(NSData *__nullable data, int64_t completedUnitCount, int64_t totalUnitCount) {
-            [weakSelf _loadOperation:operation didUpdateProgressWithCompletedUnitCount:completedUnitCount totalUnitCount:totalUnitCount];
+            [weakSelf _loadOperation:operation didUpdateProgressWithData:data completedUnitCount:completedUnitCount totalUnitCount:totalUnitCount];
         } completion:^(NSData *__nullable data, NSDictionary *__nullable info, NSError *__nullable error) {
             [weakSelf _loadOperation:operation didCompleteWithData:data info:info error:error];
         }];
@@ -223,7 +223,7 @@
     [operation updateOperationPriority];
 }
 
-- (void)_loadOperation:(nonnull _DFImageLoadOperation *)operation didUpdateProgressWithCompletedUnitCount:(int64_t)completedUnitCount totalUnitCount:(int64_t)totalUnitCount {
+- (void)_loadOperation:(nonnull _DFImageLoadOperation *)operation didUpdateProgressWithData:(NSData *__nullable)data completedUnitCount:(int64_t)completedUnitCount totalUnitCount:(int64_t)totalUnitCount {
     dispatch_async(_queue, ^{
         operation.totalUnitCount = totalUnitCount;
         operation.completedUnitCount = completedUnitCount;
