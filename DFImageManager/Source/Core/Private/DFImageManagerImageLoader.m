@@ -22,6 +22,7 @@
 
 #import "DFCachedImageResponse.h"
 #import "DFImageCaching.h"
+#import "DFImageDecoding.h"
 #import "DFImageFetching.h"
 #import "DFImageManagerConfiguration.h"
 #import "DFImageManagerDefines.h"
@@ -176,11 +177,13 @@
 #define DFImageLoadKeyCreate(request) [[_DFImageRequestKey alloc] initWithRequest:request isCacheKey:NO owner:self]
 
 @interface DFImageManagerImageLoader () <_DFImageRequestKeyOwner>
+
+@property (nonnull, nonatomic, readonly) DFImageManagerConfiguration *conf;
+
 @end
 
 @implementation DFImageManagerImageLoader {
     dispatch_queue_t _queue;
-    DFImageManagerConfiguration *_conf;
     NSMutableDictionary /* _DFImageLoadKey : _DFImageLoadOperation */ *_loadOperations;
     BOOL _fetcherRespondsToCanonicalRequest;
 }
@@ -254,7 +257,8 @@
             return;
         }
         operation.threshold = threshold;
-        UIImage *image = operation.data.length ? [UIImage df_decodedImageWithData:operation.data] : nil;
+        id<DFImageDecoding> decoder = [_conf.processor imageDecoderForData:operation.data partial:YES];
+        UIImage *image = operation.data.length ? [decoder imageWithData:operation.data partial:YES] : nil;
         if (image) {
             [self _loadOperation:operation didReceivePartialImage:image];
         }
@@ -282,7 +286,8 @@
 - (void)_loadOperation:(nonnull _DFImageLoadOperation *)operation didCompleteWithData:(nullable NSData *)data info:(nullable NSDictionary *)info error:(nullable NSError *)error {
     typeof(self) __weak weakSelf = self;
     [_conf.processingQueue addOperationWithBlock:^{
-        UIImage *image = data ? [UIImage df_decodedImageWithData:data] : nil;
+        id<DFImageDecoding> decoder = [weakSelf.conf.processor imageDecoderForData:operation.data partial:YES];
+        UIImage *image = data ? [decoder imageWithData:data partial:NO] : nil;
         [weakSelf _loadOperation:operation didCompleteWithImage:image info:info error:error];
         operation.data = nil;
     }];

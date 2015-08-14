@@ -24,6 +24,7 @@
 #import <UIKit/UIKit.h>
 
 @class DFImageRequest;
+@protocol DFImageDecoding;
 
 /*! Processes fetched images. Might include image decompression, resizing and anything else.
  @note Implementations should not cache processed images and leave it to classes conforming DFImageCaching protocol.
@@ -34,6 +35,10 @@
  @warning Implementation should not inspect a resource object of the request!
  */
 - (BOOL)isProcessingForRequestEquivalent:(nonnull DFImageRequest *)request1 toRequest:(nonnull DFImageRequest *)request2;
+
+/*! Factory method that returns image decoder for the given data.
+ */
+- (nullable id<DFImageDecoding>)imageDecoderForData:(nonnull NSData *)data partial:(BOOL)partial;
 
 /*! Returns processed image for a given request.
  */

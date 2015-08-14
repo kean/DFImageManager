@@ -27,6 +27,10 @@ static char *_imageProcessedKey;
     return CGSizeEqualToSize(request1.targetSize, request2.targetSize);
 }
 
+- (nullable id<DFImageDecoding>)imageDecoderForData:(nonnull NSData *)data partial:(BOOL)partial {
+    return [DFImageDecoder new];
+}
+
 - (UIImage *)processedImage:(UIImage *)image forRequest:(DFImageRequest *)request {
     objc_setAssociatedObject(image, &_imageProcessedKey, @YES, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     return image;

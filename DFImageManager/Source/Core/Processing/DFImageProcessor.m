@@ -20,6 +20,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+#import "DFImageDecoder.h"
+#import "DFImageDecoding.h"
 #import "DFImageProcessor.h"
 #import "DFImageRequest.h"
 #import "DFImageRequestOptions.h"
@@ -43,6 +45,10 @@ NSString *DFImageProcessingCornerRadiusKey = @"DFImageProcessingCornerRadiusKey"
     NSNumber *cornerRadius1 = request1.options.userInfo[DFImageProcessingCornerRadiusKey];
     NSNumber *cornerRadius2 = request2.options.userInfo[DFImageProcessingCornerRadiusKey];
     return (!cornerRadius1 && !cornerRadius2) || ((!!cornerRadius1 && !!cornerRadius2) && [cornerRadius1 isEqualToNumber:cornerRadius2]);
+}
+
+- (nullable id<DFImageDecoding>)imageDecoderForData:(nonnull NSData *)data partial:(BOOL)partial {
+    return [DFImageDecoder sharedDecoder];
 }
 
 - (nullable UIImage *)processedImage:(nonnull UIImage *)image forRequest:(nonnull DFImageRequest *)request {

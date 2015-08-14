@@ -26,6 +26,7 @@
 #import "DFImageFetching.h"
 #import "DFImageCaching.h"
 #import "DFImageProcessing.h"
+#import "DFImageDecoding.h"
 
 #import "DFImageManager.h"
 #import "DFImageManagerConfiguration.h"
@@ -35,6 +36,7 @@
 #import "DFImageTask.h"
 #import "DFImageRequestOptions.h"
 #import "DFImageResponse.h"
+#import "DFImageDecoder.h"
 
 // Caching (memory cache)
 #import "DFImageCache.h"

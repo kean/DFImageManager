@@ -22,6 +22,7 @@ FOUNDATION_EXPORT const unsigned char DFImageManagerFrameworkVersionString[];
 #import <DFImageManagerKit/DFImageFetching.h>
 #import <DFImageManagerKit/DFImageCaching.h>
 #import <DFImageManagerKit/DFImageProcessing.h>
+#import <DFImageManagerKit/DFImageDecoding.h>
 
 #import <DFImageManagerKit/DFImageManager.h>
 #import <DFImageManagerKit/DFImageManagerConfiguration.h>
@@ -31,6 +32,7 @@ FOUNDATION_EXPORT const unsigned char DFImageManagerFrameworkVersionString[];
 #import <DFImageManagerKit/DFImageTask.h>
 #import <DFImageManagerKit/DFImageRequestOptions.h>
 #import <DFImageManagerKit/DFImageResponse.h>
+#import <DFImageManagerKit/DFImageDecoder.h>
 
 // Caching (memory cache)
 #import <DFImageManagerKit/DFImageCache.h>

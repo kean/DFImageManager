@@ -22,37 +22,7 @@
 
 #import "UIImage+DFImageUtilities.h"
 
-#if DF_IMAGE_MANAGER_GIF_AVAILABLE
-#import "DFImageManagerKit+GIF.h"
-#endif
-
-#if DF_IMAGE_MANAGER_WEBP_AVAILABLE
-#import "DFImageManagerKit+WebP.h"
-#endif
-
 @implementation UIImage (DFImageUtilities)
-
-+ (nullable UIImage *)df_decodedImageWithData:(nonnull NSData *)data {
-    if (!data.length) {
-        return nil;
-    }
-#if DF_IMAGE_MANAGER_GIF_AVAILABLE
-    if ([DFAnimatedImage isAnimatedGIFData:data]) {
-        UIImage *image = [[DFAnimatedImage alloc] initWithAnimatedGIFData:data];
-        if (image) {
-            return image;
-        }
-    }
-#endif
-    
-#if DF_IMAGE_MANAGER_WEBP_AVAILABLE
-    UIImage *webpImage = [UIImage df_imageWithWebPData:data];
-    if (webpImage) {
-        return webpImage;
-    }
-#endif
-    return [[UIImage alloc] initWithData:data scale:[UIScreen mainScreen].scale];
-}
 
 + (UIImage *)df_decompressedImage:(UIImage *)image {
     return [self df_decompressedImage:image scale:1.f];
