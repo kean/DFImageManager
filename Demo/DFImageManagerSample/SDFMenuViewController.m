@@ -13,6 +13,7 @@
 #import "SDFMenuViewController.h"
 #import "SDFNetworkingDemoCollectionViewController.h"
 #import "SDFPhotosKitDemoViewController.h"
+#import "SDFProgressiveJPEGDemoViewController.h"
 #import <Photos/Photos.h>
 
 
@@ -131,6 +132,11 @@
         [items addObject:[SDFMenuItem itemWithTitle:@"GIF Demo" subtitle:@"'GIF' subspec" action:^{
             SDFGIFSampleViewController *controller = [SDFGIFSampleViewController new];
             controller.title = @"GIF Demo";
+            [weakSelf.navigationController pushViewController:controller animated:YES];
+        }]];
+        [items addObject:[SDFMenuItem itemWithTitle:@"Progressive JPEG Demo" subtitle:nil action:^{
+            SDFProgressiveJPEGDemoViewController *controller = [SDFProgressiveJPEGDemoViewController new];
+            controller.title = @"Progressive JPEG Demo";
             [weakSelf.navigationController pushViewController:controller animated:YES];
         }]];
         [items addObject:[SDFMenuItem itemWithTitle:@"Preheating Demo" subtitle:@"Preheat images close to viewport"  action:^{

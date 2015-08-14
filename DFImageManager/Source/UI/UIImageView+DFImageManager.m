@@ -53,17 +53,18 @@ static char *_imageTaskKey;
 
 - (nullable DFImageTask *)df_setImageWithRequest:(nullable DFImageRequest *)request {
     [self _df_cancelFetching];
-    
     if (!request) {
         return nil;
     }
-    
     UIImageView *__weak weakSelf = self;
-    DFImageTask *task = [[DFImageManager sharedManager] imageTaskForRequest:request completion:^(UIImage *__nullable image, NSError *__nullable error, DFImageResponse *__nullable response, DFImageTask *__nonnull completedTask) {
+    DFImageTask *task = [[DFImageManager sharedManager] imageTaskForRequest:request completion:^(UIImage *__nullable image, NSError *__nullable error, DFImageResponse *__nullable response, DFImageTask *__nonnull imageTask) {
         if (image) {
             weakSelf.image = image;
         }
     }];
+    task.progressiveImageHandler = ^(UIImage *__nonnull image){
+        weakSelf.image = image;
+    };
     [task resume];
     [self _df_setImageTask:task];
     
