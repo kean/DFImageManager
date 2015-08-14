@@ -142,7 +142,7 @@ static inline void DFDispatchAsync(dispatch_block_t block) {
     if (self = [super init]) {
         NSParameterAssert(configuration);
         _conf = [configuration copy];
-        _imageLoader = [[DFImageManagerImageLoader alloc] initWithFetcher:_conf.fetcher cache:_conf.cache processor:_conf.processor processingQueue:_conf.processingQueue];
+        _imageLoader = [[DFImageManagerImageLoader alloc] initWithConfiguration:configuration];
         _preheatingTasks = [NSMutableDictionary new];
         _executingImageTasks = [NSMutableSet new];
         _recursiveLock = [NSRecursiveLock new];
@@ -312,7 +312,7 @@ static inline void DFDispatchAsync(dispatch_block_t block) {
         }
         [_executingImageTasks addObject:task];
         typeof(self) __weak weakSelf = self;
-        task.loadTask = [_imageLoader startTaskForRequest:task.request progressHandler:^(int64_t completedUnitCount, int64_t totalUnitCount) {
+        DFImageManagerImageLoaderTask *loadTask = [_imageLoader startTaskForRequest:task.request progressHandler:^(int64_t completedUnitCount, int64_t totalUnitCount) {
             NSProgress *progress = task.internalProgress;
             progress.totalUnitCount = totalUnitCount;
             progress.completedUnitCount = completedUnitCount;
@@ -327,6 +327,17 @@ static inline void DFDispatchAsync(dispatch_block_t block) {
                 [strongSelf unlock];
             }
         }];
+        if (task.progressiveImageHandler && task.request.options.allowsProgressiveImage) {
+            loadTask.progressiveImageHandler = ^(UIImage *__nonnull image) {
+                void (^progressiveImageHandler)(UIImage *__nonnull) = task.progressiveImageHandler;
+                if (progressiveImageHandler) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        progressiveImageHandler(image);
+                    });
+                }
+            };
+        }
+        task.loadTask = loadTask;
     }
     if (state == DFImageTaskStateCompleted || state == DFImageTaskStateCancelled) {
         [_executingImageTasks removeObject:task];

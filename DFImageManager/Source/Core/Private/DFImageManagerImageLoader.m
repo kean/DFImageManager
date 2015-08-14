@@ -23,6 +23,7 @@
 #import "DFCachedImageResponse.h"
 #import "DFImageCaching.h"
 #import "DFImageFetching.h"
+#import "DFImageManagerConfiguration.h"
 #import "DFImageManagerDefines.h"
 #import "DFImageManagerImageLoader.h"
 #import "DFImageProcessing.h"
@@ -131,6 +132,10 @@
 @property (nonatomic) int64_t totalUnitCount;
 @property (nonatomic) int64_t completedUnitCount;
 
+// progressive image
+@property (nullable, nonatomic) NSMutableData *data;
+@property (nonatomic) float threshold;
+
 @end
 
 @implementation _DFImageLoadOperation
@@ -141,6 +146,13 @@
         _tasks = [NSMutableArray new];
     }
     return self;
+}
+
+- (NSMutableData * __nullable)data {
+    if (!_data) {
+        _data = [NSMutableData new];
+    }
+    return _data;
 }
 
 - (void)updateOperationPriority {
@@ -168,27 +180,18 @@
 
 @implementation DFImageManagerImageLoader {
     dispatch_queue_t _queue;
-    id<DFImageFetching> _fetcher;
-    id<DFImageCaching> _cache;
-    id<DFImageProcessing> _processor;
-    NSOperationQueue *_processingQueue;
+    DFImageManagerConfiguration *_conf;
     NSMutableDictionary /* _DFImageLoadKey : _DFImageLoadOperation */ *_loadOperations;
     BOOL _fetcherRespondsToCanonicalRequest;
 }
 
-- (nonnull instancetype)initWithFetcher:(nonnull id<DFImageFetching>)fetcher cache:(nullable id<DFImageCaching>)cache processor:(nullable id<DFImageProcessing>)processor processingQueue:(nullable NSOperationQueue *)processingQueue {
+- (nonnull instancetype)initWithConfiguration:(nonnull DFImageManagerConfiguration *)configuration {
     if (self = [super init]) {
-        _fetcher = fetcher;
-        _cache = cache;
-        _processor = processor;
-        _processingQueue = processingQueue;
-        if (!_processingQueue) {
-            _processingQueue = [NSOperationQueue new];
-            _processingQueue.maxConcurrentOperationCount = 1;
-        }
+        NSParameterAssert(configuration);
+        _conf = [configuration copy];
         _loadOperations = [NSMutableDictionary new];
         _queue = dispatch_queue_create([[NSString stringWithFormat:@"%@-queue-%p", [self class], self] UTF8String], DISPATCH_QUEUE_SERIAL);
-        _fetcherRespondsToCanonicalRequest = [_fetcher respondsToSelector:@selector(canonicalRequestForRequest:)];
+        _fetcherRespondsToCanonicalRequest = [_conf.fetcher respondsToSelector:@selector(canonicalRequestForRequest:)];
     }
     return self;
 }
@@ -207,7 +210,7 @@
     if (!operation) {
         operation = [[_DFImageLoadOperation alloc] initWithKey:key];
         typeof(self) __weak weakSelf = self;
-        operation.operation = [_fetcher startOperationWithRequest:task.request progressHandler:^(NSData *__nullable data, int64_t completedUnitCount, int64_t totalUnitCount) {
+        operation.operation = [_conf.fetcher startOperationWithRequest:task.request progressHandler:^(NSData *__nullable data, int64_t completedUnitCount, int64_t totalUnitCount) {
             [weakSelf _loadOperation:operation didUpdateProgressWithData:data completedUnitCount:completedUnitCount totalUnitCount:totalUnitCount];
         } completion:^(NSData *__nullable data, NSDictionary *__nullable info, NSError *__nullable error) {
             [weakSelf _loadOperation:operation didCompleteWithData:data info:info error:error];
@@ -232,14 +235,56 @@
             task.completedUnitCount = operation.completedUnitCount;
             task.progressHandler(task.completedUnitCount, task.totalUnitCount);
         }
+        // progressive image:
+        if (!_conf.allowsProgressiveImage) {
+            return;
+        }
+        if (completedUnitCount >= totalUnitCount) {
+            operation.data = nil;
+            return;
+        }
+        if (data.length) {
+            [operation.data appendData:data];
+        }
+        if (![self _shouldDecodePartialDataForOperation:operation]) {
+            return;
+        }
+        float threshold = (completedUnitCount * 1.f) / (totalUnitCount * 1.f);
+        if ((threshold - operation.threshold) < _conf.progressiveImageDecodingThreshold) {
+            return;
+        }
+        operation.threshold = threshold;
+        UIImage *image = operation.data.length ? [UIImage df_decodedImageWithData:operation.data] : nil;
+        if (image) {
+            [self _loadOperation:operation didReceivePartialImage:image];
+        }
     });
+}
+
+- (BOOL)_shouldDecodePartialDataForOperation:(_DFImageLoadOperation *)operation {
+    for (DFImageManagerImageLoaderTask *task in operation.tasks) {
+        if (task.progressiveImageHandler) {
+            return YES;
+        }
+    }
+    return NO;
+}
+
+- (void)_loadOperation:(nonnull _DFImageLoadOperation *)operation didReceivePartialImage:(nonnull UIImage *)image {
+    for (DFImageManagerImageLoaderTask *task in operation.tasks) {
+        void (^progressiveImageHandler)(UIImage *__nonnull) = task.progressiveImageHandler;
+        if (progressiveImageHandler && image) {
+            progressiveImageHandler(image);
+        }
+    }
 }
 
 - (void)_loadOperation:(nonnull _DFImageLoadOperation *)operation didCompleteWithData:(nullable NSData *)data info:(nullable NSDictionary *)info error:(nullable NSError *)error {
     typeof(self) __weak weakSelf = self;
-    [_processingQueue addOperationWithBlock:^{
+    [_conf.processingQueue addOperationWithBlock:^{
         UIImage *image = data ? [UIImage df_decodedImageWithData:data] : nil;
         [weakSelf _loadOperation:operation didCompleteWithImage:image info:info error:error];
+        operation.data = nil;
     }];
 }
 
@@ -256,7 +301,7 @@
 - (void)_loadTask:(nonnull DFImageManagerImageLoaderTask *)task didCompleteWithImage:(nullable UIImage *)image info:(nullable NSDictionary *)info error:(nullable NSError *)error {
     typeof(self) __weak weakSelf = self;
     if (image && [self _shouldProcessImage:image]) {
-        id<DFImageProcessing> processor = _processor;
+        id<DFImageProcessing> processor = _conf.processor;
         NSOperation *operation = [NSBlockOperation blockOperationWithBlock:^{
             UIImage *processedImage = [weakSelf cachedResponseForRequest:task.request].image;
             if (!processedImage) {
@@ -267,7 +312,7 @@
                 task.completionHandler(processedImage, info, error);
             });
         }];
-        [_processingQueue addOperation:operation];
+        [_conf.processingQueue addOperation:operation];
         task.processOperation = operation;
     } else {
         [weakSelf _storeImage:image info:info forRequest:task.request];
@@ -301,7 +346,7 @@
 #pragma mark Processing
 
 - (BOOL)_shouldProcessImage:(nonnull UIImage *)image {
-    if (!_processor || !_processingQueue) {
+    if (!_conf.processor || !_conf.processingQueue) {
         return NO;
     }
 #if DF_IMAGE_MANAGER_GIF_AVAILABLE
@@ -315,20 +360,20 @@
 #pragma mark Caching
 
 - (nullable DFCachedImageResponse *)cachedResponseForRequest:(nonnull DFImageRequest *)request {
-    return request.options.memoryCachePolicy != DFImageRequestCachePolicyReloadIgnoringCache ? [_cache cachedImageResponseForKey:DFImageCacheKeyCreate(request)] : nil;
+    return request.options.memoryCachePolicy != DFImageRequestCachePolicyReloadIgnoringCache ? [_conf.cache cachedImageResponseForKey:DFImageCacheKeyCreate(request)] : nil;
 }
 
 - (void)_storeImage:(nullable UIImage *)image info:(nullable NSDictionary *)info forRequest:(nonnull DFImageRequest *)request {
     if (image) {
         DFCachedImageResponse *cachedResponse = [[DFCachedImageResponse alloc] initWithImage:image info:info expirationDate:(CACurrentMediaTime() + request.options.expirationAge)];
-        [_cache storeImageResponse:cachedResponse forKey:DFImageCacheKeyCreate(request)];
+        [_conf.cache storeImageResponse:cachedResponse forKey:DFImageCacheKeyCreate(request)];
     }
 }
 
 #pragma mark Misc
 
 - (nonnull DFImageRequest *)canonicalRequestForRequest:(nonnull DFImageRequest *)request {
-    return _fetcherRespondsToCanonicalRequest ? [_fetcher canonicalRequestForRequest:request] : request;
+    return _fetcherRespondsToCanonicalRequest ? [_conf.fetcher canonicalRequestForRequest:request] : request;
 }
 
 - (nonnull NSArray *)canonicalRequestsForRequests:(nonnull NSArray *)requests {
@@ -350,12 +395,12 @@
 
 - (BOOL)isImageRequestKey:(nonnull _DFImageRequestKey *)lhs equalToKey:(nonnull _DFImageRequestKey *)rhs {
     if (lhs.isCacheKey) {
-        if (![_fetcher isRequestCacheEquivalent:lhs.request toRequest:rhs.request]) {
+        if (![_conf.fetcher isRequestCacheEquivalent:lhs.request toRequest:rhs.request]) {
             return NO;
         }
-        return _processor ? [_processor isProcessingForRequestEquivalent:lhs.request toRequest:rhs.request] : YES;
+        return _conf.processor ? [_conf.processor isProcessingForRequestEquivalent:lhs.request toRequest:rhs.request] : YES;
     } else {
-        return [_fetcher isRequestFetchEquivalent:lhs.request toRequest:rhs.request];
+        return [_conf.fetcher isRequestFetchEquivalent:lhs.request toRequest:rhs.request];
     }
 }
 

@@ -13,11 +13,38 @@
 static NSString *const kReuseIdentifierImageCell = @"kReuseIdentifierImageCell";
 
 @implementation SDFProgressiveJPEGDemoViewController  {
+    id<DFImageManaging> _previousSharedManager;
+    
     NSArray *_imageURLs;
+}
+
+- (void)dealloc {
+    [DFImageManager setSharedManager:_previousSharedManager];
 }
 
 - (instancetype)init {
     return [self initWithCollectionViewLayout:[UICollectionViewFlowLayout new]];
+}
+
+- (instancetype)initWithCollectionViewLayout:(UICollectionViewLayout *)layout {
+    if (self = [super initWithCollectionViewLayout:layout]) {
+        [self _configureProgressiveEnabledImageManager];
+    }
+    return self;
+}
+
+- (void)_configureProgressiveEnabledImageManager {
+    _previousSharedManager = [DFImageManager sharedManager];
+    
+    DFURLImageFetcher *fetcher = [[DFURLImageFetcher alloc] initWithSessionConfiguration:({
+        NSURLSessionConfiguration *conf = [NSURLSessionConfiguration defaultSessionConfiguration];
+        conf.URLCache = [[NSURLCache alloc] initWithMemoryCapacity:0 diskCapacity:1024 * 1024 * 256 diskPath:@"com.github.kean.default_image_cache"];
+        conf;
+    })];
+    DFImageManagerConfiguration *conf = [DFImageManagerConfiguration configurationWithFetcher:fetcher processor:[DFImageProcessor new] cache:[DFImageCache new]];
+    conf.allowsProgressiveImage = YES;
+    id<DFImageManaging> manager = [[DFImageManager alloc] initWithConfiguration:conf];
+    [DFImageManager addSharedManager:manager];
 }
 
 - (void)viewDidLoad {
@@ -32,7 +59,7 @@ static NSString *const kReuseIdentifierImageCell = @"kReuseIdentifierImageCell";
     layout.sectionInset = UIEdgeInsetsMake(8.f, 8.f, 8.f, 8.f);
     layout.minimumInteritemSpacing = 8.f;
     
-    _imageURLs = @[[NSURL URLWithString:@"https://cloud.githubusercontent.com/assets/1567433/9273378/f9598c62-4294-11e5-9eac-b4964b5a2947.jpg"]];
+    _imageURLs = @[[NSURL URLWithString:@"https://cloud.githubusercontent.com/assets/1567433/9279542/f56dd15e-42c0-11e5-950d-75a29d1b2464.jpg"]];
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {

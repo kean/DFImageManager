@@ -51,6 +51,14 @@
  */
 @property (nonatomic) NSUInteger maximumConcurrentPreheatingRequests;
 
+/*! If YES allows progressive image decoding. Default value is NO.
+ */
+@property (nonatomic) BOOL allowsProgressiveImage;
+
+/*! The load progress threshold at which received data is decoded. Default value is 0.2, which means that the received data will be decoded each time next 20% of total bytes is received.
+ */
+@property (nonatomic) float progressiveImageDecodingThreshold;
+
 /*! Returns a DFImageManagerConfiguration initialized with a given image fetcher.
  */
 - (nonnull instancetype)initWithFetcher:(nonnull id<DFImageFetching>)fetcher NS_DESIGNATED_INITIALIZER;

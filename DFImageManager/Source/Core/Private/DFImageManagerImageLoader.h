@@ -24,6 +24,7 @@
 #import <Foundation/Foundation.h>
 
 @class DFImageRequest;
+@class DFImageManagerConfiguration;
 @protocol DFImageFetching;
 @protocol DFImageProcessing;
 @protocol DFImageCaching;
@@ -33,6 +34,7 @@ typedef void (^DFImageLoaderCompletionHandler)(UIImage *__nullable image, NSDict
 
 @interface DFImageManagerImageLoaderTask : NSObject
 
+@property (atomic, copy) void (^__nullable progressiveImageHandler)(UIImage *__nonnull image);
 @property (nonatomic, readonly) int64_t totalUnitCount;
 @property (nonatomic, readonly) int64_t completedUnitCount;
 
@@ -45,7 +47,7 @@ typedef void (^DFImageLoaderCompletionHandler)(UIImage *__nullable image, NSDict
  */
 @interface DFImageManagerImageLoader : NSObject
 
-- (nonnull instancetype)initWithFetcher:(nonnull id<DFImageFetching>)fetcher cache:(nullable id<DFImageCaching>)cache processor:(nullable id<DFImageProcessing>)processor processingQueue:(nullable NSOperationQueue *)processingQueue;
+- (nonnull instancetype)initWithConfiguration:(nonnull DFImageManagerConfiguration *)configuration;
 
 - (nonnull DFImageManagerImageLoaderTask *)startTaskForRequest:(nonnull DFImageRequest *)request progressHandler:(nonnull DFImageLoaderProgressHandler)progressHandler completion:(nonnull DFImageLoaderCompletionHandler)completion;
 

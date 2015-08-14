@@ -32,6 +32,8 @@
         _processingQueue = [NSOperationQueue new];
         _processingQueue.maxConcurrentOperationCount = 2;
         _maximumConcurrentPreheatingRequests = 2;
+        _allowsProgressiveImage = NO;
+        _progressiveImageDecodingThreshold = 0.2f;
     }
     return self;
 }
@@ -53,6 +55,8 @@
     copy.processor = self.processor;
     copy.processingQueue = self.processingQueue;
     copy.maximumConcurrentPreheatingRequests = self.maximumConcurrentPreheatingRequests;
+    copy.allowsProgressiveImage = self.allowsProgressiveImage;
+    copy.progressiveImageDecodingThreshold = self.progressiveImageDecodingThreshold;
     return copy;
 }
 
