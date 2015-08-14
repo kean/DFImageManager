@@ -44,12 +44,12 @@ NSString *TDFMockImageFetcherOperationKey = @"TDFMockImageFetcherOperationKey";
     TDFMockFetchOperation *operation = [TDFMockFetchOperation blockOperationWithBlock:^{
         dispatch_async(dispatch_get_main_queue(), ^{
             if (progressHandler) {
-                progressHandler(50, 100);
+                progressHandler(nil, 50, 100);
             }
         });
         dispatch_async(dispatch_get_main_queue(), ^{
             if (progressHandler) {
-                progressHandler(100, 100);
+                progressHandler(nil, 100, 100);
             }
         });
         dispatch_async(dispatch_get_main_queue(), ^{
