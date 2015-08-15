@@ -22,7 +22,6 @@
 
 #import "DFImageManagerConfiguration.h"
 
-
 @implementation DFImageManagerConfiguration
 
 - (nonnull instancetype)initWithFetcher:(nonnull id<DFImageFetching>)fetcher {
@@ -52,6 +51,7 @@
 - (id)copyWithZone:(NSZone *)zone {
     DFImageManagerConfiguration *copy = [[DFImageManagerConfiguration alloc] initWithFetcher:self.fetcher];
     copy.cache = self.cache;
+    copy.decoder = self.decoder;
     copy.processor = self.processor;
     copy.processingQueue = self.processingQueue;
     copy.maximumConcurrentPreheatingRequests = self.maximumConcurrentPreheatingRequests;

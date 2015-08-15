@@ -22,6 +22,7 @@
 
 #import "DFCachedImageResponse.h"
 #import "DFImageCaching.h"
+#import "DFImageDecoder.h"
 #import "DFImageDecoding.h"
 #import "DFImageFetching.h"
 #import "DFImageManagerConfiguration.h"
@@ -257,8 +258,7 @@
             return;
         }
         operation.threshold = threshold;
-        id<DFImageDecoding> decoder = [_conf.processor imageDecoderForData:operation.data partial:YES];
-        UIImage *image = operation.data.length ? [decoder imageWithData:operation.data partial:YES] : nil;
+        UIImage *image = [self _decodedImageWithData:operation.data partial:YES];
         if (image) {
             [self _loadOperation:operation didReceivePartialImage:image];
         }
@@ -286,8 +286,7 @@
 - (void)_loadOperation:(nonnull _DFImageLoadOperation *)operation didCompleteWithData:(nullable NSData *)data info:(nullable NSDictionary *)info error:(nullable NSError *)error {
     typeof(self) __weak weakSelf = self;
     [_conf.processingQueue addOperationWithBlock:^{
-        id<DFImageDecoding> decoder = [weakSelf.conf.processor imageDecoderForData:operation.data partial:YES];
-        UIImage *image = data ? [decoder imageWithData:data partial:NO] : nil;
+        UIImage *image = [weakSelf _decodedImageWithData:data partial:NO];
         [weakSelf _loadOperation:operation didCompleteWithImage:image info:info error:error];
         operation.data = nil;
     }];
@@ -346,6 +345,13 @@
         task.priority = priority;
         [task.loadOperation updateOperationPriority];
     });
+}
+
+#pragma mark - Decoding
+
+- (nullable UIImage *)_decodedImageWithData:(nullable NSData *)data partial:(BOOL)partial {
+    id<DFImageDecoding> decoder = _conf.decoder ?: [DFImageDecoder sharedDecoder];
+    return data ? [decoder imageWithData:data partial:NO] : nil;
 }
 
 #pragma mark Processing

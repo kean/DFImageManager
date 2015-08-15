@@ -24,6 +24,7 @@
 
 @protocol DFImageCaching;
 @protocol DFImageFetching;
+@protocol DFImageDecoding;
 @protocol DFImageProcessing;
 
 /*! An DFImageManagerConfiguration object defines the behaviour and policies to use when retrieving images using DFImageManager object.
@@ -33,6 +34,10 @@
 /*! The image fetcher the receiver was initialized with.
  */
 @property (nonnull, nonatomic) id<DFImageFetching> fetcher;
+
+/*! The image decoder.
+ */
+@property (nullable, nonatomic) id<DFImageDecoding> decoder;
 
 /*! The image processor.
  */
