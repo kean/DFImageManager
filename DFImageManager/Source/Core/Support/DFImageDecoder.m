@@ -32,6 +32,10 @@
 #import "DFImageManagerKit+WebP.h"
 #endif
 
+#if DF_IMAGE_MANAGER_PROGRESSIVE_JPEG_AVAILABLE
+#import "DFImageManagerKit+ProgressiveJPEG.h"
+#endif
+
 @implementation DFImageDecoder
 
 #pragma mark <DFImageDecoding>
@@ -49,12 +53,22 @@
     }
 #endif
     
+#if DF_IMAGE_MANAGER_PROGRESSIVE_JPEG_AVAILABLE
+    if ([UIImage df_isJPEGData:data]) {
+        UIImage *image = [UIImage df_imageWithJPEGData:data];
+        if (image) {
+            return image;
+        }
+    }
+#endif
+    
 #if DF_IMAGE_MANAGER_WEBP_AVAILABLE
     UIImage *webpImage = [UIImage df_imageWithWebPData:data];
     if (webpImage) {
         return webpImage;
     }
 #endif
+    
     return [[UIImage alloc] initWithData:data scale:[UIScreen mainScreen].scale];
 }
 

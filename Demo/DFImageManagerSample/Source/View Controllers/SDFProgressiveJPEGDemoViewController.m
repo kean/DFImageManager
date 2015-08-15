@@ -59,7 +59,7 @@ static NSString *const kReuseIdentifierImageCell = @"kReuseIdentifierImageCell";
     layout.sectionInset = UIEdgeInsetsMake(8.f, 8.f, 8.f, 8.f);
     layout.minimumInteritemSpacing = 8.f;
     
-    _imageURLs = @[[NSURL URLWithString:@"https://cloud.githubusercontent.com/assets/1567433/9279542/f56dd15e-42c0-11e5-950d-75a29d1b2464.jpg"]];
+    _imageURLs = @[[NSURL URLWithString:@"https://cloud.githubusercontent.com/assets/1567433/9288231/d6cd1622-4344-11e5-9a64-f1e226d5cfe6.jpg"]];
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {

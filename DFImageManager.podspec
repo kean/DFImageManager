@@ -49,4 +49,9 @@ Pod::Spec.new do |s|
         ss.source_files = "DFImageManager/Source/WebP/**/*.{h,m}"
     end
 
+    s.subspec "ProgressiveJPEG" do |ss|
+        ss.dependency "DFJPEGTurbo"
+        ss.source_files = "DFImageManager/Source/ProgressiveJPEG/**/*.{h,m}"
+    end
+
 end

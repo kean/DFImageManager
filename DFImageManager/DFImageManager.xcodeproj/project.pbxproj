@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0C00F5651B7F302700C4DB9C /* UIImage+DFImageManagerProgressiveJPEG.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C00F5631B7F302700C4DB9C /* UIImage+DFImageManagerProgressiveJPEG.m */; };
 		0C2074331A6C821200776A43 /* Image.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0CD012681A6C6B16004F6CD3 /* Image.jpg */; };
 		0C2074341A6C821500776A43 /* TDFImageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD0126C1A6C6B16004F6CD3 /* TDFImageManager.m */; };
 		0C2074351A6C821900776A43 /* TDFTesting.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD0126A1A6C6B16004F6CD3 /* TDFTesting.m */; };
@@ -161,6 +162,9 @@
 
 /* Begin PBXFileReference section */
 		08231C32293CC0B246EA8D13 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "../Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
+		0C00F5601B7F2FF500C4DB9C /* DFImageManagerKit+ProgressiveJPEG.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "DFImageManagerKit+ProgressiveJPEG.h"; sourceTree = "<group>"; };
+		0C00F5621B7F302700C4DB9C /* UIImage+DFImageManagerProgressiveJPEG.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+DFImageManagerProgressiveJPEG.h"; sourceTree = "<group>"; };
+		0C00F5631B7F302700C4DB9C /* UIImage+DFImageManagerProgressiveJPEG.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+DFImageManagerProgressiveJPEG.m"; sourceTree = "<group>"; };
 		0C2BD4B81A03A28000412BE3 /* libDFImageManager.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libDFImageManager.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		0C2BD4C31A03A28000412BE3 /* DFImageManagerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DFImageManagerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		0C3C4C731B5EF3A500C830BA /* DFImageManagerImageLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFImageManagerImageLoader.h; sourceTree = "<group>"; };
@@ -311,6 +315,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0C00F55F1B7F2FE200C4DB9C /* ProgressiveJPEG */ = {
+			isa = PBXGroup;
+			children = (
+				0C00F5601B7F2FF500C4DB9C /* DFImageManagerKit+ProgressiveJPEG.h */,
+				0C00F5621B7F302700C4DB9C /* UIImage+DFImageManagerProgressiveJPEG.h */,
+				0C00F5631B7F302700C4DB9C /* UIImage+DFImageManagerProgressiveJPEG.m */,
+			);
+			path = ProgressiveJPEG;
+			sourceTree = "<group>";
+		};
 		0C2BD4AF1A03A28000412BE3 = {
 			isa = PBXGroup;
 			children = (
@@ -466,6 +480,7 @@
 				0C44A7311AAB235800900C6A /* PhotosKit */,
 				0C6550AF1AA738E100B4805C /* GIF */,
 				0CBAA6741B5B9454002A5E59 /* WebP */,
+				0C00F55F1B7F2FE200C4DB9C /* ProgressiveJPEG */,
 			);
 			path = Source;
 			sourceTree = "<group>";
@@ -937,6 +952,7 @@
 				0CBE003E1B7E720D004B92DB /* DFImageDecoder.m in Sources */,
 				0CBAA6811B5BB4D3002A5E59 /* UIImage+DFImageUtilities.m in Sources */,
 				0CEEED121AABE36100C212A4 /* DFImageManager.m in Sources */,
+				0C00F5651B7F302700C4DB9C /* UIImage+DFImageManagerProgressiveJPEG.m in Sources */,
 				0C3C4C761B5EF3A500C830BA /* DFImageManagerImageLoader.m in Sources */,
 				0CEEECA11AABC84F00C212A4 /* DFImageCache.m in Sources */,
 				0CEEECE71AABD75F00C212A4 /* DFImageTask.m in Sources */,
