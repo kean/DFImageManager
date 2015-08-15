@@ -63,9 +63,11 @@
 #endif
     
 #if DF_IMAGE_MANAGER_WEBP_AVAILABLE
-    UIImage *webpImage = [UIImage df_imageWithWebPData:data];
-    if (webpImage) {
-        return webpImage;
+    if ([UIImage df_isWebPData:data]) {
+        UIImage *image = [UIImage df_imageWithWebPData:data];
+        if (image) {
+            return image;
+        }
     }
 #endif
     

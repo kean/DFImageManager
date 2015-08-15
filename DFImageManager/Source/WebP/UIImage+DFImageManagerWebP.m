@@ -25,11 +25,22 @@
 
 @implementation UIImage (DFImageManagerWebP)
 
++ (BOOL)df_isWebPData:(nullable NSData *)data {
+    const NSInteger sigLength = 12;
+    if (data.length < sigLength) {
+        return NO;
+    }
+    uint8_t sig[sigLength];
+    [data getBytes:&sig length:sigLength];
+    // RIFF----WEBP
+    return (sig[0] == 0x52 && sig[1] == 0x49 && sig[2] == 0x46 && sig[3] == 0x46 && sig[8] == 0x57 && sig[9] == 0x45 && sig[10] == 0x42 && sig[11] == 0x50);
+}
+
 static void FreeImageData(void *info, const void *data, size_t size) {
     free((void *)data);
 }
 
-+ (UIImage *)df_imageWithWebPData:(NSData *)data {
++ (nullable UIImage *)df_imageWithWebPData:(nullable NSData *)data {
     WebPDecoderConfig config;
     if (!WebPInitDecoderConfig(&config)) {
         return nil;

@@ -25,17 +25,18 @@
 
 @implementation UIImage (DFImageManagerProgressiveJPEG)
 
-+ (BOOL)df_isJPEGData:(NSData *)data {
-    if (data.length < 2) {
++ (BOOL)df_isJPEGData:(nullable NSData *)data {
+    const NSInteger sigLength = 2;
+    if (data.length < sigLength) {
         return NO;
     }
     // See https://en.wikipedia.org/wiki/List_of_file_signatures
-    uint8_t h1[2];
-    [data getBytes:&h1 length:2];
-    return h1[0] == 0xFF && h1[1] == 0xD8;
+    uint8_t sig[sigLength];
+    [data getBytes:&sig length:sigLength];
+    return sig[0] == 0xFF && sig[1] == 0xD8;
 }
 
-+ (UIImage *)df_imageWithJPEGData:(NSData *)data {
++ (nullable UIImage *)df_imageWithJPEGData:(nullable NSData *)data {
     return [DFJPEGTurboImageDecoder imageWithData:data];
 }
 

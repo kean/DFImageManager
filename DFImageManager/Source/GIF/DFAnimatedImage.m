@@ -31,7 +31,7 @@
     return self;
 }
 
-- (instancetype)initWithAnimatedGIFData:(NSData *)data {
+- (nullable instancetype)initWithAnimatedGIFData:(nullable NSData *)data {
     FLAnimatedImage *animatedImage = [FLAnimatedImage animatedImageWithGIFData:data];
     if (!animatedImage) {
         return nil;
@@ -39,20 +39,20 @@
     return [self initWithAnimatedImage:animatedImage];
 }
 
-+ (instancetype)animatedImageWithGIFData:(NSData *)data {
++ (nullable instancetype)animatedImageWithGIFData:(nullable NSData *)data {
     return [[DFAnimatedImage alloc] initWithAnimatedGIFData:data];
 }
 
-/*! Based on http://en.wikipedia.org/wiki/Magic_number_(programming)
+/*! See https://en.wikipedia.org/wiki/List_of_file_signatures
  */
-+ (BOOL)isAnimatedGIFData:(NSData *)data {
-    if (data.length) {
-        uint8_t c;
-        [data getBytes:&c length:1];
-        return c == 0x47;
-    } else {
++ (BOOL)isAnimatedGIFData:(nullable NSData *)data {
+    const NSInteger sigLength = 3;
+    if (data.length < sigLength) {
         return NO;
     }
+    uint8_t sig[sigLength];
+    [data getBytes:&sig length:sigLength];
+    return sig[0] == 0x47 && sig[1] == 0x49 && sig[2] == 0x46;
 }
 
 @end

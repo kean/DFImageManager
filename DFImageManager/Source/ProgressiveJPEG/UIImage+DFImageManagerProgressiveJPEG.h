@@ -24,7 +24,12 @@
 
 @interface UIImage (DFImageManagerProgressiveJPEG)
 
-+ (BOOL)df_isJPEGData:(NSData *)data;
-+ (UIImage *)df_imageWithJPEGData:(NSData *)data;
+/*! Returns YES if the data is identified as a JPEG image.
+ */
++ (BOOL)df_isJPEGData:(nullable NSData *)data;
+
+/*! Returns image represenation of the given data.
+ */
++ (nullable UIImage *)df_imageWithJPEGData:(nullable NSData *)data;
 
 @end
