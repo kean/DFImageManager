@@ -20,7 +20,6 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "DFCompositeImageTask.h"
 #import "DFImageManager.h"
 #import "DFImageManaging.h"
 #import "DFImageRequest.h"
@@ -127,35 +126,23 @@ static const NSTimeInterval _kMinimumAutoretryInterval = 8.f;
 }
 
 - (void)setImageWithRequest:(DFImageRequest *)request {
-    [self setImageWithRequests:(request ? @[request] : nil)];
-}
-
-- (void)setImageWithRequests:(nullable NSArray *)requests {
     [self _cancelFetching];
-    
-    if (!requests.count) {
+    if (!request) {
         return;
     }
-    
-    if ([self.delegate respondsToSelector:@selector(imageView:willStartFetchingImagesForRequests:)]) {
-        [self.delegate imageView:self willStartFetchingImagesForRequests:requests];
+    if ([self.delegate respondsToSelector:@selector(imageView:willStartImageTaskForRequest:)]) {
+        [self.delegate imageView:self willStartImageTaskForRequest:request];
     }
-    NSParameterAssert(requests.count > 0);
-    DFImageView *__weak weakSelf = self;
-    _imageTask = [self _createCompositeImageTaskForRequests:requests handler:^(UIImage *__nullable image, DFImageTask *__nonnull completedTask, DFCompositeImageTask *__nonnull task) {
-        [weakSelf.delegate imageView:self didCompleteImageTask:completedTask withImage:image];
-        [weakSelf didCompleteImageTask:completedTask withImage:image];
+    typeof(self) __weak weakSelf = self;
+    DFImageTask *task = [self.imageManager imageTaskForRequest:request completion:^(UIImage *__nullable image, NSError *__nullable error, DFImageResponse *__nullable response, DFImageTask *__nonnull imageTask){
+        [weakSelf.delegate imageView:self didCompleteImageTask:imageTask withImage:image];
+        [weakSelf didCompleteImageTask:imageTask withImage:image];
     }];
-    [_imageTask resume];
-}
-
-- (nonnull DFCompositeImageTask *)_createCompositeImageTaskForRequests:(nonnull NSArray *)requests handler:(nullable DFCompositeImageTaskImageHandler)handler {
-    NSMutableArray *tasks = [NSMutableArray new];
-    for (DFImageRequest *request in requests) {
-        DFImageTask *task = [self.imageManager imageTaskForRequest:request completion:nil];
-        [tasks addObject:task];
-    }
-    return [[DFCompositeImageTask alloc] initWithImageTasks:tasks imageHandler:handler completionHandler:nil];
+    task.progressiveImageHandler = ^(UIImage *__nonnull image){
+        weakSelf.image = image;
+    };
+    _imageTask = task;
+    [task resume];
 }
 
 - (void)didCompleteImageTask:(nonnull DFImageTask *)task withImage:(nullable UIImage *)image {
@@ -193,9 +180,8 @@ static const NSTimeInterval _kMinimumAutoretryInterval = 8.f;
         && reachability.isReachable
         && self.window != nil
         && self.hidden != YES
-        && self.imageTask.isFinished) {
-        DFImageTask *task = [self.imageTask.imageTasks lastObject];
-        NSError *error = task.error;
+        && self.imageTask.state == DFImageTaskStateCompleted) {
+        NSError *error = self.imageTask.error;
         if (error && [self _isNetworkConnetionError:error]) {
             [self _attemptRetry];
         }
@@ -205,7 +191,7 @@ static const NSTimeInterval _kMinimumAutoretryInterval = 8.f;
 - (void)_attemptRetry {
     if (_previousAutoretryTime == 0.0 || CACurrentMediaTime() > _previousAutoretryTime + _kMinimumAutoretryInterval) {
         _previousAutoretryTime = CACurrentMediaTime();
-        [self setImageWithRequests:self.imageTask.imageRequests];
+        [self setImageWithRequest:self.imageTask.request];
     }
 }
 

@@ -6,6 +6,7 @@
 //  Copyright (c) 2015 Alexander Grebenyuk. All rights reserved.
 //
 
+#import "SDFCompositeCollectionImageViewCell.h"
 #import "SDFCompositeRequestDemoViewController.h"
 #import "SDFFlickrPhoto.h"
 #import "SDFFlickrRecentPhotosModel.h"
@@ -34,7 +35,7 @@ static NSString * const reuseIdentifier = @"Cell";
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    [self.collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:reuseIdentifier];
+    [self.collectionView registerClass:[SDFCompositeCollectionImageViewCell class] forCellWithReuseIdentifier:reuseIdentifier];
     
     _activityIndicatorView = [self df_showActivityIndicatorView];
     
@@ -56,25 +57,15 @@ static NSString * const reuseIdentifier = @"Cell";
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifier forIndexPath:indexPath];
-    cell.backgroundColor = [UIColor colorWithWhite:235.f/255.f alpha:1.f];
-    
-    DFImageView *imageView = (id)[cell viewWithTag:15];
-    if (!imageView) {
-        imageView = [[DFImageView alloc] initWithFrame:cell.bounds];
-        imageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-        imageView.tag = 15;
-        [cell addSubview:imageView];
-    }
+    SDFCompositeCollectionImageViewCell *cell = (id)[collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifier forIndexPath:indexPath];
     
     SDFFlickrPhoto *photo = _photos[indexPath.row];
     
     DFImageRequest *requestWithSmallURL = [[DFImageRequest alloc] initWithResource:[NSURL URLWithString:photo.photoURLSmall] targetSize:DFImageMaximumSize contentMode:DFImageContentModeAspectFill options:nil];
     
-    DFImageRequest *requestWithBigURL = [[DFImageRequest alloc] initWithResource:[NSURL URLWithString:photo.photoURLBig] targetSize:imageView.imageTargetSize contentMode:DFImageContentModeAspectFill options:nil];
+    DFImageRequest *requestWithBigURL = [[DFImageRequest alloc] initWithResource:[NSURL URLWithString:photo.photoURLBig] targetSize:DFImageMaximumSize contentMode:DFImageContentModeAspectFill options:nil];
     
-    [imageView prepareForReuse];
-    [imageView setImageWithRequests:@[ requestWithSmallURL, requestWithBigURL ] ];
+    [cell setImageWithRequests:@[requestWithSmallURL, requestWithBigURL]];
     
     return cell;
 }

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0C00F5711B7F3DF700C4DB9C /* SDFCompositeCollectionImageViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C00F5701B7F3DF700C4DB9C /* SDFCompositeCollectionImageViewCell.m */; };
 		0C016FC51A8A1B01009FDDCA /* 10669363.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0C016FBF1A8A1B01009FDDCA /* 10669363.jpg */; };
 		0C016FC61A8A1B01009FDDCA /* 10849093.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0C016FC01A8A1B01009FDDCA /* 10849093.jpg */; };
 		0C016FC71A8A1B01009FDDCA /* 10861057.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0C016FC11A8A1B01009FDDCA /* 10861057.jpg */; };
@@ -49,6 +50,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0C00F56F1B7F3DF700C4DB9C /* SDFCompositeCollectionImageViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDFCompositeCollectionImageViewCell.h; sourceTree = "<group>"; };
+		0C00F5701B7F3DF700C4DB9C /* SDFCompositeCollectionImageViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDFCompositeCollectionImageViewCell.m; sourceTree = "<group>"; };
 		0C016FBF1A8A1B01009FDDCA /* 10669363.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 10669363.jpg; sourceTree = "<group>"; };
 		0C016FC01A8A1B01009FDDCA /* 10849093.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 10849093.jpg; sourceTree = "<group>"; };
 		0C016FC11A8A1B01009FDDCA /* 10861057.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 10861057.jpg; sourceTree = "<group>"; };
@@ -187,6 +190,8 @@
 			children = (
 				0C7A23B81B5D651A00AFACFE /* SDFImageCollectionViewCell.h */,
 				0C7A23B91B5D651A00AFACFE /* SDFImageCollectionViewCell.m */,
+				0C00F56F1B7F3DF700C4DB9C /* SDFCompositeCollectionImageViewCell.h */,
+				0C00F5701B7F3DF700C4DB9C /* SDFCompositeCollectionImageViewCell.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -502,6 +507,7 @@
 				0C97D6C21A5E51E80014D8AD /* SDFBaseCollectionViewController.m in Sources */,
 				0CF8BE0E1A5F514800D8FE27 /* DFMomentHeaderCollectionReusableView.m in Sources */,
 				0C97D6BE1A5E51BE0014D8AD /* SDFFilesystemDemoViewController.m in Sources */,
+				0C00F5711B7F3DF700C4DB9C /* SDFCompositeCollectionImageViewCell.m in Sources */,
 				0CF5937C1A494CEB007C5B56 /* SDFFlickrPhoto.m in Sources */,
 				0C3304B71A4A6CDB001808F3 /* SDFPhotosKitDemoViewController.m in Sources */,
 				0C48E4BD1A5BD6D800CD2497 /* SDFNetworkingDemoCollectionViewController.m in Sources */,

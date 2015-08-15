@@ -27,7 +27,6 @@
 #import <FLAnimatedImage/FLAnimatedImage.h>
 #endif
 
-@class DFCompositeImageTask;
 @class DFImageRequest;
 @class DFImageRequestOptions;
 @class DFImageView;
@@ -36,16 +35,15 @@
  */
 @protocol DFImageViewDelegate <NSObject>
 
-/*! Method gets called every time the completion block is called for the current image fetch task.
- @note Might be called multiple times depending on the number of image requests.
+/*! Method gets called when the completion block is called for the current image fetch task.
  */
 - (void)imageView:(nonnull DFImageView *)imageView didCompleteImageTask:(nonnull DFImageTask *)imageTask withImage:(nullable UIImage *)image;
 
 @optional
-/*! Method gets called right after the image view receives image requests.
- @note This method call is always paired with a least one -imageView:didCompleteRequest:withImage:info call.
+/*! Method gets called right after the image view starts image request.
+ @note This method call is always paired with a -imageView:didCompleteImageTask:withImage: call.
  */
-- (void)imageView:(nonnull DFImageView *)imageView willStartFetchingImagesForRequests:(nonnull NSArray /*! DFImageRequest */ *)requests;
+- (void)imageView:(nonnull DFImageView *)imageView willStartImageTaskForRequest:(nonnull DFImageRequest *)request;
 
 @end
 
@@ -112,9 +110,9 @@
 
 #pragma mark - Fetching
 
-/*! Returns current image fetch task.
+/*! Returns current image task.
  */
-@property (nullable, nonatomic, readonly) DFCompositeImageTask *imageTask;
+@property (nullable, nonatomic, readonly) DFImageTask *imageTask;
 
 /*! Requests an image representation with a target size, image content mode and request options of the receiver. For more info see setImageWithRequests: method.
  */
@@ -128,14 +126,7 @@
  */
 - (void)setImageWithRequest:(nullable DFImageRequest *)request;
 
-/*! Requests an image representation for each of the specified requests.
- @note When the method is called image view cancels current image fetch task and starts a new one with a given requests. For more info see DFCompositeImageTask.
- @note This method doesn't call -prepareForReuse in case you need to refresh image without invalidating previously displayed image.
- */
-- (void)setImageWithRequests:(nullable NSArray /* DFImageRequest */ *)requests;
-
-/*! Method gets called every time the completion block is called for the current image fetch task.
- @note Might be called multiple times depending on the number of image requests.
+/*! Method gets called when the completion block is called for the current image fetch task.
  */
 - (void)didCompleteImageTask:(nonnull DFImageTask *)task withImage:(nullable UIImage *)image;
 

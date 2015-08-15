@@ -65,11 +65,13 @@ static NSString *const kReuseIdentifierImageCell = @"kReuseIdentifierImageCell";
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     SDFImageCollectionViewCell *cell = (id)[collectionView dequeueReusableCellWithReuseIdentifier:kReuseIdentifierImageCell forIndexPath:indexPath];
     cell.backgroundColor = [UIColor colorWithWhite:235.f/255.f alpha:1.f];
-    [cell.imageView df_prepareForReuse];
     NSURL *URL = _imageURLs[indexPath.row];
-    DFMutableImageRequestOptions *options = [DFMutableImageRequestOptions new];
-    options.allowsProgressiveImage = YES;
-    [cell.imageView df_setImageWithResource:URL targetSize:DFImageMaximumSize contentMode:DFImageContentModeAspectFill options:options.options];
+    [cell setImageWithRequest:({
+        DFMutableImageRequestOptions *options = [DFMutableImageRequestOptions new];
+        options.allowsProgressiveImage = YES;
+        [DFImageRequest requestWithResource:URL targetSize:DFImageMaximumSize contentMode:DFImageContentModeAspectFill options:options.options];
+    })];
+    
     return cell;
 }
 

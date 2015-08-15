@@ -9,11 +9,13 @@
 #import <UIKit/UIKit.h>
 
 @class DFImageView;
+@class DFImageRequest;
 
 @interface SDFImageCollectionViewCell : UICollectionViewCell
 
 @property (nonatomic, readonly) DFImageView *imageView;
 
 - (void)setImageWithURL:(NSURL *)imageURL;
+- (void)setImageWithRequest:(DFImageRequest *)request;
 
 @end
