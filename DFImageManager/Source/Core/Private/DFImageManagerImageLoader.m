@@ -32,6 +32,7 @@
 #import "DFImageRequest.h"
 #import "DFImageRequestOptions.h"
 #import "UIImage+DFImageUtilities.h"
+#import "DFProgressiveImageDecoder.h"
 
 #if DF_IMAGE_MANAGER_GIF_AVAILABLE
 #import "DFImageManagerKit+GIF.h"
@@ -133,10 +134,7 @@
 @property (nonnull, nonatomic, readonly) NSMutableArray *tasks;
 @property (nonatomic) int64_t totalUnitCount;
 @property (nonatomic) int64_t completedUnitCount;
-
-// progressive image
-@property (nullable, nonatomic) NSMutableData *data;
-@property (nonatomic) float threshold;
+@property (nonatomic) DFProgressiveImageDecoder *progressiveImageDecoder;
 
 @end
 
@@ -148,13 +146,6 @@
         _tasks = [NSMutableArray new];
     }
     return self;
-}
-
-- (NSMutableData * __nullable)data {
-    if (!_data) {
-        _data = [NSMutableData new];
-    }
-    return _data;
 }
 
 - (void)updateOperationPriority {
@@ -185,6 +176,7 @@
 
 @implementation DFImageManagerImageLoader {
     dispatch_queue_t _queue;
+    NSOperationQueue *_decodingQueue;
     NSMutableDictionary /* _DFImageLoadKey : _DFImageLoadOperation */ *_loadOperations;
     BOOL _fetcherRespondsToCanonicalRequest;
 }
@@ -195,6 +187,8 @@
         _conf = [configuration copy];
         _loadOperations = [NSMutableDictionary new];
         _queue = dispatch_queue_create([[NSString stringWithFormat:@"%@-queue-%p", [self class], self] UTF8String], DISPATCH_QUEUE_SERIAL);
+        _decodingQueue = [NSOperationQueue new];
+        _decodingQueue.maxConcurrentOperationCount = 1; // Serial queue
         _fetcherRespondsToCanonicalRequest = [_conf.fetcher respondsToSelector:@selector(canonicalRequestForRequest:)];
     }
     return self;
@@ -244,23 +238,26 @@
             return;
         }
         if (completedUnitCount >= totalUnitCount) {
-            operation.data = nil;
+            [operation.progressiveImageDecoder invalidate];
             return;
+        }
+        DFProgressiveImageDecoder *decoder = operation.progressiveImageDecoder;
+        if (!decoder) {
+            decoder = [[DFProgressiveImageDecoder alloc] initWithQueue:_decodingQueue decoder:_conf.decoder ?: [DFImageDecoder sharedDecoder]];
+            typeof(self) __weak weakSelf = self;
+            _DFImageLoadOperation *__weak weakOp = operation;
+            decoder.handler = ^(UIImage *__nonnull image) {
+                [weakSelf _loadOperation:weakOp didReceivePartialImage:image];
+            };
+            decoder.threshold = _conf.progressiveImageDecodingThreshold;
+            decoder.totalByteCount = totalUnitCount;
+            operation.progressiveImageDecoder = decoder;
         }
         if (data.length) {
-            [operation.data appendData:data];
+            [decoder appendData:data];
         }
-        if (![self _shouldDecodePartialDataForOperation:operation]) {
-            return;
-        }
-        float threshold = (completedUnitCount * 1.f) / (totalUnitCount * 1.f);
-        if ((threshold - operation.threshold) < _conf.progressiveImageDecodingThreshold) {
-            return;
-        }
-        operation.threshold = threshold;
-        UIImage *image = [self _decodedImageWithData:operation.data partial:YES];
-        if (image) {
-            [self _loadOperation:operation didReceivePartialImage:image];
+        if ([self _shouldDecodePartialDataForOperation:operation]) {
+            [decoder resume];
         }
     });
 }
@@ -275,20 +272,21 @@
 }
 
 - (void)_loadOperation:(nonnull _DFImageLoadOperation *)operation didReceivePartialImage:(nonnull UIImage *)image {
-    for (DFImageManagerImageLoaderTask *task in operation.tasks) {
-        void (^progressiveImageHandler)(UIImage *__nonnull) = task.progressiveImageHandler;
-        if (progressiveImageHandler && image) {
-            progressiveImageHandler(image);
+    dispatch_async(_queue, ^{
+        for (DFImageManagerImageLoaderTask *task in operation.tasks) {
+            void (^progressiveImageHandler)(UIImage *) = task.progressiveImageHandler;
+            if (progressiveImageHandler && image) {
+                progressiveImageHandler(image);
+            }
         }
-    }
+    });
 }
 
 - (void)_loadOperation:(nonnull _DFImageLoadOperation *)operation didCompleteWithData:(nullable NSData *)data info:(nullable NSDictionary *)info error:(nullable NSError *)error {
     typeof(self) __weak weakSelf = self;
-    [_conf.processingQueue addOperationWithBlock:^{
+    [_decodingQueue addOperationWithBlock:^{
         UIImage *image = [weakSelf _decodedImageWithData:data partial:NO];
         [weakSelf _loadOperation:operation didCompleteWithImage:image info:info error:error];
-        operation.data = nil;
     }];
 }
 

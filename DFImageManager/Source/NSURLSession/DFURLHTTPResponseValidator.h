@@ -22,8 +22,6 @@
 
 #import "DFURLResponseValidating.h"
 
-NS_ASSUME_NONNULL_BEGIN
-
 /*! The DFURLHTTPResponseValidator performs response validation based on HTTP status code and content type.
  */
 @interface DFURLHTTPResponseValidator : NSObject <DFURLResponseValidating>
@@ -39,5 +37,3 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nullable, nonatomic, copy) NSSet *acceptableContentTypes;
 
 @end
-
-NS_ASSUME_NONNULL_END

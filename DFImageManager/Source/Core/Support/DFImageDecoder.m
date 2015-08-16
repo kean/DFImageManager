@@ -32,10 +32,6 @@
 #import "DFImageManagerKit+WebP.h"
 #endif
 
-#if DF_IMAGE_MANAGER_PROGRESSIVE_JPEG_AVAILABLE
-#import "DFImageManagerKit+ProgressiveJPEG.h"
-#endif
-
 @implementation DFImageDecoder
 
 #pragma mark <DFImageDecoding>
@@ -47,15 +43,6 @@
 #if DF_IMAGE_MANAGER_GIF_AVAILABLE
     if ([DFAnimatedImage isAnimatedGIFData:data]) {
         UIImage *image = [[DFAnimatedImage alloc] initWithAnimatedGIFData:data];
-        if (image) {
-            return image;
-        }
-    }
-#endif
-    
-#if DF_IMAGE_MANAGER_PROGRESSIVE_JPEG_AVAILABLE
-    if ([UIImage df_isJPEGData:data]) {
-        UIImage *image = [UIImage df_imageWithJPEGData:data];
         if (image) {
             return image;
         }

@@ -32,7 +32,7 @@
         _processingQueue.maxConcurrentOperationCount = 2;
         _maximumConcurrentPreheatingRequests = 2;
         _allowsProgressiveImage = NO;
-        _progressiveImageDecodingThreshold = 0.1f;
+        _progressiveImageDecodingThreshold = 0.2f;
     }
     return self;
 }

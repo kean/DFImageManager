@@ -22,7 +22,6 @@
 
 #import "DFURLHTTPResponseValidator.h"
 
-
 @implementation DFURLHTTPResponseValidator
 
 - (nonnull instancetype)init {

@@ -7,6 +7,5 @@ source "https://github.com/CocoaPods/Specs.git"
 pod "DFImageManager", :path => "../"
 pod "DFImageManager/AFNetworking", :path => "../"
 pod "DFImageManager/GIF", :path => "../"
-pod "DFImageManager/ProgressiveJPEG", :path => "../"
 
 pod "AFNetworking/UIKit", "~> 2.0"

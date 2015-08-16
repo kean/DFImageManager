@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0C00F5651B7F302700C4DB9C /* UIImage+DFImageManagerProgressiveJPEG.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C00F5631B7F302700C4DB9C /* UIImage+DFImageManagerProgressiveJPEG.m */; };
 		0C2074331A6C821200776A43 /* Image.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0CD012681A6C6B16004F6CD3 /* Image.jpg */; };
 		0C2074341A6C821500776A43 /* TDFImageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD0126C1A6C6B16004F6CD3 /* TDFImageManager.m */; };
 		0C2074351A6C821900776A43 /* TDFTesting.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD0126A1A6C6B16004F6CD3 /* TDFTesting.m */; };
@@ -46,6 +45,9 @@
 		0C8075AD1ABAF3A400A9D88F /* TDFImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C8075AC1ABAF3A400A9D88F /* TDFImageCache.m */; };
 		0C8DA6A51B793B2B006D348E /* Image2.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0C8DA6A41B793B2B006D348E /* Image2.jpg */; };
 		0C9D40891AAC58FC00854FEC /* DFAFImageFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C9D40881AAC58FC00854FEC /* DFAFImageFetcher.m */; };
+		0CA26E311B7FB3F5005883B2 /* DFProgressiveImageDecoder.h in Headers */ = {isa = PBXBuildFile; fileRef = 0CA26E2F1B7FB3F5005883B2 /* DFProgressiveImageDecoder.h */; };
+		0CA26E321B7FB3F5005883B2 /* DFProgressiveImageDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CA26E301B7FB3F5005883B2 /* DFProgressiveImageDecoder.m */; };
+		0CA26E331B7FB3F5005883B2 /* DFProgressiveImageDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CA26E301B7FB3F5005883B2 /* DFProgressiveImageDecoder.m */; };
 		0CA8F1811A723E1400156090 /* TDFURLImageFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CA8F1801A723E1400156090 /* TDFURLImageFetcher.m */; };
 		0CA8F1821A723E1400156090 /* TDFURLImageFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CA8F1801A723E1400156090 /* TDFURLImageFetcher.m */; };
 		0CAA17F11AA9DB1C00E82041 /* TDFImageRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CAA17F01AA9DB1C00E82041 /* TDFImageRequest.m */; };
@@ -162,9 +164,6 @@
 
 /* Begin PBXFileReference section */
 		08231C32293CC0B246EA8D13 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "../Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
-		0C00F5601B7F2FF500C4DB9C /* DFImageManagerKit+ProgressiveJPEG.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "DFImageManagerKit+ProgressiveJPEG.h"; sourceTree = "<group>"; };
-		0C00F5621B7F302700C4DB9C /* UIImage+DFImageManagerProgressiveJPEG.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+DFImageManagerProgressiveJPEG.h"; sourceTree = "<group>"; };
-		0C00F5631B7F302700C4DB9C /* UIImage+DFImageManagerProgressiveJPEG.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+DFImageManagerProgressiveJPEG.m"; sourceTree = "<group>"; };
 		0C2BD4B81A03A28000412BE3 /* libDFImageManager.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libDFImageManager.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		0C2BD4C31A03A28000412BE3 /* DFImageManagerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DFImageManagerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		0C3C4C731B5EF3A500C830BA /* DFImageManagerImageLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFImageManagerImageLoader.h; sourceTree = "<group>"; };
@@ -203,6 +202,8 @@
 		0C9D40851AAC562100854FEC /* DFImageManagerKit+AFNetworking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "DFImageManagerKit+AFNetworking.h"; sourceTree = "<group>"; };
 		0C9D40871AAC58FC00854FEC /* DFAFImageFetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFAFImageFetcher.h; sourceTree = "<group>"; };
 		0C9D40881AAC58FC00854FEC /* DFAFImageFetcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFAFImageFetcher.m; sourceTree = "<group>"; };
+		0CA26E2F1B7FB3F5005883B2 /* DFProgressiveImageDecoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFProgressiveImageDecoder.h; sourceTree = "<group>"; };
+		0CA26E301B7FB3F5005883B2 /* DFProgressiveImageDecoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFProgressiveImageDecoder.m; sourceTree = "<group>"; };
 		0CA8F1801A723E1400156090 /* TDFURLImageFetcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDFURLImageFetcher.m; sourceTree = "<group>"; };
 		0CAA17F01AA9DB1C00E82041 /* TDFImageRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDFImageRequest.m; sourceTree = "<group>"; };
 		0CAA17F21AAA69B000E82041 /* TDFCommonTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDFCommonTests.h; sourceTree = "<group>"; };
@@ -315,16 +316,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		0C00F55F1B7F2FE200C4DB9C /* ProgressiveJPEG */ = {
-			isa = PBXGroup;
-			children = (
-				0C00F5601B7F2FF500C4DB9C /* DFImageManagerKit+ProgressiveJPEG.h */,
-				0C00F5621B7F302700C4DB9C /* UIImage+DFImageManagerProgressiveJPEG.h */,
-				0C00F5631B7F302700C4DB9C /* UIImage+DFImageManagerProgressiveJPEG.m */,
-			);
-			path = ProgressiveJPEG;
-			sourceTree = "<group>";
-		};
 		0C2BD4AF1A03A28000412BE3 = {
 			isa = PBXGroup;
 			children = (
@@ -353,6 +344,8 @@
 			children = (
 				0C3C4C731B5EF3A500C830BA /* DFImageManagerImageLoader.h */,
 				0C3C4C741B5EF3A500C830BA /* DFImageManagerImageLoader.m */,
+				0CA26E2F1B7FB3F5005883B2 /* DFProgressiveImageDecoder.h */,
+				0CA26E301B7FB3F5005883B2 /* DFProgressiveImageDecoder.m */,
 			);
 			path = Private;
 			sourceTree = "<group>";
@@ -480,7 +473,6 @@
 				0C44A7311AAB235800900C6A /* PhotosKit */,
 				0C6550AF1AA738E100B4805C /* GIF */,
 				0CBAA6741B5B9454002A5E59 /* WebP */,
-				0C00F55F1B7F2FE200C4DB9C /* ProgressiveJPEG */,
 			);
 			path = Source;
 			sourceTree = "<group>";
@@ -643,6 +635,7 @@
 				0CEEED331AABE4BC00C212A4 /* DFURLResponseValidating.h in Headers */,
 				0CEEECA31AABC84F00C212A4 /* NSCache+DFImageManager.h in Headers */,
 				0CEEEC8A1AABC5FC00C212A4 /* DFImageProcessor.h in Headers */,
+				0CA26E311B7FB3F5005883B2 /* DFProgressiveImageDecoder.h in Headers */,
 				0CEEED041AABD9DB00C212A4 /* DFNetworkReachability.h in Headers */,
 				0C44A8641AAB3CC000900C6A /* UIImageView+DFImageManager.h in Headers */,
 				0C44A7FF1AAB273F00900C6A /* DFImageCaching.h in Headers */,
@@ -941,6 +934,7 @@
 				0CEEECD81AABD70400C212A4 /* DFImageResponse.m in Sources */,
 				0CEEEC8B1AABC5FC00C212A4 /* DFImageProcessor.m in Sources */,
 				0C44A8651AAB3CC000900C6A /* UIImageView+DFImageManager.m in Sources */,
+				0CA26E321B7FB3F5005883B2 /* DFProgressiveImageDecoder.m in Sources */,
 				0C44A73B1AAB235800900C6A /* DFPhotosKitImageFetcher.m in Sources */,
 				0CEEECD21AABD70400C212A4 /* DFImageRequest.m in Sources */,
 				0CBAA6781B5B96B3002A5E59 /* UIImage+DFImageManagerWebP.m in Sources */,
@@ -952,7 +946,6 @@
 				0CBE003E1B7E720D004B92DB /* DFImageDecoder.m in Sources */,
 				0CBAA6811B5BB4D3002A5E59 /* UIImage+DFImageUtilities.m in Sources */,
 				0CEEED121AABE36100C212A4 /* DFImageManager.m in Sources */,
-				0C00F5651B7F302700C4DB9C /* UIImage+DFImageManagerProgressiveJPEG.m in Sources */,
 				0C3C4C761B5EF3A500C830BA /* DFImageManagerImageLoader.m in Sources */,
 				0CEEECA11AABC84F00C212A4 /* DFImageCache.m in Sources */,
 				0CEEECE71AABD75F00C212A4 /* DFImageTask.m in Sources */,
@@ -997,6 +990,7 @@
 				0CBAA6821B5BB4D3002A5E59 /* UIImage+DFImageUtilities.m in Sources */,
 				0CEEED151AABE36100C212A4 /* DFImageManager+DefaultManager.m in Sources */,
 				0CEEED131AABE36100C212A4 /* DFImageManager.m in Sources */,
+				0CA26E331B7FB3F5005883B2 /* DFProgressiveImageDecoder.m in Sources */,
 				0CBE003F1B7E720D004B92DB /* DFImageDecoder.m in Sources */,
 				0CEEED0A1AABE32E00C212A4 /* DFCompositeImageTask.m in Sources */,
 				0CF011871AAE1BAF0013AD13 /* DFImageManager+SharedManager.m in Sources */,

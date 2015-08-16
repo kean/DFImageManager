@@ -81,8 +81,3 @@
 #if DF_IMAGE_MANAGER_WEBP_AVAILABLE
 #import "DFImageManagerKit+WebP.h"
 #endif
-
-// Subspec 'ProgressiveJPEG'
-#if DF_IMAGE_MANAGER_PROGRESSIVE_JPEG_AVAILABLE
-#import "DFImageManagerKit+ProgressiveJPEG.h"
-#endif
