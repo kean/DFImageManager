@@ -165,7 +165,6 @@
 
 - (void)_cleanCacheButtonTapped {
     [[DFImageManager sharedManager] removeAllCachedObjects];
-    [[NSCache df_sharedImageCache] removeAllObjects];
 }
 
 #pragma mark - <UITableViewDataSource>
