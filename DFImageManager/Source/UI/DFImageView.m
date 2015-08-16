@@ -105,6 +105,8 @@ static const NSTimeInterval _kMinimumAutoretryInterval = 8.f;
 }
 
 - (void)_cancelFetching {
+    _imageTask.completionHandler = nil;
+    _imageTask.progressiveImageHandler = nil;
     [_imageTask cancel];
 }
 
