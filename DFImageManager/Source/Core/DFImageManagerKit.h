@@ -49,7 +49,6 @@
 // Utilities
 #import "DFCompositeImageManager.h"
 #import "DFProxyImageManager.h"
-#import "DFNetworkReachability.h"
 #import "DFCompositeImageTask.h"
 #import "UIImage+DFImageUtilities.h"
 

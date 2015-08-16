@@ -101,9 +101,6 @@
 		0CEEED011AABD9DB00C212A4 /* DFCompositeImageManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 0CEEECF81AABD9DB00C212A4 /* DFCompositeImageManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0CEEED021AABD9DB00C212A4 /* DFCompositeImageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CEEECF91AABD9DB00C212A4 /* DFCompositeImageManager.m */; };
 		0CEEED031AABD9DB00C212A4 /* DFCompositeImageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CEEECF91AABD9DB00C212A4 /* DFCompositeImageManager.m */; };
-		0CEEED041AABD9DB00C212A4 /* DFNetworkReachability.h in Headers */ = {isa = PBXBuildFile; fileRef = 0CEEECFA1AABD9DB00C212A4 /* DFNetworkReachability.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		0CEEED051AABD9DB00C212A4 /* DFNetworkReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CEEECFB1AABD9DB00C212A4 /* DFNetworkReachability.m */; };
-		0CEEED061AABD9DB00C212A4 /* DFNetworkReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CEEECFB1AABD9DB00C212A4 /* DFNetworkReachability.m */; };
 		0CEEED071AABD9DB00C212A4 /* DFProxyImageManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 0CEEECFC1AABD9DB00C212A4 /* DFProxyImageManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0CEEED081AABD9DB00C212A4 /* DFProxyImageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CEEECFD1AABD9DB00C212A4 /* DFProxyImageManager.m */; };
 		0CEEED091AABD9DB00C212A4 /* DFProxyImageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CEEECFD1AABD9DB00C212A4 /* DFProxyImageManager.m */; };
@@ -251,8 +248,6 @@
 		0CEEECF71AABD9DB00C212A4 /* DFCompositeImageTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFCompositeImageTask.m; sourceTree = "<group>"; };
 		0CEEECF81AABD9DB00C212A4 /* DFCompositeImageManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFCompositeImageManager.h; sourceTree = "<group>"; };
 		0CEEECF91AABD9DB00C212A4 /* DFCompositeImageManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFCompositeImageManager.m; sourceTree = "<group>"; };
-		0CEEECFA1AABD9DB00C212A4 /* DFNetworkReachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFNetworkReachability.h; sourceTree = "<group>"; };
-		0CEEECFB1AABD9DB00C212A4 /* DFNetworkReachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFNetworkReachability.m; sourceTree = "<group>"; };
 		0CEEECFC1AABD9DB00C212A4 /* DFProxyImageManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFProxyImageManager.h; sourceTree = "<group>"; };
 		0CEEECFD1AABD9DB00C212A4 /* DFProxyImageManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFProxyImageManager.m; sourceTree = "<group>"; };
 		0CEEED0C1AABE36100C212A4 /* DFImageManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFImageManager.h; sourceTree = "<group>"; };
@@ -560,8 +555,6 @@
 				0CEEECF91AABD9DB00C212A4 /* DFCompositeImageManager.m */,
 				0CEEECFC1AABD9DB00C212A4 /* DFProxyImageManager.h */,
 				0CEEECFD1AABD9DB00C212A4 /* DFProxyImageManager.m */,
-				0CEEECFA1AABD9DB00C212A4 /* DFNetworkReachability.h */,
-				0CEEECFB1AABD9DB00C212A4 /* DFNetworkReachability.m */,
 				0CBAA67E1B5BB4D3002A5E59 /* UIImage+DFImageUtilities.h */,
 				0CBAA67F1B5BB4D3002A5E59 /* UIImage+DFImageUtilities.m */,
 			);
@@ -630,7 +623,6 @@
 				0CEEECA31AABC84F00C212A4 /* NSCache+DFImageManager.h in Headers */,
 				0CEEEC8A1AABC5FC00C212A4 /* DFImageProcessor.h in Headers */,
 				0CA26E311B7FB3F5005883B2 /* DFProgressiveImageDecoder.h in Headers */,
-				0CEEED041AABD9DB00C212A4 /* DFNetworkReachability.h in Headers */,
 				0C44A8641AAB3CC000900C6A /* UIImageView+DFImageManager.h in Headers */,
 				0C44A7FF1AAB273F00900C6A /* DFImageCaching.h in Headers */,
 				0CEEECA01AABC84F00C212A4 /* DFImageCache.h in Headers */,
@@ -882,7 +874,6 @@
 				0CEEECD51AABD70400C212A4 /* DFImageRequestOptions.m in Sources */,
 				0CEEEC9E1AABC84F00C212A4 /* DFCachedImageResponse.m in Sources */,
 				0CEEECDD1AABD71B00C212A4 /* DFImageManagerDefines.m in Sources */,
-				0CEEED051AABD9DB00C212A4 /* DFNetworkReachability.m in Sources */,
 				0CEEED2E1AABE4BC00C212A4 /* DFURLImageFetcher.m in Sources */,
 				0C5BD74D1AA31943003C0BB6 /* TDFMockImageProcessor.m in Sources */,
 				0CEEED021AABD9DB00C212A4 /* DFCompositeImageManager.m in Sources */,
@@ -939,7 +930,6 @@
 			files = (
 				0C44A8611AAB3C8000900C6A /* DFImageView.m in Sources */,
 				0CEEED031AABD9DB00C212A4 /* DFCompositeImageManager.m in Sources */,
-				0CEEED061AABD9DB00C212A4 /* DFNetworkReachability.m in Sources */,
 				0CEEECD91AABD70400C212A4 /* DFImageResponse.m in Sources */,
 				0CEEED2F1AABE4BC00C212A4 /* DFURLImageFetcher.m in Sources */,
 				0CEEED291AABE4BC00C212A4 /* DFURLHTTPImageDeserializer.m in Sources */,

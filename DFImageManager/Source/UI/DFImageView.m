@@ -27,17 +27,12 @@
 #import "DFImageResponse.h"
 #import "DFImageTask.h"
 #import "DFImageView.h"
-#import "DFNetworkReachability.h"
 
 #if DF_IMAGE_MANAGER_GIF_AVAILABLE
 #import "DFImageManagerKit+GIF.h"
 #endif
 
-static const NSTimeInterval _kMinimumAutoretryInterval = 8.f;
-
-@implementation DFImageView {
-    NSTimeInterval _previousAutoretryTime;
-}
+@implementation DFImageView
 
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
@@ -67,14 +62,11 @@ static const NSTimeInterval _kMinimumAutoretryInterval = 8.f;
     _imageTargetSize = CGSizeZero;
     _imageContentMode = DFImageContentModeAspectFill;
     _allowsAnimations = YES;
-    _allowsAutoRetries = YES;
     _managesRequestPriorities = NO;
 #if DF_IMAGE_MANAGER_GIF_AVAILABLE
     _allowsGIFPlayback = YES;
 #endif
     _imageRequestOptions = [DFImageRequestOptions new];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_reachabilityDidChange:) name:DFNetworkReachabilityDidChangeNotification object:[DFNetworkReachability shared]];
 }
 
 - (void)displayImage:(nullable UIImage *)image {
@@ -96,7 +88,6 @@ static const NSTimeInterval _kMinimumAutoretryInterval = 8.f;
 - (void)prepareForReuse {
     [self _cancelFetching];
     _imageTask = nil;
-    _previousAutoretryTime = 0.0;
     self.image = nil;
 #if DF_IMAGE_MANAGER_GIF_AVAILABLE
     self.animatedImage = nil;
@@ -172,37 +163,6 @@ static const NSTimeInterval _kMinimumAutoretryInterval = 8.f;
         DFImageRequestPriority priority = (newWindow == nil) ? DFImageRequestPriorityNormal : DFImageRequestPriorityVeryHigh;
         [_imageTask setPriority:priority];
     }
-}
-
-#pragma mark - Notifications
-
-- (void)_reachabilityDidChange:(NSNotification *)notification {
-    DFNetworkReachability *reachability = notification.object;
-    if (self.allowsAutoRetries
-        && reachability.isReachable
-        && self.window != nil
-        && self.hidden != YES
-        && self.imageTask.state == DFImageTaskStateCompleted) {
-        NSError *error = self.imageTask.error;
-        if (error && [self _isNetworkConnetionError:error]) {
-            [self _attemptRetry];
-        }
-    }
-}
-
-- (void)_attemptRetry {
-    if (_previousAutoretryTime == 0.0 || CACurrentMediaTime() > _previousAutoretryTime + _kMinimumAutoretryInterval) {
-        _previousAutoretryTime = CACurrentMediaTime();
-        [self setImageWithRequest:self.imageTask.request];
-    }
-}
-
-- (BOOL)_isNetworkConnetionError:(NSError *)error {
-    return ([error.domain isEqualToString:NSURLErrorDomain] &&
-            (error.code == NSURLErrorNotConnectedToInternet ||
-             error.code == NSURLErrorTimedOut ||
-             error.code == NSURLErrorCannotConnectToHost ||
-             error.code == NSURLErrorNetworkConnectionLost));
 }
 
 @end
