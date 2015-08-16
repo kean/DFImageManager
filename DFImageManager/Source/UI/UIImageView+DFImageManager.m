@@ -56,7 +56,7 @@ static char *_imageTaskKey;
     if (!request) {
         return nil;
     }
-    UIImageView *__weak weakSelf = self;
+    typeof(self) __weak weakSelf = self;
     DFImageTask *task = [[DFImageManager sharedManager] imageTaskForRequest:request completion:^(UIImage *__nullable image, NSError *__nullable error, DFImageResponse *__nullable response, DFImageTask *__nonnull imageTask){
         if (image) {
             weakSelf.image = image;

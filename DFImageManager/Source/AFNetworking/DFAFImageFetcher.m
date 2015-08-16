@@ -76,7 +76,7 @@ NSString *const DFAFRequestCachePolicyKey = @"DFAFRequestCachePolicyKey";
     if (self = [super init]) {
         _sessionManager = sessionManager;
         _dataTaskDelegates = [NSMutableDictionary new];
-        DFAFImageFetcher *__weak weakSelf = self;
+        typeof(self) __weak weakSelf = self;
         [sessionManager setDataTaskDidReceiveDataBlock:^(NSURLSession *session, NSURLSessionDataTask *dataTask, NSData *data) {
             DFAFImageFetcher *strongSelf = weakSelf;
             _DFDataTaskDelegate *delegate;
@@ -120,7 +120,7 @@ NSString *const DFAFRequestCachePolicyKey = @"DFAFRequestCachePolicyKey";
 
 - (nonnull NSOperation *)startOperationWithRequest:(nonnull DFImageRequest *)request progressHandler:(nullable DFImageFetchingProgressHandler)progressHandler completion:(nullable DFImageFetchingCompletionHandler)completion {
     NSURLRequest *URLRequest = [self _URLRequestForImageRequest:request];
-    DFAFImageFetcher *__weak weakSelf = self;
+    typeof(self) __weak weakSelf = self;
     NSURLSessionDataTask *__block task = [self.sessionManager dataTaskWithRequest:URLRequest completionHandler:^(NSURLResponse *URLResponse, NSData *result, NSError *error) {
         DFAFImageFetcher *strongSelf = weakSelf;
         @synchronized(strongSelf) {

@@ -59,7 +59,7 @@
         return;
     }
     _isStarted = YES;
-    DFCompositeImageTask *__weak weakSelf = self;
+    typeof(self) __weak weakSelf = self;
     for (DFImageTask *task in _remainingTasks) {
         DFImageTaskCompletion completionHandler = task.completionHandler;
         task.completionHandler = ^(UIImage *__nullable image, NSError *__nullable error, DFImageResponse *__nullable response, DFImageTask *__nonnull completedTask) {
