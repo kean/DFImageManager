@@ -355,6 +355,10 @@ static const NSTimeInterval _kCommandExecutionInterval = 0.005; // 5 ms
     }
 }
 
+- (void)removeAllCachedObjects {
+    [_session.configuration.URLCache removeAllCachedResponses];
+}
+
 #pragma mark - <NSURLSessionDataTaskDelegate>
 
 - (void)URLSession:(NSURLSession *)session dataTask:(NSURLSessionDataTask *)dataTask didReceiveData:(NSData *)data {

@@ -15,6 +15,7 @@
 #import "SDFPhotosKitDemoViewController.h"
 #import "SDFProgressiveJPEGDemoViewController.h"
 #import <Photos/Photos.h>
+#import <DFImageManager/DFImageManagerKit.h>
 
 
 @interface SDFMenuSection : NSObject
@@ -77,6 +78,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    [self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:@"Clean Cache" style:UIBarButtonItemStylePlain target:self action:@selector(_cleanCacheButtonTapped)]];
     
     NSMutableArray *sections = [NSMutableArray new];
     
@@ -156,6 +159,13 @@
     })];
     
     _sections = [sections copy];
+}
+
+#pragma mark - Actions
+
+- (void)_cleanCacheButtonTapped {
+    [[DFImageManager sharedManager] removeAllCachedObjects];
+    [[NSCache df_sharedImageCache] removeAllObjects];
 }
 
 #pragma mark - <UITableViewDataSource>

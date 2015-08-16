@@ -72,4 +72,8 @@ typedef void (^DFImageTaskCompletion)(UIImage *__nullable image, NSError *__null
  */
 - (void)stopPreheatingImagesForAllRequests;
 
+/*! Removes all cached objects from all caches.
+ */
+- (void)removeAllCachedObjects;
+
 @end

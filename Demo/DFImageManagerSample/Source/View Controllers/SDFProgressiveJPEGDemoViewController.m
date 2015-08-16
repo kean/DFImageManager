@@ -38,7 +38,8 @@ static NSString *const kReuseIdentifierImageCell = @"kReuseIdentifierImageCell";
     
     DFURLImageFetcher *fetcher = [[DFURLImageFetcher alloc] initWithSessionConfiguration:({
         NSURLSessionConfiguration *conf = [NSURLSessionConfiguration defaultSessionConfiguration];
-        conf.URLCache = [[NSURLCache alloc] initWithMemoryCapacity:0 diskCapacity:1024 * 1024 * 256 diskPath:@"com.github.kean.default_image_cache"];
+        // disable URL cache for this fetcher
+        conf.URLCache = nil;
         conf;
     })];
     DFImageManagerConfiguration *conf = [DFImageManagerConfiguration configurationWithFetcher:fetcher processor:[DFImageProcessor new] cache:[DFImageCache new]];

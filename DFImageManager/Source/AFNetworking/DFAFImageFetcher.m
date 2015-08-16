@@ -155,6 +155,10 @@ NSString *const DFAFRequestCachePolicyKey = @"DFAFRequestCachePolicyKey";
     return operation;
 }
 
+- (void)removeAllCachedObjects {
+    [_sessionManager.session.configuration.URLCache removeAllCachedResponses];
+}
+
 #pragma mark Support
 
 - (NSURLRequest *)_URLRequestForImageRequest:(DFImageRequest *)imageRequest {

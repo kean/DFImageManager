@@ -147,4 +147,10 @@
     }
 }
 
+- (void)removeAllCachedObjects {
+    for (id<DFImageManaging> manager in _managers) {
+        [manager removeAllCachedObjects];
+    }
+}
+
 @end

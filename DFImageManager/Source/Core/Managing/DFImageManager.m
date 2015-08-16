@@ -207,6 +207,13 @@ static inline void DFDispatchAsync(dispatch_block_t block) {
     [self unlock];
 }
 
+- (void)removeAllCachedObjects {
+    [_conf.cache removeAllObjects];
+    if ([_conf.fetcher respondsToSelector:@selector(removeAllCachedObjects)]) {
+        [_conf.fetcher removeAllCachedObjects];
+    }
+}
+
 #pragma mark <DFImageManaging> (Preheating)
 
 - (void)startPreheatingImagesForRequests:(nonnull NSArray *)requests {
