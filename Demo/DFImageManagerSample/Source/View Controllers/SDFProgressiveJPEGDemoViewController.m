@@ -14,7 +14,7 @@ static NSString *const kReuseIdentifierImageCell = @"kReuseIdentifierImageCell";
 
 @implementation SDFProgressiveJPEGDemoViewController  {
     id<DFImageManaging> _previousSharedManager;
-    
+    UISegmentedControl *_segmentedControl;
     NSArray *_imageURLs;
 }
 
@@ -51,6 +51,17 @@ static NSString *const kReuseIdentifierImageCell = @"kReuseIdentifierImageCell";
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    _imageURLs = @[ @[[NSURL URLWithString:@"https://cloud.githubusercontent.com/assets/1567433/9288231/d6cd1622-4344-11e5-9a64-f1e226d5cfe6.jpg"]],
+                    @[[NSURL URLWithString:@"https://cloud.githubusercontent.com/assets/1567433/9293881/beef5cc2-4443-11e5-8d7b-c80e78f822d5.jpg"]] ];
+    
+    self.navigationItem.titleView = ({
+        UISegmentedControl *segmentedControl = [[UISegmentedControl alloc] initWithItems:@[@"progressive", @"baseline"]];
+        segmentedControl.selectedSegmentIndex = 0;
+        [segmentedControl addTarget:self action:@selector(_segmentedControlValueChanged:) forControlEvents:UIControlEventValueChanged];
+        _segmentedControl = segmentedControl;
+        segmentedControl;
+    });
+    
     [self.collectionView registerClass:[SDFImageCollectionViewCell class] forCellWithReuseIdentifier:kReuseIdentifierImageCell];
     self.collectionView.alwaysBounceVertical = YES;
     self.view.backgroundColor = [UIColor whiteColor];
@@ -59,18 +70,18 @@ static NSString *const kReuseIdentifierImageCell = @"kReuseIdentifierImageCell";
     UICollectionViewFlowLayout *layout = (id)self.collectionViewLayout;
     layout.sectionInset = UIEdgeInsetsMake(8.f, 8.f, 8.f, 8.f);
     layout.minimumInteritemSpacing = 8.f;
-    
-    _imageURLs = @[[NSURL URLWithString:@"https://cloud.githubusercontent.com/assets/1567433/9288231/d6cd1622-4344-11e5-9a64-f1e226d5cfe6.jpg"]];
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     SDFImageCollectionViewCell *cell = (id)[collectionView dequeueReusableCellWithReuseIdentifier:kReuseIdentifierImageCell forIndexPath:indexPath];
     cell.backgroundColor = [UIColor colorWithWhite:235.f/255.f alpha:1.f];
-    NSURL *URL = _imageURLs[indexPath.row];
+    NSURL *URL = [self _currentDataSource][indexPath.row];
     [cell setImageWithRequest:({
-        DFMutableImageRequestOptions *options = [DFMutableImageRequestOptions new];
-        options.allowsProgressiveImage = YES;
-        [DFImageRequest requestWithResource:URL targetSize:DFImageMaximumSize contentMode:DFImageContentModeAspectFill options:options.options];
+        [DFImageRequest requestWithResource:URL targetSize:DFImageMaximumSize contentMode:DFImageContentModeAspectFill options:({
+            DFMutableImageRequestOptions *options = [DFMutableImageRequestOptions new];
+            options.allowsProgressiveImage = YES;
+            options.options;
+        })];
     })];
     
     return cell;
@@ -83,7 +94,17 @@ static NSString *const kReuseIdentifierImageCell = @"kReuseIdentifierImageCell";
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    return _imageURLs.count;
+    return [self _currentDataSource].count;
+}
+
+- (NSArray *)_currentDataSource {
+    return _imageURLs[_segmentedControl.selectedSegmentIndex];
+}
+
+#pragma mark - Actions
+
+- (void)_segmentedControlValueChanged:(UISegmentedControl *)control {
+    [self.collectionView reloadData];
 }
 
 @end

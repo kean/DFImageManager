@@ -137,7 +137,7 @@
             controller.title = @"GIF Demo";
             [weakSelf.navigationController pushViewController:controller animated:YES];
         }]];
-        [items addObject:[SDFMenuItem itemWithTitle:@"Progressive JPEG Demo" subtitle:@"'ProgressiveJPEG' subspec" action:^{
+        [items addObject:[SDFMenuItem itemWithTitle:@"Progressive Decoding Demo" subtitle:@"Progressive and baseline JPEG" action:^{
             SDFProgressiveJPEGDemoViewController *controller = [SDFProgressiveJPEGDemoViewController new];
             controller.title = @"Progressive JPEG Demo";
             [weakSelf.navigationController pushViewController:controller animated:YES];
