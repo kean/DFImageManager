@@ -34,10 +34,6 @@
 #import "UIImage+DFImageUtilities.h"
 #import "DFProgressiveImageDecoder.h"
 
-#if DF_IMAGE_MANAGER_GIF_AVAILABLE
-#import "DFImageManagerKit+GIF.h"
-#endif
-
 #pragma mark - DFImageManagerImageLoaderTask
 
 @class _DFImageLoadOperation;
@@ -278,6 +274,7 @@
             if (progressiveImageHandler && image) {
                 progressiveImageHandler(image);
             }
+            
         }
     });
 }
@@ -285,7 +282,8 @@
 - (void)_loadOperation:(nonnull _DFImageLoadOperation *)operation didCompleteWithData:(nullable NSData *)data info:(nullable NSDictionary *)info error:(nullable NSError *)error {
     typeof(self) __weak weakSelf = self;
     [_decodingQueue addOperationWithBlock:^{
-        UIImage *image = [weakSelf _decodedImageWithData:data partial:NO];
+        id<DFImageDecoding> decoder = weakSelf.conf.decoder ?: [DFImageDecoder sharedDecoder];
+        UIImage *image = data ? [decoder imageWithData:data partial:NO] : nil;
         [weakSelf _loadOperation:operation didCompleteWithImage:image info:info error:error];
     }];
 }
@@ -345,24 +343,12 @@
     });
 }
 
-#pragma mark - Decoding
-
-- (nullable UIImage *)_decodedImageWithData:(nullable NSData *)data partial:(BOOL)partial {
-    id<DFImageDecoding> decoder = _conf.decoder ?: [DFImageDecoder sharedDecoder];
-    return data ? [decoder imageWithData:data partial:NO] : nil;
-}
-
 #pragma mark Processing
 
 - (BOOL)_shouldProcessImage:(nonnull UIImage *)image forRequest:(nonnull DFImageRequest *)request {
     if (!_conf.processor || !_conf.processingQueue) {
         return NO;
     }
-#if DF_IMAGE_MANAGER_GIF_AVAILABLE
-    if ([image isKindOfClass:[DFAnimatedImage class]]) {
-        return NO;
-    }
-#endif
     return [_conf.processor shouldProcessImage:image forRequest:request];
 }
 
