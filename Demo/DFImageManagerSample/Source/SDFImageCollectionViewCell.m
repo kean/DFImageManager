@@ -59,6 +59,9 @@
 - (void)setImageWithRequest:(DFImageRequest *)request {
     [_imageView setImageWithRequest:request];
     self.currentProgress = _imageView.imageTask.progress;
+    if (_imageView.imageTask.state == DFImageTaskStateCompleted) {
+        self.progressView.alpha = 0;
+    }
 }
 
 - (void)setCurrentProgress:(NSProgress *)currentProgress {

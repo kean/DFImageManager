@@ -60,7 +60,7 @@
  */
 @property (nonatomic) BOOL allowsProgressiveImage;
 
-/*! The load progress threshold at which received data is decoded. Default value is 0.2, which means that the received data will be decoded each time next 20% of total bytes is received.
+/*! The load progress threshold at which received data is decoded. Default value is 0.15, which means that the received data will be decoded each time next 15% of total bytes is received.
  */
 @property (nonatomic) float progressiveImageDecodingThreshold;
 
