@@ -27,6 +27,10 @@ static char *_imageProcessedKey;
     return CGSizeEqualToSize(request1.targetSize, request2.targetSize);
 }
 
+- (BOOL)shouldProcessImage:(nonnull UIImage *)image forRequest:(nonnull DFImageRequest *)request {
+    return YES;
+}
+
 - (nullable id<DFImageDecoding>)imageDecoderForData:(nonnull NSData *)data partial:(BOOL)partial {
     return [DFImageDecoder new];
 }

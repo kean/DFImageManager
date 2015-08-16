@@ -109,6 +109,10 @@
     // Do nothing
 }
 
+- (void)removeAllCachedImages {
+    // Do nothing
+}
+
 @end
 
 
