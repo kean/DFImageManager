@@ -155,7 +155,7 @@ NSString *const DFAFRequestCachePolicyKey = @"DFAFRequestCachePolicyKey";
     return operation;
 }
 
-- (void)removeAllCachedObjects {
+- (void)removeAllCachedImages {
     [_sessionManager.session.configuration.URLCache removeAllCachedResponses];
 }
 

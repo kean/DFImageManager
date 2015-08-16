@@ -207,10 +207,10 @@ static inline void DFDispatchAsync(dispatch_block_t block) {
     [self unlock];
 }
 
-- (void)removeAllCachedObjects {
+- (void)removeAllCachedImages {
     [_conf.cache removeAllObjects];
-    if ([_conf.fetcher respondsToSelector:@selector(removeAllCachedObjects)]) {
-        [_conf.fetcher removeAllCachedObjects];
+    if ([_conf.fetcher respondsToSelector:@selector(removeAllCachedImages)]) {
+        [_conf.fetcher removeAllCachedImages];
     }
 }
 

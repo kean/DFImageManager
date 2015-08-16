@@ -164,7 +164,7 @@
 #pragma mark - Actions
 
 - (void)_cleanCacheButtonTapped {
-    [[DFImageManager sharedManager] removeAllCachedObjects];
+    [[DFImageManager sharedManager] removeAllCachedImages];
 }
 
 #pragma mark - <UITableViewDataSource>

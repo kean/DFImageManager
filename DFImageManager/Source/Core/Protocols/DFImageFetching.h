@@ -65,8 +65,8 @@ typedef void (^DFImageFetchingCompletionHandler)(NSData *__nullable data, NSDict
  */
 - (nonnull DFImageRequest *)canonicalRequestForRequest:(nonnull DFImageRequest *)request;
 
-/*! Remove all cached objects.
+/*! Remove all cached images.
  */
-- (void)removeAllCachedObjects;
+- (void)removeAllCachedImages;
 
 @end

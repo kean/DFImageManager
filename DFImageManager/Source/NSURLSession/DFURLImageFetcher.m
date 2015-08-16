@@ -355,7 +355,7 @@ static const NSTimeInterval _kCommandExecutionInterval = 0.005; // 5 ms
     }
 }
 
-- (void)removeAllCachedObjects {
+- (void)removeAllCachedImages {
     [_session.configuration.URLCache removeAllCachedResponses];
 }
 
