@@ -2,6 +2,11 @@
 
 <h1 align="center">DFImageManager</h1>
 
+<p align="center">
+<a href="https://cocoapods.org/pods/DFImageManager"><img src="http://img.shields.io/cocoapods/v/DFImageManager.svg"></a>
+<a href="https://github.com/Carthage/Carthage"><img src="https://img.shields.io/badge/Carthage-compatible-4BC51D.svg"></a>
+</p>
+
 Advanced iOS framework for loading, caching, processing, displaying and preheating images. It uses latest features in iOS SDK and doesn't reinvent existing technologies. It provides a powerful API that will extend the capabilities of your app.
 
 The DFImageManager is not just a loader, it is a pipeline for executing image requests using pluggable components. It features [multiple subspecs](#install_using_cocopods) that automatically integrate things like [AFNetworking](https://github.com/AFNetworking/AFNetworking), [FLAnimatedImage](https://github.com/Flipboard/FLAnimatedImage) as a performant animated GIF engine, and more.
