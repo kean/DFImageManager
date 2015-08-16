@@ -5,7 +5,7 @@ workspace "DFImageManager.xcworkspace"
 
 source "https://github.com/CocoaPods/Specs.git"
 
-link_with "DFImageManager", "DFImageManagerKit"
+link_with "DFImageManager"
 
 pod "AFNetworking/NSURLSession", "~> 2.0"
 pod "FLAnimatedImage", "~> 1.0"
