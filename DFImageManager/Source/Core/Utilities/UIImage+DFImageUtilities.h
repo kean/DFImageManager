@@ -27,9 +27,17 @@
  */
 @interface UIImage (DFImageUtilities)
 
+/*! Returns decompressed image with a given data.
+ */
++ (nullable UIImage *)df_decompressedImageWithData:(nullable NSData *)data;
+
 /*! Returns decompressed image with a given image.
  */
 + (nullable UIImage *)df_decompressedImage:(nullable UIImage *)image;
+
+/*! Returns scale that is required to fill/fit image in a target size, maintaining aspect ratio.
+ */
++ (CGFloat)df_scaleForImage:(nullable UIImage *)image targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode;
 
 /*! Returns decompressed image with a given image.
  @param targetSize Image target size in pixels.

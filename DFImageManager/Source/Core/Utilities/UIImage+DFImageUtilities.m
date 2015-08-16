@@ -24,15 +24,24 @@
 
 @implementation UIImage (DFImageUtilities)
 
++ (nullable UIImage *)df_decompressedImageWithData:(nullable NSData *)data {
+    UIImage *image = [[UIImage alloc] initWithData:data scale:[UIScreen mainScreen].scale];
+    return [self df_decompressedImage:image];
+}
+
 + (UIImage *)df_decompressedImage:(UIImage *)image {
     return [self df_decompressedImage:image scale:1.f];
 }
 
-+ (UIImage *)df_decompressedImage:(UIImage *)image targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode {
++ (CGFloat)df_scaleForImage:(nullable UIImage *)image targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode {
     CGSize bitmapSize = CGSizeMake(CGImageGetWidth(image.CGImage), CGImageGetHeight(image.CGImage));
     CGFloat scaleWidth = targetSize.width / bitmapSize.width;
     CGFloat scaleHeight = targetSize.height / bitmapSize.height;
-    CGFloat scale = contentMode == DFImageContentModeAspectFill ? MAX(scaleWidth, scaleHeight) : MIN(scaleWidth, scaleHeight);
+    return contentMode == DFImageContentModeAspectFill ? MAX(scaleWidth, scaleHeight) : MIN(scaleWidth, scaleHeight);
+}
+
++ (UIImage *)df_decompressedImage:(UIImage *)image targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode {
+    CGFloat scale = [self df_scaleForImage:image targetSize:targetSize contentMode:contentMode];
     return [self df_decompressedImage:image scale:scale];
 }
 

@@ -302,7 +302,7 @@
 
 - (void)_loadTask:(nonnull DFImageManagerImageLoaderTask *)task didCompleteWithImage:(nullable UIImage *)image info:(nullable NSDictionary *)info error:(nullable NSError *)error {
     typeof(self) __weak weakSelf = self;
-    if (image && [self _shouldProcessImage:image]) {
+    if (image && [self _shouldProcessImage:image forRequest:task.request]) {
         id<DFImageProcessing> processor = _conf.processor;
         NSOperation *operation = [NSBlockOperation blockOperationWithBlock:^{
             UIImage *processedImage = [weakSelf cachedResponseForRequest:task.request].image;
@@ -354,7 +354,7 @@
 
 #pragma mark Processing
 
-- (BOOL)_shouldProcessImage:(nonnull UIImage *)image {
+- (BOOL)_shouldProcessImage:(nonnull UIImage *)image forRequest:(nonnull DFImageRequest *)request {
     if (!_conf.processor || !_conf.processingQueue) {
         return NO;
     }
@@ -363,7 +363,7 @@
         return NO;
     }
 #endif
-    return YES;
+    return [_conf.processor shouldProcessImage:image forRequest:request];
 }
 
 #pragma mark Caching

@@ -35,6 +35,10 @@
  */
 - (BOOL)isProcessingForRequestEquivalent:(nonnull DFImageRequest *)request1 toRequest:(nonnull DFImageRequest *)request2;
 
+/*! Returns NO when no processing is required for image with a given request.
+ */
+- (BOOL)shouldProcessImage:(nonnull UIImage *)image forRequest:(nonnull DFImageRequest *)request;
+
 /*! Returns processed image for a given request.
  */
 - (nullable UIImage *)processedImage:(nonnull UIImage *)image forRequest:(nonnull DFImageRequest *)request;

@@ -22,6 +22,7 @@
 
 #import "DFImageDecoder.h"
 #import "DFImageManagerDefines.h"
+#import "UIImage+DFImageUtilities.h"
 #import <libkern/OSAtomic.h>
 
 #if DF_IMAGE_MANAGER_GIF_AVAILABLE
@@ -58,7 +59,7 @@
     }
 #endif
     
-    return [[UIImage alloc] initWithData:data scale:[UIScreen mainScreen].scale];
+    return [UIImage df_decompressedImageWithData:data];
 }
 
 #pragma mark Dependency Injector

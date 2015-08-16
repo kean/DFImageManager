@@ -45,11 +45,26 @@ NSString *DFImageProcessingCornerRadiusKey = @"DFImageProcessingCornerRadiusKey"
     return (!cornerRadius1 && !cornerRadius2) || ((!!cornerRadius1 && !!cornerRadius2) && [cornerRadius1 isEqualToNumber:cornerRadius2]);
 }
 
+- (BOOL)shouldProcessImage:(nonnull UIImage *)image forRequest:(nonnull DFImageRequest *)request {
+    if (request.contentMode == DFImageContentModeAspectFill && request.options.allowsClipping) {
+        return YES;
+    }
+    CGFloat scale = [UIImage df_scaleForImage:image targetSize:request.targetSize contentMode:request.contentMode];
+    if (scale < 1.f) {
+        return YES;
+    }
+    NSNumber *normalizedCornerRadius = request.options.userInfo[DFImageProcessingCornerRadiusKey];
+    return normalizedCornerRadius != nil;
+}
+
 - (nullable UIImage *)processedImage:(nonnull UIImage *)image forRequest:(nonnull DFImageRequest *)request {
     if (request.contentMode == DFImageContentModeAspectFill && request.options.allowsClipping) {
         image = [DFImageProcessor _croppedImage:image aspectFillPixelSize:request.targetSize];
     }
-    image = [UIImage df_decompressedImage:image targetSize:request.targetSize contentMode:request.contentMode];
+    CGFloat scale = [UIImage df_scaleForImage:image targetSize:request.targetSize contentMode:request.contentMode];
+    if (scale < 1.f) {
+        image = [UIImage df_decompressedImage:image scale:scale];
+    }
     NSNumber *normalizedCornerRadius = request.options.userInfo[DFImageProcessingCornerRadiusKey];
     if (normalizedCornerRadius) {
         CGFloat cornerRadius = normalizedCornerRadius.floatValue * MIN(image.size.width, image.size.height);
