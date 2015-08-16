@@ -110,4 +110,8 @@
  */
 @property (nullable, copy, nonatomic) NSDictionary *userInfo;
 
+/*! Returns default image request options builder that is used when new DFMutableImageRequestOptions instance is initialized.
+ */
++ (nonnull instancetype)defaultOptions;
+
 @end

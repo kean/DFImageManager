@@ -50,14 +50,34 @@
 
 @implementation DFMutableImageRequestOptions
 
+static DFMutableImageRequestOptions *_defaultOptions;
+
++ (void)initialize {
+    _defaultOptions = [DFMutableImageRequestOptions new];
+    _defaultOptions.priority = DFImageRequestPriorityNormal;
+    _defaultOptions.allowsNetworkAccess = YES;
+    _defaultOptions.allowsClipping = NO;
+    _defaultOptions.allowsProgressiveImage = NO;
+    _defaultOptions.memoryCachePolicy = DFImageRequestCachePolicyDefault;
+    _defaultOptions.expirationAge = 60.0 * 10.0; // 600.0 seconds
+}
+
++ (instancetype)defaultOptions {
+    return _defaultOptions;
+}
+
 - (nonnull instancetype)init {
     if (self = [super init]) {
-        _priority = DFImageRequestPriorityNormal;
-        _allowsNetworkAccess = YES;
-        _allowsClipping = NO;
-        _allowsProgressiveImage = NO;
-        _memoryCachePolicy = DFImageRequestCachePolicyDefault;
-        _expirationAge = 60.0 * 10.0; // 600.0 seconds
+        DFImageRequestOptions *defaults = [[self class] defaultOptions];
+        if (defaults) {
+            _priority = defaults.priority;
+            _allowsNetworkAccess = defaults.allowsNetworkAccess;
+            _allowsClipping = defaults.allowsClipping;
+            _allowsProgressiveImage = defaults.allowsProgressiveImage;
+            _memoryCachePolicy = defaults.memoryCachePolicy;
+            _expirationAge = defaults.expirationAge;
+            _userInfo = [defaults.userInfo copy];
+        }
     }
     return self;
 }
