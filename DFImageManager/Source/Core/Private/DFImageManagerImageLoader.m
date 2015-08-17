@@ -252,29 +252,35 @@
         if (data.length) {
             [decoder appendData:data];
         }
-        if ([self _shouldDecodePartialDataForOperation:operation]) {
-            [decoder resume];
+        for (DFImageManagerImageLoaderTask *task in operation.tasks) {
+            if (task.progressiveImageHandler) {
+                [decoder resume];
+                break;
+            }
         }
     });
 }
 
-- (BOOL)_shouldDecodePartialDataForOperation:(_DFImageLoadOperation *)operation {
-    for (DFImageManagerImageLoaderTask *task in operation.tasks) {
-        if (task.progressiveImageHandler) {
-            return YES;
-        }
-    }
-    return NO;
-}
-
 - (void)_loadOperation:(nonnull _DFImageLoadOperation *)operation didReceivePartialImage:(nonnull UIImage *)image {
+    if (!image) {
+        return;
+    }
     dispatch_async(_queue, ^{
         for (DFImageManagerImageLoaderTask *task in operation.tasks) {
             void (^progressiveImageHandler)(UIImage *) = task.progressiveImageHandler;
-            if (progressiveImageHandler && image) {
-                progressiveImageHandler(image);
+            if (progressiveImageHandler) {
+                if ([self _shouldProcessImage:image forRequest:task.request]) {
+                    id<DFImageProcessing> processor = _conf.processor;
+                    [_conf.processingQueue addOperationWithBlock:^{
+                        UIImage *processedImage = [processor processedImage:image forRequest:task.request];
+                        if (processedImage) {
+                            progressiveImageHandler(processedImage);
+                        }
+                    }];
+                } else {
+                    progressiveImageHandler(image);
+                }
             }
-            
         }
     });
 }
@@ -308,9 +314,7 @@
                 processedImage = [processor processedImage:image forRequest:task.request];
                 [weakSelf _storeImage:processedImage info:info forRequest:task.request];
             }
-            dispatch_async(_queue, ^{
-                task.completionHandler(processedImage, info, error);
-            });
+            task.completionHandler(processedImage, info, error);
         }];
         [_conf.processingQueue addOperation:operation];
         task.processOperation = operation;
