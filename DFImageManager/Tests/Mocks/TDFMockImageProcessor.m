@@ -27,15 +27,11 @@ static char *_imageProcessedKey;
     return CGSizeEqualToSize(request1.targetSize, request2.targetSize);
 }
 
-- (BOOL)shouldProcessImage:(nonnull UIImage *)image forRequest:(nonnull DFImageRequest *)request {
+- (BOOL)shouldProcessImage:(nonnull UIImage *)image forRequest:(nonnull DFImageRequest *)request partial:(BOOL)partial {
     return YES;
 }
 
-- (nullable id<DFImageDecoding>)imageDecoderForData:(nonnull NSData *)data partial:(BOOL)partial {
-    return [DFImageDecoder new];
-}
-
-- (UIImage *)processedImage:(UIImage *)image forRequest:(DFImageRequest *)request {
+- (UIImage *)processedImage:(UIImage *)image forRequest:(DFImageRequest *)request partial:(BOOL)partial {
     objc_setAssociatedObject(image, &_imageProcessedKey, @YES, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     return image;
 }

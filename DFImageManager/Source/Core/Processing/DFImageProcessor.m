@@ -49,7 +49,7 @@ NSString *DFImageProcessingCornerRadiusKey = @"DFImageProcessingCornerRadiusKey"
     return (!cornerRadius1 && !cornerRadius2) || ((!!cornerRadius1 && !!cornerRadius2) && [cornerRadius1 isEqualToNumber:cornerRadius2]);
 }
 
-- (BOOL)shouldProcessImage:(nonnull UIImage *)image forRequest:(nonnull DFImageRequest *)request {
+- (BOOL)shouldProcessImage:(nonnull UIImage *)image forRequest:(nonnull DFImageRequest *)request partial:(BOOL)partial {
 #if DF_IMAGE_MANAGER_GIF_AVAILABLE
     if ([image isKindOfClass:[DFAnimatedImage class]]) {
         return NO;
@@ -66,8 +66,8 @@ NSString *DFImageProcessingCornerRadiusKey = @"DFImageProcessingCornerRadiusKey"
     return normalizedCornerRadius != nil;
 }
 
-- (nullable UIImage *)processedImage:(nonnull UIImage *)image forRequest:(nonnull DFImageRequest *)request {
-    if (![self shouldProcessImage:image forRequest:request]) {
+- (nullable UIImage *)processedImage:(nonnull UIImage *)image forRequest:(nonnull DFImageRequest *)request partial:(BOOL)partial {
+    if (![self shouldProcessImage:image forRequest:request partial:partial]) {
         return image;
     }
     if (request.contentMode == DFImageContentModeAspectFill && request.options.allowsClipping) {

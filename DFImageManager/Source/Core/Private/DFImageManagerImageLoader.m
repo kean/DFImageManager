@@ -269,10 +269,10 @@
         for (DFImageManagerImageLoaderTask *task in operation.tasks) {
             void (^progressiveImageHandler)(UIImage *) = task.progressiveImageHandler;
             if (progressiveImageHandler) {
-                if ([self _shouldProcessImage:image forRequest:task.request]) {
+                if ([self _shouldProcessImage:image forRequest:task.request partial:YES]) {
                     id<DFImageProcessing> processor = _conf.processor;
                     [_conf.processingQueue addOperationWithBlock:^{
-                        UIImage *processedImage = [processor processedImage:image forRequest:task.request];
+                        UIImage *processedImage = [processor processedImage:image forRequest:task.request partial:YES];
                         if (processedImage) {
                             progressiveImageHandler(processedImage);
                         }
@@ -306,12 +306,12 @@
 
 - (void)_loadTask:(nonnull DFImageManagerImageLoaderTask *)task didCompleteWithImage:(nullable UIImage *)image info:(nullable NSDictionary *)info error:(nullable NSError *)error {
     typeof(self) __weak weakSelf = self;
-    if (image && [self _shouldProcessImage:image forRequest:task.request]) {
+    if (image && [self _shouldProcessImage:image forRequest:task.request partial:NO]) {
         id<DFImageProcessing> processor = _conf.processor;
         NSOperation *operation = [NSBlockOperation blockOperationWithBlock:^{
             UIImage *processedImage = [weakSelf cachedResponseForRequest:task.request].image;
             if (!processedImage) {
-                processedImage = [processor processedImage:image forRequest:task.request];
+                processedImage = [processor processedImage:image forRequest:task.request partial:NO];
                 [weakSelf _storeImage:processedImage info:info forRequest:task.request];
             }
             task.completionHandler(processedImage, info, error);
@@ -349,11 +349,11 @@
 
 #pragma mark Processing
 
-- (BOOL)_shouldProcessImage:(nonnull UIImage *)image forRequest:(nonnull DFImageRequest *)request {
+- (BOOL)_shouldProcessImage:(nonnull UIImage *)image forRequest:(nonnull DFImageRequest *)request partial:(BOOL)partial {
     if (!_conf.processor || !_conf.processingQueue) {
         return NO;
     }
-    return [_conf.processor shouldProcessImage:image forRequest:request];
+    return [_conf.processor shouldProcessImage:image forRequest:request partial:partial];
 }
 
 #pragma mark Caching

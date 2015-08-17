@@ -36,11 +36,13 @@
 - (BOOL)isProcessingForRequestEquivalent:(nonnull DFImageRequest *)request1 toRequest:(nonnull DFImageRequest *)request2;
 
 /*! Returns NO when no processing is required for image with a given request.
+ @param partial If YES then image is a progressively decoded partial image data.
  */
-- (BOOL)shouldProcessImage:(nonnull UIImage *)image forRequest:(nonnull DFImageRequest *)request;
+- (BOOL)shouldProcessImage:(nonnull UIImage *)image forRequest:(nonnull DFImageRequest *)request partial:(BOOL)partial;
 
 /*! Returns processed image for a given request.
+  @param partial If YES then image is a progressively decoded partial image data.
  */
-- (nullable UIImage *)processedImage:(nonnull UIImage *)image forRequest:(nonnull DFImageRequest *)request;
+- (nullable UIImage *)processedImage:(nonnull UIImage *)image forRequest:(nonnull DFImageRequest *)request partial:(BOOL)partial;
 
 @end
