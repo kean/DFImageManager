@@ -56,7 +56,6 @@
 @property (nullable, atomic) DFImageResponse *response;
 @property (nonatomic) NSInteger tag;
 @property (nonatomic) BOOL preheating;
-@property (nullable, nonatomic, weak) DFImageManagerImageLoaderTask *loadTask;
 
 @end
 
@@ -121,7 +120,7 @@ static inline void DFDispatchAsync(dispatch_block_t block) {
     ([NSThread isMainThread]) ? block() : dispatch_async(dispatch_get_main_queue(), block);
 }
 
-@interface DFImageManager () <NSLocking, _DFImageTaskManaging>
+@interface DFImageManager () <NSLocking, _DFImageTaskManaging, DFImageManagerImageLoaderDelegate>
 
 @property (nonnull, nonatomic, readonly) DFImageManagerImageLoader *imageLoader;
 @property (nonnull, nonatomic, readonly) NSMutableSet /* _DFImageTask */ *executingImageTasks;
@@ -143,6 +142,7 @@ static inline void DFDispatchAsync(dispatch_block_t block) {
         NSParameterAssert(configuration);
         _conf = [configuration copy];
         _imageLoader = [[DFImageManagerImageLoader alloc] initWithConfiguration:configuration];
+        _imageLoader.delegate = self;
         _preheatingTasks = [NSMutableDictionary new];
         _executingImageTasks = [NSMutableSet new];
         _recursiveLock = [NSRecursiveLock new];
@@ -304,7 +304,7 @@ static inline void DFDispatchAsync(dispatch_block_t block) {
 
 - (void)_transitionActionFromState:(DFImageTaskState)fromState toState:(DFImageTaskState)toState task:(nonnull _DFImageTask *)task {
     if (fromState == DFImageTaskStateRunning && toState == DFImageTaskStateCancelled) {
-        [_imageLoader cancelTask:task.loadTask];
+        [_imageLoader cancelLoadingForImageTask:task];
     }
 }
 
@@ -318,33 +318,7 @@ static inline void DFDispatchAsync(dispatch_block_t block) {
             return;
         }
         [_executingImageTasks addObject:task];
-        typeof(self) __weak weakSelf = self;
-        DFImageManagerImageLoaderTask *loadTask = [_imageLoader startTaskForRequest:task.request progressHandler:^(int64_t completedUnitCount, int64_t totalUnitCount) {
-            NSProgress *progress = task.internalProgress;
-            progress.totalUnitCount = totalUnitCount;
-            progress.completedUnitCount = completedUnitCount;
-        } completion:^(UIImage *__nullable image, NSDictionary *__nullable info, NSError *__nullable error) {
-            task.image = image;
-            task.response = [[DFImageResponse alloc] initWithInfo:info isFastResponse:NO];
-            task.error = error;
-            DFImageManager *strongSelf = weakSelf;
-            if (strongSelf) {
-                [strongSelf lock];
-                [strongSelf _setImageTaskState:DFImageTaskStateCompleted task:task];
-                [strongSelf unlock];
-            }
-        }];
-        if (task.progressiveImageHandler && task.request.options.allowsProgressiveImage) {
-            loadTask.progressiveImageHandler = ^(UIImage *__nonnull image) {
-                void (^progressiveImageHandler)(UIImage *__nonnull) = task.progressiveImageHandler;
-                if (progressiveImageHandler) {
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        progressiveImageHandler(image);
-                    });
-                }
-            };
-        }
-        task.loadTask = loadTask;
+        [_imageLoader startLoadingForImageTask:task];
     }
     if (state == DFImageTaskStateCompleted || state == DFImageTaskStateCancelled) {
         [_executingImageTasks removeObject:task];
@@ -367,6 +341,33 @@ static inline void DFDispatchAsync(dispatch_block_t block) {
         }
         [self _imageTaskDidComplete:task];
     }
+}
+
+#pragma mark - <DFImageManagerImageLoaderDelegate>
+
+- (void)imageLoader:(nonnull DFImageManagerImageLoader *)imageLoader imageTask:(nonnull _DFImageTask *)task didUpdateProgressWithCompletedUnitCount:(int64_t)completedUnitCount totalUnitCount:(int64_t)totalUnitCount {
+    NSProgress *progress = task.internalProgress;
+    progress.totalUnitCount = totalUnitCount;
+    progress.completedUnitCount = completedUnitCount;
+}
+
+- (void)imageLoader:(nonnull DFImageManagerImageLoader *)imageLoader imageTask:(nonnull DFImageTask *)task didReceiveProgressiveImage:(nonnull UIImage *)image {
+    void (^progressiveImageHandler)(UIImage *__nonnull) = task.progressiveImageHandler;
+    if (progressiveImageHandler) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            progressiveImageHandler(image);
+        });
+    }
+}
+
+- (void)imageLoader:(nonnull DFImageManagerImageLoader *)imageLoader imageTask:(nonnull _DFImageTask *)task didCompleteWithImage:(nullable UIImage *)image info:(nullable NSDictionary *)info error:(nullable NSError *)error {
+    task.image = image;
+    task.response = [[DFImageResponse alloc] initWithInfo:info isFastResponse:NO];
+    task.error = error;
+    
+    [self lock];
+    [self _setImageTaskState:DFImageTaskStateCompleted task:task];
+    [self unlock];
 }
 
 #pragma mark <NSLocking>
@@ -404,7 +405,7 @@ static inline void DFDispatchAsync(dispatch_block_t block) {
         return;
     }
     [self lock];
-    [_imageLoader setPriority:task.priority forTask:task.loadTask];
+    [_imageLoader updateLoadingPriorityForImageTask:task];
     [self unlock];
 }
 
@@ -417,10 +418,6 @@ static inline void DFDispatchAsync(dispatch_block_t block) {
         progress.cancellationHandler = ^{
             [weakTask cancel];
         };
-        if (task.loadTask.totalUnitCount != 0) {
-            progress.totalUnitCount = task.loadTask.totalUnitCount;
-            progress.completedUnitCount = task.loadTask.completedUnitCount;
-        }
         task.internalProgress = progress;
     }
     [self unlock];

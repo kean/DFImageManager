@@ -23,20 +23,17 @@
 #import "DFImageManagerDefines.h"
 #import <Foundation/Foundation.h>
 
-@class DFImageRequest;
+@class DFImageTask;
 @class DFImageManagerConfiguration;
-@protocol DFImageFetching;
-@protocol DFImageProcessing;
-@protocol DFImageCaching;
+@class DFImageManagerImageLoader;
 
-typedef void (^DFImageLoaderProgressHandler)(int64_t completedUnitCount, int64_t totalUnitCount);
-typedef void (^DFImageLoaderCompletionHandler)(UIImage *__nullable image, NSDictionary *__nullable info, NSError *__nullable error);
+@protocol DFImageManagerImageLoaderDelegate <NSObject>
 
-@interface DFImageManagerImageLoaderTask : NSObject
+- (void)imageLoader:(nonnull DFImageManagerImageLoader *)imageLoader imageTask:(nonnull DFImageTask *)imageTask didUpdateProgressWithCompletedUnitCount:(int64_t)completedUnitCount totalUnitCount:(int64_t)totalUnitCount;
 
-@property (atomic, copy) void (^__nullable progressiveImageHandler)(UIImage *__nonnull image);
-@property (nonatomic, readonly) int64_t totalUnitCount;
-@property (nonatomic, readonly) int64_t completedUnitCount;
+- (void)imageLoader:(nonnull DFImageManagerImageLoader *)imageLoader imageTask:(nonnull DFImageTask *)imageTask didCompleteWithImage:(nullable UIImage *)image info:(nullable NSDictionary *)info error:(nullable NSError *)error;
+
+- (void)imageLoader:(nonnull DFImageManagerImageLoader *)imageLoader imageTask:(nonnull DFImageTask *)imageTask didReceiveProgressiveImage:(nonnull UIImage *)image;
 
 @end
 
@@ -47,13 +44,15 @@ typedef void (^DFImageLoaderCompletionHandler)(UIImage *__nullable image, NSDict
  */
 @interface DFImageManagerImageLoader : NSObject
 
+@property (nullable, nonatomic, weak) id<DFImageManagerImageLoaderDelegate> delegate;
+
 - (nonnull instancetype)initWithConfiguration:(nonnull DFImageManagerConfiguration *)configuration;
 
-- (nonnull DFImageManagerImageLoaderTask *)startTaskForRequest:(nonnull DFImageRequest *)request progressHandler:(nonnull DFImageLoaderProgressHandler)progressHandler completion:(nonnull DFImageLoaderCompletionHandler)completion;
+- (void)startLoadingForImageTask:(nonnull DFImageTask *)imageTask;
 
-- (void)cancelTask:(nullable DFImageManagerImageLoaderTask *)task;
+- (void)cancelLoadingForImageTask:(nonnull DFImageTask *)imageTask;
 
-- (void)setPriority:(DFImageRequestPriority)priority forTask:(nullable DFImageManagerImageLoaderTask *)task;
+- (void)updateLoadingPriorityForImageTask:(nonnull DFImageTask *)imageTask;
 
 - (nullable DFCachedImageResponse *)cachedResponseForRequest:(nonnull DFImageRequest *)request;
 

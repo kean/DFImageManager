@@ -65,10 +65,12 @@
 }
 
 - (void)appendData:(nullable NSData *)data {
-    [self lock];
-    [_data appendData:data];
-    [self _decodeIfNeeded];
-    [self unlock];
+    if (data.length) {
+        [self lock];
+        [_data appendData:data];
+        [self _decodeIfNeeded];
+        [self unlock];
+    }
 }
 
 - (void)_decodeIfNeeded {

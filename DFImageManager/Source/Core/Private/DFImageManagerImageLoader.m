@@ -31,36 +31,33 @@
 #import "DFImageProcessing.h"
 #import "DFImageRequest.h"
 #import "DFImageRequestOptions.h"
-#import "UIImage+DFImageUtilities.h"
+#import "DFImageTask.h"
 #import "DFProgressiveImageDecoder.h"
 
-#pragma mark - DFImageManagerImageLoaderTask
+#pragma mark - _DFImageLoaderTask
 
 @class _DFImageLoadOperation;
 
-@interface DFImageManagerImageLoaderTask ()
+@interface _DFImageLoaderTask : NSObject
 
-@property (nonnull, nonatomic, readonly) DFImageRequest *request;
-@property (nonatomic) DFImageRequestPriority priority;
-@property (nonnull, nonatomic, copy, readonly) DFImageLoaderProgressHandler progressHandler;
-@property (nonnull, nonatomic, copy, readonly) DFImageLoaderCompletionHandler completionHandler;
+@property (nonnull, nonatomic, readonly) DFImageTask *imageTask;
+@property (nonnull, nonatomic, readonly) DFImageRequest *request; // dynamic
 @property (nullable, nonatomic, weak) _DFImageLoadOperation *loadOperation;
 @property (nullable, nonatomic, weak) NSOperation *processOperation;
-@property (nonatomic) int64_t totalUnitCount;
-@property (nonatomic) int64_t completedUnitCount;
 
 @end
 
-@implementation DFImageManagerImageLoaderTask
+@implementation _DFImageLoaderTask
 
-- (nonnull instancetype)initWithRequest:(nonnull DFImageRequest *)request progressHandler:(nonnull DFImageLoaderProgressHandler)progressHandler completionHandler:(nonnull DFImageLoaderCompletionHandler)completionHandler {
+- (nonnull instancetype)initWithImageTask:(nonnull DFImageTask *)imageTask {
     if (self = [super init]) {
-        _request = request;
-        _priority = request.options.priority;
-        _progressHandler = progressHandler;
-        _completionHandler = completionHandler;
+        _imageTask = imageTask;
     }
     return self;
+}
+
+- (DFImageRequest * __nonnull)request {
+    return self.imageTask.request;
 }
 
 @end
@@ -147,8 +144,8 @@
 - (void)updateOperationPriority {
     if (_operation && _tasks.count) {
         DFImageRequestPriority priority = DFImageRequestPriorityVeryLow;
-        for (DFImageManagerImageLoaderTask *task in _tasks) {
-            priority = MAX(task.priority, priority);
+        for (_DFImageLoaderTask *task in _tasks) {
+            priority = MAX(task.imageTask.priority, priority);
         }
         if (_operation.queuePriority != (NSOperationQueuePriority)priority) {
             _operation.queuePriority = (NSOperationQueuePriority)priority;
@@ -167,20 +164,21 @@
 @interface DFImageManagerImageLoader () <_DFImageRequestKeyOwner>
 
 @property (nonnull, nonatomic, readonly) DFImageManagerConfiguration *conf;
+@property (nonnull, nonatomic, readonly) NSMutableDictionary /* DFImageTask : _DFImageLoaderTask */ *executingTasks;
+@property (nonnull, nonatomic, readonly) NSMutableDictionary /* _DFImageRequestKey : _DFImageLoadOperation */ *loadOperations;
+@property (nonnull, nonatomic, readonly) dispatch_queue_t queue;
+@property (nonnull, nonatomic, readonly) NSOperationQueue *decodingQueue;
+@property (nonatomic, readonly) BOOL fetcherRespondsToCanonicalRequest;
 
 @end
 
-@implementation DFImageManagerImageLoader {
-    dispatch_queue_t _queue;
-    NSOperationQueue *_decodingQueue;
-    NSMutableDictionary /* _DFImageLoadKey : _DFImageLoadOperation */ *_loadOperations;
-    BOOL _fetcherRespondsToCanonicalRequest;
-}
+@implementation DFImageManagerImageLoader
 
 - (nonnull instancetype)initWithConfiguration:(nonnull DFImageManagerConfiguration *)configuration {
     if (self = [super init]) {
         NSParameterAssert(configuration);
         _conf = [configuration copy];
+        _executingTasks = [NSMutableDictionary new];
         _loadOperations = [NSMutableDictionary new];
         _queue = dispatch_queue_create([[NSString stringWithFormat:@"%@-queue-%p", [self class], self] UTF8String], DISPATCH_QUEUE_SERIAL);
         _decodingQueue = [NSOperationQueue new];
@@ -190,15 +188,15 @@
     return self;
 }
 
-- (nonnull DFImageManagerImageLoaderTask *)startTaskForRequest:(nonnull DFImageRequest *)request progressHandler:(nonnull DFImageLoaderProgressHandler)progressHandler completion:(nonnull DFImageLoaderCompletionHandler)completion {
-    DFImageManagerImageLoaderTask *task = [[DFImageManagerImageLoaderTask alloc] initWithRequest:request progressHandler:progressHandler completionHandler:completion];
+- (void)startLoadingForImageTask:(nonnull DFImageTask *)imageTask {
+    _DFImageLoaderTask *loaderTask = [[_DFImageLoaderTask alloc] initWithImageTask:imageTask];
+    _executingTasks[imageTask] = loaderTask;
     dispatch_async(_queue, ^{
-        [self _requestImageForTask:task];
+        [self _startLoadOperationForTask:loaderTask];
     });
-    return task;
 }
 
-- (void)_requestImageForTask:(DFImageManagerImageLoaderTask *)task {
+- (void)_startLoadOperationForTask:(_DFImageLoaderTask *)task {
     _DFImageRequestKey *key = DFImageLoadKeyCreate(task.request);
     _DFImageLoadOperation *operation = _loadOperations[key];
     if (!operation) {
@@ -211,9 +209,7 @@
         }];
         _loadOperations[key] = operation;
     } else {
-        task.totalUnitCount = operation.totalUnitCount;
-        task.completedUnitCount = operation.completedUnitCount;
-        task.progressHandler(task.completedUnitCount, task.totalUnitCount);
+        [self.delegate imageLoader:self imageTask:task.imageTask didUpdateProgressWithCompletedUnitCount:operation.completedUnitCount totalUnitCount:operation.totalUnitCount];
     }
     task.loadOperation = operation;
     [operation.tasks addObject:task];
@@ -222,14 +218,13 @@
 
 - (void)_loadOperation:(nonnull _DFImageLoadOperation *)operation didUpdateProgressWithData:(NSData *__nullable)data completedUnitCount:(int64_t)completedUnitCount totalUnitCount:(int64_t)totalUnitCount {
     dispatch_async(_queue, ^{
+        // update progress
         operation.totalUnitCount = totalUnitCount;
         operation.completedUnitCount = completedUnitCount;
-        for (DFImageManagerImageLoaderTask *task in operation.tasks) {
-            task.totalUnitCount = operation.totalUnitCount;
-            task.completedUnitCount = operation.completedUnitCount;
-            task.progressHandler(task.completedUnitCount, task.totalUnitCount);
+        for (_DFImageLoaderTask *task in operation.tasks) {
+            [self.delegate imageLoader:self imageTask:task.imageTask didUpdateProgressWithCompletedUnitCount:operation.completedUnitCount totalUnitCount:operation.totalUnitCount];
         }
-        // progressive image:
+        // progressive image decoding
         if (!_conf.allowsProgressiveImage) {
             return;
         }
@@ -240,20 +235,18 @@
         DFProgressiveImageDecoder *decoder = operation.progressiveImageDecoder;
         if (!decoder) {
             decoder = [[DFProgressiveImageDecoder alloc] initWithQueue:_decodingQueue decoder:_conf.decoder ?: [DFImageDecoder sharedDecoder]];
+            decoder.threshold = _conf.progressiveImageDecodingThreshold;
+            decoder.totalByteCount = totalUnitCount;
             typeof(self) __weak weakSelf = self;
             _DFImageLoadOperation *__weak weakOp = operation;
             decoder.handler = ^(UIImage *__nonnull image) {
-                [weakSelf _loadOperation:weakOp didReceivePartialImage:image];
+                [weakSelf _loadOperation:weakOp didDecodePartialImage:image];
             };
-            decoder.threshold = _conf.progressiveImageDecodingThreshold;
-            decoder.totalByteCount = totalUnitCount;
             operation.progressiveImageDecoder = decoder;
         }
-        if (data.length) {
-            [decoder appendData:data];
-        }
-        for (DFImageManagerImageLoaderTask *task in operation.tasks) {
-            if (task.progressiveImageHandler) {
+        [decoder appendData:data];
+        for (_DFImageLoaderTask *task in operation.tasks) {
+            if (task.imageTask.progressiveImageHandler && task.request.options.allowsProgressiveImage) {
                 [decoder resume];
                 break;
             }
@@ -261,52 +254,51 @@
     });
 }
 
-- (void)_loadOperation:(nonnull _DFImageLoadOperation *)operation didReceivePartialImage:(nonnull UIImage *)image {
-    if (!image) {
-        return;
-    }
+- (void)_loadOperation:(nonnull _DFImageLoadOperation *)operation didDecodePartialImage:(nonnull UIImage *)image {
     dispatch_async(_queue, ^{
-        for (DFImageManagerImageLoaderTask *task in operation.tasks) {
-            void (^progressiveImageHandler)(UIImage *) = task.progressiveImageHandler;
-            if (progressiveImageHandler) {
-                if ([self _shouldProcessImage:image forRequest:task.request partial:YES]) {
-                    id<DFImageProcessing> processor = _conf.processor;
-                    [_conf.processingQueue addOperationWithBlock:^{
-                        UIImage *processedImage = [processor processedImage:image forRequest:task.request partial:YES];
-                        if (processedImage) {
-                            progressiveImageHandler(processedImage);
-                        }
-                    }];
-                } else {
-                    progressiveImageHandler(image);
-                }
+        for (_DFImageLoaderTask *task in operation.tasks) {
+            if ([self _shouldProcessImage:image forRequest:task.request partial:YES]) {
+                typeof(self) __weak weakSelf = self;
+                id<DFImageProcessing> processor = _conf.processor;
+                [_conf.processingQueue addOperationWithBlock:^{
+                    UIImage *processedImage = [processor processedImage:image forRequest:task.request partial:YES];
+                    if (processedImage) {
+                        [weakSelf.delegate imageLoader:weakSelf imageTask:task.imageTask didReceiveProgressiveImage:processedImage];
+                    }
+                }];
+            } else {
+                [self.delegate imageLoader:self imageTask:task.imageTask didReceiveProgressiveImage:image];
             }
         }
     });
 }
 
 - (void)_loadOperation:(nonnull _DFImageLoadOperation *)operation didCompleteWithData:(nullable NSData *)data info:(nullable NSDictionary *)info error:(nullable NSError *)error {
-    typeof(self) __weak weakSelf = self;
-    [_decodingQueue addOperationWithBlock:^{
-        id<DFImageDecoding> decoder = weakSelf.conf.decoder ?: [DFImageDecoder sharedDecoder];
-        UIImage *image = data ? [decoder imageWithData:data partial:NO] : nil;
-        [weakSelf _loadOperation:operation didCompleteWithImage:image info:info error:error];
-    }];
+    if (data.length) {
+        typeof(self) __weak weakSelf = self;
+        [_decodingQueue addOperationWithBlock:^{
+            id<DFImageDecoding> decoder = weakSelf.conf.decoder ?: [DFImageDecoder sharedDecoder];
+            UIImage *image = [decoder imageWithData:data partial:NO];
+            [weakSelf _loadOperation:operation didCompleteWithImage:image info:info error:error];
+        }];
+    } else {
+        [self _loadOperation:operation didCompleteWithImage:nil info:info error:error];
+    }
 }
 
 - (void)_loadOperation:(nonnull _DFImageLoadOperation *)operation didCompleteWithImage:(nullable UIImage *)image info:(nullable NSDictionary *)info error:(nullable NSError *)error {
     dispatch_async(_queue, ^{
-        for (DFImageManagerImageLoaderTask *task in operation.tasks) {
-            [self _loadTask:task didCompleteWithImage:image info:info error:error];
+        for (_DFImageLoaderTask *task in operation.tasks) {
+            [self _loadTask:task processImage:image info:info error:error];
         }
         [operation.tasks removeAllObjects];
         [_loadOperations removeObjectForKey:operation.key];
     });
 }
 
-- (void)_loadTask:(nonnull DFImageManagerImageLoaderTask *)task didCompleteWithImage:(nullable UIImage *)image info:(nullable NSDictionary *)info error:(nullable NSError *)error {
-    typeof(self) __weak weakSelf = self;
+- (void)_loadTask:(nonnull _DFImageLoaderTask *)task processImage:(nullable UIImage *)image info:(nullable NSDictionary *)info error:(nullable NSError *)error {
     if (image && [self _shouldProcessImage:image forRequest:task.request partial:NO]) {
+        typeof(self) __weak weakSelf = self;
         id<DFImageProcessing> processor = _conf.processor;
         NSOperation *operation = [NSBlockOperation blockOperationWithBlock:^{
             UIImage *processedImage = [weakSelf cachedResponseForRequest:task.request].image;
@@ -314,21 +306,29 @@
                 processedImage = [processor processedImage:image forRequest:task.request partial:NO];
                 [weakSelf _storeImage:processedImage info:info forRequest:task.request];
             }
-            task.completionHandler(processedImage, info, error);
+            [weakSelf _loadTask:task didCompleteWithImage:processedImage info:info error:error];
         }];
         [_conf.processingQueue addOperation:operation];
         task.processOperation = operation;
     } else {
-        [weakSelf _storeImage:image info:info forRequest:task.request];
-        task.completionHandler(image, info, error);
+        [self _storeImage:image info:info forRequest:task.request];
+        [self _loadTask:task didCompleteWithImage:image info:info error:error];
     }
 }
 
-- (void)cancelTask:(nullable DFImageManagerImageLoaderTask *)task {
+- (void)_loadTask:(nonnull _DFImageLoaderTask *)task didCompleteWithImage:(nullable UIImage *)image info:(nullable NSDictionary *)info error:(nullable NSError *)error {
     dispatch_async(_queue, ^{
-        _DFImageLoadOperation *operation = task.loadOperation;
+        [self.delegate imageLoader:self imageTask:task.imageTask didCompleteWithImage:image info:info error:error];
+        [_executingTasks removeObjectForKey:task.imageTask];
+    });
+}
+
+- (void)cancelLoadingForImageTask:(nonnull DFImageTask *)imageTask {
+    dispatch_async(_queue, ^{
+        _DFImageLoaderTask *loaderTask = _executingTasks[imageTask];
+        _DFImageLoadOperation *operation = loaderTask.loadOperation;
         if (operation) {
-            [operation.tasks removeObject:task];
+            [operation.tasks removeObject:loaderTask];
             if (operation.tasks.count == 0) {
                 [operation.operation cancel];
                 [_loadOperations removeObjectForKey:operation.key];
@@ -336,14 +336,15 @@
                 [operation updateOperationPriority];
             }
         }
-        [task.processOperation cancel];
+        [loaderTask.processOperation cancel];
+        [_executingTasks removeObjectForKey:imageTask];
     });
 }
 
-- (void)setPriority:(DFImageRequestPriority)priority forTask:(nullable DFImageManagerImageLoaderTask *)task {
+- (void)updateLoadingPriorityForImageTask:(nonnull DFImageTask *)imageTask {
     dispatch_async(_queue, ^{
-        task.priority = priority;
-        [task.loadOperation updateOperationPriority];
+        _DFImageLoaderTask *loaderTask = _executingTasks[imageTask];
+        [loaderTask.loadOperation updateOperationPriority];
     });
 }
 
