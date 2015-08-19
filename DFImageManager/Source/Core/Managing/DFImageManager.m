@@ -332,13 +332,13 @@ static inline void DFDispatchAsync(dispatch_block_t block) {
                 task.error = [NSError errorWithDomain:DFImageManagerErrorDomain code:DFImageManagerErrorUnknown userInfo:nil];
             }
         }
-        DFImageTaskCompletion completion = task.completionHandler;
-        if (completion) {
-            DFDispatchAsync(^{
+        DFDispatchAsync(^{
+            DFImageTaskCompletion completion = task.completionHandler;
+            if (completion) {
                 completion(task.image, task.error, task.response, task);
                 task.image = nil;
-            });
-        }
+            }
+        });
         [self _imageTaskDidComplete:task];
     }
 }
@@ -352,12 +352,12 @@ static inline void DFDispatchAsync(dispatch_block_t block) {
 }
 
 - (void)imageLoader:(nonnull DFImageManagerImageLoader *)imageLoader imageTask:(nonnull DFImageTask *)task didReceiveProgressiveImage:(nonnull UIImage *)image {
-    void (^progressiveImageHandler)(UIImage *__nonnull) = task.progressiveImageHandler;
-    if (progressiveImageHandler) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            progressiveImageHandler(image);
-        });
-    }
+    dispatch_async(dispatch_get_main_queue(), ^{
+        void (^handler)(UIImage *__nonnull) = task.progressiveImageHandler;
+        if (handler) {
+            handler(image);
+        }
+    });
 }
 
 - (void)imageLoader:(nonnull DFImageManagerImageLoader *)imageLoader imageTask:(nonnull _DFImageTask *)task didCompleteWithImage:(nullable UIImage *)image info:(nullable NSDictionary *)info error:(nullable NSError *)error {
