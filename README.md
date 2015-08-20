@@ -32,13 +32,12 @@ The DFImageManager is not just a loader, it is a pipeline for executing image re
 ##### Decoding and Processing
 - Animated GIF support using best-in-class [FLAnimatedImage](https://github.com/Flipboard/FLAnimatedImage) library
 - [WebP](https://developers.google.com/speed/webp/) support
+- Progressive image decoding
 - Background image decompression
-- Resize and crop loaded images to [fit displayed size](https://developer.apple.com/library/ios/qa/qa1708/_index.html)
-- Add rounded corners or circle
+- Resize and crop loaded images to [fit displayed size](https://developer.apple.com/library/ios/qa/qa1708/_index.html), add rounded corners or circle
 
 ##### Displaying
 - Use UI components and UIKit categories
-- Automatically retry load if the network load failes
 
 ##### Advanced
 - [Intelligent preheating](https://github.com/kean/DFImageManager/wiki/Image-Preheating-Guide) of images that are close to the viewport
