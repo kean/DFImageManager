@@ -201,6 +201,7 @@ static inline void DFDispatchAsync(dispatch_block_t block) {
     }
     _invalidated = YES;
     [_preheatingTasks removeAllObjects];
+    _imageLoader.delegate = nil;
     for (_DFImageTask *task in _executingImageTasks) {
         [self _setImageTaskState:DFImageTaskStateCancelled task:task];
     }
