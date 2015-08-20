@@ -35,6 +35,13 @@
 
 @implementation DFImageDecoder
 
+- (instancetype)init {
+    if (self = [super init]) {
+        _shouldDecompressImages = YES;
+    }
+    return self;
+}
+
 #pragma mark <DFImageDecoding>
 
 - (nullable UIImage *)imageWithData:(nonnull NSData *)data partial:(BOOL)partial {
@@ -59,7 +66,11 @@
     }
 #endif
     
-    return [UIImage df_decompressedImageWithData:data];
+    UIImage *image = [[UIImage alloc] initWithData:data scale:[UIScreen mainScreen].scale];
+    if (self.shouldDecompressImages) {
+        image = [UIImage df_decompressedImage:image];
+    }
+    return image;
 }
 
 #pragma mark Dependency Injector

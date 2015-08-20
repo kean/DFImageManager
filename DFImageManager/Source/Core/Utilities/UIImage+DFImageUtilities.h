@@ -27,10 +27,6 @@
  */
 @interface UIImage (DFImageUtilities)
 
-/*! Returns decompressed image with a given data.
- */
-+ (nullable UIImage *)df_decompressedImageWithData:(nullable NSData *)data;
-
 /*! Returns decompressed image with a given image.
  */
 + (nullable UIImage *)df_decompressedImage:(nullable UIImage *)image;

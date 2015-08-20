@@ -24,11 +24,6 @@
 
 @implementation UIImage (DFImageUtilities)
 
-+ (nullable UIImage *)df_decompressedImageWithData:(nullable NSData *)data {
-    UIImage *image = [[UIImage alloc] initWithData:data scale:[UIScreen mainScreen].scale];
-    return [self df_decompressedImage:image];
-}
-
 + (UIImage *)df_decompressedImage:(UIImage *)image {
     return [self df_decompressedImage:image scale:1.f];
 }
