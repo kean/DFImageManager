@@ -9,7 +9,7 @@
 
 Advanced iOS framework for loading, caching, processing, displaying and preheating images. It uses latest advancements in iOS SDK and doesn't reinvent existing technologies. It provides a powerful API that will extend the capabilities of your app.
 
-The DFImageManager is not just a loader, it is a pipeline for executing image requests using pluggable components. It also features [multiple subspecs](#install_using_cocopods) that automatically integrate things like [AFNetworking](https://github.com/AFNetworking/AFNetworking), [FLAnimatedImage](https://github.com/Flipboard/FLAnimatedImage), [libwebp](https://developers.google.com/speed/webp/docs/api) and more.
+DFImageManager is not just a loader, it's a pipeline for executing image requests using pluggable components. It also features [multiple subspecs](#install_using_cocopods) that automatically integrate things like [FLAnimatedImage](https://github.com/Flipboard/FLAnimatedImage), [AFNetworking](https://github.com/AFNetworking/AFNetworking), [libwebp](https://developers.google.com/speed/webp/docs/api) and more.
 
 1. [Getting Started](#h_getting_started)
 2. [Usage](#h_usage)
@@ -31,7 +31,7 @@ The DFImageManager is not just a loader, it is a pipeline for executing image re
 - Uses latest advancements in [Foundation URL Loading System](https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/URLLoadingSystem/URLLoadingSystem.html) including [NSURLSession](https://developer.apple.com/library/ios/documentation/Foundation/Reference/NSURLSession_class/) that supports [HTTP/2](https://en.wikipedia.org/wiki/HTTP/2)
 - Has basic built-in networking implementation, and optional [AFNetworking integration](#install_using_cocopods) (which should be your primary choice). Combine the power of both frameworks! 
 - Groups similar requests and never executes them twice
-- [Intelligent preheating](https://github.com/kean/DFImageManager/wiki/Image-Preheating-Guide) of images that are close to the viewport
+- [Intelligent preheating](https://github.com/kean/DFImageManager/wiki/Image-Preheating-Guide) of images close to the viewport
 - Progress tracking using `NSProgress`
 
 ##### Caching
@@ -47,10 +47,10 @@ The DFImageManager is not just a loader, it is a pipeline for executing image re
 
 ##### Displaying
 - Use UI components and UIKit categories
+- Automatically manage requests priorities
 
 ##### Advanced
 - Customize different parts of the framework using dependency injection
-- Add custom image decoders
 - Compose image tasks using `DFCompositeImageTask`. You might use it to show a low-resolution placeholder first and swap to a higher-res one when it is loaded. Or implement custom [revalidation policies](https://github.com/kean/DFImageManager/wiki/Advanced-Image-Caching-Guide#custom-revalidation-using-dfcompositeimagetask)
 - Create custom image managers
 - [Compose image managers](https://github.com/kean/DFImageManager/wiki/Extending-Image-Manager-Guide#using-dfcompositeimagemanager) into a tree of responsibility
