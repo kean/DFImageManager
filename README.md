@@ -7,25 +7,24 @@
 <a href="https://github.com/Carthage/Carthage"><img src="https://img.shields.io/badge/Carthage-compatible-4BC51D.svg"></a>
 </p>
 
-Advanced iOS framework for loading, caching, processing, displaying and preheating images. It uses latest features in iOS SDK and doesn't reinvent existing technologies. It provides a powerful API that will extend the capabilities of your app.
+Advanced iOS framework for loading, caching, processing, displaying and preheating images. It uses latest advancements in iOS SDK and doesn't reinvent existing technologies. It provides a powerful API that will extend the capabilities of your app.
 
-The DFImageManager is not just a loader, it is a pipeline for executing image requests using pluggable components. It features [multiple subspecs](#install_using_cocopods) that automatically integrate things like [AFNetworking](https://github.com/AFNetworking/AFNetworking), [FLAnimatedImage](https://github.com/Flipboard/FLAnimatedImage) as a performant animated GIF engine, and more.
+The DFImageManager is not just a loader, it is a pipeline for executing image requests using pluggable components. It also features [multiple subspecs](#install_using_cocopods) that automatically integrate things like [AFNetworking](https://github.com/AFNetworking/AFNetworking), [FLAnimatedImage](https://github.com/Flipboard/FLAnimatedImage), [libwebp](https://developers.google.com/speed/webp/docs/api) and more.
 
-* [Features](#h_features)
-* [Getting Started](#h_getting_started)
-* [Usage](#h_usage)
-* [Design](#h_design)
-* [Installation](#install_using_cocopods)
-* [Requirements](#h_requirements)
-* [Supported Image Formats](#h_supported_image_formats)
-* [Contribution](#h_contribution)
+1. [Getting Started](#h_getting_started)
+2. [Usage](#h_usage)
+3. [Design](#h_design)
+4. [Installation](#install_using_cocopods)
+5. [Requirements](#h_requirements)
+6. [Supported Image Formats](#h_supported_image_formats)
+7. [Contribution](#h_contribution)
 
 ## <a name="h_features"></a>Features
 
-- Zero config, yet immense customization and extensibility
-- Works great with Swift
-- Common APIs for different resources (`NSURL`, `PHAsset`, and your custom classes)
+- Zero config, yet immense customization and flexibility
+- Works great with both Objective-C and Swift
 - Great performance even on outdated devices, asynchronous and thread safe
+- Modular design
 - Unit tested
 
 ##### Loading
@@ -226,7 +225,7 @@ id<DFImageManaging> compositeImageManager = [[DFCompositeImageManager alloc] ini
 
 ## <a name="h_design"></a>Design
 
-<img src="https://cloud.githubusercontent.com/assets/1567433/9427953/ccbef7f2-499f-11e5-8542-bd54ea7b2250.png" height="420"/>
+<img src="https://cloud.githubusercontent.com/assets/1567433/9430006/ee9f9b86-49ec-11e5-9a2b-121d6f6f3384.png" height="420"/>
 
 |Protocol|Description|
 |--------|-----------|
