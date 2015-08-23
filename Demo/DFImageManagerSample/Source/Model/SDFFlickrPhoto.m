@@ -28,7 +28,7 @@
         // http://farm{farm-id}.staticflickr.com/{server-id}/{id}_{secret}.jpg
         
         NSString *(^photoWithSize)(NSString *) = ^NSString *(NSString *size) {
-            return [NSString stringWithFormat:@"http://farm%@.staticflickr.com/%@/%@_%@_%@.jpg", self.farm, self.server, self.itemid, self.secret, size];
+            return [NSString stringWithFormat:@"https://farm%@.staticflickr.com/%@/%@_%@_%@.jpg", self.farm, self.server, self.itemid, self.secret, size];
         };
         self.photoURL = photoWithSize(@"m");
         self.photoURLSmall = photoWithSize(@"s");
