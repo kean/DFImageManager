@@ -17,7 +17,6 @@ The DFImageManager is not just a loader, it is a pipeline for executing image re
 * [Design](#h_design)
 * [Installation](#install_using_cocopods)
 * [Requirements](#h_requirements)
-* [Supported Resources](#h_supported_resources)
 * [Supported Image Formats](#h_supported_image_formats)
 * [Contribution](#h_contribution)
 
@@ -269,10 +268,6 @@ pod 'DFImageManager/WebP'
 
 ## <a name="h_requirements"></a>Requirements
 iOS 7.0+
-
-## <a name="h_supported_resources"></a>Supported Resources
-- `NSURL` with **http**, **https**, **ftp**, **file**, and **data** schemes (`AFNetworking` or `NSURLSession` subspec)
-- `PHAsset`, `NSURL` with **com.github.kean.photos-kit** scheme (`PhotosKit` subspec)
 
 ## <a name="h_supported_image_formats"></a>Supported Image Formats
 - Image formats supported by `UIImage` (JPEG, PNG, BMP, [and more](https://developer.apple.com/library/ios/documentation/UIKit/Reference/UIImage_Class/))
