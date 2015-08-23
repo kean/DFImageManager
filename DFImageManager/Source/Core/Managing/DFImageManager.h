@@ -60,6 +60,10 @@
  */
 - (nonnull instancetype)initWithConfiguration:(nonnull DFImageManagerConfiguration *)configuration NS_DESIGNATED_INITIALIZER;
 
+/*! Unavailable initializer, please use designated initializer.
+ */
+- (nullable instancetype)init NS_UNAVAILABLE;
+
 @end
 
 

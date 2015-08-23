@@ -150,6 +150,11 @@ static inline void DFDispatchAsync(dispatch_block_t block) {
     return self;
 }
 
+- (nullable instancetype)init {
+    [NSException raise:NSInternalInconsistencyException format:@"Please use designated initialzier"];
+    return nil;
+}
+
 + (void)initialize {
     [self setSharedManager:[self createDefaultManager]];
 }
