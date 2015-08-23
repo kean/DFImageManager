@@ -162,13 +162,25 @@ Those were the most common cases. `DFImageManager` is packed with other features
 - `PHAsset`, `NSURL` with **com.github.kean.photos-kit** scheme (`PhotosKit` subspec)
 
 ## Supported Image Formats
-- Everything supported by `UIImage` (jpg, png, bmp, [and more](https://developer.apple.com/library/ios/documentation/UIKit/Reference/UIImage_Class/))
-- gif (`GIF` subspec)
-- webp (`WebP` subspec)
+- Image formats supported by `UIImage` (JPEG, PNG, BMP, [and more](https://developer.apple.com/library/ios/documentation/UIKit/Reference/UIImage_Class/))
+- GIF (`GIF` subspec)
+- WebP (`WebP` subspec)
+
+## Design
+
+<img src="https://cloud.githubusercontent.com/assets/1567433/9427953/ccbef7f2-499f-11e5-8542-bd54ea7b2250.png" height="420"/>
+
+|Protocol|Description|
+|--------|-----------|
+|`DFImageManaging`|A high-level API for loading images|
+|`DFImageFetching`|Performs fetching of image data (`NSData`)|
+|`DFImageDecoding`|Converts `NSData` to `UIImage` objects|
+|`DFImageProcessing`|Processes decoded images|
+|`DFImageCaching`|Stores processed images into memory cache|
 
 ## <a name="install_using_cocopods"></a>Installation with [CocoaPods](http://cocoapods.org)
 
-CocoaPods is the dependency manager for Cocoa projects, which automates the process of integrating third-party frameworks like DFImageManager. If you are not familiar with CocoaPods the best place to start would be [official CocoaPods guides](http://guides.cocoapods.org). To install DFImageManager add a dependency in your Podfile:
+CocoaPods is the dependency manager for Cocoa projects which automates integration of third-party frameworks. If you are not familiar with CocoaPods the best place to start would be [official CocoaPods guides](http://guides.cocoapods.org). To install DFImageManager add a dependency in your Podfile:
 ```ruby
 # Podfile
 platform :ios, '7.0'
@@ -176,7 +188,7 @@ pod 'DFImageManager'
 ```
 
 By default it will install subspecs:
-- `DFImageManager/Core` - core DFImageManager classes
+- `DFImageManager/Core` - DFImageManager core classes
 - `DFImageManager/UI` - UI components
 - `DFImageManager/NSURLSession` - basic networking on top of NSURLSession
 - `DFImageManager/PhotosKit` - Photos Framework support
