@@ -60,34 +60,78 @@ iOS 7.0+
 
 ## Usage
 
-#### Zero config image fetching
+#### Zero Config Image Loading
 
 ```objective-c
-DFImageTask *task = [[DFImageManager sharedManager] imageTaskForResource:[NSURL URLWithString:@"http://..."] completion:^(UIImage *image, NSDictionary *info) {
-  // Use decompressed image and inspect info
-}];
-[task resume];
-
-[task cancel]; // task can be used to cancel the request
+[[[DFImageManager sharedManager] imageTaskForResource:[NSURL URLWithString:@"http://..."] completion:^(UIImage *image, NSError *error, DFImageResponse *response, DFImageTask *task){
+  // Use loaded image
+}] resume];
 ```
 
-#### Add request options
+#### Adding Request Options
 
 ```objective-c
 NSURL *imageURL = [NSURL URLWithString:@"http://..."];
 
 DFMutableImageRequestOptions *options = [DFMutableImageRequestOptions new]; // builder
+options.priority = DFImageRequestPriorityVeryHigh;
 options.allowsClipping = YES;
-options.userInfo = @{ DFURLRequestCachePolicyKey : @(NSURLRequestReturnCacheDataDontLoad) };
 
 DFImageRequest *request = [DFImageRequest requestWithResource:imageURL targetSize:CGSizeMake(100.f, 100.f) contentMode:DFImageContentModeAspectFill options:options.options];
 
-[[[DFImageManager sharedManager] imageTaskForRequest:request completion:^(UIImage *image, NSDictionary *info) {
-// Image is resized and clipped to fill 100x100px square
+[[[DFImageManager sharedManager] imageTaskForRequest:request completion:^(UIImage *image, NSError *error, DFImageResponse *response, DFImageTask *imageTask) {
+  // Image is resized and clipped to fill 100x100px square
+  if (response.isFastResponse) {
+    // Image was returned synchronously from the memory cache
+  }
 }] resume];
 ```
 
-#### Use UI components
+#### Using Image Task
+
+```objective-c
+DFImageTask *imageTask = [[DFImageManager sharedManager] imageTaskForResource:[NSURL URLWithString:@"http://..."] completion:nil];
+[imageTask resume];
+
+// Use progress object to track load progress
+NSProgress *progress = imageTask.progress;
+
+// Change priority of the already executing task
+imageTask.priority = DFImageRequestPriorityHigh;
+    
+// Cancel image task
+[imageTask cancel];
+```
+
+#### Progressive Image Decoding
+
+```objective-c
+// Create image request that allows progressive image
+DFMutableImageRequestOptions *options = [DFMutableImageRequestOptions new];
+options.allowsProgressiveImage = YES;
+DFImageRequest *request = // Create request with given options
+
+DFImageTask *imageTask = .../ Create image task
+
+// Set progressive image handler
+imageTask.progressiveImageHandler = ^(UIImage *__nonnull image){
+  imageView.image = image;
+};
+
+[imageTask resume]; // Progressive image should also be enabled by DFImageManager
+```
+
+#### Preheating Images
+
+```objective-c
+NSArray *requestsForAddedItems = ...; // Create image requests
+[[DFImageManager sharedManager] startPreheatingImagesForRequests:requestsForAddedItems];
+    
+NSArray *requestsForRemovedItems = ...; // Create image requests
+[[DFImageManager sharedManager] stopPreheatingImagesForRequests:requestsForRemovedItems];
+```
+
+#### Using UI Components
 Use methods from `UIImageView` category for simple cases:
 ```objective-c
 UIImageView *imageView = ...;
@@ -98,52 +142,67 @@ Use `DFImageView` for more advanced features:
 ```objective-c
 DFImageView *imageView = ...;
 imageView.allowsAnimations = YES; // Animates images when the response isn't fast enough
-imageView.allowsAutoRetries = YES; // Retries when network reachability changes
+imageView.managesRequestPriorities = YES; // Automatically changes current request priority when image view gets added/removed from the window
 
 [imageView prepareForReuse];
 [imageView setImageWithResource:[NSURL URLWithString:@"http://..."]];
-// Or use other APIs, for example, set multiple requests [imageView setImageWithRequests:@[ ... ]];
 ```
 
-#### Start multiple requests with a single completion handler
-The `DFCompositeImageTask` class manages execution of one or many image requests. It also stores execution state for each request.
+#### Composing Image Tasks
+The `DFCompositeImageTask` class manages execution of multiple image requests and provides a single completion block.
 ```objective-c
-DFImageRequest *previewRequest = [DFImageRequest requestWithResource:[NSURL URLWithString:@"http://preview"]];
-DFImageRequest *fullsizeRequest = [DFImageRequest requestWithResource:[NSURL URLWithString:@"http://fullsize_image"]];
+DFImageTask *previewImageTask = ...; // Create image task for image preview
+DFImageTask *fullsizeImageTask = ...; // Create image task for fullsize image
 
-NSArray *requests = @[ previewRequest, fullsizeRequest ];
-DFCompositeImageTask *task = [DFCompositeImageTask requestImageForRequests:requests imageHandler:^(UIImage *image, NSDictionary *info, DFImageRequest *request) {
-  // Handler is called at least once
-  // For more info see DFCompositeImageTask class
-} completionHandler:nil];
+DFCompositeImageTask *compositeImageTask = [[DFCompositeImageTask alloc] initWithImageTasks:@[previewImageTask, fullsizeImageTask] imageHandler:^(UIImage *image, DFImageTask *completedTask, DFCompositeImageTask *compositeTask){
+  // One of the image tasks has completed
+} completionHandler:^(DFCompositeImageTask *compositeTask){
+  // All tasks has either completed or became obsolete
+}];
+[compositeImageTask resume];
 ```
 There are many [ways](https://github.com/kean/DFImageManager/wiki/Advanced-Image-Caching-Guide#custom-revalidation-using-dfcompositeimagefetchoperation) how composite requests can be used.
 
-#### Use the same `DFImageManaging` API for PHAsset and your custom classes
+#### Using `DFImageManaging` API for PHAsset
+
 ```objective-c
 PHAsset *asset = ...;
 DFImageRequest *request = [DFImageRequest requestWithResource:asset targetSize:CGSizeMake(100.f, 100.f) contentMode:DFImageContentModeAspectFill options:nil];
 [[[DFImageManager sharedManager] imageTaskForRequest:request completion:^(UIImage *image, NSDictionary *info) {
   // Image resized to 100x100px square
-  // Photos Kit image manager does most of the hard work
 }] resume];
 ```
 
-#### Use composite managers
+#### Creating Image Managers
+You can either create `DFImageManager` instance with a custom configuration or even provide your own implementation of `DFImageManaging` protocol.
+```objective-c
+// Create dependencies. You can either use existing classes or provide your own.
+id<DFImageFetching> fetcher = ...; // Create image fetcher
+id<DFImageDecoding> decoder = ...; // Create image decoder
+id<DFImageProcessing> processor = ...; // Create image processor
+id<DFImageCaching> cache = ...; // Create image cache
+
+// Create configuration to inject dependencies
+DFImageManagerConfiguration *configuration = [[DFImageManagerConfiguration alloc] initWithFetcher:fetcher];
+configuration.decoder = decoder;
+configuration.processor = processor;
+configuration.cache = cache;
+
+// Configure progressive image decoding
+configuration.allowsProgressiveImage = YES;
+configuration.progressiveImageDecodingThreshold = 0.2;
+
+// Create image manager with configuration
+DFImageManager *imageManager = [[DFImageManager alloc] initWithConfiguration:configuration];
+```
+
+#### Composing Image Managers
 The `DFCompositeImageManager` allows clients to construct a tree of responsibility from multiple image managers, where image requests are dynamically dispatched between them. Each manager should conform to `DFImageManaging` protocol. The `DFCompositeImageManager` also conforms to `DFImageManaging` protocol, which lets clients treat individual objects and compositions uniformly. The default `[DFImageManager sharedManager]` is a composite that contains all built in managers: the ones that support `NSURL` fetching, `PHAsset` objects, etc. 
 
 It's easy for clients to add additional managers to the shared manager. You can either add support for new image requests, or intercept existing ones. For more info see [Composing Image Managers](https://github.com/kean/DFImageManager/wiki/Extending-Image-Manager-Guide#using-dfcompositeimagemanager).
 
 ```objective-c
-// Implement custom image fetcher that conforms to DFImageFetching protocol,
-// including - (BOOL)canHandleRequest:(DFImageRequest *)request; method
-id<DFImageFetching> fetcher = [YourImageFetcher new];
-id<DFImageProcessing> processor = [YourImageProcessor new];
-id<DFImageCaching> cache = [YourImageMemCache new];
-
-// Create DFImageManager with your configuration.
-DFImageManagerConfiguration *configuration = [DFImageManagerConfiguration configurationWithFetcher:fetcher processor:processor cache:cache];
-id<DFImageManaging> manager = [[DFImageManager alloc] initWithConfiguration:configuration];
+id<DFImageManaging> manager = ...; // Create image manager
 
 // Create composite manager with your custom manager and all built-in managers.
 NSArray *managers = @[ manager, [DFImageManager sharedManager] ];
@@ -153,9 +212,9 @@ id<DFImageManaging> compositeImageManager = [[DFCompositeImageManager alloc] ini
 [DFImageManager setSharedManager:compositeImageManager];
 ```
 
-#### What's more
+#### What Else
 
-Those were the most common cases. `DFImageManager` is packed with other features. For more info check out the complete [documentation](http://cocoadocs.org/docsets/DFImageManager) and project [Wiki](https://github.com/kean/DFImageManager/wiki)
+`DFImageManager` is jam-packed with other features. For more info check out the complete [documentation](http://cocoadocs.org/docsets/DFImageManager) and project [Wiki](https://github.com/kean/DFImageManager/wiki)
 
 ## Supported Resources
 - `NSURL` with **http**, **https**, **ftp**, **file**, and **data** schemes (`AFNetworking` or `NSURLSession` subspec)
