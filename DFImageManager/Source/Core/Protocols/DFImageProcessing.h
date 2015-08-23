@@ -25,13 +25,12 @@
 
 @class DFImageRequest;
 
-/*! Processes fetched images. Might include image decompression, resizing and anything else.
- @note Implementations should not cache processed images and leave it to classes conforming DFImageCaching protocol.
+/*! Processes images. Might include image scaling, cropping and more.
  */
 @protocol DFImageProcessing <NSObject>
 
-/*! Compares two requests for equivalence with regard to processing the image. Requests should be considered equivalent if image processor will produce the same result for both requests when given the same input image. 
- @warning Implementation should not inspect a resource object of the request!
+/*! Compares two requests for equivalence with regard to processing the image. Requests should be considered equivalent if image processor will produce the same result for both requests when given the same input image.
+ @warning Implementation should not inspect a resource object of the request.
  */
 - (BOOL)isProcessingForRequestEquivalent:(nonnull DFImageRequest *)request1 toRequest:(nonnull DFImageRequest *)request2;
 
@@ -41,7 +40,7 @@
 - (BOOL)shouldProcessImage:(nonnull UIImage *)image forRequest:(nonnull DFImageRequest *)request partial:(BOOL)partial;
 
 /*! Returns processed image for a given request.
-  @param partial If YES then image is a progressively decoded partial image data.
+ @param partial If YES then image is a progressively decoded partial image data.
  */
 - (nullable UIImage *)processedImage:(nonnull UIImage *)image forRequest:(nonnull DFImageRequest *)request partial:(BOOL)partial;
 

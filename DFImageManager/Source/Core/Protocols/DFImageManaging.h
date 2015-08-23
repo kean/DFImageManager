@@ -30,7 +30,7 @@
 
 typedef void (^DFImageTaskCompletion)(UIImage *__nullable image, NSError *__nullable error, DFImageResponse *__nullable response, DFImageTask *__nonnull imageTask);
 
-/*! Provides an API for loading images associated with a given resources. The resources might by anything from a NSURL to a PHAsset objects or even your custom classes.
+/*! Provides a high-level API for loading images.
  */
 @protocol DFImageManaging <NSObject>
 
