@@ -232,6 +232,8 @@ static const NSTimeInterval _kCommandExecutionInterval = 0.005; // 5 ms
     _DFURLFetcherCommandExecutor *_executor;
 }
 
+DF_INIT_UNAVAILABLE_IMPL
+
 - (instancetype)initWithSession:(NSURLSession *)session sessionDelegate:(id<DFURLImageFetcherSessionDelegate>)sessionDelegate {
     NSParameterAssert(session);
     NSParameterAssert(sessionDelegate);
@@ -249,11 +251,6 @@ static const NSTimeInterval _kCommandExecutionInterval = 0.005; // 5 ms
     NSParameterAssert(configuration);
     NSURLSession *session = [NSURLSession sessionWithConfiguration:configuration delegate:self delegateQueue:nil];
     return [self initWithSession:session sessionDelegate:self];
-}
-
-- (nullable instancetype)init {
-    [NSException raise:NSInternalInconsistencyException format:@"Please use designated initialzier"];
-    return nil;
 }
 
 #pragma mark - <DFImageFetching>

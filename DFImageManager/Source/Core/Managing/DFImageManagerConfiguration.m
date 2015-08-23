@@ -21,8 +21,11 @@
 // THE SOFTWARE.
 
 #import "DFImageManagerConfiguration.h"
+#import "DFImageManagerDefines.h"
 
 @implementation DFImageManagerConfiguration
+
+DF_INIT_UNAVAILABLE_IMPL
 
 - (nonnull instancetype)initWithFetcher:(nonnull id<DFImageFetching>)fetcher {
     if (self = [super init]) {
@@ -35,11 +38,6 @@
         _progressiveImageDecodingThreshold = 0.15f;
     }
     return self;
-}
-
-- (nullable instancetype)init {
-    [NSException raise:NSInternalInconsistencyException format:@"Please use designated initialzier"];
-    return nil;
 }
 
 + (nonnull instancetype)configurationWithFetcher:(nonnull id<DFImageFetching>)fetcher {

@@ -21,7 +21,7 @@
 // THE SOFTWARE.
 
 #import "DFCollectionViewPreheatingController.h"
-
+#import "DFImageManagerDefines.h"
 
 @implementation DFCollectionViewPreheatingController {
     NSMutableSet *_preheatIndexPaths;
@@ -31,6 +31,8 @@
 - (void)dealloc {
     [_collectionView removeObserver:self forKeyPath:@"contentOffset"];
 }
+
+DF_INIT_UNAVAILABLE_IMPL
 
 - (instancetype)initWithCollectionView:(UICollectionView *)collectionView {
     if (self = [super init]) {
@@ -46,11 +48,6 @@
         _preheatRectUpdateRatio = 0.33f;
     }
     return self;
-}
-
-- (nullable instancetype)init {
-    [NSException raise:NSInternalInconsistencyException format:@"Please use designated initialzier"];
-    return nil;
 }
 
 - (void)resetPreheatRect {

@@ -30,6 +30,8 @@
     NSMutableArray *_remainingTasks;
 }
 
+DF_INIT_UNAVAILABLE_IMPL
+
 - (nonnull instancetype)initWithImageTasks:(nonnull NSArray *)tasks imageHandler:(nullable DFCompositeImageTaskImageHandler)imageHandler completionHandler:(nullable DFCompositeImageTaskCompletionHandler)completionHandler {
     if (self = [super init]) {
         NSParameterAssert(tasks.count > 0);
@@ -40,11 +42,6 @@
         _allowsObsoleteRequests = YES;
     }
     return self;
-}
-
-- (nullable instancetype)init {
-    [NSException raise:NSInternalInconsistencyException format:@"Please use designated initialzier"];
-    return nil;
 }
 
 + (nullable DFCompositeImageTask *)compositeImageTaskWithRequests:(nonnull NSArray *)requests imageHandler:(nullable DFCompositeImageTaskImageHandler)imageHandler completionHandler:(nullable DFCompositeImageTaskCompletionHandler)completionHandler {

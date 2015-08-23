@@ -72,6 +72,8 @@ NSString *const DFAFRequestCachePolicyKey = @"DFAFRequestCachePolicyKey";
     NSMutableDictionary *_dataTaskDelegates;
 }
 
+DF_INIT_UNAVAILABLE_IMPL
+
 - (instancetype)initWithSessionManager:(AFURLSessionManager *)sessionManager {
     if (self = [super init]) {
         _sessionManager = sessionManager;
@@ -90,11 +92,6 @@ NSString *const DFAFRequestCachePolicyKey = @"DFAFRequestCachePolicyKey";
         _supportedSchemes = [NSSet setWithObjects:@"http", @"https", @"ftp", @"file", @"data", nil];
     }
     return self;
-}
-
-- (nullable instancetype)init {
-    [NSException raise:NSInternalInconsistencyException format:@"Please use designated initialzier"];
-    return nil;
 }
 
 #pragma mark <DFImageFetching>

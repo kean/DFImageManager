@@ -21,13 +21,11 @@
 // THE SOFTWARE.
 
 #import "DFCachedImageResponse.h"
+#import "DFImageManagerDefines.h"
 
 @implementation DFCachedImageResponse
 
-- (nullable instancetype)init {
-    [NSException raise:NSInternalInconsistencyException format:@"Please use designated initialzier"];
-    return nil;
-}
+DF_INIT_UNAVAILABLE_IMPL
 
 - (nullable instancetype)initWithImage:(nonnull UIImage *)image info:(nullable NSDictionary *)info expirationDate:(NSTimeInterval)expirationDate {
     if (self = [super init]) {

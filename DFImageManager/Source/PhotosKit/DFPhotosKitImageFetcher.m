@@ -165,10 +165,7 @@ static inline NSString *_PHAssetLocalIdentifier(id resource) {
 @synthesize executing = _executing;
 @synthesize finished = _finished;
 
-- (instancetype)init {
-    [NSException raise:NSInternalInconsistencyException format:@"Please use designated initialzier"];
-    return nil;
-}
+DF_INIT_UNAVAILABLE_IMPL
 
 - (instancetype)initWithResource:(id)resource options:(PHImageRequestOptions *)options {
     if (self = [super init]) {

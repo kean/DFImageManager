@@ -137,6 +137,8 @@ static inline void DFDispatchAsync(dispatch_block_t block) {
 
 @synthesize configuration = _conf;
 
+DF_INIT_UNAVAILABLE_IMPL
+
 - (nonnull instancetype)initWithConfiguration:(nonnull DFImageManagerConfiguration *)configuration {
     if (self = [super init]) {
         NSParameterAssert(configuration);
@@ -148,11 +150,6 @@ static inline void DFDispatchAsync(dispatch_block_t block) {
         _recursiveLock = [NSRecursiveLock new];
     }
     return self;
-}
-
-- (nullable instancetype)init {
-    [NSException raise:NSInternalInconsistencyException format:@"Please use designated initialzier"];
-    return nil;
 }
 
 + (void)initialize {

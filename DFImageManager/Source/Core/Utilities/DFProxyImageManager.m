@@ -42,16 +42,13 @@
     id (^_block)(id);
 }
 
+DF_INIT_UNAVAILABLE_IMPL
+
 - (instancetype)initWithBlock:(DFImageRequest * __nonnull (^ __nonnull)(DFImageRequest * __nonnull))block {
     if (self = [super init]) {
         _block = [block copy];
     }
     return self;
-}
-
-- (nullable instancetype)init {
-    [NSException raise:NSInternalInconsistencyException format:@"Please use designated initialzier"];
-    return nil;
 }
 
 #pragma mark - <DFProxyRequestTransforming>

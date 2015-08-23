@@ -25,6 +25,8 @@
 
 @implementation DFImageRequest
 
+DF_INIT_UNAVAILABLE_IMPL
+
 - (nonnull instancetype)initWithResource:(nonnull id)resource targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(nullable DFImageRequestOptions *)options {
     if (self = [super init]) {
         _resource = resource;
@@ -37,11 +39,6 @@
 
 - (nonnull instancetype)initWithResource:(nonnull id)resource {
     return [self initWithResource:resource targetSize:DFImageMaximumSize contentMode:DFImageContentModeAspectFill options:nil];
-}
-
-- (nullable instancetype)init {
-    [NSException raise:NSInternalInconsistencyException format:@"Please use designated initialzier"];
-    return nil;
 }
 
 + (nonnull instancetype)requestWithResource:(nonnull id)resource {
