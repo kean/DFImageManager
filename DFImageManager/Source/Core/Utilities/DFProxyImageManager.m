@@ -32,6 +32,10 @@
  */
 - (instancetype)initWithBlock:(DFImageRequest *__nonnull (^__nonnull)(DFImageRequest *__nonnull))block NS_DESIGNATED_INITIALIZER;
 
+/*! Unavailable initializer, please use designated initializer.
+ */
+- (nullable instancetype)init NS_UNAVAILABLE;
+
 @end
 
 @implementation _DFProxyRequestTransformer {
@@ -43,6 +47,11 @@
         _block = [block copy];
     }
     return self;
+}
+
+- (nullable instancetype)init {
+    [NSException raise:NSInternalInconsistencyException format:@"Please use designated initialzier"];
+    return nil;
 }
 
 #pragma mark - <DFProxyRequestTransforming>

@@ -37,6 +37,11 @@
     return self;
 }
 
+- (nullable instancetype)init {
+    [NSException raise:NSInternalInconsistencyException format:@"Please use designated initialzier"];
+    return nil;
+}
+
 + (nonnull instancetype)configurationWithFetcher:(nonnull id<DFImageFetching>)fetcher {
     return [[DFImageManagerConfiguration alloc] initWithFetcher:fetcher];
 }

@@ -42,6 +42,11 @@
     return self;
 }
 
+- (nullable instancetype)init {
+    [NSException raise:NSInternalInconsistencyException format:@"Please use designated initialzier"];
+    return nil;
+}
+
 + (nullable DFCompositeImageTask *)compositeImageTaskWithRequests:(nonnull NSArray *)requests imageHandler:(nullable DFCompositeImageTaskImageHandler)imageHandler completionHandler:(nullable DFCompositeImageTaskCompletionHandler)completionHandler {
     NSParameterAssert(requests.count > 0);
     NSMutableArray *tasks = [NSMutableArray new];

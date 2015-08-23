@@ -68,6 +68,10 @@
  */
 - (nonnull instancetype)initWithFetcher:(nonnull id<DFImageFetching>)fetcher NS_DESIGNATED_INITIALIZER;
 
+/*! Unavailable initializer, please use designated initializer.
+ */
+- (nullable instancetype)init NS_UNAVAILABLE;
+
 /*! Returns configuration created with a given image fetcher.
  */
 + (nonnull instancetype)configurationWithFetcher:(nonnull id<DFImageFetching>)fetcher;

@@ -45,6 +45,10 @@ typedef void (^DFCompositeImageTaskCompletionHandler)(DFCompositeImageTask *__no
  */
 - (nonnull instancetype)initWithImageTasks:(nonnull NSArray /* DFImageTask */ *)tasks imageHandler:(nullable DFCompositeImageTaskImageHandler)imageHandler completionHandler:(nullable DFCompositeImageTaskCompletionHandler)completionHandler NS_DESIGNATED_INITIALIZER;
 
+/*! Unavailable initializer, please use designated initializer.
+ */
+- (nullable instancetype)init NS_UNAVAILABLE;
+
 /*! Creates image tasks with a given requests by using shared image manager. Then creates and returns composite image task. You must resume it by calling resume method.
  @param requests Array of requests. Must contain at least one request.
  @param imageHandler The image handler gets called each time the image is successfully fetched, but it doesn't get called for obsolete tasks.

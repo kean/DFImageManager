@@ -48,6 +48,11 @@
     return self;
 }
 
+- (nullable instancetype)init {
+    [NSException raise:NSInternalInconsistencyException format:@"Please use designated initialzier"];
+    return nil;
+}
+
 - (void)resetPreheatRect {
     [self.delegate collectionViewPreheatingController:self didUpdatePreheatRectWithAddedIndexPaths:@[] removedIndexPaths:_preheatIndexPaths.allObjects];
     [self _resetPreheatRect];

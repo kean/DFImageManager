@@ -78,6 +78,10 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (instancetype)initWithCollectionView:(UICollectionView *)collectionView NS_DESIGNATED_INITIALIZER;
 
+/*! Unavailable initializer, please use designated initializer.
+ */
+- (nullable instancetype)init NS_UNAVAILABLE;
+
 /*! Resets preheat rect and calls delegate with removed index paths.
  */
 - (void)resetPreheatRect;
