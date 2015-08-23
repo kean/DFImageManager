@@ -11,7 +11,17 @@ Advanced iOS framework for loading, caching, processing, displaying and preheati
 
 The DFImageManager is not just a loader, it is a pipeline for executing image requests using pluggable components. It features [multiple subspecs](#install_using_cocopods) that automatically integrate things like [AFNetworking](https://github.com/AFNetworking/AFNetworking), [FLAnimatedImage](https://github.com/Flipboard/FLAnimatedImage) as a performant animated GIF engine, and more.
 
-## Features
+* [Features](#h_features)
+* [Getting Started](#h_getting_started)
+* [Usage](#h_usage)
+* [Design](#h_design)
+* [Installation](#install_using_cocopods)
+* [Requirements](#h_requirements)
+* [Supported Resources](#h_supported_resources)
+* [Supported Image Formats](#h_supported_image_formats)
+* [Contribution](#h_contribution)
+
+## <a name="h_features"></a>Features
 
 - Zero config, yet immense customization and extensibility
 - Works great with Swift
@@ -46,7 +56,7 @@ The DFImageManager is not just a loader, it is a pipeline for executing image re
 - Add support for custom image requests by [composing image managers](https://github.com/kean/DFImageManager/wiki/Extending-Image-Manager-Guide#using-dfcompositeimagemanager) into a tree of responsibility
 - Add support for custom image requests using `DFProxyImageManager`
 
-## Getting Started
+## <a name="h_getting_started"></a>Getting Started
 - Download the latest [release](https://github.com/kean/DFImageManager/releases) version
 - Take a look at the comprehensive [demo](https://github.com/kean/DFImageManager/tree/master/Demo), it's easy to install with `pod try DFImageManager` command
 - Check out the complete [documentation](http://cocoadocs.org/docsets/DFImageManager)
@@ -55,10 +65,7 @@ The DFImageManager is not just a loader, it is a pipeline for executing image re
 - [Install using CocoaPods](#install_using_cocopods), import `<DFImageManager/DFImageManagerKit.h>` and enjoy!
 - Check out [Nuke](https://github.com/kean/Nuke) - experimental Swift framework with similar functionality
 
-## Requirements
-iOS 7.0+
-
-## Usage
+## <a name="h_usage"></a>Usage
 
 #### Zero Config Image Loading
 
@@ -216,16 +223,7 @@ id<DFImageManaging> compositeImageManager = [[DFCompositeImageManager alloc] ini
 
 `DFImageManager` is jam-packed with other features. For more info check out the complete [documentation](http://cocoadocs.org/docsets/DFImageManager) and project [Wiki](https://github.com/kean/DFImageManager/wiki)
 
-## Supported Resources
-- `NSURL` with **http**, **https**, **ftp**, **file**, and **data** schemes (`AFNetworking` or `NSURLSession` subspec)
-- `PHAsset`, `NSURL` with **com.github.kean.photos-kit** scheme (`PhotosKit` subspec)
-
-## Supported Image Formats
-- Image formats supported by `UIImage` (JPEG, PNG, BMP, [and more](https://developer.apple.com/library/ios/documentation/UIKit/Reference/UIImage_Class/))
-- GIF (`GIF` subspec)
-- WebP (`WebP` subspec)
-
-## Design
+## <a name="h_design"></a>Design
 
 <img src="https://cloud.githubusercontent.com/assets/1567433/9427953/ccbef7f2-499f-11e5-8542-bd54ea7b2250.png" height="420"/>
 
@@ -267,7 +265,19 @@ pod 'DFImageManager/GIF'
 pod 'DFImageManager/WebP'
 ```
 
-## Contribution
+## <a name="h_requirements"></a>Requirements
+iOS 7.0+
+
+## <a name="h_supported_resources"></a>Supported Resources
+- `NSURL` with **http**, **https**, **ftp**, **file**, and **data** schemes (`AFNetworking` or `NSURLSession` subspec)
+- `PHAsset`, `NSURL` with **com.github.kean.photos-kit** scheme (`PhotosKit` subspec)
+
+## <a name="h_supported_image_formats"></a>Supported Image Formats
+- Image formats supported by `UIImage` (JPEG, PNG, BMP, [and more](https://developer.apple.com/library/ios/documentation/UIKit/Reference/UIImage_Class/))
+- GIF (`GIF` subspec)
+- WebP (`WebP` subspec)
+
+## <a name="h_contribution"></a>Contribution
  
 - If you **need help**, use [Stack Overflow](http://stackoverflow.com/questions/tagged/dfimagemanager). (Tag 'dfimagemanager')
 - If you'd like to **ask a general question**, use [Stack Overflow](http://stackoverflow.com/questions/tagged/dfimagemanager).
