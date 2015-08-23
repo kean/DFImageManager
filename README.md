@@ -33,16 +33,17 @@ The DFImageManager is not just a loader, it is a pipeline for executing image re
 - Uses latest advancements in [Foundation URL Loading System](https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/URLLoadingSystem/URLLoadingSystem.html) including [NSURLSession](https://developer.apple.com/library/ios/documentation/Foundation/Reference/NSURLSession_class/) that supports [HTTP/2](https://en.wikipedia.org/wiki/HTTP/2)
 - Has basic built-in networking implementation, and optional [AFNetworking integration](#install_using_cocopods) (which should be your primary choice). Combine the power of both frameworks! 
 - Groups similar requests and never executes them twice
+- [Intelligent preheating](https://github.com/kean/DFImageManager/wiki/Image-Preheating-Guide) of images that are close to the viewport
 - Progress tracking using `NSProgress`
 
 ##### Caching
 - Instead of reinventing a caching methodology it relies on HTTP cache as defined in [HTTP specification](https://tools.ietf.org/html/rfc7234) and caching implementation provided by [Foundation URL Loading System](https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/URLLoadingSystem/URLLoadingSystem.html). The caching and revalidation are completely transparent to the client
-- Two levels of cache, including top level memory cache for decompressed and processed images
+- Two cache layers, including [top level memory cache](https://github.com/kean/DFImageManager/wiki/Image-Caching-Guide) for decompressed images
 
 ##### Decoding and Processing
 - Animated GIF support using best-in-class [FLAnimatedImage](https://github.com/Flipboard/FLAnimatedImage) library
 - [WebP](https://developers.google.com/speed/webp/) support
-- Progressive image decoding
+- Progressive image decoding (progressive JPEG and more)
 - Background image decompression
 - Resize and crop loaded images to [fit displayed size](https://developer.apple.com/library/ios/qa/qa1708/_index.html), add rounded corners or circle
 
@@ -50,11 +51,12 @@ The DFImageManager is not just a loader, it is a pipeline for executing image re
 - Use UI components and UIKit categories
 
 ##### Advanced
-- [Intelligent preheating](https://github.com/kean/DFImageManager/wiki/Image-Preheating-Guide) of images that are close to the viewport
-- Use `DFCompositeImageTask` to execute and handle multiple image requests. You might show a low-resolution placeholder first and swap to a higher-res one when it is loaded. Or implement some custom [revalidation policies](https://github.com/kean/DFImageManager/wiki/Advanced-Image-Caching-Guide#custom-revalidation-using-dfcompositeimagetask)
 - Customize different parts of the framework using dependency injection
-- Add support for custom image requests by [composing image managers](https://github.com/kean/DFImageManager/wiki/Extending-Image-Manager-Guide#using-dfcompositeimagemanager) into a tree of responsibility
-- Add support for custom image requests using `DFProxyImageManager`
+- Add custom image decoders
+- Compose image tasks using `DFCompositeImageTask`. You might use it to show a low-resolution placeholder first and swap to a higher-res one when it is loaded. Or implement custom [revalidation policies](https://github.com/kean/DFImageManager/wiki/Advanced-Image-Caching-Guide#custom-revalidation-using-dfcompositeimagetask)
+- Create custom image managers
+- [Compose image managers](https://github.com/kean/DFImageManager/wiki/Extending-Image-Manager-Guide#using-dfcompositeimagemanager) into a tree of responsibility
+- Extend `DFImageManaging` API using `DFProxyImageManager`
 
 ## <a name="h_getting_started"></a>Getting Started
 - Download the latest [release](https://github.com/kean/DFImageManager/releases) version
