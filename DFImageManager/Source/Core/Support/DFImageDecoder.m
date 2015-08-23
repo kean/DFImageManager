@@ -66,7 +66,7 @@
     }
 #endif
     
-    UIImage *image = [[UIImage alloc] initWithData:data scale:[UIScreen mainScreen].scale];
+    UIImage *image = [UIImage imageWithData:data scale:[UIScreen mainScreen].scale];
     if (self.shouldDecompressImages) {
         image = [UIImage df_decompressedImage:image];
     }
