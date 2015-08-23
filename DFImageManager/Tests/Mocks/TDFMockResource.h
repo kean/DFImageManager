@@ -14,6 +14,8 @@
 
 - (instancetype)initWithID:(NSString *)ID NS_DESIGNATED_INITIALIZER;
 
+- (instancetype)init NS_UNAVAILABLE;
+
 + (instancetype)resourceWithID:(NSString *)ID;
 
 @end

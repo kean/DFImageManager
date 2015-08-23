@@ -92,6 +92,11 @@ NSString *const DFAFRequestCachePolicyKey = @"DFAFRequestCachePolicyKey";
     return self;
 }
 
+- (nullable instancetype)init {
+    [NSException raise:NSInternalInconsistencyException format:@"Please use designated initialzier"];
+    return nil;
+}
+
 #pragma mark <DFImageFetching>
 
 - (BOOL)canHandleRequest:(DFImageRequest *)request {

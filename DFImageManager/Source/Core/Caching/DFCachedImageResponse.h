@@ -44,4 +44,8 @@
  */
 - (nullable instancetype)initWithImage:(nonnull UIImage *)image info:( nullable NSDictionary *)info expirationDate:(NSTimeInterval)expirationDate NS_DESIGNATED_INITIALIZER;
 
+/*! Unavailable initializer, please use designated initializer.
+ */
+- (nullable instancetype)init NS_UNAVAILABLE;
+
 @end

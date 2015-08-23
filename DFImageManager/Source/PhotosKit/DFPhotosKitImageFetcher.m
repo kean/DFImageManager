@@ -150,6 +150,9 @@ static inline NSString *_PHAssetLocalIdentifier(id resource) {
 @property (nonatomic, getter = isExecuting) BOOL executing;
 @property (nonatomic, getter = isFinished) BOOL finished;
 
+- (instancetype)init NS_UNAVAILABLE;
+- (instancetype)initWithResource:(id)resource options:(PHImageRequestOptions *)options NS_DESIGNATED_INITIALIZER;
+
 @end
 
 @implementation _DFPhotosKitImageFetchOperation {
@@ -161,6 +164,11 @@ static inline NSString *_PHAssetLocalIdentifier(id resource) {
 
 @synthesize executing = _executing;
 @synthesize finished = _finished;
+
+- (instancetype)init {
+    [NSException raise:NSInternalInconsistencyException format:@"Please use designated initialzier"];
+    return nil;
+}
 
 - (instancetype)initWithResource:(id)resource options:(PHImageRequestOptions *)options {
     if (self = [super init]) {

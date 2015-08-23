@@ -17,6 +17,11 @@
     return self;
 }
 
+- (instancetype)init {
+    [NSException raise:NSInternalInconsistencyException format:@"Please use designated initialzier"];
+    return nil;
+}
+
 + (instancetype)resourceWithID:(NSString *)ID {
     return [[[self class] alloc] initWithID:ID];
 }

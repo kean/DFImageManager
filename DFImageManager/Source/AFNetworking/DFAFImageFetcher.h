@@ -71,6 +71,10 @@ extern NSString *const DFAFRequestCachePolicyKey;
  */
 - (instancetype)initWithSessionManager:(AFURLSessionManager *)sessionManager NS_DESIGNATED_INITIALIZER;
 
+/*! Unavailable initializer, please use designated initializer.
+ */
+- (nullable instancetype)init NS_UNAVAILABLE;
+
 @end
 
 NS_ASSUME_NONNULL_END

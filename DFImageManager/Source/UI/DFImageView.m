@@ -49,7 +49,7 @@
     return self;
 }
 
-- (nonnull instancetype)initWithCoder:(NSCoder *)decoder {
+- (nullable instancetype)initWithCoder:(NSCoder *)decoder {
     if (self = [super initWithCoder:decoder]) {
         [self _commonInit];
     }

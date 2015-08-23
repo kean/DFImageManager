@@ -24,6 +24,11 @@
 
 @implementation DFCachedImageResponse
 
+- (nullable instancetype)init {
+    [NSException raise:NSInternalInconsistencyException format:@"Please use designated initialzier"];
+    return nil;
+}
+
 - (nullable instancetype)initWithImage:(nonnull UIImage *)image info:(nullable NSDictionary *)info expirationDate:(NSTimeInterval)expirationDate {
     if (self = [super init]) {
         _image = image;

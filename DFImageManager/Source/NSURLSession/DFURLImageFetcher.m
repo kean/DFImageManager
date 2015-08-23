@@ -251,6 +251,11 @@ static const NSTimeInterval _kCommandExecutionInterval = 0.005; // 5 ms
     return [self initWithSession:session sessionDelegate:self];
 }
 
+- (nullable instancetype)init {
+    [NSException raise:NSInternalInconsistencyException format:@"Please use designated initialzier"];
+    return nil;
+}
+
 #pragma mark - <DFImageFetching>
 
 - (BOOL)canHandleRequest:(nonnull DFImageRequest *)request {
