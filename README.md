@@ -170,7 +170,7 @@ DFCompositeImageTask *compositeImageTask = [[DFCompositeImageTask alloc] initWit
 ```
 There are many [ways](https://github.com/kean/DFImageManager/wiki/Advanced-Image-Caching-Guide#custom-revalidation-using-dfcompositeimagefetchoperation) how composite requests can be used.
 
-#### Using `DFImageManaging` API for PHAsset
+#### Requesting Image for PHAsset
 
 ```objective-c
 PHAsset *asset = ...;
