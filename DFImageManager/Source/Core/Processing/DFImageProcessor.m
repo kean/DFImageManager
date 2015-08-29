@@ -86,13 +86,9 @@ NSString *DFImageProcessingCornerRadiusKey = @"DFImageProcessingCornerRadiusKey"
 }
 
 + (nullable UIImage *)_croppedImage:(nonnull UIImage *)image aspectFillPixelSize:(CGSize)targetSize {
-    CGSize imageSize = CGSizeMake(CGImageGetWidth(image.CGImage), CGImageGetHeight(image.CGImage));
-    CGFloat scale = ({
-        CGFloat scaleWidth = targetSize.width / imageSize.width;
-        CGFloat scaleHeight = targetSize.height / imageSize.height;
-        MAX(scaleWidth, scaleHeight);
-    });
-    CGSize sizeScaled = CGSizeMake(imageSize.width * scale, imageSize.height * scale);
+    CGSize bitmapSize = CGSizeMake(CGImageGetWidth(image.CGImage), CGImageGetHeight(image.CGImage));
+    CGFloat scale = [UIImage df_scaleForImage:image targetSize:targetSize contentMode:DFImageContentModeAspectFill];
+    CGSize sizeScaled = CGSizeMake(bitmapSize.width * scale, bitmapSize.height * scale);
     CGRect cropRect = CGRectMake((sizeScaled.width - targetSize.width) / 2.f, (sizeScaled.height - targetSize.height) / 2.f, targetSize.width, targetSize.height);
     CGRect normalizedCropRect = CGRectMake(cropRect.origin.x / sizeScaled.width, cropRect.origin.y / sizeScaled.height, cropRect.size.width / sizeScaled.width, cropRect.size.height / sizeScaled.height);
     return [UIImage df_croppedImage:image normalizedCropRect:normalizedCropRect];

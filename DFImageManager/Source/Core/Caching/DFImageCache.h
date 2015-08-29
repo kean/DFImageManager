@@ -35,7 +35,7 @@
  */
 - (nonnull instancetype)initWithCache:(nonnull NSCache *)cache NS_DESIGNATED_INITIALIZER;
 
-/*! Returns cost for a given image response.
+/*! Returns cost for a given cached image response.
  */
 - (NSUInteger)costForImageResponse:(nonnull DFCachedImageResponse *)cachedResponse;
 
