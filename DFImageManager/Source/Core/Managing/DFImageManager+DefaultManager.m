@@ -53,12 +53,7 @@
     
 #if DF_IMAGE_MANAGER_AFNETWORKING_AVAILABLE
     id<DFImageManaging> URLImageManager = ({
-        NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
-        configuration.URLCache = [[NSURLCache alloc] initWithMemoryCapacity:0 diskCapacity:1024 * 1024 * 200 diskPath:@"com.github.kean.default_image_cache"];
-        configuration.timeoutIntervalForRequest = 60.f;
-        configuration.timeoutIntervalForResource = 360.f;
-        
-        AFHTTPSessionManager *httpSessionManager = [[AFHTTPSessionManager alloc] initWithSessionConfiguration:configuration];
+        AFHTTPSessionManager *httpSessionManager = [[AFHTTPSessionManager alloc] initWithSessionConfiguration:[self _defaultSessionConfiguration]];
         httpSessionManager.responseSerializer = [AFHTTPResponseSerializer new];
         DFAFImageFetcher *fetcher = [[DFAFImageFetcher alloc] initWithSessionManager:httpSessionManager];
         [[DFImageManager alloc] initWithConfiguration:[DFImageManagerConfiguration  configurationWithFetcher:fetcher processor:processor cache:cache]];
@@ -66,28 +61,26 @@
     [managers addObject:URLImageManager];
 #elif __has_include("DFImageManagerKit+NSURLSession.h")
     id<DFImageManaging> URLImageManager = ({
-        NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
-        configuration.URLCache = [[NSURLCache alloc] initWithMemoryCapacity:0 diskCapacity:1024 * 1024 * 200 diskPath:@"com.github.kean.default_image_cache"];
-        configuration.timeoutIntervalForRequest = 60.f;
-        configuration.timeoutIntervalForResource = 360.f;
-        
-        DFURLImageFetcher *fetcher = [[DFURLImageFetcher alloc] initWithSessionConfiguration:configuration];
+        DFURLImageFetcher *fetcher = [[DFURLImageFetcher alloc] initWithSessionConfiguration:[self _defaultSessionConfiguration]];
         [[DFImageManager alloc] initWithConfiguration:[DFImageManagerConfiguration configurationWithFetcher:fetcher processor:processor cache:cache]];
     });
     [managers addObject:URLImageManager];
 #endif
     
 #if __has_include("DFImageManagerKit+PhotosKit.h")
-    id<DFImageManaging> photosKitImageManager = ({
-        DFPhotosKitImageFetcher *fetcher = [DFPhotosKitImageFetcher new];
-        [[DFImageManager alloc] initWithConfiguration:[DFImageManagerConfiguration configurationWithFetcher:fetcher processor:processor cache:cache]];
-    });
+    id<DFImageManaging> photosKitImageManager = [[DFImageManager alloc] initWithConfiguration:[DFImageManagerConfiguration configurationWithFetcher:[DFPhotosKitImageFetcher new] processor:processor cache:cache]];
     [managers addObject:photosKitImageManager];
 #endif
     
-    DFCompositeImageManager *compositeImageManager = [[DFCompositeImageManager alloc] initWithImageManagers:managers];
-    
-    return compositeImageManager;
+    return managers.count > 1 ? [[DFCompositeImageManager alloc] initWithImageManagers:managers] : managers.firstObject;
+}
+
++ (NSURLSessionConfiguration *)_defaultSessionConfiguration {
+    NSURLSessionConfiguration *conf = [NSURLSessionConfiguration defaultSessionConfiguration];
+    conf.URLCache = [[NSURLCache alloc] initWithMemoryCapacity:0 diskCapacity:1024 * 1024 * 200 diskPath:@"com.github.kean.default_image_cache"];
+    conf.timeoutIntervalForRequest = 60.f;
+    conf.timeoutIntervalForResource = 360.f;
+    return conf;
 }
 
 @end
