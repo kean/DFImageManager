@@ -29,8 +29,8 @@ DFImageManager is not just a loader, it's a pipeline for executing image request
 
 ##### Loading
 - Uses latest advancements in [Foundation URL Loading System](https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/URLLoadingSystem/URLLoadingSystem.html) including [NSURLSession](https://developer.apple.com/library/ios/documentation/Foundation/Reference/NSURLSession_class/) that supports [HTTP/2](https://en.wikipedia.org/wiki/HTTP/2)
-- Has basic built-in networking implementation, and optional [AFNetworking integration](#install_using_cocopods) (which should be your primary choice). Combine the power of both frameworks! 
-- Groups similar requests and never executes them twice
+- Has basic built-in networking implementation, and optional [AFNetworking integration](#install_using_cocopods) (which should be your primary choice). Combine the power of both frameworks!
+- Uses a single fetch operation for multiple equivalent requests
 - [Intelligent preheating](https://github.com/kean/DFImageManager/wiki/Image-Preheating-Guide) of images close to the viewport
 - Progress tracking using `NSProgress`
 

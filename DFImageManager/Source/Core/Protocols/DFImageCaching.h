@@ -29,11 +29,11 @@
  */
 @protocol DFImageCaching <NSObject>
 
-/*! Returns the cached image response associated with a given key.
+/*! Returns cached image response associated with a given key.
  */
 - (nullable DFCachedImageResponse *)cachedImageResponseForKey:(nullable id<NSCopying>)key;
 
-/*! Stores the cached image response for the given key.
+/*! Stores cached image response for the given key.
  */
 - (void)storeImageResponse:(nullable DFCachedImageResponse *)cachedResponse forKey:(nullable id<NSCopying>)key;
 

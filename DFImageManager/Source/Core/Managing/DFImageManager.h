@@ -25,35 +25,25 @@
 
 @class DFImageManagerConfiguration;
 
-/*! The DFImageManager and the related classes provide an implementation of the DFImageManaging protocol. The role of the DFImageManager is to manage the execution of image tasks by delegating the actual job to the objects, implementing DFImageFetching, DFImageCaching, and DFImageProcessing protocols.
+/*! The role of DFImageManager is to manage the execution of image tasks by delegating the actual job to the objects, implementing DFImageFetching, DFImageCaching, DFImageDecoding, and DFImageProcessing protocols.
  
- @note Reusing Operations
+ @note Reusing Operations 
  
- Image manager automatically reuses fetch operations. It order to enable this functionality you should implement the -isRequestFetchEquivalent:toRequest: method in your DFImageFetching implementation.
+ DFImageManager might use a single fetch operation for multiple image tasks with equivalent requests. Image manager cancels fetch operations only when there are no remaining image tasks registered with a given operation.
  
- @note Cancellation
+ @note Memory Caching
  
- Image manager cancels fetch operations only when there are no remaining image tasks registered with a given operation.
- 
- @note  Memory Caching
- 
- Image manager uses cache (object conforming to DFImageCaching protocol) for memory caching. It should be able to lookup cached images based on the image request, but it doesn't know anything about the resources, specific request options, and the way the requests are interpreted and handled. There are three simple rules how image manager stores and retrieves cached images. First, image manager can't use cached images stored by other managers. Second, all resources must implement -hash method. Third, image manager has an intelligent way of creating cache keys that delegate the comparison of image requests to the image fetcher (DFImageFetching) and the image processor (DFImageProcessing). Make sure to implement -isRequestCacheEquivalent:toRequest: method in your DFImageFetching implementation and -isProcessingForRequestEquivalent:toRequest: method in DFImageProcessing implementation.
+ DFImageManager uses DFImageCaching protocol for memory caching. It should be able to lookup cached images based on the image requests, but it doesn't know anything about the resources, specific request options, and the way the requests are interpreted and handled. There are three simple rules how image manager stores and retrieves cached images. First, image manager can't use cached images stored by other managers. Second, all resources must implement -hash method. Third, image manager uses special cache keys that delegate the test for equivalence of the image requests to the image fetcher (DFImageFetching) and the image processor (DFImageProcessing).
  
  @note Preheating
  
- The DFImageManager does its best to guarantee that preheating tasks never interfere with regular (non-preheating) tasks. There is a limit of concurrent preheating tasks enforced by DFImageManager. There is also certain (very small) delay when manager starts executing preheating requests. Given that fact, clients don't need to worry about the order in which they start their requests (preheating or not), which comes really handy when you, for example, reload collection view's data and start preheating images at the same time.
- 
- The DFImageManager stops multiple similar preheating requests with a single -stopPreheatingImagesForRequests: call.
+ DFImageManager does its best to guarantee that preheating tasks never interfere with regular (non-preheating) tasks. There is a limit of concurrent preheating tasks enforced by DFImageManager. There is also certain (very small) delay when manager starts executing preheating requests. DFImageManager stops multiple equivalent preheating requests with a single -stopPreheatingImagesForRequests: call.
  */
 @interface DFImageManager : NSObject <DFImageManaging>
 
 /*! A copy of the configuration object for this manager (read only). Changing mutable values within the configuration object has no effect on the current manager.
  */
 @property (nonnull, nonatomic, copy, readonly) DFImageManagerConfiguration *configuration;
-
-/*! The receivers name.
- */
-@property (nullable, nonatomic, copy) NSString *name;
 
 /*! Creates image manager with a specified configuration.
  @param configuration A configuration object that specifies certain behaviours, such as fetching, processing, caching and more. Manager copies the configuration object.

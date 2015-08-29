@@ -33,22 +33,17 @@
 #import "DFImageManager.h"
 #import "DFImageManagerConfiguration.h"
 
-// Support
-#import "DFImageRequest.h"
 #import "DFImageTask.h"
+#import "DFImageRequest.h"
 #import "DFImageRequestOptions.h"
 #import "DFImageResponse.h"
-#import "DFImageDecoder.h"
 
-// Caching (memory cache)
 #import "DFImageCache.h"
 #import "DFCachedImageResponse.h"
 #import "NSCache+DFImageManager.h"
 
-// Processing
+#import "DFImageDecoder.h"
 #import "DFImageProcessor.h"
-
-// Utilities
 #import "UIImage+DFImageUtilities.h"
 
 

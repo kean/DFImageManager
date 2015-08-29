@@ -27,7 +27,6 @@
 #import "DFImageManagerConfiguration.h"
 #import "DFImageManagerDefines.h"
 #import "DFImageManagerImageLoader.h"
-#import "DFImageProcessing.h"
 #import "DFImageRequest.h"
 #import "DFImageRequestOptions.h"
 #import "DFImageResponse.h"
@@ -73,7 +72,7 @@
         _manager = manager;
         _request = request;
         _priority = request.options.priority;
-        _completionHandler = completionHandler;
+        _completionHandler = [completionHandler copy];
         _state = DFImageTaskStateSuspended;
     }
     return self;
@@ -198,14 +197,13 @@ DF_INIT_UNAVAILABLE_IMPL
 
 - (void)invalidateAndCancel {
     [self lock];
-    if (_invalidated) {
-        return;
-    }
-    _invalidated = YES;
-    [_preheatingTasks removeAllObjects];
-    _imageLoader.delegate = nil;
-    for (_DFImageTask *task in _executingImageTasks) {
-        [self _setImageTaskState:DFImageTaskStateCancelled task:task];
+    if (!_invalidated) {
+        _invalidated = YES;
+        [_preheatingTasks removeAllObjects];
+        _imageLoader.delegate = nil;
+        for (_DFImageTask *task in _executingImageTasks) {
+            [self _setImageTaskState:DFImageTaskStateCancelled task:task];
+        }
     }
     [self unlock];
 }
@@ -263,21 +261,21 @@ DF_INIT_UNAVAILABLE_IMPL
     if (!_needsToExecutePreheatingTasks && !_invalidated) {
         _needsToExecutePreheatingTasks = YES;
         // Manager won't start executing preheating tasks in case you are about to add normal (non-preheating) right after adding preheating ones.
+        typeof(self) __weak weakSelf = self;
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.15 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            [self lock];
-            [self _executePreheatingTasksIfNeeded];
-            [self unlock];
+            [weakSelf _executePreheatingTasksIfNeeded];
         });
     }
 }
 
 - (void)_executePreheatingTasksIfNeeded {
+    [self lock];
     _needsToExecutePreheatingTasks = NO;
     NSUInteger executingTaskCount = _executingImageTasks.count;
     if (executingTaskCount < _conf.maximumConcurrentPreheatingRequests) {
         for (_DFImageTask *task in [_preheatingTasks.allValues sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"tag" ascending:YES]]]) {
             if (executingTaskCount >= _conf.maximumConcurrentPreheatingRequests) {
-                return;
+                break;
             }
             if (task.state == DFImageTaskStateSuspended) {
                 [self _setImageTaskState:DFImageTaskStateRunning task:task];
@@ -285,6 +283,7 @@ DF_INIT_UNAVAILABLE_IMPL
             }
         }
     }
+    [self unlock];
 }
 
 - (void)_imageTaskDidComplete:(_DFImageTask *)task {
@@ -346,7 +345,7 @@ DF_INIT_UNAVAILABLE_IMPL
     }
 }
 
-#pragma mark - <DFImageManagerImageLoaderDelegate>
+#pragma mark <DFImageManagerImageLoaderDelegate>
 
 - (void)imageLoader:(nonnull DFImageManagerImageLoader *)imageLoader imageTask:(nonnull _DFImageTask *)task didUpdateProgressWithCompletedUnitCount:(int64_t)completedUnitCount totalUnitCount:(int64_t)totalUnitCount {
     NSProgress *progress = task.internalProgress;
@@ -383,10 +382,10 @@ DF_INIT_UNAVAILABLE_IMPL
     [_recursiveLock unlock];
 }
 
-#pragma mark - <_DFImageTaskManaging>
+#pragma mark <_DFImageTaskManaging>
 
 - (void)resumeManagedTask:(nonnull _DFImageTask *)task {
-    if (_invalidated) {
+    if (!_invalidated) {
         return;
     }
     [self lock];
@@ -425,12 +424,6 @@ DF_INIT_UNAVAILABLE_IMPL
     }
     [self unlock];
     return progress;
-}
-
-#pragma mark Support
-
-- (NSString *)description {
-    return [NSString stringWithFormat:@"<%@ %p> { name = %@ }", [self class], self, self.name];
 }
 
 @end
