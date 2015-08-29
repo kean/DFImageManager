@@ -72,7 +72,7 @@
     [managers addObject:photosKitImageManager];
 #endif
     
-    return managers.count > 1 ? [[DFCompositeImageManager alloc] initWithImageManagers:managers] : managers.firstObject;
+    return [[DFCompositeImageManager alloc] initWithImageManagers:managers];
 }
 
 + (NSURLSessionConfiguration *)_defaultSessionConfiguration {
