@@ -41,7 +41,7 @@
 - (void)resumeManagedTask:(nonnull _DFImageTask *)task;
 - (void)cancelManagedTask:(nonnull _DFImageTask *)task;
 - (void)managedTaskDidChangePriority:(nonnull _DFImageTask *)task;
-- (nonnull NSProgress *)progressForManagedTask:(nonnull _DFImageTask *)task;
+- (nullable NSProgress *)progressForManagedTask:(nonnull _DFImageTask *)task;
 
 @end
 
@@ -73,7 +73,6 @@
         _request = request;
         _priority = request.options.priority;
         _completionHandler = [completionHandler copy];
-        _state = DFImageTaskStateSuspended;
     }
     return self;
 }
@@ -93,7 +92,7 @@
     }
 }
 
-- (NSProgress * __nonnull)progress {
+- (nullable NSProgress *)progress {
     return [self.manager progressForManagedTask:self];
 }
 
@@ -119,7 +118,7 @@ static inline void DFDispatchAsync(dispatch_block_t block) {
     ([NSThread isMainThread]) ? block() : dispatch_async(dispatch_get_main_queue(), block);
 }
 
-@interface DFImageManager () <NSLocking, _DFImageTaskManaging, DFImageManagerImageLoaderDelegate>
+@interface DFImageManager () <_DFImageTaskManaging, DFImageManagerImageLoaderDelegate>
 
 @property (nonnull, nonatomic, readonly) DFImageManagerImageLoader *imageLoader;
 @property (nonnull, nonatomic, readonly) NSMutableSet /* _DFImageTask */ *executingImageTasks;
@@ -155,6 +154,14 @@ DF_INIT_UNAVAILABLE_IMPL
     [self setSharedManager:[self createDefaultManager]];
 }
 
+- (void)_performBlock:(__attribute__((noescape)) void (^__nonnull)())block {
+    [_recursiveLock lock];
+    if (!_invalidated) {
+        block();
+    }
+    [_recursiveLock unlock];
+}
+
 #pragma mark <DFImageManaging>
 
 - (BOOL)canHandleRequest:(nonnull DFImageRequest *)request {
@@ -169,43 +176,38 @@ DF_INIT_UNAVAILABLE_IMPL
 
 - (nullable DFImageTask *)imageTaskForRequest:(nonnull DFImageRequest *)request completion:(nullable DFImageTaskCompletion)completion {
     NSParameterAssert(request);
-    if (_invalidated) {
-        return nil;
-    }
-    return [[_DFImageTask alloc] initWithManager:self request:[_imageLoader canonicalRequestForRequest:request] completionHandler:completion];
+    return _invalidated ? nil : [[_DFImageTask alloc] initWithManager:self request:[_imageLoader canonicalRequestForRequest:request] completionHandler:completion];
 }
 
 - (void)getImageTasksWithCompletion:(void (^ __nullable)(NSArray * __nonnull, NSArray * __nonnull))completion {
     NSMutableSet *tasks = [NSMutableSet new];
     NSMutableSet *preheatingTasks = [NSMutableSet new];
-    [self lock];
-    for (_DFImageTask *task in _executingImageTasks) {
-        if (task.preheating) {
-            [preheatingTasks addObject:task];
-        } else {
-            [tasks addObject:task];
+    [self _performBlock:^{
+        for (_DFImageTask *task in _executingImageTasks) {
+            if (task.preheating) {
+                [preheatingTasks addObject:task];
+            } else {
+                [tasks addObject:task];
+            }
         }
-    }
-    for (_DFImageTask *task in _preheatingTasks.allValues) {
-        [preheatingTasks addObject:task];
-    }
-    [self unlock];
+        for (_DFImageTask *task in _preheatingTasks.allValues) {
+            [preheatingTasks addObject:task];
+        }
+    }];
     dispatch_async(dispatch_get_main_queue(), ^{
         completion(tasks.allObjects, preheatingTasks.allObjects);
     });
 }
 
 - (void)invalidateAndCancel {
-    [self lock];
-    if (!_invalidated) {
+    [self _performBlock:^{
         _invalidated = YES;
         [_preheatingTasks removeAllObjects];
         _imageLoader.delegate = nil;
         for (_DFImageTask *task in _executingImageTasks) {
             [self _setImageTaskState:DFImageTaskStateCancelled task:task];
         }
-    }
-    [self unlock];
+    }];
 }
 
 - (void)removeAllCachedImages {
@@ -218,43 +220,40 @@ DF_INIT_UNAVAILABLE_IMPL
 #pragma mark <DFImageManaging> (Preheating)
 
 - (void)startPreheatingImagesForRequests:(nonnull NSArray *)requests {
-    if (_invalidated) {
-        return;
-    }
     requests = [_imageLoader canonicalRequestsForRequests:requests];
-    [self lock];
-    for (DFImageRequest *request in requests) {
-        id<NSCopying> key = [_imageLoader processingKeyForRequest:request];
-        if (!_preheatingTasks[key]) {
-            _DFImageTask *task = [[_DFImageTask alloc] initWithManager:self request:request completionHandler:nil];
-            task.preheating = YES;
-            task.tag = _preheatingTaskCounter++;
-            _preheatingTasks[key] = task;
+    [self _performBlock:^{
+        for (DFImageRequest *request in requests) {
+            id<NSCopying> key = [_imageLoader processingKeyForRequest:request];
+            if (!_preheatingTasks[key]) {
+                _DFImageTask *task = [[_DFImageTask alloc] initWithManager:self request:request completionHandler:nil];
+                task.preheating = YES;
+                task.tag = _preheatingTaskCounter++;
+                _preheatingTasks[key] = task;
+            }
         }
-    }
-    [self _setNeedsExecutePreheatingTasks];
-    [self unlock];
+        [self _setNeedsExecutePreheatingTasks];
+    }];
 }
 
 - (void)stopPreheatingImagesForRequests:(nonnull NSArray *)requests {
     requests = [_imageLoader canonicalRequestsForRequests:requests];
-    [self lock];
-    for (DFImageRequest *request in requests) {
-        id<NSCopying> key = [_imageLoader processingKeyForRequest:request];
-        _DFImageTask *task = _preheatingTasks[key];
-        if (task) {
-            [self _setImageTaskState:DFImageTaskStateCancelled task:task];
+    [self _performBlock:^{
+        for (DFImageRequest *request in requests) {
+            id<NSCopying> key = [_imageLoader processingKeyForRequest:request];
+            _DFImageTask *task = _preheatingTasks[key];
+            if (task) {
+                [self _setImageTaskState:DFImageTaskStateCancelled task:task];
+            }
         }
-    }
-    [self unlock];
+    }];
 }
 
 - (void)stopPreheatingImagesForAllRequests {
-    [self lock];
-    for (_DFImageTask *task in _preheatingTasks.allValues) {
-        [self _setImageTaskState:DFImageTaskStateCancelled task:task];
-    }
-    [self unlock];
+    [self _performBlock:^{
+        for (_DFImageTask *task in _preheatingTasks.allValues) {
+            [self _setImageTaskState:DFImageTaskStateCancelled task:task];
+        }
+    }];
 }
 
 - (void)_setNeedsExecutePreheatingTasks {
@@ -269,21 +268,21 @@ DF_INIT_UNAVAILABLE_IMPL
 }
 
 - (void)_executePreheatingTasksIfNeeded {
-    [self lock];
-    _needsToExecutePreheatingTasks = NO;
-    NSUInteger executingTaskCount = _executingImageTasks.count;
-    if (executingTaskCount < _conf.maximumConcurrentPreheatingRequests) {
-        for (_DFImageTask *task in [_preheatingTasks.allValues sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"tag" ascending:YES]]]) {
-            if (executingTaskCount >= _conf.maximumConcurrentPreheatingRequests) {
-                break;
-            }
-            if (task.state == DFImageTaskStateSuspended) {
-                [self _setImageTaskState:DFImageTaskStateRunning task:task];
-                executingTaskCount++;
+    [self _performBlock:^{
+        _needsToExecutePreheatingTasks = NO;
+        NSUInteger executingTaskCount = _executingImageTasks.count;
+        if (executingTaskCount < _conf.maximumConcurrentPreheatingRequests) {
+            for (_DFImageTask *task in [_preheatingTasks.allValues sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"tag" ascending:YES]]]) {
+                if (executingTaskCount >= _conf.maximumConcurrentPreheatingRequests) {
+                    break;
+                }
+                if (task.state == DFImageTaskStateSuspended) {
+                    [self _setImageTaskState:DFImageTaskStateRunning task:task];
+                    executingTaskCount++;
+                }
             }
         }
-    }
-    [self unlock];
+    }];
 }
 
 - (void)_imageTaskDidComplete:(_DFImageTask *)task {
@@ -366,63 +365,44 @@ DF_INIT_UNAVAILABLE_IMPL
     task.image = image;
     task.response = [[DFImageResponse alloc] initWithInfo:info isFastResponse:NO];
     task.error = error;
-    
-    [self lock];
-    [self _setImageTaskState:DFImageTaskStateCompleted task:task];
-    [self unlock];
-}
-
-#pragma mark <NSLocking>
-
-- (void)lock {
-    [_recursiveLock lock];
-}
-
-- (void)unlock {
-    [_recursiveLock unlock];
+    [self _performBlock:^{
+        [self _setImageTaskState:DFImageTaskStateCompleted task:task];
+    }];
 }
 
 #pragma mark <_DFImageTaskManaging>
 
 - (void)resumeManagedTask:(nonnull _DFImageTask *)task {
-    if (!_invalidated) {
-        return;
-    }
-    [self lock];
-    [self _setImageTaskState:DFImageTaskStateRunning task:task];
-    [self unlock];
+    [self _performBlock:^{
+        [self _setImageTaskState:DFImageTaskStateRunning task:task];
+    }];
 }
 
 - (void)cancelManagedTask:(nonnull _DFImageTask *)task {
-    if (_invalidated) {
-        return;
-    }
-    [self lock];
-    [self _setImageTaskState:DFImageTaskStateCancelled task:task];
-    [self unlock];
+    [self _performBlock:^{
+        [self _setImageTaskState:DFImageTaskStateCancelled task:task];
+    }];
 }
 
 - (void)managedTaskDidChangePriority:(nonnull _DFImageTask *)task {
-    if (_invalidated) {
-        return;
-    }
-    [self lock];
-    [_imageLoader updateLoadingPriorityForImageTask:task];
-    [self unlock];
+    [self _performBlock:^{
+        [_imageLoader updateLoadingPriorityForImageTask:task];
+    }];
 }
 
-- (NSProgress *)progressForManagedTask:(nonnull _DFImageTask *)task {
-    [self lock];
-    NSProgress *progress = task.internalProgress;
-    if (!progress) {
-        progress = [NSProgress progressWithTotalUnitCount:-1];
-        _DFImageTask *__weak weakTask = task;
-        progress.cancellationHandler = ^{
-            [weakTask cancel];
-        };
-        task.internalProgress = progress;
-    }
-    [self unlock];
+- (nullable NSProgress *)progressForManagedTask:(nonnull _DFImageTask *)task {
+    NSProgress *__block progress;
+    [self _performBlock:^{
+        progress = task.internalProgress;
+        if (!progress) {
+            progress = [NSProgress progressWithTotalUnitCount:-1];
+            _DFImageTask *__weak weakTask = task;
+            progress.cancellationHandler = ^{
+                [weakTask cancel];
+            };
+            task.internalProgress = progress;
+        }
+    }];
     return progress;
 }
 

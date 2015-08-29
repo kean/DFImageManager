@@ -29,7 +29,7 @@
 /*! Constants for determining the current state of a task.
  */
 typedef NS_ENUM(NSUInteger, DFImageTaskState) {
-    DFImageTaskStateSuspended,
+    DFImageTaskStateSuspended = 0,
     DFImageTaskStateRunning,
     DFImageTaskStateCancelled,
     DFImageTaskStateCompleted
@@ -59,7 +59,7 @@ typedef NS_ENUM(NSUInteger, DFImageTaskState) {
 /*! A progress object monitoring the current task progress. Progress is created lazily.
  @note Progress object can be used to cancel image task.
  */
-@property (nonnull, atomic, readonly) NSProgress *progress;
+@property (nullable, atomic, readonly) NSProgress *progress;
 
 /*! Priority of the task. Can be changed during the execution of the task.
  */
