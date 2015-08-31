@@ -149,12 +149,4 @@ DF_INIT_UNAVAILABLE_IMPL
     return NO;
 }
 
-- (nonnull NSArray *)imageRequests {
-    NSMutableArray *requests = [NSMutableArray new];
-    for (DFImageTask *task in _imageTasks) {
-        [requests addObject:task.request];
-    }
-    return [requests copy];
-}
-
 @end
