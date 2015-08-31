@@ -86,142 +86,67 @@ typedef void (^_DFURLSessionDataTaskCompletionHandler)(NSData *data, NSURLRespon
 @end
 
 
-@interface _DFSessionTaskCommand : NSObject <NSCopying>
+static const NSTimeInterval _kTaskExecutionInterval = 0.005; // 5 ms
 
-@property (nonatomic, readonly) NSURLSessionTask *task;
-
-- (instancetype)initWithTask:(NSURLSessionTask *)task;
-- (void)execute;
-
-@end
-
-@implementation _DFSessionTaskCommand
-
-- (instancetype)initWithTask:(NSURLSessionTask *)task {
-    if (self = [super init]) {
-        _task = task;
-    }
-    return self;
-}
-
-- (void)execute {
-    // Do nothing
-}
-
-- (id)copyWithZone:(NSZone *)zone {
-    return self;
-}
-
-- (NSUInteger)hash {
-    return self.task.hash;
-}
-
-- (BOOL)isEqual:(_DFSessionTaskCommand *)other {
-    return [self.task isEqual:other.task];
-}
-
-- (NSString *)description {
-    return [NSString stringWithFormat:@"<%@ %p> task:%@ }", [self class], self, _task];
-}
-
-@end
-
-
-@interface _DFSessionTaskResumeCommand : _DFSessionTaskCommand
-
-@end
-
-@implementation _DFSessionTaskResumeCommand
-
-- (void)execute {
-    [self.task resume];
-}
-
-@end
-
-
-@interface _DFSessionTaskCancelCommand : _DFSessionTaskCommand
-
-@end
-
-@implementation _DFSessionTaskCancelCommand
-
-- (void)execute {
-    [self.task cancel];
-}
-
-@end
-
-
-static const NSTimeInterval _kCommandExecutionInterval = 0.005; // 5 ms
-
-/*! The _DFURLFetcherCommandExecutor serves multiple puproses:
+/*! The _DFURLFetcherTaskQueue serves multiple puproses:
  - Prevents NSURLSession trashing
  - Prevents excessive resuming of tasks during the extremely fast scrolling
  - Limits the possibility of the known system crash http://prod.lists.apple.com/archives/macnetworkprog/2014/Oct/msg00001.html that sometimes reproduces on an older devices. It does NOT reproduce on newer devices.
  */
-@interface _DFURLFetcherCommandExecutor : NSObject
-
-- (void)executeCommand:(_DFSessionTaskCommand *)command;
-
+@interface _DFURLFetcherTaskQueue : NSObject
 @end
 
-@implementation _DFURLFetcherCommandExecutor {
-    NSMutableOrderedSet *_commands;
-    BOOL _isRunning;
-    BOOL _isStopping;
+@implementation _DFURLFetcherTaskQueue {
+    NSMutableOrderedSet *_pendingTasks;
+    BOOL _executing;
 }
 
 - (instancetype)init {
     if (self = [super init]) {
-        _commands = [NSMutableOrderedSet new];
+        _pendingTasks = [NSMutableOrderedSet new];
     }
     return self;
 }
 
-- (void)executeCommand:(_DFSessionTaskCommand *)command {
+- (void)resumeTask:(NSURLSessionTask *)task {
     dispatch_async(dispatch_get_main_queue(), ^{
-        if ([command isKindOfClass:[_DFSessionTaskCancelCommand class]]) {
-            // If contains other commands for a given task - remove them
-            if ([_commands containsObject:command]) {
-                [_commands removeObject:command];
-                return;
-            }
-        }
-        [_commands addObject:command];
-        if (!_isRunning) {
-            [self _runAfterDelay];
+        [_pendingTasks addObject:task];
+        [self _setNeedsResumePendingTasks];
+    });
+}
+
+- (void)cancelTask:(NSURLSessionTask *)task {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if ([_pendingTasks containsObject:task]) {
+            [_pendingTasks removeObject:task];
+        } else {
+            [task cancel];
         }
     });
 }
 
-/*! Gurantees that there is is at least '_kCommandExecutionInterval' seconds between the execution of each command.
+/*! Gurantees that there is is at least '_kTaskExecutionInterval' seconds between the execution of each task.
  */
-- (void)_runAfterDelay {
-    _isRunning = YES;
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(_kCommandExecutionInterval * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [self _run];
-    });
+- (void)_setNeedsResumePendingTasks {
+    if (!_executing) {
+        _executing = YES;
+        typeof(self) __weak weakSelf = self;
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(_kTaskExecutionInterval * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [weakSelf _resumePendingTask];
+        });
+    }
 }
 
-- (void)_run {
-    if (_isStopping) {
-        _isStopping = NO;
-        if (!_commands.count) {
-            _isRunning = NO;
-            return;
-        }
+- (void)_resumePendingTask {
+    _executing = NO;
+    NSURLSessionTask *task = _pendingTasks.firstObject;
+    if (task) {
+        [task resume];
+        [_pendingTasks removeObject:task];
     }
-    _DFSessionTaskCommand *command = _commands.firstObject;
-    if (command) {
-        [_commands removeObject:command];
-        [command execute];
+    if (_pendingTasks.count) {
+        [self _setNeedsResumePendingTasks];
     }
-    if (!_commands.count) {
-        // Stop execution on the next run (if no commands are added)
-        _isStopping = YES;
-    }
-    [self _runAfterDelay];
 }
 
 @end
@@ -229,7 +154,7 @@ static const NSTimeInterval _kCommandExecutionInterval = 0.005; // 5 ms
 
 @implementation DFURLImageFetcher {
     NSMutableDictionary *_sessionTaskHandlers;
-    _DFURLFetcherCommandExecutor *_executor;
+    _DFURLFetcherTaskQueue *_taskQueue;
 }
 
 DF_INIT_UNAVAILABLE_IMPL
@@ -241,7 +166,7 @@ DF_INIT_UNAVAILABLE_IMPL
         _session = session;
         _sessionDelegate = sessionDelegate;
         _sessionTaskHandlers = [NSMutableDictionary new];
-        _executor = [_DFURLFetcherCommandExecutor new];
+        _taskQueue = [_DFURLFetcherTaskQueue new];
         _supportedSchemes = [NSSet setWithObjects:@"http", @"https", @"ftp", @"file", @"data", nil];
     }
     return self;
@@ -253,7 +178,7 @@ DF_INIT_UNAVAILABLE_IMPL
     return [self initWithSession:session sessionDelegate:self];
 }
 
-#pragma mark - <DFImageFetching>
+#pragma mark <DFImageFetching>
 
 - (BOOL)canHandleRequest:(nonnull DFImageRequest *)request {
     if ([request.resource isKindOfClass:[NSURL class]]) {
@@ -299,7 +224,7 @@ DF_INIT_UNAVAILABLE_IMPL
     // Passive container, DFURLImageFetcher never even start the operation, it only uses it's -cancel and -setPririty APIs. DFImageManager should probably have a specific protocol instead of NSOperation, because sometimes there is not need in one.
     _DFURLSessionOperation *operation = [_DFURLSessionOperation new];
     operation.cancellationHandler = ^{
-        [_executor executeCommand:[[_DFSessionTaskCancelCommand alloc] initWithTask:task]];
+        [_taskQueue cancelTask:task];
     };
     operation.priorityHandler = ^(NSOperationQueuePriority priority) {
         if ([task respondsToSelector:@selector(setPriority:)]) {
@@ -307,7 +232,7 @@ DF_INIT_UNAVAILABLE_IMPL
         }
     };
     
-    [_executor executeCommand:[[_DFSessionTaskResumeCommand alloc] initWithTask:task]];
+    [_taskQueue resumeTask:task];
     
     return operation;
 }
@@ -361,7 +286,7 @@ DF_INIT_UNAVAILABLE_IMPL
     [_session.configuration.URLCache removeAllCachedResponses];
 }
 
-#pragma mark - <NSURLSessionDataTaskDelegate>
+#pragma mark <NSURLSessionDataTaskDelegate>
 
 - (void)URLSession:(NSURLSession *)session dataTask:(NSURLSessionDataTask *)dataTask didReceiveData:(NSData *)data {
     @synchronized(self) {
@@ -386,7 +311,7 @@ DF_INIT_UNAVAILABLE_IMPL
     }
 }
 
-#pragma mark - <DFURLImageFetcherSessionDelegate>
+#pragma mark <DFURLImageFetcherSessionDelegate>
 
 - (NSURLSessionDataTask *)URLImageFetcher:(DFURLImageFetcher *)fetcher dataTaskWithRequest:(NSURLRequest *)request progressHandler:(_DFURLSessionDataTaskProgressHandler)progressHandler completionHandler:(_DFURLSessionDataTaskCompletionHandler)completionHandler {
     NSURLSessionDataTask *task = [self.session dataTaskWithRequest:request];
