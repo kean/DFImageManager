@@ -32,6 +32,7 @@
 
 #import "DFImageManager.h"
 #import "DFImageManagerConfiguration.h"
+#import "DFCompositeImageManager.h"
 
 #import "DFImageTask.h"
 #import "DFImageRequest.h"

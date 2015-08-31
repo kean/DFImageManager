@@ -20,6 +20,5 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "DFCompositeImageManager.h"
 #import "DFProxyImageManager.h"
 #import "DFCompositeImageTask.h"
