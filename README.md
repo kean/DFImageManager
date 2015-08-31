@@ -42,7 +42,7 @@ DFImageManager is not just a loader, it's a pipeline for executing image request
 - Animated GIF support using best-in-class [FLAnimatedImage](https://github.com/Flipboard/FLAnimatedImage) library
 - [WebP](https://developers.google.com/speed/webp/) support
 - Progressive image decoding (progressive JPEG and more)
-- Background image decompression
+- Background image decompression and scaling in a single step
 - Resize and crop loaded images to [fit displayed size](https://developer.apple.com/library/ios/qa/qa1708/_index.html), add rounded corners or circle
 
 ##### Displaying
