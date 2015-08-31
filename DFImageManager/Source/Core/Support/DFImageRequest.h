@@ -70,12 +70,3 @@
 - (nullable instancetype)init NS_UNAVAILABLE;
 
 @end
-
-
-@interface DFImageRequest (UIKitAdditions)
-
-/*! Returns image target size (in pixels) for a given view.
- */
-+ (CGSize)targetSizeForView:(nonnull UIView *)view;
-
-@end

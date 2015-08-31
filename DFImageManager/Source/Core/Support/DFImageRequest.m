@@ -54,14 +54,3 @@ DF_INIT_UNAVAILABLE_IMPL
 }
 
 @end
-
-
-@implementation DFImageRequest (UIKitAdditions)
-
-+ (CGSize)targetSizeForView:(nonnull UIView *)view {
-    CGSize size = view.bounds.size;
-    CGFloat scale = [UIScreen mainScreen].scale;
-    return CGSizeMake(size.width * scale, size.height * scale);
-}
-
-@end

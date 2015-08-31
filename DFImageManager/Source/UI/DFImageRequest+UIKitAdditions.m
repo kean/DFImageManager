@@ -21,6 +21,13 @@
 // THE SOFTWARE.
 
 #import "DFImageRequest+UIKitAdditions.h"
-#import "DFCollectionViewPreheatingController.h"
-#import "DFImageView.h"
-#import "UIImageView+DFImageManager.h"
+
+@implementation DFImageRequest (UIKitAdditions)
+
++ (CGSize)targetSizeForView:(nonnull UIView *)view {
+    CGSize size = view.bounds.size;
+    CGFloat scale = [UIScreen mainScreen].scale;
+    return CGSizeMake(size.width * scale, size.height * scale);
+}
+
+@end

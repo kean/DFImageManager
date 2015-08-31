@@ -21,6 +21,7 @@
 // THE SOFTWARE.
 
 #import "DFImageManager.h"
+#import "DFImageRequest+UIKitAdditions.h"
 #import "DFImageRequest.h"
 #import "DFImageTask.h"
 #import "UIImageView+DFImageManager.h"

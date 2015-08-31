@@ -20,7 +20,12 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "DFImageRequest+UIKitAdditions.h"
-#import "DFCollectionViewPreheatingController.h"
-#import "DFImageView.h"
-#import "UIImageView+DFImageManager.h"
+#import <DFImageManagerKit/DFImageManagerKit.h>
+
+@interface DFImageRequest (UIKitAdditions)
+
+/*! Returns image target size (in pixels) for a given view.
+ */
++ (CGSize)targetSizeForView:(nonnull UIView *)view;
+
+@end
