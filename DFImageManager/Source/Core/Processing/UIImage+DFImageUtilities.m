@@ -35,11 +35,6 @@
     return contentMode == DFImageContentModeAspectFill ? MAX(scaleWidth, scaleHeight) : MIN(scaleWidth, scaleHeight);
 }
 
-+ (UIImage *)df_decompressedImage:(UIImage *)image targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode {
-    CGFloat scale = [self df_scaleForImage:image targetSize:targetSize contentMode:contentMode];
-    return [self df_decompressedImage:image scale:scale];
-}
-
 + (UIImage *)df_decompressedImage:(UIImage *)image scale:(CGFloat)scale {
     if (!image) {
         return nil;
@@ -58,7 +53,7 @@
     CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
     CGBitmapInfo bitmapInfo = CGImageGetBitmapInfo(imageRef);
     
-    int infoMask = (bitmapInfo & kCGBitmapAlphaInfoMask);
+    CGImageAlphaInfo infoMask = (bitmapInfo & kCGBitmapAlphaInfoMask);
     BOOL anyNonAlpha = (infoMask == kCGImageAlphaNone ||
                         infoMask == kCGImageAlphaNoneSkipFirst ||
                         infoMask == kCGImageAlphaNoneSkipLast);

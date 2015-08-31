@@ -35,11 +35,6 @@
  */
 + (CGFloat)df_scaleForImage:(nullable UIImage *)image targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode;
 
-/*! Returns decompressed image with a given image.
- @param targetSize Image target size in pixels.
- */
-+ (nullable UIImage *)df_decompressedImage:(nullable UIImage *)image targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode;
-
 /*! Returns scaled decompressed image with a given image.
  */
 + (nullable UIImage *)df_decompressedImage:(nullable UIImage *)image scale:(CGFloat)scale;
