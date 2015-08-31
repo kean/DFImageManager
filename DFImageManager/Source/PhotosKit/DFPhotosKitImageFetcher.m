@@ -98,10 +98,6 @@ static inline NSString *_PHAssetLocalIdentifier(id resource) {
     } else if (![_PHAssetLocalIdentifier(request1.resource) isEqualToString:_PHAssetLocalIdentifier(request2.resource)]) {
         return NO;
     }
-    if (!(CGSizeEqualToSize(request1.targetSize, request2.targetSize) &&
-          request1.contentMode == request2.contentMode)) {
-        return NO;
-    }
     _DFPhotosKitRequestOptions options1 = [self _requestOptionsFromUserInfo:request1.options.userInfo];
     _DFPhotosKitRequestOptions options2 = [self _requestOptionsFromUserInfo:request2.options.userInfo];
     return (options1.version == options2.version);
