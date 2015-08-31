@@ -21,6 +21,7 @@
 // THE SOFTWARE.
 
 #import "DFImageManager.h"
+#import "DFImageManagerDefines.h"
 #import "DFImageManaging.h"
 #import "DFImageRequest.h"
 #import "DFImageRequestOptions.h"
@@ -75,8 +76,7 @@
         self.animatedImage = nil;
     }
     if (self.allowsGIFPlayback && [image isKindOfClass:[DFAnimatedImage class]]) {
-        DFAnimatedImage *animatedImage = (DFAnimatedImage *)image;
-        self.animatedImage = animatedImage.animatedImage;
+        self.animatedImage = ((DFAnimatedImage *)image).animatedImage;
         return;
     }
 #endif
@@ -128,7 +128,7 @@
     }
     typeof(self) __weak weakSelf = self;
     DFImageTask *task = [self.imageManager imageTaskForRequest:request completion:^(UIImage *__nullable image, NSError *__nullable error, DFImageResponse *__nullable response, DFImageTask *__nonnull imageTask){
-        [weakSelf.delegate imageView:self didCompleteImageTask:imageTask withImage:image];
+        [weakSelf.delegate imageView:weakSelf didCompleteImageTask:imageTask withImage:image];
         [weakSelf didCompleteImageTask:imageTask withImage:image];
     }];
     task.progressiveImageHandler = ^(UIImage *__nonnull image){
@@ -154,8 +154,6 @@
         [self displayImage:image];
     }
 }
-
-#pragma mark - Priorities
 
 - (void)willMoveToWindow:(UIWindow *)newWindow {
     [super willMoveToWindow:newWindow];
