@@ -25,7 +25,6 @@
 #import "DFImageManager.h"
 #import "DFImageManagerConfiguration.h"
 #import "DFImageProcessor.h"
-#import "DFProxyImageManager.h"
 
 #if DF_IMAGE_MANAGER_AFNETWORKING_AVAILABLE
 #import "DFImageManagerKit+AFNetworking.h"
