@@ -20,7 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import <DFImageManagerKit/DFImageManagerKit.h>
+#import "DFImageRequest.h"
 
 @interface DFImageRequest (UIKitAdditions)
 

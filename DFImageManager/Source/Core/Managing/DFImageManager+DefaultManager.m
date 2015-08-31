@@ -51,24 +51,24 @@
 #pragma clang diagnostic pop
     
 #if DF_IMAGE_MANAGER_AFNETWORKING_AVAILABLE
-    id<DFImageManaging> URLImageManager = ({
+    [managers addObject:({
         AFHTTPSessionManager *httpSessionManager = [[AFHTTPSessionManager alloc] initWithSessionConfiguration:[self _defaultSessionConfiguration]];
         httpSessionManager.responseSerializer = [AFHTTPResponseSerializer new];
         DFAFImageFetcher *fetcher = [[DFAFImageFetcher alloc] initWithSessionManager:httpSessionManager];
         [[DFImageManager alloc] initWithConfiguration:[DFImageManagerConfiguration  configurationWithFetcher:fetcher processor:processor cache:cache]];
-    });
-    [managers addObject:URLImageManager];
+    })];
 #elif __has_include("DFImageManagerKit+NSURLSession.h")
-    id<DFImageManaging> URLImageManager = ({
+    [managers addObject:({
         DFURLImageFetcher *fetcher = [[DFURLImageFetcher alloc] initWithSessionConfiguration:[self _defaultSessionConfiguration]];
         [[DFImageManager alloc] initWithConfiguration:[DFImageManagerConfiguration configurationWithFetcher:fetcher processor:processor cache:cache]];
-    });
-    [managers addObject:URLImageManager];
+    })];
 #endif
     
 #if __has_include("DFImageManagerKit+PhotosKit.h")
-    id<DFImageManaging> photosKitImageManager = [[DFImageManager alloc] initWithConfiguration:[DFImageManagerConfiguration configurationWithFetcher:[DFPhotosKitImageFetcher new] processor:processor cache:cache]];
-    [managers addObject:photosKitImageManager];
+    [managers addObject:({
+        DFPhotosKitImageFetcher *fethcer = [DFPhotosKitImageFetcher new];
+        [[DFImageManager alloc] initWithConfiguration:[DFImageManagerConfiguration configurationWithFetcher:fethcer processor:processor cache:cache]];
+    })];
 #endif
     
     return [[DFCompositeImageManager alloc] initWithImageManagers:managers];
