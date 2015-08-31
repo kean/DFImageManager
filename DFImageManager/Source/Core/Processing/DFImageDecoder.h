@@ -27,10 +27,6 @@
  */
 @interface DFImageDecoder : NSObject <DFImageDecoding>
 
-/*! If YES decoder would force image decompression, otherwise UIImage might delay decompression until the image is displayed. Default value is YES.
- */
-@property (nonatomic) BOOL shouldDecompressImages;
-
 /*! The image decoder instance shared by the application.
  */
 + (nullable id<DFImageDecoding>)sharedDecoder;

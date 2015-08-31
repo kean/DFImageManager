@@ -33,6 +33,13 @@ NSString *DFImageProcessingCornerRadiusKey = @"DFImageProcessingCornerRadiusKey"
 
 @implementation DFImageProcessor
 
+- (instancetype)init {
+    if (self = [super init]) {
+        _shouldDecompressImages = YES;
+    }
+    return self;
+}
+
 #pragma mark <DFImageProcessing>
 
 - (BOOL)isProcessingForRequestEquivalent:(nonnull DFImageRequest *)request1 toRequest:(nonnull DFImageRequest *)request2 {
@@ -55,6 +62,9 @@ NSString *DFImageProcessingCornerRadiusKey = @"DFImageProcessingCornerRadiusKey"
         return NO;
     }
 #endif
+    if (self.shouldDecompressImages) {
+        return YES;
+    }
     if (request.contentMode == DFImageContentModeAspectFill && request.options.allowsClipping) {
         return YES;
     }
@@ -74,7 +84,7 @@ NSString *DFImageProcessingCornerRadiusKey = @"DFImageProcessingCornerRadiusKey"
         image = [DFImageProcessor _croppedImage:image aspectFillPixelSize:request.targetSize];
     }
     CGFloat scale = [UIImage df_scaleForImage:image targetSize:request.targetSize contentMode:request.contentMode];
-    if (scale < 1.f) {
+    if (scale < 1.f || self.shouldDecompressImages) {
         image = [UIImage df_decompressedImage:image scale:scale];
     }
     NSNumber *normalizedCornerRadius = request.options.userInfo[DFImageProcessingCornerRadiusKey];
