@@ -29,15 +29,11 @@
 
 /* The animated image that the receiver was initialized with. An `FLAnimatedImage`'s job is to deliver frames in a highly performant way and works in conjunction with `FLAnimatedImageView`.
  */
-@property (nullable, nonatomic, readonly) FLAnimatedImage *animatedImage;
+@property (nonnull, nonatomic, readonly) FLAnimatedImage *animatedImage;
 
 /*! Initializes the DFAnimatedImage with an instance of FLAnimatedImage class.
  */
-- (nonnull instancetype)initWithAnimatedImage:(nullable FLAnimatedImage *)animatedImage NS_DESIGNATED_INITIALIZER;
-
-/*! Initializes the DFAnimatedImage with an instance of FLAnimatedImage class created from a given data.
- */
-- (nullable instancetype)initWithAnimatedGIFData:(nullable NSData *)data;
+- (nonnull instancetype)initWithAnimatedImage:(nonnull FLAnimatedImage *)animatedImage NS_DESIGNATED_INITIALIZER;
 
 /*! Returns the DFAnimatedImage object with an instance of FLAnimatedImage class created from a given data.
  */

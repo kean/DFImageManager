@@ -43,7 +43,7 @@
     }
 #if DF_IMAGE_MANAGER_GIF_AVAILABLE
     if ([DFAnimatedImage isAnimatedGIFData:data]) {
-        UIImage *image = [[DFAnimatedImage alloc] initWithAnimatedGIFData:data];
+        UIImage *image = [DFAnimatedImage animatedImageWithGIFData:data];
         if (image) {
             return image;
         }

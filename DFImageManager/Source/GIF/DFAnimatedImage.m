@@ -31,16 +31,9 @@
     return self;
 }
 
-- (nullable instancetype)initWithAnimatedGIFData:(nullable NSData *)data {
-    FLAnimatedImage *animatedImage = [FLAnimatedImage animatedImageWithGIFData:data];
-    if (!animatedImage) {
-        return nil;
-    }
-    return [self initWithAnimatedImage:animatedImage];
-}
-
 + (nullable instancetype)animatedImageWithGIFData:(nullable NSData *)data {
-    return [[DFAnimatedImage alloc] initWithAnimatedGIFData:data];
+    FLAnimatedImage *animatedImage = [FLAnimatedImage animatedImageWithGIFData:data];
+    return animatedImage ? [[DFAnimatedImage alloc] initWithAnimatedImage:animatedImage] : nil;
 }
 
 /*! See https://en.wikipedia.org/wiki/List_of_file_signatures
