@@ -24,7 +24,6 @@
 #import "DFImageRequestOptions.h"
 #import "DFURLHTTPResponseValidator.h"
 #import "DFURLImageFetcher.h"
-#import "DFURLResponseValidating.h"
 
 NSString *const DFURLRequestCachePolicyKey = @"DFURLRequestCachePolicyKey";
 
@@ -64,11 +63,9 @@ typedef void (^_DFURLSessionDataTaskCompletionHandler)(NSData *data, NSURLRespon
 
 @interface _DFURLSessionDataTaskHandler : NSObject
 
-@property (nonatomic, copy, readonly) _DFURLSessionDataTaskProgressHandler progressHandler;
-@property (nonatomic, copy, readonly) _DFURLSessionDataTaskCompletionHandler completionHandler;
-@property (nonatomic, readonly) NSMutableData *data;
-
-- (instancetype)initWithProgressHandler:(_DFURLSessionDataTaskProgressHandler)progressHandler completion:(_DFURLSessionDataTaskCompletionHandler)completion;
+@property (nullable, nonatomic, copy, readonly) _DFURLSessionDataTaskProgressHandler progressHandler;
+@property (nullable, nonatomic, copy, readonly) _DFURLSessionDataTaskCompletionHandler completionHandler;
+@property (nonnull, nonatomic, readonly) NSMutableData *data;
 
 @end
 
@@ -152,10 +149,14 @@ static const NSTimeInterval _kTaskExecutionInterval = 0.005; // 5 ms
 @end
 
 
-@implementation DFURLImageFetcher {
-    NSMutableDictionary *_sessionTaskHandlers;
-    _DFURLFetcherTaskQueue *_taskQueue;
-}
+@interface DFURLImageFetcher ()
+
+@property (nonnull, nonatomic, readonly) _DFURLFetcherTaskQueue *taskQueue;
+@property (nonnull, nonatomic, readonly) NSMutableDictionary *sessionTaskHandlers;
+
+@end
+
+@implementation DFURLImageFetcher
 
 DF_INIT_UNAVAILABLE_IMPL
 
@@ -173,9 +174,7 @@ DF_INIT_UNAVAILABLE_IMPL
 }
 
 - (instancetype)initWithSessionConfiguration:(NSURLSessionConfiguration *)configuration {
-    NSParameterAssert(configuration);
-    NSURLSession *session = [NSURLSession sessionWithConfiguration:configuration delegate:self delegateQueue:nil];
-    return [self initWithSession:session sessionDelegate:self];
+    return [self initWithSession:[NSURLSession sessionWithConfiguration:configuration delegate:self delegateQueue:nil] sessionDelegate:self];
 }
 
 #pragma mark <DFImageFetching>
@@ -224,7 +223,7 @@ DF_INIT_UNAVAILABLE_IMPL
     // Passive container, DFURLImageFetcher never even start the operation, it only uses it's -cancel and -setPririty APIs. DFImageManager should probably have a specific protocol instead of NSOperation, because sometimes there is not need in one.
     _DFURLSessionOperation *operation = [_DFURLSessionOperation new];
     operation.cancellationHandler = ^{
-        [_taskQueue cancelTask:task];
+        [weakSelf.taskQueue cancelTask:task];
     };
     operation.priorityHandler = ^(NSOperationQueuePriority priority) {
         if ([task respondsToSelector:@selector(setPriority:)]) {
@@ -275,11 +274,7 @@ DF_INIT_UNAVAILABLE_IMPL
     if ([self.delegate respondsToSelector:@selector(URLImageFetcher:responseValidatorForImageRequest:URLRequest:)]) {
         return [self.delegate URLImageFetcher:self responseValidatorForImageRequest:imageRequest URLRequest:URLRequest];
     }
-    if ([URLRequest.URL.scheme hasPrefix:@"http"]) {
-        return [DFURLHTTPResponseValidator new];
-    } else {
-        return nil;
-    }
+    return [URLRequest.URL.scheme hasPrefix:@"http"] ? [DFURLHTTPResponseValidator new] : nil;
 }
 
 - (void)removeAllCachedImages {
