@@ -118,12 +118,8 @@
     if (!request) {
         return;
     }
-    if ([self.delegate respondsToSelector:@selector(imageView:willStartImageTaskForRequest:)]) {
-        [self.delegate imageView:self willStartImageTaskForRequest:request];
-    }
     typeof(self) __weak weakSelf = self;
     DFImageTask *task = [self.imageManager imageTaskForRequest:request completion:^(UIImage *__nullable image, NSError *__nullable error, DFImageResponse *__nullable response, DFImageTask *__nonnull imageTask){
-        [weakSelf.delegate imageView:weakSelf didCompleteImageTask:imageTask withImage:image];
         [weakSelf didCompleteImageTask:imageTask withImage:image];
     }];
     task.progressiveImageHandler = ^(UIImage *__nonnull image){
