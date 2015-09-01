@@ -103,8 +103,6 @@
  */
 - (void)prepareForReuse;
 
-#pragma mark - Fetching
-
 /*! Returns current image task.
  */
 @property (nullable, nonatomic, readonly) DFImageTask *imageTask;

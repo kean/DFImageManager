@@ -23,6 +23,7 @@
 #import "DFImageManager.h"
 #import "DFImageManagerDefines.h"
 #import "DFImageManaging.h"
+#import "DFImageRequest+UIKitAdditions.h"
 #import "DFImageRequest.h"
 #import "DFImageRequestOptions.h"
 #import "DFImageResponse.h"
@@ -36,7 +37,6 @@
 @implementation DFImageView
 
 - (void)dealloc {
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
     [self _cancelFetching];
 }
 
@@ -63,7 +63,6 @@
     _imageTargetSize = CGSizeZero;
     _imageContentMode = DFImageContentModeAspectFill;
     _allowsAnimations = YES;
-    _managesRequestPriorities = NO;
 #if DF_IMAGE_MANAGER_GIF_AVAILABLE
     _allowsGIFPlayback = YES;
 #endif
@@ -83,11 +82,8 @@
     self.image = image;
 }
 
-#pragma mark -
-
 - (void)prepareForReuse {
     [self _cancelFetching];
-    _imageTask = nil;
     self.image = nil;
 #if DF_IMAGE_MANAGER_GIF_AVAILABLE
     self.animatedImage = nil;
@@ -99,13 +95,12 @@
     _imageTask.completionHandler = nil;
     _imageTask.progressiveImageHandler = nil;
     [_imageTask cancel];
+    _imageTask = nil;
 }
 
 - (CGSize)imageTargetSize {
     if (CGSizeEqualToSize(CGSizeZero, _imageTargetSize)) {
-        CGSize size = self.bounds.size;
-        CGFloat scale = [UIScreen mainScreen].scale;
-        return CGSizeMake(size.width * scale, size.height * scale);
+        return [DFImageRequest targetSizeForView:self];
     }
     return _imageTargetSize;
 }
@@ -139,8 +134,7 @@
 }
 
 - (void)didCompleteImageTask:(nonnull DFImageTask *)task withImage:(nullable UIImage *)image {
-    BOOL isFastResponse = task.response.isFastResponse;
-    if (self.allowsAnimations && !isFastResponse && !self.image) {
+    if (self.allowsAnimations && !task.response.isFastResponse && !self.image) {
         [self displayImage:image];
         [self.layer addAnimation:({
             CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"opacity"];
@@ -158,8 +152,7 @@
 - (void)willMoveToWindow:(UIWindow *)newWindow {
     [super willMoveToWindow:newWindow];
     if (self.managesRequestPriorities) {
-        DFImageRequestPriority priority = (newWindow == nil) ? DFImageRequestPriorityNormal : DFImageRequestPriorityVeryHigh;
-        [_imageTask setPriority:priority];
+        [_imageTask setPriority:(newWindow ? DFImageRequestPriorityNormal: DFImageRequestPriorityVeryLow)];
     }
 }
 
