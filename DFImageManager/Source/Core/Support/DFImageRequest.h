@@ -55,10 +55,6 @@
 
 /*! Returns a DFImageRequest initialized with a given resource. Uses DFImageMaximumSize and DFImageContentModeAspectFill as other parameters.
  */
-- (nonnull instancetype)initWithResource:(nonnull id)resource;
-
-/*! Returns a DFImageRequest initialized with a given resource. Uses DFImageMaximumSize and DFImageContentModeAspectFill as other parameters.
- */
 + (nonnull instancetype)requestWithResource:(nonnull id)resource;
 
 /*! Returns a DFImageRequest initialized with a given parameters.

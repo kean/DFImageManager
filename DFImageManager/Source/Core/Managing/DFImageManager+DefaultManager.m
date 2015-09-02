@@ -55,7 +55,7 @@
         AFHTTPSessionManager *httpSessionManager = [[AFHTTPSessionManager alloc] initWithSessionConfiguration:[self _defaultSessionConfiguration]];
         httpSessionManager.responseSerializer = [AFHTTPResponseSerializer new];
         DFAFImageFetcher *fetcher = [[DFAFImageFetcher alloc] initWithSessionManager:httpSessionManager];
-        [[DFImageManager alloc] initWithConfiguration:[DFImageManagerConfiguration  configurationWithFetcher:fetcher processor:processor cache:cache]];
+        [[DFImageManager alloc] initWithConfiguration:[DFImageManagerConfiguration configurationWithFetcher:fetcher processor:processor cache:cache]];
     })];
 #elif __has_include("DFImageManagerKit+NSURLSession.h")
     [managers addObject:({
@@ -66,8 +66,8 @@
     
 #if __has_include("DFImageManagerKit+PhotosKit.h")
     [managers addObject:({
-        DFPhotosKitImageFetcher *fethcer = [DFPhotosKitImageFetcher new];
-        [[DFImageManager alloc] initWithConfiguration:[DFImageManagerConfiguration configurationWithFetcher:fethcer processor:processor cache:cache]];
+        DFPhotosKitImageFetcher *fetcher = [DFPhotosKitImageFetcher new];
+        [[DFImageManager alloc] initWithConfiguration:[DFImageManagerConfiguration configurationWithFetcher:fetcher processor:processor cache:cache]];
     })];
 #endif
     

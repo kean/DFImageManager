@@ -74,14 +74,14 @@
 #pragma mark - Request Cache Equivalence
 
 - (void)testThatRequestsWithTheSameURLAreCacheEquivalent {
-    DFImageRequest *request1 = [[DFImageRequest alloc] initWithResource:[NSURL URLWithString:@"http://path/resourse"]];
-    DFImageRequest *request2 = [[DFImageRequest alloc] initWithResource:[NSURL URLWithString:@"http://path/resourse"]];
+    DFImageRequest *request1 = [DFImageRequest requestWithResource:[NSURL URLWithString:@"http://path/resourse"]];
+    DFImageRequest *request2 = [DFImageRequest requestWithResource:[NSURL URLWithString:@"http://path/resourse"]];
     XCTAssertTrue([_fetcher isRequestCacheEquivalent:request1 toRequest:request2]);
 }
 
 - (void)testThatRequestsWithDifferentURLsAreNotCacheEquivalent {
-    DFImageRequest *request1 = [[DFImageRequest alloc] initWithResource:[NSURL URLWithString:@"http://path/resourse_01"]];
-    DFImageRequest *request2 = [[DFImageRequest alloc] initWithResource:[NSURL URLWithString:@"http://path/resourse_02"]];
+    DFImageRequest *request1 = [DFImageRequest requestWithResource:[NSURL URLWithString:@"http://path/resourse_01"]];
+    DFImageRequest *request2 = [DFImageRequest requestWithResource:[NSURL URLWithString:@"http://path/resourse_02"]];
     XCTAssertFalse([_fetcher isRequestCacheEquivalent:request1 toRequest:request2]);
 }
 
@@ -92,7 +92,7 @@
 - (void)testThatURLFetcherSupportsFileSystemURL {
     NSURL *fileURL = [TDFTesting testImageURL];
     
-    DFImageRequest *request = [[DFImageRequest alloc] initWithResource:fileURL];
+    DFImageRequest *request = [DFImageRequest requestWithResource:fileURL];
     XCTAssertTrue([_fetcher canHandleRequest:request]);
     
     XCTestExpectation *expectation = [self expectationWithDescription:@"fetch_completed"];
@@ -112,7 +112,7 @@
     NSString *dataString = [NSString stringWithFormat:dataFormatString, [imgData base64EncodedStringWithOptions:0]];
     NSURL *dataURL = [NSURL URLWithString:dataString];
     
-    DFImageRequest *request = [[DFImageRequest alloc] initWithResource:dataURL];
+    DFImageRequest *request = [DFImageRequest requestWithResource:dataURL];
     XCTAssertTrue([_fetcher canHandleRequest:request]);
     
     XCTestExpectation *expectation = [self expectationWithDescription:@"fetch_completed"];

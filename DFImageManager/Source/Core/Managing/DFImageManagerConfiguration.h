@@ -72,10 +72,6 @@
  */
 - (nullable instancetype)init NS_UNAVAILABLE;
 
-/*! Returns configuration created with a given image fetcher.
- */
-+ (nonnull instancetype)configurationWithFetcher:(nonnull id<DFImageFetching>)fetcher;
-
 /*! Returns configuration created with a given fetcher, processor and cache.
  */
 + (nonnull instancetype)configurationWithFetcher:(nonnull id<DFImageFetching>)fetcher processor:(nullable id<DFImageProcessing>)processor cache:(nullable id<DFImageCaching>)cache;

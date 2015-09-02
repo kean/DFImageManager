@@ -175,8 +175,8 @@
 @implementation DFImageManagerImageLoader
 
 - (nonnull instancetype)initWithConfiguration:(nonnull DFImageManagerConfiguration *)configuration {
+    NSParameterAssert(configuration);
     if (self = [super init]) {
-        NSParameterAssert(configuration);
         _conf = [configuration copy];
         _executingTasks = [NSMutableDictionary new];
         _loadOperations = [NSMutableDictionary new];

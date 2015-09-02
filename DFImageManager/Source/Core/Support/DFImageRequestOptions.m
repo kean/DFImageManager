@@ -41,10 +41,6 @@
     return self;
 }
 
-- (NSString *)description {
-    return [NSString stringWithFormat:@"<%@ %p> { priority = %i, network = %i, clip = %i, progressive = %i, cache = %i, expires = %0.2f }", [self class], self, (int)_priority, _allowsNetworkAccess, _allowsClipping, _allowsProgressiveImage, _memoryCachePolicy == DFImageRequestCachePolicyDefault ? 1 : 0, _expirationAge];
-}
-
 @end
 
 
@@ -56,8 +52,6 @@ static DFMutableImageRequestOptions *_defaultOptions;
     _defaultOptions = [DFMutableImageRequestOptions new];
     _defaultOptions.priority = DFImageRequestPriorityNormal;
     _defaultOptions.allowsNetworkAccess = YES;
-    _defaultOptions.allowsClipping = NO;
-    _defaultOptions.allowsProgressiveImage = NO;
     _defaultOptions.memoryCachePolicy = DFImageRequestCachePolicyDefault;
     _defaultOptions.expirationAge = 60.0 * 10.0; // 600.0 seconds
 }

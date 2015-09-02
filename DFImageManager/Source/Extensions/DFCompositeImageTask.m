@@ -33,8 +33,8 @@
 DF_INIT_UNAVAILABLE_IMPL
 
 - (nonnull instancetype)initWithImageTasks:(nonnull NSArray *)tasks imageHandler:(nullable DFCompositeImageTaskImageHandler)imageHandler completionHandler:(nullable DFCompositeImageTaskCompletionHandler)completionHandler {
+    NSParameterAssert(tasks.count > 0);
     if (self = [super init]) {
-        NSParameterAssert(tasks.count > 0);
         _imageTasks = [tasks copy];
         _remainingTasks = [NSMutableArray arrayWithArray:tasks];
         _imageHandler = imageHandler;

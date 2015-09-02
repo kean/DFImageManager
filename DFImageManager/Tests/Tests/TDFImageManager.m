@@ -687,7 +687,7 @@
 #pragma mark - Invalidation
 
 - (void)testThatRequestsFinishWithoutAStrongReferenceToManager {
-    DFImageManager *manager = [[DFImageManager alloc] initWithConfiguration:[DFImageManagerConfiguration configurationWithFetcher:[TDFMockImageFetcher new]]];
+    DFImageManager *manager = [[DFImageManager alloc] initWithConfiguration:[DFImageManagerConfiguration configurationWithFetcher:[TDFMockImageFetcher new] processor:nil cache:nil]];
     @autoreleasepool {
         XCTestExpectation *expectation = [self expectationWithDescription:@"first_request"];
         [[manager imageTaskForResource:[TDFMockResource resourceWithID:@"ID01"] completion:^(UIImage *__nullable image, NSError *__nullable error, DFImageResponse *__nullable response, DFImageTask *__nonnull completedTask) {

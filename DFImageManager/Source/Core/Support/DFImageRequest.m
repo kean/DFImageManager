@@ -37,20 +37,12 @@ DF_INIT_UNAVAILABLE_IMPL
     return self;
 }
 
-- (nonnull instancetype)initWithResource:(nonnull id)resource {
-    return [self initWithResource:resource targetSize:DFImageMaximumSize contentMode:DFImageContentModeAspectFill options:nil];
-}
-
 + (nonnull instancetype)requestWithResource:(nonnull id)resource {
-    return [[[self class] alloc] initWithResource:resource];
+    return [[[self class] alloc] initWithResource:resource targetSize:DFImageMaximumSize contentMode:DFImageContentModeAspectFill options:nil];
 }
 
 + (nonnull instancetype)requestWithResource:(nonnull id)resource targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(nullable DFImageRequestOptions *)options {
     return [[[self class] alloc] initWithResource:resource targetSize:targetSize contentMode:contentMode options:options];
-}
-
-- (NSString *)description {
-    return [NSString stringWithFormat:@"<%@ %p> { resource = %@, targetSize = %@, contentMode = %i, options = %@ }", [self class], self, self.resource, NSStringFromCGSize(self.targetSize), (int)self.contentMode, self.options];
 }
 
 @end

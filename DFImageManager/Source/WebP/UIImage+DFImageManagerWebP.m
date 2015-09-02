@@ -49,32 +49,27 @@ static void FreeImageData(void *info, const void *data, size_t size) {
         return nil;
     }
     config.output.colorspace = config.input.has_alpha ? MODE_rgbA : MODE_RGB;
-    config.options.use_threads = 1;
     if (WebPDecode(data.bytes, data.length, &config) != VP8_STATUS_OK) {
         return nil;
     }
+    size_t width = (size_t)(config.options.use_scaling ? config.options.scaled_width : config.input.width);
+    size_t height = (size_t)(config.options.use_scaling ? config.options.scaled_height : config.input.height);
     
-    size_t width = (size_t)config.input.width;
-    size_t height = (size_t)config.input.height;
-    if (config.options.use_scaling) {
-        width = (size_t)config.options.scaled_width;
-        height = (size_t)config.options.scaled_height;
-    }
-    
-    CGDataProviderRef provider =
-    CGDataProviderCreateWithData(NULL, config.output.u.RGBA.rgba, config.output.u.RGBA.size, FreeImageData);
+    CGDataProviderRef providerRef = CGDataProviderCreateWithData(NULL, config.output.u.RGBA.rgba, config.output.u.RGBA.size, FreeImageData);
     CGColorSpaceRef colorSpaceRef = CGColorSpaceCreateDeviceRGB();
     CGBitmapInfo bitmapInfo = config.input.has_alpha ? kCGBitmapByteOrder32Big | kCGImageAlphaPremultipliedLast : 0;
     size_t components = config.input.has_alpha ? 4 : 3;
-    CGColorRenderingIntent renderingIntent = kCGRenderingIntentDefault;
-    CGImageRef imageRef = CGImageCreate(width, height, 8, components * 8, components * width, colorSpaceRef, bitmapInfo, provider, NULL, NO, renderingIntent);
-    
-    CGColorSpaceRelease(colorSpaceRef);
-    CGDataProviderRelease(provider);
-    
+    CGImageRef imageRef = CGImageCreate(width, height, 8, components * 8, components * width, colorSpaceRef, bitmapInfo, providerRef, NULL, NO, kCGRenderingIntentDefault);
+    if (colorSpaceRef) {
+        CGColorSpaceRelease(colorSpaceRef);
+    }
+    if (providerRef) {
+        CGDataProviderRelease(providerRef);
+    }
     UIImage *image = [[UIImage alloc] initWithCGImage:imageRef];
-    CGImageRelease(imageRef);
-    
+    if (imageRef) {
+        CGImageRelease(imageRef);
+    }
     return image;
 }
 

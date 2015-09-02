@@ -277,10 +277,8 @@ DF_INIT_UNAVAILABLE_IMPL
 }
 
 - (void)_imageTaskDidComplete:(_DFImageTask *)task {
-    if (_preheatingTasks.count) {
-        if (task.preheating || !task.error) {
-            [_preheatingTasks removeObjectForKey:[_imageLoader processingKeyForRequest:task.request]];
-        }
+    if (_preheatingTasks.count && (task.preheating || !task.error)) {
+        [_preheatingTasks removeObjectForKey:[_imageLoader processingKeyForRequest:task.request]];
     }
 }
 
