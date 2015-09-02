@@ -36,16 +36,8 @@
  */
 - (void)addImageManager:(nonnull id<DFImageManaging>)imageManager;
 
-/*! Adds image managers to the end of the chain.
- */
-- (void)addImageManagers:(nonnull NSArray /* <DFImageManaging> */ *)imageManagers;
-
 /*! Removes image manager from the chain.
  */
 - (void)removeImageManager:(nonnull id<DFImageManaging>)imageManager;
-
-/*! Removes image managers from the chain.
- */
-- (void)removeImageManagers:(nonnull NSArray /* <DFImageManaging> */ *)imageManagers;
 
 @end

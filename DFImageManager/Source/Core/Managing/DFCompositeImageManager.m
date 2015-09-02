@@ -22,19 +22,16 @@
 
 #import "DFCompositeImageManager.h"
 #import "DFImageRequest.h"
-#import "DFImageTask.h"
 
-#define DFManagerForRequest(request) \
-({ \
-    id<DFImageManaging> outManager_macro; \
-    for (id<DFImageManaging> manager_macro in _managers) { \
-        if ([manager_macro canHandleRequest:request]) { \
-            outManager_macro = manager_macro; \
+#define DFManagerForRequest(request) ({ \
+    id<DFImageManaging> __df_outManager; \
+    for (id<DFImageManaging> __df_manager in _managers) { \
+        if ([__df_manager canHandleRequest:request]) { \
+            __df_outManager = __df_manager; \
             break; \
         } \
     } \
-    outManager_macro; \
-})
+    __df_outManager; })
 
 @implementation DFCompositeImageManager {
     NSMutableArray /* id<DFImageManaging> */ *_managers;
@@ -55,22 +52,14 @@
 }
 
 - (void)addImageManager:(nonnull id<DFImageManaging>)imageManager {
-    [self addImageManagers:@[imageManager]];
-}
-
-- (void)addImageManagers:(nonnull NSArray *)imageManagers {
-    [_managers addObjectsFromArray:imageManagers];
+    [_managers addObject:imageManager];
 }
 
 - (void)removeImageManager:(nonnull id<DFImageManaging>)imageManager {
-    [self removeImageManagers:@[imageManager]];
+    [_managers removeObject:imageManager];
 }
 
-- (void)removeImageManagers:(nonnull NSArray *)imageManagers {
-    [_managers removeObjectsInArray:imageManagers];
-}
-
-#pragma mark - <DFImageManaging>
+#pragma mark <DFImageManaging>
 
 - (BOOL)canHandleRequest:(nonnull DFImageRequest *)request {
     return DFManagerForRequest(request) != nil;
