@@ -80,13 +80,13 @@
 - (void)getImageTasksWithCompletion:(void (^ __nullable)(NSArray * __nonnull, NSArray * __nonnull))completion {
     NSMutableArray *allTasks = [NSMutableArray new];
     NSMutableArray *allPreheatingTasks = [NSMutableArray new];
-    NSInteger __block numberOfCallbacks = 0;
+    NSInteger __block numberOfCallbacks = (NSInteger)_managers.count;
     for (id<DFImageManaging> manager in _managers) {
         [manager getImageTasksWithCompletion:^(NSArray *tasks, NSArray *preheatingTasks) {
             [allTasks addObjectsFromArray:tasks];
             [allPreheatingTasks addObjectsFromArray:preheatingTasks];
-            numberOfCallbacks++;
-            if (numberOfCallbacks == _managers.count) {
+            numberOfCallbacks--;
+            if (numberOfCallbacks == 0) {
                 completion(allTasks, allPreheatingTasks);
             }
         }];
@@ -114,9 +114,6 @@
 }
 
 - (nonnull NSMapTable *)_dispatchTableForRequests:(nonnull NSArray *)inputRequests {
-    if (!inputRequests.count) {
-        return nil;
-    }
     id<DFImageManaging> manager;
     NSMutableArray *requests;
     NSMapTable *table = [NSMapTable strongToStrongObjectsMapTable];
