@@ -44,7 +44,6 @@
     if (self = [super initWithFrame:frame]) {
         self.contentMode = UIViewContentModeScaleAspectFill;
         self.clipsToBounds = YES;
-        
         [self _commonInit];
     }
     return self;
