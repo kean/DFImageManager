@@ -21,7 +21,6 @@
 // THE SOFTWARE.
 
 #import "DFImageProcessing.h"
-#import "DFImageRequestOptions.h"
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
