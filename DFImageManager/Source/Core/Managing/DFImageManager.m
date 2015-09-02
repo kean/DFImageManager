@@ -253,27 +253,27 @@ DF_INIT_UNAVAILABLE_IMPL
         // Manager won't start executing preheating tasks in case you are about to add normal (non-preheating) right after adding preheating ones.
         typeof(self) __weak weakSelf = self;
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.15 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            [weakSelf _executePreheatingTasksIfNeeded];
+            [weakSelf _performBlock:^{
+                [weakSelf _executePreheatingTasksIfNeeded];
+            }];
         });
     }
 }
 
 - (void)_executePreheatingTasksIfNeeded {
-    [self _performBlock:^{
-        _needsToExecutePreheatingTasks = NO;
-        NSUInteger executingTaskCount = _executingImageTasks.count;
-        if (executingTaskCount < _configuration.maximumConcurrentPreheatingRequests) {
-            for (_DFImageTask *task in [_preheatingTasks.allValues sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"tag" ascending:YES]]]) {
-                if (executingTaskCount >= _configuration.maximumConcurrentPreheatingRequests) {
-                    break;
-                }
-                if (task.state == DFImageTaskStateSuspended) {
-                    [self _setImageTaskState:DFImageTaskStateRunning task:task];
-                    executingTaskCount++;
-                }
+    _needsToExecutePreheatingTasks = NO;
+    NSUInteger executingTaskCount = _executingImageTasks.count;
+    if (executingTaskCount < _configuration.maximumConcurrentPreheatingRequests && _preheatingTasks.count) {
+        for (_DFImageTask *task in [_preheatingTasks.allValues sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"tag" ascending:YES]]]) {
+            if (executingTaskCount >= _configuration.maximumConcurrentPreheatingRequests) {
+                break;
+            }
+            if (task.state == DFImageTaskStateSuspended) {
+                [self _setImageTaskState:DFImageTaskStateRunning task:task];
+                executingTaskCount++;
             }
         }
-    }];
+    }
 }
 
 - (void)_imageTaskDidComplete:(_DFImageTask *)task {
