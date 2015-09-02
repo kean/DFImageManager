@@ -63,46 +63,17 @@
     return decompressedImage;
 }
 
-+ (UIImage *)df_croppedImage:(UIImage *)image normalizedCropRect:(CGRect)inputCropRect {
-    CGRect cropRect = inputCropRect;
-    
-    switch (image.imageOrientation) {
-        case UIImageOrientationUp:
-        case UIImageOrientationUpMirrored:
-            // do nothing
-            break;
-        case UIImageOrientationLeft:
-        case UIImageOrientationLeftMirrored:
-            cropRect.origin.y = inputCropRect.origin.x;
-            cropRect.origin.x = 1.f - inputCropRect.origin.y - inputCropRect.size.height;
-            cropRect.size.width = inputCropRect.size.height;
-            cropRect.size.height = inputCropRect.size.width;
-            break;
-        case UIImageOrientationDown:
-        case UIImageOrientationDownMirrored:
-            cropRect.origin.x = 1.f - inputCropRect.origin.x - inputCropRect.size.width;
-            cropRect.origin.y = 1.f - inputCropRect.origin.y - inputCropRect.size.height;
-            break;
-        case UIImageOrientationRight:
-        case UIImageOrientationRightMirrored:
-            cropRect.origin.x = inputCropRect.origin.y;
-            cropRect.origin.y = 1.f - inputCropRect.origin.x - inputCropRect.size.width;
-            cropRect.size.width = inputCropRect.size.height;
-            cropRect.size.height = inputCropRect.size.width;
-            break;
-        default:
-            break;
-    }
-    
-    CGSize imagePixelSize = CGSizeMake(CGImageGetWidth(image.CGImage), CGImageGetHeight(image.CGImage));
-    CGRect imageCropRect = CGRectMake((CGFloat)floor(cropRect.origin.x * imagePixelSize.width),
-                                      (CGFloat)floor(cropRect.origin.y * imagePixelSize.height),
-                                      (CGFloat)floor(cropRect.size.width * imagePixelSize.width),
-                                      (CGFloat)floor(cropRect.size.height * imagePixelSize.height));
-    
-    CGImageRef croppedImageRef = CGImageCreateWithImageInRect(image.CGImage, imageCropRect);
++ (UIImage *)df_croppedImage:(UIImage *)image normalizedCropRect:(CGRect)cropRect {
+    CGSize imageSize = CGSizeMake(CGImageGetWidth(image.CGImage), CGImageGetHeight(image.CGImage));
+    CGRect imageCropRect = CGRectMake((CGFloat)floor(cropRect.origin.x * imageSize.width),
+                                      (CGFloat)floor(cropRect.origin.y * imageSize.height),
+                                      (CGFloat)floor(cropRect.size.width * imageSize.width),
+                                      (CGFloat)floor(cropRect.size.height * imageSize.height));
+    CGImageRef croppedImageRef = CGImageCreateWithImageInRect([image CGImage], imageCropRect);
     UIImage *croppedImage = [UIImage imageWithCGImage:croppedImageRef scale:image.scale orientation:image.imageOrientation];
-    CGImageRelease(croppedImageRef);
+    if (croppedImageRef) {
+        CGImageRelease(croppedImageRef);
+    }
     return croppedImage;
 }
 
