@@ -45,18 +45,6 @@
  */
 @property (nonnull, nonatomic) id<DFImageManaging> imageManager;
 
-/*! Image target size  used for image requests when target size is not present in -setImageWith... method that was called.. Returns current view pixel size when the value is CGSizeZero.
- */
-@property (nonatomic) CGSize imageTargetSize;
-
-/*! Image content mode used for image requests when content mode is not present in -setImageWith... method that was called. Default value is DFImageContentModeAspectFill.
- */
-@property (nonatomic) DFImageContentMode imageContentMode;
-
-/*! Image request options used for image requests when options are no present in -setImageWith... method that was called.
- */
-@property (nullable, nonatomic) DFImageRequestOptions *imageRequestOptions;
-
 /*! Automatically changes current request priority when image view gets added/removed from the window. Default value is NO.
  */
 @property (nonatomic) BOOL managesRequestPriorities;

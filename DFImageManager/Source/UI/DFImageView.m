@@ -60,13 +60,10 @@
 - (void)_commonInit {
     self.imageManager = [DFImageManager sharedManager];
     
-    _imageTargetSize = CGSizeZero;
-    _imageContentMode = DFImageContentModeAspectFill;
     _allowsAnimations = YES;
 #if DF_IMAGE_MANAGER_GIF_AVAILABLE
     _allowsGIFPlayback = YES;
 #endif
-    _imageRequestOptions = [DFImageRequestOptions new];
 }
 
 - (void)displayImage:(nullable UIImage *)image {
@@ -98,15 +95,8 @@
     _imageTask = nil;
 }
 
-- (CGSize)imageTargetSize {
-    if (CGSizeEqualToSize(CGSizeZero, _imageTargetSize)) {
-        return [DFImageRequest targetSizeForView:self];
-    }
-    return _imageTargetSize;
-}
-
 - (void)setImageWithResource:(nullable id)resource {
-    [self setImageWithResource:resource targetSize:self.imageTargetSize contentMode:self.imageContentMode options:self.imageRequestOptions];
+    [self setImageWithResource:resource targetSize:[DFImageRequest targetSizeForView:self] contentMode:DFImageContentModeAspectFill options:nil];
 }
 
 - (void)setImageWithResource:(nullable id)resource targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(nullable DFImageRequestOptions *)options {
