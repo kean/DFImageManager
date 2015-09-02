@@ -28,7 +28,7 @@
     CGSize bitmapSize = CGSizeMake(CGImageGetWidth(image.CGImage), CGImageGetHeight(image.CGImage));
     CGFloat scaleWidth = targetSize.width / bitmapSize.width;
     CGFloat scaleHeight = targetSize.height / bitmapSize.height;
-    return contentMode == DFImageContentModeAspectFill ? MAX(scaleWidth, scaleHeight) : MIN(scaleWidth, scaleHeight);
+    return (contentMode == DFImageContentModeAspectFill) ? MAX(scaleWidth, scaleHeight) : MIN(scaleWidth, scaleHeight);
 }
 
 + (UIImage *)df_decompressedImage:(UIImage *)image scale:(CGFloat)scale {
@@ -44,37 +44,22 @@
         imageSize = CGSizeMake(imageSize.width * scale, imageSize.height * scale);
     }
     
-    CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
-    CGBitmapInfo bitmapInfo = CGImageGetBitmapInfo(imageRef);
-    
-    CGImageAlphaInfo infoMask = (bitmapInfo & kCGBitmapAlphaInfoMask);
-    BOOL anyNonAlpha = (infoMask == kCGImageAlphaNone ||
-                        infoMask == kCGImageAlphaNoneSkipFirst ||
-                        infoMask == kCGImageAlphaNoneSkipLast);
-    
-    // CGBitmapContextCreate doesn't support kCGImageAlphaNone with RGB.
-    if (infoMask == kCGImageAlphaNone && CGColorSpaceGetNumberOfComponents(colorSpace) > 1) {
-        bitmapInfo &= ~kCGBitmapAlphaInfoMask; // Unset old alpha info
-        bitmapInfo |= kCGImageAlphaNoneSkipFirst;
+    CGColorSpaceRef colorSpaceRef = CGColorSpaceCreateDeviceRGB();
+    CGContextRef contextRef = CGBitmapContextCreate(NULL, (size_t)imageSize.width, (size_t)imageSize.height, CGImageGetBitsPerComponent(imageRef), 0, colorSpaceRef, (kCGBitmapByteOrderDefault | kCGImageAlphaPremultipliedFirst));
+    if (colorSpaceRef) {
+        CGColorSpaceRelease(colorSpaceRef);
     }
-    // Some PNGs tell us they have alpha but only 3 components. Odd.
-    else if (!anyNonAlpha && CGColorSpaceGetNumberOfComponents(colorSpace) == 3) {
-        bitmapInfo &= ~kCGBitmapAlphaInfoMask; // Unset old alpha info
-        bitmapInfo |= kCGImageAlphaPremultipliedFirst;
-    }
-    
-    CGContextRef context = CGBitmapContextCreate(NULL, (size_t)imageSize.width, (size_t)imageSize.height, CGImageGetBitsPerComponent(imageRef), 0, colorSpace, bitmapInfo);
-    CGColorSpaceRelease(colorSpace);
-    if (!context) {
+    if (!contextRef) {
         return image;
     }
     
-    CGContextDrawImage(context, (CGRect){CGPointZero, imageSize}, imageRef);
-    CGImageRef decompressedImageRef = CGBitmapContextCreateImage(context);
-    CGContextRelease(context);
-    
+    CGContextDrawImage(contextRef, (CGRect){CGPointZero, imageSize}, imageRef);
+    CGImageRef decompressedImageRef = CGBitmapContextCreateImage(contextRef);
+    CGContextRelease(contextRef);
     UIImage *decompressedImage = [UIImage imageWithCGImage:decompressedImageRef scale:image.scale orientation:image.imageOrientation];
-    CGImageRelease(decompressedImageRef);
+    if (decompressedImageRef) {
+        CGImageRelease(decompressedImageRef);
+    }
     return decompressedImage;
 }
 
