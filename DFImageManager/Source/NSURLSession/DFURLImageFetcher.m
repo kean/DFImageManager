@@ -301,9 +301,6 @@ DF_INIT_UNAVAILABLE_IMPL
         }
         [_sessionTaskHandlers removeObjectForKey:task];
     }
-    if (error && [self.delegate respondsToSelector:@selector(URLImageFetcher:didEncounterError:)]) {
-        [self.delegate URLImageFetcher:self didEncounterError:error];
-    }
 }
 
 #pragma mark <DFURLImageFetcherSessionDelegate>
