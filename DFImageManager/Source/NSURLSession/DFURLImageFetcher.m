@@ -281,6 +281,10 @@ DF_INIT_UNAVAILABLE_IMPL
     [_session.configuration.URLCache removeAllCachedResponses];
 }
 
+- (void)invalidate {
+    [_session invalidateAndCancel];
+}
+
 #pragma mark <NSURLSessionDataTaskDelegate>
 
 - (void)URLSession:(NSURLSession *)session dataTask:(NSURLSessionDataTask *)dataTask didReceiveData:(NSData *)data {

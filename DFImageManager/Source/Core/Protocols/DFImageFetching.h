@@ -69,4 +69,8 @@ typedef void (^DFImageFetchingCompletionHandler)(NSData *__nullable data, NSDict
  */
 - (void)removeAllCachedImages;
 
+/*! Invalidates the reciever.
+ */
+- (void)invalidate;
+
 @end

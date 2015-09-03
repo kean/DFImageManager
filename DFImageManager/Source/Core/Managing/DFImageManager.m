@@ -198,6 +198,9 @@ DF_INIT_UNAVAILABLE_IMPL
         for (_DFImageTask *task in _executingImageTasks.allObjects) {
             [self _setImageTaskState:DFImageTaskStateCancelled task:task];
         }
+        if ([_configuration.fetcher respondsToSelector:@selector(invalidate)]) {
+            [_configuration.fetcher invalidate];
+        }
     }];
 }
 

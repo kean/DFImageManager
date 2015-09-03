@@ -165,6 +165,10 @@ DF_INIT_UNAVAILABLE_IMPL
     [_sessionManager.session.configuration.URLCache removeAllCachedResponses];
 }
 
+- (void)invalidate {
+    [_sessionManager invalidateSessionCancelingTasks:YES];
+}
+
 #pragma mark Support
 
 - (NSURLRequest *)_URLRequestForImageRequest:(DFImageRequest *)imageRequest {

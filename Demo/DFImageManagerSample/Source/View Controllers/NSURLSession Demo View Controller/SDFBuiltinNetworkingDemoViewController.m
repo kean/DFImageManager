@@ -30,6 +30,7 @@ static NSString * const reuseIdentifier = @"Cell";
 }
 
 - (void)dealloc {
+    [[DFImageManager sharedManager] invalidateAndCancel];
     [DFImageManager setSharedManager:_previousSharedManager];
 }
 
