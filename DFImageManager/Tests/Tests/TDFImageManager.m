@@ -701,8 +701,14 @@
 
 - (void)testThatInvalidateAndCancelMethodCancelsOutstandingRequests {
     _fetcher.queue.suspended = YES;
+    // More than 1 image task!
     [[_manager imageTaskForResource:[TDFMockResource resourceWithID:@"ID01"] completion:nil] resume];
-    [self expectationForNotification:TDFMockFetchOperationWillCancelNotification object:nil handler:nil];
+    [[_manager imageTaskForResource:[TDFMockResource resourceWithID:@"ID02"] completion:nil] resume];
+    NSInteger __block callbackCount = 0;
+    [self expectationForNotification:TDFMockFetchOperationWillCancelNotification object:nil handler:^BOOL(NSNotification *notification) {
+        callbackCount++;
+        return callbackCount == 2;
+    }];;
     [_manager invalidateAndCancel];
     [self waitForExpectationsWithTimeout:1.0 handler:nil];
 }

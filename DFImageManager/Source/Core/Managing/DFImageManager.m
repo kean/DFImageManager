@@ -195,7 +195,7 @@ DF_INIT_UNAVAILABLE_IMPL
         _invalidated = YES;
         [_preheatingTasks removeAllObjects];
         _imageLoader.delegate = nil;
-        for (_DFImageTask *task in _executingImageTasks) {
+        for (_DFImageTask *task in _executingImageTasks.allObjects) {
             [self _setImageTaskState:DFImageTaskStateCancelled task:task];
         }
     }];
