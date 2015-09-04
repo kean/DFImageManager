@@ -9,6 +9,10 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
+static inline BOOL
+TDFSystemVersionGreaterThanOrEqualTo(NSString *version) {
+    return [[[UIDevice currentDevice] systemVersion] compare:version options:NSNumericSearch] != NSOrderedAscending;
+}
 
 @interface TDFTesting : NSObject
 

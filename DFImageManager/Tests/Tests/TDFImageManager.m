@@ -19,7 +19,7 @@
 
 @end
 
-@implementation TDFImageManager {    
+@implementation TDFImageManager {
     TDFMockImageFetcher *_fetcher;
     TDFMockImageProcessor *_processor;
     TDFMockImageCache *_cache;
@@ -298,9 +298,13 @@
     
     double __block fractionCompleted = 0;
     [self keyValueObservingExpectationForObject:progress keyPath:@"fractionCompleted" handler:^BOOL(NSProgress *observedObject, NSDictionary *change) {
-        // TODO: Fix this test, it fails on iOS 7
-        fractionCompleted += 0.5;
-        XCTAssertEqual(fractionCompleted, observedObject.fractionCompleted);
+        if (TDFSystemVersionGreaterThanOrEqualTo(@"8.0")) {
+            fractionCompleted += 0.5;
+            XCTAssertEqual(fractionCompleted, observedObject.fractionCompleted);
+        } else {
+            XCTAssertEqual(fractionCompleted, observedObject.fractionCompleted);
+            fractionCompleted += 0.5;
+        }
         return observedObject.fractionCompleted == 1;
     }];
     
