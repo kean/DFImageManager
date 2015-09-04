@@ -29,24 +29,6 @@
 
 @class DFImageRequest;
 @class DFImageRequestOptions;
-@class DFImageView;
-
-/*! A class conforming to the DFImageViewDelegate protocol provides method for displaying fetched images and reacting to failures.
- */
-@protocol DFImageViewDelegate <NSObject>
-
-/*! Method gets called when the completion block is called for the current image fetch task.
- */
-- (void)imageView:(nonnull DFImageView *)imageView didCompleteImageTask:(nonnull DFImageTask *)imageTask withImage:(nullable UIImage *)image;
-
-@optional
-/*! Method gets called right after the image view starts image request.
- @note This method call is always paired with a -imageView:didCompleteImageTask:withImage: call.
- */
-- (void)imageView:(nonnull DFImageView *)imageView willStartImageTaskForRequest:(nonnull DFImageRequest *)request;
-
-@end
-
 
 #if DF_IMAGE_MANAGER_GIF_AVAILABLE
 /*! An image view extends UIImageView class with image fetching functionality. It also adds other features like managing request priorities, retrying failed requests and more.
@@ -62,22 +44,6 @@
 /*! Image manager used by the image view. Set to the shared manager during initialization.
  */
 @property (nonnull, nonatomic) id<DFImageManaging> imageManager;
-
-/*! Image view delegate. By default delegate is set to the image view itself. The implementation displays fetched images with animation when necessary.
- */
-@property (nullable, nonatomic, weak) id<DFImageViewDelegate> delegate;
-
-/*! Image target size  used for image requests when target size is not present in -setImageWith... method that was called.. Returns current view pixel size when the value is CGSizeZero.
- */
-@property (nonatomic) CGSize imageTargetSize;
-
-/*! Image content mode used for image requests when content mode is not present in -setImageWith... method that was called. Default value is DFImageContentModeAspectFill.
- */
-@property (nonatomic) DFImageContentMode imageContentMode;
-
-/*! Image request options used for image requests when options are no present in -setImageWith... method that was called.
- */
-@property (nullable, nonatomic) DFImageRequestOptions *imageRequestOptions;
 
 /*! Automatically changes current request priority when image view gets added/removed from the window. Default value is NO.
  */
@@ -102,8 +68,6 @@
 /*! Performs any clean up necessary to prepare the view for use again. Removes currently displayed image and cancels all requests registered with a receiver.
  */
 - (void)prepareForReuse;
-
-#pragma mark - Fetching
 
 /*! Returns current image task.
  */

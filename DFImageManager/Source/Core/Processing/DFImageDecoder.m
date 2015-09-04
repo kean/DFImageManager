@@ -22,7 +22,6 @@
 
 #import "DFImageDecoder.h"
 #import "DFImageManagerDefines.h"
-#import "UIImage+DFImageUtilities.h"
 #import <libkern/OSAtomic.h>
 
 #if DF_IMAGE_MANAGER_GIF_AVAILABLE
@@ -35,13 +34,6 @@
 
 @implementation DFImageDecoder
 
-- (instancetype)init {
-    if (self = [super init]) {
-        _shouldDecompressImages = YES;
-    }
-    return self;
-}
-
 #pragma mark <DFImageDecoding>
 
 - (nullable UIImage *)imageWithData:(nonnull NSData *)data partial:(BOOL)partial {
@@ -50,7 +42,7 @@
     }
 #if DF_IMAGE_MANAGER_GIF_AVAILABLE
     if ([DFAnimatedImage isAnimatedGIFData:data]) {
-        UIImage *image = [[DFAnimatedImage alloc] initWithAnimatedGIFData:data];
+        UIImage *image = [DFAnimatedImage animatedImageWithGIFData:data];
         if (image) {
             return image;
         }
@@ -66,11 +58,7 @@
     }
 #endif
     
-    UIImage *image = [UIImage imageWithData:data scale:[UIScreen mainScreen].scale];
-    if (self.shouldDecompressImages) {
-        image = [UIImage df_decompressedImage:image];
-    }
-    return image;
+    return [UIImage imageWithData:data scale:[UIScreen mainScreen].scale];
 }
 
 #pragma mark Dependency Injector

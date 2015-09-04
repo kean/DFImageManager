@@ -72,10 +72,6 @@ typedef void (^DFCompositeImageTaskCompletionHandler)(DFCompositeImageTask *__no
  */
 @property (nonnull, nonatomic, copy, readonly) NSArray /* DFImageTask */ *imageTasks;
 
-/*! Returns all image requests from the image tasks that the receiver was initialized with.
- */
-@property (nonnull, nonatomic, copy, readonly) NSArray /* DFImageRequest */ *imageRequests;
-
 /*! Returns YES if all the requests have completed.
  */
 @property (nonatomic, readonly) BOOL isFinished;

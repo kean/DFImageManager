@@ -175,8 +175,8 @@
 @implementation DFImageManagerImageLoader
 
 - (nonnull instancetype)initWithConfiguration:(nonnull DFImageManagerConfiguration *)configuration {
+    NSParameterAssert(configuration);
     if (self = [super init]) {
-        NSParameterAssert(configuration);
         _conf = [configuration copy];
         _executingTasks = [NSMutableDictionary new];
         _loadOperations = [NSMutableDictionary new];
@@ -292,7 +292,7 @@
             [self _loadTask:task processImage:image info:info error:error];
         }
         [operation.tasks removeAllObjects];
-        [_loadOperations removeObjectForKey:operation.key];
+        [self _removeImageLoadOperation:operation];
     });
 }
 
@@ -331,7 +331,7 @@
             [operation.tasks removeObject:loaderTask];
             if (operation.tasks.count == 0) {
                 [operation.operation cancel];
-                [_loadOperations removeObjectForKey:operation.key];
+                [self _removeImageLoadOperation:operation];
             } else {
                 [operation updateOperationPriority];
             }
@@ -346,6 +346,12 @@
         _DFImageLoaderTask *loaderTask = _executingTasks[imageTask];
         [loaderTask.loadOperation updateOperationPriority];
     });
+}
+
+- (void)_removeImageLoadOperation:(nonnull _DFImageLoadOperation *)operation {
+    if (_loadOperations[operation.key] == operation) {
+        [_loadOperations removeObjectForKey:operation.key];
+    }
 }
 
 #pragma mark Processing

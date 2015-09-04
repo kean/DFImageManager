@@ -20,6 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+#import "DFImageRequest+UIKitAdditions.h"
 #import "DFCollectionViewPreheatingController.h"
 #import "DFImageView.h"
 #import "UIImageView+DFImageManager.h"

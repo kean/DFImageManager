@@ -78,18 +78,20 @@ DF_INIT_UNAVAILABLE_IMPL
     if (self = [super init]) {
         _sessionManager = sessionManager;
         _dataTaskDelegates = [NSMutableDictionary new];
+        _supportedSchemes = [NSSet setWithObjects:@"http", @"https", @"ftp", @"file", @"data", nil];
         typeof(self) __weak weakSelf = self;
         [sessionManager setDataTaskDidReceiveDataBlock:^(NSURLSession *session, NSURLSessionDataTask *dataTask, NSData *data) {
             DFAFImageFetcher *strongSelf = weakSelf;
-            _DFDataTaskDelegate *delegate;
-            @synchronized(strongSelf) {
-                delegate = strongSelf->_dataTaskDelegates[dataTask];
-            }
-            if (delegate.dataTaskDidReceiveDataBlock) {
-                delegate.dataTaskDidReceiveDataBlock(session, dataTask, data);
+            if (strongSelf) {
+                _DFDataTaskDelegate *delegate;
+                @synchronized(strongSelf) {
+                    delegate = strongSelf->_dataTaskDelegates[dataTask];
+                }
+                if (delegate.dataTaskDidReceiveDataBlock) {
+                    delegate.dataTaskDidReceiveDataBlock(session, dataTask, data);
+                }
             }
         }];
-        _supportedSchemes = [NSSet setWithObjects:@"http", @"https", @"ftp", @"file", @"data", nil];
     }
     return self;
 }
@@ -125,11 +127,13 @@ DF_INIT_UNAVAILABLE_IMPL
     typeof(self) __weak weakSelf = self;
     NSURLSessionDataTask *__block task = [self.sessionManager dataTaskWithRequest:URLRequest completionHandler:^(NSURLResponse *URLResponse, NSData *result, NSError *error) {
         DFAFImageFetcher *strongSelf = weakSelf;
-        @synchronized(strongSelf) {
-            [strongSelf->_dataTaskDelegates removeObjectForKey:task];
-        }
-        if (completion) {
-            completion(result, nil, error);
+        if (strongSelf) {
+            @synchronized(strongSelf) {
+                [strongSelf->_dataTaskDelegates removeObjectForKey:task];
+            }
+            if (completion) {
+                completion(result, nil, error);
+            }
         }
     }];
     [task resume];
@@ -159,6 +163,10 @@ DF_INIT_UNAVAILABLE_IMPL
 
 - (void)removeAllCachedImages {
     [_sessionManager.session.configuration.URLCache removeAllCachedResponses];
+}
+
+- (void)invalidate {
+    [_sessionManager invalidateSessionCancelingTasks:YES];
 }
 
 #pragma mark Support

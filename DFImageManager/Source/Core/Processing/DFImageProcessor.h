@@ -21,7 +21,6 @@
 // THE SOFTWARE.
 
 #import "DFImageProcessing.h"
-#import "DFImageRequestOptions.h"
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
@@ -32,5 +31,9 @@ extern NSString *__nonnull DFImageProcessingCornerRadiusKey;
 /*! The DFImageProcessor implements image decompression, scaling, cropping and more.
  */
 @interface DFImageProcessor : NSObject <DFImageProcessing>
+
+/*! If YES decoder would force image decompression, otherwise UIImage might delay decompression until the image is displayed. Default value is YES.
+ */
+@property (nonatomic) BOOL shouldDecompressImages;
 
 @end

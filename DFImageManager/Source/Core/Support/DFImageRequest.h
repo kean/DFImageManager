@@ -55,10 +55,6 @@
 
 /*! Returns a DFImageRequest initialized with a given resource. Uses DFImageMaximumSize and DFImageContentModeAspectFill as other parameters.
  */
-- (nonnull instancetype)initWithResource:(nonnull id)resource;
-
-/*! Returns a DFImageRequest initialized with a given resource. Uses DFImageMaximumSize and DFImageContentModeAspectFill as other parameters.
- */
 + (nonnull instancetype)requestWithResource:(nonnull id)resource;
 
 /*! Returns a DFImageRequest initialized with a given parameters.
@@ -68,14 +64,5 @@
 /*! Unavailable initializer, please use designated initializer.
  */
 - (nullable instancetype)init NS_UNAVAILABLE;
-
-@end
-
-
-@interface DFImageRequest (UIKitAdditions)
-
-/*! Returns image target size (in pixels) for a given view.
- */
-+ (CGSize)targetSizeForView:(nonnull UIView *)view;
 
 @end

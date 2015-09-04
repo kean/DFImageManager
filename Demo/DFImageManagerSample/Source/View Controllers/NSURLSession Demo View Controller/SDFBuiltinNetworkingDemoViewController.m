@@ -30,6 +30,7 @@ static NSString * const reuseIdentifier = @"Cell";
 }
 
 - (void)dealloc {
+    [[DFImageManager sharedManager] invalidateAndCancel];
     [DFImageManager setSharedManager:_previousSharedManager];
 }
 
@@ -48,7 +49,7 @@ static NSString * const reuseIdentifier = @"Cell";
     
     DFURLImageFetcher *fetcher = [[DFURLImageFetcher alloc] initWithSessionConfiguration:configuration];
     id<DFImageManaging> manager = [[DFImageManager alloc] initWithConfiguration:[DFImageManagerConfiguration configurationWithFetcher:fetcher processor:[DFImageProcessor new] cache:[DFImageCache new]]];
-    [DFImageManager addSharedManager:manager];
+    [DFImageManager setSharedManager:manager];
 }
 
 - (void)viewDidLoad {

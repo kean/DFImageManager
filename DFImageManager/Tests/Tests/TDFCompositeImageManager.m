@@ -144,8 +144,8 @@
     
     DFCompositeImageManager *composite = [[DFCompositeImageManager alloc] initWithImageManagers:@[ manager1, manager2 ]];
     
-    DFImageRequest *request1 = [[DFImageRequest alloc] initWithResource:resource1];
-    DFImageRequest *request2 = [[DFImageRequest alloc] initWithResource:resource2];
+    DFImageRequest *request1 = [DFImageRequest requestWithResource:resource1];
+    DFImageRequest *request2 = [DFImageRequest requestWithResource:resource2];
     
     XCTAssertTrue([composite canHandleRequest:request1]);
     XCTAssertTrue([composite canHandleRequest:request2]);
@@ -171,8 +171,8 @@
     
     DFCompositeImageManager *composite = [[DFCompositeImageManager alloc] initWithImageManagers:@[ manager1, [[DFCompositeImageManager alloc] initWithImageManagers:@[ manager2 ]] ]];
     
-    DFImageRequest *request1 = [[DFImageRequest alloc] initWithResource:resource1];
-    DFImageRequest *request2 = [[DFImageRequest alloc] initWithResource:resource2];
+    DFImageRequest *request1 = [DFImageRequest requestWithResource:resource1];
+    DFImageRequest *request2 = [DFImageRequest requestWithResource:resource2];
     
     XCTAssertTrue([composite canHandleRequest:request1]);
     XCTAssertTrue([composite canHandleRequest:request2]);
@@ -205,8 +205,8 @@
     
     DFCompositeImageManager *composite = [[DFCompositeImageManager alloc] initWithImageManagers:@[ manager1, manager2 ]];
     
-    DFImageRequest *request1 = [[DFImageRequest alloc] initWithResource:resource1];
-    DFImageRequest *request2 = [[DFImageRequest alloc] initWithResource:resource2];
+    DFImageRequest *request1 = [DFImageRequest requestWithResource:resource1];
+    DFImageRequest *request2 = [DFImageRequest requestWithResource:resource2];
     
     DFImageTask *task1 = [composite imageTaskForRequest:request1 completion:nil];
     DFImageTask *task2 = [composite imageTaskForRequest:request2 completion:nil];

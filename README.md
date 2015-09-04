@@ -9,7 +9,7 @@
 
 Advanced iOS framework for loading, caching, processing, displaying and preheating images. It uses latest advancements in iOS SDK and doesn't reinvent existing technologies. It provides a powerful API that will extend the capabilities of your app.
 
-DFImageManager is not just a loader, it's a pipeline for executing image requests using pluggable components. It also features [multiple subspecs](#install_using_cocopods) that automatically integrate things like [FLAnimatedImage](https://github.com/Flipboard/FLAnimatedImage), [AFNetworking](https://github.com/AFNetworking/AFNetworking), [libwebp](https://developers.google.com/speed/webp/docs/api) and more.
+DFImageManager is not just a loader, it's [a pipeline](#h_design) that loads images using pluggable components. It features [multiple subspecs](#install_using_cocopods) that integrate things like [FLAnimatedImage](https://github.com/Flipboard/FLAnimatedImage), [AFNetworking](https://github.com/AFNetworking/AFNetworking), [libwebp](https://developers.google.com/speed/webp/docs/api) and more. And it all comes in a strikingly small package with less code than alternative libraries.
 
 1. [Getting Started](#h_getting_started)
 2. [Usage](#h_usage)
@@ -24,25 +24,26 @@ DFImageManager is not just a loader, it's a pipeline for executing image request
 - Zero config, yet immense customization and flexibility
 - Works great with both Objective-C and Swift
 - Great performance even on outdated devices, asynchronous and thread safe
-- Modular design
 - Unit tested
 
 ##### Loading
-- Uses latest advancements in [Foundation URL Loading System](https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/URLLoadingSystem/URLLoadingSystem.html) including [NSURLSession](https://developer.apple.com/library/ios/documentation/Foundation/Reference/NSURLSession_class/) that supports [HTTP/2](https://en.wikipedia.org/wiki/HTTP/2)
-- Has basic built-in networking implementation, and optional [AFNetworking integration](#install_using_cocopods) (which should be your primary choice). Combine the power of both frameworks! 
-- Groups similar requests and never executes them twice
+- Uses [NSURLSession](https://developer.apple.com/library/ios/documentation/Foundation/Reference/NSURLSession_class/) with [HTTP/2](https://en.wikipedia.org/wiki/HTTP/2) support
+- Has optional [AFNetworking integration](#install_using_cocopods) (which should be your primary choice). Combine the power of both frameworks!
+- Uses a single fetch operation for multiple equivalent requests
 - [Intelligent preheating](https://github.com/kean/DFImageManager/wiki/Image-Preheating-Guide) of images close to the viewport
 - Progress tracking using `NSProgress`
 
 ##### Caching
-- Instead of reinventing a caching methodology it relies on HTTP cache as defined in [HTTP specification](https://tools.ietf.org/html/rfc7234) and caching implementation provided by [Foundation URL Loading System](https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/URLLoadingSystem/URLLoadingSystem.html). The caching and revalidation are completely transparent to the client
+- Instead of reinventing a caching methodology it relies on HTTP cache as defined in [HTTP specification](https://tools.ietf.org/html/rfc7234) and caching implementation provided by [Foundation](https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/URLLoadingSystem/URLLoadingSystem.html)
+- Caching is completely transparent to the client
 - Two cache layers, including [top level memory cache](https://github.com/kean/DFImageManager/wiki/Image-Caching-Guide) for decompressed images
 
 ##### Decoding and Processing
 - Animated GIF support using best-in-class [FLAnimatedImage](https://github.com/Flipboard/FLAnimatedImage) library
 - [WebP](https://developers.google.com/speed/webp/) support
 - Progressive image decoding (progressive JPEG and more)
-- Background image decompression
+- Background image decompression and scaling in a single step
+- Scales large images (~6000x4000 px) and prepares them for display with ease
 - Resize and crop loaded images to [fit displayed size](https://developer.apple.com/library/ios/qa/qa1708/_index.html), add rounded corners or circle
 
 ##### Displaying
@@ -119,8 +120,6 @@ options.allowsProgressiveImage = YES;
 DFImageRequest *request = // Create request with given options
 
 DFImageTask *imageTask = .../ Create image task
-
-// Set progressive image handler
 imageTask.progressiveImageHandler = ^(UIImage *__nonnull image){
   imageView.image = image;
 };
@@ -204,9 +203,7 @@ DFImageManager *imageManager = [[DFImageManager alloc] initWithConfiguration:con
 ```
 
 #### Composing Image Managers
-The `DFCompositeImageManager` allows clients to construct a tree of responsibility from multiple image managers, where image requests are dynamically dispatched between them. Each manager should conform to `DFImageManaging` protocol. The `DFCompositeImageManager` also conforms to `DFImageManaging` protocol, which lets clients treat individual objects and compositions uniformly. The default `[DFImageManager sharedManager]` is a composite that contains all built in managers: the ones that support `NSURL` fetching, `PHAsset` objects, etc. 
-
-It's easy for clients to add additional managers to the shared manager. You can either add support for new image requests, or intercept existing ones. For more info see [Composing Image Managers](https://github.com/kean/DFImageManager/wiki/Extending-Image-Manager-Guide#using-dfcompositeimagemanager).
+The `DFCompositeImageManager` allows clients to construct a tree of responsibility from multiple image managers, where image requests are dynamically dispatched between them. Each manager should conform to `DFImageManaging` protocol. The `DFCompositeImageManager` also conforms to `DFImageManaging` protocol, which lets clients treat individual objects and compositions uniformly. The default `[DFImageManager sharedManager]` is a composite that contains all built in managers: the ones that support `NSURL` fetching, `PHAsset` objects, etc.  It's easy for clients to add additional managers to the shared manager. For more info see [Composing Image Managers](https://github.com/kean/DFImageManager/wiki/Extending-Image-Manager-Guide#using-dfcompositeimagemanager).
 
 ```objective-c
 id<DFImageManaging> manager = ...; // Create image manager
@@ -237,7 +234,7 @@ id<DFImageManaging> compositeImageManager = [[DFCompositeImageManager alloc] ini
 
 ## <a name="install_using_cocopods"></a>Installation with [CocoaPods](http://cocoapods.org)
 
-CocoaPods is the dependency manager for Cocoa projects which automates integration of third-party frameworks. If you are not familiar with CocoaPods the best place to start would be [official CocoaPods guides](http://guides.cocoapods.org). To install DFImageManager add a dependency in your Podfile:
+CocoaPods is the dependency manager for Cocoa projects. If you are not familiar with CocoaPods the best place to start would be [official CocoaPods guides](http://guides.cocoapods.org). To install DFImageManager add a dependency in your Podfile:
 ```ruby
 # Podfile
 platform :ios, '7.0'
@@ -249,6 +246,7 @@ By default it will install subspecs:
 - `DFImageManager/UI` - UI components
 - `DFImageManager/NSURLSession` - basic networking on top of NSURLSession
 - `DFImageManager/PhotosKit` - Photos Framework support
+- `DFImageManager/Extensions` - extensions that include composite tasks and more
 
 There are three more optional subspecs:
 - `DFImageManager/AFNetworking` - replaces networking stack with [AFNetworking](https://github.com/AFNetworking/AFNetworking)

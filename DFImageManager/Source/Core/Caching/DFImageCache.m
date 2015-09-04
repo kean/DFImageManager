@@ -22,6 +22,7 @@
 
 #import "DFCachedImageResponse.h"
 #import "DFImageCache.h"
+#import "DFImageManagerDefines.h"
 #import "NSCache+DFImageManager.h"
 
 #if DF_IMAGE_MANAGER_GIF_AVAILABLE
@@ -37,7 +38,7 @@
 - (nonnull instancetype)initWithCache:(nonnull NSCache *)cache {
     if (self = [super init]) {
         _cache = cache;
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_didReceiveMemoryWarning:) name:UIApplicationDidReceiveMemoryWarningNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeAllObjects) name:UIApplicationDidReceiveMemoryWarningNotification object:nil];
     }
     return self;
 }
@@ -49,10 +50,10 @@
 #pragma mark - <DFImageCaching>
 
 - (nullable DFCachedImageResponse *)cachedImageResponseForKey:(nullable id<NSCopying>)key {
-    DFCachedImageResponse *cachedImage = [_cache objectForKey:key];
-    if (cachedImage) {
-        if (cachedImage.expirationDate > CACurrentMediaTime()) {
-            return cachedImage;
+    DFCachedImageResponse *response = [_cache objectForKey:key];
+    if (response) {
+        if (response.expirationDate > CACurrentMediaTime()) {
+            return response;
         } else {
             [_cache removeObjectForKey:key];
         }
@@ -60,10 +61,9 @@
     return nil;
 }
 
-- (void)storeImageResponse:(nullable DFCachedImageResponse *)cachedResponse forKey:(nullable id<NSCopying>)key {
-    if (cachedResponse && key) {
-        NSUInteger cost = [self costForImageResponse:cachedResponse];
-        [_cache setObject:cachedResponse forKey:key cost:cost];
+- (void)storeImageResponse:(nullable DFCachedImageResponse *)response forKey:(nullable id<NSCopying>)key {
+    if (response && key) {
+        [_cache setObject:response forKey:key cost:[self costForImageResponse:response]];
     }
 }
 
@@ -71,24 +71,16 @@
     [_cache removeAllObjects];
 }
 
-#pragma mark -
-
 - (NSUInteger)costForImageResponse:(nonnull DFCachedImageResponse *)cachedResponse {
     UIImage *image = cachedResponse.image;
     CGImageRef imageRef = image.CGImage;
-    NSUInteger bitsPerPixel = CGImageGetBitsPerPixel(imageRef);
-    NSUInteger cost = (CGImageGetWidth(imageRef) * CGImageGetHeight(imageRef) * bitsPerPixel) / 8; // Return number of bytes in image bitmap.
+    NSUInteger cost = (CGImageGetWidth(imageRef) * CGImageGetHeight(imageRef) * CGImageGetBitsPerPixel(imageRef)) / 8;
 #if DF_IMAGE_MANAGER_GIF_AVAILABLE
     if ([image isKindOfClass:[DFAnimatedImage class]]) {
-        DFAnimatedImage *animatedImage = (id)image;
-        cost += animatedImage.animatedImage.data.length;
+        cost += ((DFAnimatedImage *)image).animatedImage.data.length;
     }
 #endif
     return cost;
-}
-
-- (void)_didReceiveMemoryWarning:(NSNotification *__unused)notification {
-    [self.cache removeAllObjects];
 }
 
 @end

@@ -33,6 +33,13 @@ NSString *DFImageProcessingCornerRadiusKey = @"DFImageProcessingCornerRadiusKey"
 
 @implementation DFImageProcessor
 
+- (instancetype)init {
+    if (self = [super init]) {
+        _shouldDecompressImages = YES;
+    }
+    return self;
+}
+
 #pragma mark <DFImageProcessing>
 
 - (BOOL)isProcessingForRequestEquivalent:(nonnull DFImageRequest *)request1 toRequest:(nonnull DFImageRequest *)request2 {
@@ -55,15 +62,7 @@ NSString *DFImageProcessingCornerRadiusKey = @"DFImageProcessingCornerRadiusKey"
         return NO;
     }
 #endif
-    if (request.contentMode == DFImageContentModeAspectFill && request.options.allowsClipping) {
-        return YES;
-    }
-    CGFloat scale = [UIImage df_scaleForImage:image targetSize:request.targetSize contentMode:request.contentMode];
-    if (scale < 1.f) {
-        return YES;
-    }
-    NSNumber *normalizedCornerRadius = request.options.userInfo[DFImageProcessingCornerRadiusKey];
-    return normalizedCornerRadius != nil;
+    return YES;
 }
 
 - (nullable UIImage *)processedImage:(nonnull UIImage *)image forRequest:(nonnull DFImageRequest *)request partial:(BOOL)partial {
@@ -74,7 +73,7 @@ NSString *DFImageProcessingCornerRadiusKey = @"DFImageProcessingCornerRadiusKey"
         image = [DFImageProcessor _croppedImage:image aspectFillPixelSize:request.targetSize];
     }
     CGFloat scale = [UIImage df_scaleForImage:image targetSize:request.targetSize contentMode:request.contentMode];
-    if (scale < 1.f) {
+    if (scale < 1.f || self.shouldDecompressImages) {
         image = [UIImage df_decompressedImage:image scale:scale];
     }
     NSNumber *normalizedCornerRadius = request.options.userInfo[DFImageProcessingCornerRadiusKey];
@@ -86,15 +85,12 @@ NSString *DFImageProcessingCornerRadiusKey = @"DFImageProcessingCornerRadiusKey"
 }
 
 + (nullable UIImage *)_croppedImage:(nonnull UIImage *)image aspectFillPixelSize:(CGSize)targetSize {
-    CGSize imageSize = CGSizeMake(CGImageGetWidth(image.CGImage), CGImageGetHeight(image.CGImage));
-    CGFloat scale = ({
-        CGFloat scaleWidth = targetSize.width / imageSize.width;
-        CGFloat scaleHeight = targetSize.height / imageSize.height;
-        MAX(scaleWidth, scaleHeight);
+    CGSize scaledSize = ({
+        CGFloat scale = [UIImage df_scaleForImage:image targetSize:targetSize contentMode:DFImageContentModeAspectFill];
+        CGSizeMake(CGImageGetWidth(image.CGImage) * scale, CGImageGetHeight(image.CGImage) * scale);
     });
-    CGSize sizeScaled = CGSizeMake(imageSize.width * scale, imageSize.height * scale);
-    CGRect cropRect = CGRectMake((sizeScaled.width - targetSize.width) / 2.f, (sizeScaled.height - targetSize.height) / 2.f, targetSize.width, targetSize.height);
-    CGRect normalizedCropRect = CGRectMake(cropRect.origin.x / sizeScaled.width, cropRect.origin.y / sizeScaled.height, cropRect.size.width / sizeScaled.width, cropRect.size.height / sizeScaled.height);
+    CGRect cropRect = CGRectMake((scaledSize.width - targetSize.width) / 2.f, (scaledSize.height - targetSize.height) / 2.f, targetSize.width, targetSize.height);
+    CGRect normalizedCropRect = CGRectMake(cropRect.origin.x / scaledSize.width, cropRect.origin.y / scaledSize.height, cropRect.size.width / scaledSize.width, cropRect.size.height / scaledSize.height);
     return [UIImage df_croppedImage:image normalizedCropRect:normalizedCropRect];
 }
 

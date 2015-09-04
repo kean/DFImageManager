@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
     s.name         = "DFImageManager"
-    s.version      = "0.7.0"
+    s.version      = "0.7.1"
     s.summary      = "Advanced iOS framework for loading images. Zero config, yet immense customization and flexibility."
     s.homepage     = "https://github.com/kean/DFImageManager"
     s.license      = { :type => "MIT", :file => "LICENSE" }
@@ -10,11 +10,16 @@ Pod::Spec.new do |s|
     s.ios.deployment_target = "7.0"
     s.source       = { :git => "https://github.com/kean/DFImageManager.git", :tag => s.version.to_s }
     s.requires_arc = true
-    s.default_subspecs = "Core", "UI", "NSURLSession", "PhotosKit"
+    s.default_subspecs = "Core", "Extensions", "UI", "NSURLSession", "PhotosKit"
 
     s.subspec "Core" do |ss|
         ss.source_files  = "DFImageManager/Source/Core/**/*.{h,m}"
         ss.private_header_files = "DFImageManager/Source/Core/Private/*.h"
+    end
+
+    s.subspec "Extensions" do |ss|
+        ss.dependency "DFImageManager/Core"
+        ss.source_files = "DFImageManager/Source/Extensions/**/*.{h,m}"
     end
 
     s.subspec "UI" do |ss|
@@ -39,7 +44,6 @@ Pod::Spec.new do |s|
     end
 
     s.subspec "GIF" do |ss|
-        ss.dependency "DFImageManager/Core"
         ss.dependency "FLAnimatedImage", "~> 1.0"
         ss.source_files = "DFImageManager/Source/GIF/**/*.{h,m}"
     end

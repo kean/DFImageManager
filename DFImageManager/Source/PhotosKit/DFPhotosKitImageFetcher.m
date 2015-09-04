@@ -39,10 +39,6 @@ NS_CLASS_AVAILABLE_IOS(8_0) @interface _DFPhotosKitImageFetchOperation : NSOpera
 
 NSString *const DFPhotosKitVersionKey = @"DFPhotosKitVersionKey";
 
-typedef struct {
-    PHImageRequestOptionsVersion version;
-} _DFPhotosKitRequestOptions;
-
 static inline NSString *_PHAssetLocalIdentifier(id resource) {
     if ([resource isKindOfClass:[PHAsset class]]) {
         return ((PHAsset *)resource).localIdentifier;
@@ -98,20 +94,15 @@ static inline NSString *_PHAssetLocalIdentifier(id resource) {
     } else if (![_PHAssetLocalIdentifier(request1.resource) isEqualToString:_PHAssetLocalIdentifier(request2.resource)]) {
         return NO;
     }
-    if (!(CGSizeEqualToSize(request1.targetSize, request2.targetSize) &&
-          request1.contentMode == request2.contentMode)) {
-        return NO;
-    }
-    _DFPhotosKitRequestOptions options1 = [self _requestOptionsFromUserInfo:request1.options.userInfo];
-    _DFPhotosKitRequestOptions options2 = [self _requestOptionsFromUserInfo:request2.options.userInfo];
-    return (options1.version == options2.version);
+    PHImageRequestOptionsVersion version1 = [self _imageVersionFromUserInfo:request1.options.userInfo];
+    PHImageRequestOptionsVersion version2 = [self _imageVersionFromUserInfo:request2.options.userInfo];
+    return version1 == version2;
 }
 
 - (nonnull NSOperation *)startOperationWithRequest:(nonnull DFImageRequest *)request progressHandler:(nullable DFImageFetchingProgressHandler)progressHandler completion:(nullable DFImageFetchingCompletionHandler)completion {
-    _DFPhotosKitRequestOptions options = [self _requestOptionsFromUserInfo:request.options.userInfo];
     PHImageRequestOptions *requestOptions = [PHImageRequestOptions new];
     requestOptions.networkAccessAllowed = request.options.allowsNetworkAccess;
-    requestOptions.version = options.version;
+    requestOptions.version = [self _imageVersionFromUserInfo:request.options.userInfo];
     requestOptions.progressHandler = ^(double progress, NSError *error, BOOL *stop, NSDictionary *info){
         if (progressHandler) {
             int64_t totalUnitCount = 1000;
@@ -135,11 +126,9 @@ static inline NSString *_PHAssetLocalIdentifier(id resource) {
     return operation;
 }
 
-- (_DFPhotosKitRequestOptions)_requestOptionsFromUserInfo:(NSDictionary *)info {
-    _DFPhotosKitRequestOptions options;
+- (PHImageRequestOptionsVersion)_imageVersionFromUserInfo:(NSDictionary *)info {
     NSNumber *version = info[DFPhotosKitVersionKey];
-    options.version = version ? version.integerValue : PHImageRequestOptionsVersionCurrent;
-    return options;
+    return version ? version.integerValue : PHImageRequestOptionsVersionCurrent;
 }
 
 @end

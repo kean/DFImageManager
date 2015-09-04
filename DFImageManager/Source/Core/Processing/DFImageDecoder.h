@@ -20,32 +20,19 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "DFAnimatedImage.h"
+#import <Foundation/Foundation.h>
+#import "DFImageDecoding.h"
 
-@implementation DFAnimatedImage
-
-- (instancetype)initWithAnimatedImage:(FLAnimatedImage *)animatedImage {
-    if (self = [super initWithCGImage:animatedImage.posterImage.CGImage]) {
-        _animatedImage = animatedImage;
-    }
-    return self;
-}
-
-+ (nullable instancetype)animatedImageWithGIFData:(nullable NSData *)data {
-    FLAnimatedImage *animatedImage = [FLAnimatedImage animatedImageWithGIFData:data];
-    return animatedImage ? [[DFAnimatedImage alloc] initWithAnimatedImage:animatedImage] : nil;
-}
-
-/*! See https://en.wikipedia.org/wiki/List_of_file_signatures
+/*! Image decoder that supports multiple image formats not supported by UIImage.
  */
-+ (BOOL)isAnimatedGIFData:(nullable NSData *)data {
-    const NSInteger sigLength = 3;
-    if (data.length < sigLength) {
-        return NO;
-    }
-    uint8_t sig[sigLength];
-    [data getBytes:&sig length:sigLength];
-    return sig[0] == 0x47 && sig[1] == 0x49 && sig[2] == 0x46;
-}
+@interface DFImageDecoder : NSObject <DFImageDecoding>
+
+/*! The image decoder instance shared by the application.
+ */
++ (nullable id<DFImageDecoding>)sharedDecoder;
+
+/*! The image decoder instance shared by the application.
+ */
++ (void)setSharedDecoder:(nullable id<DFImageDecoding>)sharedDecoder;
 
 @end

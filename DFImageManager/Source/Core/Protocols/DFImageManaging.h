@@ -39,15 +39,13 @@ typedef void (^DFImageTaskCompletion)(UIImage *__nullable image, NSError *__null
 - (BOOL)canHandleRequest:(nonnull DFImageRequest *)request;
 
 /*! Creates an image task with a given resource. After you create the task, you must start it by calling its resume method.
- @note Creates image request with a DFImageMaximumSize, DFImageContentModeAspectFill and no options.
- @param resource The resource whose image data is to be loaded.
+ @note Creates image request with a DFImageMaximumSize, DFImageContentModeAspectFill and default options.
  */
 - (nullable DFImageTask *)imageTaskForResource:(nonnull id)resource completion:(nullable DFImageTaskCompletion)completion;
 
 /*! Creates an image task with a given request. After you create the task, you must start it by calling its resume method.
  @param request The request that contains the resource whose image is to be loaded, and request options. Image manager creates a deep copy of the request.
  @param completion Completion block to be called on the main thread when loading is complete. Completion block is called synchronously when the requested image can be retrieved from the memory cache and the request was made on the main thread. For more info see DFImageManager class reference.
- @return An image task.
  */
 - (nullable DFImageTask *)imageTaskForRequest:(nonnull DFImageRequest *)request completion:(nullable DFImageTaskCompletion)completion;
 

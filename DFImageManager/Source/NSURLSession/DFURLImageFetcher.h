@@ -52,10 +52,6 @@ extern NSString *const DFURLRequestCachePolicyKey;
  */
 - (nullable id<DFURLResponseValidating>)URLImageFetcher:(DFURLImageFetcher *)fetcher responseValidatorForImageRequest:(DFImageRequest *)imageRequest URLRequest:(NSURLRequest *)URLRequest;
 
-/*! Sent every time image fetcher encounters error. Doesn't get called if image fetcher isn't set as NSURLSession delegate.
- */
-- (void)URLImageFetcher:(DFURLImageFetcher *)fetcher didEncounterError:(NSError *)error;
-
 @end
 
 
@@ -68,6 +64,7 @@ extern NSString *const DFURLRequestCachePolicyKey;
 - (NSURLSessionDataTask *)URLImageFetcher:(DFURLImageFetcher *)fetcher dataTaskWithRequest:(NSURLRequest *)request progressHandler:(void (^__nullable)(NSData *__nullable data, int64_t countOfBytesReceived, int64_t countOfBytesExpectedToReceive))progressHandler completionHandler:(void (^__nullable)(NSData *__nullable data, NSURLResponse *__nullable response, NSError *__nullable error))completionHandler;
 
 @end
+
 
 /*! The DFURLImageFetcher implements DFImageFetching protocol to provide a functionality of fetching images using Cocoa URL Loading System.
  @note Uses NSURLSession with a custom delegate. For more info on NSURLSession life cycle with custom delegates see the "URL Loading System Programming Guide" from Apple.

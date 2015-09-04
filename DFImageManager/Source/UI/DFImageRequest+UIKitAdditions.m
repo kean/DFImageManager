@@ -20,23 +20,14 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import <Foundation/Foundation.h>
-#import "DFImageDecoding.h"
+#import "DFImageRequest+UIKitAdditions.h"
 
-/*! Image decoder that supports multiple image formats not supported by UIImage.
- */
-@interface DFImageDecoder : NSObject <DFImageDecoding>
+@implementation DFImageRequest (UIKitAdditions)
 
-/*! If YES decoder would force image decompression, otherwise UIImage might delay decompression until the image is displayed. Default value is YES.
- */
-@property (nonatomic) BOOL shouldDecompressImages;
-
-/*! The image decoder instance shared by the application.
- */
-+ (nullable id<DFImageDecoding>)sharedDecoder;
-
-/*! The image decoder instance shared by the application.
- */
-+ (void)setSharedDecoder:(nullable id<DFImageDecoding>)sharedDecoder;
++ (CGSize)targetSizeForView:(nonnull UIView *)view {
+    CGSize size = view.bounds.size;
+    CGFloat scale = [UIScreen mainScreen].scale;
+    return CGSizeMake(size.width * scale, size.height * scale);
+}
 
 @end

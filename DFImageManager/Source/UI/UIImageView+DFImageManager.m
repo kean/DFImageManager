@@ -21,6 +21,7 @@
 // THE SOFTWARE.
 
 #import "DFImageManager.h"
+#import "DFImageRequest+UIKitAdditions.h"
 #import "DFImageRequest.h"
 #import "DFImageTask.h"
 #import "UIImageView+DFImageManager.h"
@@ -48,7 +49,7 @@ static char *_imageTaskKey;
 }
 
 - (nullable DFImageTask *)df_setImageWithResource:(nullable id)resource targetSize:(CGSize)targetSize contentMode:(DFImageContentMode)contentMode options:(nullable DFImageRequestOptions *)options {
-    return [self df_setImageWithRequest:resource ? [DFImageRequest requestWithResource:resource targetSize:targetSize contentMode:contentMode options:options] : nil];
+    return [self df_setImageWithRequest:(resource ? [DFImageRequest requestWithResource:resource targetSize:targetSize contentMode:contentMode options:options] : nil)];
 }
 
 - (nullable DFImageTask *)df_setImageWithRequest:(nullable DFImageRequest *)request {
@@ -67,7 +68,6 @@ static char *_imageTaskKey;
     };
     [task resume];
     [self _df_setImageTask:task];
-    
     return task;
 }
 

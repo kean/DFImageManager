@@ -20,6 +20,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+// Subspec 'Core'
+
 #import "DFImageManagerDefines.h"
 
 #import "DFImageManaging.h"
@@ -30,27 +32,26 @@
 
 #import "DFImageManager.h"
 #import "DFImageManagerConfiguration.h"
+#import "DFCompositeImageManager.h"
 
-// Support
-#import "DFImageRequest.h"
 #import "DFImageTask.h"
+#import "DFImageRequest.h"
 #import "DFImageRequestOptions.h"
 #import "DFImageResponse.h"
-#import "DFImageDecoder.h"
 
-// Caching (memory cache)
 #import "DFImageCache.h"
 #import "DFCachedImageResponse.h"
 #import "NSCache+DFImageManager.h"
 
-// Processing
+#import "DFImageDecoder.h"
 #import "DFImageProcessor.h"
-
-// Utilities
-#import "DFCompositeImageManager.h"
-#import "DFProxyImageManager.h"
-#import "DFCompositeImageTask.h"
 #import "UIImage+DFImageUtilities.h"
+
+
+// Subspec 'Extensions'
+#if __has_include("DFImageManagerKit+Extensions.h")
+#import "DFImageManagerKit+Extensions.h"
+#endif
 
 // Subspec 'UI'
 #if __has_include("DFImageManagerKit+UI.h")

@@ -25,7 +25,7 @@
     [super setUp];
     
     _fetcher = [TDFMockFetcher new];
-    _manager = [[DFImageManager alloc] initWithConfiguration:[DFImageManagerConfiguration configurationWithFetcher:_fetcher]];
+    _manager = [[DFImageManager alloc] initWithConfiguration:[DFImageManagerConfiguration configurationWithFetcher:_fetcher processor:nil cache:nil]];
     [DFImageManager setSharedManager:_manager];
 }
 
