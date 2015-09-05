@@ -31,11 +31,11 @@
 #import <AFNetworking/AFHTTPSessionManager.h>
 #endif
 
-#if __has_include("DFImageManagerKit+NSURLSession.h")
+#if DF_IMAGE_MANAGER_NSURLSESSION_AVAILABLE
 #import "DFImageManagerKit+NSURLSession.h"
 #endif
 
-#if __has_include("DFImageManagerKit+PhotosKit.h")
+#if DF_IMAGE_MANAGER_PHOTOSKIT_AVAILABLE
 #import "DFImageManagerKit+PhotosKit.h"
 #endif
 
@@ -57,14 +57,16 @@
         DFAFImageFetcher *fetcher = [[DFAFImageFetcher alloc] initWithSessionManager:httpSessionManager];
         [[DFImageManager alloc] initWithConfiguration:[DFImageManagerConfiguration configurationWithFetcher:fetcher processor:processor cache:cache]];
     })];
-#elif __has_include("DFImageManagerKit+NSURLSession.h")
+#endif
+    
+#if DF_IMAGE_MANAGER_NSURLSESSION_AVAILABLE
     [managers addObject:({
         DFURLImageFetcher *fetcher = [[DFURLImageFetcher alloc] initWithSessionConfiguration:[self _defaultSessionConfiguration]];
         [[DFImageManager alloc] initWithConfiguration:[DFImageManagerConfiguration configurationWithFetcher:fetcher processor:processor cache:cache]];
     })];
 #endif
     
-#if __has_include("DFImageManagerKit+PhotosKit.h")
+#if DF_IMAGE_MANAGER_PHOTOSKIT_AVAILABLE
     [managers addObject:({
         DFPhotosKitImageFetcher *fetcher = [DFPhotosKitImageFetcher new];
         [[DFImageManager alloc] initWithConfiguration:[DFImageManagerConfiguration configurationWithFetcher:fetcher processor:processor cache:cache]];
