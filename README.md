@@ -1,13 +1,6 @@
-<p align="center"><img src="https://cloud.githubusercontent.com/assets/1567433/9701111/759d9cfa-5424-11e5-988c-9f18c7400ae2.png" height="200"/></p>
+<p align="center"><img src="https://cloud.githubusercontent.com/assets/1567433/9701434/c141e50a-5431-11e5-9897-d49b4a4dcf36.png" height="100"/></p>
 
-<h1 align="center">DFImageManager</h1>
-
-<p align="center">
-<a href="https://cocoapods.org/pods/DFImageManager"><img src="http://img.shields.io/cocoapods/v/DFImageManager.svg"></a>
-<a href="https://github.com/Carthage/Carthage"><img src="https://img.shields.io/badge/Carthage-compatible-4BC51D.svg"></a>
-</p>
-
-Advanced iOS framework for loading, caching, processing, displaying and preheating images. It uses latest advancements in iOS SDK and doesn't reinvent existing technologies. It provides a powerful API that will extend the capabilities of your app.
+Advanced iOS framework for loading, caching, processing, displaying and preheating images. It uses latest advancements in iOS SDK and doesn't reinvent existing technologies. It has an elagant and powerful API that will extend the capabilities of your app.
 
 DFImageManager is not just a loader, it's [a pipeline](#h_design) that loads images using pluggable components. It features [multiple subspecs](#install_using_cocopods) that integrate things like [FLAnimatedImage](https://github.com/Flipboard/FLAnimatedImage), [AFNetworking](https://github.com/AFNetworking/AFNetworking), [libwebp](https://developers.google.com/speed/webp/docs/api) and more. And it all comes in a strikingly small package with less code than alternative libraries.
 
