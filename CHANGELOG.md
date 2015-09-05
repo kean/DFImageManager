@@ -2,7 +2,7 @@
 
 # DFImageManager 0.7.1
 
-`DFImageManager 0.7.1` focuses on stability and performance. The main changes were made to image processing. Images are now decompressed and scaled in a single step (x2-4 times faster depending on scale, significantly reduces memory usage) which allow DFImageManager to scales large images (~6000x4000 px) and prepares them for display with ease.
+`DFImageManager 0.7.1` focuses on stability and performance. The main changes were made to the image processing. Images are now decompressed and scaled in a single step (x2-4 times faster depending on scale, significantly reduces memory usage) which allows DFImageManager to scale large images (~6000x4000 px) and prepare them for display with ease.
 
 ## Changes
 
