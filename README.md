@@ -1,4 +1,4 @@
-<p align="center"><img src="https://cloud.githubusercontent.com/assets/1567433/6745579/db90e29a-ce5c-11e4-941d-405ab6729811.png" height="200"/></p>
+<p align="center"><img src="https://cloud.githubusercontent.com/assets/1567433/9701111/759d9cfa-5424-11e5-988c-9f18c7400ae2.png" height="200"/></p>
 
 <h1 align="center">DFImageManager</h1>
 
