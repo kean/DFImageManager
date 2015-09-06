@@ -393,7 +393,7 @@
     return canonicalRequests;
 }
 
-- (nonnull id<NSCopying>)processingKeyForRequest:(nonnull DFImageRequest *)request {
+- (nonnull id<NSCopying>)preheatingKeyForRequest:(nonnull DFImageRequest *)request {
     return DFImageCacheKeyCreate(request);
 }
 

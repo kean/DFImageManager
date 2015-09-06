@@ -60,6 +60,6 @@
 
 - (nonnull NSArray *)canonicalRequestsForRequests:(nonnull NSArray *)requests;
 
-- (nonnull id<NSCopying>)processingKeyForRequest:(nonnull DFImageRequest *)request;
+- (nonnull id<NSCopying>)preheatingKeyForRequest:(nonnull DFImageRequest *)request;
 
 @end
