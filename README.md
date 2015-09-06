@@ -1,4 +1,4 @@
-<p align="center"><img src="https://cloud.githubusercontent.com/assets/1567433/9701434/c141e50a-5431-11e5-9897-d49b4a4dcf36.png" width="66%"/>
+<p align="center"><img src="https://cloud.githubusercontent.com/assets/1567433/9706439/4d3fd63c-54ed-11e5-91ec-a52c768b67fe.png" width="70%"/>
 
 Advanced iOS framework for loading, caching, processing, displaying and preheating images. It uses latest advancements in iOS SDK and doesn't reinvent existing technologies. It has an elagant and powerful API that will extend the capabilities of your app.
 
@@ -215,7 +215,7 @@ id<DFImageManaging> compositeImageManager = [[DFCompositeImageManager alloc] ini
 
 ## <a name="h_design"></a>Design
 
-<img src="https://cloud.githubusercontent.com/assets/1567433/9430006/ee9f9b86-49ec-11e5-9a2b-121d6f6f3384.png" height="420"/>
+<img src="https://cloud.githubusercontent.com/assets/1567433/9706417/0352d3bc-54ed-11e5-94ff-cb8691800f78.png" width="66%"/>
 
 |Protocol|Description|
 |--------|-----------|
