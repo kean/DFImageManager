@@ -189,9 +189,9 @@
 }
 
 - (void)startLoadingForImageTask:(nonnull DFImageTask *)imageTask {
-    _DFImageLoaderTask *loaderTask = [[_DFImageLoaderTask alloc] initWithImageTask:imageTask];
-    _executingTasks[imageTask] = loaderTask;
     dispatch_async(_queue, ^{
+        _DFImageLoaderTask *loaderTask = [[_DFImageLoaderTask alloc] initWithImageTask:imageTask];
+        _executingTasks[imageTask] = loaderTask;
         [self _startLoadOperationForTask:loaderTask];
     });
 }
