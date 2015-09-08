@@ -11,20 +11,20 @@ let manager = DFImageManager.sharedManager()
 let imageURL = NSURL(string: "http://farm8.staticflickr.com/7315/16455839655_7d6deb1ebf_z_d.jpg")!
 manager.imageTaskForResource(imageURL) { (image, _, _, _) -> Void in
     var fetchedImage = image
-}?.resume()
+}.resume()
 //: Use DFImageRequest class to set specific request parameters like output image size (in pixels).
 let request = DFImageRequest(resource: imageURL, targetSize: CGSize(width: 100, height: 100), contentMode: .AspectFill, options: nil)
 manager.imageTaskForRequest(request) { (image, _, _, _) -> Void in
     var fetchedImage = image
-}?.resume()
+}.resume()
 //: Image manager returns instance of DFImageTask class for each image request. Image task can be used to cancel request or change its priority and more.
 let task = manager.imageTaskForResource(NSURL(string: "http://farm6.staticflickr.com/5311/14244377986_c3c660ef30_k_d.jpg")!, completion: { (image, error, _, _) -> Void in
     var fetchedImage = image
     let responseError = error
 })
-task?.resume()
-task?.priority = .High
+task.resume()
+task.priority = .High
 
-task?.cancel()
+task.cancel()
 
 XCPSetExecutionShouldContinueIndefinitely()

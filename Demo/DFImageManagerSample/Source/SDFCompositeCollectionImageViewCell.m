@@ -25,6 +25,7 @@
         
         _imageView = [UIImageView new];
         _imageView.contentMode = UIViewContentModeScaleAspectFill;
+        _imageView.clipsToBounds = YES;
         [self addSubview:_imageView];
         
         _imageView.translatesAutoresizingMaskIntoConstraints = NO;

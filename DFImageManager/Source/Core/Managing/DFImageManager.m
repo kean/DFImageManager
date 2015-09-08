@@ -166,14 +166,14 @@ DF_INIT_UNAVAILABLE_IMPL
     return [_configuration.fetcher canHandleRequest:request];
 }
 
-- (nullable DFImageTask *)imageTaskForResource:(nonnull id)resource completion:(nullable DFImageTaskCompletion)completion {
+- (nonnull DFImageTask *)imageTaskForResource:(nonnull id)resource completion:(nullable DFImageTaskCompletion)completion {
     NSParameterAssert(resource);
     return [self imageTaskForRequest:[DFImageRequest requestWithResource:resource] completion:completion];
 }
 
-- (nullable DFImageTask *)imageTaskForRequest:(nonnull DFImageRequest *)request completion:(nullable DFImageTaskCompletion)completion {
+- (nonnull DFImageTask *)imageTaskForRequest:(nonnull DFImageRequest *)request completion:(nullable DFImageTaskCompletion)completion {
     NSParameterAssert(request);
-    return _invalidated ? nil : [[_DFImageTask alloc] initWithManager:self request:request completionHandler:completion];
+    return [[_DFImageTask alloc] initWithManager:self request:request completionHandler:completion];
 }
 
 - (void)getImageTasksWithCompletion:(void (^ __nullable)(NSArray * __nonnull, NSArray * __nonnull))completion {
@@ -192,7 +192,6 @@ DF_INIT_UNAVAILABLE_IMPL
 
 - (void)invalidateAndCancel {
     [self _performBlock:^{
-        _invalidated = YES;
         [_preheatingTasks removeAllObjects];
         _imageLoader.delegate = nil;
         for (_DFImageTask *task in _executingTasks.allObjects) {
@@ -201,6 +200,7 @@ DF_INIT_UNAVAILABLE_IMPL
         if ([_configuration.fetcher respondsToSelector:@selector(invalidate)]) {
             [_configuration.fetcher invalidate];
         }
+        _invalidated = YES;
     }];
 }
 
@@ -249,7 +249,7 @@ DF_INIT_UNAVAILABLE_IMPL
 }
 
 - (void)_setNeedsExecutePreheatingTasks {
-    if (!_needsToExecutePreheatingTasks && !_invalidated) {
+    if (!_needsToExecutePreheatingTasks) {
         _needsToExecutePreheatingTasks = YES;
         // Manager won't start executing preheating tasks in case you are about to add normal (non-preheating) right after adding preheating ones.
         typeof(self) __weak weakSelf = self;

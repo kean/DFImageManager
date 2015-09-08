@@ -717,10 +717,13 @@
     [self waitForExpectationsWithTimeout:1.0 handler:nil];
 }
 
-- (void)testThatNewRequestsCantBeCreated {
-    XCTAssertNotNil([_manager imageTaskForResource:[TDFMockResource resourceWithID:@"ID01"] completion:nil]);
+- (void)testThatInvalidatedManagerDoesntResumeTasks {
+    DFImageTask *task = [_manager imageTaskForResource:[TDFMockResource resourceWithID:@"ID01"] completion:nil];
     [_manager invalidateAndCancel];
-    XCTAssertNil([_manager imageTaskForResource:[TDFMockResource resourceWithID:@"ID02"] completion:nil]);
+    [task resume];
+    XCTAssertEqual(task.state, DFImageTaskStateSuspended);
+    [task cancel];
+    XCTAssertEqual(task.state, DFImageTaskStateSuspended);
 }
 
 #pragma mark - Fault Tolerance
