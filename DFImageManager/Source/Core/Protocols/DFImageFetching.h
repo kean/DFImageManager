@@ -34,25 +34,19 @@ typedef void (^DFImageFetchingCompletionHandler)(NSData *__nullable data, NSDict
 @protocol DFImageFetching <NSObject>
 
 /*! Inspects the given request and determines whether the receiver can handle the given request.
- @param request The initial request to be handled. The request is not canonical (see canonicalRequestForRequest: method for more info).
  */
 - (BOOL)canHandleRequest:(nonnull DFImageRequest *)request;
 
 /*! Compares two requests for equivalence with regard to fetching the image data. Requests should be considered equivalent if the image fetcher can handle both requests with a single operation.
- @param request1 The first canonical request.
- @param request2 The second canonical request.
  */
 - (BOOL)isRequestFetchEquivalent:(nonnull DFImageRequest *)request1 toRequest:(nonnull DFImageRequest *)request2;
 
 /*! Compares two requests for equivalence with regard to caching the image data.
  @note The DFImageManager uses this method for memory caching only, which means that there is no need for filtering out the dynamic part of the request (is there is any). For example, the dynamic part might be a username and password in a URL.
- @param request1 The first canonical request.
- @param request2 The second canonical request.
  */
 - (BOOL)isRequestCacheEquivalent:(nonnull DFImageRequest *)request1 toRequest:(nonnull DFImageRequest *)request2;
 
 /*! Starts fetching an image data for the request.
- @param request The canonical request.
  @param progressHandler Progress handler that can be called on any thread. Image fetcher that don't report progress should ignore this the handler.
  @param completion Completion handler, can be called on any thread.
  @return The operation that implements fetching.
@@ -60,10 +54,6 @@ typedef void (^DFImageFetchingCompletionHandler)(NSData *__nullable data, NSDict
 - (nonnull NSOperation *)startOperationWithRequest:(nonnull DFImageRequest *)request progressHandler:(nullable DFImageFetchingProgressHandler)progressHandler completion:(nullable DFImageFetchingCompletionHandler)completion;
 
 @optional
-
-/*! Returns a canonical form of the given request. All DFImageFetching methods receive requests in a canonical form except for the -canHandleRequest: method.
- */
-- (nonnull DFImageRequest *)canonicalRequestForRequest:(nonnull DFImageRequest *)request;
 
 /*! Remove all cached images.
  */

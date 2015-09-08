@@ -56,10 +56,6 @@
 
 - (nullable DFCachedImageResponse *)cachedResponseForRequest:(nonnull DFImageRequest *)request;
 
-- (nonnull DFImageRequest *)canonicalRequestForRequest:(nonnull DFImageRequest *)request;
-
-- (nonnull NSArray *)canonicalRequestsForRequests:(nonnull NSArray *)requests;
-
 - (nonnull id<NSCopying>)preheatingKeyForRequest:(nonnull DFImageRequest *)request;
 
 @end

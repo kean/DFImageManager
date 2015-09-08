@@ -168,7 +168,6 @@
 @property (nonnull, nonatomic, readonly) NSMutableDictionary /* _DFImageRequestKey : _DFImageLoadOperation */ *loadOperations;
 @property (nonnull, nonatomic, readonly) dispatch_queue_t queue;
 @property (nonnull, nonatomic, readonly) NSOperationQueue *decodingQueue;
-@property (nonatomic, readonly) BOOL fetcherRespondsToCanonicalRequest;
 
 @end
 
@@ -183,7 +182,6 @@
         _queue = dispatch_queue_create([[NSString stringWithFormat:@"%@-queue-%p", [self class], self] UTF8String], DISPATCH_QUEUE_SERIAL);
         _decodingQueue = [NSOperationQueue new];
         _decodingQueue.maxConcurrentOperationCount = 1; // Serial queue
-        _fetcherRespondsToCanonicalRequest = [_conf.fetcher respondsToSelector:@selector(canonicalRequestForRequest:)];
     }
     return self;
 }
@@ -354,7 +352,7 @@
     }
 }
 
-#pragma mark Processing
+#pragma mark Misc
 
 - (BOOL)_shouldProcessImage:(nonnull UIImage *)image forRequest:(nonnull DFImageRequest *)request partial:(BOOL)partial {
     if (!_conf.processor || !_conf.processingQueue) {
@@ -362,8 +360,6 @@
     }
     return [_conf.processor shouldProcessImage:image forRequest:request partial:partial];
 }
-
-#pragma mark Caching
 
 - (nullable DFCachedImageResponse *)cachedResponseForRequest:(nonnull DFImageRequest *)request {
     return request.options.memoryCachePolicy != DFImageRequestCachePolicyReloadIgnoringCache ? [_conf.cache cachedImageResponseForKey:DFImageCacheKeyCreate(request)] : nil;
@@ -374,23 +370,6 @@
         DFCachedImageResponse *cachedResponse = [[DFCachedImageResponse alloc] initWithImage:image info:info expirationDate:(CACurrentMediaTime() + request.options.expirationAge)];
         [_conf.cache storeImageResponse:cachedResponse forKey:DFImageCacheKeyCreate(request)];
     }
-}
-
-#pragma mark Misc
-
-- (nonnull DFImageRequest *)canonicalRequestForRequest:(nonnull DFImageRequest *)request {
-    return _fetcherRespondsToCanonicalRequest ? [_conf.fetcher canonicalRequestForRequest:request] : request;
-}
-
-- (nonnull NSArray *)canonicalRequestsForRequests:(nonnull NSArray *)requests {
-    if (!_fetcherRespondsToCanonicalRequest) {
-        return requests;
-    }
-    NSMutableArray *canonicalRequests = [[NSMutableArray alloc] initWithCapacity:requests.count];
-    for (DFImageRequest *request in requests) {
-        [canonicalRequests addObject:[self canonicalRequestForRequest:request]];
-    }
-    return canonicalRequests;
 }
 
 - (nonnull id<NSCopying>)preheatingKeyForRequest:(nonnull DFImageRequest *)request {

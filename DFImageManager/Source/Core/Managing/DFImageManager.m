@@ -173,7 +173,7 @@ DF_INIT_UNAVAILABLE_IMPL
 
 - (nullable DFImageTask *)imageTaskForRequest:(nonnull DFImageRequest *)request completion:(nullable DFImageTaskCompletion)completion {
     NSParameterAssert(request);
-    return _invalidated ? nil : [[_DFImageTask alloc] initWithManager:self request:[_imageLoader canonicalRequestForRequest:request] completionHandler:completion];
+    return _invalidated ? nil : [[_DFImageTask alloc] initWithManager:self request:request completionHandler:completion];
 }
 
 - (void)getImageTasksWithCompletion:(void (^ __nullable)(NSArray * __nonnull, NSArray * __nonnull))completion {
@@ -214,7 +214,6 @@ DF_INIT_UNAVAILABLE_IMPL
 #pragma mark <DFImageManaging> (Preheating)
 
 - (void)startPreheatingImagesForRequests:(nonnull NSArray *)requests {
-    requests = [_imageLoader canonicalRequestsForRequests:requests];
     [self _performBlock:^{
         for (DFImageRequest *request in requests) {
             id<NSCopying> key = [_imageLoader preheatingKeyForRequest:request];
@@ -230,7 +229,6 @@ DF_INIT_UNAVAILABLE_IMPL
 }
 
 - (void)stopPreheatingImagesForRequests:(nonnull NSArray *)requests {
-    requests = [_imageLoader canonicalRequestsForRequests:requests];
     [self _performBlock:^{
         for (DFImageRequest *request in requests) {
             id<NSCopying> key = [_imageLoader preheatingKeyForRequest:request];

@@ -40,7 +40,6 @@ typedef NS_ENUM(NSUInteger, DFImageTaskState) {
 @interface DFImageTask : NSObject <NSCopying>
 
 /*! The image request that the task was created with.
- @note Image request is in its canonical form.
  */
 @property (nonnull, atomic, readonly) DFImageRequest *request;
 
