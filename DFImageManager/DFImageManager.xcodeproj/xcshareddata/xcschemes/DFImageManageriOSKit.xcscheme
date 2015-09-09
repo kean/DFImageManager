@@ -15,8 +15,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "0C3EF4D91A6C6E8D0046FD55"
-               BuildableName = "DFImageManagerKit.framework"
-               BlueprintName = "DFImageManagerKit"
+               BuildableName = "DFImageManageriOSKit.framework"
+               BlueprintName = "DFImageManageriOSKit"
                ReferencedContainer = "container:DFImageManager.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -57,8 +57,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "0C3EF4D91A6C6E8D0046FD55"
-            BuildableName = "DFImageManagerKit.framework"
-            BlueprintName = "DFImageManagerKit"
+            BuildableName = "DFImageManageriOSKit.framework"
+            BlueprintName = "DFImageManageriOSKit"
             ReferencedContainer = "container:DFImageManager.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -79,8 +79,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "0C3EF4D91A6C6E8D0046FD55"
-            BuildableName = "DFImageManagerKit.framework"
-            BlueprintName = "DFImageManagerKit"
+            BuildableName = "DFImageManageriOSKit.framework"
+            BlueprintName = "DFImageManageriOSKit"
             ReferencedContainer = "container:DFImageManager.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -97,8 +97,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "0C3EF4D91A6C6E8D0046FD55"
-            BuildableName = "DFImageManagerKit.framework"
-            BlueprintName = "DFImageManagerKit"
+            BuildableName = "DFImageManageriOSKit.framework"
+            BlueprintName = "DFImageManageriOSKit"
             ReferencedContainer = "container:DFImageManager.xcodeproj">
          </BuildableReference>
       </MacroExpansion>

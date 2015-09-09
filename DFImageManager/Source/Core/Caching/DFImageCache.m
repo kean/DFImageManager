@@ -38,7 +38,9 @@
 - (nonnull instancetype)initWithCache:(nonnull NSCache *)cache {
     if (self = [super init]) {
         _cache = cache;
+#if TARGET_OS_IOS
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeAllObjects) name:UIApplicationDidReceiveMemoryWarningNotification object:nil];
+#endif
     }
     return self;
 }
@@ -52,7 +54,7 @@
 - (nullable DFCachedImageResponse *)cachedImageResponseForKey:(nullable id<NSCopying>)key {
     DFCachedImageResponse *response = [_cache objectForKey:key];
     if (response) {
-        if (response.expirationDate > CACurrentMediaTime()) {
+        if (response.expirationDate > CFAbsoluteTimeGetCurrent()) {
             return response;
         } else {
             [_cache removeObjectForKey:key];
