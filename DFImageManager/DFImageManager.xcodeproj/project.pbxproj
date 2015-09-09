@@ -114,17 +114,17 @@
 		0CEEED331AABE4BC00C212A4 /* DFURLResponseValidating.h in Headers */ = {isa = PBXBuildFile; fileRef = 0CEEED231AABE4BC00C212A4 /* DFURLResponseValidating.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0CF011861AAE1BAF0013AD13 /* DFImageManager+SharedManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CF011841AAE1BAF0013AD13 /* DFImageManager+SharedManager.m */; };
 		0CF011871AAE1BAF0013AD13 /* DFImageManager+SharedManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CF011841AAE1BAF0013AD13 /* DFImageManager+SharedManager.m */; };
-		658B85971B9B8CA800FEC428 /* DFCollectionViewPreheatingController.h in Headers */ = {isa = PBXBuildFile; fileRef = 658B858E1B9B8CA800FEC428 /* DFCollectionViewPreheatingController.h */; };
+		658B85971B9B8CA800FEC428 /* DFCollectionViewPreheatingController.h in Headers */ = {isa = PBXBuildFile; fileRef = 658B858E1B9B8CA800FEC428 /* DFCollectionViewPreheatingController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		658B85981B9B8CA800FEC428 /* DFCollectionViewPreheatingController.m in Sources */ = {isa = PBXBuildFile; fileRef = 658B858F1B9B8CA800FEC428 /* DFCollectionViewPreheatingController.m */; };
 		658B85991B9B8CA800FEC428 /* DFCollectionViewPreheatingController.m in Sources */ = {isa = PBXBuildFile; fileRef = 658B858F1B9B8CA800FEC428 /* DFCollectionViewPreheatingController.m */; };
-		658B859A1B9B8CA800FEC428 /* DFImageManagerKit+UI.h in Headers */ = {isa = PBXBuildFile; fileRef = 658B85901B9B8CA800FEC428 /* DFImageManagerKit+UI.h */; };
-		658B859B1B9B8CA800FEC428 /* DFImageRequest+UIKitAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 658B85911B9B8CA800FEC428 /* DFImageRequest+UIKitAdditions.h */; };
+		658B859A1B9B8CA800FEC428 /* DFImageManagerKit+UI.h in Headers */ = {isa = PBXBuildFile; fileRef = 658B85901B9B8CA800FEC428 /* DFImageManagerKit+UI.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		658B859B1B9B8CA800FEC428 /* DFImageRequest+UIKitAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 658B85911B9B8CA800FEC428 /* DFImageRequest+UIKitAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		658B859C1B9B8CA800FEC428 /* DFImageRequest+UIKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 658B85921B9B8CA800FEC428 /* DFImageRequest+UIKitAdditions.m */; };
 		658B859D1B9B8CA800FEC428 /* DFImageRequest+UIKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 658B85921B9B8CA800FEC428 /* DFImageRequest+UIKitAdditions.m */; };
-		658B859E1B9B8CA800FEC428 /* DFImageView.h in Headers */ = {isa = PBXBuildFile; fileRef = 658B85931B9B8CA800FEC428 /* DFImageView.h */; };
+		658B859E1B9B8CA800FEC428 /* DFImageView.h in Headers */ = {isa = PBXBuildFile; fileRef = 658B85931B9B8CA800FEC428 /* DFImageView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		658B859F1B9B8CA800FEC428 /* DFImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 658B85941B9B8CA800FEC428 /* DFImageView.m */; };
 		658B85A01B9B8CA800FEC428 /* DFImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 658B85941B9B8CA800FEC428 /* DFImageView.m */; };
-		658B85A11B9B8CA800FEC428 /* UIImageView+DFImageManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 658B85951B9B8CA800FEC428 /* UIImageView+DFImageManager.h */; };
+		658B85A11B9B8CA800FEC428 /* UIImageView+DFImageManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 658B85951B9B8CA800FEC428 /* UIImageView+DFImageManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		658B85A21B9B8CA800FEC428 /* UIImageView+DFImageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 658B85961B9B8CA800FEC428 /* UIImageView+DFImageManager.m */; };
 		658B85A31B9B8CA800FEC428 /* UIImageView+DFImageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 658B85961B9B8CA800FEC428 /* UIImageView+DFImageManager.m */; };
 		65C32EDF1B9ABEBB000657AF /* DFImageResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CEEECD01AABD70400C212A4 /* DFImageResponse.m */; };
@@ -646,9 +646,9 @@
 		658B84E41B9AC02F00FEC428 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				658B85901B9B8CA800FEC428 /* DFImageManagerKit+UI.h */,
 				658B858E1B9B8CA800FEC428 /* DFCollectionViewPreheatingController.h */,
 				658B858F1B9B8CA800FEC428 /* DFCollectionViewPreheatingController.m */,
-				658B85901B9B8CA800FEC428 /* DFImageManagerKit+UI.h */,
 				658B85911B9B8CA800FEC428 /* DFImageRequest+UIKitAdditions.h */,
 				658B85921B9B8CA800FEC428 /* DFImageRequest+UIKitAdditions.m */,
 				658B85931B9B8CA800FEC428 /* DFImageView.h */,
