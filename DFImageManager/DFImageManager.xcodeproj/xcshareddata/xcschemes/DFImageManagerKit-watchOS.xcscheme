@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0700"
+   LastUpgradeVersion = "0640"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -14,23 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "0C3EF4D91A6C6E8D0046FD55"
-               BuildableName = "DFImageManageriOSKit.framework"
-               BlueprintName = "DFImageManageriOSKit"
-               ReferencedContainer = "container:DFImageManager.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "NO"
-            buildForProfiling = "NO"
-            buildForArchiving = "NO"
-            buildForAnalyzing = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "0C3EF4E31A6C6E8D0046FD55"
-               BuildableName = "DFImageManagerKitTests.xctest"
-               BlueprintName = "DFImageManagerKitTests"
+               BlueprintIdentifier = "65C32EDC1B9ABEBB000657AF"
+               BuildableName = "DFImageManagerKit.framework"
+               BlueprintName = "DFImageManagerKit-watchOS"
                ReferencedContainer = "container:DFImageManager.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -42,26 +28,7 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "0C3EF4E31A6C6E8D0046FD55"
-               BuildableName = "DFImageManagerKitTests.xctest"
-               BlueprintName = "DFImageManagerKitTests"
-               ReferencedContainer = "container:DFImageManager.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "0C3EF4D91A6C6E8D0046FD55"
-            BuildableName = "DFImageManageriOSKit.framework"
-            BlueprintName = "DFImageManageriOSKit"
-            ReferencedContainer = "container:DFImageManager.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </TestAction>
@@ -78,9 +45,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "0C3EF4D91A6C6E8D0046FD55"
-            BuildableName = "DFImageManageriOSKit.framework"
-            BlueprintName = "DFImageManageriOSKit"
+            BlueprintIdentifier = "65C32EDC1B9ABEBB000657AF"
+            BuildableName = "DFImageManagerKit.framework"
+            BlueprintName = "DFImageManagerKit-watchOS"
             ReferencedContainer = "container:DFImageManager.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -96,15 +63,15 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "0C3EF4D91A6C6E8D0046FD55"
-            BuildableName = "DFImageManageriOSKit.framework"
-            BlueprintName = "DFImageManageriOSKit"
+            BlueprintIdentifier = "65C32EDC1B9ABEBB000657AF"
+            BuildableName = "DFImageManagerKit.framework"
+            BlueprintName = "DFImageManagerKit-watchOS"
             ReferencedContainer = "container:DFImageManager.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
-      buildConfiguration = "Release">
+      buildConfiguration = "Debug">
    </AnalyzeAction>
    <ArchiveAction
       buildConfiguration = "Release"
