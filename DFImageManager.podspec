@@ -11,7 +11,7 @@ Pod::Spec.new do |s|
     s.watchos.deployment_target = "2.0"
     s.source       = { :git => "https://github.com/kean/DFImageManager.git", :tag => s.version.to_s }
     s.requires_arc = true
-    s.default_subspecs = "Core", "Extensions", "iOSUI", "NSURLSession", "PhotosKit"
+    s.default_subspecs = "Core", "Extensions", "UI", "NSURLSession", "PhotosKit"
 
     s.subspec "Core" do |ss|
         ss.source_files  = "DFImageManager/Source/Core/**/*.{h,m}"
@@ -23,7 +23,7 @@ Pod::Spec.new do |s|
         ss.source_files = "DFImageManager/Source/Extensions/**/*.{h,m}"
     end
 
-    s.subspec "iOSUI" do |ss|
+    s.subspec "UI" do |ss|
         ss.ios.deployment_target = "7.0"   
         ss.dependency "DFImageManager/Core"
         ss.ios.source_files = "DFImageManager/Source/UI/**/*.{h,m}"
