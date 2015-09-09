@@ -32,6 +32,10 @@
 #import "DFImageManagerKit+WebP.h"
 #endif
 
+#if TARGET_OS_WATCH
+#import <WatchKit/WatchKit.h>
+#endif
+
 @implementation DFImageDecoder
 
 #pragma mark <DFImageDecoding>
@@ -57,8 +61,14 @@
         }
     }
 #endif
-    
+
+#if TARGET_OS_IOS
     return [UIImage imageWithData:data scale:[UIScreen mainScreen].scale];
+#elif TARGET_OS_WATCH
+    return [UIImage imageWithData:data scale:[WKInterfaceDevice currentDevice].screenScale];
+#else
+    return [UIImage imageWithData:data];
+#endif
 }
 
 #pragma mark Dependency Injector

@@ -367,7 +367,7 @@
 
 - (void)_storeImage:(nullable UIImage *)image info:(nullable NSDictionary *)info forRequest:(nonnull DFImageRequest *)request {
     if (image) {
-        DFCachedImageResponse *cachedResponse = [[DFCachedImageResponse alloc] initWithImage:image info:info expirationDate:(CACurrentMediaTime() + request.options.expirationAge)];
+        DFCachedImageResponse *cachedResponse = [[DFCachedImageResponse alloc] initWithImage:image info:info expirationDate:(CFAbsoluteTimeGetCurrent() + request.options.expirationAge)];
         [_conf.cache storeImageResponse:cachedResponse forKey:DFImageCacheKeyCreate(request)];
     }
 }
