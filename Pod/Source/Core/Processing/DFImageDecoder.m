@@ -24,11 +24,11 @@
 #import "DFImageManagerDefines.h"
 #import <libkern/OSAtomic.h>
 
-#if DF_IMAGE_MANAGER_GIF_AVAILABLE
+#if __has_include("DFImageManagerKit+GIF.h")
 #import "DFImageManagerKit+GIF.h"
 #endif
 
-#if DF_IMAGE_MANAGER_WEBP_AVAILABLE
+#if __has_include("DFImageManagerKit+WebP.h")
 #import "DFImageManagerKit+WebP.h"
 #endif
 
@@ -44,7 +44,7 @@
     if (!data.length) {
         return nil;
     }
-#if DF_IMAGE_MANAGER_GIF_AVAILABLE
+#if __has_include("DFImageManagerKit+GIF.h")
     if ([DFAnimatedImage isAnimatedGIFData:data]) {
         UIImage *image = [DFAnimatedImage animatedImageWithGIFData:data];
         if (image) {
@@ -53,7 +53,7 @@
     }
 #endif
     
-#if DF_IMAGE_MANAGER_WEBP_AVAILABLE
+#if __has_include("DFImageManagerKit+WebP.h")
     if ([UIImage df_isWebPData:data] && !partial) {
         UIImage *image = [UIImage df_imageWithWebPData:data];
         if (image) {

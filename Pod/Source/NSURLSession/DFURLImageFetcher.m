@@ -256,7 +256,7 @@ DF_INIT_UNAVAILABLE_IMPL
 
 - (NSURLRequest *)_defaultURLRequestForImageRequest:(DFImageRequest *)imageRequest {
     NSMutableURLRequest *URLRequest = [[NSMutableURLRequest alloc] initWithURL:(NSURL *)imageRequest.resource];
-#ifdef DF_IMAGE_MANAGER_WEBP_AVAILABLE
+#if __has_include("DFImageManagerKit+WebP.h")
     [URLRequest addValue:@"image/webp,image/*;q=0.8" forHTTPHeaderField:@"Accept"];
 #else
     [URLRequest addValue:@"image/*" forHTTPHeaderField:@"Accept"];

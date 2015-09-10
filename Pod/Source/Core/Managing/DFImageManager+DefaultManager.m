@@ -26,7 +26,7 @@
 #import "DFImageManagerConfiguration.h"
 #import "DFImageProcessor.h"
 
-#if DF_IMAGE_MANAGER_AFNETWORKING_AVAILABLE
+#if __has_include("DFImageManagerKit+AFNetworking.h")
 #import "DFImageManagerKit+AFNetworking.h"
 #import <AFNetworking/AFHTTPSessionManager.h>
 #endif
@@ -50,7 +50,7 @@
     DFImageCache *cache = [DFImageCache new];
 #pragma clang diagnostic pop
     
-#if DF_IMAGE_MANAGER_AFNETWORKING_AVAILABLE
+#if __has_include("DFImageManagerKit+AFNetworking.h")
     [managers addObject:({
         AFHTTPSessionManager *httpSessionManager = [[AFHTTPSessionManager alloc] initWithSessionConfiguration:[self _defaultSessionConfiguration]];
         httpSessionManager.responseSerializer = [AFHTTPResponseSerializer new];

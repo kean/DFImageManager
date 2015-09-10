@@ -30,7 +30,7 @@
 #import "DFImageTask.h"
 #import "DFImageView.h"
 
-#if DF_IMAGE_MANAGER_GIF_AVAILABLE
+#if __has_include("DFImageManagerKit+GIF.h")
 #import "DFImageManagerKit+GIF.h"
 #endif
 
@@ -60,13 +60,13 @@
     self.imageManager = [DFImageManager sharedManager];
     
     _allowsAnimations = YES;
-#if DF_IMAGE_MANAGER_GIF_AVAILABLE
+#if __has_include("DFImageManagerKit+GIF.h")
     _allowsGIFPlayback = YES;
 #endif
 }
 
 - (void)displayImage:(nullable UIImage *)image {
-#if DF_IMAGE_MANAGER_GIF_AVAILABLE
+#if __has_include("DFImageManagerKit+GIF.h")
     if (!image) {
         self.animatedImage = nil;
     }
@@ -81,7 +81,7 @@
 - (void)prepareForReuse {
     [self _cancelFetching];
     self.image = nil;
-#if DF_IMAGE_MANAGER_GIF_AVAILABLE
+#if __has_include("DFImageManagerKit+GIF.h")
     self.animatedImage = nil;
 #endif
     [self.layer removeAllAnimations];

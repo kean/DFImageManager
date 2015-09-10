@@ -25,7 +25,7 @@
 #import "DFImageRequestOptions.h"
 #import "UIImage+DFImageUtilities.h"
 
-#if DF_IMAGE_MANAGER_GIF_AVAILABLE
+#if __has_include("DFImageManagerKit+GIF.h")
 #import "DFImageManagerKit+GIF.h"
 #endif
 
@@ -57,7 +57,7 @@ NSString *DFImageProcessingCornerRadiusKey = @"DFImageProcessingCornerRadiusKey"
 }
 
 - (BOOL)shouldProcessImage:(nonnull UIImage *)image forRequest:(nonnull DFImageRequest *)request partial:(BOOL)partial {
-#if DF_IMAGE_MANAGER_GIF_AVAILABLE
+#if __has_include("DFImageManagerKit+GIF.h")
     if ([image isKindOfClass:[DFAnimatedImage class]]) {
         return NO;
     }

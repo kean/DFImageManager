@@ -64,7 +64,7 @@
 #endif
 
 // Subspec 'AFNetworking'
-#if DF_IMAGE_MANAGER_AFNETWORKING_AVAILABLE
+#if __has_include("DFImageManagerKit+AFNetworking.h")
 #import "DFImageManagerKit+AFNetworking.h"
 #endif
 
@@ -74,11 +74,11 @@
 #endif
 
 // Subspec 'GIF'
-#if DF_IMAGE_MANAGER_GIF_AVAILABLE
+#if __has_include("DFImageManagerKit+GIF.h")
 #import "DFImageManagerKit+GIF.h"
 #endif
 
 // Subspec 'WebP'
-#if DF_IMAGE_MANAGER_WEBP_AVAILABLE
+#if __has_include("DFImageManagerKit+WebP.h")
 #import "DFImageManagerKit+WebP.h"
 #endif
