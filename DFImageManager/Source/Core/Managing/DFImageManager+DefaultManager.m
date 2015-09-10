@@ -35,7 +35,7 @@
 #import "DFImageManagerKit+NSURLSession.h"
 #endif
 
-#if DF_IMAGE_MANAGER_PHOTOSKIT_AVAILABLE
+#if __has_include("DFImageManagerKit+PhotosKit.h")
 #import "DFImageManagerKit+PhotosKit.h"
 #endif
 
@@ -66,7 +66,7 @@
     })];
 #endif
     
-#if DF_IMAGE_MANAGER_PHOTOSKIT_AVAILABLE
+#if __has_include("DFImageManagerKit+PhotosKit.h")
     [managers addObject:({
         DFPhotosKitImageFetcher *fetcher = [DFPhotosKitImageFetcher new];
         [[DFImageManager alloc] initWithConfiguration:[DFImageManagerConfiguration configurationWithFetcher:fetcher processor:processor cache:cache]];
