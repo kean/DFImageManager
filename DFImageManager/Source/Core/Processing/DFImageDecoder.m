@@ -62,7 +62,7 @@
     }
 #endif
 
-#if TARGET_OS_IOS
+#if __IPHONE_OS_VERSION_MIN_REQUIRED
     return [UIImage imageWithData:data scale:[UIScreen mainScreen].scale];
 #elif TARGET_OS_WATCH
     return [UIImage imageWithData:data scale:[WKInterfaceDevice currentDevice].screenScale];

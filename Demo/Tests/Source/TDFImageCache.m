@@ -31,7 +31,7 @@
 
 - (void)testThatImageIsCached {
     UIImage *image = [UIImage new];
-    DFCachedImageResponse *cachedResponse = [[DFCachedImageResponse alloc] initWithImage:image info:nil expirationDate:CACurrentMediaTime() + 1.0];
+    DFCachedImageResponse *cachedResponse = [[DFCachedImageResponse alloc] initWithImage:image info:nil expirationDate:CFAbsoluteTimeGetCurrent() + 1.0];
     [_cache storeImageResponse:cachedResponse forKey:@"key"];
     XCTAssertNotNil([_cache cachedImageResponseForKey:@"key"]);
     XCTAssertEqual([_cache cachedImageResponseForKey:@"key"].image, image);
@@ -39,7 +39,7 @@
 
 - (void)testThatExpiredImageIsntReturned {
     UIImage *image = [UIImage new];
-    DFCachedImageResponse *cachedImage = [[DFCachedImageResponse alloc] initWithImage:image info:nil expirationDate:CACurrentMediaTime() + 0.01];
+    DFCachedImageResponse *cachedImage = [[DFCachedImageResponse alloc] initWithImage:image info:nil expirationDate:CFAbsoluteTimeGetCurrent() + 0.01];
     [_cache storeImageResponse:cachedImage forKey:@"key"];
     XCTAssertNotNil([_cache cachedImageResponseForKey:@"key"]);
     XCTAssertEqual([_cache cachedImageResponseForKey:@"key"].image, image);

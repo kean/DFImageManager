@@ -25,11 +25,30 @@
 		0C25A3A71BA0E48B0044BC00 /* SDFProgressiveJPEGDemoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C25A3941BA0E48B0044BC00 /* SDFProgressiveJPEGDemoViewController.m */; };
 		0C25A3A81BA0E48B0044BC00 /* UIViewController+SDFImageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C25A3961BA0E48B0044BC00 /* UIViewController+SDFImageManager.m */; };
 		0C300EB31BA0E357008DDEF6 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C300EB21BA0E357008DDEF6 /* main.m */; };
-		0C300EBC1BA0E357008DDEF6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0C300EBA1BA0E357008DDEF6 /* Main.storyboard */; };
 		0C300EBE1BA0E357008DDEF6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0C300EBD1BA0E357008DDEF6 /* Assets.xcassets */; };
-		0C300ECC1BA0E357008DDEF6 /* DFImageManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C300ECB1BA0E357008DDEF6 /* DFImageManagerTests.m */; };
-		0C8D14F31BA16A08004CF4F5 /* Launch Screen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0C8D14F11BA16A08004CF4F5 /* Launch Screen.xib */; };
-		6E10BE386191F593B2E50DCB /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B03B8FB3F7A856F04DB9C291 /* libPods.a */; };
+		0C4D3DC61BA180EF008138FA /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0C4D3DC41BA180EF008138FA /* Info.plist */; };
+		0CCBC4E71BA1819F00B26297 /* TDFCompositeImageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CCBC4D01BA1819F00B26297 /* TDFCompositeImageManager.m */; };
+		0CCBC4E81BA1819F00B26297 /* TDFCompositeImageTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CCBC4D11BA1819F00B26297 /* TDFCompositeImageTask.m */; };
+		0CCBC4E91BA1819F00B26297 /* TDFImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CCBC4D21BA1819F00B26297 /* TDFImageCache.m */; };
+		0CCBC4EA1BA1819F00B26297 /* TDFImageFormats.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CCBC4D31BA1819F00B26297 /* TDFImageFormats.m */; };
+		0CCBC4EB1BA1819F00B26297 /* TDFImageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CCBC4D41BA1819F00B26297 /* TDFImageManager.m */; };
+		0CCBC4EC1BA1819F00B26297 /* TDFImageRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CCBC4D51BA1819F00B26297 /* TDFImageRequest.m */; };
+		0CCBC4ED1BA1819F00B26297 /* TDFImageRequestOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CCBC4D61BA1819F00B26297 /* TDFImageRequestOptions.m */; };
+		0CCBC4EE1BA1819F00B26297 /* TDFMockFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CCBC4D81BA1819F00B26297 /* TDFMockFetcher.m */; };
+		0CCBC4EF1BA1819F00B26297 /* TDFMockFetchOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CCBC4DA1BA1819F00B26297 /* TDFMockFetchOperation.m */; };
+		0CCBC4F01BA1819F00B26297 /* TDFMockImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CCBC4DC1BA1819F00B26297 /* TDFMockImageCache.m */; };
+		0CCBC4F11BA1819F00B26297 /* TDFMockImageFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CCBC4DE1BA1819F00B26297 /* TDFMockImageFetcher.m */; };
+		0CCBC4F21BA1819F00B26297 /* TDFMockImageProcessor.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CCBC4E01BA1819F00B26297 /* TDFMockImageProcessor.m */; };
+		0CCBC4F31BA1819F00B26297 /* TDFMockResource.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CCBC4E21BA1819F00B26297 /* TDFMockResource.m */; };
+		0CCBC4F41BA1819F00B26297 /* TDFTesting.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CCBC4E41BA1819F00B26297 /* TDFTesting.m */; };
+		0CCBC4F51BA1819F00B26297 /* TDFURLImageFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CCBC4E61BA1819F00B26297 /* TDFURLImageFetcher.m */; };
+		0CCBC4FA1BA181AD00B26297 /* Image.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0CCBC4F71BA181AD00B26297 /* Image.jpg */; };
+		0CCBC4FB1BA181AD00B26297 /* Image2.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0CCBC4F81BA181AD00B26297 /* Image2.jpg */; };
+		0CCBC4FC1BA181AD00B26297 /* lhfer5lguvi76a9uedez.webp in Resources */ = {isa = PBXBuildFile; fileRef = 0CCBC4F91BA181AD00B26297 /* lhfer5lguvi76a9uedez.webp */; };
+		0CD0C52E1BA182F4007654C0 /* Launch Screen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0CD0C52C1BA182F4007654C0 /* Launch Screen.xib */; };
+		0CD0C52F1BA182F4007654C0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0CD0C52D1BA182F4007654C0 /* Main.storyboard */; };
+		1CBE0FDBC25E8B67D95069B3 /* libPods-DFImageManager-Example.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EE530ED905ADD95C00723F3E /* libPods-DFImageManager-Example.a */; };
+		BBDAEA832C0B942115F00BB0 /* libPods-DFImageManager-Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1560C6FFF9421F30F28DD9BF /* libPods-DFImageManager-Tests.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -78,16 +97,49 @@
 		0C25A3961BA0E48B0044BC00 /* UIViewController+SDFImageManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+SDFImageManager.m"; sourceTree = "<group>"; };
 		0C300EAE1BA0E357008DDEF6 /* DFImageManager-Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "DFImageManager-Example.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0C300EB21BA0E357008DDEF6 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		0C300EBB1BA0E357008DDEF6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		0C300EBD1BA0E357008DDEF6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		0C300EC21BA0E357008DDEF6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		0C300EC71BA0E357008DDEF6 /* DFImageManagerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DFImageManagerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		0C300ECB1BA0E357008DDEF6 /* DFImageManagerTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DFImageManagerTests.m; sourceTree = "<group>"; };
-		0C300ECD1BA0E357008DDEF6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		0C8D14F21BA16A08004CF4F5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = "DFImageManager/Base.lproj/Launch Screen.xib"; sourceTree = "<group>"; };
+		0C300EC71BA0E357008DDEF6 /* DFImageManager-Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "DFImageManager-Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		0C4D3DC41BA180EF008138FA /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		0CCBC4CF1BA1819F00B26297 /* TDFCommonTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDFCommonTests.h; sourceTree = "<group>"; };
+		0CCBC4D01BA1819F00B26297 /* TDFCompositeImageManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDFCompositeImageManager.m; sourceTree = "<group>"; };
+		0CCBC4D11BA1819F00B26297 /* TDFCompositeImageTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDFCompositeImageTask.m; sourceTree = "<group>"; };
+		0CCBC4D21BA1819F00B26297 /* TDFImageCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDFImageCache.m; sourceTree = "<group>"; };
+		0CCBC4D31BA1819F00B26297 /* TDFImageFormats.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDFImageFormats.m; sourceTree = "<group>"; };
+		0CCBC4D41BA1819F00B26297 /* TDFImageManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDFImageManager.m; sourceTree = "<group>"; };
+		0CCBC4D51BA1819F00B26297 /* TDFImageRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDFImageRequest.m; sourceTree = "<group>"; };
+		0CCBC4D61BA1819F00B26297 /* TDFImageRequestOptions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDFImageRequestOptions.m; sourceTree = "<group>"; };
+		0CCBC4D71BA1819F00B26297 /* TDFMockFetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDFMockFetcher.h; sourceTree = "<group>"; };
+		0CCBC4D81BA1819F00B26297 /* TDFMockFetcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDFMockFetcher.m; sourceTree = "<group>"; };
+		0CCBC4D91BA1819F00B26297 /* TDFMockFetchOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDFMockFetchOperation.h; sourceTree = "<group>"; };
+		0CCBC4DA1BA1819F00B26297 /* TDFMockFetchOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDFMockFetchOperation.m; sourceTree = "<group>"; };
+		0CCBC4DB1BA1819F00B26297 /* TDFMockImageCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDFMockImageCache.h; sourceTree = "<group>"; };
+		0CCBC4DC1BA1819F00B26297 /* TDFMockImageCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDFMockImageCache.m; sourceTree = "<group>"; };
+		0CCBC4DD1BA1819F00B26297 /* TDFMockImageFetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDFMockImageFetcher.h; sourceTree = "<group>"; };
+		0CCBC4DE1BA1819F00B26297 /* TDFMockImageFetcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDFMockImageFetcher.m; sourceTree = "<group>"; };
+		0CCBC4DF1BA1819F00B26297 /* TDFMockImageProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDFMockImageProcessor.h; sourceTree = "<group>"; };
+		0CCBC4E01BA1819F00B26297 /* TDFMockImageProcessor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDFMockImageProcessor.m; sourceTree = "<group>"; };
+		0CCBC4E11BA1819F00B26297 /* TDFMockResource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDFMockResource.h; sourceTree = "<group>"; };
+		0CCBC4E21BA1819F00B26297 /* TDFMockResource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDFMockResource.m; sourceTree = "<group>"; };
+		0CCBC4E31BA1819F00B26297 /* TDFTesting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDFTesting.h; sourceTree = "<group>"; };
+		0CCBC4E41BA1819F00B26297 /* TDFTesting.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDFTesting.m; sourceTree = "<group>"; };
+		0CCBC4E51BA1819F00B26297 /* TDFTestingKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDFTestingKit.h; sourceTree = "<group>"; };
+		0CCBC4E61BA1819F00B26297 /* TDFURLImageFetcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDFURLImageFetcher.m; sourceTree = "<group>"; };
+		0CCBC4F71BA181AD00B26297 /* Image.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Image.jpg; sourceTree = "<group>"; };
+		0CCBC4F81BA181AD00B26297 /* Image2.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Image2.jpg; sourceTree = "<group>"; };
+		0CCBC4F91BA181AD00B26297 /* lhfer5lguvi76a9uedez.webp */ = {isa = PBXFileReference; lastKnownFileType = file; path = lhfer5lguvi76a9uedez.webp; sourceTree = "<group>"; };
+		0CCFAF981BA184AD002AA4C7 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		0CD0C52C1BA182F4007654C0 /* Launch Screen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "Launch Screen.xib"; sourceTree = "<group>"; };
+		0CD0C52D1BA182F4007654C0 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
+		1560C6FFF9421F30F28DD9BF /* libPods-DFImageManager-Tests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-DFImageManager-Tests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		1E51FAF3847DE46226299A4D /* Pods-DFImageManager-Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DFImageManager-Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-DFImageManager-Example/Pods-DFImageManager-Example.release.xcconfig"; sourceTree = "<group>"; };
+		2E2EA14F8A3A91C15132A745 /* Pods-DFImageManager-Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DFImageManager-Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-DFImageManager-Tests/Pods-DFImageManager-Tests.release.xcconfig"; sourceTree = "<group>"; };
 		599EBDF002F63E25C864BD6D /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		B03B8FB3F7A856F04DB9C291 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		BA6F81F6502FCBB59AC27D87 /* Pods-DFImageManager-Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DFImageManager-Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DFImageManager-Tests/Pods-DFImageManager-Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		C1DF69A0F90DE5AC4298DEAB /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
+		ED3F742640430A1A8FBFB06A /* Pods-DFImageManager-Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DFImageManager-Example.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DFImageManager-Example/Pods-DFImageManager-Example.debug.xcconfig"; sourceTree = "<group>"; };
+		EE530ED905ADD95C00723F3E /* libPods-DFImageManager-Example.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-DFImageManager-Example.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -95,7 +147,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6E10BE386191F593B2E50DCB /* libPods.a in Frameworks */,
+				1CBE0FDBC25E8B67D95069B3 /* libPods-DFImageManager-Example.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -103,6 +155,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BBDAEA832C0B942115F00BB0 /* libPods-DFImageManager-Tests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -121,6 +174,8 @@
 		0C25A3731BA0E48B0044BC00 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				0CD0C52C1BA182F4007654C0 /* Launch Screen.xib */,
+				0CD0C52D1BA182F4007654C0 /* Main.storyboard */,
 				0C25A3791BA0E48B0044BC00 /* SDFAppDelegate.h */,
 				0C25A37A1BA0E48B0044BC00 /* SDFAppDelegate.m */,
 				0C25A3A91BA152790044BC00 /* View Controllers */,
@@ -150,7 +205,7 @@
 			isa = PBXGroup;
 			children = (
 				0C300EB01BA0E357008DDEF6 /* DFImageManager */,
-				0C300ECA1BA0E357008DDEF6 /* DFImageManagerTests */,
+				0C4D3DC21BA180EF008138FA /* Tests */,
 				0C300EAF1BA0E357008DDEF6 /* Products */,
 				2914E686212F5A07714706EC /* Pods */,
 				5CB0AB8787B493D1DB1B516C /* Frameworks */,
@@ -161,7 +216,7 @@
 			isa = PBXGroup;
 			children = (
 				0C300EAE1BA0E357008DDEF6 /* DFImageManager-Example.app */,
-				0C300EC71BA0E357008DDEF6 /* DFImageManagerTests.xctest */,
+				0C300EC71BA0E357008DDEF6 /* DFImageManager-Tests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -170,8 +225,6 @@
 			isa = PBXGroup;
 			children = (
 				0C25A3731BA0E48B0044BC00 /* Source */,
-				0C300EBA1BA0E357008DDEF6 /* Main.storyboard */,
-				0C8D14F11BA16A08004CF4F5 /* Launch Screen.xib */,
 				0C300EBD1BA0E357008DDEF6 /* Assets.xcassets */,
 				0C300EC21BA0E357008DDEF6 /* Info.plist */,
 				0C300EB11BA0E357008DDEF6 /* Supporting Files */,
@@ -187,13 +240,14 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		0C300ECA1BA0E357008DDEF6 /* DFImageManagerTests */ = {
+		0C4D3DC21BA180EF008138FA /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				0C300ECB1BA0E357008DDEF6 /* DFImageManagerTests.m */,
-				0C300ECD1BA0E357008DDEF6 /* Info.plist */,
+				0C4D3DC41BA180EF008138FA /* Info.plist */,
+				0CCBC4CE1BA1819F00B26297 /* Source */,
+				0CCBC4F61BA181AD00B26297 /* Resources */,
 			);
-			path = DFImageManagerTests;
+			path = Tests;
 			sourceTree = "<group>";
 		};
 		0CAB83FA1BA1541F005961E6 /* GIF Demo */ = {
@@ -217,6 +271,63 @@
 				0C25A3761BA0E48B0044BC00 /* SDFMomentHeaderCollectionReusableView.xib */,
 			);
 			name = "PhotosKit Demo";
+			sourceTree = "<group>";
+		};
+		0CCBC4CE1BA1819F00B26297 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				0CCBC4CF1BA1819F00B26297 /* TDFCommonTests.h */,
+				0CCBC4D01BA1819F00B26297 /* TDFCompositeImageManager.m */,
+				0CCBC4D11BA1819F00B26297 /* TDFCompositeImageTask.m */,
+				0CCBC4D21BA1819F00B26297 /* TDFImageCache.m */,
+				0CCBC4D31BA1819F00B26297 /* TDFImageFormats.m */,
+				0CCBC4D41BA1819F00B26297 /* TDFImageManager.m */,
+				0CCBC4D51BA1819F00B26297 /* TDFImageRequest.m */,
+				0CCBC4D61BA1819F00B26297 /* TDFImageRequestOptions.m */,
+				0CCBC4E61BA1819F00B26297 /* TDFURLImageFetcher.m */,
+				0CCBC4FE1BA181BC00B26297 /* Misc */,
+				0CCBC4FD1BA181B200B26297 /* Mocks */,
+			);
+			path = Source;
+			sourceTree = "<group>";
+		};
+		0CCBC4F61BA181AD00B26297 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				0CCBC4F71BA181AD00B26297 /* Image.jpg */,
+				0CCBC4F81BA181AD00B26297 /* Image2.jpg */,
+				0CCBC4F91BA181AD00B26297 /* lhfer5lguvi76a9uedez.webp */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		0CCBC4FD1BA181B200B26297 /* Mocks */ = {
+			isa = PBXGroup;
+			children = (
+				0CCBC4D71BA1819F00B26297 /* TDFMockFetcher.h */,
+				0CCBC4D81BA1819F00B26297 /* TDFMockFetcher.m */,
+				0CCBC4D91BA1819F00B26297 /* TDFMockFetchOperation.h */,
+				0CCBC4DA1BA1819F00B26297 /* TDFMockFetchOperation.m */,
+				0CCBC4DB1BA1819F00B26297 /* TDFMockImageCache.h */,
+				0CCBC4DC1BA1819F00B26297 /* TDFMockImageCache.m */,
+				0CCBC4DD1BA1819F00B26297 /* TDFMockImageFetcher.h */,
+				0CCBC4DE1BA1819F00B26297 /* TDFMockImageFetcher.m */,
+				0CCBC4DF1BA1819F00B26297 /* TDFMockImageProcessor.h */,
+				0CCBC4E01BA1819F00B26297 /* TDFMockImageProcessor.m */,
+				0CCBC4E11BA1819F00B26297 /* TDFMockResource.h */,
+				0CCBC4E21BA1819F00B26297 /* TDFMockResource.m */,
+			);
+			name = Mocks;
+			sourceTree = "<group>";
+		};
+		0CCBC4FE1BA181BC00B26297 /* Misc */ = {
+			isa = PBXGroup;
+			children = (
+				0CCBC4E31BA1819F00B26297 /* TDFTesting.h */,
+				0CCBC4E41BA1819F00B26297 /* TDFTesting.m */,
+				0CCBC4E51BA1819F00B26297 /* TDFTestingKit.h */,
+			);
+			name = Misc;
 			sourceTree = "<group>";
 		};
 		0CE22EE31BA1563400A5C2CD /* Builtin Networking Demo */ = {
@@ -300,6 +411,10 @@
 			children = (
 				599EBDF002F63E25C864BD6D /* Pods.debug.xcconfig */,
 				C1DF69A0F90DE5AC4298DEAB /* Pods.release.xcconfig */,
+				BA6F81F6502FCBB59AC27D87 /* Pods-DFImageManager-Tests.debug.xcconfig */,
+				2E2EA14F8A3A91C15132A745 /* Pods-DFImageManager-Tests.release.xcconfig */,
+				ED3F742640430A1A8FBFB06A /* Pods-DFImageManager-Example.debug.xcconfig */,
+				1E51FAF3847DE46226299A4D /* Pods-DFImageManager-Example.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -307,7 +422,10 @@
 		5CB0AB8787B493D1DB1B516C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				0CCFAF981BA184AD002AA4C7 /* UIKit.framework */,
 				B03B8FB3F7A856F04DB9C291 /* libPods.a */,
+				EE530ED905ADD95C00723F3E /* libPods-DFImageManager-Example.a */,
+				1560C6FFF9421F30F28DD9BF /* libPods-DFImageManager-Tests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -334,22 +452,24 @@
 			productReference = 0C300EAE1BA0E357008DDEF6 /* DFImageManager-Example.app */;
 			productType = "com.apple.product-type.application";
 		};
-		0C300EC61BA0E357008DDEF6 /* DFImageManagerTests */ = {
+		0C300EC61BA0E357008DDEF6 /* DFImageManager-Tests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 0C300ED31BA0E357008DDEF6 /* Build configuration list for PBXNativeTarget "DFImageManagerTests" */;
+			buildConfigurationList = 0C300ED31BA0E357008DDEF6 /* Build configuration list for PBXNativeTarget "DFImageManager-Tests" */;
 			buildPhases = (
+				E1B108FC052D22D6E929C5CE /* Check Pods Manifest.lock */,
 				0C300EC31BA0E357008DDEF6 /* Sources */,
 				0C300EC41BA0E357008DDEF6 /* Frameworks */,
 				0C300EC51BA0E357008DDEF6 /* Resources */,
+				F2EE2AB43B4717327E16FE5A /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 				0C300EC91BA0E357008DDEF6 /* PBXTargetDependency */,
 			);
-			name = DFImageManagerTests;
+			name = "DFImageManager-Tests";
 			productName = DFImageManagerTests;
-			productReference = 0C300EC71BA0E357008DDEF6 /* DFImageManagerTests.xctest */;
+			productReference = 0C300EC71BA0E357008DDEF6 /* DFImageManager-Tests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -384,7 +504,7 @@
 			projectRoot = "";
 			targets = (
 				0C300EAD1BA0E357008DDEF6 /* DFImageManager-Example */,
-				0C300EC61BA0E357008DDEF6 /* DFImageManagerTests */,
+				0C300EC61BA0E357008DDEF6 /* DFImageManager-Tests */,
 			);
 		};
 /* End PBXProject section */
@@ -395,9 +515,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				0C300EBE1BA0E357008DDEF6 /* Assets.xcassets in Resources */,
+				0CD0C52F1BA182F4007654C0 /* Main.storyboard in Resources */,
+				0CD0C52E1BA182F4007654C0 /* Launch Screen.xib in Resources */,
 				0C25A3981BA0E48B0044BC00 /* SDFMomentHeaderCollectionReusableView.xib in Resources */,
-				0C300EBC1BA0E357008DDEF6 /* Main.storyboard in Resources */,
-				0C8D14F31BA16A08004CF4F5 /* Launch Screen.xib in Resources */,
+				0C4D3DC61BA180EF008138FA /* Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -405,6 +526,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0CCBC4FB1BA181AD00B26297 /* Image2.jpg in Resources */,
+				0CCBC4FC1BA181AD00B26297 /* lhfer5lguvi76a9uedez.webp in Resources */,
+				0CCBC4FA1BA181AD00B26297 /* Image.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -438,7 +562,37 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-DFImageManager-Example/Pods-DFImageManager-Example-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E1B108FC052D22D6E929C5CE /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		F2EE2AB43B4717327E16FE5A /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-DFImageManager-Tests/Pods-DFImageManager-Tests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -472,7 +626,21 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0C300ECC1BA0E357008DDEF6 /* DFImageManagerTests.m in Sources */,
+				0CCBC4F51BA1819F00B26297 /* TDFURLImageFetcher.m in Sources */,
+				0CCBC4F31BA1819F00B26297 /* TDFMockResource.m in Sources */,
+				0CCBC4F41BA1819F00B26297 /* TDFTesting.m in Sources */,
+				0CCBC4EB1BA1819F00B26297 /* TDFImageManager.m in Sources */,
+				0CCBC4F21BA1819F00B26297 /* TDFMockImageProcessor.m in Sources */,
+				0CCBC4E71BA1819F00B26297 /* TDFCompositeImageManager.m in Sources */,
+				0CCBC4ED1BA1819F00B26297 /* TDFImageRequestOptions.m in Sources */,
+				0CCBC4EC1BA1819F00B26297 /* TDFImageRequest.m in Sources */,
+				0CCBC4EE1BA1819F00B26297 /* TDFMockFetcher.m in Sources */,
+				0CCBC4F01BA1819F00B26297 /* TDFMockImageCache.m in Sources */,
+				0CCBC4EA1BA1819F00B26297 /* TDFImageFormats.m in Sources */,
+				0CCBC4E91BA1819F00B26297 /* TDFImageCache.m in Sources */,
+				0CCBC4E81BA1819F00B26297 /* TDFCompositeImageTask.m in Sources */,
+				0CCBC4F11BA1819F00B26297 /* TDFMockImageFetcher.m in Sources */,
+				0CCBC4EF1BA1819F00B26297 /* TDFMockFetchOperation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -485,26 +653,6 @@
 			targetProxy = 0C300EC81BA0E357008DDEF6 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
-
-/* Begin PBXVariantGroup section */
-		0C300EBA1BA0E357008DDEF6 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				0C300EBB1BA0E357008DDEF6 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-		0C8D14F11BA16A08004CF4F5 /* Launch Screen.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				0C8D14F21BA16A08004CF4F5 /* Base */,
-			);
-			name = "Launch Screen.xib";
-			path = ..;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		0C300ECE1BA0E357008DDEF6 /* Debug */ = {
@@ -591,7 +739,7 @@
 		};
 		0C300ED11BA0E357008DDEF6 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 599EBDF002F63E25C864BD6D /* Pods.debug.xcconfig */;
+			baseConfigurationReference = ED3F742640430A1A8FBFB06A /* Pods-DFImageManager-Example.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = DFImageManager/Info.plist;
@@ -604,7 +752,7 @@
 		};
 		0C300ED21BA0E357008DDEF6 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C1DF69A0F90DE5AC4298DEAB /* Pods.release.xcconfig */;
+			baseConfigurationReference = 1E51FAF3847DE46226299A4D /* Pods-DFImageManager-Example.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = DFImageManager/Info.plist;
@@ -617,25 +765,27 @@
 		};
 		0C300ED41BA0E357008DDEF6 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = BA6F81F6502FCBB59AC27D87 /* Pods-DFImageManager-Tests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				INFOPLIST_FILE = DFImageManagerTests/Info.plist;
+				INFOPLIST_FILE = Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.github.kean.DFImageManagerTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/DFImageManager.app/DFImageManager";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/DFImageManager-Example.app/DFImageManager-Example";
 			};
 			name = Debug;
 		};
 		0C300ED51BA0E357008DDEF6 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2E2EA14F8A3A91C15132A745 /* Pods-DFImageManager-Tests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				INFOPLIST_FILE = DFImageManagerTests/Info.plist;
+				INFOPLIST_FILE = Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.github.kean.DFImageManagerTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/DFImageManager.app/DFImageManager";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/DFImageManager-Example.app/DFImageManager-Example";
 			};
 			name = Release;
 		};
@@ -660,7 +810,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		0C300ED31BA0E357008DDEF6 /* Build configuration list for PBXNativeTarget "DFImageManagerTests" */ = {
+		0C300ED31BA0E357008DDEF6 /* Build configuration list for PBXNativeTarget "DFImageManager-Tests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				0C300ED41BA0E357008DDEF6 /* Debug */,
