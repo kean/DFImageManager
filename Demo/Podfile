@@ -1,6 +1,6 @@
 platform :ios, "7.0"
 
-xcodeproj "DFImageManagerSample.xcodeproj"
+xcodeproj "DFImageManager.xcodeproj"
 
 source "https://github.com/CocoaPods/Specs.git"
 

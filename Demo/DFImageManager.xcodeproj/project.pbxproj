@@ -1,0 +1,675 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0C0BAAC11BA157DC00F28AA6 /* SDFPhotos.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C0BAAC01BA157DC00F28AA6 /* SDFPhotos.m */; };
+		0C25A3971BA0E48B0044BC00 /* SDFMomentHeaderCollectionReusableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C25A3751BA0E48B0044BC00 /* SDFMomentHeaderCollectionReusableView.m */; };
+		0C25A3981BA0E48B0044BC00 /* SDFMomentHeaderCollectionReusableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0C25A3761BA0E48B0044BC00 /* SDFMomentHeaderCollectionReusableView.xib */; };
+		0C25A3991BA0E48B0044BC00 /* SDFStickyHeaderCollectionViewFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C25A3781BA0E48B0044BC00 /* SDFStickyHeaderCollectionViewFlowLayout.m */; };
+		0C25A39A1BA0E48B0044BC00 /* SDFAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C25A37A1BA0E48B0044BC00 /* SDFAppDelegate.m */; };
+		0C25A39B1BA0E48B0044BC00 /* SDFBaseCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C25A37C1BA0E48B0044BC00 /* SDFBaseCollectionViewController.m */; };
+		0C25A39C1BA0E48B0044BC00 /* SDFBuiltinNetworkingDemoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C25A37E1BA0E48B0044BC00 /* SDFBuiltinNetworkingDemoViewController.m */; };
+		0C25A39D1BA0E48B0044BC00 /* SDFCompositeCollectionImageViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C25A3801BA0E48B0044BC00 /* SDFCompositeCollectionImageViewCell.m */; };
+		0C25A39E1BA0E48B0044BC00 /* SDFCompositeRequestDemoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C25A3821BA0E48B0044BC00 /* SDFCompositeRequestDemoViewController.m */; };
+		0C25A39F1BA0E48B0044BC00 /* SDFFilesystemDemoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C25A3841BA0E48B0044BC00 /* SDFFilesystemDemoViewController.m */; };
+		0C25A3A21BA0E48B0044BC00 /* SDFGIFDemoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C25A38A1BA0E48B0044BC00 /* SDFGIFDemoViewController.m */; };
+		0C25A3A31BA0E48B0044BC00 /* SDFImageCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C25A38C1BA0E48B0044BC00 /* SDFImageCollectionViewCell.m */; };
+		0C25A3A41BA0E48B0044BC00 /* SDFMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C25A38E1BA0E48B0044BC00 /* SDFMenuViewController.m */; };
+		0C25A3A51BA0E48B0044BC00 /* SDFNetworkingDemoCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C25A3901BA0E48B0044BC00 /* SDFNetworkingDemoCollectionViewController.m */; };
+		0C25A3A61BA0E48B0044BC00 /* SDFPhotosKitDemoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C25A3921BA0E48B0044BC00 /* SDFPhotosKitDemoViewController.m */; };
+		0C25A3A71BA0E48B0044BC00 /* SDFProgressiveJPEGDemoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C25A3941BA0E48B0044BC00 /* SDFProgressiveJPEGDemoViewController.m */; };
+		0C25A3A81BA0E48B0044BC00 /* UIViewController+SDFImageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C25A3961BA0E48B0044BC00 /* UIViewController+SDFImageManager.m */; };
+		0C300EB31BA0E357008DDEF6 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C300EB21BA0E357008DDEF6 /* main.m */; };
+		0C300EBC1BA0E357008DDEF6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0C300EBA1BA0E357008DDEF6 /* Main.storyboard */; };
+		0C300EBE1BA0E357008DDEF6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0C300EBD1BA0E357008DDEF6 /* Assets.xcassets */; };
+		0C300ECC1BA0E357008DDEF6 /* DFImageManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C300ECB1BA0E357008DDEF6 /* DFImageManagerTests.m */; };
+		0C8D14F31BA16A08004CF4F5 /* Launch Screen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0C8D14F11BA16A08004CF4F5 /* Launch Screen.xib */; };
+		6E10BE386191F593B2E50DCB /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B03B8FB3F7A856F04DB9C291 /* libPods.a */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		0C300EC81BA0E357008DDEF6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0C300EA61BA0E357008DDEF6 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 0C300EAD1BA0E357008DDEF6;
+			remoteInfo = DFImageManager;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		0C0BAABF1BA157DC00F28AA6 /* SDFPhotos.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDFPhotos.h; sourceTree = "<group>"; };
+		0C0BAAC01BA157DC00F28AA6 /* SDFPhotos.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDFPhotos.m; sourceTree = "<group>"; };
+		0C25A3741BA0E48B0044BC00 /* SDFMomentHeaderCollectionReusableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDFMomentHeaderCollectionReusableView.h; sourceTree = "<group>"; };
+		0C25A3751BA0E48B0044BC00 /* SDFMomentHeaderCollectionReusableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDFMomentHeaderCollectionReusableView.m; sourceTree = "<group>"; };
+		0C25A3761BA0E48B0044BC00 /* SDFMomentHeaderCollectionReusableView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SDFMomentHeaderCollectionReusableView.xib; sourceTree = "<group>"; };
+		0C25A3771BA0E48B0044BC00 /* SDFStickyHeaderCollectionViewFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDFStickyHeaderCollectionViewFlowLayout.h; sourceTree = "<group>"; };
+		0C25A3781BA0E48B0044BC00 /* SDFStickyHeaderCollectionViewFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDFStickyHeaderCollectionViewFlowLayout.m; sourceTree = "<group>"; };
+		0C25A3791BA0E48B0044BC00 /* SDFAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDFAppDelegate.h; sourceTree = "<group>"; };
+		0C25A37A1BA0E48B0044BC00 /* SDFAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDFAppDelegate.m; sourceTree = "<group>"; };
+		0C25A37B1BA0E48B0044BC00 /* SDFBaseCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDFBaseCollectionViewController.h; sourceTree = "<group>"; };
+		0C25A37C1BA0E48B0044BC00 /* SDFBaseCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDFBaseCollectionViewController.m; sourceTree = "<group>"; };
+		0C25A37D1BA0E48B0044BC00 /* SDFBuiltinNetworkingDemoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDFBuiltinNetworkingDemoViewController.h; sourceTree = "<group>"; };
+		0C25A37E1BA0E48B0044BC00 /* SDFBuiltinNetworkingDemoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDFBuiltinNetworkingDemoViewController.m; sourceTree = "<group>"; };
+		0C25A37F1BA0E48B0044BC00 /* SDFCompositeCollectionImageViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDFCompositeCollectionImageViewCell.h; sourceTree = "<group>"; };
+		0C25A3801BA0E48B0044BC00 /* SDFCompositeCollectionImageViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDFCompositeCollectionImageViewCell.m; sourceTree = "<group>"; };
+		0C25A3811BA0E48B0044BC00 /* SDFCompositeRequestDemoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDFCompositeRequestDemoViewController.h; sourceTree = "<group>"; };
+		0C25A3821BA0E48B0044BC00 /* SDFCompositeRequestDemoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDFCompositeRequestDemoViewController.m; sourceTree = "<group>"; };
+		0C25A3831BA0E48B0044BC00 /* SDFFilesystemDemoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDFFilesystemDemoViewController.h; sourceTree = "<group>"; };
+		0C25A3841BA0E48B0044BC00 /* SDFFilesystemDemoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDFFilesystemDemoViewController.m; sourceTree = "<group>"; };
+		0C25A3891BA0E48B0044BC00 /* SDFGIFDemoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDFGIFDemoViewController.h; sourceTree = "<group>"; };
+		0C25A38A1BA0E48B0044BC00 /* SDFGIFDemoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDFGIFDemoViewController.m; sourceTree = "<group>"; };
+		0C25A38B1BA0E48B0044BC00 /* SDFImageCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDFImageCollectionViewCell.h; sourceTree = "<group>"; };
+		0C25A38C1BA0E48B0044BC00 /* SDFImageCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDFImageCollectionViewCell.m; sourceTree = "<group>"; };
+		0C25A38D1BA0E48B0044BC00 /* SDFMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDFMenuViewController.h; sourceTree = "<group>"; };
+		0C25A38E1BA0E48B0044BC00 /* SDFMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDFMenuViewController.m; sourceTree = "<group>"; };
+		0C25A38F1BA0E48B0044BC00 /* SDFNetworkingDemoCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDFNetworkingDemoCollectionViewController.h; sourceTree = "<group>"; };
+		0C25A3901BA0E48B0044BC00 /* SDFNetworkingDemoCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDFNetworkingDemoCollectionViewController.m; sourceTree = "<group>"; };
+		0C25A3911BA0E48B0044BC00 /* SDFPhotosKitDemoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDFPhotosKitDemoViewController.h; sourceTree = "<group>"; };
+		0C25A3921BA0E48B0044BC00 /* SDFPhotosKitDemoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDFPhotosKitDemoViewController.m; sourceTree = "<group>"; };
+		0C25A3931BA0E48B0044BC00 /* SDFProgressiveJPEGDemoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDFProgressiveJPEGDemoViewController.h; sourceTree = "<group>"; };
+		0C25A3941BA0E48B0044BC00 /* SDFProgressiveJPEGDemoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDFProgressiveJPEGDemoViewController.m; sourceTree = "<group>"; };
+		0C25A3951BA0E48B0044BC00 /* UIViewController+SDFImageManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+SDFImageManager.h"; sourceTree = "<group>"; };
+		0C25A3961BA0E48B0044BC00 /* UIViewController+SDFImageManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+SDFImageManager.m"; sourceTree = "<group>"; };
+		0C300EAE1BA0E357008DDEF6 /* DFImageManager-Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "DFImageManager-Example.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		0C300EB21BA0E357008DDEF6 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		0C300EBB1BA0E357008DDEF6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		0C300EBD1BA0E357008DDEF6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		0C300EC21BA0E357008DDEF6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		0C300EC71BA0E357008DDEF6 /* DFImageManagerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DFImageManagerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		0C300ECB1BA0E357008DDEF6 /* DFImageManagerTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DFImageManagerTests.m; sourceTree = "<group>"; };
+		0C300ECD1BA0E357008DDEF6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		0C8D14F21BA16A08004CF4F5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = "DFImageManager/Base.lproj/Launch Screen.xib"; sourceTree = "<group>"; };
+		599EBDF002F63E25C864BD6D /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		B03B8FB3F7A856F04DB9C291 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		C1DF69A0F90DE5AC4298DEAB /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		0C300EAB1BA0E357008DDEF6 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6E10BE386191F593B2E50DCB /* libPods.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0C300EC41BA0E357008DDEF6 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		0C0BAABE1BA157BB00F28AA6 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				0C0BAABF1BA157DC00F28AA6 /* SDFPhotos.h */,
+				0C0BAAC01BA157DC00F28AA6 /* SDFPhotos.m */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		0C25A3731BA0E48B0044BC00 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				0C25A3791BA0E48B0044BC00 /* SDFAppDelegate.h */,
+				0C25A37A1BA0E48B0044BC00 /* SDFAppDelegate.m */,
+				0C25A3A91BA152790044BC00 /* View Controllers */,
+				0CE22EE81BA1568300A5C2CD /* Views */,
+				0C0BAABE1BA157BB00F28AA6 /* Model */,
+			);
+			path = Source;
+			sourceTree = "<group>";
+		};
+		0C25A3A91BA152790044BC00 /* View Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				0CE22EEA1BA156A900A5C2CD /* Menu */,
+				0CE22EE51BA1565500A5C2CD /* AFNetworking Demo */,
+				0CE22EE41BA1564200A5C2CD /* Filesystem Demo */,
+				0CE22EE31BA1563400A5C2CD /* Builtin Networking Demo */,
+				0CAB83FB1BA1542F005961E6 /* PhotosKit Demo */,
+				0CAB83FA1BA1541F005961E6 /* GIF Demo */,
+				0CE22EE61BA1566100A5C2CD /* Progressive JPEG Demo */,
+				0CE22EE91BA1569300A5C2CD /* Composite Request Demo */,
+				0CE22EE71BA1567300A5C2CD /* Misc */,
+			);
+			name = "View Controllers";
+			sourceTree = "<group>";
+		};
+		0C300EA51BA0E357008DDEF6 = {
+			isa = PBXGroup;
+			children = (
+				0C300EB01BA0E357008DDEF6 /* DFImageManager */,
+				0C300ECA1BA0E357008DDEF6 /* DFImageManagerTests */,
+				0C300EAF1BA0E357008DDEF6 /* Products */,
+				2914E686212F5A07714706EC /* Pods */,
+				5CB0AB8787B493D1DB1B516C /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		0C300EAF1BA0E357008DDEF6 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				0C300EAE1BA0E357008DDEF6 /* DFImageManager-Example.app */,
+				0C300EC71BA0E357008DDEF6 /* DFImageManagerTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		0C300EB01BA0E357008DDEF6 /* DFImageManager */ = {
+			isa = PBXGroup;
+			children = (
+				0C25A3731BA0E48B0044BC00 /* Source */,
+				0C300EBA1BA0E357008DDEF6 /* Main.storyboard */,
+				0C8D14F11BA16A08004CF4F5 /* Launch Screen.xib */,
+				0C300EBD1BA0E357008DDEF6 /* Assets.xcassets */,
+				0C300EC21BA0E357008DDEF6 /* Info.plist */,
+				0C300EB11BA0E357008DDEF6 /* Supporting Files */,
+			);
+			path = DFImageManager;
+			sourceTree = "<group>";
+		};
+		0C300EB11BA0E357008DDEF6 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				0C300EB21BA0E357008DDEF6 /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		0C300ECA1BA0E357008DDEF6 /* DFImageManagerTests */ = {
+			isa = PBXGroup;
+			children = (
+				0C300ECB1BA0E357008DDEF6 /* DFImageManagerTests.m */,
+				0C300ECD1BA0E357008DDEF6 /* Info.plist */,
+			);
+			path = DFImageManagerTests;
+			sourceTree = "<group>";
+		};
+		0CAB83FA1BA1541F005961E6 /* GIF Demo */ = {
+			isa = PBXGroup;
+			children = (
+				0C25A3891BA0E48B0044BC00 /* SDFGIFDemoViewController.h */,
+				0C25A38A1BA0E48B0044BC00 /* SDFGIFDemoViewController.m */,
+			);
+			name = "GIF Demo";
+			sourceTree = "<group>";
+		};
+		0CAB83FB1BA1542F005961E6 /* PhotosKit Demo */ = {
+			isa = PBXGroup;
+			children = (
+				0C25A3911BA0E48B0044BC00 /* SDFPhotosKitDemoViewController.h */,
+				0C25A3921BA0E48B0044BC00 /* SDFPhotosKitDemoViewController.m */,
+				0C25A3771BA0E48B0044BC00 /* SDFStickyHeaderCollectionViewFlowLayout.h */,
+				0C25A3781BA0E48B0044BC00 /* SDFStickyHeaderCollectionViewFlowLayout.m */,
+				0C25A3741BA0E48B0044BC00 /* SDFMomentHeaderCollectionReusableView.h */,
+				0C25A3751BA0E48B0044BC00 /* SDFMomentHeaderCollectionReusableView.m */,
+				0C25A3761BA0E48B0044BC00 /* SDFMomentHeaderCollectionReusableView.xib */,
+			);
+			name = "PhotosKit Demo";
+			sourceTree = "<group>";
+		};
+		0CE22EE31BA1563400A5C2CD /* Builtin Networking Demo */ = {
+			isa = PBXGroup;
+			children = (
+				0C25A37D1BA0E48B0044BC00 /* SDFBuiltinNetworkingDemoViewController.h */,
+				0C25A37E1BA0E48B0044BC00 /* SDFBuiltinNetworkingDemoViewController.m */,
+			);
+			name = "Builtin Networking Demo";
+			sourceTree = "<group>";
+		};
+		0CE22EE41BA1564200A5C2CD /* Filesystem Demo */ = {
+			isa = PBXGroup;
+			children = (
+				0C25A3831BA0E48B0044BC00 /* SDFFilesystemDemoViewController.h */,
+				0C25A3841BA0E48B0044BC00 /* SDFFilesystemDemoViewController.m */,
+			);
+			name = "Filesystem Demo";
+			sourceTree = "<group>";
+		};
+		0CE22EE51BA1565500A5C2CD /* AFNetworking Demo */ = {
+			isa = PBXGroup;
+			children = (
+				0C25A38F1BA0E48B0044BC00 /* SDFNetworkingDemoCollectionViewController.h */,
+				0C25A3901BA0E48B0044BC00 /* SDFNetworkingDemoCollectionViewController.m */,
+			);
+			name = "AFNetworking Demo";
+			sourceTree = "<group>";
+		};
+		0CE22EE61BA1566100A5C2CD /* Progressive JPEG Demo */ = {
+			isa = PBXGroup;
+			children = (
+				0C25A3931BA0E48B0044BC00 /* SDFProgressiveJPEGDemoViewController.h */,
+				0C25A3941BA0E48B0044BC00 /* SDFProgressiveJPEGDemoViewController.m */,
+			);
+			name = "Progressive JPEG Demo";
+			sourceTree = "<group>";
+		};
+		0CE22EE71BA1567300A5C2CD /* Misc */ = {
+			isa = PBXGroup;
+			children = (
+				0C25A3951BA0E48B0044BC00 /* UIViewController+SDFImageManager.h */,
+				0C25A3961BA0E48B0044BC00 /* UIViewController+SDFImageManager.m */,
+				0C25A37B1BA0E48B0044BC00 /* SDFBaseCollectionViewController.h */,
+				0C25A37C1BA0E48B0044BC00 /* SDFBaseCollectionViewController.m */,
+			);
+			name = Misc;
+			sourceTree = "<group>";
+		};
+		0CE22EE81BA1568300A5C2CD /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				0C25A38B1BA0E48B0044BC00 /* SDFImageCollectionViewCell.h */,
+				0C25A38C1BA0E48B0044BC00 /* SDFImageCollectionViewCell.m */,
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
+		0CE22EE91BA1569300A5C2CD /* Composite Request Demo */ = {
+			isa = PBXGroup;
+			children = (
+				0C25A37F1BA0E48B0044BC00 /* SDFCompositeCollectionImageViewCell.h */,
+				0C25A3801BA0E48B0044BC00 /* SDFCompositeCollectionImageViewCell.m */,
+				0C25A3811BA0E48B0044BC00 /* SDFCompositeRequestDemoViewController.h */,
+				0C25A3821BA0E48B0044BC00 /* SDFCompositeRequestDemoViewController.m */,
+			);
+			name = "Composite Request Demo";
+			sourceTree = "<group>";
+		};
+		0CE22EEA1BA156A900A5C2CD /* Menu */ = {
+			isa = PBXGroup;
+			children = (
+				0C25A38D1BA0E48B0044BC00 /* SDFMenuViewController.h */,
+				0C25A38E1BA0E48B0044BC00 /* SDFMenuViewController.m */,
+			);
+			name = Menu;
+			sourceTree = "<group>";
+		};
+		2914E686212F5A07714706EC /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				599EBDF002F63E25C864BD6D /* Pods.debug.xcconfig */,
+				C1DF69A0F90DE5AC4298DEAB /* Pods.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		5CB0AB8787B493D1DB1B516C /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				B03B8FB3F7A856F04DB9C291 /* libPods.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		0C300EAD1BA0E357008DDEF6 /* DFImageManager-Example */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 0C300ED01BA0E357008DDEF6 /* Build configuration list for PBXNativeTarget "DFImageManager-Example" */;
+			buildPhases = (
+				5514771875E9AA32DC94126B /* Check Pods Manifest.lock */,
+				0C300EAA1BA0E357008DDEF6 /* Sources */,
+				0C300EAB1BA0E357008DDEF6 /* Frameworks */,
+				0C300EAC1BA0E357008DDEF6 /* Resources */,
+				6CAB571D2576FBA77C74239E /* Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "DFImageManager-Example";
+			productName = DFImageManager;
+			productReference = 0C300EAE1BA0E357008DDEF6 /* DFImageManager-Example.app */;
+			productType = "com.apple.product-type.application";
+		};
+		0C300EC61BA0E357008DDEF6 /* DFImageManagerTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 0C300ED31BA0E357008DDEF6 /* Build configuration list for PBXNativeTarget "DFImageManagerTests" */;
+			buildPhases = (
+				0C300EC31BA0E357008DDEF6 /* Sources */,
+				0C300EC41BA0E357008DDEF6 /* Frameworks */,
+				0C300EC51BA0E357008DDEF6 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				0C300EC91BA0E357008DDEF6 /* PBXTargetDependency */,
+			);
+			name = DFImageManagerTests;
+			productName = DFImageManagerTests;
+			productReference = 0C300EC71BA0E357008DDEF6 /* DFImageManagerTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		0C300EA61BA0E357008DDEF6 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0700;
+				ORGANIZATIONNAME = "Alexander Grebenyuk";
+				TargetAttributes = {
+					0C300EAD1BA0E357008DDEF6 = {
+						CreatedOnToolsVersion = 7.0;
+					};
+					0C300EC61BA0E357008DDEF6 = {
+						CreatedOnToolsVersion = 7.0;
+						TestTargetID = 0C300EAD1BA0E357008DDEF6;
+					};
+				};
+			};
+			buildConfigurationList = 0C300EA91BA0E357008DDEF6 /* Build configuration list for PBXProject "DFImageManager" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 0C300EA51BA0E357008DDEF6;
+			productRefGroup = 0C300EAF1BA0E357008DDEF6 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				0C300EAD1BA0E357008DDEF6 /* DFImageManager-Example */,
+				0C300EC61BA0E357008DDEF6 /* DFImageManagerTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		0C300EAC1BA0E357008DDEF6 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0C300EBE1BA0E357008DDEF6 /* Assets.xcassets in Resources */,
+				0C25A3981BA0E48B0044BC00 /* SDFMomentHeaderCollectionReusableView.xib in Resources */,
+				0C300EBC1BA0E357008DDEF6 /* Main.storyboard in Resources */,
+				0C8D14F31BA16A08004CF4F5 /* Launch Screen.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0C300EC51BA0E357008DDEF6 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		5514771875E9AA32DC94126B /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		6CAB571D2576FBA77C74239E /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		0C300EAA1BA0E357008DDEF6 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0C25A3A61BA0E48B0044BC00 /* SDFPhotosKitDemoViewController.m in Sources */,
+				0C25A3A51BA0E48B0044BC00 /* SDFNetworkingDemoCollectionViewController.m in Sources */,
+				0C25A39F1BA0E48B0044BC00 /* SDFFilesystemDemoViewController.m in Sources */,
+				0C25A3A41BA0E48B0044BC00 /* SDFMenuViewController.m in Sources */,
+				0C25A3971BA0E48B0044BC00 /* SDFMomentHeaderCollectionReusableView.m in Sources */,
+				0C25A39C1BA0E48B0044BC00 /* SDFBuiltinNetworkingDemoViewController.m in Sources */,
+				0C0BAAC11BA157DC00F28AA6 /* SDFPhotos.m in Sources */,
+				0C25A3A81BA0E48B0044BC00 /* UIViewController+SDFImageManager.m in Sources */,
+				0C25A3A31BA0E48B0044BC00 /* SDFImageCollectionViewCell.m in Sources */,
+				0C25A39D1BA0E48B0044BC00 /* SDFCompositeCollectionImageViewCell.m in Sources */,
+				0C25A39B1BA0E48B0044BC00 /* SDFBaseCollectionViewController.m in Sources */,
+				0C25A3991BA0E48B0044BC00 /* SDFStickyHeaderCollectionViewFlowLayout.m in Sources */,
+				0C25A3A71BA0E48B0044BC00 /* SDFProgressiveJPEGDemoViewController.m in Sources */,
+				0C25A39A1BA0E48B0044BC00 /* SDFAppDelegate.m in Sources */,
+				0C300EB31BA0E357008DDEF6 /* main.m in Sources */,
+				0C25A39E1BA0E48B0044BC00 /* SDFCompositeRequestDemoViewController.m in Sources */,
+				0C25A3A21BA0E48B0044BC00 /* SDFGIFDemoViewController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0C300EC31BA0E357008DDEF6 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0C300ECC1BA0E357008DDEF6 /* DFImageManagerTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		0C300EC91BA0E357008DDEF6 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 0C300EAD1BA0E357008DDEF6 /* DFImageManager-Example */;
+			targetProxy = 0C300EC81BA0E357008DDEF6 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		0C300EBA1BA0E357008DDEF6 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				0C300EBB1BA0E357008DDEF6 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		0C8D14F11BA16A08004CF4F5 /* Launch Screen.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				0C8D14F21BA16A08004CF4F5 /* Base */,
+			);
+			name = "Launch Screen.xib";
+			path = ..;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		0C300ECE1BA0E357008DDEF6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		0C300ECF1BA0E357008DDEF6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		0C300ED11BA0E357008DDEF6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 599EBDF002F63E25C864BD6D /* Pods.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = DFImageManager/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.github.kean.DFImageManager;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		0C300ED21BA0E357008DDEF6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = C1DF69A0F90DE5AC4298DEAB /* Pods.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = DFImageManager/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.github.kean.DFImageManager;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		0C300ED41BA0E357008DDEF6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				INFOPLIST_FILE = DFImageManagerTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.github.kean.DFImageManagerTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/DFImageManager.app/DFImageManager";
+			};
+			name = Debug;
+		};
+		0C300ED51BA0E357008DDEF6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				INFOPLIST_FILE = DFImageManagerTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.github.kean.DFImageManagerTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/DFImageManager.app/DFImageManager";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		0C300EA91BA0E357008DDEF6 /* Build configuration list for PBXProject "DFImageManager" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0C300ECE1BA0E357008DDEF6 /* Debug */,
+				0C300ECF1BA0E357008DDEF6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		0C300ED01BA0E357008DDEF6 /* Build configuration list for PBXNativeTarget "DFImageManager-Example" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0C300ED11BA0E357008DDEF6 /* Debug */,
+				0C300ED21BA0E357008DDEF6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		0C300ED31BA0E357008DDEF6 /* Build configuration list for PBXNativeTarget "DFImageManagerTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0C300ED41BA0E357008DDEF6 /* Debug */,
+				0C300ED51BA0E357008DDEF6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 0C300EA61BA0E357008DDEF6 /* Project object */;
+}
