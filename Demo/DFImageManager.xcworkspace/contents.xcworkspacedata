@@ -11,21 +11,58 @@
       location = "group:../Pod/Source"
       name = "Source">
       <Group
-         location = "group:AFNetworking"
-         name = "AFNetworking">
-         <FileRef
-            location = "group:DFAFImageFetcher.h">
-         </FileRef>
-         <FileRef
-            location = "group:DFAFImageFetcher.m">
-         </FileRef>
-         <FileRef
-            location = "group:DFImageManagerKit+AFNetworking.h">
-         </FileRef>
-      </Group>
-      <Group
          location = "group:Core"
          name = "Core">
+         <FileRef
+            location = "group:DFImageManagerKit.h">
+         </FileRef>
+         <Group
+            location = "group:Protocols"
+            name = "Protocols">
+            <FileRef
+               location = "group:DFImageManaging.h">
+            </FileRef>
+            <FileRef
+               location = "group:DFImageFetching.h">
+            </FileRef>
+            <FileRef
+               location = "group:DFImageCaching.h">
+            </FileRef>
+            <FileRef
+               location = "group:DFImageDecoding.h">
+            </FileRef>
+            <FileRef
+               location = "group:DFImageProcessing.h">
+            </FileRef>
+         </Group>
+         <Group
+            location = "group:Managing"
+            name = "Managing">
+            <FileRef
+               location = "group:DFImageManager.h">
+            </FileRef>
+            <FileRef
+               location = "group:DFImageManager.m">
+            </FileRef>
+            <FileRef
+               location = "group:DFImageManagerConfiguration.h">
+            </FileRef>
+            <FileRef
+               location = "group:DFImageManagerConfiguration.m">
+            </FileRef>
+            <FileRef
+               location = "group:DFCompositeImageManager.h">
+            </FileRef>
+            <FileRef
+               location = "group:DFCompositeImageManager.m">
+            </FileRef>
+            <FileRef
+               location = "group:DFImageManager+DefaultManager.m">
+            </FileRef>
+            <FileRef
+               location = "group:DFImageManager+SharedManager.m">
+            </FileRef>
+         </Group>
          <Group
             location = "group:Caching"
             name = "Caching">
@@ -48,53 +85,6 @@
                location = "group:NSCache+DFImageManager.m">
             </FileRef>
          </Group>
-         <FileRef
-            location = "group:DFImageManagerKit.h">
-         </FileRef>
-         <Group
-            location = "group:Managing"
-            name = "Managing">
-            <FileRef
-               location = "group:DFCompositeImageManager.h">
-            </FileRef>
-            <FileRef
-               location = "group:DFCompositeImageManager.m">
-            </FileRef>
-            <FileRef
-               location = "group:DFImageManager+DefaultManager.m">
-            </FileRef>
-            <FileRef
-               location = "group:DFImageManager+SharedManager.m">
-            </FileRef>
-            <FileRef
-               location = "group:DFImageManager.h">
-            </FileRef>
-            <FileRef
-               location = "group:DFImageManager.m">
-            </FileRef>
-            <FileRef
-               location = "group:DFImageManagerConfiguration.h">
-            </FileRef>
-            <FileRef
-               location = "group:DFImageManagerConfiguration.m">
-            </FileRef>
-         </Group>
-         <Group
-            location = "group:Private"
-            name = "Private">
-            <FileRef
-               location = "group:DFImageManagerImageLoader.h">
-            </FileRef>
-            <FileRef
-               location = "group:DFImageManagerImageLoader.m">
-            </FileRef>
-            <FileRef
-               location = "group:DFProgressiveImageDecoder.h">
-            </FileRef>
-            <FileRef
-               location = "group:DFProgressiveImageDecoder.m">
-            </FileRef>
-         </Group>
          <Group
             location = "group:Processing"
             name = "Processing">
@@ -115,25 +105,6 @@
             </FileRef>
             <FileRef
                location = "group:UIImage+DFImageUtilities.m">
-            </FileRef>
-         </Group>
-         <Group
-            location = "group:Protocols"
-            name = "Protocols">
-            <FileRef
-               location = "group:DFImageCaching.h">
-            </FileRef>
-            <FileRef
-               location = "group:DFImageDecoding.h">
-            </FileRef>
-            <FileRef
-               location = "group:DFImageFetching.h">
-            </FileRef>
-            <FileRef
-               location = "group:DFImageManaging.h">
-            </FileRef>
-            <FileRef
-               location = "group:DFImageProcessing.h">
             </FileRef>
          </Group>
          <Group
@@ -170,37 +141,52 @@
                location = "group:DFImageTask.m">
             </FileRef>
          </Group>
+         <Group
+            location = "group:Private"
+            name = "Private">
+            <FileRef
+               location = "group:DFImageManagerImageLoader.h">
+            </FileRef>
+            <FileRef
+               location = "group:DFImageManagerImageLoader.m">
+            </FileRef>
+            <FileRef
+               location = "group:DFProgressiveImageDecoder.h">
+            </FileRef>
+            <FileRef
+               location = "group:DFProgressiveImageDecoder.m">
+            </FileRef>
+         </Group>
       </Group>
       <Group
-         location = "group:Extensions"
-         name = "Extensions">
+         location = "group:UI"
+         name = "UI">
          <FileRef
-            location = "group:DFCompositeImageTask.h">
+            location = "group:DFImageManagerKit+UI.h">
          </FileRef>
          <FileRef
-            location = "group:DFCompositeImageTask.m">
+            location = "group:DFImageView.h">
          </FileRef>
          <FileRef
-            location = "group:DFImageManagerKit+Extensions.h">
+            location = "group:DFImageView.m">
          </FileRef>
          <FileRef
-            location = "group:DFProxyImageManager.h">
+            location = "group:UIImageView+DFImageManager.h">
          </FileRef>
          <FileRef
-            location = "group:DFProxyImageManager.m">
-         </FileRef>
-      </Group>
-      <Group
-         location = "group:GIF"
-         name = "GIF">
-         <FileRef
-            location = "group:DFAnimatedImage.h">
+            location = "group:UIImageView+DFImageManager.m">
          </FileRef>
          <FileRef
-            location = "group:DFAnimatedImage.m">
+            location = "group:DFCollectionViewPreheatingController.h">
          </FileRef>
          <FileRef
-            location = "group:DFImageManagerKit+GIF.h">
+            location = "group:DFCollectionViewPreheatingController.m">
+         </FileRef>
+         <FileRef
+            location = "group:DFImageRequest+UIKitAdditions.h">
+         </FileRef>
+         <FileRef
+            location = "group:DFImageRequest+UIKitAdditions.m">
          </FileRef>
       </Group>
       <Group
@@ -226,6 +212,19 @@
          </FileRef>
       </Group>
       <Group
+         location = "group:AFNetworking"
+         name = "AFNetworking">
+         <FileRef
+            location = "group:DFImageManagerKit+AFNetworking.h">
+         </FileRef>
+         <FileRef
+            location = "group:DFAFImageFetcher.h">
+         </FileRef>
+         <FileRef
+            location = "group:DFAFImageFetcher.m">
+         </FileRef>
+      </Group>
+      <Group
          location = "group:PhotosKit"
          name = "PhotosKit">
          <FileRef
@@ -245,37 +244,6 @@
          </FileRef>
       </Group>
       <Group
-         location = "group:UI"
-         name = "UI">
-         <FileRef
-            location = "group:DFCollectionViewPreheatingController.h">
-         </FileRef>
-         <FileRef
-            location = "group:DFCollectionViewPreheatingController.m">
-         </FileRef>
-         <FileRef
-            location = "group:DFImageManagerKit+UI.h">
-         </FileRef>
-         <FileRef
-            location = "group:DFImageRequest+UIKitAdditions.h">
-         </FileRef>
-         <FileRef
-            location = "group:DFImageRequest+UIKitAdditions.m">
-         </FileRef>
-         <FileRef
-            location = "group:DFImageView.h">
-         </FileRef>
-         <FileRef
-            location = "group:DFImageView.m">
-         </FileRef>
-         <FileRef
-            location = "group:UIImageView+DFImageManager.h">
-         </FileRef>
-         <FileRef
-            location = "group:UIImageView+DFImageManager.m">
-         </FileRef>
-      </Group>
-      <Group
          location = "group:WebP"
          name = "WebP">
          <FileRef
@@ -286,6 +254,38 @@
          </FileRef>
          <FileRef
             location = "group:UIImage+DFImageManagerWebP.m">
+         </FileRef>
+      </Group>
+      <Group
+         location = "group:GIF"
+         name = "GIF">
+         <FileRef
+            location = "group:DFImageManagerKit+GIF.h">
+         </FileRef>
+         <FileRef
+            location = "group:DFAnimatedImage.h">
+         </FileRef>
+         <FileRef
+            location = "group:DFAnimatedImage.m">
+         </FileRef>
+      </Group>
+      <Group
+         location = "group:Extensions"
+         name = "Extensions">
+         <FileRef
+            location = "group:DFImageManagerKit+Extensions.h">
+         </FileRef>
+         <FileRef
+            location = "group:DFCompositeImageTask.h">
+         </FileRef>
+         <FileRef
+            location = "group:DFCompositeImageTask.m">
+         </FileRef>
+         <FileRef
+            location = "group:DFProxyImageManager.h">
+         </FileRef>
+         <FileRef
+            location = "group:DFProxyImageManager.m">
          </FileRef>
       </Group>
    </Group>
