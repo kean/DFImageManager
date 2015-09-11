@@ -538,26 +538,27 @@
     _fetcher.queue.suspended = YES;
     
     DFMutableImageRequestOptions *options = [DFMutableImageRequestOptions new];
-    options.priority = DFImageRequestPriorityVeryHigh;
+    options.priority = DFImageRequestPriorityHigh;
     DFImageRequest *request = [DFImageRequest requestWithResource:[TDFMockResource resourceWithID:@"ID"] targetSize:DFImageMaximumSize contentMode:DFImageContentModeAspectFill options:options.options];
     
     NSOperation *__block operation;
     [self expectationForNotification:TDFMockImageFetcherDidStartOperationNotification object:_fetcher handler:^BOOL(NSNotification *notification) {
         operation = notification.userInfo[TDFMockImageFetcherOperationKey];
+        XCTAssert([operation isKindOfClass:[NSOperation class]]);
         XCTAssertNotNil(operation);
         return YES;
     }];
     
     XCTestExpectation *expectation = [self expectationWithDescription:@""];
     DFImageTask *task = [_manager imageTaskForRequest:request completion:^(UIImage *__nullable image, NSError *__nullable error, DFImageResponse *__nullable response, DFImageTask *__nonnull completedTask) {
-        XCTAssertEqual(operation.queuePriority, (NSOperationQueuePriority)DFImageRequestPriorityVeryLow);
+        XCTAssertEqual(operation.queuePriority, NSOperationQueuePriorityLow);
         [expectation fulfill];
     }];
     XCTAssertEqual(task.priority, options.priority);
     [task resume];
     [NSThread sleepForTimeInterval:0.05]; // Wait till operation is created
-    [task setPriority:DFImageRequestPriorityVeryLow];
-    XCTAssertEqual(task.priority, DFImageRequestPriorityVeryLow);
+    [task setPriority:DFImageRequestPriorityLow];
+    XCTAssertEqual(task.priority, DFImageRequestPriorityLow);
     _fetcher.queue.suspended = NO;
     
     [self waitForExpectationsWithTimeout:1.0 handler:nil];

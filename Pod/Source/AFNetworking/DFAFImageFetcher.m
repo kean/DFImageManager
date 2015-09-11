@@ -21,36 +21,43 @@
 // THE SOFTWARE.
 
 #import "DFAFImageFetcher.h"
-#import "DFImageRequestOptions.h"
+#import "DFImageFetchingOperation.h"
 #import "DFImageManagerDefines.h"
 #import "DFImageRequest.h"
+#import "DFImageRequestOptions.h"
 
 NSString *const DFAFRequestCachePolicyKey = @"DFAFRequestCachePolicyKey";
 
-@interface _DFAFOperation : NSOperation
-
-@property (nonatomic, copy) void (^cancellationHandler)(void);
-@property (nonatomic, copy) void (^priorityHandler)(NSOperationQueuePriority priority);
-
-@end
-
-@implementation _DFAFOperation
-
-- (void)cancel {
-    @synchronized(self) {
-        if (!self.isCancelled) {
-            [super cancel];
-            if (self.cancellationHandler) {
-                self.cancellationHandler();
-            }
-        }
+static inline float _DFAFSessionTaskPriorityForRequestPriority(DFImageRequestPriority priority) {
+    switch (priority) {
+        case DFImageRequestPriorityHigh: return 0.25;
+        case DFImageRequestPriorityNormal: return 0.5;
+        case DFImageRequestPriorityLow: return 0.75;
     }
 }
 
-- (void)setQueuePriority:(NSOperationQueuePriority)queuePriority {
-    super.queuePriority = queuePriority;
-    if (self.priorityHandler) {
-        self.priorityHandler(queuePriority);
+@interface _DFAFImageFetchOperation : NSObject <DFImageFetchingOperation>
+
+@property (nullable, nonatomic, weak, readonly) NSURLSessionTask *task;
+
+@end
+
+@implementation _DFAFImageFetchOperation
+
+- (nonnull instancetype)initWithTask:(nonnull NSURLSessionTask *)task {
+    if (self = [super init]) {
+        _task = task;
+    }
+    return self;
+}
+
+- (void)cancelImageFetching {
+    [_task cancel];
+}
+
+- (void)setImageFetchingPriority:(DFImageRequestPriority)priority {
+    if ([_task respondsToSelector:@selector(setPriority:)]) {
+        _task.priority = _DFAFSessionTaskPriorityForRequestPriority(priority);
     }
 }
 
@@ -122,7 +129,7 @@ DF_INIT_UNAVAILABLE_IMPL
     return request1 == request2 || [(NSURL *)request1.resource isEqual:(NSURL *)request2.resource];
 }
 
-- (nonnull NSOperation *)startOperationWithRequest:(nonnull DFImageRequest *)request progressHandler:(nullable DFImageFetchingProgressHandler)progressHandler completion:(nullable DFImageFetchingCompletionHandler)completion {
+- (id<DFImageFetchingOperation>)startOperationWithRequest:(DFImageRequest *)request progressHandler:(DFImageFetchingProgressHandler)progressHandler completion:(DFImageFetchingCompletionHandler)completion {
     NSURLRequest *URLRequest = [self _URLRequestForImageRequest:request];
     typeof(self) __weak weakSelf = self;
     NSURLSessionDataTask *__block task = [self.sessionManager dataTaskWithRequest:URLRequest completionHandler:^(NSURLResponse *URLResponse, NSData *result, NSError *error) {
@@ -136,8 +143,6 @@ DF_INIT_UNAVAILABLE_IMPL
             }
         }
     }];
-    [task resume];
-    
     // Track progress using dataTaskDidReceiveDataBlock exposed by AFURLSessionManager.
     _DFDataTaskDelegate *dataTaskDelegate = [_DFDataTaskDelegate new];
     dataTaskDelegate.dataTaskDidReceiveDataBlock = ^(NSURLSession *session, NSURLSessionDataTask *dataTask, NSData *data) {
@@ -149,16 +154,8 @@ DF_INIT_UNAVAILABLE_IMPL
         _dataTaskDelegates[task] = dataTaskDelegate;
     }
     
-    _DFAFOperation *operation = [_DFAFOperation new];
-    operation.cancellationHandler = ^{
-        [task cancel];
-    };
-    operation.priorityHandler = ^(NSOperationQueuePriority priority){
-        if ([task respondsToSelector:@selector(setPriority:)]) {
-            task.priority = [DFAFImageFetcher _taskPriorityForQueuePriority:priority];
-        }
-    };
-    return operation;
+    [task resume];
+    return [[_DFAFImageFetchOperation alloc] initWithTask:task];
 }
 
 - (void)removeAllCachedImages {

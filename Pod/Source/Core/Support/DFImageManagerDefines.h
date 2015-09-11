@@ -54,11 +54,9 @@ typedef NS_ENUM(NSInteger, DFImageRequestCachePolicy) {
 /*! Image request priority.
  */
 typedef NS_ENUM(NSInteger, DFImageRequestPriority) {
-    DFImageRequestPriorityVeryLow = NSOperationQueuePriorityVeryLow,
-    DFImageRequestPriorityLow = NSOperationQueuePriorityLow,
-    DFImageRequestPriorityNormal = NSOperationQueuePriorityNormal,
-    DFImageRequestPriorityHigh = NSOperationQueuePriorityHigh,
-    DFImageRequestPriorityVeryHigh = NSOperationQueuePriorityVeryHigh
+    DFImageRequestPriorityLow,
+    DFImageRequestPriorityNormal,
+    DFImageRequestPriorityHigh
 };
 
 /*! Progress handler, called on a main thread.

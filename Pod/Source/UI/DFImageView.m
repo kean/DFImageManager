@@ -137,7 +137,7 @@
 - (void)willMoveToWindow:(UIWindow *)newWindow {
     [super willMoveToWindow:newWindow];
     if (self.managesRequestPriorities) {
-        [_imageTask setPriority:(newWindow ? DFImageRequestPriorityNormal: DFImageRequestPriorityVeryLow)];
+        [_imageTask setPriority:(newWindow ? DFImageRequestPriorityNormal: DFImageRequestPriorityLow)];
     }
 }
 

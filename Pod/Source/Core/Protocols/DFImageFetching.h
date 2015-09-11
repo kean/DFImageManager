@@ -23,6 +23,7 @@
 #import <UIKit/UIKit.h>
 #import <Foundation/Foundation.h>
 
+@protocol DFImageFetchingOperation;
 @class DFImageRequest;
 
 typedef void (^DFImageFetchingProgressHandler)(NSData *__nullable data, int64_t completedUnitCount, int64_t totalUnitCount);
@@ -48,10 +49,9 @@ typedef void (^DFImageFetchingCompletionHandler)(NSData *__nullable data, NSDict
 
 /*! Starts fetching an image data for the request.
  @param progressHandler Progress handler that can be called on any thread. Image fetcher that don't report progress should ignore this the handler.
- @param completion Completion handler, can be called on any thread.
- @return The operation that implements fetching.
+ @param completion Completion handler, can be called on arbitrary thread.
  */
-- (nonnull NSOperation *)startOperationWithRequest:(nonnull DFImageRequest *)request progressHandler:(nullable DFImageFetchingProgressHandler)progressHandler completion:(nullable DFImageFetchingCompletionHandler)completion;
+- (nonnull id<DFImageFetchingOperation>)startOperationWithRequest:(nonnull DFImageRequest *)request progressHandler:(nullable DFImageFetchingProgressHandler)progressHandler completion:(nullable DFImageFetchingCompletionHandler)completion;
 
 @optional
 

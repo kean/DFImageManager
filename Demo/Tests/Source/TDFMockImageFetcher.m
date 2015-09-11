@@ -39,7 +39,7 @@ NSString *TDFMockImageFetcherOperationKey = @"TDFMockImageFetcherOperationKey";
     return [request1.resource isEqual:request2.resource];
 }
 
-- (nonnull NSOperation *)startOperationWithRequest:(nonnull DFImageRequest *)request progressHandler:(nullable DFImageFetchingProgressHandler)progressHandler completion:(nullable DFImageFetchingCompletionHandler)completion {
+- (id<DFImageFetchingOperation>)startOperationWithRequest:(DFImageRequest *)request progressHandler:(DFImageFetchingProgressHandler)progressHandler completion:(DFImageFetchingCompletionHandler)completion {
     _createdOperationCount++;
     TDFMockFetchOperation *operation = [TDFMockFetchOperation blockOperationWithBlock:^{
         dispatch_async(dispatch_get_main_queue(), ^{

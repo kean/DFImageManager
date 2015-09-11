@@ -26,6 +26,7 @@
 
 #import "DFImageManaging.h"
 #import "DFImageFetching.h"
+#import "DFImageFetchingOperation.h"
 #import "DFImageCaching.h"
 #import "DFImageProcessing.h"
 #import "DFImageDecoding.h"

@@ -20,6 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+#import "DFImageFetchingOperation.h"
 #import "DFImageRequest.h"
 #import "DFImageRequestOptions.h"
 #import "DFURLHTTPResponseValidator.h"
@@ -28,60 +29,7 @@
 NSString *const DFURLRequestCachePolicyKey = @"DFURLRequestCachePolicyKey";
 
 
-@interface _DFURLSessionOperation : NSOperation
-
-@property (nonatomic, copy) void (^cancellationHandler)(void);
-@property (nonatomic, copy) void (^priorityHandler)(NSOperationQueuePriority priority);
-
-@end
-
-@implementation _DFURLSessionOperation
-
-- (void)cancel {
-    @synchronized(self) {
-        if (!self.isCancelled) {
-            [super cancel];
-            if (self.cancellationHandler) {
-                self.cancellationHandler();
-            }
-        }
-    }
-}
-
-- (void)setQueuePriority:(NSOperationQueuePriority)queuePriority {
-    super.queuePriority = queuePriority;
-    if (self.priorityHandler) {
-        self.priorityHandler(queuePriority);
-    }
-}
-
-@end
-
-
-typedef void (^_DFURLSessionDataTaskProgressHandler)(NSData *data, int64_t countOfBytesReceived, int64_t countOfBytesExpectedToReceive);
-typedef void (^_DFURLSessionDataTaskCompletionHandler)(NSData *data, NSURLResponse *response, NSError *error);
-
-@interface _DFURLSessionDataTaskHandler : NSObject
-
-@property (nullable, nonatomic, copy, readonly) _DFURLSessionDataTaskProgressHandler progressHandler;
-@property (nullable, nonatomic, copy, readonly) _DFURLSessionDataTaskCompletionHandler completionHandler;
-@property (nonnull, nonatomic, readonly) NSMutableData *data;
-
-@end
-
-@implementation _DFURLSessionDataTaskHandler
-
-- (instancetype)initWithProgressHandler:(_DFURLSessionDataTaskProgressHandler)progressHandler completion:(_DFURLSessionDataTaskCompletionHandler)completionHandler {
-    if (self = [super init]) {
-        _progressHandler = [progressHandler copy];
-        _completionHandler = [completionHandler copy];
-        _data = [NSMutableData new];
-    }
-    return self;
-}
-
-@end
-
+#pragma mark - _DFURLFetcherTaskQueue -
 
 static const NSTimeInterval _kTaskExecutionInterval = 0.005; // 5 ms
 
@@ -122,8 +70,6 @@ static const NSTimeInterval _kTaskExecutionInterval = 0.005; // 5 ms
     });
 }
 
-/*! Gurantees that there is is at least '_kTaskExecutionInterval' seconds between the execution of each task.
- */
 - (void)_setNeedsResumePendingTasks {
     if (!_executing) {
         _executing = YES;
@@ -148,6 +94,75 @@ static const NSTimeInterval _kTaskExecutionInterval = 0.005; // 5 ms
 
 @end
 
+
+#pragma mark - _DFURLImageFetchOperation -
+
+static inline float _DFSessionTaskPriorityForRequestPriority(DFImageRequestPriority priority) {
+    switch (priority) {
+        case DFImageRequestPriorityHigh: return 0.25;
+        case DFImageRequestPriorityNormal: return 0.5;
+        case DFImageRequestPriorityLow: return 0.75;
+    }
+}
+
+@interface _DFURLImageFetchOperation : NSObject <DFImageFetchingOperation>
+
+@property (nullable, nonatomic, weak, readonly) NSURLSessionTask *task;
+@property (nullable, nonatomic, weak, readonly) _DFURLFetcherTaskQueue *queue;
+
+@end
+
+@implementation _DFURLImageFetchOperation
+
+- (nonnull instancetype)initWithTask:(nonnull NSURLSessionTask *)task queue:(nonnull _DFURLFetcherTaskQueue *)queue {
+    if (self = [super init]) {
+        _task = task;
+        _queue = queue;
+    }
+    return self;
+}
+
+- (void)cancelImageFetching {
+    [_queue cancelTask:_task];
+}
+
+- (void)setImageFetchingPriority:(DFImageRequestPriority)priority {
+    if ([_task respondsToSelector:@selector(setPriority:)]) {
+        _task.priority = _DFSessionTaskPriorityForRequestPriority(priority);
+    }
+}
+
+@end
+
+
+#pragma mark - _DFURLSessionDataTaskHandler -
+
+typedef void (^_DFURLSessionDataTaskProgressHandler)(NSData *data, int64_t countOfBytesReceived, int64_t countOfBytesExpectedToReceive);
+typedef void (^_DFURLSessionDataTaskCompletionHandler)(NSData *data, NSURLResponse *response, NSError *error);
+
+@interface _DFURLSessionDataTaskHandler : NSObject
+
+@property (nullable, nonatomic, copy, readonly) _DFURLSessionDataTaskProgressHandler progressHandler;
+@property (nullable, nonatomic, copy, readonly) _DFURLSessionDataTaskCompletionHandler completionHandler;
+@property (nonnull, nonatomic, readonly) NSMutableData *data;
+
+@end
+
+@implementation _DFURLSessionDataTaskHandler
+
+- (instancetype)initWithProgressHandler:(_DFURLSessionDataTaskProgressHandler)progressHandler completion:(_DFURLSessionDataTaskCompletionHandler)completionHandler {
+    if (self = [super init]) {
+        _progressHandler = [progressHandler copy];
+        _completionHandler = [completionHandler copy];
+        _data = [NSMutableData new];
+    }
+    return self;
+}
+
+@end
+
+
+#pragma mark - DFURLImageFetcher -
 
 @interface DFURLImageFetcher ()
 
@@ -200,7 +215,7 @@ DF_INIT_UNAVAILABLE_IMPL
     return request1 == request2 || [(NSURL *)request1.resource isEqual:(NSURL *)request2.resource];
 }
 
-- (nonnull NSOperation *)startOperationWithRequest:(nonnull DFImageRequest *)request progressHandler:(nullable DFImageFetchingProgressHandler)progressHandler completion:(nullable DFImageFetchingCompletionHandler)completion {
+- (id<DFImageFetchingOperation>)startOperationWithRequest:(DFImageRequest *)request progressHandler:(DFImageFetchingProgressHandler)progressHandler completion:(DFImageFetchingCompletionHandler)completion {
     typeof(self) __weak weakSelf = self;
     NSURLRequest *URLRequest = [self _URLRequestForImageRequest:request];
     NSURLSessionDataTask *__block task = [self.sessionDelegate URLImageFetcher:self dataTaskWithRequest:URLRequest progressHandler:^(NSData *data, int64_t countOfBytesReceived, int64_t countOfBytesExpectedToReceive) {
@@ -219,31 +234,8 @@ DF_INIT_UNAVAILABLE_IMPL
             completion(receivedData, nil, error);
         }
     }];
-    
-    // Passive container, DFURLImageFetcher never even start the operation, it only uses it's -cancel and -setPririty APIs. DFImageManager should probably have a specific protocol instead of NSOperation, because sometimes there is not need in one.
-    _DFURLSessionOperation *operation = [_DFURLSessionOperation new];
-    operation.cancellationHandler = ^{
-        [weakSelf.taskQueue cancelTask:task];
-    };
-    operation.priorityHandler = ^(NSOperationQueuePriority priority) {
-        if ([task respondsToSelector:@selector(setPriority:)]) {
-            task.priority = [DFURLImageFetcher _taskPriorityForQueuePriority:priority];
-        }
-    };
-    
     [_taskQueue resumeTask:task];
-    
-    return operation;
-}
-
-+ (float)_taskPriorityForQueuePriority:(NSOperationQueuePriority)queuePriority {
-    switch (queuePriority) {
-        case NSOperationQueuePriorityVeryHigh: return 0.9f;
-        case NSOperationQueuePriorityHigh: return 0.7f;
-        case NSOperationQueuePriorityNormal: return 0.5f;
-        case NSOperationQueuePriorityLow: return 0.3f;
-        case NSOperationQueuePriorityVeryLow: return 0.1f;
-    }
+    return [[_DFURLImageFetchOperation alloc] initWithTask:task queue:self.taskQueue];
 }
 
 - (NSURLRequest *)_URLRequestForImageRequest:(DFImageRequest *)imageRequest {

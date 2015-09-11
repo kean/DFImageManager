@@ -20,6 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+#import "DFImageFetchingOperation.h"
 #import "DFImageRequest.h"
 #import "DFImageRequestOptions.h"
 #import "DFPhotosKitImageFetcher.h"
@@ -27,7 +28,7 @@
 #import <Photos/Photos.h>
 
 
-NS_CLASS_AVAILABLE_IOS(8_0) @interface _DFPhotosKitImageFetchOperation : NSOperation
+NS_CLASS_AVAILABLE_IOS(8_0) @interface _DFPhotosKitImageFetchOperation : NSOperation <DFImageFetchingOperation>
 
 @property (nonatomic, readonly) NSData *result;
 @property (nonatomic, readonly) NSDictionary *info;
@@ -134,6 +135,14 @@ static inline NSString *_PHAssetLocalIdentifier(id resource) {
 @end
 
 
+static inline NSOperationQueuePriority _DFQueuePriorityForRequestPriority(DFImageRequestPriority priority) {
+    switch (priority) {
+        case DFImageRequestPriorityHigh: return NSOperationQueuePriorityHigh;
+        case DFImageRequestPriorityNormal: return NSOperationQueuePriorityNormal;
+        case DFImageRequestPriorityLow: return NSOperationQueuePriorityLow;
+    }
+}
+
 @interface _DFPhotosKitImageFetchOperation ()
 
 @property (nonatomic, getter = isExecuting) BOOL executing;
@@ -237,6 +246,16 @@ DF_INIT_UNAVAILABLE_IMPL
     [self willChangeValueForKey:@"isExecuting"];
     _executing = executing;
     [self didChangeValueForKey:@"isExecuting"];
+}
+
+#pragma mark - <DFImageFetchingOperation>
+
+- (void)cancelImageFetching {
+    [self cancel];
+}
+
+- (void)setImageFetchingPriority:(DFImageRequestPriority)priority {
+    self.queuePriority = _DFQueuePriorityForRequestPriority(priority);
 }
 
 @end

@@ -26,6 +26,9 @@
                location = "group:DFImageFetching.h">
             </FileRef>
             <FileRef
+               location = "group:DFImageFetchingOperation.h">
+            </FileRef>
+            <FileRef
                location = "group:DFImageCaching.h">
             </FileRef>
             <FileRef

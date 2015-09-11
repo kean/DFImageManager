@@ -25,6 +25,7 @@
 #import "DFImageDecoder.h"
 #import "DFImageDecoding.h"
 #import "DFImageFetching.h"
+#import "DFImageFetchingOperation.h"
 #import "DFImageManagerConfiguration.h"
 #import "DFImageManagerDefines.h"
 #import "DFImageManagerImageLoader.h"
@@ -123,7 +124,7 @@
 @interface _DFImageLoadOperation : NSObject
 
 @property (nonnull, nonatomic, readonly) _DFImageRequestKey *key;
-@property (nullable, nonatomic) NSOperation *operation;
+@property (nullable, nonatomic) id<DFImageFetchingOperation> operation;
 @property (nonnull, nonatomic, readonly) NSMutableArray *tasks;
 @property (nonatomic) int64_t totalUnitCount;
 @property (nonatomic) int64_t completedUnitCount;
@@ -143,13 +144,11 @@
 
 - (void)updateOperationPriority {
     if (_operation && _tasks.count) {
-        DFImageRequestPriority priority = DFImageRequestPriorityVeryLow;
+        DFImageRequestPriority priority = DFImageRequestPriorityLow;
         for (_DFImageLoaderTask *task in _tasks) {
             priority = MAX(task.imageTask.priority, priority);
         }
-        if (_operation.queuePriority != (NSOperationQueuePriority)priority) {
-            _operation.queuePriority = (NSOperationQueuePriority)priority;
-        }
+        [_operation setImageFetchingPriority:priority];
     }
 }
 
@@ -328,7 +327,7 @@
         if (operation) {
             [operation.tasks removeObject:loaderTask];
             if (operation.tasks.count == 0) {
-                [operation.operation cancel];
+                [operation.operation cancelImageFetching];
                 [self _removeImageLoadOperation:operation];
             } else {
                 [operation updateOperationPriority];

@@ -66,7 +66,7 @@ NSString *TDFMockFetcherDidStartOperationNotification = @"TDFMockFetcherDidStart
     return [request1.resource isEqual:request2.resource];
 }
 
-- (nonnull NSOperation *)startOperationWithRequest:(nonnull DFImageRequest *)request progressHandler:(nullable DFImageFetchingProgressHandler)progressHandler completion:(nullable DFImageFetchingCompletionHandler)completion {
+- (id<DFImageFetchingOperation>)startOperationWithRequest:(DFImageRequest *)request progressHandler:(DFImageFetchingProgressHandler)progressHandler completion:(DFImageFetchingCompletionHandler)completion {
     TDFMockFetchOperation *operation = [TDFMockFetchOperation blockOperationWithBlock:^{
         TDFMockResponse *response = _responses[request.resource];
         [NSThread sleepForTimeInterval:response.elapsedTime];
