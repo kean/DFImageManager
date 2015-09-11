@@ -21,7 +21,7 @@ DFImageManager is a [pipeline](#h_design) that loads images using pluggable comp
 
 ##### Loading
 - Uses [NSURLSession](https://developer.apple.com/library/ios/documentation/Foundation/Reference/NSURLSession_class/) with [HTTP/2](https://en.wikipedia.org/wiki/HTTP/2) support
-- Has optional [AFNetworking integration](#install_using_cocopods) (which should be your primary choice). Combine the power of both frameworks!
+- Has optional [AFNetworking integration](#install_using_cocopods), combine the power of both frameworks!
 - Uses a single fetch operation for multiple equivalent requests
 - [Intelligent preheating](https://github.com/kean/DFImageManager/wiki/Image-Preheating-Guide) of images close to the viewport
 - Progress tracking using `NSProgress`
@@ -34,7 +34,7 @@ DFImageManager is a [pipeline](#h_design) that loads images using pluggable comp
 ##### Decoding and Processing
 - Animated GIF support using best-in-class [FLAnimatedImage](https://github.com/Flipboard/FLAnimatedImage) library
 - [WebP](https://developers.google.com/speed/webp/) support
-- Progressive image decoding (progressive JPEG and more)
+- Progressive image decoding (including progressive JPEG)
 - Background image decompression and scaling in a single step
 - Scale large images (~6000x4000 px) and prepare them for display with ease
 - Resize and crop loaded images to [fit displayed size](https://developer.apple.com/library/ios/qa/qa1708/_index.html), add rounded corners or circle
@@ -53,7 +53,6 @@ DFImageManager is a [pipeline](#h_design) that loads images using pluggable comp
 - Take a look at the comprehensive [demo](https://github.com/kean/DFImageManager/tree/master/Demo), it's easy to install with `pod try DFImageManager` command
 - Check out the complete [documentation](http://cocoadocs.org/docsets/DFImageManager)
 - View the growing project [Wiki](https://github.com/kean/DFImageManager/wiki) and [FAQ](https://github.com/kean/DFImageManager/wiki/FAQ)
-- Experiment with the APIs in a Swift playground available in the project
 - [Install using CocoaPods](#install_using_cocopods), import `<DFImageManager/DFImageManagerKit.h>` and enjoy!
 - Check out [Nuke](https://github.com/kean/Nuke) - experimental Swift framework with similar functionality
 
