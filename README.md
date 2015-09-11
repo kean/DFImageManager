@@ -1,8 +1,8 @@
 <p align="center"><img src="https://cloud.githubusercontent.com/assets/1567433/9706439/4d3fd63c-54ed-11e5-91ec-a52c768b67fe.png" width="70%"/>
 
-Advanced iOS framework for loading, caching, processing, displaying and preheating images. It uses latest advancements in iOS SDK and doesn't reinvent existing technologies. It has an elagant and powerful API that will extend the capabilities of your app.
+Advanced iOS framework for loading, caching, processing, displaying and preheating images. It uses latest advancements in iOS SDK and doesn't reinvent existing technologies. It has an elegant and powerful API that will extend the capabilities of your app.
 
-DFImageManager is not just a loader, it's [a pipeline](#h_design) that loads images using pluggable components. It features [multiple subspecs](#install_using_cocopods) that integrate things like [FLAnimatedImage](https://github.com/Flipboard/FLAnimatedImage), [AFNetworking](https://github.com/AFNetworking/AFNetworking), [libwebp](https://developers.google.com/speed/webp/docs/api) and more. And it all comes in a strikingly small package with less code than alternative libraries.
+DFImageManager is a [pipeline](#h_design) that loads images using pluggable components. It features [multiple subspecs](#install_using_cocopods) that integrate things like [FLAnimatedImage](https://github.com/Flipboard/FLAnimatedImage), [libwebp](https://developers.google.com/speed/webp/docs/api), and more. And it all comes in a strikingly small package with less code than alternative libraries.
 
 1. [Getting Started](#h_getting_started)
 2. [Usage](#h_usage)
