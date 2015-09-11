@@ -39,13 +39,14 @@ typedef void (^DFImageTaskCompletion)(UIImage *__nullable image, NSError *__null
 - (BOOL)canHandleRequest:(nonnull DFImageRequest *)request;
 
 /*! Creates an image task with a given resource. After you create the task, you must start it by calling its resume method.
- @note Creates image request with a DFImageMaximumSize, DFImageContentModeAspectFill and default options.
+ @note Creates image request with a DFImageMaximumSize, DFImageContentModeAspectFill, and default options.
+ @param completion Completion block to be called on the main thread when image task is either completed or cancelled. Completion block is called synchronously when the requested image can be retrieved from the memory cache and the request was made from the main thread. For more info see DFImageManager class reference.
  */
 - (nonnull DFImageTask *)imageTaskForResource:(nonnull id)resource completion:(nullable DFImageTaskCompletion)completion;
 
 /*! Creates an image task with a given request. After you create the task, you must start it by calling its resume method.
- @param request The request that contains the resource whose image is to be loaded, and request options. Image manager creates a deep copy of the request.
- @param completion Completion block to be called on the main thread when loading is complete. Completion block is called synchronously when the requested image can be retrieved from the memory cache and the request was made on the main thread. For more info see DFImageManager class reference.
+ @param request The request that contains the resource whose image is to be loaded, and additional options.
+ @param completion Completion block to be called on the main thread when image task is either completed or cancelled. Completion block is called synchronously when the requested image can be retrieved from the memory cache and the request was made from the main thread. For more info see DFImageManager class reference.
  */
 - (nonnull DFImageTask *)imageTaskForRequest:(nonnull DFImageRequest *)request completion:(nullable DFImageTaskCompletion)completion;
 
@@ -53,16 +54,19 @@ typedef void (^DFImageTaskCompletion)(UIImage *__nullable image, NSError *__null
  */
 - (void)getImageTasksWithCompletion:(void (^__nullable)(NSArray *__nonnull tasks, NSArray *__nonnull preheatingTasks))completion;
 
-/*! Cancels all outstanding requests, including preheating requests, and then invalidates the image manager. New requests may not be created.
+/*! Cancels all outstanding requests, including preheating requests, and then invalidates the image manager. New image tasks may not be started.
  */
 - (void)invalidateAndCancel;
 
 /*! Prepares images for the given requests for later use.
- @note The application is responsible for providing the same requests when preheating the images and when actually requesting them later or else the preheating might not be effective.
+ @note When you call this method, DFImageManager starts to fetch image data and cache images for the given requests. At any time afterward, you can create image tasks with equivalent requests.
+ @note DFImageManager caches images with the exact target size, content mode, and options you specify in this method. If you later request an image with, for example, a different target size than you passed when calling this method, DFImageManager might have to generate a new image but would still be able to use cached image data.
+ @note If this method is called twice with the same requests the second call would have no effect (unless first requests are completed).
  */
 - (void)startPreheatingImagesForRequests:(nonnull NSArray /* DFImageRequest */ *)requests;
 
 /*! Cancels preheating for the given requests.
+ @note The request parameters shall exactly match the parameters used in startPreheatingImagesForRequests: method.
  */
 - (void)stopPreheatingImagesForRequests:(nonnull NSArray /* DFImageRequest */ *)requests;
 
@@ -70,7 +74,7 @@ typedef void (^DFImageTaskCompletion)(UIImage *__nullable image, NSError *__null
  */
 - (void)stopPreheatingImagesForAllRequests;
 
-/*! Removes all cached images from all caches.
+/*! Removes all cached images from all cache layers.
  */
 - (void)removeAllCachedImages;
 

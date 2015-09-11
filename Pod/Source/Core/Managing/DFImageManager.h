@@ -25,7 +25,7 @@
 
 @class DFImageManagerConfiguration;
 
-/*! The role of DFImageManager is to manage the execution of image tasks by delegating the actual job to the objects, implementing DFImageFetching, DFImageCaching, DFImageDecoding, and DFImageProcessing protocols.
+/*! The role of DFImageManager is to manage the execution of image tasks by delegating the actual job to the objects implementing DFImageFetching, DFImageCaching, DFImageDecoding, and DFImageProcessing protocols.
  
  @note Reusing Operations 
  
@@ -37,7 +37,7 @@
  
  @note Preheating
  
- DFImageManager does its best to guarantee that preheating tasks never interfere with regular (non-preheating) tasks. There is a limit of concurrent preheating tasks enforced by DFImageManager. There is also certain (very small) delay when manager starts executing preheating requests. DFImageManager stops multiple equivalent preheating requests with a single -stopPreheatingImagesForRequests: call.
+ DFImageManager does its best to guarantee that preheating tasks never interfere with regular (non-preheating) tasks. There is a limit of concurrent preheating tasks enforced by DFImageManager. There is also certain (very small) delay when manager starts executing preheating requests.
  */
 @interface DFImageManager : NSObject <DFImageManaging>
 
@@ -45,8 +45,7 @@
  */
 @property (nonnull, nonatomic, copy, readonly) DFImageManagerConfiguration *configuration;
 
-/*! Creates image manager with a specified configuration.
- @param configuration A configuration object that specifies certain behaviours, such as fetching, processing, caching and more. Manager copies the configuration object.
+/*! Creates image manager with a given configuration. Manager copies the configuration object.
  */
 - (nonnull instancetype)initWithConfiguration:(nonnull DFImageManagerConfiguration *)configuration NS_DESIGNATED_INITIALIZER;
 
