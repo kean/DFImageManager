@@ -7,7 +7,6 @@
 //
 
 #import "SDFBuiltinNetworkingDemoViewController.h"
-#import "SDFCompositeRequestDemoViewController.h"
 #import "SDFFilesystemDemoViewController.h"
 #import "SDFGIFDemoViewController.h"
 #import "SDFMenuViewController.h"
@@ -148,11 +147,6 @@
             controller.numberOfItemsPerRow = 3;
             controller.displaysPreheatingDetails = YES;
             controller.title = @"Preheating Demo";
-            [weakSelf.navigationController pushViewController:controller animated:YES];
-        }]];
-        [items addObject:[SDFMenuItem itemWithTitle:@"Composite Request Demo" subtitle:@"Request both thumbnail and fullscreen image" action:^{
-            SDFCompositeRequestDemoViewController *controller = [SDFCompositeRequestDemoViewController new];
-            controller.title = @"Composite Request Demo";
             [weakSelf.navigationController pushViewController:controller animated:YES];
         }]];
         [SDFMenuSection sectionWithTitle:@"Other" items:items];

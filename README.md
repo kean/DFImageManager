@@ -45,10 +45,8 @@ DFImageManager is not just a loader, it's [a pipeline](#h_design) that loads ima
 
 ##### Advanced
 - Customize different parts of the framework using dependency injection
-- Compose image tasks using `DFCompositeImageTask`. You might use it to show a low-resolution placeholder first and swap to a higher-res one when it is loaded. Or implement custom [revalidation policies](https://github.com/kean/DFImageManager/wiki/Advanced-Image-Caching-Guide#custom-revalidation-using-dfcompositeimagetask)
 - Create custom image managers
 - [Compose image managers](https://github.com/kean/DFImageManager/wiki/Extending-Image-Manager-Guide#using-dfcompositeimagemanager) into a tree of responsibility
-- Extend `DFImageManaging` API using `DFProxyImageManager`
 
 ## <a name="h_getting_started"></a>Getting Started
 - Download the latest [release](https://github.com/kean/DFImageManager/releases) version
@@ -147,21 +145,6 @@ imageView.managesRequestPriorities = YES; // Automatically changes current reque
 [imageView setImageWithResource:[NSURL URLWithString:@"http://..."]];
 ```
 
-#### Composing Image Tasks
-The `DFCompositeImageTask` class manages execution of multiple image requests and provides a single completion block.
-```objective-c
-DFImageTask *previewImageTask = ...; // Create image task for image preview
-DFImageTask *fullsizeImageTask = ...; // Create image task for fullsize image
-
-DFCompositeImageTask *compositeImageTask = [[DFCompositeImageTask alloc] initWithImageTasks:@[previewImageTask, fullsizeImageTask] imageHandler:^(UIImage *image, DFImageTask *completedTask, DFCompositeImageTask *compositeTask){
-  // One of the image tasks has completed
-} completionHandler:^(DFCompositeImageTask *compositeTask){
-  // All tasks has either completed or became obsolete
-}];
-[compositeImageTask resume];
-```
-There are many [ways](https://github.com/kean/DFImageManager/wiki/Advanced-Image-Caching-Guide#custom-revalidation-using-dfcompositeimagefetchoperation) how composite requests can be used.
-
 #### Requesting Image for PHAsset
 
 ```objective-c
@@ -239,7 +222,6 @@ By default it will install subspecs:
 - `DFImageManager/UI` - UI components
 - `DFImageManager/NSURLSession` - basic networking on top of NSURLSession
 - `DFImageManager/PhotosKit` - Photos Framework support
-- `DFImageManager/Extensions` - extensions that include composite tasks and more
 
 There are three more optional subspecs:
 - `DFImageManager/AFNetworking` - replaces networking stack with [AFNetworking](https://github.com/AFNetworking/AFNetworking)

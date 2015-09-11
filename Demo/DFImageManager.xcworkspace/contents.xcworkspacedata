@@ -269,24 +269,5 @@
             location = "group:DFAnimatedImage.m">
          </FileRef>
       </Group>
-      <Group
-         location = "group:Extensions"
-         name = "Extensions">
-         <FileRef
-            location = "group:DFImageManagerKit+Extensions.h">
-         </FileRef>
-         <FileRef
-            location = "group:DFCompositeImageTask.h">
-         </FileRef>
-         <FileRef
-            location = "group:DFCompositeImageTask.m">
-         </FileRef>
-         <FileRef
-            location = "group:DFProxyImageManager.h">
-         </FileRef>
-         <FileRef
-            location = "group:DFProxyImageManager.m">
-         </FileRef>
-      </Group>
    </Group>
 </Workspace>

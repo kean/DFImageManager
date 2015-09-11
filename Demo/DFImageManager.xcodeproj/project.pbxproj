@@ -14,8 +14,6 @@
 		0C25A39A1BA0E48B0044BC00 /* SDFAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C25A37A1BA0E48B0044BC00 /* SDFAppDelegate.m */; };
 		0C25A39B1BA0E48B0044BC00 /* SDFBaseCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C25A37C1BA0E48B0044BC00 /* SDFBaseCollectionViewController.m */; };
 		0C25A39C1BA0E48B0044BC00 /* SDFBuiltinNetworkingDemoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C25A37E1BA0E48B0044BC00 /* SDFBuiltinNetworkingDemoViewController.m */; };
-		0C25A39D1BA0E48B0044BC00 /* SDFCompositeCollectionImageViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C25A3801BA0E48B0044BC00 /* SDFCompositeCollectionImageViewCell.m */; };
-		0C25A39E1BA0E48B0044BC00 /* SDFCompositeRequestDemoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C25A3821BA0E48B0044BC00 /* SDFCompositeRequestDemoViewController.m */; };
 		0C25A39F1BA0E48B0044BC00 /* SDFFilesystemDemoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C25A3841BA0E48B0044BC00 /* SDFFilesystemDemoViewController.m */; };
 		0C25A3A21BA0E48B0044BC00 /* SDFGIFDemoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C25A38A1BA0E48B0044BC00 /* SDFGIFDemoViewController.m */; };
 		0C25A3A31BA0E48B0044BC00 /* SDFImageCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C25A38C1BA0E48B0044BC00 /* SDFImageCollectionViewCell.m */; };
@@ -28,7 +26,6 @@
 		0C300EBE1BA0E357008DDEF6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0C300EBD1BA0E357008DDEF6 /* Assets.xcassets */; };
 		0C4D3DC61BA180EF008138FA /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0C4D3DC41BA180EF008138FA /* Info.plist */; };
 		0CCBC4E71BA1819F00B26297 /* TDFCompositeImageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CCBC4D01BA1819F00B26297 /* TDFCompositeImageManager.m */; };
-		0CCBC4E81BA1819F00B26297 /* TDFCompositeImageTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CCBC4D11BA1819F00B26297 /* TDFCompositeImageTask.m */; };
 		0CCBC4E91BA1819F00B26297 /* TDFImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CCBC4D21BA1819F00B26297 /* TDFImageCache.m */; };
 		0CCBC4EA1BA1819F00B26297 /* TDFImageFormats.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CCBC4D31BA1819F00B26297 /* TDFImageFormats.m */; };
 		0CCBC4EB1BA1819F00B26297 /* TDFImageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CCBC4D41BA1819F00B26297 /* TDFImageManager.m */; };
@@ -75,10 +72,6 @@
 		0C25A37C1BA0E48B0044BC00 /* SDFBaseCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDFBaseCollectionViewController.m; sourceTree = "<group>"; };
 		0C25A37D1BA0E48B0044BC00 /* SDFBuiltinNetworkingDemoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDFBuiltinNetworkingDemoViewController.h; sourceTree = "<group>"; };
 		0C25A37E1BA0E48B0044BC00 /* SDFBuiltinNetworkingDemoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDFBuiltinNetworkingDemoViewController.m; sourceTree = "<group>"; };
-		0C25A37F1BA0E48B0044BC00 /* SDFCompositeCollectionImageViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDFCompositeCollectionImageViewCell.h; sourceTree = "<group>"; };
-		0C25A3801BA0E48B0044BC00 /* SDFCompositeCollectionImageViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDFCompositeCollectionImageViewCell.m; sourceTree = "<group>"; };
-		0C25A3811BA0E48B0044BC00 /* SDFCompositeRequestDemoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDFCompositeRequestDemoViewController.h; sourceTree = "<group>"; };
-		0C25A3821BA0E48B0044BC00 /* SDFCompositeRequestDemoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDFCompositeRequestDemoViewController.m; sourceTree = "<group>"; };
 		0C25A3831BA0E48B0044BC00 /* SDFFilesystemDemoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDFFilesystemDemoViewController.h; sourceTree = "<group>"; };
 		0C25A3841BA0E48B0044BC00 /* SDFFilesystemDemoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDFFilesystemDemoViewController.m; sourceTree = "<group>"; };
 		0C25A3891BA0E48B0044BC00 /* SDFGIFDemoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDFGIFDemoViewController.h; sourceTree = "<group>"; };
@@ -103,7 +96,6 @@
 		0C4D3DC41BA180EF008138FA /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0CCBC4CF1BA1819F00B26297 /* TDFCommonTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDFCommonTests.h; sourceTree = "<group>"; };
 		0CCBC4D01BA1819F00B26297 /* TDFCompositeImageManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDFCompositeImageManager.m; sourceTree = "<group>"; };
-		0CCBC4D11BA1819F00B26297 /* TDFCompositeImageTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDFCompositeImageTask.m; sourceTree = "<group>"; };
 		0CCBC4D21BA1819F00B26297 /* TDFImageCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDFImageCache.m; sourceTree = "<group>"; };
 		0CCBC4D31BA1819F00B26297 /* TDFImageFormats.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDFImageFormats.m; sourceTree = "<group>"; };
 		0CCBC4D41BA1819F00B26297 /* TDFImageManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDFImageManager.m; sourceTree = "<group>"; };
@@ -195,7 +187,6 @@
 				0CAB83FB1BA1542F005961E6 /* PhotosKit Demo */,
 				0CAB83FA1BA1541F005961E6 /* GIF Demo */,
 				0CE22EE61BA1566100A5C2CD /* Progressive JPEG Demo */,
-				0CE22EE91BA1569300A5C2CD /* Composite Request Demo */,
 				0CE22EE71BA1567300A5C2CD /* Misc */,
 			);
 			name = "View Controllers";
@@ -278,7 +269,6 @@
 			children = (
 				0CCBC4CF1BA1819F00B26297 /* TDFCommonTests.h */,
 				0CCBC4D01BA1819F00B26297 /* TDFCompositeImageManager.m */,
-				0CCBC4D11BA1819F00B26297 /* TDFCompositeImageTask.m */,
 				0CCBC4D21BA1819F00B26297 /* TDFImageCache.m */,
 				0CCBC4D31BA1819F00B26297 /* TDFImageFormats.m */,
 				0CCBC4D41BA1819F00B26297 /* TDFImageManager.m */,
@@ -384,17 +374,6 @@
 				0C25A38C1BA0E48B0044BC00 /* SDFImageCollectionViewCell.m */,
 			);
 			name = Views;
-			sourceTree = "<group>";
-		};
-		0CE22EE91BA1569300A5C2CD /* Composite Request Demo */ = {
-			isa = PBXGroup;
-			children = (
-				0C25A37F1BA0E48B0044BC00 /* SDFCompositeCollectionImageViewCell.h */,
-				0C25A3801BA0E48B0044BC00 /* SDFCompositeCollectionImageViewCell.m */,
-				0C25A3811BA0E48B0044BC00 /* SDFCompositeRequestDemoViewController.h */,
-				0C25A3821BA0E48B0044BC00 /* SDFCompositeRequestDemoViewController.m */,
-			);
-			name = "Composite Request Demo";
 			sourceTree = "<group>";
 		};
 		0CE22EEA1BA156A900A5C2CD /* Menu */ = {
@@ -611,13 +590,11 @@
 				0C0BAAC11BA157DC00F28AA6 /* SDFPhotos.m in Sources */,
 				0C25A3A81BA0E48B0044BC00 /* UIViewController+SDFImageManager.m in Sources */,
 				0C25A3A31BA0E48B0044BC00 /* SDFImageCollectionViewCell.m in Sources */,
-				0C25A39D1BA0E48B0044BC00 /* SDFCompositeCollectionImageViewCell.m in Sources */,
 				0C25A39B1BA0E48B0044BC00 /* SDFBaseCollectionViewController.m in Sources */,
 				0C25A3991BA0E48B0044BC00 /* SDFStickyHeaderCollectionViewFlowLayout.m in Sources */,
 				0C25A3A71BA0E48B0044BC00 /* SDFProgressiveJPEGDemoViewController.m in Sources */,
 				0C25A39A1BA0E48B0044BC00 /* SDFAppDelegate.m in Sources */,
 				0C300EB31BA0E357008DDEF6 /* main.m in Sources */,
-				0C25A39E1BA0E48B0044BC00 /* SDFCompositeRequestDemoViewController.m in Sources */,
 				0C25A3A21BA0E48B0044BC00 /* SDFGIFDemoViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -638,7 +615,6 @@
 				0CCBC4F01BA1819F00B26297 /* TDFMockImageCache.m in Sources */,
 				0CCBC4EA1BA1819F00B26297 /* TDFImageFormats.m in Sources */,
 				0CCBC4E91BA1819F00B26297 /* TDFImageCache.m in Sources */,
-				0CCBC4E81BA1819F00B26297 /* TDFCompositeImageTask.m in Sources */,
 				0CCBC4F11BA1819F00B26297 /* TDFMockImageFetcher.m in Sources */,
 				0CCBC4EF1BA1819F00B26297 /* TDFMockFetchOperation.m in Sources */,
 			);
