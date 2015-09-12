@@ -190,6 +190,11 @@ static NSString * const reuseIdentifier = @"Cell";
     return cell;
 }
 
+- (void)collectionView:(UICollectionView *)collectionView didEndDisplayingCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath {
+    DFImageView *imageView = (id)[cell viewWithTag:15];
+    [imageView prepareForReuse];
+}
+
 - (CGSize)_imageTargetSize {
     CGSize size = ((UICollectionViewFlowLayout *)self.collectionViewLayout).itemSize;
     CGFloat scale = [UIScreen mainScreen].scale;

@@ -85,6 +85,13 @@ static NSString *const kReuseIdentifierImageCell = @"kReuseIdentifierImageCell";
     return cell;
 }
 
+- (void)collectionView:(UICollectionView *)collectionView didEndDisplayingCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.section == 1) {
+        SDFImageCollectionViewCell *imageCell = (id)cell;
+        [imageCell prepareForReuse];
+    }
+}
+
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
     UICollectionViewFlowLayout *layout = (id)self.collectionViewLayout;
     CGFloat width = (self.view.bounds.size.width - layout.sectionInset.left - layout.sectionInset.right);
