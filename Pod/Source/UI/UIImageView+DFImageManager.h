@@ -24,6 +24,7 @@
 #import <UIKit/UIKit.h>
 
 @class DFImageTask;
+@class DFImageRequest;
 @class DFImageRequestOptions;
 
 /*! Adds some very basic image fetching capabilities to the UIImageView. For more features see DFImageView.
