@@ -291,6 +291,7 @@
             [self _loadTask:task processImage:image info:info error:error];
         }
         [operation.tasks removeAllObjects];
+        operation.fetchOperation = nil;
         [self _removeImageLoadOperation:operation];
     });
 }
@@ -330,6 +331,7 @@
             [operation.tasks removeObject:loaderTask];
             if (operation.tasks.count == 0) {
                 [operation.fetchOperation cancelImageFetching];
+                operation.fetchOperation = nil;
                 [self _removeImageLoadOperation:operation];
             } else {
                 [operation updateOperationPriority];
