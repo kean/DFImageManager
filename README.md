@@ -1,6 +1,6 @@
 <p align="center"><img src="https://cloud.githubusercontent.com/assets/1567433/9706439/4d3fd63c-54ed-11e5-91ec-a52c768b67fe.png" width="70%"/>
 
-Advanced iOS framework for loading, caching, processing, displaying and preheating images. It uses latest advancements in iOS SDK and doesn't reinvent existing technologies. It has an elegant and powerful API that will extend the capabilities of your app.
+Advanced framework for loading, caching, processing, displaying and preheating images. It uses latest advancements in iOS SDK and doesn't reinvent existing technologies. It has an elegant and powerful API that will extend the capabilities of your app.
 
 DFImageManager is a [pipeline](#h_design) that loads images using pluggable components. It features [multiple subspecs](#install_using_cocopods) that integrate things like [FLAnimatedImage](https://github.com/Flipboard/FLAnimatedImage), [libwebp](https://developers.google.com/speed/webp/docs/api), and more. And it all comes in a strikingly small package with less code than alternative libraries.
 
@@ -62,7 +62,7 @@ DFImageManager is a [pipeline](#h_design) that loads images using pluggable comp
 
 ```objective-c
 [[[DFImageManager sharedManager] imageTaskForResource:[NSURL URLWithString:@"http://..."] completion:^(UIImage *image, NSError *error, DFImageResponse *response, DFImageTask *task){
-  // Use loaded image
+// Use loaded image
 }] resume];
 ```
 
@@ -78,10 +78,10 @@ options.allowsClipping = YES;
 DFImageRequest *request = [DFImageRequest requestWithResource:imageURL targetSize:CGSizeMake(100.f, 100.f) contentMode:DFImageContentModeAspectFill options:options.options];
 
 [[[DFImageManager sharedManager] imageTaskForRequest:request completion:^(UIImage *image, NSError *error, DFImageResponse *response, DFImageTask *imageTask) {
-  // Image is resized and clipped to fill 100x100px square
-  if (response.isFastResponse) {
-    // Image was returned synchronously from the memory cache
-  }
+// Image is resized and clipped to fill 100x100px square
+if (response.isFastResponse) {
+// Image was returned synchronously from the memory cache
+}
 }] resume];
 ```
 
@@ -96,7 +96,7 @@ NSProgress *progress = imageTask.progress;
 
 // Change priority of the already executing task
 imageTask.priority = DFImageRequestPriorityHigh;
-    
+
 // Cancel image task
 [imageTask cancel];
 ```
@@ -122,19 +122,19 @@ imageView.managesRequestPriorities = YES; // Automatically changes current reque
 
 ```objective-c
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:<#reuse_id#> forIndexPath:indexPath];
-    cell.backgroundColor = [UIColor colorWithWhite:235.f/255.f alpha:1.f];
+UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:<#reuse_id#> forIndexPath:indexPath];
+cell.backgroundColor = [UIColor colorWithWhite:235.f/255.f alpha:1.f];
 
-    DFImageView *imageView = (id)[cell viewWithTag:15];
-    if (!imageView) {
-        imageView = [[DFImageView alloc] initWithFrame:cell.bounds];
-        imageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-        imageView.tag = 15;
-        [cell addSubview:imageView];
-    }
-    [imageView prepareForReuse];
-    [imageView setImageWithResource:<#image_url#>];
-    return cell;
+DFImageView *imageView = (id)[cell viewWithTag:15];
+if (!imageView) {
+imageView = [[DFImageView alloc] initWithFrame:cell.bounds];
+imageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+imageView.tag = 15;
+[cell addSubview:imageView];
+}
+[imageView prepareForReuse];
+[imageView setImageWithResource:<#image_url#>];
+return cell;
 }
 ```
 
@@ -142,8 +142,8 @@ Cancel image task as soon as the cell goes offscreen (optional):
 
 ```objective-c
 - (void)collectionView:(UICollectionView *)collectionView didEndDisplayingCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath {
-    DFImageView *imageView = (id)[cell viewWithTag:15];
-    [imageView prepareForReuse];
+DFImageView *imageView = (id)[cell viewWithTag:15];
+[imageView prepareForReuse];
 }
 ```
 
@@ -152,7 +152,7 @@ Cancel image task as soon as the cell goes offscreen (optional):
 ```objective-c
 NSArray *requestsForAddedItems = ...; // Create image requests
 [[DFImageManager sharedManager] startPreheatingImagesForRequests:requestsForAddedItems];
-    
+
 NSArray *requestsForRemovedItems = ...; // Create image requests
 [[DFImageManager sharedManager] stopPreheatingImagesForRequests:requestsForRemovedItems];
 ```
@@ -163,7 +163,7 @@ NSArray *requestsForRemovedItems = ...; // Create image requests
 PHAsset *asset = ...;
 DFImageRequest *request = [DFImageRequest requestWithResource:asset targetSize:CGSizeMake(100.f, 100.f) contentMode:DFImageContentModeAspectFill options:nil];
 [[[DFImageManager sharedManager] imageTaskForRequest:request completion:^(UIImage *image, NSDictionary *info) {
-  // Image resized to 100x100px square
+// Image resized to 100x100px square
 }] resume];
 ```
 
@@ -180,7 +180,7 @@ DFImageRequest *request = // Create request with given options
 
 DFImageTask *imageTask = .../ Create image task
 imageTask.progressiveImageHandler = ^(UIImage *__nonnull image){
-  imageView.image = image;
+imageView.image = image;
 };
 
 [imageTask resume];
@@ -244,11 +244,12 @@ id<DFImageManaging> compositeImageManager = [[DFCompositeImageManager alloc] ini
 CocoaPods is the dependency manager for Cocoa projects. If you are not familiar with CocoaPods the best place to start would be [official CocoaPods guides](http://guides.cocoapods.org). To install DFImageManager add a dependency in your Podfile:
 ```ruby
 # Podfile
-platform :ios, '7.0'
+# platform :ios, '7.0'
+# platform :watchos, '2.0'
 pod 'DFImageManager'
 ```
 
-By default it will install subspecs:
+By default it will install these subspecs (if they are available for your platform):
 - `DFImageManager/Core` - DFImageManager core classes
 - `DFImageManager/UI` - UI components
 - `DFImageManager/NSURLSession` - basic networking on top of NSURLSession
@@ -259,10 +260,9 @@ There are three more optional subspecs:
 - `DFImageManager/GIF` - GIF support with a [FLAnimatedImage](https://github.com/Flipboard/FLAnimatedImage) dependency
 - `DFImageManager/WebP` - WebP support with a [libwebp](https://cocoapods.org/pods/libwebp) dependency
 
-To install optional dependencies include them in your Podfile:
+To install optional subspecs include them in your Podfile:
 ```ruby
 # Podfile
-platform :ios, '7.0'
 pod 'DFImageManager'
 pod 'DFImageManager/AFNetworking'
 pod 'DFImageManager/GIF'
@@ -270,7 +270,8 @@ pod 'DFImageManager/WebP'
 ```
 
 ## <a name="h_requirements"></a>Requirements
-iOS 7.0+
+- iOS 7.0+ / watchOS 2
+- Xcode 6.0+
 
 ## <a name="h_supported_image_formats"></a>Supported Image Formats
 - Image formats supported by `UIImage` (JPEG, PNG, BMP, [and more](https://developer.apple.com/library/ios/documentation/UIKit/Reference/UIImage_Class/))
@@ -278,7 +279,7 @@ iOS 7.0+
 - WebP (`WebP` subspec)
 
 ## <a name="h_contribution"></a>Contribution
- 
+
 - If you **need help**, use [Stack Overflow](http://stackoverflow.com/questions/tagged/dfimagemanager). (Tag 'dfimagemanager')
 - If you'd like to **ask a general question**, use [Stack Overflow](http://stackoverflow.com/questions/tagged/dfimagemanager).
 - If you **found a bug**, and can provide steps to reproduce it, open an issue.
