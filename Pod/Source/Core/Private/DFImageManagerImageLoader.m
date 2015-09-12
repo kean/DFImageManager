@@ -224,7 +224,7 @@
             [self.delegate imageLoader:self imageTask:task.imageTask didUpdateProgressWithCompletedUnitCount:operation.completedUnitCount totalUnitCount:operation.totalUnitCount];
         }
         // progressive image decoding
-        if (!_conf.allowsProgressiveImage) {
+        if (![DFImageManagerConfiguration allowsProgressiveImage]) {
             return;
         }
         if (completedUnitCount >= totalUnitCount) {

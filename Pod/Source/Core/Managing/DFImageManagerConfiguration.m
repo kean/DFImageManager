@@ -53,9 +53,23 @@ DF_INIT_UNAVAILABLE_IMPL
     copy.processor = self.processor;
     copy.processingQueue = self.processingQueue;
     copy.maximumConcurrentPreheatingRequests = self.maximumConcurrentPreheatingRequests;
-    copy.allowsProgressiveImage = self.allowsProgressiveImage;
     copy.progressiveImageDecodingThreshold = self.progressiveImageDecodingThreshold;
     return copy;
+}
+
+@end
+
+
+@implementation DFImageManagerConfiguration (DFGlobalConfiguration)
+
+static BOOL _allowsProgressiveImage = NO;
+
++ (void)setAllowsProgressiveImage:(BOOL)allowsProgressiveImage {
+    _allowsProgressiveImage = allowsProgressiveImage;
+}
+
++ (BOOL)allowsProgressiveImage {
+    return _allowsProgressiveImage;
 }
 
 @end

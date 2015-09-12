@@ -170,6 +170,9 @@ DFImageRequest *request = [DFImageRequest requestWithResource:asset targetSize:C
 #### Progressive Image Decoding
 
 ```objective-c
+// Enable progressive image decoding
+[DFImageManagerConfiguration setAllowsProgressiveImage:YES];
+
 // Create image request that allows progressive image
 DFMutableImageRequestOptions *options = [DFMutableImageRequestOptions new];
 options.allowsProgressiveImage = YES;
@@ -180,7 +183,7 @@ imageTask.progressiveImageHandler = ^(UIImage *__nonnull image){
   imageView.image = image;
 };
 
-[imageTask resume]; // Progressive image should also be enabled by DFImageManager
+[imageTask resume];
 ```
 
 #### Creating Image Managers

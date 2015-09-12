@@ -13,13 +13,12 @@
 static NSString *const kReuseIdentifierImageCell = @"kReuseIdentifierImageCell";
 
 @implementation SDFProgressiveJPEGDemoViewController  {
-    id<DFImageManaging> _previousSharedManager;
     UISegmentedControl *_segmentedControl;
     NSArray *_imageURLs;
 }
 
 - (void)dealloc {
-    [DFImageManager setSharedManager:_previousSharedManager];
+    [DFImageManagerConfiguration setAllowsProgressiveImage:NO];
 }
 
 - (instancetype)init {
@@ -28,24 +27,9 @@ static NSString *const kReuseIdentifierImageCell = @"kReuseIdentifierImageCell";
 
 - (instancetype)initWithCollectionViewLayout:(UICollectionViewLayout *)layout {
     if (self = [super initWithCollectionViewLayout:layout]) {
-        [self _configureProgressiveEnabledImageManager];
+        [DFImageManagerConfiguration setAllowsProgressiveImage:YES];
     }
     return self;
-}
-
-- (void)_configureProgressiveEnabledImageManager {
-    _previousSharedManager = [DFImageManager sharedManager];
-    
-    DFURLImageFetcher *fetcher = [[DFURLImageFetcher alloc] initWithSessionConfiguration:({
-        NSURLSessionConfiguration *conf = [NSURLSessionConfiguration defaultSessionConfiguration];
-        // disable URL cache for this fetcher
-        conf.URLCache = nil;
-        conf;
-    })];
-    DFImageManagerConfiguration *conf = [DFImageManagerConfiguration configurationWithFetcher:fetcher processor:[DFImageProcessor new] cache:[DFImageCache new]];
-    conf.allowsProgressiveImage = YES;
-    id<DFImageManaging> manager = [[DFImageManager alloc] initWithConfiguration:conf];
-    [DFImageManager addSharedManager:manager];
 }
 
 - (void)viewDidLoad {
