@@ -14,7 +14,7 @@ DFImageManager is a [pipeline](#h_design) that loads images using pluggable comp
 
 ## <a name="h_features"></a>Features
 
-*TL;DR [superior](https://github.com/kean/DFImageManager/wiki/How-is-DFImageManager-better-than-SDWebImage) to alternative libraries*
+*TL;DR: it's [really good](https://github.com/kean/DFImageManager/wiki/How-is-DFImageManager-better-than-SDWebImage)*
 
 - Zero config, yet immense customization and flexibility
 - Works great with both Objective-C and Swift
