@@ -2,7 +2,7 @@
 
 Advanced framework for loading, caching, processing, displaying and preheating images. It uses latest advancements in iOS SDK and doesn't reinvent existing technologies. It has an elegant and powerful API that will extend the capabilities of your app.
 
-DFImageManager is a [pipeline](#h_design) that loads images using pluggable components. It features [multiple subspecs](#install_using_cocopods) that integrate things like [FLAnimatedImage](https://github.com/Flipboard/FLAnimatedImage), [libwebp](https://developers.google.com/speed/webp/docs/api), and more. And it all comes in a strikingly small package with less code than alternative libraries.
+DFImageManager is a [pipeline](#h_design) that loads images using pluggable components. It features [multiple subspecs](#install_using_cocopods) that integrate things like [FLAnimatedImage](https://github.com/Flipboard/FLAnimatedImage), [libwebp](https://developers.google.com/speed/webp/docs/api), and more. And it all comes in a strikingly small package with less code than [alternative libraries](https://github.com/kean/DFImageManager/wiki/How-is-DFImageManager-better-than-SDWebImage).
 
 1. [Getting Started](#h_getting_started)
 2. [Usage](#h_usage)
@@ -13,8 +13,6 @@ DFImageManager is a [pipeline](#h_design) that loads images using pluggable comp
 7. [Contribution](#h_contribution)
 
 ## <a name="h_features"></a>Features
-
-*TL;DR: it's [really good](https://github.com/kean/DFImageManager/wiki/How-is-DFImageManager-better-than-SDWebImage)*
 
 - Zero config, yet immense customization and flexibility
 - Works great with both Objective-C and Swift
@@ -202,10 +200,6 @@ DFImageManagerConfiguration *configuration = [[DFImageManagerConfiguration alloc
 configuration.decoder = decoder;
 configuration.processor = processor;
 configuration.cache = cache;
-
-// Configure progressive image decoding
-configuration.allowsProgressiveImage = YES;
-configuration.progressiveImageDecodingThreshold = 0.2;
 
 // Create image manager with configuration
 DFImageManager *imageManager = [[DFImageManager alloc] initWithConfiguration:configuration];
