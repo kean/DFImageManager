@@ -131,7 +131,9 @@ static NSString * const reuseIdentifier = @"Cell";
         PHFetchResult *moments = [PHAssetCollection fetchMomentsWithOptions:nil];
         NSMutableArray *assets = [NSMutableArray new];
         for (PHAssetCollection *moment in moments) {
-            PHFetchResult *assetsFetchResults = [PHAsset fetchAssetsInAssetCollection:moment options:nil];
+            PHFetchOptions *options = [PHFetchOptions new];
+            options.predicate = [NSPredicate predicateWithFormat:@"mediaType == %d", PHAssetMediaTypeImage];
+            PHFetchResult *assetsFetchResults = [PHAsset fetchAssetsInAssetCollection:moment options:options];
             if (assetsFetchResults) {
                 [assets addObject:assetsFetchResults];
             }
