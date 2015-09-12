@@ -64,7 +64,7 @@ DFImageManager is a [pipeline](#h_design) that loads images using pluggable comp
 
 ```objective-c
 [[[DFImageManager sharedManager] imageTaskForResource:[NSURL URLWithString:@"http://..."] completion:^(UIImage *image, NSError *error, DFImageResponse *response, DFImageTask *task){
-// Use loaded image
+    // Use loaded image
 }] resume];
 ```
 
@@ -80,10 +80,10 @@ options.allowsClipping = YES;
 DFImageRequest *request = [DFImageRequest requestWithResource:imageURL targetSize:CGSizeMake(100.f, 100.f) contentMode:DFImageContentModeAspectFill options:options.options];
 
 [[[DFImageManager sharedManager] imageTaskForRequest:request completion:^(UIImage *image, NSError *error, DFImageResponse *response, DFImageTask *imageTask) {
-// Image is resized and clipped to fill 100x100px square
-if (response.isFastResponse) {
-// Image was returned synchronously from the memory cache
-}
+    // Image is resized and clipped to fill 100x100px square
+    if (response.isFastResponse) {
+        // Image was returned synchronously from the memory cache
+    }
 }] resume];
 ```
 
@@ -124,19 +124,19 @@ imageView.managesRequestPriorities = YES; // Automatically changes current reque
 
 ```objective-c
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:<#reuse_id#> forIndexPath:indexPath];
-cell.backgroundColor = [UIColor colorWithWhite:235.f/255.f alpha:1.f];
+    UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:<#reuse_id#> forIndexPath:indexPath];
+    cell.backgroundColor = [UIColor colorWithWhite:235.f/255.f alpha:1.f];
 
-DFImageView *imageView = (id)[cell viewWithTag:15];
-if (!imageView) {
-imageView = [[DFImageView alloc] initWithFrame:cell.bounds];
-imageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-imageView.tag = 15;
-[cell addSubview:imageView];
-}
-[imageView prepareForReuse];
-[imageView setImageWithResource:<#image_url#>];
-return cell;
+    DFImageView *imageView = (id)[cell viewWithTag:15];
+    if (!imageView) {
+        imageView = [[DFImageView alloc] initWithFrame:cell.bounds];
+        imageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        imageView.tag = 15;
+        [cell addSubview:imageView];
+    }
+    [imageView prepareForReuse];
+    [imageView setImageWithResource:<#image_url#>];
+    return cell;
 }
 ```
 
@@ -144,8 +144,8 @@ Cancel image task as soon as the cell goes offscreen (optional):
 
 ```objective-c
 - (void)collectionView:(UICollectionView *)collectionView didEndDisplayingCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath {
-DFImageView *imageView = (id)[cell viewWithTag:15];
-[imageView prepareForReuse];
+    DFImageView *imageView = (id)[cell viewWithTag:15];
+    [imageView prepareForReuse];
 }
 ```
 
@@ -165,7 +165,7 @@ NSArray *requestsForRemovedItems = ...; // Create image requests
 PHAsset *asset = ...;
 DFImageRequest *request = [DFImageRequest requestWithResource:asset targetSize:CGSizeMake(100.f, 100.f) contentMode:DFImageContentModeAspectFill options:nil];
 [[[DFImageManager sharedManager] imageTaskForRequest:request completion:^(UIImage *image, NSDictionary *info) {
-// Image resized to 100x100px square
+    // Image resized to 100x100px square
 }] resume];
 ```
 
@@ -182,7 +182,7 @@ DFImageRequest *request = // Create request with given options
 
 DFImageTask *imageTask = .../ Create image task
 imageTask.progressiveImageHandler = ^(UIImage *__nonnull image){
-imageView.image = image;
+    imageView.image = image;
 };
 
 [imageTask resume];
