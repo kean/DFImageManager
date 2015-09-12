@@ -1,5 +1,28 @@
  [Changelog](https://github.com/kean/DFImageManager/releases) for all versions
 
+# DFImageManager 0.8.0
+
+`DFImageManager 0.8.0` makes things more cohesive. Documentation, examples, demos, project structure - everything was revised and uncluttered. This release also features limited watchOS 2 support, which at this point  includes `DFImageManager/Core` and `DFImageManager/NSURLSession` subpecs.
+
+## Changes
+
+### Major
+
+- #28 DFImageFetching protocol now requires fetch operation to conform to simple DFImageFetchingOperation protocol
+- #15 watchOS 2 support, at this moment only DFImageManager/Core and DFImageManager/NSURLSession subpecs are available
+- DFImageManager/Extensions subspec with DFCompositeImageTask and DFProxyImageManager are no longer part of the framework. There are multiple more generic ways to implement those features.
+- Revised documentation, examples, demos, project structure
+
+### Minor
+
+- #75 Provide an easier way to enable progressive image decoding
+- #73 -[DFImageManaging imageTaskForRequest:completion:] and -[DFImageManaging imageTaskForResource:completion:] methods return nonnull image task instead of nullable
+- Cleaner DFImageRequestOptions implementation
+- Remove canonical requests feature, which was very application specific
+- Reduce number of DFImageRequestPriority options, DFImageRequestPriority no longer bound to NSOperationQueuePriority
+- Multiple implementation details are improved across the board
+
+
 # DFImageManager 0.7.1
 
 `DFImageManager 0.7.1` focuses on stability and performance. The main changes were made to the image processing. Images are now decompressed and scaled in a single step (x2-4 times faster depending on scale, significantly reduces memory usage) which allows DFImageManager to scale large images (~6000x4000 px) and prepare them for display with ease.
