@@ -72,7 +72,7 @@ DFImageManager is a [pipeline](#h_design) that loads images using pluggable comp
 NSURL *imageURL = [NSURL URLWithString:@"http://..."];
 
 DFMutableImageRequestOptions *options = [DFMutableImageRequestOptions new]; // builder
-options.priority = DFImageRequestPriorityVeryHigh;
+options.priority = DFImageRequestPriorityHigh;
 options.allowsClipping = YES;
 
 DFImageRequest *request = [DFImageRequest requestWithResource:imageURL targetSize:CGSizeMake(100.f, 100.f) contentMode:DFImageContentModeAspectFill options:options.options];
@@ -101,32 +101,6 @@ imageTask.priority = DFImageRequestPriorityHigh;
 [imageTask cancel];
 ```
 
-#### Progressive Image Decoding
-
-```objective-c
-// Create image request that allows progressive image
-DFMutableImageRequestOptions *options = [DFMutableImageRequestOptions new];
-options.allowsProgressiveImage = YES;
-DFImageRequest *request = // Create request with given options
-
-DFImageTask *imageTask = .../ Create image task
-imageTask.progressiveImageHandler = ^(UIImage *__nonnull image){
-  imageView.image = image;
-};
-
-[imageTask resume]; // Progressive image should also be enabled by DFImageManager
-```
-
-#### Preheating Images
-
-```objective-c
-NSArray *requestsForAddedItems = ...; // Create image requests
-[[DFImageManager sharedManager] startPreheatingImagesForRequests:requestsForAddedItems];
-    
-NSArray *requestsForRemovedItems = ...; // Create image requests
-[[DFImageManager sharedManager] stopPreheatingImagesForRequests:requestsForRemovedItems];
-```
-
 #### Using UI Components
 Use methods from `UIImageView` category for simple cases:
 ```objective-c
@@ -144,6 +118,45 @@ imageView.managesRequestPriorities = YES; // Automatically changes current reque
 [imageView setImageWithResource:[NSURL URLWithString:@"http://..."]];
 ```
 
+#### UICollectionView
+
+```objective-c
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+    UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:<#reuse_id#> forIndexPath:indexPath];
+    cell.backgroundColor = [UIColor colorWithWhite:235.f/255.f alpha:1.f];
+
+    DFImageView *imageView = (id)[cell viewWithTag:15];
+    if (!imageView) {
+        imageView = [[DFImageView alloc] initWithFrame:cell.bounds];
+        imageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        imageView.tag = 15;
+        [cell addSubview:imageView];
+    }
+    [imageView prepareForReuse];
+    [imageView setImageWithResource:<#image_url#>];
+    return cell;
+}
+```
+
+Cancel image task as soon as the cell goes offscreen (optional):
+
+```objective-c
+- (void)collectionView:(UICollectionView *)collectionView didEndDisplayingCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath {
+    DFImageView *imageView = (id)[cell viewWithTag:15];
+    [imageView prepareForReuse];
+}
+```
+
+#### Preheating Images
+
+```objective-c
+NSArray *requestsForAddedItems = ...; // Create image requests
+[[DFImageManager sharedManager] startPreheatingImagesForRequests:requestsForAddedItems];
+    
+NSArray *requestsForRemovedItems = ...; // Create image requests
+[[DFImageManager sharedManager] stopPreheatingImagesForRequests:requestsForRemovedItems];
+```
+
 #### Requesting Image for PHAsset
 
 ```objective-c
@@ -152,6 +165,22 @@ DFImageRequest *request = [DFImageRequest requestWithResource:asset targetSize:C
 [[[DFImageManager sharedManager] imageTaskForRequest:request completion:^(UIImage *image, NSDictionary *info) {
   // Image resized to 100x100px square
 }] resume];
+```
+
+#### Progressive Image Decoding
+
+```objective-c
+// Create image request that allows progressive image
+DFMutableImageRequestOptions *options = [DFMutableImageRequestOptions new];
+options.allowsProgressiveImage = YES;
+DFImageRequest *request = // Create request with given options
+
+DFImageTask *imageTask = .../ Create image task
+imageTask.progressiveImageHandler = ^(UIImage *__nonnull image){
+  imageView.image = image;
+};
+
+[imageTask resume]; // Progressive image should also be enabled by DFImageManager
 ```
 
 #### Creating Image Managers
