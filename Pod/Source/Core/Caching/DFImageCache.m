@@ -38,7 +38,7 @@
 - (nonnull instancetype)initWithCache:(nonnull NSCache *)cache {
     if (self = [super init]) {
         _cache = cache;
-#if __IPHONE_OS_VERSION_MIN_REQUIRED
+#if __IPHONE_OS_VERSION_MIN_REQUIRED && !__WATCH_OS_VERSION_MIN_REQUIRED
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeAllObjects) name:UIApplicationDidReceiveMemoryWarningNotification object:nil];
 #endif
     }

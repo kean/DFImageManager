@@ -62,12 +62,10 @@
     }
 #endif
 
-#if __IPHONE_OS_VERSION_MIN_REQUIRED
+#if __IPHONE_OS_VERSION_MIN_REQUIRED && !__WATCH_OS_VERSION_MIN_REQUIRED
     return [UIImage imageWithData:data scale:[UIScreen mainScreen].scale];
-#elif TARGET_OS_WATCH
-    return [UIImage imageWithData:data scale:[WKInterfaceDevice currentDevice].screenScale];
 #else
-    return [UIImage imageWithData:data];
+    return [UIImage imageWithData:data scale:[WKInterfaceDevice currentDevice].screenScale];
 #endif
 }
 

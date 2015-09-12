@@ -19,7 +19,6 @@ Pod::Spec.new do |s|
     end
 
     s.subspec "UI" do |ss|
-        ss.ios.deployment_target = "7.0"   
         ss.dependency "DFImageManager/Core"
         ss.ios.source_files = "Pod/Source/UI/**/*.{h,m}"
     end
@@ -30,26 +29,22 @@ Pod::Spec.new do |s|
     end
 
     s.subspec "AFNetworking" do |ss|
-        ss.ios.deployment_target = "7.0"   
         ss.dependency "DFImageManager/Core"
         ss.dependency "AFNetworking/NSURLSession", "~> 2.0"
         ss.source_files = "Pod/Source/AFNetworking/**/*.{h,m}"
     end
 
     s.subspec "PhotosKit" do |ss|
-        ss.ios.deployment_target = "7.0"   
         ss.dependency "DFImageManager/Core"
         ss.source_files = "Pod/Source/PhotosKit/**/*.{h,m}"
     end
 
     s.subspec "GIF" do |ss|
-        ss.ios.deployment_target = "7.0"   
         ss.dependency "FLAnimatedImage", "~> 1.0"
         ss.source_files = "Pod/Source/GIF/**/*.{h,m}"
     end
 
     s.subspec "WebP" do |ss|
-        ss.ios.deployment_target = "7.0"   
         ss.dependency "libwebp"
         ss.source_files = "Pod/Source/WebP/**/*.{h,m}"
     end
