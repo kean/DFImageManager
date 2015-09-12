@@ -74,7 +74,7 @@
 
 @end
 
-/*! Make it possible to use DFImageRequest as a key in dictionaries (and dictionary-like structures). Requests may be interpreted differently so we compare them using <DFImageFetching> -isRequestFetchEquivalent:toRequest: method and (optionally) similar <DFImageProcessing> method.
+/*! Make it possible to use DFImageRequest as a key in dictionaries (and dictionary-like structures). Requests are compared using -[DFImageFetching isRequestFetchEquivalent:toRequest:] method and -[DFImageProcessing isProcessingForRequestEquivalent:toRequest:] method (for cache and preheating)
  */
 @interface _DFImageRequestKey : NSObject <NSCopying>
 
@@ -121,10 +121,12 @@
 
 #pragma mark - _DFImageLoadOperation
 
+/*! Wrapper for <DFImageFetchingOperation> operation.
+ */
 @interface _DFImageLoadOperation : NSObject
 
 @property (nonnull, nonatomic, readonly) _DFImageRequestKey *key;
-@property (nullable, nonatomic) id<DFImageFetchingOperation> operation;
+@property (nullable, nonatomic) id<DFImageFetchingOperation> fetchOperation;
 @property (nonnull, nonatomic, readonly) NSMutableArray *tasks;
 @property (nonatomic) int64_t totalUnitCount;
 @property (nonatomic) int64_t completedUnitCount;
@@ -143,12 +145,12 @@
 }
 
 - (void)updateOperationPriority {
-    if (_operation && _tasks.count) {
+    if (_fetchOperation && _tasks.count) {
         DFImageRequestPriority priority = DFImageRequestPriorityLow;
         for (_DFImageLoaderTask *task in _tasks) {
             priority = MAX(task.imageTask.priority, priority);
         }
-        [_operation setImageFetchingPriority:priority];
+        [_fetchOperation setImageFetchingPriority:priority];
     }
 }
 
@@ -193,13 +195,13 @@
     });
 }
 
-- (void)_startLoadOperationForTask:(_DFImageLoaderTask *)task {
+- (void)_startLoadOperationForTask:(nonnull _DFImageLoaderTask *)task {
     _DFImageRequestKey *key = DFImageLoadKeyCreate(task.request);
     _DFImageLoadOperation *operation = _loadOperations[key];
-    if (!operation) {
+    if (!operation) { // Couldn't find existing operation with equivalent image request
         operation = [[_DFImageLoadOperation alloc] initWithKey:key];
         typeof(self) __weak weakSelf = self;
-        operation.operation = [_conf.fetcher startOperationWithRequest:task.request progressHandler:^(NSData *__nullable data, int64_t completedUnitCount, int64_t totalUnitCount) {
+        operation.fetchOperation = [_conf.fetcher startOperationWithRequest:task.request progressHandler:^(NSData *__nullable data, int64_t completedUnitCount, int64_t totalUnitCount) {
             [weakSelf _loadOperation:operation didUpdateProgressWithData:data completedUnitCount:completedUnitCount totalUnitCount:totalUnitCount];
         } completion:^(NSData *__nullable data, NSDictionary *__nullable info, NSError *__nullable error) {
             [weakSelf _loadOperation:operation didCompleteWithData:data info:info error:error];
@@ -327,7 +329,7 @@
         if (operation) {
             [operation.tasks removeObject:loaderTask];
             if (operation.tasks.count == 0) {
-                [operation.operation cancelImageFetching];
+                [operation.fetchOperation cancelImageFetching];
                 [self _removeImageLoadOperation:operation];
             } else {
                 [operation updateOperationPriority];
