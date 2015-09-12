@@ -24,12 +24,10 @@
 #import <AFNetworking/AFURLSessionManager.h>
 #import <Foundation/Foundation.h>
 
-NS_ASSUME_NONNULL_BEGIN
-
 /*! The NSNumber with NSURLRequestCachePolicy value that specifies a request cache policy.
  @note Should be put into DFImageRequestOptions userInfo dictionary.
  */
-extern NSString *const DFAFRequestCachePolicyKey;
+extern NSString *__nonnull const DFAFRequestCachePolicyKey;
 
 @class DFAFImageFetcher;
 
@@ -45,7 +43,7 @@ extern NSString *const DFAFRequestCachePolicyKey;
  @param URLRequest The proposed URL request to used for image load.
  @return The delegate may return modified, unmodified NSURLResponse or create NSURLResponse from scratch.
  */
-- (NSURLRequest *)imageFetcher:(DFAFImageFetcher *)fetcher URLRequestForImageRequest:(DFImageRequest *)imageRequest URLRequest:(NSURLRequest *)URLRequest;
+- (nonnull NSURLRequest *)imageFetcher:(nonnull DFAFImageFetcher *)fetcher URLRequestForImageRequest:(nonnull DFImageRequest *)imageRequest URLRequest:(nonnull NSURLRequest *)URLRequest;
 
 @end
 
@@ -56,7 +54,7 @@ extern NSString *const DFAFRequestCachePolicyKey;
 
 /*! The session manager that the receiver was initialized with.
  */
-@property (nonatomic, readonly) AFURLSessionManager *sessionManager;
+@property (nonnull, nonatomic, readonly) AFURLSessionManager *sessionManager;
 
 /*! The delegate of the receiver.
  */
@@ -65,16 +63,14 @@ extern NSString *const DFAFRequestCachePolicyKey;
 /*! A set containing all the supported URL schemes. The default set contains "http", "https", "ftp", "file" and "data" schemes.
  @note The property can be changed in case there are any custom protocols supported by NSURLSession.
  */
-@property (nonatomic, copy) NSSet *supportedSchemes;
+@property (nonnull, nonatomic, copy) NSSet *supportedSchemes;
 
 /*! Initializes the DFURLImageFetcher with a given session manager.
  */
-- (instancetype)initWithSessionManager:(AFURLSessionManager *)sessionManager NS_DESIGNATED_INITIALIZER;
+- (nonnull instancetype)initWithSessionManager:(nonnull AFURLSessionManager *)sessionManager NS_DESIGNATED_INITIALIZER;
 
 /*! Unavailable initializer, please use designated initializer.
  */
 - (nullable instancetype)init NS_UNAVAILABLE;
 
 @end
-
-NS_ASSUME_NONNULL_END
