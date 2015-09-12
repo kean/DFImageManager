@@ -25,18 +25,18 @@
 @implementation DFImageRequestOptions
 
 - (nonnull instancetype)init {
-    return [self initWithOptions:[DFMutableImageRequestOptions new]];
+    return [self initWithBuilder:[DFMutableImageRequestOptions new]];
 }
 
-- (nonnull instancetype)initWithOptions:(nonnull DFImageRequestOptions *)options {
+- (nonnull instancetype)initWithBuilder:(nonnull DFMutableImageRequestOptions *)builder {
     if (self = [super init]) {
-        _priority = options.priority;
-        _allowsNetworkAccess = options.allowsNetworkAccess;
-        _allowsClipping = options.allowsClipping;
-        _allowsProgressiveImage = options.allowsProgressiveImage;
-        _memoryCachePolicy = options.memoryCachePolicy;
-        _expirationAge = options.expirationAge;
-        _userInfo = options.userInfo;
+        _priority = builder.priority;
+        _allowsNetworkAccess = builder.allowsNetworkAccess;
+        _allowsClipping = builder.allowsClipping;
+        _allowsProgressiveImage = builder.allowsProgressiveImage;
+        _memoryCachePolicy = builder.memoryCachePolicy;
+        _expirationAge = builder.expirationAge;
+        _userInfo = builder.userInfo;
     }
     return self;
 }
@@ -77,7 +77,7 @@ static DFMutableImageRequestOptions *_defaultOptions;
 }
 
 - (DFImageRequestOptions * __nonnull)options {
-    return [[DFImageRequestOptions alloc] initWithOptions:self];
+    return [[DFImageRequestOptions alloc] initWithBuilder:self];
 }
 
 @end

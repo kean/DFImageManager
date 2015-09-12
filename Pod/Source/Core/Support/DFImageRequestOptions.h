@@ -57,11 +57,6 @@
  */
 @property (nullable, nonatomic, readonly) NSDictionary *userInfo;
 
-/*! Initializes DFImageRequestOptions with another instance of request options.
- @param options The given options. Options might be nil.
- */
-- (nonnull instancetype)initWithOptions:(nonnull DFMutableImageRequestOptions *)options NS_DESIGNATED_INITIALIZER;
-
 /*! Initializes DFImageRequestOptions with default options.
  */
 - (nonnull instancetype)init;
@@ -69,11 +64,12 @@
 @end
 
 
-/*! DFImageRequestOptions builder. Use options property of the builder to create DFImageRequestOptions object.
+/*! DFImageRequestOptions builder. Use options property of the builder to build DFImageRequestOptions object.
+ @warning This class is not a mutable counterpart of DFImageRequestOptions! It's a builder  that allows DFImageRequestOptions to be immutable without having a telescoping constructor.
  */
 @interface DFMutableImageRequestOptions : NSObject
 
-/*! Creates request options from the receiver.
+/*! Builds request options from the receiver.
  */
 @property (nonnull, nonatomic, readonly) DFImageRequestOptions *options;
 
