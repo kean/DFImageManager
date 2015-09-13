@@ -48,12 +48,6 @@
 #import "DFImageProcessor.h"
 #import "UIImage+DFImageUtilities.h"
 
-
-// Subspec 'Extensions'
-#if __has_include("DFImageManagerKit+Extensions.h")
-#import "DFImageManagerKit+Extensions.h"
-#endif
-
 // Subspec 'UI'
 #if __has_include("DFImageManagerKit+UI.h")
 #import "DFImageManagerKit+UI.h"
