@@ -68,10 +68,6 @@
  */
 + (void)setSharedManager:(nonnull id<DFImageManaging>)manager;
 
-/*! Adds the image manager to the current shared manager by composing them together. The added image manager will be the first one to respond to the image requests.
- */
-+ (void)addSharedManager:(nonnull id<DFImageManaging>)manager;
-
 @end
 
 
