@@ -195,7 +195,7 @@ DF_INIT_UNAVAILABLE_IMPL
         [_preheatingTasks removeAllObjects];
         _imageLoader.delegate = nil;
         for (_DFImageTask *task in _executingTasks.allObjects) {
-            [self _setImageTaskState:DFImageTaskStateCancelled task:task];
+            [self _setState:DFImageTaskStateCancelled forTask:task];
         }
         if ([_configuration.fetcher respondsToSelector:@selector(invalidate)]) {
             [_configuration.fetcher invalidate];
@@ -234,7 +234,7 @@ DF_INIT_UNAVAILABLE_IMPL
             id<NSCopying> key = [_imageLoader preheatingKeyForRequest:request];
             _DFImageTask *task = _preheatingTasks[key];
             if (task) {
-                [self _setImageTaskState:DFImageTaskStateCancelled task:task];
+                [self _setState:DFImageTaskStateCancelled forTask:task];
             }
         }
     }];
@@ -243,7 +243,7 @@ DF_INIT_UNAVAILABLE_IMPL
 - (void)stopPreheatingImagesForAllRequests {
     [self _performBlock:^{
         for (_DFImageTask *task in _preheatingTasks.allValues) {
-            [self _setImageTaskState:DFImageTaskStateCancelled task:task];
+            [self _setState:DFImageTaskStateCancelled forTask:task];
         }
     }];
 }
@@ -270,7 +270,7 @@ DF_INIT_UNAVAILABLE_IMPL
                 break;
             }
             if (task.state == DFImageTaskStateSuspended) {
-                [self _setImageTaskState:DFImageTaskStateRunning task:task];
+                [self _setState:DFImageTaskStateRunning forTask:task];
                 executingTaskCount++;
             }
         }
@@ -285,7 +285,7 @@ DF_INIT_UNAVAILABLE_IMPL
 
 #pragma mark FSM (DFImageTaskState)
 
-- (void)_setImageTaskState:(DFImageTaskState)state task:(nonnull _DFImageTask *)task {
+- (void)_setState:(DFImageTaskState)state forTask:(nonnull _DFImageTask *)task {
     if ([task isValidNextState:state]) {
         [self _transitionActionFromState:task.state toState:state task:task];
         task.state = state;
@@ -305,7 +305,7 @@ DF_INIT_UNAVAILABLE_IMPL
         if (response) { // fast path
             task.image = response.image;
             task.response = [[DFImageResponse alloc] initWithInfo:response.info isFastResponse:YES];
-            [self _setImageTaskState:DFImageTaskStateCompleted task:task];
+            [self _setState:DFImageTaskStateCompleted forTask:task];
         } else {
             [_executingTasks addObject:task];
             [_imageLoader startLoadingForImageTask:task];
@@ -318,10 +318,8 @@ DF_INIT_UNAVAILABLE_IMPL
         if (state == DFImageTaskStateCancelled) {
             task.error = [NSError errorWithDomain:DFImageManagerErrorDomain code:DFImageManagerErrorCancelled userInfo:nil];
         }
-        if (state == DFImageTaskStateCompleted) {
-            if (!task.image && !task.error) {
-                task.error = [NSError errorWithDomain:DFImageManagerErrorDomain code:DFImageManagerErrorUnknown userInfo:nil];
-            }
+        if (state == DFImageTaskStateCompleted && (!task.image && !task.error)) {
+            task.error = [NSError errorWithDomain:DFImageManagerErrorDomain code:DFImageManagerErrorUnknown userInfo:nil];
         }
         DFDispatchAsync(^{
             DFImageTaskCompletion completion = task.completionHandler;
@@ -344,7 +342,7 @@ DF_INIT_UNAVAILABLE_IMPL
 
 - (void)imageLoader:(nonnull DFImageManagerImageLoader *)imageLoader imageTask:(nonnull DFImageTask *)task didReceiveProgressiveImage:(nonnull UIImage *)image {
     dispatch_async(dispatch_get_main_queue(), ^{
-        void (^handler)(UIImage *__nonnull) = task.progressiveImageHandler;
+        void (^handler)(UIImage *) = task.progressiveImageHandler;
         if (handler) {
             handler(image);
         }
@@ -356,7 +354,7 @@ DF_INIT_UNAVAILABLE_IMPL
     task.response = [[DFImageResponse alloc] initWithInfo:info isFastResponse:NO];
     task.error = error;
     [self _performBlock:^{
-        [self _setImageTaskState:DFImageTaskStateCompleted task:task];
+        [self _setState:DFImageTaskStateCompleted forTask:task];
     }];
 }
 
@@ -364,13 +362,13 @@ DF_INIT_UNAVAILABLE_IMPL
 
 - (void)resumeManagedTask:(nonnull _DFImageTask *)task {
     [self _performBlock:^{
-        [self _setImageTaskState:DFImageTaskStateRunning task:task];
+        [self _setState:DFImageTaskStateRunning forTask:task];
     }];
 }
 
 - (void)cancelManagedTask:(nonnull _DFImageTask *)task {
     [self _performBlock:^{
-        [self _setImageTaskState:DFImageTaskStateCancelled task:task];
+        [self _setState:DFImageTaskStateCancelled forTask:task];
     }];
 }
 

@@ -32,10 +32,6 @@
     [NSException raise:NSInternalInconsistencyException format:@"Abstract method called %@", NSStringFromSelector(_cmd)];
 }
 
-- (void)setPriority:(DFImageRequestPriority)priority {
-    [NSException raise:NSInternalInconsistencyException format:@"Abstract method called %@", NSStringFromSelector(_cmd)];
-}
-
 - (id)copyWithZone:(NSZone *)zone {
     return self;
 }
