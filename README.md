@@ -4,6 +4,8 @@ Advanced framework for loading, caching, processing, displaying and preheating i
 
 DFImageManager is a [pipeline](#h_design) that loads images using pluggable components. It features [multiple subspecs](#install_using_cocopods) that integrate things like [FLAnimatedImage](https://github.com/Flipboard/FLAnimatedImage), [libwebp](https://developers.google.com/speed/webp/docs/api), and more. And it all comes in a strikingly small package with less code than [alternative libraries](https://github.com/kean/DFImageManager/wiki/How-is-DFImageManager-better-than-SDWebImage).
 
+> Programming in Swift? Try [Nuke](https://github.com/kean/Nuke).
+
 1. [Getting Started](#h_getting_started)
 2. [Usage](#h_usage)
 3. [Design](#h_design)
