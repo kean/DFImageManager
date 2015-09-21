@@ -61,7 +61,7 @@ extern NSString *const DFURLRequestCachePolicyKey;
 /*! A set containing all the supported URL schemes. The default set contains "http", "https", "ftp", "file" and "data" schemes.
  @note The property can be changed in case there are any custom protocols supported by NSURLSession.
  */
-@property (nonatomic, copy) NSSet *supportedSchemes;
+@property (nonatomic, copy) NSSet<NSString *> *supportedSchemes;
 
 /*! The delegate of the receiver.
  */

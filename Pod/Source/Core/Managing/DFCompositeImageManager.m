@@ -16,7 +16,7 @@
     __df_outManager; })
 
 @implementation DFCompositeImageManager {
-    NSMutableArray /* id<DFImageManaging> */ *_managers;
+    NSMutableArray<id<DFImageManaging>> *_managers;
 }
 
 - (nonnull instancetype)init {
@@ -26,7 +26,7 @@
     return self;
 }
 
-- (nonnull instancetype)initWithImageManagers:(nonnull NSArray *)imageManagers {
+- (nonnull instancetype)initWithImageManagers:(nonnull NSArray<id<DFImageManaging>> *)imageManagers {
     if (self = [self init]) {
         [_managers addObjectsFromArray:imageManagers];
     }
@@ -59,7 +59,7 @@
     return [manager imageTaskForRequest:request completion:completion];
 }
 
-- (void)getImageTasksWithCompletion:(void (^ __nullable)(NSArray * __nonnull, NSArray * __nonnull))completion {
+- (void)getImageTasksWithCompletion:(void (^ __nullable)(NSArray<DFImageTask *> * __nonnull, NSArray<DFImageTask *> * __nonnull))completion {
     NSMutableArray *allTasks = [NSMutableArray new];
     NSMutableArray *allPreheatingTasks = [NSMutableArray new];
     NSInteger __block numberOfCallbacks = (NSInteger)_managers.count;

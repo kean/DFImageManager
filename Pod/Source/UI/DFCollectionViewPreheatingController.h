@@ -15,7 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param addedIndexPaths Index paths for items added to the preheat window. Index paths are sorted so that the items closest to the previous preheat window are in the beginning of the array; no matter whether user is scrolling forward of backward.
  @param removedIndexPaths Index paths for items there were removed from the preheat window.
  */
-- (void)collectionViewPreheatingController:(DFCollectionViewPreheatingController *)controller didUpdatePreheatRectWithAddedIndexPaths:(NSArray *)addedIndexPaths removedIndexPaths:(NSArray *)removedIndexPaths;
+- (void)collectionViewPreheatingController:(DFCollectionViewPreheatingController *)controller didUpdatePreheatRectWithAddedIndexPaths:(NSArray<NSIndexPath *> *)addedIndexPaths removedIndexPaths:(NSArray<NSIndexPath *> *)removedIndexPaths;
 
 @end
 
@@ -25,7 +25,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @interface DFCollectionViewPreheatingController : NSObject
 
-/*! The collection view the receiver was initializer with.
+/*! The collection view the receiver was initialized with.
  */
 @property (nonatomic, readonly) UICollectionView *collectionView;
 
@@ -53,7 +53,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /*! Returns current preheat indexes.
  */
-@property (nonatomic, readonly) NSSet *preheatIndexPaths;
+@property (nonatomic, readonly) NSSet<NSIndexPath *> *preheatIndexPaths;
 
 /*! Initializes preheating controller with a collection view.
  @param collectionView Collection view.
