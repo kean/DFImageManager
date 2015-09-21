@@ -45,7 +45,7 @@ extern NSString *__nonnull const DFAFRequestCachePolicyKey;
 /*! A set containing all the supported URL schemes. The default set contains "http", "https", "ftp", "file" and "data" schemes.
  @note The property can be changed in case there are any custom protocols supported by NSURLSession.
  */
-@property (nonnull, nonatomic, copy) NSSet *supportedSchemes;
+@property (nonnull, nonatomic, copy) NSSet<NSString *> *supportedSchemes;
 
 /*! Initializes the DFURLImageFetcher with a given session manager.
  */

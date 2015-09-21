@@ -83,7 +83,7 @@ DF_INIT_UNAVAILABLE_IMPL
         
         _preheatIndexPaths = newIndexPaths;
         
-        NSArray *sortedAddedIndexPaths = [addedIndexPaths.allObjects sortedArrayUsingDescriptors:@[ [NSSortDescriptor sortDescriptorWithKey:@"section" ascending:isScrollingForward], [NSSortDescriptor sortDescriptorWithKey:@"item" ascending:isScrollingForward] ]];
+        NSArray<NSIndexPath *> *sortedAddedIndexPaths = [addedIndexPaths.allObjects sortedArrayUsingDescriptors:@[ [NSSortDescriptor sortDescriptorWithKey:@"section" ascending:isScrollingForward], [NSSortDescriptor sortDescriptorWithKey:@"item" ascending:isScrollingForward] ]];
         
         _preheatRect = preheatRect;
         
@@ -111,9 +111,9 @@ DF_INIT_UNAVAILABLE_IMPL
     return CGRectIntegral(preheatRect);
 }
 
-- (NSArray *)_indexPathsForElementsInRect:(CGRect)rect {
-    NSArray *allLayoutAttributes = [self.collectionView.collectionViewLayout layoutAttributesForElementsInRect:rect];
-    NSMutableArray *indexPaths = [NSMutableArray new];
+- (NSArray<NSIndexPath *> *)_indexPathsForElementsInRect:(CGRect)rect {
+    NSArray<UICollectionViewLayoutAttributes *> *allLayoutAttributes = [self.collectionView.collectionViewLayout layoutAttributesForElementsInRect:rect];
+    NSMutableArray<NSIndexPath *> *indexPaths = [NSMutableArray new];
     for (UICollectionViewLayoutAttributes *attributes in allLayoutAttributes) {
         if (attributes.representedElementCategory == UICollectionElementCategoryCell) {
             [indexPaths addObject:attributes.indexPath];

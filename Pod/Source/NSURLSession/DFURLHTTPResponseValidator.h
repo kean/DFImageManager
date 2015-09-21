@@ -16,6 +16,6 @@
 /*! The acceptable MIME types for responses. Default value is nil so that all content types are supported. Image initialization never crashes when provided with an invalid data.
  @note All content types are acceptable in case acceptableContentTypes is nil.
  */
-@property (nullable, nonatomic, copy) NSSet *acceptableContentTypes;
+@property (nullable, nonatomic, copy) NSSet<NSString *> *acceptableContentTypes;
 
 @end

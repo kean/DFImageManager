@@ -34,7 +34,7 @@ typedef void (^DFImageTaskCompletion)(UIImage *__nullable image, NSError *__null
 
 /*! Asynchronously calls a completion block on the main thread with all resumed outstanding image tasks and separate array with all preheating tasks.
  */
-- (void)getImageTasksWithCompletion:(void (^__nullable)(NSArray *__nonnull tasks, NSArray *__nonnull preheatingTasks))completion;
+- (void)getImageTasksWithCompletion:(void (^__nullable)(NSArray<DFImageTask *> *__nonnull tasks, NSArray<DFImageTask *> *__nonnull preheatingTasks))completion;
 
 /*! Cancels all outstanding requests, including preheating requests, and then invalidates the image manager. New image tasks may not be started.
  */
@@ -45,12 +45,12 @@ typedef void (^DFImageTaskCompletion)(UIImage *__nullable image, NSError *__null
  @note DFImageManager caches images with the exact target size, content mode, and options you specify in this method. If you later request an image with, for example, a different target size than you passed when calling this method, DFImageManager might have to generate a new image but would still be able to use cached image data.
  @note If this method is called twice with the same requests the second call would have no effect (unless first requests are completed).
  */
-- (void)startPreheatingImagesForRequests:(nonnull NSArray /* DFImageRequest */ *)requests;
+- (void)startPreheatingImagesForRequests:(nonnull NSArray<DFImageRequest *> *)requests;
 
 /*! Cancels preheating for the given requests.
  @note The request parameters shall exactly match the parameters used in startPreheatingImagesForRequests: method.
  */
-- (void)stopPreheatingImagesForRequests:(nonnull NSArray /* DFImageRequest */ *)requests;
+- (void)stopPreheatingImagesForRequests:(nonnull NSArray<DFImageRequest *> *)requests;
 
 /*! Cancels all image preheating tasks registered with a manager.
  */

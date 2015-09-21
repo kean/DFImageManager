@@ -12,7 +12,7 @@
 
 /*! Initializes composite image manager with an array of image managers.
  */
-- (nonnull instancetype)initWithImageManagers:(nonnull NSArray /* id<DFImageManaging> */ *)imageManagers;
+- (nonnull instancetype)initWithImageManagers:(nonnull NSArray<id<DFImageManaging>> *)imageManagers;
 
 /*! Adds image manager to the end of the chain.
  */
