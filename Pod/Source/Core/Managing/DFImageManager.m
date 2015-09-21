@@ -158,7 +158,7 @@ DF_INIT_UNAVAILABLE_IMPL
     return [[_DFImageTask alloc] initWithManager:self request:request completionHandler:completion];
 }
 
-- (void)getImageTasksWithCompletion:(void (^ __nullable)(NSArray * __nonnull, NSArray * __nonnull))completion {
+- (void)getImageTasksWithCompletion:(void (^)(NSArray<DFImageTask *> * _Nonnull, NSArray<DFImageTask *> * _Nonnull))completion {
     NSMutableSet *tasks = [NSMutableSet new];
     NSMutableSet *preheatingTasks = [NSMutableSet new];
     [self _performBlock:^{

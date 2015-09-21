@@ -74,7 +74,7 @@
     return [self imageTaskForRequest:request completion:completion];
 }
 
-- (void)getImageTasksWithCompletion:(void (^)(NSArray *, NSArray *))completion {
+- (void)getImageTasksWithCompletion:(void (^)(NSArray<DFImageTask *> * _Nonnull, NSArray<DFImageTask *> * _Nonnull))completion {
     dispatch_async(dispatch_get_main_queue(), ^{
         NSMutableSet *tasks = [NSMutableSet new];
         NSMutableSet *preheatingTasks = [NSMutableSet new];
