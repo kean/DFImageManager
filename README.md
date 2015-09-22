@@ -1,8 +1,8 @@
 <p align="center"><img src="https://cloud.githubusercontent.com/assets/1567433/9706439/4d3fd63c-54ed-11e5-91ec-a52c768b67fe.png" width="70%"/>
 
-Advanced framework for loading, caching, processing, displaying and preheating images. It uses latest advancements in iOS SDK and doesn't reinvent existing technologies. It has an elegant and powerful API that will extend the capabilities of your app.
+Advanced framework for loading, caching, processing, displaying and preheating images. It uses latest advancements in iOS SDK and doesn't reinvent existing technologies.
 
-DFImageManager is a [pipeline](#h_design) that loads images using pluggable components. It features [multiple subspecs](#install_using_cocopods) that integrate things like [FLAnimatedImage](https://github.com/Flipboard/FLAnimatedImage), [libwebp](https://developers.google.com/speed/webp/docs/api), and more. And it all comes in a strikingly small package with less code than [alternative libraries](https://github.com/kean/DFImageManager/wiki/How-is-DFImageManager-better-than-SDWebImage).
+DFImageManager is a [pipeline](#h_design) that loads images using multiple dependencies which can be injected in runtime. It features [multiple subspecs](#install_using_cocopods) that integrate things like [FLAnimatedImage](https://github.com/Flipboard/FLAnimatedImage), [libwebp](https://developers.google.com/speed/webp/docs/api), and more.
 
 > Programming in Swift? Try [Nuke](https://github.com/kean/Nuke).
 
@@ -16,9 +16,9 @@ DFImageManager is a [pipeline](#h_design) that loads images using pluggable comp
 
 ## <a name="h_features"></a>Features
 
-- Zero config, yet immense customization and flexibility
+- Zero config
 - Works great with both Objective-C and Swift
-- Great performance even on outdated devices, asynchronous and thread safe
+- Performant, asynchronous, thread safe
 - Comprehensive unit test coverage
 
 ##### Loading
@@ -26,10 +26,9 @@ DFImageManager is a [pipeline](#h_design) that loads images using pluggable comp
 - Has optional [AFNetworking integration](#install_using_cocopods), combine the power of both frameworks!
 - Uses a single fetch operation for multiple equivalent requests
 - [Intelligent preheating](https://github.com/kean/DFImageManager/wiki/Image-Preheating-Guide) of images close to the viewport
-- Progress tracking using `NSProgress`
 
 ##### Caching
-- Instead of reinventing a caching methodology it relies on HTTP cache as defined in [HTTP specification](https://tools.ietf.org/html/rfc7234) and caching implementation provided by [Foundation](https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/URLLoadingSystem/URLLoadingSystem.html)
+- Doesn't reinvent caching, relies on [HTTP cache](https://tools.ietf.org/html/rfc7234) and its implementation in [Foundation](https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/URLLoadingSystem/URLLoadingSystem.html)
 - Caching is completely transparent to the client
 - Two cache layers, including [top level memory cache](https://github.com/kean/DFImageManager/wiki/Image-Caching-Guide) for decompressed images
 
@@ -41,26 +40,21 @@ DFImageManager is a [pipeline](#h_design) that loads images using pluggable comp
 - Scale large images (~6000x4000 px) and prepare them for display with ease
 - Resize and crop loaded images to [fit displayed size](https://developer.apple.com/library/ios/qa/qa1708/_index.html), add rounded corners or circle
 
-##### Displaying
-- Use UI components and UIKit categories
-- Automatically manage requests priorities
-
 ##### Advanced
 - Customize different parts of the framework using dependency injection
 - Create custom image managers
 - [Compose image managers](https://github.com/kean/DFImageManager/wiki/Extending-Image-Manager-Guide#using-dfcompositeimagemanager) into a tree of responsibility
 
 ## <a name="h_getting_started"></a>Getting Started
-- Download the latest [release](https://github.com/kean/DFImageManager/releases) version
-- Take a look at the comprehensive [demo](https://github.com/kean/DFImageManager/tree/master/Demo), it's easy to install with `pod try DFImageManager` command
-- Check out the complete [documentation](http://cocoadocs.org/docsets/DFImageManager)
+- Download latest [release](https://github.com/kean/DFImageManager/releases) version
+- Take a look at comprehensive [demo](https://github.com/kean/DFImageManager/tree/master/Demo), it's easy to install with `pod try DFImageManager` command
+- Check out complete [documentation](http://cocoadocs.org/docsets/DFImageManager)
 - View the growing project [Wiki](https://github.com/kean/DFImageManager/wiki) and [FAQ](https://github.com/kean/DFImageManager/wiki/FAQ)
 - [Install using CocoaPods](#install_using_cocopods), import `<DFImageManager/DFImageManagerKit.h>` and enjoy!
-- Check out [Nuke](https://github.com/kean/Nuke) - experimental Swift framework with similar functionality
 
 ## <a name="h_usage"></a>Usage
 
-#### Zero Config Image Loading
+#### Zero Config
 
 ```objective-c
 [[[DFImageManager sharedManager] imageTaskForResource:[NSURL URLWithString:@"http://..."] completion:^(UIImage *image, NSError *error, DFImageResponse *response, DFImageTask *task){
@@ -221,10 +215,6 @@ id<DFImageManaging> compositeImageManager = [[DFCompositeImageManager alloc] ini
 [DFImageManager setSharedManager:compositeImageManager];
 ```
 
-#### What Else
-
-`DFImageManager` is jam-packed with other features. For more info check out the complete [documentation](http://cocoadocs.org/docsets/DFImageManager) and project [Wiki](https://github.com/kean/DFImageManager/wiki)
-
 ## <a name="h_design"></a>Design
 
 <img src="https://cloud.githubusercontent.com/assets/1567433/9706417/0352d3bc-54ed-11e5-94ff-cb8691800f78.png" width="66%"/>
@@ -239,7 +229,7 @@ id<DFImageManaging> compositeImageManager = [[DFCompositeImageManager alloc] ini
 
 ## <a name="install_using_cocopods"></a>Installation with [CocoaPods](http://cocoapods.org)
 
-CocoaPods is the dependency manager for Cocoa projects. If you are not familiar with CocoaPods the best place to start would be [official CocoaPods guides](http://guides.cocoapods.org). To install DFImageManager add a dependency in your Podfile:
+To install DFImageManager add a dependency in your Podfile:
 ```ruby
 # Podfile
 # platform :ios, '7.0'
@@ -279,7 +269,6 @@ pod 'DFImageManager/WebP'
 ## <a name="h_contribution"></a>Contribution
 
 - If you **need help**, use [Stack Overflow](http://stackoverflow.com/questions/tagged/dfimagemanager). (Tag 'dfimagemanager')
-- If you'd like to **ask a general question**, use [Stack Overflow](http://stackoverflow.com/questions/tagged/dfimagemanager).
 - If you **found a bug**, and can provide steps to reproduce it, open an issue.
 - If you **have a feature request**, open an issue.
 - If you **want to contribute**, branch of the `develop` branch and submit a pull request.
