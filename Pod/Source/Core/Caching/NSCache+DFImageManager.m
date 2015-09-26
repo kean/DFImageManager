@@ -21,9 +21,13 @@
     static NSUInteger recommendedSize;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
+#if TARGET_OS_WATCH
+        recommendedSize = 1024 * 1024 * 20; /* 20 Mb */
+#else
         NSProcessInfo *info = [NSProcessInfo processInfo];
         CGFloat ratio = info.physicalMemory <= (1024 * 1024 * 512 /* 512 Mb */) ? 0.1f : 0.2f;
         recommendedSize = (NSUInteger)MAX(1024 * 1024 * 50 /* 50 Mb */, info.physicalMemory * ratio);
+#endif
     });
     return recommendedSize;
 }
