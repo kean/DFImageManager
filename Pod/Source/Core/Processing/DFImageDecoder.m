@@ -20,30 +20,7 @@
 
 @implementation DFImageDecoder
 
-#pragma mark <DFImageDecoding>
-
 - (nullable UIImage *)imageWithData:(nonnull NSData *)data partial:(BOOL)partial {
-    if (!data.length) {
-        return nil;
-    }
-#if __has_include("DFImageManagerKit+GIF.h")
-    if ([DFAnimatedImage isAnimatedGIFData:data]) {
-        UIImage *image = [DFAnimatedImage animatedImageWithGIFData:data];
-        if (image) {
-            return image;
-        }
-    }
-#endif
-    
-#if __has_include("DFImageManagerKit+WebP.h")
-    if ([UIImage df_isWebPData:data] && !partial) {
-        UIImage *image = [UIImage df_imageWithWebPData:data];
-        if (image) {
-            return image;
-        }
-    }
-#endif
-
 #if __IPHONE_OS_VERSION_MIN_REQUIRED && !__WATCH_OS_VERSION_MIN_REQUIRED
     return [UIImage imageWithData:data scale:[UIScreen mainScreen].scale];
 #else
@@ -57,7 +34,15 @@ static id<DFImageDecoding> _sharedDecoder;
 static OSSpinLock _lock = OS_SPINLOCK_INIT;
 
 + (void)initialize {
-    [self setSharedDecoder:[DFImageDecoder new]];
+    NSMutableArray *decoders = [NSMutableArray new];
+#if __has_include("DFImageManagerKit+GIF.h")
+    [decoders addObject:[DFAnimatedImageDecoder new]];
+#endif
+#if __has_include("DFImageManagerKit+WebP.h")
+    [decoders addObject:[DFWebPImageDecoder new]];
+#endif
+    [decoders addObject:[DFImageDecoder new]];
+    [self setSharedDecoder:[[DFCompositeImageDecoder alloc] initWithDecoders:decoders]];
 }
 
 + (nullable id<DFImageDecoding>)sharedDecoder {
@@ -72,6 +57,30 @@ static OSSpinLock _lock = OS_SPINLOCK_INIT;
     OSSpinLockLock(&_lock);
     _sharedDecoder = sharedDecoder;
     OSSpinLockUnlock(&_lock);
+}
+
+@end
+
+
+@implementation DFCompositeImageDecoder {
+    NSArray <id<DFImageDecoding>> *_decoders;
+}
+
+- (instancetype)initWithDecoders:(NSArray<id<DFImageDecoding>> *)decoders {
+    if (self = [super init]) {
+        _decoders = [NSArray arrayWithArray:decoders];
+    }
+    return self;
+}
+
+- (UIImage *)imageWithData:(NSData *)data partial:(BOOL)partial {
+    for (id<DFImageDecoding> decoder in _decoders) {
+        UIImage *image = [decoder imageWithData:data partial:partial];
+        if (image) {
+            return image;
+        }
+    }
+    return nil;
 }
 
 @end

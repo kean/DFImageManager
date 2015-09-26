@@ -20,8 +20,8 @@
 - (void)testThatWebPIsDecoded {
     NSData *data = [self _webpImageData];
     XCTAssertEqual(data.length, 118042);
-    XCTAssertTrue([UIImage df_isWebPData:data]);
-    UIImage *image = [UIImage df_imageWithWebPData:data];
+    id<DFImageDecoding> decoder = [DFWebPImageDecoder new];
+    UIImage *image = [decoder imageWithData:data partial:NO];
     XCTAssertNotNil(image);
     XCTAssertEqual(image.size.width, 768);
     XCTAssertEqual(image.size.height, 768);

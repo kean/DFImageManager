@@ -253,10 +253,10 @@
             location = "group:DFImageManagerKit+WebP.h">
          </FileRef>
          <FileRef
-            location = "group:UIImage+DFImageManagerWebP.h">
+            location = "group:DFWebPImageDecoder.h">
          </FileRef>
          <FileRef
-            location = "group:UIImage+DFImageManagerWebP.m">
+            location = "group:DFWebPImageDecoder.m">
          </FileRef>
       </Group>
       <Group
@@ -270,6 +270,12 @@
          </FileRef>
          <FileRef
             location = "group:DFAnimatedImage.m">
+         </FileRef>
+         <FileRef
+            location = "group:DFAnimatedImageDecoder.h">
+         </FileRef>
+         <FileRef
+            location = "group:DFAnimatedImageDecoder.m">
          </FileRef>
       </Group>
    </Group>

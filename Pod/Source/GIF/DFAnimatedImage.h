@@ -5,7 +5,7 @@
 #import <UIKit/UIKit.h>
 #import <FLAnimatedImage/FLAnimatedImage.h>
 
-/*! The DFAnimatedImage subclasses UIImage and represents a poster image for the underlying animated image. It is a regular UIImage that doesn't override any of the native UIImage behaviours it can be used anywhere where a regular `UIImage` can be used.
+/*! The DFAnimatedImage subclasses UIImage and represents a poster image for the underlying animated image. It can be used anywhere where a regular `UIImage` can be used.
  */
 @interface DFAnimatedImage : UIImage
 
@@ -13,16 +13,8 @@
  */
 @property (nonnull, nonatomic, readonly) FLAnimatedImage *animatedImage;
 
-/*! Initializes the DFAnimatedImage with an instance of FLAnimatedImage class.
+/*! Initializes the DFAnimatedImage with an instance of FLAnimatedImage class and poster image.
  */
-- (nonnull instancetype)initWithAnimatedImage:(nonnull FLAnimatedImage *)animatedImage NS_DESIGNATED_INITIALIZER;
-
-/*! Returns the DFAnimatedImage object with an instance of FLAnimatedImage class created from a given data.
- */
-+ (nullable instancetype)animatedImageWithGIFData:(nullable NSData *)data;
-
-/*! Returns YES if the data represents an animated GIF.
- */
-+ (BOOL)isAnimatedGIFData:(nullable NSData *)data;
+- (nonnull instancetype)initWithAnimatedImage:(nonnull FLAnimatedImage *)animatedImage posterImage:(nonnull CGImageRef)posterImage posterImageScale:(CGFloat)posterImageScale posterImageOrientation:(UIImageOrientation)posterImageOrientation NS_DESIGNATED_INITIALIZER;
 
 @end

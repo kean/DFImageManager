@@ -18,3 +18,12 @@
 + (void)setSharedDecoder:(nullable id<DFImageDecoding>)sharedDecoder;
 
 @end
+
+
+/*! Composes image decoders.
+*/
+@interface DFCompositeImageDecoder : NSObject <DFImageDecoding>
+
+- (nonnull instancetype)initWithDecoders:(nonnull NSArray <id<DFImageDecoding>> *)decoders;
+
+@end

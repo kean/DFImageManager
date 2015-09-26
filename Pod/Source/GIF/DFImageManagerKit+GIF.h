@@ -3,3 +3,4 @@
 // Copyright (c) 2015 Alexander Grebenyuk (github.com/kean).
 
 #import "DFAnimatedImage.h"
+#import "DFAnimatedImageDecoder.h"

@@ -2,4 +2,4 @@
 //
 // Copyright (c) 2015 Alexander Grebenyuk (github.com/kean).
 
-#import "UIImage+DFImageManagerWebP.h"
+#import "DFWebPImageDecoder.h"

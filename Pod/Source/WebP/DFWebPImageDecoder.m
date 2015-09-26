@@ -2,27 +2,22 @@
 //
 // Copyright (c) 2015 Alexander Grebenyuk (github.com/kean).
 
-#import "UIImage+DFImageManagerWebP.h"
+#import "DFWebPImageDecoder.h"
 #import <libwebp/webp/decode.h>
 
-@implementation UIImage (DFImageManagerWebP)
-
-+ (BOOL)df_isWebPData:(nullable NSData *)data {
-    const NSInteger sigLength = 12;
-    if (data.length < sigLength) {
-        return NO;
-    }
-    uint8_t sig[sigLength];
-    [data getBytes:&sig length:sigLength];
-    // RIFF----WEBP
-    return (sig[0] == 0x52 && sig[1] == 0x49 && sig[2] == 0x46 && sig[3] == 0x46 && sig[8] == 0x57 && sig[9] == 0x45 && sig[10] == 0x42 && sig[11] == 0x50);
-}
+@implementation DFWebPImageDecoder
 
 static void FreeImageData(void *info, const void *data, size_t size) {
     free((void *)data);
 }
 
-+ (nullable UIImage *)df_imageWithWebPData:(nullable NSData *)data {
+- (UIImage *)imageWithData:(NSData *)data partial:(BOOL)partial {
+    if (partial) {
+        return nil;
+    }
+    if (![self _isWebPData:data]) {
+        return nil;
+    }
     WebPDecoderConfig config;
     if (!WebPInitDecoderConfig(&config)) {
         return nil;
@@ -53,6 +48,17 @@ static void FreeImageData(void *info, const void *data, size_t size) {
         CGImageRelease(imageRef);
     }
     return image;
+}
+
+- (BOOL)_isWebPData:(NSData *)data {
+    const NSInteger sigLength = 12;
+    if (data.length < sigLength) {
+        return NO;
+    }
+    uint8_t sig[sigLength];
+    [data getBytes:&sig length:sigLength];
+    // RIFF----WEBP
+    return (sig[0] == 0x52 && sig[1] == 0x49 && sig[2] == 0x46 && sig[3] == 0x46 && sig[8] == 0x57 && sig[9] == 0x45 && sig[10] == 0x42 && sig[11] == 0x50);
 }
 
 @end
