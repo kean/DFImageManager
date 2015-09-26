@@ -70,6 +70,25 @@
             </FileRef>
          </Group>
          <Group
+            location = "group:../Fetching"
+            name = "Fetching">
+            <FileRef
+               location = "group:/Users/kean/Develop/Source/DFImageManager/Pod/Source/Core/Fetching/DFURLHTTPResponseValidator.m">
+            </FileRef>
+            <FileRef
+               location = "group:DFURLHTTPResponseValidator.h">
+            </FileRef>
+            <FileRef
+               location = "group:DFURLImageFetcher.h">
+            </FileRef>
+            <FileRef
+               location = "group:DFURLImageFetcher.m">
+            </FileRef>
+            <FileRef
+               location = "group:DFURLResponseValidating.h">
+            </FileRef>
+         </Group>
+         <Group
             location = "group:Caching"
             name = "Caching">
             <FileRef
@@ -193,28 +212,6 @@
          </FileRef>
          <FileRef
             location = "group:DFImageRequest+UIKitAdditions.m">
-         </FileRef>
-      </Group>
-      <Group
-         location = "group:NSURLSession"
-         name = "NSURLSession">
-         <FileRef
-            location = "group:DFImageManagerKit+NSURLSession.h">
-         </FileRef>
-         <FileRef
-            location = "group:DFURLHTTPImageDeserializer.m">
-         </FileRef>
-         <FileRef
-            location = "group:DFURLHTTPResponseValidator.h">
-         </FileRef>
-         <FileRef
-            location = "group:DFURLImageFetcher.h">
-         </FileRef>
-         <FileRef
-            location = "group:DFURLImageFetcher.m">
-         </FileRef>
-         <FileRef
-            location = "group:DFURLResponseValidating.h">
          </FileRef>
       </Group>
       <Group

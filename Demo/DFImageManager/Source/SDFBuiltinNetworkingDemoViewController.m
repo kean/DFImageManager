@@ -8,7 +8,8 @@
 
 #import "SDFPhotos.h"
 #import "SDFBuiltinNetworkingDemoViewController.h"
-#import <DFImageManagerKit.h>
+#import <DFImageManager/DFImageManagerKit.h>
+#import <DFImageManager/DFImageManagerKit+UI.h>
 
 
 static NSString * const reuseIdentifier = @"Cell";

@@ -227,7 +227,6 @@ pod 'DFImageManager'
 By default it will install these subspecs (if they are available for your platform):
 - `DFImageManager/Core` - DFImageManager core classes
 - `DFImageManager/UI` - UI components
-- `DFImageManager/NSURLSession` - basic networking on top of NSURLSession
 - `DFImageManager/PhotosKit` - Photos Framework support
 
 There are three more optional subspecs:

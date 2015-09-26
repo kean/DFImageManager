@@ -11,6 +11,7 @@
 #import "SDFPhotosKitDemoViewController.h"
 #import "UIViewController+SDFImageManager.h"
 #import <DFImageManager/DFImageManagerKit.h>
+#import <DFImageManager/DFImageManagerKit+UI.h>
 #import <Photos/Photos.h>
 
 

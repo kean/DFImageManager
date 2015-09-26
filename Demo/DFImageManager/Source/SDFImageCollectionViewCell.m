@@ -7,7 +7,8 @@
 //
 
 #import "SDFImageCollectionViewCell.h"
-#import <DFImageManagerKit.h>
+#import <DFImageManager/DFImageManagerKit.h>
+#import <DFImageManager/DFImageManagerKit+UI.h>
 
 @interface SDFImageCollectionViewCell ()
 

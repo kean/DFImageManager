@@ -27,3 +27,7 @@
 #import "DFImageDecoder.h"
 #import "DFImageProcessor.h"
 #import "UIImage+DFImageUtilities.h"
+
+#import "DFURLHTTPResponseValidator.h"
+#import "DFURLImageFetcher.h"
+#import "DFURLResponseValidating.h"

@@ -10,6 +10,7 @@
 #import "SDFNetworkingDemoCollectionViewController.h"
 #import <AFNetworkActivityIndicatorManager.h>
 #import <DFImageManager/DFImageManagerKit.h>
+#import <DFImageManager/DFImageManagerKit+UI.h>
 
 
 @interface SDFNetworkingDemoCollectionViewController () <DFCollectionViewPreheatingControllerDelegate>
