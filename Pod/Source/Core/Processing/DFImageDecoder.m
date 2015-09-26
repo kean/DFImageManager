@@ -10,10 +10,6 @@
 #import "DFImageManagerKit+GIF.h"
 #endif
 
-#if __has_include("DFImageManagerKit+WebP.h")
-#import "DFImageManagerKit+WebP.h"
-#endif
-
 #if TARGET_OS_WATCH
 #import <WatchKit/WatchKit.h>
 #endif
@@ -37,9 +33,6 @@ static OSSpinLock _lock = OS_SPINLOCK_INIT;
     NSMutableArray *decoders = [NSMutableArray new];
 #if __has_include("DFImageManagerKit+GIF.h")
     [decoders addObject:[DFAnimatedImageDecoder new]];
-#endif
-#if __has_include("DFImageManagerKit+WebP.h")
-    [decoders addObject:[DFWebPImageDecoder new]];
 #endif
     [decoders addObject:[DFImageDecoder new]];
     [self setSharedDecoder:[[DFCompositeImageDecoder alloc] initWithDecoders:decoders]];

@@ -230,11 +230,7 @@ DF_INIT_UNAVAILABLE_IMPL
 
 - (NSURLRequest *)_defaultURLRequestForImageRequest:(DFImageRequest *)imageRequest {
     NSMutableURLRequest *URLRequest = [[NSMutableURLRequest alloc] initWithURL:(NSURL *)imageRequest.resource];
-#if __has_include("DFImageManagerKit+WebP.h")
-    [URLRequest addValue:@"image/webp,image/*;q=0.8" forHTTPHeaderField:@"Accept"];
-#else
     [URLRequest addValue:@"image/*" forHTTPHeaderField:@"Accept"];
-#endif
     DFImageRequestOptions *options = imageRequest.options;
     if (options.userInfo[DFURLRequestCachePolicyKey]) {
         URLRequest.cachePolicy = [options.userInfo[DFURLRequestCachePolicyKey] unsignedIntegerValue];
