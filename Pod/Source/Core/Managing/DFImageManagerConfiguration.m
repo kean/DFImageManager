@@ -2,6 +2,7 @@
 //
 // Copyright (c) 2015 Alexander Grebenyuk (github.com/kean).
 
+#import "DFImageDecoder.h"
 #import "DFImageManagerConfiguration.h"
 #import "DFImageManagerDefines.h"
 
@@ -13,6 +14,7 @@ DF_INIT_UNAVAILABLE_IMPL
     NSParameterAssert(fetcher);
     if (self = [super init]) {
         _fetcher = fetcher;
+        _decoder = [DFImageDecoder new];
         _processingQueue = [NSOperationQueue new];
         _processingQueue.maxConcurrentOperationCount = 2;
         _maximumConcurrentPreheatingRequests = 2;

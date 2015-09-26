@@ -19,7 +19,7 @@
 
 /*! The image decoder.
  */
-@property (nullable, nonatomic) id<DFImageDecoding> decoder;
+@property (nonnull, nonatomic) id<DFImageDecoding> decoder;
 
 /*! The image processor.
  */

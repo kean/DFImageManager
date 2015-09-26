@@ -4,7 +4,6 @@
 
 #import "DFImageDecoder.h"
 #import "DFImageManagerDefines.h"
-#import <libkern/OSAtomic.h>
 
 #if TARGET_OS_WATCH
 #import <WatchKit/WatchKit.h>
@@ -18,29 +17,6 @@
 #else
     return [UIImage imageWithData:data scale:[WKInterfaceDevice currentDevice].screenScale];
 #endif
-}
-
-#pragma mark Dependency Injector
-
-static id<DFImageDecoding> _sharedDecoder;
-static OSSpinLock _lock = OS_SPINLOCK_INIT;
-
-+ (void)initialize {
-    [self setSharedDecoder:[DFImageDecoder new]];
-}
-
-+ (nullable id<DFImageDecoding>)sharedDecoder {
-    id<DFImageDecoding> decoder;
-    OSSpinLockLock(&_lock);
-    decoder = _sharedDecoder;
-    OSSpinLockUnlock(&_lock);
-    return decoder;
-}
-
-+ (void)setSharedDecoder:(nullable id<DFImageDecoding>)sharedDecoder {
-    OSSpinLockLock(&_lock);
-    _sharedDecoder = sharedDecoder;
-    OSSpinLockUnlock(&_lock);
 }
 
 @end

@@ -215,7 +215,7 @@
         }
         DFProgressiveImageDecoder *decoder = operation.progressiveImageDecoder;
         if (!decoder) {
-            decoder = [[DFProgressiveImageDecoder alloc] initWithQueue:_decodingQueue decoder:_conf.decoder ?: [DFImageDecoder sharedDecoder]];
+            decoder = [[DFProgressiveImageDecoder alloc] initWithQueue:_decodingQueue decoder:_conf.decoder];
             decoder.threshold = _conf.progressiveImageDecodingThreshold;
             decoder.totalByteCount = totalUnitCount;
             typeof(self) __weak weakSelf = self;
@@ -258,8 +258,7 @@
     if (data.length) {
         typeof(self) __weak weakSelf = self;
         [_decodingQueue addOperationWithBlock:^{
-            id<DFImageDecoding> decoder = weakSelf.conf.decoder ?: [DFImageDecoder sharedDecoder];
-            UIImage *image = [decoder imageWithData:data partial:NO];
+            UIImage *image = [weakSelf.conf.decoder imageWithData:data partial:NO];
             [weakSelf _loadOperation:operation didCompleteWithImage:image info:info error:error];
         }];
     } else {
