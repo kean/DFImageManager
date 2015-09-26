@@ -189,6 +189,9 @@ typedef void (^_DFURLSessionDataTaskCompletionHandler)(NSData *data, NSURLRespon
     if (![self isRequestCacheEquivalent:request1 toRequest:request2]) {
         return NO;
     }
+    if (request1.options.allowsNetworkAccess != request2.options.allowsNetworkAccess) {
+        return NO;
+    }
     NSURLRequestCachePolicy defaultCachePolicy = self.session.configuration.requestCachePolicy;
     NSURLRequestCachePolicy requestCachePolicy1 = request1.options.userInfo[DFURLRequestCachePolicyKey] ? [request1.options.userInfo[DFURLRequestCachePolicyKey] unsignedIntegerValue] : defaultCachePolicy;
     NSURLRequestCachePolicy requestCachePolicy2 = request2.options.userInfo[DFURLRequestCachePolicyKey] ? [request2.options.userInfo[DFURLRequestCachePolicyKey] unsignedIntegerValue] : defaultCachePolicy;
