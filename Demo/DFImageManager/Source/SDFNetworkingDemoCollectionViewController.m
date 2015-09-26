@@ -10,7 +10,9 @@
 #import "SDFNetworkingDemoCollectionViewController.h"
 #import <DFImageManager/DFImageManagerKit.h>
 #import <DFImageManager/DFImageManagerKit+UI.h>
+#import <DFImageManager/DFImageManagerKit+AFNetworking.h>
 #import <AFNetworking/AFNetworkActivityIndicatorManager.h>
+#import <AFNetworking/AFHTTPSessionManager.h>
 
 @interface SDFNetworkingDemoCollectionViewController () <DFCollectionViewPreheatingControllerDelegate>
 
@@ -20,12 +22,17 @@
     NSArray *_photos;
     
     DFCollectionViewPreheatingController *_preheatingController;
+    id<DFImageManaging> _previousImageManager;
     
     // Debug
     UILabel *_detailsLabel;
 }
 
 static NSString * const reuseIdentifier = @"Cell";
+
+- (void)dealloc {
+    [DFImageManager setSharedManager:_previousImageManager];
+}
 
 - (instancetype)initWithCollectionViewLayout:(UICollectionViewLayout *)layout {
     if (self = [super initWithCollectionViewLayout:layout]) {
@@ -37,6 +44,15 @@ static NSString * const reuseIdentifier = @"Cell";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    _previousImageManager = [DFImageManager sharedManager];
+    
+    [DFImageManager setSharedManager:({
+        AFHTTPSessionManager *httpSessionManager = [[AFHTTPSessionManager alloc] initWithSessionConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
+        httpSessionManager.responseSerializer = [AFHTTPResponseSerializer new];
+        DFAFImageFetcher *fetcher = [[DFAFImageFetcher alloc] initWithSessionManager:httpSessionManager];
+        [[DFImageManager alloc] initWithConfiguration:[DFImageManagerConfiguration configurationWithFetcher:fetcher processor:[DFImageProcessor new] cache:[DFImageCache new]]];
+    })];
     
     [AFNetworkActivityIndicatorManager sharedManager].enabled = YES;
     

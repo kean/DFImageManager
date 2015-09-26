@@ -42,25 +42,13 @@
  */
 @interface DFImageManager (SharedManager)
 
-/*! Returns the shared image manager instance. By default returns the image manager instance created using DFImageManager -createDefaultManager method. An application with more specific needs can create a custom image manager and set it as a shared instance.
+/*! Returns the shared image manager instance.
  */
 + (nonnull id<DFImageManaging>)sharedManager;
 
 /*! Sets the image manager instance shared by all clients of the current application.
  */
 + (void)setSharedManager:(nonnull id<DFImageManaging>)manager;
-
-@end
-
-
-@interface DFImageManager (DefaultManager)
-
-/*! Creates default image manager that contains all built-in fetchers.
- @note Supported resources:
- - NSURL with schemes http, https, ftp, file and data (AFNetworking or NSURLSession subspec, AFNetworking is used by default when available)
- - PHAsset and NSURL with scheme com.github.kean.photos-kit (PhotosKit subspec)
- */
-+ (nonnull id<DFImageManaging>)createDefaultManager;
 
 @end
 

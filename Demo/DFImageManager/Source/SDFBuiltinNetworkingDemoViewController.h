@@ -8,7 +8,6 @@
 
 #import "SDFBaseCollectionViewController.h"
 
-
 @interface SDFBuiltinNetworkingDemoViewController : SDFBaseCollectionViewController
 
 @end

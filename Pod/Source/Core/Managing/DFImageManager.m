@@ -129,10 +129,6 @@ DF_INIT_UNAVAILABLE_IMPL
     return self;
 }
 
-+ (void)initialize {
-    [self setSharedManager:[self createDefaultManager]];
-}
-
 - (void)_performBlock:(__attribute__((noescape)) void (^__nonnull)())block {
     [_recursiveLock lock];
     if (!_invalidated) {

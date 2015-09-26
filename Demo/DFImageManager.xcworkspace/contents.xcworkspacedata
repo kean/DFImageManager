@@ -60,9 +60,6 @@
                location = "group:DFCompositeImageManager.m">
             </FileRef>
             <FileRef
-               location = "group:DFImageManager+DefaultManager.m">
-            </FileRef>
-            <FileRef
                location = "group:DFImageManager+SharedManager.m">
             </FileRef>
             <FileRef

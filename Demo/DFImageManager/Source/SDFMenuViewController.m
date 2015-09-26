@@ -86,14 +86,14 @@
     
     [sections addObject:({
         NSMutableArray *items = [NSMutableArray new];
-        [items addObject:[SDFMenuItem itemWithTitle:@"Networking Demo" subtitle:@"'AFNetworking' subspec"  action:^{
-            SDFNetworkingDemoCollectionViewController *controller = [SDFNetworkingDemoCollectionViewController new];
-            controller.allowsPreheating = NO;
+
+        [items addObject:[SDFMenuItem itemWithTitle:@"Networking Demo" subtitle:@"Built-in networking on top of NSURLSession" action:^{
+            SDFBuiltinNetworkingDemoViewController *controller = [SDFBuiltinNetworkingDemoViewController new];
             controller.title = @"Networking Demo";
             [weakSelf.navigationController pushViewController:controller animated:YES];
         }]];
         
-        [items addObject:[SDFMenuItem itemWithTitle:@"Filesystem Demo" subtitle:@"'AFNetworking' subspec" action:^{
+        [items addObject:[SDFMenuItem itemWithTitle:@"Filesystem Demo" subtitle:nil action:^{
             SDFFilesystemDemoViewController *controller = [SDFFilesystemDemoViewController new];
             controller.title = @"Filesystem Demo";
             [weakSelf.navigationController pushViewController:controller animated:YES];
@@ -105,11 +105,13 @@
             [weakSelf.navigationController pushViewController:controller animated:YES];
         }]];
         
-        [items addObject:[SDFMenuItem itemWithTitle:@"Built-in Networking Demo" subtitle:@"Basic built-in networking, 'NSURLSession' subspec" action:^{
-            SDFBuiltinNetworkingDemoViewController *controller = [SDFBuiltinNetworkingDemoViewController new];
-            controller.title = @"Built-in Networking Demo";
+        [items addObject:[SDFMenuItem itemWithTitle:@"AFNetworking Demo" subtitle:@"'AFNetworking' subspec"  action:^{
+            SDFNetworkingDemoCollectionViewController *controller = [SDFNetworkingDemoCollectionViewController new];
+            controller.allowsPreheating = NO;
+            controller.title = @"AFNetworking Demo";
             [weakSelf.navigationController pushViewController:controller animated:YES];
         }]];
+        
         [SDFMenuSection sectionWithTitle:@"Image Managers" items:items];
     })];
     
