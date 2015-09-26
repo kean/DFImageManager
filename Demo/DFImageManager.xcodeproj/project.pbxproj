@@ -31,6 +31,10 @@
 		0C4188181BB6FF990060069C /* 10915709.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0C4188121BB6FF990060069C /* 10915709.jpg */; settings = {ASSET_TAGS = (); }; };
 		0C4188191BB6FF990060069C /* 10926234.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0C4188131BB6FF990060069C /* 10926234.jpg */; settings = {ASSET_TAGS = (); }; };
 		0C4D3DC61BA180EF008138FA /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0C4D3DC41BA180EF008138FA /* Info.plist */; };
+		0C5F09CD1BB7380B004A58EE /* DFImageManager.podspec in Resources */ = {isa = PBXBuildFile; fileRef = 0C5F09CC1BB7380B004A58EE /* DFImageManager.podspec */; settings = {ASSET_TAGS = (); }; };
+		0C5F09CF1BB7381E004A58EE /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 0C5F09CE1BB7381E004A58EE /* README.md */; settings = {ASSET_TAGS = (); }; };
+		0C5F09D11BB73824004A58EE /* CHANGELOG.md in Sources */ = {isa = PBXBuildFile; fileRef = 0C5F09D01BB73824004A58EE /* CHANGELOG.md */; settings = {ASSET_TAGS = (); }; };
+		0C5F09D31BB73829004A58EE /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 0C5F09D21BB73829004A58EE /* LICENSE */; settings = {ASSET_TAGS = (); }; };
 		0CCBC4E71BA1819F00B26297 /* TDFCompositeImageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CCBC4D01BA1819F00B26297 /* TDFCompositeImageManager.m */; };
 		0CCBC4E91BA1819F00B26297 /* TDFImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CCBC4D21BA1819F00B26297 /* TDFImageCache.m */; };
 		0CCBC4EA1BA1819F00B26297 /* TDFImageFormats.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CCBC4D31BA1819F00B26297 /* TDFImageFormats.m */; };
@@ -106,6 +110,10 @@
 		0C4188121BB6FF990060069C /* 10915709.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 10915709.jpg; sourceTree = "<group>"; };
 		0C4188131BB6FF990060069C /* 10926234.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 10926234.jpg; sourceTree = "<group>"; };
 		0C4D3DC41BA180EF008138FA /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		0C5F09CC1BB7380B004A58EE /* DFImageManager.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = DFImageManager.podspec; path = ../DFImageManager.podspec; sourceTree = "<group>"; };
+		0C5F09CE1BB7381E004A58EE /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
+		0C5F09D01BB73824004A58EE /* CHANGELOG.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = CHANGELOG.md; path = ../CHANGELOG.md; sourceTree = "<group>"; };
+		0C5F09D21BB73829004A58EE /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		0CCBC4CF1BA1819F00B26297 /* TDFCommonTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDFCommonTests.h; sourceTree = "<group>"; };
 		0CCBC4D01BA1819F00B26297 /* TDFCompositeImageManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDFCompositeImageManager.m; sourceTree = "<group>"; };
 		0CCBC4D21BA1819F00B26297 /* TDFImageCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDFImageCache.m; sourceTree = "<group>"; };
@@ -207,6 +215,7 @@
 		0C300EA51BA0E357008DDEF6 = {
 			isa = PBXGroup;
 			children = (
+				0C5F09CB1BB737E3004A58EE /* Podspec Metadata */,
 				0C300EB01BA0E357008DDEF6 /* DFImageManager */,
 				0C4D3DC21BA180EF008138FA /* Tests */,
 				0C300EAF1BA0E357008DDEF6 /* Products */,
@@ -265,6 +274,17 @@
 				0CCBC4F61BA181AD00B26297 /* Resources */,
 			);
 			path = Tests;
+			sourceTree = "<group>";
+		};
+		0C5F09CB1BB737E3004A58EE /* Podspec Metadata */ = {
+			isa = PBXGroup;
+			children = (
+				0C5F09CC1BB7380B004A58EE /* DFImageManager.podspec */,
+				0C5F09CE1BB7381E004A58EE /* README.md */,
+				0C5F09D01BB73824004A58EE /* CHANGELOG.md */,
+				0C5F09D21BB73829004A58EE /* LICENSE */,
+			);
+			name = "Podspec Metadata";
 			sourceTree = "<group>";
 		};
 		0CAB83FA1BA1541F005961E6 /* GIF Demo */ = {
@@ -521,6 +541,7 @@
 			files = (
 				0C300EBE1BA0E357008DDEF6 /* Assets.xcassets in Resources */,
 				0C4188181BB6FF990060069C /* 10915709.jpg in Resources */,
+				0C5F09D31BB73829004A58EE /* LICENSE in Resources */,
 				0C4188171BB6FF990060069C /* 10872981.jpg in Resources */,
 				0C4188151BB6FF990060069C /* 10849093.jpg in Resources */,
 				0C4188141BB6FF990060069C /* 10669363.jpg in Resources */,
@@ -529,6 +550,7 @@
 				0CD0C52E1BA182F4007654C0 /* Launch Screen.xib in Resources */,
 				0C25A3981BA0E48B0044BC00 /* SDFMomentHeaderCollectionReusableView.xib in Resources */,
 				0C4D3DC61BA180EF008138FA /* Info.plist in Resources */,
+				0C5F09CD1BB7380B004A58EE /* DFImageManager.podspec in Resources */,
 				0C4188161BB6FF990060069C /* 10861057.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -619,12 +641,14 @@
 				0C25A3A41BA0E48B0044BC00 /* SDFMenuViewController.m in Sources */,
 				0C25A3971BA0E48B0044BC00 /* SDFMomentHeaderCollectionReusableView.m in Sources */,
 				0C25A39C1BA0E48B0044BC00 /* SDFBuiltinNetworkingDemoViewController.m in Sources */,
+				0C5F09CF1BB7381E004A58EE /* README.md in Sources */,
 				0C0BAAC11BA157DC00F28AA6 /* SDFPhotos.m in Sources */,
 				0C25A3A81BA0E48B0044BC00 /* UIViewController+SDFImageManager.m in Sources */,
 				0C25A3A31BA0E48B0044BC00 /* SDFImageCollectionViewCell.m in Sources */,
 				0C25A39B1BA0E48B0044BC00 /* SDFBaseCollectionViewController.m in Sources */,
 				0C25A3991BA0E48B0044BC00 /* SDFStickyHeaderCollectionViewFlowLayout.m in Sources */,
 				0C25A3A71BA0E48B0044BC00 /* SDFProgressiveJPEGDemoViewController.m in Sources */,
+				0C5F09D11BB73824004A58EE /* CHANGELOG.md in Sources */,
 				0C25A39A1BA0E48B0044BC00 /* SDFAppDelegate.m in Sources */,
 				0C300EB31BA0E357008DDEF6 /* main.m in Sources */,
 				0C25A3A21BA0E48B0044BC00 /* SDFGIFDemoViewController.m in Sources */,
