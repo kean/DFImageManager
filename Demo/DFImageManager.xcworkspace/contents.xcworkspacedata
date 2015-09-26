@@ -65,6 +65,9 @@
             <FileRef
                location = "group:DFImageManager+SharedManager.m">
             </FileRef>
+            <FileRef
+               location = "group:DFImageManager+Convenience.m">
+            </FileRef>
          </Group>
          <Group
             location = "group:Caching"
