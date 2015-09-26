@@ -167,10 +167,10 @@
             location = "group:Private"
             name = "Private">
             <FileRef
-               location = "group:DFImageManagerImageLoader.h">
+               location = "group:/Users/kean/Develop/Source/DFImageManager/Pod/Source/Core/Private/DFImageManagerLoader.h">
             </FileRef>
             <FileRef
-               location = "group:DFImageManagerImageLoader.m">
+               location = "group:/Users/kean/Develop/Source/DFImageManager/Pod/Source/Core/Private/DFImageManagerLoader.m">
             </FileRef>
             <FileRef
                location = "group:DFProgressiveImageDecoder.h">

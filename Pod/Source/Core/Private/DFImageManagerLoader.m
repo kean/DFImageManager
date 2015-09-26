@@ -10,7 +10,7 @@
 #import "DFImageFetchingOperation.h"
 #import "DFImageManagerConfiguration.h"
 #import "DFImageManagerDefines.h"
-#import "DFImageManagerImageLoader.h"
+#import "DFImageManagerLoader.h"
 #import "DFImageProcessing.h"
 #import "DFImageRequest.h"
 #import "DFImageRequestOptions.h"
@@ -139,12 +139,12 @@
 @end
 
 
-#pragma mark - DFImageManagerImageLoader
+#pragma mark - DFImageManagerLoader
 
 #define DFImageCacheKeyCreate(request) [[_DFImageRequestKey alloc] initWithRequest:request isCacheKey:YES owner:self]
 #define DFImageLoadKeyCreate(request) [[_DFImageRequestKey alloc] initWithRequest:request isCacheKey:NO owner:self]
 
-@interface DFImageManagerImageLoader () <_DFImageRequestKeyOwner>
+@interface DFImageManagerLoader () <_DFImageRequestKeyOwner>
 
 @property (nonnull, nonatomic, readonly) DFImageManagerConfiguration *conf;
 @property (nonnull, nonatomic, readonly) NSMutableDictionary /* DFImageTask : _DFImageLoaderTask */ *executingTasks;
@@ -154,7 +154,7 @@
 
 @end
 
-@implementation DFImageManagerImageLoader
+@implementation DFImageManagerLoader
 
 - (nonnull instancetype)initWithConfiguration:(nonnull DFImageManagerConfiguration *)configuration {
     NSParameterAssert(configuration);

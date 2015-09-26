@@ -7,15 +7,15 @@
 
 @class DFImageTask;
 @class DFImageManagerConfiguration;
-@class DFImageManagerImageLoader;
+@class DFImageManagerLoader;
 
-@protocol DFImageManagerImageLoaderDelegate <NSObject>
+@protocol DFImageManagerLoaderDelegate <NSObject>
 
-- (void)imageLoader:(nonnull DFImageManagerImageLoader *)imageLoader imageTask:(nonnull DFImageTask *)imageTask didUpdateProgressWithCompletedUnitCount:(int64_t)completedUnitCount totalUnitCount:(int64_t)totalUnitCount;
+- (void)imageLoader:(nonnull DFImageManagerLoader *)imageLoader imageTask:(nonnull DFImageTask *)imageTask didUpdateProgressWithCompletedUnitCount:(int64_t)completedUnitCount totalUnitCount:(int64_t)totalUnitCount;
 
-- (void)imageLoader:(nonnull DFImageManagerImageLoader *)imageLoader imageTask:(nonnull DFImageTask *)imageTask didCompleteWithImage:(nullable UIImage *)image info:(nullable NSDictionary *)info error:(nullable NSError *)error;
+- (void)imageLoader:(nonnull DFImageManagerLoader *)imageLoader imageTask:(nonnull DFImageTask *)imageTask didCompleteWithImage:(nullable UIImage *)image info:(nullable NSDictionary *)info error:(nullable NSError *)error;
 
-- (void)imageLoader:(nonnull DFImageManagerImageLoader *)imageLoader imageTask:(nonnull DFImageTask *)imageTask didReceiveProgressiveImage:(nonnull UIImage *)image;
+- (void)imageLoader:(nonnull DFImageManagerLoader *)imageLoader imageTask:(nonnull DFImageTask *)imageTask didReceiveProgressiveImage:(nonnull UIImage *)image;
 
 @end
 
@@ -24,9 +24,9 @@
  - transparent multiplexing
  - offloads work to the background queue
  */
-@interface DFImageManagerImageLoader : NSObject
+@interface DFImageManagerLoader : NSObject
 
-@property (nullable, nonatomic, weak) id<DFImageManagerImageLoaderDelegate> delegate;
+@property (nullable, nonatomic, weak) id<DFImageManagerLoaderDelegate> delegate;
 
 - (nonnull instancetype)initWithConfiguration:(nonnull DFImageManagerConfiguration *)configuration;
 

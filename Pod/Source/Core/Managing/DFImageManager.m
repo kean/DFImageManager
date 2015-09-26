@@ -8,7 +8,7 @@
 #import "DFImageManager.h"
 #import "DFImageManagerConfiguration.h"
 #import "DFImageManagerDefines.h"
-#import "DFImageManagerImageLoader.h"
+#import "DFImageManagerLoader.h"
 #import "DFImageRequest.h"
 #import "DFImageRequestOptions.h"
 #import "DFImageResponse.h"
@@ -99,9 +99,9 @@ static inline void DFDispatchAsync(dispatch_block_t block) {
     ([NSThread isMainThread]) ? block() : dispatch_async(dispatch_get_main_queue(), block);
 }
 
-@interface DFImageManager () <_DFImageTaskManaging, DFImageManagerImageLoaderDelegate>
+@interface DFImageManager () <_DFImageTaskManaging, DFImageManagerLoaderDelegate>
 
-@property (nonnull, nonatomic, readonly) DFImageManagerImageLoader *imageLoader;
+@property (nonnull, nonatomic, readonly) DFImageManagerLoader *imageLoader;
 @property (nonnull, nonatomic, readonly) NSMutableSet /* _DFImageTask */ *executingTasks;
 @property (nonnull, nonatomic, readonly) NSMutableDictionary /* _DFImageCacheKey : _DFImageTask */ *preheatingTasks;
 @property (nonnull, nonatomic, readonly) NSRecursiveLock *recursiveLock;
@@ -120,7 +120,7 @@ DF_INIT_UNAVAILABLE_IMPL
     if (self = [super init]) {
         NSParameterAssert(configuration);
         _configuration = [configuration copy];
-        _imageLoader = [[DFImageManagerImageLoader alloc] initWithConfiguration:configuration];
+        _imageLoader = [[DFImageManagerLoader alloc] initWithConfiguration:configuration];
         _imageLoader.delegate = self;
         _preheatingTasks = [NSMutableDictionary new];
         _executingTasks = [NSMutableSet new];
@@ -310,15 +310,15 @@ DF_INIT_UNAVAILABLE_IMPL
     }
 }
 
-#pragma mark <DFImageManagerImageLoaderDelegate>
+#pragma mark <DFImageManagerLoaderDelegate>
 
-- (void)imageLoader:(nonnull DFImageManagerImageLoader *)imageLoader imageTask:(nonnull _DFImageTask *)task didUpdateProgressWithCompletedUnitCount:(int64_t)completedUnitCount totalUnitCount:(int64_t)totalUnitCount {
+- (void)imageLoader:(nonnull DFImageManagerLoader *)imageLoader imageTask:(nonnull _DFImageTask *)task didUpdateProgressWithCompletedUnitCount:(int64_t)completedUnitCount totalUnitCount:(int64_t)totalUnitCount {
     NSProgress *progress = task.internalProgress;
     progress.totalUnitCount = totalUnitCount;
     progress.completedUnitCount = completedUnitCount;
 }
 
-- (void)imageLoader:(nonnull DFImageManagerImageLoader *)imageLoader imageTask:(nonnull DFImageTask *)task didReceiveProgressiveImage:(nonnull UIImage *)image {
+- (void)imageLoader:(nonnull DFImageManagerLoader *)imageLoader imageTask:(nonnull DFImageTask *)task didReceiveProgressiveImage:(nonnull UIImage *)image {
     dispatch_async(dispatch_get_main_queue(), ^{
         void (^handler)(UIImage *) = task.progressiveImageHandler;
         if (handler) {
@@ -327,7 +327,7 @@ DF_INIT_UNAVAILABLE_IMPL
     });
 }
 
-- (void)imageLoader:(nonnull DFImageManagerImageLoader *)imageLoader imageTask:(nonnull _DFImageTask *)task didCompleteWithImage:(nullable UIImage *)image info:(nullable NSDictionary *)info error:(nullable NSError *)error {
+- (void)imageLoader:(nonnull DFImageManagerLoader *)imageLoader imageTask:(nonnull _DFImageTask *)task didCompleteWithImage:(nullable UIImage *)image info:(nullable NSDictionary *)info error:(nullable NSError *)error {
     task.image = image;
     task.response = [[DFImageResponse alloc] initWithInfo:info isFastResponse:NO];
     task.error = error;
