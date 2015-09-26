@@ -227,12 +227,12 @@ pod 'DFImageManager'
 By default it will install these subspecs (if they are available for your platform):
 - `DFImageManager/Core` - DFImageManager core classes
 - `DFImageManager/UI` - UI components
-- `DFImageManager/PhotosKit` - Photos Framework support
 
-There are three more optional subspecs:
+There are four more optional subspecs:
 - `DFImageManager/AFNetworking` - replaces networking stack with [AFNetworking](https://github.com/AFNetworking/AFNetworking)
 - `DFImageManager/GIF` - GIF support with a [FLAnimatedImage](https://github.com/Flipboard/FLAnimatedImage) dependency
 - `DFImageManager/WebP` - WebP support with a [libwebp](https://cocoapods.org/pods/libwebp) dependency
+- `DFImageManager/PhotosKit` - Photos Framework support
 
 To install optional subspecs include them in your Podfile:
 ```ruby

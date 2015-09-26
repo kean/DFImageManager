@@ -10,7 +10,7 @@ Pod::Spec.new do |s|
     s.watchos.deployment_target = "2.0"
     s.source       = { :git => "https://github.com/kean/DFImageManager.git", :tag => s.version.to_s }
     s.requires_arc = true
-    s.default_subspecs = "Core", "UI", "PhotosKit"
+    s.default_subspecs = "Core", "UI"
 
     s.subspec "Core" do |ss|
         ss.source_files  = "Pod/Source/Core/**/*.{h,m}"

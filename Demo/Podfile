@@ -9,6 +9,7 @@ target 'DFImageManager-Example', :exclusive => true do
 	pod "DFImageManager/AFNetworking", :path => "../"
 	pod "DFImageManager/GIF", :path => "../"
 	pod "DFImageManager/WebP", :path => "../"
+	pod "DFImageManager/PhotosKit", :path => "../"
 
 	pod "AFNetworking/UIKit", "~> 2.0"
 end
@@ -18,6 +19,7 @@ target 'DFImageManager-Tests', :exclusive => true do
 	pod "DFImageManager/AFNetworking", :path => "../"
 	pod "DFImageManager/GIF", :path => "../"
 	pod "DFImageManager/WebP", :path => "../"
+	pod "DFImageManager/PhotosKit", :path => "../"
 	
 	pod "OHHTTPStubs"
 end
