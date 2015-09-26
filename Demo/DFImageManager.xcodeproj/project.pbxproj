@@ -110,7 +110,7 @@
 		0C4188121BB6FF990060069C /* 10915709.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 10915709.jpg; sourceTree = "<group>"; };
 		0C4188131BB6FF990060069C /* 10926234.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 10926234.jpg; sourceTree = "<group>"; };
 		0C4D3DC41BA180EF008138FA /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		0C5F09CC1BB7380B004A58EE /* DFImageManager.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = DFImageManager.podspec; path = ../DFImageManager.podspec; sourceTree = "<group>"; };
+		0C5F09CC1BB7380B004A58EE /* DFImageManager.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; fileEncoding = 4; name = DFImageManager.podspec; path = ../DFImageManager.podspec; sourceTree = "<group>"; };
 		0C5F09CE1BB7381E004A58EE /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		0C5F09D01BB73824004A58EE /* CHANGELOG.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = CHANGELOG.md; path = ../CHANGELOG.md; sourceTree = "<group>"; };
 		0C5F09D21BB73829004A58EE /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
