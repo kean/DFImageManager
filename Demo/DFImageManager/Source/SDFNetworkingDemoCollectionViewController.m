@@ -8,10 +8,9 @@
 
 #import "SDFPhotos.h"
 #import "SDFNetworkingDemoCollectionViewController.h"
-#import <AFNetworkActivityIndicatorManager.h>
 #import <DFImageManager/DFImageManagerKit.h>
 #import <DFImageManager/DFImageManagerKit+UI.h>
-
+#import <AFNetworking/AFNetworkActivityIndicatorManager.h>
 
 @interface SDFNetworkingDemoCollectionViewController () <DFCollectionViewPreheatingControllerDelegate>
 
@@ -46,8 +45,6 @@ static NSString * const reuseIdentifier = @"Cell";
     _photos = [SDFPhotos URLsForSmallPhotos];
     
     if (self.displaysPreheatingDetails) {
-        [self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:@"Change direction" style:UIBarButtonItemStyleBordered target:self action:@selector(_buttonChangeScrollDirectionPressed:)]];
-        
         _detailsLabel = [UILabel new];
         _detailsLabel.backgroundColor = [UIColor colorWithWhite:0.f alpha:0.6];
         _detailsLabel.font = [UIFont fontWithName:@"Courier" size:12.f];
@@ -77,14 +74,6 @@ static NSString * const reuseIdentifier = @"Cell";
     // Resets preheat rect and stop preheating images via delegate call.
     [_preheatingController resetPreheatRect];
     _preheatingController = nil;
-}
-
-#pragma mark - Actions
-
-- (void)_buttonChangeScrollDirectionPressed:(UIButton *)button {
-    UICollectionViewFlowLayout *layout = (id)self.collectionViewLayout;
-    layout.scrollDirection = (layout.scrollDirection == UICollectionViewScrollDirectionHorizontal) ? UICollectionViewScrollDirectionVertical : UICollectionViewScrollDirectionHorizontal;
-    [_preheatingController updatePreheatRect];
 }
 
 #pragma mark - <UICollectionViewDataSource>

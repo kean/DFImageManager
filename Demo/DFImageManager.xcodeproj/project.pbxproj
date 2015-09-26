@@ -44,8 +44,8 @@
 		0CCBC4FC1BA181AD00B26297 /* lhfer5lguvi76a9uedez.webp in Resources */ = {isa = PBXBuildFile; fileRef = 0CCBC4F91BA181AD00B26297 /* lhfer5lguvi76a9uedez.webp */; };
 		0CD0C52E1BA182F4007654C0 /* Launch Screen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0CD0C52C1BA182F4007654C0 /* Launch Screen.xib */; };
 		0CD0C52F1BA182F4007654C0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0CD0C52D1BA182F4007654C0 /* Main.storyboard */; };
-		1CBE0FDBC25E8B67D95069B3 /* libPods-DFImageManager-Example.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EE530ED905ADD95C00723F3E /* libPods-DFImageManager-Example.a */; };
-		BBDAEA832C0B942115F00BB0 /* libPods-DFImageManager-Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1560C6FFF9421F30F28DD9BF /* libPods-DFImageManager-Tests.a */; };
+		0D58895D1554C7134105E7F3 /* libPods-DFImageManager-Example.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A45EEF657D50DC9E62A8427B /* libPods-DFImageManager-Example.a */; };
+		319D8ECE8E2A1C24003B6D1F /* libPods-DFImageManager-Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 563D662FC105F37F2CBD6889 /* libPods-DFImageManager-Tests.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -123,15 +123,15 @@
 		0CCFAF981BA184AD002AA4C7 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		0CD0C52C1BA182F4007654C0 /* Launch Screen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "Launch Screen.xib"; sourceTree = "<group>"; };
 		0CD0C52D1BA182F4007654C0 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
-		1560C6FFF9421F30F28DD9BF /* libPods-DFImageManager-Tests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-DFImageManager-Tests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1E51FAF3847DE46226299A4D /* Pods-DFImageManager-Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DFImageManager-Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-DFImageManager-Example/Pods-DFImageManager-Example.release.xcconfig"; sourceTree = "<group>"; };
 		2E2EA14F8A3A91C15132A745 /* Pods-DFImageManager-Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DFImageManager-Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-DFImageManager-Tests/Pods-DFImageManager-Tests.release.xcconfig"; sourceTree = "<group>"; };
+		563D662FC105F37F2CBD6889 /* libPods-DFImageManager-Tests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-DFImageManager-Tests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		599EBDF002F63E25C864BD6D /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		A45EEF657D50DC9E62A8427B /* libPods-DFImageManager-Example.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-DFImageManager-Example.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B03B8FB3F7A856F04DB9C291 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		BA6F81F6502FCBB59AC27D87 /* Pods-DFImageManager-Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DFImageManager-Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DFImageManager-Tests/Pods-DFImageManager-Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		C1DF69A0F90DE5AC4298DEAB /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		ED3F742640430A1A8FBFB06A /* Pods-DFImageManager-Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DFImageManager-Example.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DFImageManager-Example/Pods-DFImageManager-Example.debug.xcconfig"; sourceTree = "<group>"; };
-		EE530ED905ADD95C00723F3E /* libPods-DFImageManager-Example.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-DFImageManager-Example.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -139,7 +139,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1CBE0FDBC25E8B67D95069B3 /* libPods-DFImageManager-Example.a in Frameworks */,
+				0D58895D1554C7134105E7F3 /* libPods-DFImageManager-Example.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -147,7 +147,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BBDAEA832C0B942115F00BB0 /* libPods-DFImageManager-Tests.a in Frameworks */,
+				319D8ECE8E2A1C24003B6D1F /* libPods-DFImageManager-Tests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -403,8 +403,8 @@
 			children = (
 				0CCFAF981BA184AD002AA4C7 /* UIKit.framework */,
 				B03B8FB3F7A856F04DB9C291 /* libPods.a */,
-				EE530ED905ADD95C00723F3E /* libPods-DFImageManager-Example.a */,
-				1560C6FFF9421F30F28DD9BF /* libPods-DFImageManager-Tests.a */,
+				A45EEF657D50DC9E62A8427B /* libPods-DFImageManager-Example.a */,
+				563D662FC105F37F2CBD6889 /* libPods-DFImageManager-Tests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -667,7 +667,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -705,7 +705,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -719,7 +719,6 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = DFImageManager/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.github.kean.DFImageManager;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -732,7 +731,6 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = DFImageManager/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.github.kean.DFImageManager;
 				PRODUCT_NAME = "$(TARGET_NAME)";

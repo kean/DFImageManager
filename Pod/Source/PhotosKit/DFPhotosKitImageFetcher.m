@@ -10,7 +10,7 @@
 #import <Photos/Photos.h>
 
 
-NS_CLASS_AVAILABLE_IOS(8_0) @interface _DFPhotosKitImageFetchOperation : NSOperation <DFImageFetchingOperation>
+@interface _DFPhotosKitImageFetchOperation : NSOperation <DFImageFetchingOperation>
 
 @property (nonatomic, readonly) NSData *result;
 @property (nonatomic, readonly) NSDictionary *info;

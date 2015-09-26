@@ -7,6 +7,7 @@
 //
 
 #import "DFImageManagerKit.h"
+#import "DFImageManagerKit+WebP.h"
 #import <UIKit/UIKit.h>
 #import <XCTest/XCTest.h>
 

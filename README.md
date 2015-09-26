@@ -219,7 +219,7 @@ id<DFImageManaging> compositeImageManager = [[DFCompositeImageManager alloc] ini
 To install DFImageManager add a dependency in your Podfile:
 ```ruby
 # Podfile
-# platform :ios, '7.0'
+# platform :ios, '8.0'
 # platform :watchos, '2.0'
 pod 'DFImageManager'
 ```
@@ -244,8 +244,8 @@ pod 'DFImageManager/WebP'
 ```
 
 ## <a name="h_requirements"></a>Requirements
-- iOS 7.0+ / watchOS 2
-- Xcode 6.0+
+- iOS 8.0+ / watchOS 2
+- Xcode 7.0+
 
 ## <a name="h_supported_image_formats"></a>Supported Image Formats
 - Image formats supported by `UIImage` (JPEG, PNG, BMP, [and more](https://developer.apple.com/library/ios/documentation/UIKit/Reference/UIImage_Class/))

@@ -83,17 +83,6 @@
     NSMutableArray *sections = [NSMutableArray new];
     
     SDFMenuViewController *__weak weakSelf = self;
-    /*
-    [sections addObject:({
-        NSMutableArray *items = [NSMutableArray new];
-        [items addObject:[SDFMenuItem itemWithTitle:@"Zero Config Demo" subtitle:nil action:^{
-            SDFMainDemoViewController *controller = [SDFMainDemoViewController new];
-            controller.title = @"Demo";
-            [weakSelf.navigationController pushViewController:controller animated:YES];
-        }]];
-        [SDFMenuSection sectionWithTitle:@"Main" items:items];
-    })];
-     */
     
     [sections addObject:({
         NSMutableArray *items = [NSMutableArray new];
@@ -111,16 +100,11 @@
         }]];
         
         [items addObject:[SDFMenuItem itemWithTitle:@"Photos Kit Demo" subtitle:@"'PhotosKit' subspec" action:^{
-            if ([PHPhotoLibrary class] != nil) {
-                SDFPhotosKitDemoViewController *controller =[SDFPhotosKitDemoViewController new];
-                controller.title = @"Photos Kit Demo";
-                [weakSelf.navigationController pushViewController:controller animated:YES];
-            } else {
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Photos Kit is only available starting with iOS 8" message:nil delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
-                [alert show];
-            }
+            SDFPhotosKitDemoViewController *controller = [SDFPhotosKitDemoViewController new];
+            controller.title = @"Photos Kit Demo";
+            [weakSelf.navigationController pushViewController:controller animated:YES];
         }]];
-                
+        
         [items addObject:[SDFMenuItem itemWithTitle:@"Built-in Networking Demo" subtitle:@"Basic built-in networking, 'NSURLSession' subspec" action:^{
             SDFBuiltinNetworkingDemoViewController *controller = [SDFBuiltinNetworkingDemoViewController new];
             controller.title = @"Built-in Networking Demo";
