@@ -6,8 +6,9 @@
 
 @implementation DFImageTask
 
-- (void)resume {
+- (DFImageTask *)resume {
     [NSException raise:NSInternalInconsistencyException format:@"Abstract method called %@", NSStringFromSelector(_cmd)];
+    return self;
 }
 
 - (void)cancel {

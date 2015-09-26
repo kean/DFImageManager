@@ -59,8 +59,9 @@
     return self;
 }
 
-- (void)resume {
+- (DFImageTask *)resume {
     [self.manager resumeManagedTask:self];
+    return self;
 }
 
 - (void)cancel {
