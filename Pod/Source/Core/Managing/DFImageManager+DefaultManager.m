@@ -14,10 +14,6 @@
 #import <AFNetworking/AFHTTPSessionManager.h>
 #endif
 
-#if __has_include("DFImageManagerKit+PhotosKit.h")
-#import "DFImageManagerKit+PhotosKit.h"
-#endif
-
 @implementation DFImageManager (DefaultManager)
 
 + (nonnull id<DFImageManaging>)createDefaultManager {
@@ -39,14 +35,7 @@
         [[DFImageManager alloc] initWithConfiguration:[DFImageManagerConfiguration configurationWithFetcher:fetcher processor:processor cache:cache]];
     })];
 #endif
-    
-#if __has_include("DFImageManagerKit+PhotosKit.h")
-    [managers addObject:({
-        DFPhotosKitImageFetcher *fetcher = [DFPhotosKitImageFetcher new];
-        [[DFImageManager alloc] initWithConfiguration:[DFImageManagerConfiguration configurationWithFetcher:fetcher processor:processor cache:cache]];
-    })];
-#endif
-    
+        
     return [[DFCompositeImageManager alloc] initWithImageManagers:managers];
 }
 

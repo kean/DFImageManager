@@ -9,7 +9,6 @@
 #import "NSURL+DFPhotosKit.h"
 #import <Photos/Photos.h>
 
-
 @interface _DFPhotosKitImageFetchOperation : NSOperation <DFImageFetchingOperation>
 
 @property (nonatomic, readonly) NSData *result;

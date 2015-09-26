@@ -12,6 +12,7 @@
 #import "UIViewController+SDFImageManager.h"
 #import <DFImageManager/DFImageManagerKit.h>
 #import <DFImageManager/DFImageManagerKit+UI.h>
+#import <DFImageManager/DFImageManagerKit+PhotosKit.h>
 #import <Photos/Photos.h>
 
 
@@ -46,6 +47,11 @@ static NSString * const reuseIdentifier = @"Cell";
     NSArray * /* PHFetchResult */ _assets;
     UIActivityIndicatorView *_indicator;
     DFCollectionViewPreheatingController *_preheatingController;
+    id<DFImageManaging> _previousSharedManager;
+}
+
+- (void)dealloc {
+    [DFImageManager setSharedManager:_previousSharedManager];
 }
 
 - (instancetype)init {
@@ -54,6 +60,14 @@ static NSString * const reuseIdentifier = @"Cell";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    _previousSharedManager = [DFImageManager sharedManager];
+    [DFImageManager setSharedManager:[[DFImageManager alloc] initWithConfiguration:({
+        DFImageManagerConfiguration *configuration = [[DFImageManagerConfiguration alloc] initWithFetcher:[DFPhotosKitImageFetcher new]];
+        configuration.cache = [DFImageCache new];
+        configuration.processor = [DFImageProcessor new];
+        configuration;
+    })]];
     
     [self.collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:reuseIdentifier];
     [self.collectionView registerNib:[UINib nibWithNibName:NSStringFromClass([SDFMomentHeaderCollectionReusableView class]) bundle:nil] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:NSStringFromClass([SDFMomentHeaderCollectionReusableView class])];
