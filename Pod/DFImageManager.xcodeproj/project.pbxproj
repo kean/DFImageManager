@@ -1,0 +1,661 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0CD2C6CD1BB72C7F006F4A63 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0CD2C6CC1BB72C7F006F4A63 /* Info.plist */; settings = {ASSET_TAGS = (); }; };
+		0CD2C6CF1BB72C8B006F4A63 /* DFImageManager-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 0CD2C6CE1BB72C8B006F4A63 /* DFImageManager-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0CD2C72C1BB72CA8006F4A63 /* DFCachedImageResponse.h in Headers */ = {isa = PBXBuildFile; fileRef = 0CD2C6D71BB72CA8006F4A63 /* DFCachedImageResponse.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0CD2C72D1BB72CA8006F4A63 /* DFCachedImageResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD2C6D81BB72CA8006F4A63 /* DFCachedImageResponse.m */; settings = {ASSET_TAGS = (); }; };
+		0CD2C72E1BB72CA8006F4A63 /* DFImageCache.h in Headers */ = {isa = PBXBuildFile; fileRef = 0CD2C6D91BB72CA8006F4A63 /* DFImageCache.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0CD2C72F1BB72CA8006F4A63 /* DFImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD2C6DA1BB72CA8006F4A63 /* DFImageCache.m */; settings = {ASSET_TAGS = (); }; };
+		0CD2C7301BB72CA8006F4A63 /* NSCache+DFImageManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 0CD2C6DB1BB72CA8006F4A63 /* NSCache+DFImageManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0CD2C7311BB72CA8006F4A63 /* NSCache+DFImageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD2C6DC1BB72CA8006F4A63 /* NSCache+DFImageManager.m */; settings = {ASSET_TAGS = (); }; };
+		0CD2C7321BB72CA8006F4A63 /* DFImageManagerKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 0CD2C6DD1BB72CA8006F4A63 /* DFImageManagerKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0CD2C7331BB72CA8006F4A63 /* DFURLHTTPResponseValidator.h in Headers */ = {isa = PBXBuildFile; fileRef = 0CD2C6DF1BB72CA8006F4A63 /* DFURLHTTPResponseValidator.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0CD2C7341BB72CA8006F4A63 /* DFURLHTTPResponseValidator.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD2C6E01BB72CA8006F4A63 /* DFURLHTTPResponseValidator.m */; settings = {ASSET_TAGS = (); }; };
+		0CD2C7351BB72CA8006F4A63 /* DFURLImageFetcher.h in Headers */ = {isa = PBXBuildFile; fileRef = 0CD2C6E11BB72CA8006F4A63 /* DFURLImageFetcher.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0CD2C7361BB72CA8006F4A63 /* DFURLImageFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD2C6E21BB72CA8006F4A63 /* DFURLImageFetcher.m */; settings = {ASSET_TAGS = (); }; };
+		0CD2C7371BB72CA8006F4A63 /* DFURLResponseValidating.h in Headers */ = {isa = PBXBuildFile; fileRef = 0CD2C6E31BB72CA8006F4A63 /* DFURLResponseValidating.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0CD2C7381BB72CA8006F4A63 /* DFCompositeImageManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 0CD2C6E51BB72CA8006F4A63 /* DFCompositeImageManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0CD2C7391BB72CA8006F4A63 /* DFCompositeImageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD2C6E61BB72CA8006F4A63 /* DFCompositeImageManager.m */; settings = {ASSET_TAGS = (); }; };
+		0CD2C73A1BB72CA8006F4A63 /* DFImageManager+Convenience.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD2C6E71BB72CA8006F4A63 /* DFImageManager+Convenience.m */; settings = {ASSET_TAGS = (); }; };
+		0CD2C73B1BB72CA8006F4A63 /* DFImageManager+SharedManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD2C6E81BB72CA8006F4A63 /* DFImageManager+SharedManager.m */; settings = {ASSET_TAGS = (); }; };
+		0CD2C73C1BB72CA8006F4A63 /* DFImageManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 0CD2C6E91BB72CA8006F4A63 /* DFImageManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0CD2C73D1BB72CA8006F4A63 /* DFImageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD2C6EA1BB72CA8006F4A63 /* DFImageManager.m */; settings = {ASSET_TAGS = (); }; };
+		0CD2C73E1BB72CA8006F4A63 /* DFImageManagerConfiguration.h in Headers */ = {isa = PBXBuildFile; fileRef = 0CD2C6EB1BB72CA8006F4A63 /* DFImageManagerConfiguration.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0CD2C73F1BB72CA8006F4A63 /* DFImageManagerConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD2C6EC1BB72CA8006F4A63 /* DFImageManagerConfiguration.m */; settings = {ASSET_TAGS = (); }; };
+		0CD2C7401BB72CA8006F4A63 /* DFImageManagerLoader.h in Headers */ = {isa = PBXBuildFile; fileRef = 0CD2C6EE1BB72CA8006F4A63 /* DFImageManagerLoader.h */; settings = {ASSET_TAGS = (); }; };
+		0CD2C7411BB72CA8006F4A63 /* DFImageManagerLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD2C6EF1BB72CA8006F4A63 /* DFImageManagerLoader.m */; settings = {ASSET_TAGS = (); }; };
+		0CD2C7421BB72CA8006F4A63 /* DFProgressiveImageDecoder.h in Headers */ = {isa = PBXBuildFile; fileRef = 0CD2C6F01BB72CA8006F4A63 /* DFProgressiveImageDecoder.h */; settings = {ASSET_TAGS = (); }; };
+		0CD2C7431BB72CA8006F4A63 /* DFProgressiveImageDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD2C6F11BB72CA8006F4A63 /* DFProgressiveImageDecoder.m */; settings = {ASSET_TAGS = (); }; };
+		0CD2C7441BB72CA8006F4A63 /* DFImageDecoder.h in Headers */ = {isa = PBXBuildFile; fileRef = 0CD2C6F31BB72CA8006F4A63 /* DFImageDecoder.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0CD2C7451BB72CA8006F4A63 /* DFImageDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD2C6F41BB72CA8006F4A63 /* DFImageDecoder.m */; settings = {ASSET_TAGS = (); }; };
+		0CD2C7461BB72CA8006F4A63 /* DFImageProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = 0CD2C6F51BB72CA8006F4A63 /* DFImageProcessor.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0CD2C7471BB72CA8006F4A63 /* DFImageProcessor.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD2C6F61BB72CA8006F4A63 /* DFImageProcessor.m */; settings = {ASSET_TAGS = (); }; };
+		0CD2C7481BB72CA8006F4A63 /* UIImage+DFImageUtilities.h in Headers */ = {isa = PBXBuildFile; fileRef = 0CD2C6F71BB72CA8006F4A63 /* UIImage+DFImageUtilities.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0CD2C7491BB72CA8006F4A63 /* UIImage+DFImageUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD2C6F81BB72CA8006F4A63 /* UIImage+DFImageUtilities.m */; settings = {ASSET_TAGS = (); }; };
+		0CD2C74A1BB72CA8006F4A63 /* DFImageCaching.h in Headers */ = {isa = PBXBuildFile; fileRef = 0CD2C6FA1BB72CA8006F4A63 /* DFImageCaching.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0CD2C74B1BB72CA8006F4A63 /* DFImageDecoding.h in Headers */ = {isa = PBXBuildFile; fileRef = 0CD2C6FB1BB72CA8006F4A63 /* DFImageDecoding.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0CD2C74C1BB72CA8006F4A63 /* DFImageFetching.h in Headers */ = {isa = PBXBuildFile; fileRef = 0CD2C6FC1BB72CA8006F4A63 /* DFImageFetching.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0CD2C74D1BB72CA8006F4A63 /* DFImageFetchingOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 0CD2C6FD1BB72CA8006F4A63 /* DFImageFetchingOperation.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0CD2C74E1BB72CA8006F4A63 /* DFImageManaging.h in Headers */ = {isa = PBXBuildFile; fileRef = 0CD2C6FE1BB72CA8006F4A63 /* DFImageManaging.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0CD2C74F1BB72CA8006F4A63 /* DFImageProcessing.h in Headers */ = {isa = PBXBuildFile; fileRef = 0CD2C6FF1BB72CA8006F4A63 /* DFImageProcessing.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0CD2C7501BB72CA8006F4A63 /* DFImageManagerDefines.h in Headers */ = {isa = PBXBuildFile; fileRef = 0CD2C7011BB72CA8006F4A63 /* DFImageManagerDefines.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0CD2C7511BB72CA8006F4A63 /* DFImageManagerDefines.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD2C7021BB72CA8006F4A63 /* DFImageManagerDefines.m */; settings = {ASSET_TAGS = (); }; };
+		0CD2C7521BB72CA8006F4A63 /* DFImageRequest.h in Headers */ = {isa = PBXBuildFile; fileRef = 0CD2C7031BB72CA8006F4A63 /* DFImageRequest.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0CD2C7531BB72CA8006F4A63 /* DFImageRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD2C7041BB72CA8006F4A63 /* DFImageRequest.m */; settings = {ASSET_TAGS = (); }; };
+		0CD2C7541BB72CA8006F4A63 /* DFImageRequestOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = 0CD2C7051BB72CA8006F4A63 /* DFImageRequestOptions.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0CD2C7551BB72CA8006F4A63 /* DFImageRequestOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD2C7061BB72CA8006F4A63 /* DFImageRequestOptions.m */; settings = {ASSET_TAGS = (); }; };
+		0CD2C7561BB72CA8006F4A63 /* DFImageResponse.h in Headers */ = {isa = PBXBuildFile; fileRef = 0CD2C7071BB72CA8006F4A63 /* DFImageResponse.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0CD2C7571BB72CA8006F4A63 /* DFImageResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD2C7081BB72CA8006F4A63 /* DFImageResponse.m */; settings = {ASSET_TAGS = (); }; };
+		0CD2C7581BB72CA8006F4A63 /* DFImageTask.h in Headers */ = {isa = PBXBuildFile; fileRef = 0CD2C7091BB72CA8006F4A63 /* DFImageTask.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0CD2C7591BB72CA8006F4A63 /* DFImageTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD2C70A1BB72CA8006F4A63 /* DFImageTask.m */; settings = {ASSET_TAGS = (); }; };
+		0CD2C7681BB72CA8006F4A63 /* DFCollectionViewPreheatingController.h in Headers */ = {isa = PBXBuildFile; fileRef = 0CD2C71C1BB72CA8006F4A63 /* DFCollectionViewPreheatingController.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0CD2C7691BB72CA8006F4A63 /* DFCollectionViewPreheatingController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD2C71D1BB72CA8006F4A63 /* DFCollectionViewPreheatingController.m */; settings = {ASSET_TAGS = (); }; };
+		0CD2C76A1BB72CA8006F4A63 /* DFImageManagerKit+UI.h in Headers */ = {isa = PBXBuildFile; fileRef = 0CD2C71E1BB72CA8006F4A63 /* DFImageManagerKit+UI.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0CD2C76B1BB72CA8006F4A63 /* DFImageRequest+UIKitAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 0CD2C71F1BB72CA8006F4A63 /* DFImageRequest+UIKitAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0CD2C76C1BB72CA8006F4A63 /* DFImageRequest+UIKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD2C7201BB72CA8006F4A63 /* DFImageRequest+UIKitAdditions.m */; settings = {ASSET_TAGS = (); }; };
+		0CD2C76D1BB72CA8006F4A63 /* DFImageView.h in Headers */ = {isa = PBXBuildFile; fileRef = 0CD2C7211BB72CA8006F4A63 /* DFImageView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0CD2C76E1BB72CA8006F4A63 /* DFImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD2C7221BB72CA8006F4A63 /* DFImageView.m */; settings = {ASSET_TAGS = (); }; };
+		0CD2C76F1BB72CA8006F4A63 /* UIImageView+DFImageManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 0CD2C7231BB72CA8006F4A63 /* UIImageView+DFImageManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0CD2C7701BB72CA8006F4A63 /* UIImageView+DFImageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD2C7241BB72CA8006F4A63 /* UIImageView+DFImageManager.m */; settings = {ASSET_TAGS = (); }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		0CD2C6BF1BB72B26006F4A63 /* DFImageManager.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DFImageManager.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		0CD2C6CC1BB72C7F006F4A63 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = "Supporting Files/Info.plist"; sourceTree = "<group>"; };
+		0CD2C6CE1BB72C8B006F4A63 /* DFImageManager-umbrella.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "DFImageManager-umbrella.h"; path = "Supporting Files/DFImageManager-umbrella.h"; sourceTree = "<group>"; };
+		0CD2C6D21BB72CA8006F4A63 /* DFAFImageFetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFAFImageFetcher.h; sourceTree = "<group>"; };
+		0CD2C6D31BB72CA8006F4A63 /* DFAFImageFetcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFAFImageFetcher.m; sourceTree = "<group>"; };
+		0CD2C6D41BB72CA8006F4A63 /* DFImageManagerKit+AFNetworking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "DFImageManagerKit+AFNetworking.h"; sourceTree = "<group>"; };
+		0CD2C6D71BB72CA8006F4A63 /* DFCachedImageResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFCachedImageResponse.h; sourceTree = "<group>"; };
+		0CD2C6D81BB72CA8006F4A63 /* DFCachedImageResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFCachedImageResponse.m; sourceTree = "<group>"; };
+		0CD2C6D91BB72CA8006F4A63 /* DFImageCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFImageCache.h; sourceTree = "<group>"; };
+		0CD2C6DA1BB72CA8006F4A63 /* DFImageCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFImageCache.m; sourceTree = "<group>"; };
+		0CD2C6DB1BB72CA8006F4A63 /* NSCache+DFImageManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSCache+DFImageManager.h"; sourceTree = "<group>"; };
+		0CD2C6DC1BB72CA8006F4A63 /* NSCache+DFImageManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSCache+DFImageManager.m"; sourceTree = "<group>"; };
+		0CD2C6DD1BB72CA8006F4A63 /* DFImageManagerKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFImageManagerKit.h; sourceTree = "<group>"; };
+		0CD2C6DF1BB72CA8006F4A63 /* DFURLHTTPResponseValidator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFURLHTTPResponseValidator.h; sourceTree = "<group>"; };
+		0CD2C6E01BB72CA8006F4A63 /* DFURLHTTPResponseValidator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFURLHTTPResponseValidator.m; sourceTree = "<group>"; };
+		0CD2C6E11BB72CA8006F4A63 /* DFURLImageFetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFURLImageFetcher.h; sourceTree = "<group>"; };
+		0CD2C6E21BB72CA8006F4A63 /* DFURLImageFetcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFURLImageFetcher.m; sourceTree = "<group>"; };
+		0CD2C6E31BB72CA8006F4A63 /* DFURLResponseValidating.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFURLResponseValidating.h; sourceTree = "<group>"; };
+		0CD2C6E51BB72CA8006F4A63 /* DFCompositeImageManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFCompositeImageManager.h; sourceTree = "<group>"; };
+		0CD2C6E61BB72CA8006F4A63 /* DFCompositeImageManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFCompositeImageManager.m; sourceTree = "<group>"; };
+		0CD2C6E71BB72CA8006F4A63 /* DFImageManager+Convenience.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "DFImageManager+Convenience.m"; sourceTree = "<group>"; };
+		0CD2C6E81BB72CA8006F4A63 /* DFImageManager+SharedManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "DFImageManager+SharedManager.m"; sourceTree = "<group>"; };
+		0CD2C6E91BB72CA8006F4A63 /* DFImageManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFImageManager.h; sourceTree = "<group>"; };
+		0CD2C6EA1BB72CA8006F4A63 /* DFImageManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFImageManager.m; sourceTree = "<group>"; };
+		0CD2C6EB1BB72CA8006F4A63 /* DFImageManagerConfiguration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFImageManagerConfiguration.h; sourceTree = "<group>"; };
+		0CD2C6EC1BB72CA8006F4A63 /* DFImageManagerConfiguration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFImageManagerConfiguration.m; sourceTree = "<group>"; };
+		0CD2C6EE1BB72CA8006F4A63 /* DFImageManagerLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFImageManagerLoader.h; sourceTree = "<group>"; };
+		0CD2C6EF1BB72CA8006F4A63 /* DFImageManagerLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFImageManagerLoader.m; sourceTree = "<group>"; };
+		0CD2C6F01BB72CA8006F4A63 /* DFProgressiveImageDecoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFProgressiveImageDecoder.h; sourceTree = "<group>"; };
+		0CD2C6F11BB72CA8006F4A63 /* DFProgressiveImageDecoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFProgressiveImageDecoder.m; sourceTree = "<group>"; };
+		0CD2C6F31BB72CA8006F4A63 /* DFImageDecoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFImageDecoder.h; sourceTree = "<group>"; };
+		0CD2C6F41BB72CA8006F4A63 /* DFImageDecoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFImageDecoder.m; sourceTree = "<group>"; };
+		0CD2C6F51BB72CA8006F4A63 /* DFImageProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFImageProcessor.h; sourceTree = "<group>"; };
+		0CD2C6F61BB72CA8006F4A63 /* DFImageProcessor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFImageProcessor.m; sourceTree = "<group>"; };
+		0CD2C6F71BB72CA8006F4A63 /* UIImage+DFImageUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+DFImageUtilities.h"; sourceTree = "<group>"; };
+		0CD2C6F81BB72CA8006F4A63 /* UIImage+DFImageUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+DFImageUtilities.m"; sourceTree = "<group>"; };
+		0CD2C6FA1BB72CA8006F4A63 /* DFImageCaching.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFImageCaching.h; sourceTree = "<group>"; };
+		0CD2C6FB1BB72CA8006F4A63 /* DFImageDecoding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFImageDecoding.h; sourceTree = "<group>"; };
+		0CD2C6FC1BB72CA8006F4A63 /* DFImageFetching.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFImageFetching.h; sourceTree = "<group>"; };
+		0CD2C6FD1BB72CA8006F4A63 /* DFImageFetchingOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFImageFetchingOperation.h; sourceTree = "<group>"; };
+		0CD2C6FE1BB72CA8006F4A63 /* DFImageManaging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFImageManaging.h; sourceTree = "<group>"; };
+		0CD2C6FF1BB72CA8006F4A63 /* DFImageProcessing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFImageProcessing.h; sourceTree = "<group>"; };
+		0CD2C7011BB72CA8006F4A63 /* DFImageManagerDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFImageManagerDefines.h; sourceTree = "<group>"; };
+		0CD2C7021BB72CA8006F4A63 /* DFImageManagerDefines.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFImageManagerDefines.m; sourceTree = "<group>"; };
+		0CD2C7031BB72CA8006F4A63 /* DFImageRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFImageRequest.h; sourceTree = "<group>"; };
+		0CD2C7041BB72CA8006F4A63 /* DFImageRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFImageRequest.m; sourceTree = "<group>"; };
+		0CD2C7051BB72CA8006F4A63 /* DFImageRequestOptions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFImageRequestOptions.h; sourceTree = "<group>"; };
+		0CD2C7061BB72CA8006F4A63 /* DFImageRequestOptions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFImageRequestOptions.m; sourceTree = "<group>"; };
+		0CD2C7071BB72CA8006F4A63 /* DFImageResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFImageResponse.h; sourceTree = "<group>"; };
+		0CD2C7081BB72CA8006F4A63 /* DFImageResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFImageResponse.m; sourceTree = "<group>"; };
+		0CD2C7091BB72CA8006F4A63 /* DFImageTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFImageTask.h; sourceTree = "<group>"; };
+		0CD2C70A1BB72CA8006F4A63 /* DFImageTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFImageTask.m; sourceTree = "<group>"; };
+		0CD2C70C1BB72CA8006F4A63 /* DFAnimatedImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFAnimatedImage.h; sourceTree = "<group>"; };
+		0CD2C70D1BB72CA8006F4A63 /* DFAnimatedImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFAnimatedImage.m; sourceTree = "<group>"; };
+		0CD2C70E1BB72CA8006F4A63 /* DFAnimatedImageDecoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFAnimatedImageDecoder.h; sourceTree = "<group>"; };
+		0CD2C70F1BB72CA8006F4A63 /* DFAnimatedImageDecoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFAnimatedImageDecoder.m; sourceTree = "<group>"; };
+		0CD2C7101BB72CA8006F4A63 /* DFAnimatedImageProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFAnimatedImageProcessor.h; sourceTree = "<group>"; };
+		0CD2C7111BB72CA8006F4A63 /* DFAnimatedImageProcessor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFAnimatedImageProcessor.m; sourceTree = "<group>"; };
+		0CD2C7121BB72CA8006F4A63 /* DFAnimatedImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFAnimatedImageView.h; sourceTree = "<group>"; };
+		0CD2C7131BB72CA8006F4A63 /* DFAnimatedImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFAnimatedImageView.m; sourceTree = "<group>"; };
+		0CD2C7141BB72CA8006F4A63 /* DFImageManagerKit+GIF.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "DFImageManagerKit+GIF.h"; sourceTree = "<group>"; };
+		0CD2C7161BB72CA8006F4A63 /* DFImageManagerKit+PhotosKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "DFImageManagerKit+PhotosKit.h"; sourceTree = "<group>"; };
+		0CD2C7171BB72CA8006F4A63 /* DFPhotosKitImageFetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFPhotosKitImageFetcher.h; sourceTree = "<group>"; };
+		0CD2C7181BB72CA8006F4A63 /* DFPhotosKitImageFetcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFPhotosKitImageFetcher.m; sourceTree = "<group>"; };
+		0CD2C7191BB72CA8006F4A63 /* NSURL+DFPhotosKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSURL+DFPhotosKit.h"; sourceTree = "<group>"; };
+		0CD2C71A1BB72CA8006F4A63 /* NSURL+DFPhotosKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURL+DFPhotosKit.m"; sourceTree = "<group>"; };
+		0CD2C71C1BB72CA8006F4A63 /* DFCollectionViewPreheatingController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFCollectionViewPreheatingController.h; sourceTree = "<group>"; };
+		0CD2C71D1BB72CA8006F4A63 /* DFCollectionViewPreheatingController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFCollectionViewPreheatingController.m; sourceTree = "<group>"; };
+		0CD2C71E1BB72CA8006F4A63 /* DFImageManagerKit+UI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "DFImageManagerKit+UI.h"; sourceTree = "<group>"; };
+		0CD2C71F1BB72CA8006F4A63 /* DFImageRequest+UIKitAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "DFImageRequest+UIKitAdditions.h"; sourceTree = "<group>"; };
+		0CD2C7201BB72CA8006F4A63 /* DFImageRequest+UIKitAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "DFImageRequest+UIKitAdditions.m"; sourceTree = "<group>"; };
+		0CD2C7211BB72CA8006F4A63 /* DFImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFImageView.h; sourceTree = "<group>"; };
+		0CD2C7221BB72CA8006F4A63 /* DFImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFImageView.m; sourceTree = "<group>"; };
+		0CD2C7231BB72CA8006F4A63 /* UIImageView+DFImageManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+DFImageManager.h"; sourceTree = "<group>"; };
+		0CD2C7241BB72CA8006F4A63 /* UIImageView+DFImageManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+DFImageManager.m"; sourceTree = "<group>"; };
+		0CD2C7261BB72CA8006F4A63 /* DFImageManagerKit+WebP.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "DFImageManagerKit+WebP.h"; sourceTree = "<group>"; };
+		0CD2C7271BB72CA8006F4A63 /* DFWebPImageDecoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFWebPImageDecoder.h; sourceTree = "<group>"; };
+		0CD2C7281BB72CA8006F4A63 /* DFWebPImageDecoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFWebPImageDecoder.m; sourceTree = "<group>"; };
+		0CD2C7741BB72D66006F4A63 /* DFImageManager.modulemap */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.module-map"; name = DFImageManager.modulemap; path = "Supporting Files/DFImageManager.modulemap"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		0CD2C6BB1BB72B25006F4A63 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		0CD2C6B51BB72B25006F4A63 = {
+			isa = PBXGroup;
+			children = (
+				0CD2C6CB1BB72C75006F4A63 /* Supporting Files */,
+				0CD2C6D01BB72CA8006F4A63 /* Source */,
+				0CD2C6C01BB72B26006F4A63 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		0CD2C6C01BB72B26006F4A63 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				0CD2C6BF1BB72B26006F4A63 /* DFImageManager.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		0CD2C6CB1BB72C75006F4A63 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				0CD2C6CC1BB72C7F006F4A63 /* Info.plist */,
+				0CD2C6CE1BB72C8B006F4A63 /* DFImageManager-umbrella.h */,
+				0CD2C7741BB72D66006F4A63 /* DFImageManager.modulemap */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		0CD2C6D01BB72CA8006F4A63 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				0CD2C6D51BB72CA8006F4A63 /* Core */,
+				0CD2C71B1BB72CA8006F4A63 /* UI */,
+				0CD2C6D11BB72CA8006F4A63 /* AFNetworking */,
+				0CD2C70B1BB72CA8006F4A63 /* GIF */,
+				0CD2C7151BB72CA8006F4A63 /* PhotosKit */,
+				0CD2C7251BB72CA8006F4A63 /* WebP */,
+			);
+			path = Source;
+			sourceTree = "<group>";
+		};
+		0CD2C6D11BB72CA8006F4A63 /* AFNetworking */ = {
+			isa = PBXGroup;
+			children = (
+				0CD2C6D41BB72CA8006F4A63 /* DFImageManagerKit+AFNetworking.h */,
+				0CD2C6D21BB72CA8006F4A63 /* DFAFImageFetcher.h */,
+				0CD2C6D31BB72CA8006F4A63 /* DFAFImageFetcher.m */,
+			);
+			path = AFNetworking;
+			sourceTree = "<group>";
+		};
+		0CD2C6D51BB72CA8006F4A63 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				0CD2C6DD1BB72CA8006F4A63 /* DFImageManagerKit.h */,
+				0CD2C6D61BB72CA8006F4A63 /* Caching */,
+				0CD2C6DE1BB72CA8006F4A63 /* Fetching */,
+				0CD2C6E41BB72CA8006F4A63 /* Managing */,
+				0CD2C6ED1BB72CA8006F4A63 /* Private */,
+				0CD2C6F21BB72CA8006F4A63 /* Processing */,
+				0CD2C6F91BB72CA8006F4A63 /* Protocols */,
+				0CD2C7001BB72CA8006F4A63 /* Support */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
+		0CD2C6D61BB72CA8006F4A63 /* Caching */ = {
+			isa = PBXGroup;
+			children = (
+				0CD2C6D71BB72CA8006F4A63 /* DFCachedImageResponse.h */,
+				0CD2C6D81BB72CA8006F4A63 /* DFCachedImageResponse.m */,
+				0CD2C6D91BB72CA8006F4A63 /* DFImageCache.h */,
+				0CD2C6DA1BB72CA8006F4A63 /* DFImageCache.m */,
+				0CD2C6DB1BB72CA8006F4A63 /* NSCache+DFImageManager.h */,
+				0CD2C6DC1BB72CA8006F4A63 /* NSCache+DFImageManager.m */,
+			);
+			path = Caching;
+			sourceTree = "<group>";
+		};
+		0CD2C6DE1BB72CA8006F4A63 /* Fetching */ = {
+			isa = PBXGroup;
+			children = (
+				0CD2C6DF1BB72CA8006F4A63 /* DFURLHTTPResponseValidator.h */,
+				0CD2C6E01BB72CA8006F4A63 /* DFURLHTTPResponseValidator.m */,
+				0CD2C6E11BB72CA8006F4A63 /* DFURLImageFetcher.h */,
+				0CD2C6E21BB72CA8006F4A63 /* DFURLImageFetcher.m */,
+				0CD2C6E31BB72CA8006F4A63 /* DFURLResponseValidating.h */,
+			);
+			path = Fetching;
+			sourceTree = "<group>";
+		};
+		0CD2C6E41BB72CA8006F4A63 /* Managing */ = {
+			isa = PBXGroup;
+			children = (
+				0CD2C6E51BB72CA8006F4A63 /* DFCompositeImageManager.h */,
+				0CD2C6E61BB72CA8006F4A63 /* DFCompositeImageManager.m */,
+				0CD2C6E71BB72CA8006F4A63 /* DFImageManager+Convenience.m */,
+				0CD2C6E81BB72CA8006F4A63 /* DFImageManager+SharedManager.m */,
+				0CD2C6E91BB72CA8006F4A63 /* DFImageManager.h */,
+				0CD2C6EA1BB72CA8006F4A63 /* DFImageManager.m */,
+				0CD2C6EB1BB72CA8006F4A63 /* DFImageManagerConfiguration.h */,
+				0CD2C6EC1BB72CA8006F4A63 /* DFImageManagerConfiguration.m */,
+			);
+			path = Managing;
+			sourceTree = "<group>";
+		};
+		0CD2C6ED1BB72CA8006F4A63 /* Private */ = {
+			isa = PBXGroup;
+			children = (
+				0CD2C6EE1BB72CA8006F4A63 /* DFImageManagerLoader.h */,
+				0CD2C6EF1BB72CA8006F4A63 /* DFImageManagerLoader.m */,
+				0CD2C6F01BB72CA8006F4A63 /* DFProgressiveImageDecoder.h */,
+				0CD2C6F11BB72CA8006F4A63 /* DFProgressiveImageDecoder.m */,
+			);
+			path = Private;
+			sourceTree = "<group>";
+		};
+		0CD2C6F21BB72CA8006F4A63 /* Processing */ = {
+			isa = PBXGroup;
+			children = (
+				0CD2C6F31BB72CA8006F4A63 /* DFImageDecoder.h */,
+				0CD2C6F41BB72CA8006F4A63 /* DFImageDecoder.m */,
+				0CD2C6F51BB72CA8006F4A63 /* DFImageProcessor.h */,
+				0CD2C6F61BB72CA8006F4A63 /* DFImageProcessor.m */,
+				0CD2C6F71BB72CA8006F4A63 /* UIImage+DFImageUtilities.h */,
+				0CD2C6F81BB72CA8006F4A63 /* UIImage+DFImageUtilities.m */,
+			);
+			path = Processing;
+			sourceTree = "<group>";
+		};
+		0CD2C6F91BB72CA8006F4A63 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				0CD2C6FA1BB72CA8006F4A63 /* DFImageCaching.h */,
+				0CD2C6FB1BB72CA8006F4A63 /* DFImageDecoding.h */,
+				0CD2C6FC1BB72CA8006F4A63 /* DFImageFetching.h */,
+				0CD2C6FD1BB72CA8006F4A63 /* DFImageFetchingOperation.h */,
+				0CD2C6FE1BB72CA8006F4A63 /* DFImageManaging.h */,
+				0CD2C6FF1BB72CA8006F4A63 /* DFImageProcessing.h */,
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
+		0CD2C7001BB72CA8006F4A63 /* Support */ = {
+			isa = PBXGroup;
+			children = (
+				0CD2C7011BB72CA8006F4A63 /* DFImageManagerDefines.h */,
+				0CD2C7021BB72CA8006F4A63 /* DFImageManagerDefines.m */,
+				0CD2C7031BB72CA8006F4A63 /* DFImageRequest.h */,
+				0CD2C7041BB72CA8006F4A63 /* DFImageRequest.m */,
+				0CD2C7051BB72CA8006F4A63 /* DFImageRequestOptions.h */,
+				0CD2C7061BB72CA8006F4A63 /* DFImageRequestOptions.m */,
+				0CD2C7071BB72CA8006F4A63 /* DFImageResponse.h */,
+				0CD2C7081BB72CA8006F4A63 /* DFImageResponse.m */,
+				0CD2C7091BB72CA8006F4A63 /* DFImageTask.h */,
+				0CD2C70A1BB72CA8006F4A63 /* DFImageTask.m */,
+			);
+			path = Support;
+			sourceTree = "<group>";
+		};
+		0CD2C70B1BB72CA8006F4A63 /* GIF */ = {
+			isa = PBXGroup;
+			children = (
+				0CD2C7141BB72CA8006F4A63 /* DFImageManagerKit+GIF.h */,
+				0CD2C70C1BB72CA8006F4A63 /* DFAnimatedImage.h */,
+				0CD2C70D1BB72CA8006F4A63 /* DFAnimatedImage.m */,
+				0CD2C70E1BB72CA8006F4A63 /* DFAnimatedImageDecoder.h */,
+				0CD2C70F1BB72CA8006F4A63 /* DFAnimatedImageDecoder.m */,
+				0CD2C7101BB72CA8006F4A63 /* DFAnimatedImageProcessor.h */,
+				0CD2C7111BB72CA8006F4A63 /* DFAnimatedImageProcessor.m */,
+				0CD2C7121BB72CA8006F4A63 /* DFAnimatedImageView.h */,
+				0CD2C7131BB72CA8006F4A63 /* DFAnimatedImageView.m */,
+			);
+			path = GIF;
+			sourceTree = "<group>";
+		};
+		0CD2C7151BB72CA8006F4A63 /* PhotosKit */ = {
+			isa = PBXGroup;
+			children = (
+				0CD2C7161BB72CA8006F4A63 /* DFImageManagerKit+PhotosKit.h */,
+				0CD2C7171BB72CA8006F4A63 /* DFPhotosKitImageFetcher.h */,
+				0CD2C7181BB72CA8006F4A63 /* DFPhotosKitImageFetcher.m */,
+				0CD2C7191BB72CA8006F4A63 /* NSURL+DFPhotosKit.h */,
+				0CD2C71A1BB72CA8006F4A63 /* NSURL+DFPhotosKit.m */,
+			);
+			path = PhotosKit;
+			sourceTree = "<group>";
+		};
+		0CD2C71B1BB72CA8006F4A63 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				0CD2C71E1BB72CA8006F4A63 /* DFImageManagerKit+UI.h */,
+				0CD2C7211BB72CA8006F4A63 /* DFImageView.h */,
+				0CD2C7221BB72CA8006F4A63 /* DFImageView.m */,
+				0CD2C7231BB72CA8006F4A63 /* UIImageView+DFImageManager.h */,
+				0CD2C7241BB72CA8006F4A63 /* UIImageView+DFImageManager.m */,
+				0CD2C71C1BB72CA8006F4A63 /* DFCollectionViewPreheatingController.h */,
+				0CD2C71D1BB72CA8006F4A63 /* DFCollectionViewPreheatingController.m */,
+				0CD2C71F1BB72CA8006F4A63 /* DFImageRequest+UIKitAdditions.h */,
+				0CD2C7201BB72CA8006F4A63 /* DFImageRequest+UIKitAdditions.m */,
+			);
+			path = UI;
+			sourceTree = "<group>";
+		};
+		0CD2C7251BB72CA8006F4A63 /* WebP */ = {
+			isa = PBXGroup;
+			children = (
+				0CD2C7261BB72CA8006F4A63 /* DFImageManagerKit+WebP.h */,
+				0CD2C7271BB72CA8006F4A63 /* DFWebPImageDecoder.h */,
+				0CD2C7281BB72CA8006F4A63 /* DFWebPImageDecoder.m */,
+			);
+			path = WebP;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		0CD2C6BC1BB72B25006F4A63 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0CD2C7541BB72CA8006F4A63 /* DFImageRequestOptions.h in Headers */,
+				0CD2C7381BB72CA8006F4A63 /* DFCompositeImageManager.h in Headers */,
+				0CD2C7371BB72CA8006F4A63 /* DFURLResponseValidating.h in Headers */,
+				0CD2C6CF1BB72C8B006F4A63 /* DFImageManager-umbrella.h in Headers */,
+				0CD2C73E1BB72CA8006F4A63 /* DFImageManagerConfiguration.h in Headers */,
+				0CD2C7521BB72CA8006F4A63 /* DFImageRequest.h in Headers */,
+				0CD2C7351BB72CA8006F4A63 /* DFURLImageFetcher.h in Headers */,
+				0CD2C74A1BB72CA8006F4A63 /* DFImageCaching.h in Headers */,
+				0CD2C76B1BB72CA8006F4A63 /* DFImageRequest+UIKitAdditions.h in Headers */,
+				0CD2C74E1BB72CA8006F4A63 /* DFImageManaging.h in Headers */,
+				0CD2C72C1BB72CA8006F4A63 /* DFCachedImageResponse.h in Headers */,
+				0CD2C7561BB72CA8006F4A63 /* DFImageResponse.h in Headers */,
+				0CD2C74D1BB72CA8006F4A63 /* DFImageFetchingOperation.h in Headers */,
+				0CD2C76A1BB72CA8006F4A63 /* DFImageManagerKit+UI.h in Headers */,
+				0CD2C7441BB72CA8006F4A63 /* DFImageDecoder.h in Headers */,
+				0CD2C7581BB72CA8006F4A63 /* DFImageTask.h in Headers */,
+				0CD2C76F1BB72CA8006F4A63 /* UIImageView+DFImageManager.h in Headers */,
+				0CD2C73C1BB72CA8006F4A63 /* DFImageManager.h in Headers */,
+				0CD2C7681BB72CA8006F4A63 /* DFCollectionViewPreheatingController.h in Headers */,
+				0CD2C7481BB72CA8006F4A63 /* UIImage+DFImageUtilities.h in Headers */,
+				0CD2C74B1BB72CA8006F4A63 /* DFImageDecoding.h in Headers */,
+				0CD2C7501BB72CA8006F4A63 /* DFImageManagerDefines.h in Headers */,
+				0CD2C7321BB72CA8006F4A63 /* DFImageManagerKit.h in Headers */,
+				0CD2C7461BB72CA8006F4A63 /* DFImageProcessor.h in Headers */,
+				0CD2C7331BB72CA8006F4A63 /* DFURLHTTPResponseValidator.h in Headers */,
+				0CD2C74F1BB72CA8006F4A63 /* DFImageProcessing.h in Headers */,
+				0CD2C72E1BB72CA8006F4A63 /* DFImageCache.h in Headers */,
+				0CD2C7301BB72CA8006F4A63 /* NSCache+DFImageManager.h in Headers */,
+				0CD2C74C1BB72CA8006F4A63 /* DFImageFetching.h in Headers */,
+				0CD2C76D1BB72CA8006F4A63 /* DFImageView.h in Headers */,
+				0CD2C7421BB72CA8006F4A63 /* DFProgressiveImageDecoder.h in Headers */,
+				0CD2C7401BB72CA8006F4A63 /* DFImageManagerLoader.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		0CD2C6BE1BB72B25006F4A63 /* DFImageManager */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 0CD2C6C71BB72B26006F4A63 /* Build configuration list for PBXNativeTarget "DFImageManager" */;
+			buildPhases = (
+				0CD2C6BA1BB72B25006F4A63 /* Sources */,
+				0CD2C6BB1BB72B25006F4A63 /* Frameworks */,
+				0CD2C6BC1BB72B25006F4A63 /* Headers */,
+				0CD2C6BD1BB72B25006F4A63 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = DFImageManager;
+			productName = DFImageManager;
+			productReference = 0CD2C6BF1BB72B26006F4A63 /* DFImageManager.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		0CD2C6B61BB72B25006F4A63 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0700;
+				ORGANIZATIONNAME = "Alexander Grebenyuk";
+				TargetAttributes = {
+					0CD2C6BE1BB72B25006F4A63 = {
+						CreatedOnToolsVersion = 7.0;
+					};
+				};
+			};
+			buildConfigurationList = 0CD2C6B91BB72B25006F4A63 /* Build configuration list for PBXProject "DFImageManager" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 0CD2C6B51BB72B25006F4A63;
+			productRefGroup = 0CD2C6C01BB72B26006F4A63 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				0CD2C6BE1BB72B25006F4A63 /* DFImageManager */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		0CD2C6BD1BB72B25006F4A63 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0CD2C6CD1BB72C7F006F4A63 /* Info.plist in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		0CD2C6BA1BB72B25006F4A63 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0CD2C7571BB72CA8006F4A63 /* DFImageResponse.m in Sources */,
+				0CD2C7451BB72CA8006F4A63 /* DFImageDecoder.m in Sources */,
+				0CD2C7411BB72CA8006F4A63 /* DFImageManagerLoader.m in Sources */,
+				0CD2C72D1BB72CA8006F4A63 /* DFCachedImageResponse.m in Sources */,
+				0CD2C73F1BB72CA8006F4A63 /* DFImageManagerConfiguration.m in Sources */,
+				0CD2C7511BB72CA8006F4A63 /* DFImageManagerDefines.m in Sources */,
+				0CD2C73D1BB72CA8006F4A63 /* DFImageManager.m in Sources */,
+				0CD2C7691BB72CA8006F4A63 /* DFCollectionViewPreheatingController.m in Sources */,
+				0CD2C7701BB72CA8006F4A63 /* UIImageView+DFImageManager.m in Sources */,
+				0CD2C7431BB72CA8006F4A63 /* DFProgressiveImageDecoder.m in Sources */,
+				0CD2C76C1BB72CA8006F4A63 /* DFImageRequest+UIKitAdditions.m in Sources */,
+				0CD2C7391BB72CA8006F4A63 /* DFCompositeImageManager.m in Sources */,
+				0CD2C7471BB72CA8006F4A63 /* DFImageProcessor.m in Sources */,
+				0CD2C7361BB72CA8006F4A63 /* DFURLImageFetcher.m in Sources */,
+				0CD2C7591BB72CA8006F4A63 /* DFImageTask.m in Sources */,
+				0CD2C7341BB72CA8006F4A63 /* DFURLHTTPResponseValidator.m in Sources */,
+				0CD2C7551BB72CA8006F4A63 /* DFImageRequestOptions.m in Sources */,
+				0CD2C76E1BB72CA8006F4A63 /* DFImageView.m in Sources */,
+				0CD2C7491BB72CA8006F4A63 /* UIImage+DFImageUtilities.m in Sources */,
+				0CD2C72F1BB72CA8006F4A63 /* DFImageCache.m in Sources */,
+				0CD2C73B1BB72CA8006F4A63 /* DFImageManager+SharedManager.m in Sources */,
+				0CD2C7531BB72CA8006F4A63 /* DFImageRequest.m in Sources */,
+				0CD2C7311BB72CA8006F4A63 /* NSCache+DFImageManager.m in Sources */,
+				0CD2C73A1BB72CA8006F4A63 /* DFImageManager+Convenience.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		0CD2C6C51BB72B26006F4A63 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		0CD2C6C61BB72B26006F4A63 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		0CD2C6C81BB72B26006F4A63 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = "Supporting Files/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = "Supporting Files/DFImageManager.modulemap";
+				PRODUCT_BUNDLE_IDENTIFIER = com.github.kean.DFImageManager;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		0CD2C6C91BB72B26006F4A63 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = "Supporting Files/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = "Supporting Files/DFImageManager.modulemap";
+				PRODUCT_BUNDLE_IDENTIFIER = com.github.kean.DFImageManager;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		0CD2C6B91BB72B25006F4A63 /* Build configuration list for PBXProject "DFImageManager" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0CD2C6C51BB72B26006F4A63 /* Debug */,
+				0CD2C6C61BB72B26006F4A63 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		0CD2C6C71BB72B26006F4A63 /* Build configuration list for PBXNativeTarget "DFImageManager" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0CD2C6C81BB72B26006F4A63 /* Debug */,
+				0CD2C6C91BB72B26006F4A63 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 0CD2C6B61BB72B25006F4A63 /* Project object */;
+}

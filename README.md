@@ -1,5 +1,10 @@
 <p align="center"><img src="https://cloud.githubusercontent.com/assets/1567433/9706439/4d3fd63c-54ed-11e5-91ec-a52c768b67fe.png" width="70%"/>
 
+<p align="center">
+<a href="https://cocoapods.org"><img src="https://img.shields.io/cocoapods/v/DFImageManager.svg"></a>
+<a href="https://github.com/Carthage/Carthage"><img src="https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat"></a>
+</p>
+
 Advanced framework for loading, caching, processing, displaying and preheating images. It uses latest advancements in iOS SDK and doesn't reinvent existing technologies.
 
 DFImageManager is a [pipeline](#h_design) that loads images using multiple dependencies which can be injected in runtime.
