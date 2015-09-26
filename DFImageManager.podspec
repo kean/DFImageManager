@@ -38,12 +38,15 @@ Pod::Spec.new do |s|
 
     s.subspec "GIF" do |ss|
         ss.ios.deployment_target = "8.0"
+        ss.dependency "DFImageManager/Core"
+        ss.dependency "DFImageManager/UI"
         ss.dependency "FLAnimatedImage", "~> 1.0"
         ss.source_files = "Pod/Source/GIF/**/*.{h,m}"
     end
 
     s.subspec "WebP" do |ss|
         ss.ios.deployment_target = "8.0"
+        ss.dependency "DFImageManager/Core"
         ss.dependency "libwebp"
         ss.source_files = "Pod/Source/WebP/**/*.{h,m}"
     end

@@ -12,10 +12,6 @@
 #import "DFImageTask.h"
 #import "DFImageView.h"
 
-#if __has_include("DFImageManagerKit+GIF.h")
-#import "DFImageManagerKit+GIF.h"
-#endif
-
 @implementation DFImageView
 
 - (void)dealloc {
@@ -40,32 +36,12 @@
 
 - (void)_commonInit {
     self.imageManager = [DFImageManager sharedManager];
-    
     _allowsAnimations = YES;
-#if __has_include("DFImageManagerKit+GIF.h")
-    _allowsGIFPlayback = YES;
-#endif
-}
-
-- (void)displayImage:(nullable UIImage *)image {
-#if __has_include("DFImageManagerKit+GIF.h")
-    if (!image) {
-        self.animatedImage = nil;
-    }
-    if (self.allowsGIFPlayback && [image isKindOfClass:[DFAnimatedImage class]]) {
-        self.animatedImage = ((DFAnimatedImage *)image).animatedImage;
-        return;
-    }
-#endif
-    self.image = image;
 }
 
 - (void)prepareForReuse {
     [self _cancelFetching];
     self.image = nil;
-#if __has_include("DFImageManagerKit+GIF.h")
-    self.animatedImage = nil;
-#endif
     [self.layer removeAllAnimations];
 }
 
@@ -102,7 +78,7 @@
 
 - (void)didCompleteImageTask:(nonnull DFImageTask *)task withImage:(nullable UIImage *)image {
     if (self.allowsAnimations && !task.response.isFastResponse && !self.image) {
-        [self displayImage:image];
+        self.image = image;
         [self.layer addAnimation:({
             CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"opacity"];
             animation.keyPath = @"opacity";
@@ -112,7 +88,7 @@
             animation;
         }) forKey:@"opacity"];
     } else {
-        [self displayImage:image];
+        self.image = image;
     }
 }
 

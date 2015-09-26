@@ -4,3 +4,5 @@
 
 #import "DFAnimatedImage.h"
 #import "DFAnimatedImageDecoder.h"
+#import "DFAnimatedImageProcessor.h"
+#import "DFAnimatedImageView.h"

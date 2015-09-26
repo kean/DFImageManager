@@ -48,7 +48,13 @@ static NSString * const reuseIdentifier = @"Cell";
     _previousImageManager = [DFImageManager sharedManager];
     
     [DFImageManager setSharedManager:({
-        AFHTTPSessionManager *httpSessionManager = [[AFHTTPSessionManager alloc] initWithSessionConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
+        AFHTTPSessionManager *httpSessionManager = [[AFHTTPSessionManager alloc] initWithSessionConfiguration:({
+            NSURLSessionConfiguration *conf = [NSURLSessionConfiguration defaultSessionConfiguration];
+            conf.URLCache = [[NSURLCache alloc] initWithMemoryCapacity:0 diskCapacity:1024 * 1024 * 200 diskPath:@"com.github.kean.default_image_cache"];
+            conf.timeoutIntervalForRequest = 60.f;
+            conf.timeoutIntervalForResource = 360.f;
+            conf;
+        })];
         httpSessionManager.responseSerializer = [AFHTTPResponseSerializer new];
         DFAFImageFetcher *fetcher = [[DFAFImageFetcher alloc] initWithSessionManager:httpSessionManager];
         [[DFImageManager alloc] initWithConfiguration:[DFImageManagerConfiguration configurationWithFetcher:fetcher processor:[DFImageProcessor new] cache:[DFImageCache new]]];

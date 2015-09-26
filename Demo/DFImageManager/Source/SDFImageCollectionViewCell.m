@@ -9,6 +9,7 @@
 #import "SDFImageCollectionViewCell.h"
 #import <DFImageManager/DFImageManagerKit.h>
 #import <DFImageManager/DFImageManagerKit+UI.h>
+#import <DFImageManager/DFImageManagerKit+GIF.h>
 
 @interface SDFImageCollectionViewCell ()
 
@@ -25,7 +26,7 @@
 
 - (instancetype)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {
-        _imageView = [DFImageView new];
+        _imageView = [DFAnimatedImageView new];
         _progressView = [UIProgressView new];
         
         [self addSubview:_imageView];

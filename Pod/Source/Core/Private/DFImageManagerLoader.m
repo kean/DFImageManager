@@ -343,7 +343,11 @@
     if (!_conf.processor || !_conf.processingQueue) {
         return NO;
     }
-    return [_conf.processor shouldProcessImage:image forRequest:request partial:partial];
+    if ([_conf.processor respondsToSelector:@selector(shouldProcessImage:forRequest:partial:)]) {
+        return [_conf.processor shouldProcessImage:image forRequest:request partial:partial];
+    }
+    return YES;
+//    return [_conf.processor shouldProcessImage:image forRequest:request partial:partial];
 }
 
 - (nullable DFCachedImageResponse *)cachedResponseForRequest:(nonnull DFImageRequest *)request {

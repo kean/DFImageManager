@@ -27,10 +27,6 @@ static char *_imageProcessedKey;
     return CGSizeEqualToSize(request1.targetSize, request2.targetSize);
 }
 
-- (BOOL)shouldProcessImage:(nonnull UIImage *)image forRequest:(nonnull DFImageRequest *)request partial:(BOOL)partial {
-    return YES;
-}
-
 - (UIImage *)processedImage:(UIImage *)image forRequest:(DFImageRequest *)request partial:(BOOL)partial {
     objc_setAssociatedObject(image, &_imageProcessedKey, @YES, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     return image;

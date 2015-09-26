@@ -6,10 +6,6 @@
 #import "DFImageManagerDefines.h"
 #import <libkern/OSAtomic.h>
 
-#if __has_include("DFImageManagerKit+GIF.h")
-#import "DFImageManagerKit+GIF.h"
-#endif
-
 #if TARGET_OS_WATCH
 #import <WatchKit/WatchKit.h>
 #endif
@@ -30,12 +26,7 @@ static id<DFImageDecoding> _sharedDecoder;
 static OSSpinLock _lock = OS_SPINLOCK_INIT;
 
 + (void)initialize {
-    NSMutableArray *decoders = [NSMutableArray new];
-#if __has_include("DFImageManagerKit+GIF.h")
-    [decoders addObject:[DFAnimatedImageDecoder new]];
-#endif
-    [decoders addObject:[DFImageDecoder new]];
-    [self setSharedDecoder:[[DFCompositeImageDecoder alloc] initWithDecoders:decoders]];
+    [self setSharedDecoder:[DFImageDecoder new]];
 }
 
 + (nullable id<DFImageDecoding>)sharedDecoder {

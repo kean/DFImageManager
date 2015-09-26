@@ -8,12 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
-@class DFImageView;
+@class DFAnimatedImageView;
 @class DFImageRequest;
 
 @interface SDFImageCollectionViewCell : UICollectionViewCell
 
-@property (nonatomic, readonly) DFImageView *imageView;
+@property (nonatomic, readonly) DFAnimatedImageView *imageView;
 
 - (void)setImageWithURL:(NSURL *)imageURL;
 - (void)setImageWithRequest:(DFImageRequest *)request;

@@ -7,10 +7,6 @@
 #import "DFImageManagerDefines.h"
 #import "NSCache+DFImageManager.h"
 
-#if __has_include("DFImageManagerKit+GIF.h")
-#import "DFImageManagerKit+GIF.h"
-#endif
-
 @implementation DFImageCache
 
 - (void)dealloc {
@@ -58,13 +54,7 @@
 - (NSUInteger)costForImageResponse:(nonnull DFCachedImageResponse *)cachedResponse {
     UIImage *image = cachedResponse.image;
     CGImageRef imageRef = image.CGImage;
-    NSUInteger cost = (CGImageGetWidth(imageRef) * CGImageGetHeight(imageRef) * CGImageGetBitsPerPixel(imageRef)) / 8;
-#if __has_include("DFImageManagerKit+GIF.h")
-    if ([image isKindOfClass:[DFAnimatedImage class]]) {
-        cost += ((DFAnimatedImage *)image).animatedImage.data.length;
-    }
-#endif
-    return cost;
+    return (CGImageGetWidth(imageRef) * CGImageGetHeight(imageRef) * CGImageGetBitsPerPixel(imageRef)) / 8;
 }
 
 @end

@@ -155,8 +155,6 @@ typedef void (^_DFURLSessionDataTaskCompletionHandler)(NSData *data, NSURLRespon
 
 @implementation DFURLImageFetcher
 
-DF_INIT_UNAVAILABLE_IMPL
-
 - (instancetype)initWithSession:(NSURLSession *)session sessionDelegate:(id<DFURLImageFetcherSessionDelegate>)sessionDelegate {
     NSParameterAssert(session);
     NSParameterAssert(sessionDelegate);
@@ -172,6 +170,10 @@ DF_INIT_UNAVAILABLE_IMPL
 
 - (instancetype)initWithSessionConfiguration:(NSURLSessionConfiguration *)configuration {
     return [self initWithSession:[NSURLSession sessionWithConfiguration:configuration delegate:self delegateQueue:nil] sessionDelegate:self];
+}
+
+- (instancetype)init {
+    return [self initWithSessionConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
 }
 
 #pragma mark <DFImageFetching>

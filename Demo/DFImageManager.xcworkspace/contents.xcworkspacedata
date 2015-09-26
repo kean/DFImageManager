@@ -274,6 +274,18 @@
          <FileRef
             location = "group:DFAnimatedImageDecoder.m">
          </FileRef>
+         <FileRef
+            location = "group:DFAnimatedImageProcessor.h">
+         </FileRef>
+         <FileRef
+            location = "group:DFAnimatedImageProcessor.m">
+         </FileRef>
+         <FileRef
+            location = "group:DFAnimatedImageView.h">
+         </FileRef>
+         <FileRef
+            location = "group:DFAnimatedImageView.m">
+         </FileRef>
       </Group>
    </Group>
 </Workspace>

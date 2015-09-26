@@ -7,10 +7,6 @@
 #import "DFImageRequestOptions.h"
 #import "UIImage+DFImageUtilities.h"
 
-#if __has_include("DFImageManagerKit+GIF.h")
-#import "DFImageManagerKit+GIF.h"
-#endif
-
 NSString *DFImageProcessingCornerRadiusKey = @"DFImageProcessingCornerRadiusKey";
 
 @implementation DFImageProcessor
@@ -38,19 +34,7 @@ NSString *DFImageProcessingCornerRadiusKey = @"DFImageProcessingCornerRadiusKey"
     return (!cornerRadius1 && !cornerRadius2) || ((!!cornerRadius1 && !!cornerRadius2) && [cornerRadius1 isEqualToNumber:cornerRadius2]);
 }
 
-- (BOOL)shouldProcessImage:(nonnull UIImage *)image forRequest:(nonnull DFImageRequest *)request partial:(BOOL)partial {
-#if __has_include("DFImageManagerKit+GIF.h")
-    if ([image isKindOfClass:[DFAnimatedImage class]]) {
-        return NO;
-    }
-#endif
-    return YES;
-}
-
 - (nullable UIImage *)processedImage:(nonnull UIImage *)image forRequest:(nonnull DFImageRequest *)request partial:(BOOL)partial {
-    if (![self shouldProcessImage:image forRequest:request partial:partial]) {
-        return image;
-    }
     if (request.contentMode == DFImageContentModeAspectFill && request.options.allowsClipping) {
         image = [DFImageProcessor _croppedImage:image aspectFillPixelSize:request.targetSize];
     }
