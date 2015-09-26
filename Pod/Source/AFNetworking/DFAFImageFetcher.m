@@ -170,14 +170,4 @@ DF_INIT_UNAVAILABLE_IMPL
     return [URLRequest copy];
 }
 
-+ (float)_taskPriorityForQueuePriority:(NSOperationQueuePriority)queuePriority {
-    switch (queuePriority) {
-        case NSOperationQueuePriorityVeryHigh: return 0.9f;
-        case NSOperationQueuePriorityHigh: return 0.7f;
-        case NSOperationQueuePriorityNormal: return 0.5f;
-        case NSOperationQueuePriorityLow: return 0.3f;
-        case NSOperationQueuePriorityVeryLow: return 0.1f;
-    }
-}
-
 @end
