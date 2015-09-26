@@ -47,7 +47,7 @@ DFImageManager is a [pipeline](#h_design) that loads images using multiple depen
 ## <a name="h_getting_started"></a>Getting Started
 - Take a look at comprehensive [demo](https://github.com/kean/DFImageManager/tree/master/Demo), it's easy to install with `pod try DFImageManager` command
 - Check out complete [documentation](http://cocoadocs.org/docsets/DFImageManager) and [Wiki](https://github.com/kean/DFImageManager/wiki)
-- [Install using CocoaPods](#install_using_cocopods), import `<DFImageManager/DFImageManagerKit.h>` and enjoy!
+- [Install using CocoaPods](#install_using_cocopods), `@import DFImageManager` and enjoy!
 
 ## <a name="h_usage"></a>Usage
 
