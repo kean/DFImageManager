@@ -2,7 +2,7 @@
 
 Advanced framework for loading, caching, processing, displaying and preheating images. It uses latest advancements in iOS SDK and doesn't reinvent existing technologies.
 
-DFImageManager is a [pipeline](#h_design) that loads images using multiple dependencies which can be injected in runtime. It features [multiple subspecs](#install_using_cocopods) that integrate things like [FLAnimatedImage](https://github.com/Flipboard/FLAnimatedImage), [libwebp](https://developers.google.com/speed/webp/docs/api), and more.
+DFImageManager is a [pipeline](#h_design) that loads images using multiple dependencies which can be injected in runtime.
 
 > Programming in Swift? Try [Nuke](https://github.com/kean/Nuke).
 
@@ -19,11 +19,10 @@ DFImageManager is a [pipeline](#h_design) that loads images using multiple depen
 - Zero config
 - Works great with both Objective-C and Swift
 - Performant, asynchronous, thread safe
-- Comprehensive unit test coverage
 
 ##### Loading
 - Uses [NSURLSession](https://developer.apple.com/library/ios/documentation/Foundation/Reference/NSURLSession_class/) with [HTTP/2](https://en.wikipedia.org/wiki/HTTP/2) support
-- Has optional [AFNetworking integration](#install_using_cocopods), combine the power of both frameworks!
+- Optional [AFNetworking](#install_using_cocopods) integration, combine the power of both frameworks!
 - Uses a single fetch operation for multiple equivalent requests
 - [Intelligent preheating](https://github.com/kean/DFImageManager/wiki/Image-Preheating-Guide) of images close to the viewport
 
@@ -33,19 +32,18 @@ DFImageManager is a [pipeline](#h_design) that loads images using multiple depen
 - Two cache layers, including [top level memory cache](https://github.com/kean/DFImageManager/wiki/Image-Caching-Guide) for decompressed images
 
 ##### Decoding and Processing
-- Animated GIF support using best-in-class [FLAnimatedImage](https://github.com/Flipboard/FLAnimatedImage) library
-- [WebP](https://developers.google.com/speed/webp/) support
-- Progressive image decoding (including progressive JPEG)
+- Optional [FLAnimatedImage](https://github.com/Flipboard/FLAnimatedImage) integration
+- Optional [WebP](https://developers.google.com/speed/webp/) integration
+- Progressive image decoding (including progressive JPEG)s
 - Background image decompression and scaling in a single step
 - Resize and crop loaded images to [fit displayed size](https://developer.apple.com/library/ios/qa/qa1708/_index.html), add rounded corners or circle
 
 ##### Advanced
 - Customize different parts of the framework using dependency injection
-- Create custom image managers
-- [Compose image managers](https://github.com/kean/DFImageManager/wiki/Extending-Image-Manager-Guide#using-dfcompositeimagemanager) into a tree of responsibility
+- Create and [compose image managers](https://github.com/kean/DFImageManager/wiki/Extending-Image-Manager-Guide#using-dfcompositeimagemanager) into a tree of responsibility
 
 ## <a name="h_getting_started"></a>Getting Started
-- Take a look at comprehensive [demo](https://github.com/kean/DFImageManager/tree/master/Demo), it's easy to install with `pod try DFImageManager` command
+- Take a look at comprehensive [demo](https://github.com/kean/DFImageManager/tree/master/Demo) project, it's easy to install with `pod try DFImageManager` command
 - Check out complete [documentation](http://cocoadocs.org/docsets/DFImageManager) and [Wiki](https://github.com/kean/DFImageManager/wiki)
 - [Install using CocoaPods](#install_using_cocopods), `@import DFImageManager` and enjoy!
 
@@ -54,7 +52,7 @@ DFImageManager is a [pipeline](#h_design) that loads images using multiple depen
 #### Zero Config
 
 ```objective-c
-[[DFImageManager imageTaskForResource:[NSURL URLWithString:@"http://..."] completion:^(UIImage *image, NSError *error, DFImageResponse *response, DFImageTask *task){
+[[DFImageManager imageTaskForResource:<#imageURL#> completion:^(UIImage *image, NSError *error, DFImageResponse *response, DFImageTask *task){
     // Use loaded image
 }] resume];
 ```
@@ -62,13 +60,11 @@ DFImageManager is a [pipeline](#h_design) that loads images using multiple depen
 #### Adding Request Options
 
 ```objective-c
-NSURL *imageURL = [NSURL URLWithString:@"http://..."];
-
 DFMutableImageRequestOptions *options = [DFMutableImageRequestOptions new]; // builder
 options.priority = DFImageRequestPriorityHigh;
 options.allowsClipping = YES;
 
-DFImageRequest *request = [DFImageRequest requestWithResource:imageURL targetSize:CGSizeMake(100.f, 100.f) contentMode:DFImageContentModeAspectFill options:options.options];
+DFImageRequest *request = [DFImageRequest requestWithResource:<#imageURL#> targetSize:CGSizeMake(100, 100) contentMode:DFImageContentModeAspectFill options:options.options];
 
 [[DFImageManager imageTaskForRequest:request completion:^(UIImage *image, NSError *error, DFImageResponse *response, DFImageTask *imageTask) {
     // Image is resized and clipped to fill 100x100px square
@@ -81,9 +77,7 @@ DFImageRequest *request = [DFImageRequest requestWithResource:imageURL targetSiz
 #### Using Image Task
 
 ```objective-c
-DFImageTask *task = [DFImageManager imageTaskForResource:[NSURL URLWithString:@"http://..."] completion:nil];
-[task resume];
-
+DFImageTask *task = [DFImageManager imageTaskForResource:<#imageURL#> completion:nil];
 NSProgress *progress = task.progress; // Track progress
 task.priority = DFImageRequestPriorityHigh; // Change priority of executing task
 [task cancel]; // Cancel image task
@@ -93,17 +87,17 @@ task.priority = DFImageRequestPriorityHigh; // Change priority of executing task
 Use methods from `UIImageView` category for simple cases:
 ```objective-c
 UIImageView *imageView = ...;
-[imageView df_setImageWithResource:[NSURL URLWithString:@"http://..."]];
+[imageView df_setImageWithResource:<#imageURL#>];
 ```
 
 Use `DFImageView` for more advanced features:
 ```objective-c
 DFImageView *imageView = ...;
-imageView.allowsAnimations = YES; // Animates images when the response isn't fast enough
+imageView.allowsAnimations = YES; // Animates images when the response wasn't fast enough
 imageView.managesRequestPriorities = YES; // Automatically changes current request priority when image view gets added/removed from the window
 
 [imageView prepareForReuse];
-[imageView setImageWithResource:[NSURL URLWithString:@"http://..."]];
+[imageView setImageWithResource:<#imageURL#>];
 ```
 
 #### UICollectionView
@@ -128,29 +122,18 @@ Cancel image task as soon as the cell goes offscreen (optional):
 
 ```objective-c
 - (void)collectionView:(UICollectionView *)collectionView didEndDisplayingCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath {
-    DFImageView *imageView = (id)[cell viewWithTag:15];
-    [imageView prepareForReuse];
+    [((DFImageView *)[cell viewWithTag:15]) prepareForReuse];
 }
 ```
 
 #### Preheating Images
 
 ```objective-c
-NSArray *requestsForAddedItems = ...; // Create image requests
+NSArray<DFImageRequest *> *requestsForAddedItems = <#requests#>;
 [DFImageManager startPreheatingImagesForRequests:requestsForAddedItems];
 
-NSArray *requestsForRemovedItems = ...; // Create image requests
+NSArray<DFImageRequest *> *requestsForRemovedItems = <#requests#>;
 [DFImageManager stopPreheatingImagesForRequests:requestsForRemovedItems];
-```
-
-#### Requesting Image for PHAsset
-
-```objective-c
-PHAsset *asset = ...;
-DFImageRequest *request = [DFImageRequest requestWithResource:asset targetSize:CGSizeMake(100.f, 100.f) contentMode:DFImageContentModeAspectFill options:nil];
-[[DFImageManager imageTaskForRequest:request completion:^(UIImage *image, NSDictionary *info) {
-    // Image resized to 100x100px square
-}] resume];
 ```
 
 #### Progressive Image Decoding
@@ -162,23 +145,23 @@ DFImageRequest *request = [DFImageRequest requestWithResource:asset targetSize:C
 // Create image request that allows progressive image
 DFMutableImageRequestOptions *options = [DFMutableImageRequestOptions new];
 options.allowsProgressiveImage = YES;
-DFImageRequest *request = // Create request with given options
+DFImageRequest *request = <#request#>;
 
-DFImageTask *task = .../ Create image task
+DFImageTask *task = <#task#>;
 task.progressiveImageHandler = ^(UIImage *__nonnull image){
     imageView.image = image;
 };
 [task resume];
 ```
 
-#### Creating Image Managers
-You can either create `DFImageManager` instance with a custom configuration or even provide your own implementation of `DFImageManaging` protocol.
+#### Customizing Image Manager
+
 ```objective-c
 // Create dependencies. You can either use existing classes or provide your own.
-id<DFImageFetching> fetcher = ...; // Create image fetcher
-id<DFImageDecoding> decoder = ...; // Create image decoder
-id<DFImageProcessing> processor = ...; // Create image processor
-id<DFImageCaching> cache = ...; // Create image cache
+id<DFImageFetching> fetcher = <#fetcher#>;
+id<DFImageDecoding> decoder = <#decoder#>;
+id<DFImageProcessing> processor = <#processor#>;
+id<DFImageCaching> cache = <#cache#>;
 
 DFImageManagerConfiguration *configuration = [[DFImageManagerConfiguration alloc] initWithFetcher:fetcher];
 configuration.decoder = decoder;
@@ -189,17 +172,13 @@ configuration.cache = cache;
 ```
 
 #### Composing Image Managers
-The `DFCompositeImageManager` allows clients to construct a tree of responsibility from multiple image managers, requests are dynamically dispatched between them. Each manager should conform to `DFImageManaging` protocol. The `DFCompositeImageManager` also conforms to `DFImageManaging` protocol, which lets clients treat individual objects and compositions uniformly. For more info see [Composing Image Managers](https://github.com/kean/DFImageManager/wiki/Extending-Image-Manager-Guide#using-dfcompositeimagemanager).
+The `DFCompositeImageManager` constructs a tree of responsibility from multiple image managers and dynamically dispatch requests between them. Each manager should conform to `DFImageManaging` protocol. The `DFCompositeImageManager` also conforms to `DFImageManaging` protocol which lets users to treat individual managers and compositions uniformly. For more info see [Composing Image Managers](https://github.com/kean/DFImageManager/wiki/Extending-Image-Manager-Guide#using-dfcompositeimagemanager).
 
 ```objective-c
-id<DFImageManaging> manager = <#manager#>
+id<DFImageManaging> manager1 = <#manager#>
+id<DFImageManaging> manager2 = <#manager#>
 
-// Create composite manager with your custom manager and all built-in managers.
-NSArray *managers = @[ manager, [DFImageManager sharedManager] ];
-id<DFImageManaging> compositeImageManager = [[DFCompositeImageManager alloc] initWithImageManagers:managers];
-
-// Use dependency injector to set shared manager
-[DFImageManager setSharedManager:compositeImageManager];
+id<DFImageManaging> composite = [[DFCompositeImageManager alloc] initWithImageManagers:@[manager1, manager2]];
 ```
 
 ## <a name="h_design"></a>Design
