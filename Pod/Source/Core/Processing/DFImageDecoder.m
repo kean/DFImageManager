@@ -12,7 +12,7 @@
 @implementation DFImageDecoder
 
 - (nullable UIImage *)imageWithData:(nonnull NSData *)data partial:(BOOL)partial {
-#if __IPHONE_OS_VERSION_MIN_REQUIRED && !__WATCH_OS_VERSION_MIN_REQUIRED
+#if TARGET_OS_IOS && !TARGET_OS_WATCH
     return [UIImage imageWithData:data scale:[UIScreen mainScreen].scale];
 #else
     return [UIImage imageWithData:data scale:[WKInterfaceDevice currentDevice].screenScale];
