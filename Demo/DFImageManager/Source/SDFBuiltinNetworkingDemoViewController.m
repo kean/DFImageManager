@@ -11,13 +11,35 @@
 #import <DFImageManager/DFImageManagerKit.h>
 #import <DFImageManager/DFImageManagerKit+UI.h>
 
-
 static NSString * const reuseIdentifier = @"Cell";
 
 @implementation SDFBuiltinNetworkingDemoViewController {
     id<DFImageManaging> _previousSharedManager;
     
     NSArray *_photos;
+}
+
+- (void)dealloc {
+    [[DFImageManager sharedManager] invalidateAndCancel];
+    [DFImageManager setSharedManager:_previousSharedManager];
+}
+
+- (instancetype)initWithCollectionViewLayout:(UICollectionViewLayout *)layout {
+    if (self = [super initWithCollectionViewLayout:layout]) {
+        [self _configureBuiltinManager];
+    }
+    return self;
+}
+
+- (void)_configureBuiltinManager {
+    _previousSharedManager = [DFImageManager sharedManager];
+    
+    NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
+    configuration.URLCache = [[NSURLCache alloc] initWithMemoryCapacity:0 diskCapacity:1024 * 1024 * 256 diskPath:@"com.github.kean.default_image_cache"];
+    
+    DFURLImageFetcher *fetcher = [[DFURLImageFetcher alloc] initWithSessionConfiguration:configuration];
+    id<DFImageManaging> manager = [[DFImageManager alloc] initWithConfiguration:[DFImageManagerConfiguration configurationWithFetcher:fetcher processor:[DFImageProcessor new] cache:[DFImageCache new]]];
+    [DFImageManager setSharedManager:manager];
 }
 
 - (void)viewDidLoad {

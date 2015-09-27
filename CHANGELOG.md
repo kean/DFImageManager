@@ -2,7 +2,7 @@
 
 # DFImageManager 1.0.0
 
-DFImageManager 1.0.0 is the first major release. It introduces multiple changes that make DFImageManager more robust and future proof. The main difference is the absence of conditional compilation that relied on `__has_include` macros. In practice it means that optional subspecs are no longer 'zero config'. Please check carefully how you configure DFImageManager.
+DFImageManager 1.0.0 is the first major release. It introduces multiple changes that make DFImageManager more robust and future proof. The main difference is the absence of conditional compilation that relied on `__has_include` macros, everything is implemented using classes. Conditional compilation now only takes place when default image manager is created and it doesn't rely on `__has_include`. In practice there are no changes whatsoever to the default image manager configuration, everything should work the same as it did in version 0.8.0.
 
 ## Changes
 
@@ -10,14 +10,14 @@ DFImageManager 1.0.0 is the first major release. It introduces multiple changes 
 
 - Now requires iOS 8.0+
 - Remove conditional compilation that relied on __has_include macros
-- DFImageManager is no longer 'zero config' in terms of optional subspecs
-- DFImageManager/NSURLSession subspec is removed and sources made part of DFImageManager/Core subspec
+- DFImageManager/NSURLSession subspec is removed, sources made part of DFImageManager/Core subspec
 - Add DFCompositeImageDecoder
 - Add DFWebPImageDecoder
 - Add DFAnimatedImageView, DFAnimatedImageDecoder, DFAnimatedImageProcessor
 - DFImageManager/PhotosKit subspec is now optional
 - DFURLImageFetcher no longer sets "image/webp,image/*;q=0.8" as "Accept" HTTP header automatically
 - Remove +[DFImageManager sharedDecoder] dependency injector, there is now a single entry point to configure image manager and that is DFImageManagerConfiguration
+- DFImageManagerConfiguration no longer forces you to initialize it with image fetcher instance
 - Remove -[DFURLImageFetcher initWithSession:sessionDelegate:] method and DFURLImageFetcherSessionDelegate protocol, this feature was too hardcode for basic built-in networking.
 
 ### Minor

@@ -28,6 +28,7 @@ Pod::Spec.new do |s|
 
     s.subspec 'AFNetworking' do |ss|
         ss.ios.deployment_target = '8.0'
+        ss.prefix_header_contents = '#define DF_SUBSPEC_AFNETWORKING_ENABLED 1'
         ss.dependency 'DFImageManager/Core'
         ss.dependency 'AFNetworking/NSURLSession', '~> 2.0'
         ss.source_files = 'Pod/Source/AFNetworking/**/*.{h,m}'
@@ -35,12 +36,14 @@ Pod::Spec.new do |s|
 
     s.subspec 'PhotosKit' do |ss|
         ss.ios.deployment_target = '8.0'
+        ss.prefix_header_contents = '#define DF_SUBSPEC_PHOTOSKIT_ENABLED 1'
         ss.dependency 'DFImageManager/Core'
         ss.source_files = 'Pod/Source/PhotosKit/**/*.{h,m}'
     end
 
     s.subspec 'GIF' do |ss|
         ss.ios.deployment_target = '8.0'
+        ss.prefix_header_contents = '#define DF_SUBSPEC_GIF_ENABLED 1'
         ss.dependency 'DFImageManager/Core'
         ss.dependency 'DFImageManager/UI'
         ss.dependency 'FLAnimatedImage', '~> 1.0'
@@ -49,6 +52,7 @@ Pod::Spec.new do |s|
 
     s.subspec 'WebP' do |ss|
         ss.ios.deployment_target = '8.0'
+        ss.prefix_header_contents = '#define DF_SUBSPEC_WEBP_ENABLED 1'
         ss.dependency 'DFImageManager/Core'
         ss.dependency 'libwebp'
         ss.source_files = 'Pod/Source/WebP/**/*.{h,m}'

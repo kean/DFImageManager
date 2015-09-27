@@ -8,12 +8,8 @@
 
 @implementation DFImageManagerConfiguration
 
-DF_INIT_UNAVAILABLE_IMPL
-
-- (instancetype)initWithFetcher:(id<DFImageFetching>)fetcher {
-    NSParameterAssert(fetcher);
+- (instancetype)init {
     if (self = [super init]) {
-        _fetcher = fetcher;
         _decoder = [DFImageDecoder new];
         _processingQueue = [NSOperationQueue new];
         _processingQueue.maxConcurrentOperationCount = 2;
@@ -24,16 +20,18 @@ DF_INIT_UNAVAILABLE_IMPL
 }
 
 + (instancetype)configurationWithFetcher:(id<DFImageFetching>)fetcher processor:(id<DFImageProcessing>)processor cache:(id<DFImageCaching>)cache {
-    DFImageManagerConfiguration *conf = [[[self class] alloc] initWithFetcher:fetcher];
+    DFImageManagerConfiguration *conf = [[self class] new];
+    conf.fetcher = fetcher;
     conf.processor = processor;
     conf.cache = cache;
     return conf;
 }
 
 - (id)copyWithZone:(NSZone *)zone {
-    DFImageManagerConfiguration *copy = [[DFImageManagerConfiguration alloc] initWithFetcher:self.fetcher];
-    copy.cache = self.cache;
+    DFImageManagerConfiguration *copy = [DFImageManagerConfiguration new];
+    copy.fetcher = self.fetcher;
     copy.decoder = self.decoder;
+    copy.cache = self.cache;
     copy.processor = self.processor;
     copy.processingQueue = self.processingQueue;
     copy.maximumConcurrentPreheatingRequests = self.maximumConcurrentPreheatingRequests;

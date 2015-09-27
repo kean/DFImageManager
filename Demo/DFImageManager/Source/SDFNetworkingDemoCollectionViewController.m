@@ -22,17 +22,12 @@
     NSArray *_photos;
     
     DFCollectionViewPreheatingController *_preheatingController;
-    id<DFImageManaging> _previousImageManager;
     
     // Debug
     UILabel *_detailsLabel;
 }
 
 static NSString * const reuseIdentifier = @"Cell";
-
-- (void)dealloc {
-    [DFImageManager setSharedManager:_previousImageManager];
-}
 
 - (instancetype)initWithCollectionViewLayout:(UICollectionViewLayout *)layout {
     if (self = [super initWithCollectionViewLayout:layout]) {
@@ -44,22 +39,7 @@ static NSString * const reuseIdentifier = @"Cell";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    _previousImageManager = [DFImageManager sharedManager];
-    
-    [DFImageManager setSharedManager:({
-        AFHTTPSessionManager *httpSessionManager = [[AFHTTPSessionManager alloc] initWithSessionConfiguration:({
-            NSURLSessionConfiguration *conf = [NSURLSessionConfiguration defaultSessionConfiguration];
-            conf.URLCache = [[NSURLCache alloc] initWithMemoryCapacity:0 diskCapacity:1024 * 1024 * 200 diskPath:@"com.github.kean.default_image_cache"];
-            conf.timeoutIntervalForRequest = 60.f;
-            conf.timeoutIntervalForResource = 360.f;
-            conf;
-        })];
-        httpSessionManager.responseSerializer = [AFHTTPResponseSerializer new];
-        DFAFImageFetcher *fetcher = [[DFAFImageFetcher alloc] initWithSessionManager:httpSessionManager];
-        [[DFImageManager alloc] initWithConfiguration:[DFImageManagerConfiguration configurationWithFetcher:fetcher processor:[DFImageProcessor new] cache:[DFImageCache new]]];
-    })];
-    
+        
     [AFNetworkActivityIndicatorManager sharedManager].enabled = YES;
     
     [self.collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:reuseIdentifier];

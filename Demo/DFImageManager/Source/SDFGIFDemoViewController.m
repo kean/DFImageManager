@@ -22,11 +22,6 @@ static NSString *const kReuseIdentifierImageCell = @"kReuseIdentifierImageCell";
 
 @implementation SDFGIFDemoViewController {
     NSArray *_imageURLs;
-    id<DFImageManaging> _previousImageManager;
-}
-
-- (void)dealloc {
-    [DFImageManager setSharedManager:_previousImageManager];
 }
 
 - (instancetype)init {
@@ -35,22 +30,6 @@ static NSString *const kReuseIdentifierImageCell = @"kReuseIdentifierImageCell";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    _previousImageManager = [DFImageManager sharedManager];
-    [DFImageManager setSharedManager:({
-        DFCompositeImageDecoder *decoder = [[DFCompositeImageDecoder alloc] initWithDecoders:@[ [DFAnimatedImageDecoder new], [DFImageDecoder new]]];
-        DFImageManagerConfiguration *conf = [[DFImageManagerConfiguration alloc] initWithFetcher:[[DFURLImageFetcher alloc] initWithSessionConfiguration:({
-            NSURLSessionConfiguration *conf = [NSURLSessionConfiguration defaultSessionConfiguration];
-            conf.URLCache = [[NSURLCache alloc] initWithMemoryCapacity:0 diskCapacity:1024 * 1024 * 200 diskPath:@"com.github.kean.default_image_cache"];
-            conf.timeoutIntervalForRequest = 60.f;
-            conf.timeoutIntervalForResource = 360.f;
-            conf;
-        })]];
-        conf.decoder = decoder;
-        conf.processor = [[DFAnimatedImageProcessor alloc] initWithProcessor:[DFImageProcessor new]];
-        conf.cache = [DFImageCache new];
-        [[DFImageManager alloc] initWithConfiguration:conf];
-    })];
     
     [self.collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:kReuseIdentifierTextViewCell];
     [self.collectionView registerClass:[SDFImageCollectionViewCell class] forCellWithReuseIdentifier:kReuseIdentifierImageCell];

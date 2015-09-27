@@ -15,11 +15,11 @@
 
 /*! The image fetcher the receiver was initialized with.
  */
-@property (nonnull, nonatomic) id<DFImageFetching> fetcher;
+@property (nullable, nonatomic) id<DFImageFetching> fetcher;
 
 /*! The image decoder.
  */
-@property (nonnull, nonatomic) id<DFImageDecoding> decoder;
+@property (nullable, nonatomic) id<DFImageDecoding> decoder;
 
 /*! The image processor.
  */
@@ -42,13 +42,9 @@
  */
 @property (nonatomic) float progressiveImageDecodingThreshold;
 
-/*! Returns a DFImageManagerConfiguration initialized with a given image fetcher.
+/*! Initializes DFImageManagerConfiguration instance with default parameters.
  */
-- (nonnull instancetype)initWithFetcher:(nonnull id<DFImageFetching>)fetcher NS_DESIGNATED_INITIALIZER;
-
-/*! Unavailable initializer, please use designated initializer.
- */
-- (nullable instancetype)init NS_UNAVAILABLE;
+- (nullable instancetype)init;
 
 /*! Returns configuration created with a given fetcher, processor and cache.
  */
