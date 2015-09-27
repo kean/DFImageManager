@@ -227,7 +227,7 @@ pod 'DFImageManager/PhotosKit'
 
  DFImageManager has a limited Carthage support that doesn't feature [FLAnimatedImage](https://github.com/Flipboard/FLAnimatedImage) and [AFNetworking](https://github.com/AFNetworking/AFNetworking) integration. To install DFImageManager add a dependency to your Cartfile:
 ```
-github 'DFImageManager'
+github "kean/DFImageManager"
 ```
 
 ## <a name="h_requirements"></a>Requirements
