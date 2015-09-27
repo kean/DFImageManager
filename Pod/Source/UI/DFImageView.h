@@ -8,7 +8,7 @@
 @class DFImageRequest;
 @class DFImageRequestOptions;
 
-/*! An image view extends UIImageView class with image fetching functionality. It also adds other features like managing request priorities and more.
+/*! The DFImageView extends UIImageView class with image fetching functionality. It also adds other features like managing request priorities and more.
  */
 @interface DFImageView : UIImageView
 
@@ -44,7 +44,7 @@
  */
 - (void)setImageWithRequest:(nullable DFImageRequest *)request;
 
-/*! Method gets called when the completion block is called for the current image fetch task.
+/*! Subclassing hook that gets called when the completion block is called for the current image fetch task.
  */
 - (void)didCompleteImageTask:(nonnull DFImageTask *)task withImage:(nullable UIImage *)image;
 

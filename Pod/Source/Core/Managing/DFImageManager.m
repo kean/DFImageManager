@@ -118,8 +118,8 @@ static inline void DFDispatchAsync(dispatch_block_t block) {
 DF_INIT_UNAVAILABLE_IMPL
 
 - (nonnull instancetype)initWithConfiguration:(nonnull DFImageManagerConfiguration *)configuration {
+    NSParameterAssert(configuration);
     if (self = [super init]) {
-        NSParameterAssert(configuration);
         _configuration = [configuration copy];
         _imageLoader = [[DFImageManagerLoader alloc] initWithConfiguration:configuration];
         _imageLoader.delegate = self;

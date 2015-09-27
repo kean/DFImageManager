@@ -41,7 +41,7 @@ static inline NSString *_PHAssetLocalIdentifier(id resource) {
     return self;
 }
 
-#pragma mark - <DFImageFetching>
+#pragma mark <DFImageFetching>
 
 - (BOOL)canHandleRequest:(DFImageRequest *)request {
     id asset = request.resource;

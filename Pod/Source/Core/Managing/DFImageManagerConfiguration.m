@@ -10,7 +10,7 @@
 
 DF_INIT_UNAVAILABLE_IMPL
 
-- (nonnull instancetype)initWithFetcher:(nonnull id<DFImageFetching>)fetcher {
+- (instancetype)initWithFetcher:(id<DFImageFetching>)fetcher {
     NSParameterAssert(fetcher);
     if (self = [super init]) {
         _fetcher = fetcher;
@@ -23,7 +23,7 @@ DF_INIT_UNAVAILABLE_IMPL
     return self;
 }
 
-+ (nonnull instancetype)configurationWithFetcher:(nonnull id<DFImageFetching>)fetcher processor:(nullable id<DFImageProcessing>)processor cache:(nullable id<DFImageCaching>)cache {
++ (instancetype)configurationWithFetcher:(id<DFImageFetching>)fetcher processor:(id<DFImageProcessing>)processor cache:(id<DFImageCaching>)cache {
     DFImageManagerConfiguration *conf = [[[self class] alloc] initWithFetcher:fetcher];
     conf.processor = processor;
     conf.cache = cache;

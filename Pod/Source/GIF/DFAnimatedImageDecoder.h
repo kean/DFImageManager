@@ -6,4 +6,5 @@
 #import "DFImageDecoding.h"
 
 @interface DFAnimatedImageDecoder : NSObject <DFImageDecoding>
+
 @end

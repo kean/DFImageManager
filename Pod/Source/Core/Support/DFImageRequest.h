@@ -7,7 +7,7 @@
 
 @class DFImageRequestOptions;
 
-/*! The DFImageRequest class represents an image request for a specified resource. The request also contains options on how to retrieve and (optionally) process the image.
+/*! The DFImageRequest class represents an image request for a specified resource.
  */
 @interface DFImageRequest : NSObject
 

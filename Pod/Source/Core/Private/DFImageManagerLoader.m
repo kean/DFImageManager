@@ -56,7 +56,7 @@
 
 @end
 
-/*! Make it possible to use DFImageRequest as a key in dictionaries (and dictionary-like structures). Requests are compared using -[DFImageFetching isRequestFetchEquivalent:toRequest:] method and -[DFImageProcessing isProcessingForRequestEquivalent:toRequest:] method (for cache and preheating)
+/*! Make it possible to use DFImageRequest as a key in dictionaries, tables, etc. Requests are compared using -[DFImageFetching isRequestFetchEquivalent:toRequest:] and -[DFImageProcessing isProcessingForRequestEquivalent:toRequest:] methods.
  */
 @interface _DFImageRequestKey : NSObject <NSCopying>
 
@@ -346,7 +346,6 @@
         return [_conf.processor shouldProcessImage:image forRequest:request partial:partial];
     }
     return YES;
-//    return [_conf.processor shouldProcessImage:image forRequest:request partial:partial];
 }
 
 - (nullable DFCachedImageResponse *)cachedResponseForRequest:(nonnull DFImageRequest *)request {

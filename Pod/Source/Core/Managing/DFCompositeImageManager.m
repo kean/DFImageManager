@@ -19,18 +19,15 @@
     NSMutableArray<id<DFImageManaging>> *_managers;
 }
 
-- (nonnull instancetype)init {
-    if (self = [super init]) {
-        _managers = [NSMutableArray new];
-    }
-    return self;
-}
-
 - (nonnull instancetype)initWithImageManagers:(nonnull NSArray<id<DFImageManaging>> *)imageManagers {
     if (self = [self init]) {
         [_managers addObjectsFromArray:imageManagers];
     }
     return self;
+}
+
+- (nonnull instancetype)init {
+    return [self initWithImageManagers:@[]];
 }
 
 - (void)addImageManager:(nonnull id<DFImageManaging>)imageManager {

@@ -3,7 +3,6 @@
 // Copyright (c) 2015 Alexander Grebenyuk (github.com/kean).
 
 #import "DFImageDecoder.h"
-#import "DFImageManagerDefines.h"
 
 #if TARGET_OS_WATCH
 #import <WatchKit/WatchKit.h>

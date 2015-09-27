@@ -6,7 +6,7 @@
 
 @class DFMutableImageRequestOptions;
 
-/*! You use a DFImageRequestOptions object to specify options when requesting image representations of resources using classes conforming DFImageManaging protocol.
+/*! Use a DFImageRequestOptions object to specify options when requesting image representations of resources using classes conforming DFImageManaging protocol.
  */
 @interface DFImageRequestOptions : NSObject
 

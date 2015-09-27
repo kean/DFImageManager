@@ -28,7 +28,7 @@ DFImageManager is a [pipeline](#h_design) that loads images using multiple depen
 ##### Loading
 - Uses [NSURLSession](https://developer.apple.com/library/ios/documentation/Foundation/Reference/NSURLSession_class/) with [HTTP/2](https://en.wikipedia.org/wiki/HTTP/2) support
 - Optional [AFNetworking](#install_using_cocopods) integration, combine the power of both frameworks!
-- Uses a single fetch operation for multiple equivalent requests
+- Uses a single fetch operation for equivalent requests
 - [Intelligent preheating](https://github.com/kean/DFImageManager/wiki/Image-Preheating-Guide) of images close to the viewport
 
 ##### Caching
@@ -177,12 +177,11 @@ configuration.cache = cache;
 ```
 
 #### Composing Image Managers
-The `DFCompositeImageManager` constructs a tree of responsibility from multiple image managers and dynamically dispatch requests between them. Each manager should conform to `DFImageManaging` protocol. The `DFCompositeImageManager` also conforms to `DFImageManaging` protocol which lets users to treat individual managers and compositions uniformly. For more info see [Composing Image Managers](https://github.com/kean/DFImageManager/wiki/Extending-Image-Manager-Guide#using-dfcompositeimagemanager).
+The `DFCompositeImageManager` constructs a [tree of responsibility](https://github.com/kean/DFImageManager/wiki/Extending-Image-Manager-Guide#using-dfcompositeimagemanager) from image managers and dynamically dispatch requests between them. Each manager should conform to `DFImageManaging` protocol. The `DFCompositeImageManager` also conforms to `DFImageManaging` protocol so that individual managers and compositions can be treated uniformly.
 
 ```objective-c
 id<DFImageManaging> manager1 = <#manager#>
 id<DFImageManaging> manager2 = <#manager#>
-
 id<DFImageManaging> composite = [[DFCompositeImageManager alloc] initWithImageManagers:@[manager1, manager2]];
 ```
 

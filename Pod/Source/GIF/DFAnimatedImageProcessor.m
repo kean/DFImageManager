@@ -2,12 +2,15 @@
 //
 // Copyright (c) 2015 Alexander Grebenyuk (github.com/kean).
 
-#import "DFAnimatedImageProcessor.h"
 #import "DFAnimatedImage.h"
+#import "DFAnimatedImageProcessor.h"
+#import "DFImageManagerDefines.h"
 
 @implementation DFAnimatedImageProcessor {
     id<DFImageProcessing> _processor;
 }
+
+DF_INIT_UNAVAILABLE_IMPL
 
 - (instancetype)initWithProcessor:(id<DFImageProcessing>)processor {
     if (self = [super init]) {

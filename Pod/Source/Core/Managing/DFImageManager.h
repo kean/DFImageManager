@@ -7,23 +7,15 @@
 
 @class DFImageManagerConfiguration;
 
-/*! The role of DFImageManager is to manage the execution of image tasks by delegating the actual job to the objects implementing DFImageFetching, DFImageCaching, DFImageDecoding, and DFImageProcessing protocols.
+/*! The DFImageManager manages execution of image tasks by delegating the actual job to the objects conforming to DFImageFetching, DFImageCaching, DFImageDecoding, and DFImageProcessing protocols.
  
  @note Reusing Operations 
  
- DFImageManager might use a single fetch operation for multiple image tasks with equivalent requests. Image manager cancels fetch operations only when there are no remaining image tasks registered with a given operation.
- 
- @note Memory Caching
- 
- DFImageManager uses DFImageCaching protocol for memory caching. It should be able to lookup cached images based on the image requests, but it doesn't know anything about the resources, specific request options, and the way the requests are interpreted and handled. There are three simple rules how image manager stores and retrieves cached images. First, image manager can't use cached images stored by other managers. Second, all resources must implement -hash method. Third, image manager uses special cache keys that delegate the test for equivalence of the image requests to the image fetcher (DFImageFetching) and the image processor (DFImageProcessing).
- 
- @note Preheating
- 
- DFImageManager does its best to guarantee that preheating tasks never interfere with regular (non-preheating) tasks. There is a limit of concurrent preheating tasks enforced by DFImageManager. There is also certain (very small) delay when manager starts executing preheating requests.
+ DFImageManager might uses a single fetch operation for image tasks with equivalent requests. Image manager cancels fetch operations only when there are no remaining image tasks registered with a given operation.
  */
 @interface DFImageManager : NSObject <DFImageManaging>
 
-/*! A copy of the configuration object for this manager (read only). Changing mutable values within the configuration object has no effect on the current manager.
+/*! Returns a copy of the configuration object for this manager.
  */
 @property (nonnull, nonatomic, copy, readonly) DFImageManagerConfiguration *configuration;
 
@@ -38,7 +30,7 @@
 @end
 
 
-/*! Dependency injectors for the image manager shared by the application.
+/*! Dependency injectors.
  */
 @interface DFImageManager (SharedManager)
 
@@ -46,7 +38,7 @@
  */
 + (nonnull id<DFImageManaging>)sharedManager;
 
-/*! Sets the image manager instance shared by all clients of the current application.
+/*! Sets the shared image manager.
  */
 + (void)setSharedManager:(nonnull id<DFImageManaging>)manager;
 

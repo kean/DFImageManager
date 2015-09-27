@@ -9,7 +9,7 @@
 @class DFImageRequest;
 @class DFImageRequestOptions;
 
-/*! Adds some very basic image fetching capabilities to the UIImageView. For more features see DFImageView.
+/*! Adds some basic image fetching capabilities to the UIImageView. For more features see DFImageView.
  */
 @interface UIImageView (DFImageManager)
 

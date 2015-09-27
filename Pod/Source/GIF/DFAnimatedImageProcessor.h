@@ -9,6 +9,12 @@
  */
 @interface DFAnimatedImageProcessor : NSObject <DFImageProcessing>
 
+/*! Initialized animated image processor with an actual processor.
+ */
 - (nonnull instancetype)initWithProcessor:(nonnull id<DFImageProcessing>)processor;
+
+/*! Unavailable initializer, please use designated initializer.
+ */
+- (nullable instancetype)init NS_UNAVAILABLE;
 
 @end

@@ -8,6 +8,7 @@
 /*! Image decoder that supports multiple image formats not supported by UIImage.
  */
 @interface DFImageDecoder : NSObject <DFImageDecoding>
+
 @end
 
 
@@ -15,6 +16,8 @@
 */
 @interface DFCompositeImageDecoder : NSObject <DFImageDecoding>
 
+/*! Initializes DFCompositeImageDecoder with an array of decoders.
+ */
 - (nonnull instancetype)initWithDecoders:(nonnull NSArray <id<DFImageDecoding>> *)decoders;
 
 @end
