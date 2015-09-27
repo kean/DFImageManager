@@ -158,7 +158,6 @@ DF_INIT_UNAVAILABLE_IMPL
 
 - (NSURLRequest *)_defaultURLRequestForImageRequest:(DFImageRequest *)imageRequest {
     NSMutableURLRequest *URLRequest = [[NSMutableURLRequest alloc] initWithURL:(NSURL *)imageRequest.resource];
-    [URLRequest addValue:@"image/*" forHTTPHeaderField:@"Accept"];
     DFImageRequestOptions *options = imageRequest.options;
     if (options.userInfo[DFAFRequestCachePolicyKey]) {
         URLRequest.cachePolicy = [options.userInfo[DFAFRequestCachePolicyKey] unsignedIntegerValue];

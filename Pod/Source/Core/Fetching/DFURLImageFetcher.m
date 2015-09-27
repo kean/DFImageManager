@@ -213,7 +213,6 @@ static inline float _DFSessionTaskPriorityForRequestPriority(DFImageRequestPrior
 
 - (NSURLRequest *)_defaultURLRequestForImageRequest:(DFImageRequest *)imageRequest {
     NSMutableURLRequest *URLRequest = [[NSMutableURLRequest alloc] initWithURL:(NSURL *)imageRequest.resource];
-    [URLRequest addValue:@"image/*" forHTTPHeaderField:@"Accept"];
     DFImageRequestOptions *options = imageRequest.options;
     if (options.userInfo[DFURLRequestCachePolicyKey]) {
         URLRequest.cachePolicy = [options.userInfo[DFURLRequestCachePolicyKey] unsignedIntegerValue];

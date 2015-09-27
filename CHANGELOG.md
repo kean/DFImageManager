@@ -15,7 +15,6 @@ DFImageManager 1.0.0 is the first major release. It introduces multiple changes 
 - Add DFWebPImageDecoder
 - Add DFAnimatedImageView, DFAnimatedImageDecoder, DFAnimatedImageProcessor
 - DFImageManager/PhotosKit subspec is now optional
-- DFURLImageFetcher no longer sets "image/webp,image/*;q=0.8" as "Accept" HTTP header automatically
 - Remove +[DFImageManager sharedDecoder] dependency injector, there is now a single entry point to configure image manager and that is DFImageManagerConfiguration
 - DFImageManagerConfiguration no longer forces you to initialize it with image fetcher instance
 - Remove -[DFURLImageFetcher initWithSession:sessionDelegate:] method and DFURLImageFetcherSessionDelegate protocol, this feature was too hardcode for basic built-in networking.

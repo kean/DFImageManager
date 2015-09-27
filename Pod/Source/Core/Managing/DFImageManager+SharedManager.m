@@ -114,6 +114,11 @@ static OSSpinLock _lock = OS_SPINLOCK_INIT;
 + (NSURLSessionConfiguration *)_defaultSessionConfiguration {
     NSURLSessionConfiguration *conf = [NSURLSessionConfiguration defaultSessionConfiguration];
     conf.URLCache = [[NSURLCache alloc] initWithMemoryCapacity:0 diskCapacity:1024 * 1024 * 200 diskPath:@"com.github.kean.default_image_cache"];
+#if DF_SUBSPEC_WEBP_ENABLED
+    conf.HTTPAdditionalHeaders = @{ @"Accept" : @"image/webp,image/*;q=0.8" };
+#else
+    conf.HTTPAdditionalHeaders = @{ @"Accept" : @"image/*" };
+#endif
     conf.timeoutIntervalForRequest = 60.f;
     conf.timeoutIntervalForResource = 360.f;
     return conf;
