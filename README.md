@@ -14,10 +14,9 @@ DFImageManager is a [pipeline](#h_design) that loads images using multiple depen
 1. [Getting Started](#h_getting_started)
 2. [Usage](#h_usage)
 3. [Design](#h_design)
-4. [Installation](#install_using_cocopods)
+4. [Installation](#installation)
 5. [Requirements](#h_requirements)
 6. [Supported Image Formats](#h_supported_image_formats)
-7. [Contribution](#h_contribution)
 
 ## <a name="h_features"></a>Features
 
@@ -27,7 +26,7 @@ DFImageManager is a [pipeline](#h_design) that loads images using multiple depen
 
 ##### Loading
 - Uses [NSURLSession](https://developer.apple.com/library/ios/documentation/Foundation/Reference/NSURLSession_class/) with [HTTP/2](https://en.wikipedia.org/wiki/HTTP/2) support
-- Optional [AFNetworking](#install_using_cocopods) integration, combine the power of both frameworks!
+- Optional [AFNetworking](#installation) integration, combine the power of both frameworks!
 - Uses a single fetch operation for equivalent requests
 - [Intelligent preheating](https://github.com/kean/DFImageManager/wiki/Image-Preheating-Guide) of images close to the viewport
 
@@ -36,10 +35,10 @@ DFImageManager is a [pipeline](#h_design) that loads images using multiple depen
 - Caching is completely transparent to the client
 - Two cache layers, including [top level memory cache](https://github.com/kean/DFImageManager/wiki/Image-Caching-Guide) for decompressed images
 
-##### Decoding and Processing
+##### Processing
 - Optional [FLAnimatedImage](https://github.com/Flipboard/FLAnimatedImage) integration
 - Optional [WebP](https://developers.google.com/speed/webp/) integration
-- Progressive image decoding (including progressive JPEG)s
+- Progressive image decoding including progressive JPEG
 - Background image decompression and scaling in a single step
 - Resize and crop loaded images to [fit displayed size](https://developer.apple.com/library/ios/qa/qa1708/_index.html), add rounded corners or circle
 
@@ -48,9 +47,9 @@ DFImageManager is a [pipeline](#h_design) that loads images using multiple depen
 - Create and [compose image managers](https://github.com/kean/DFImageManager/wiki/Extending-Image-Manager-Guide#using-dfcompositeimagemanager) into a tree of responsibility
 
 ## <a name="h_getting_started"></a>Getting Started
-- Take a look at comprehensive [demo](https://github.com/kean/DFImageManager/tree/master/Demo) project, it's easy to install with `pod try DFImageManager` command
+- Take a look at comprehensive [demo](https://github.com/kean/DFImageManager/tree/master/Demo) using `pod try DFImageManager` command
 - Check out complete [documentation](http://cocoadocs.org/docsets/DFImageManager) and [Wiki](https://github.com/kean/DFImageManager/wiki)
-- [Install using CocoaPods](#install_using_cocopods), `@import DFImageManager` and enjoy!
+- [Install](#installation), `@import DFImageManager` and enjoy!
 
 ## <a name="h_usage"></a>Usage
 
@@ -83,9 +82,9 @@ DFImageRequest *request = [DFImageRequest requestWithResource:<#imageURL#> targe
 
 ```objective-c
 DFImageTask *task = [DFImageManager imageTaskForResource:<#imageURL#> completion:nil];
-NSProgress *progress = task.progress; // Track progress
+NSProgress *progress = task.progress;
 task.priority = DFImageRequestPriorityHigh; // Change priority of executing task
-[task cancel]; // Cancel image task
+[task cancel];
 ```
 
 #### Using UI Components
@@ -162,7 +161,6 @@ task.progressiveImageHandler = ^(UIImage *__nonnull image){
 #### Customizing Image Manager
 
 ```objective-c
-// Create dependencies. You can either use existing classes or provide your own.
 id<DFImageFetching> fetcher = <#fetcher#>;
 id<DFImageDecoding> decoder = <#decoder#>;
 id<DFImageProcessing> processor = <#processor#>;
@@ -197,17 +195,16 @@ id<DFImageManaging> composite = [[DFCompositeImageManager alloc] initWithImageMa
 |`DFImageProcessing`|Processes decoded images|
 |`DFImageCaching`|Stores processed images into memory cache|
 
-## <a name="install_using_cocopods"></a>Installation with [CocoaPods](http://cocoapods.org)
+## Installation<a name="installation"></a>
+
+### [CocoaPods](http://cocoapods.org)
 
 To install DFImageManager add a dependency in your Podfile:
 ```ruby
-# Podfile
-# platform :ios, '8.0'
-# platform :watchos, '2.0'
 pod 'DFImageManager'
 ```
 
-By default it will install these subspecs (if they are available for your platform):
+By default it will install these subspecs:
 - `DFImageManager/Core` - DFImageManager core classes
 - `DFImageManager/UI` - UI components
 
@@ -219,11 +216,18 @@ There are four more optional subspecs:
 
 To install optional subspecs include them in your Podfile:
 ```ruby
-# Podfile
 pod 'DFImageManager'
 pod 'DFImageManager/AFNetworking'
 pod 'DFImageManager/GIF'
 pod 'DFImageManager/WebP'
+pod 'DFImageManager/PhotosKit'
+```
+
+### [Carthage](https://github.com/Carthage/Carthage)
+
+ DFImageManager has a limited Carthage support that doesn't feature [FLAnimatedImage](https://github.com/Flipboard/FLAnimatedImage) and [AFNetworking](https://github.com/AFNetworking/AFNetworking) integration. To install DFImageManager add a dependency to your Cartfile:
+```
+github 'DFImageManager'
 ```
 
 ## <a name="h_requirements"></a>Requirements
