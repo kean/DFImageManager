@@ -5,7 +5,7 @@
 #import "DFImageCaching.h"
 #import <Foundation/Foundation.h>
 
-/*! Memory cache implementation that is built on top of NSCache and adds more functionality to it, like expiration of cached entries, automatic cleanup on memory warnings and more.
+/*! Memory cache implementation built on top of NSCache. Adds cached entries expiration, automatic cleanup on memory warnings and more.
  */
 @interface DFImageCache : NSObject <DFImageCaching>
 

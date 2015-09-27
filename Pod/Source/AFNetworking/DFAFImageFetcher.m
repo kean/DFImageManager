@@ -38,9 +38,7 @@ static inline float _DFAFSessionTaskPriorityForRequestPriority(DFImageRequestPri
 }
 
 - (void)setImageFetchingPriority:(DFImageRequestPriority)priority {
-    if ([_task respondsToSelector:@selector(setPriority:)]) {
-        _task.priority = _DFAFSessionTaskPriorityForRequestPriority(priority);
-    }
+    _task.priority = _DFAFSessionTaskPriorityForRequestPriority(priority);
 }
 
 @end
@@ -108,7 +106,7 @@ DF_INIT_UNAVAILABLE_IMPL
 }
 
 - (BOOL)isRequestCacheEquivalent:(DFImageRequest *)request1 toRequest:(DFImageRequest *)request2 {
-    return request1 == request2 || [(NSURL *)request1.resource isEqual:(NSURL *)request2.resource];
+    return [(NSURL *)request1.resource isEqual:(NSURL *)request2.resource];
 }
 
 - (id<DFImageFetchingOperation>)startOperationWithRequest:(DFImageRequest *)request progressHandler:(DFImageFetchingProgressHandler)progressHandler completion:(DFImageFetchingCompletionHandler)completion {

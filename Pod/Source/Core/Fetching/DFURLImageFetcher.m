@@ -89,8 +89,8 @@ static inline float _DFSessionTaskPriorityForRequestPriority(DFImageRequestPrior
 
 @interface _DFURLImageFetchOperation : NSObject <DFImageFetchingOperation>
 
-@property (nullable, nonatomic, weak, readonly) NSURLSessionTask *task;
-@property (nullable, nonatomic, weak, readonly) _DFURLFetcherTaskQueue *queue;
+@property (nullable, nonatomic, readonly) NSURLSessionTask *task;
+@property (nullable, nonatomic, readonly) _DFURLFetcherTaskQueue *queue;
 
 @end
 
@@ -109,9 +109,7 @@ static inline float _DFSessionTaskPriorityForRequestPriority(DFImageRequestPrior
 }
 
 - (void)setImageFetchingPriority:(DFImageRequestPriority)priority {
-    if ([_task respondsToSelector:@selector(setPriority:)]) {
-        _task.priority = _DFSessionTaskPriorityForRequestPriority(priority);
-    }
+    _task.priority = _DFSessionTaskPriorityForRequestPriority(priority);
 }
 
 @end
@@ -119,20 +117,17 @@ static inline float _DFSessionTaskPriorityForRequestPriority(DFImageRequestPrior
 
 #pragma mark - _DFURLSessionDataTaskHandler -
 
-typedef void (^_DFURLSessionDataTaskProgressHandler)(NSData *data, int64_t countOfBytesReceived, int64_t countOfBytesExpectedToReceive);
-typedef void (^_DFURLSessionDataTaskCompletionHandler)(NSData *data, NSURLResponse *response, NSError *error);
-
 @interface _DFURLSessionDataTaskHandler : NSObject
 
-@property (nullable, nonatomic, copy, readonly) _DFURLSessionDataTaskProgressHandler progressHandler;
-@property (nullable, nonatomic, copy, readonly) _DFURLSessionDataTaskCompletionHandler completionHandler;
+@property (nullable, nonatomic, copy, readonly) DFImageFetchingProgressHandler progressHandler;
+@property (nullable, nonatomic, copy, readonly) DFImageFetchingCompletionHandler completionHandler;
 @property (nonnull, nonatomic, readonly) NSMutableData *data;
 
 @end
 
 @implementation _DFURLSessionDataTaskHandler
 
-- (instancetype)initWithProgressHandler:(_DFURLSessionDataTaskProgressHandler)progressHandler completion:(_DFURLSessionDataTaskCompletionHandler)completionHandler {
+- (instancetype)initWithProgressHandler:(DFImageFetchingProgressHandler)progressHandler completion:(DFImageFetchingCompletionHandler)completionHandler {
     if (self = [super init]) {
         _progressHandler = [progressHandler copy];
         _completionHandler = [completionHandler copy];
@@ -155,21 +150,15 @@ typedef void (^_DFURLSessionDataTaskCompletionHandler)(NSData *data, NSURLRespon
 
 @implementation DFURLImageFetcher
 
-- (instancetype)initWithSession:(NSURLSession *)session sessionDelegate:(id<DFURLImageFetcherSessionDelegate>)sessionDelegate {
-    NSParameterAssert(session);
-    NSParameterAssert(sessionDelegate);
+- (instancetype)initWithSessionConfiguration:(NSURLSessionConfiguration *)configuration {
+    NSParameterAssert(configuration);
     if (self = [super init]) {
-        _session = session;
-        _sessionDelegate = sessionDelegate;
+        _session = [NSURLSession sessionWithConfiguration:configuration delegate:self delegateQueue:nil];
         _sessionTaskHandlers = [NSMutableDictionary new];
         _taskQueue = [_DFURLFetcherTaskQueue new];
         _supportedSchemes = [NSSet setWithObjects:@"http", @"https", @"ftp", @"file", @"data", nil];
     }
     return self;
-}
-
-- (instancetype)initWithSessionConfiguration:(NSURLSessionConfiguration *)configuration {
-    return [self initWithSession:[NSURLSession sessionWithConfiguration:configuration delegate:self delegateQueue:nil] sessionDelegate:self];
 }
 
 - (instancetype)init {
@@ -199,28 +188,17 @@ typedef void (^_DFURLSessionDataTaskCompletionHandler)(NSData *data, NSURLRespon
 }
 
 - (BOOL)isRequestCacheEquivalent:(DFImageRequest *)request1 toRequest:(DFImageRequest *)request2 {
-    return request1 == request2 || [(NSURL *)request1.resource isEqual:(NSURL *)request2.resource];
+    return [(NSURL *)request1.resource isEqual:(NSURL *)request2.resource];
 }
 
 - (id<DFImageFetchingOperation>)startOperationWithRequest:(DFImageRequest *)request progressHandler:(DFImageFetchingProgressHandler)progressHandler completion:(DFImageFetchingCompletionHandler)completion {
-    typeof(self) __weak weakSelf = self;
     NSURLRequest *URLRequest = [self _URLRequestForImageRequest:request];
-    NSURLSessionDataTask *__block task = [self.sessionDelegate URLImageFetcher:self dataTaskWithRequest:URLRequest progressHandler:^(NSData *data, int64_t countOfBytesReceived, int64_t countOfBytesExpectedToReceive) {
-        if (progressHandler) {
-            progressHandler(data, countOfBytesReceived, countOfBytesExpectedToReceive);
+    NSURLSessionDataTask *task = [self.session dataTaskWithRequest:URLRequest];
+    if (task) {
+        @synchronized(self) {
+            _sessionTaskHandlers[task] = [[_DFURLSessionDataTaskHandler alloc] initWithProgressHandler:progressHandler completion:completion];
         }
-    } completionHandler:^(NSData *data, NSURLResponse *URLResponse, NSError *error) {
-        NSData *receivedData = data;
-        if (receivedData) {
-            id<DFURLResponseValidating> validator = [weakSelf _responseValidatorForImageRequest:request URLRequest:URLRequest];
-            if (validator && ![validator isValidResponse:URLResponse data:data error:&error]) {
-                receivedData = nil;
-            }
-        }
-        if (completion) {
-            completion(receivedData, nil, error);
-        }
-    }];
+    }
     [_taskQueue resumeTask:task];
     return [[_DFURLImageFetchOperation alloc] initWithTask:task queue:self.taskQueue];
 }
@@ -245,9 +223,9 @@ typedef void (^_DFURLSessionDataTaskCompletionHandler)(NSData *data, NSURLRespon
     return [URLRequest copy];
 }
 
-- (nullable id<DFURLResponseValidating>)_responseValidatorForImageRequest:(nonnull DFImageRequest *)imageRequest URLRequest:(nonnull NSURLRequest *)URLRequest {
-    if ([self.delegate respondsToSelector:@selector(URLImageFetcher:responseValidatorForImageRequest:URLRequest:)]) {
-        return [self.delegate URLImageFetcher:self responseValidatorForImageRequest:imageRequest URLRequest:URLRequest];
+- (nullable id<DFURLResponseValidating>)_responseValidatorForURLRequest:(nonnull NSURLRequest *)URLRequest {
+    if ([self.delegate respondsToSelector:@selector(URLImageFetcher:responseValidatorForURLRequest:)]) {
+        return [self.delegate URLImageFetcher:self responseValidatorForURLRequest:URLRequest];
     }
     return [URLRequest.URL.scheme hasPrefix:@"http"] ? [DFURLHTTPResponseValidator new] : nil;
 }
@@ -275,23 +253,18 @@ typedef void (^_DFURLSessionDataTaskCompletionHandler)(NSData *data, NSURLRespon
 - (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task didCompleteWithError:(NSError *)error {
     @synchronized(self) {
         _DFURLSessionDataTaskHandler *handler = _sessionTaskHandlers[task];
+        NSData *data = handler.data;
+        if (data) {
+            id<DFURLResponseValidating> validator = [self _responseValidatorForURLRequest:task.currentRequest];
+            if (validator && ![validator isValidResponse:task.response data:data error:&error]) {
+                data = nil;
+            }
+        }
         if (handler.completionHandler) {
-            handler.completionHandler(handler.data, task.response, error);
+            handler.completionHandler(data, nil, error);
         }
         [_sessionTaskHandlers removeObjectForKey:task];
     }
-}
-
-#pragma mark <DFURLImageFetcherSessionDelegate>
-
-- (NSURLSessionDataTask *)URLImageFetcher:(DFURLImageFetcher *)fetcher dataTaskWithRequest:(NSURLRequest *)request progressHandler:(_DFURLSessionDataTaskProgressHandler)progressHandler completionHandler:(_DFURLSessionDataTaskCompletionHandler)completionHandler {
-    NSURLSessionDataTask *task = [self.session dataTaskWithRequest:request];
-    if (task) {
-        @synchronized(self) {
-            _sessionTaskHandlers[task] = [[_DFURLSessionDataTaskHandler alloc] initWithProgressHandler:progressHandler completion:completionHandler];
-        }
-    }
-    return task;
 }
 
 @end

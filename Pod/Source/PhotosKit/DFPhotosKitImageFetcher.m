@@ -64,9 +64,6 @@ static inline NSString *_PHAssetLocalIdentifier(id resource) {
 }
 
 - (BOOL)isRequestCacheEquivalent:(DFImageRequest *)request1 toRequest:(DFImageRequest *)request2 {
-    if (request1 == request2) {
-        return YES;
-    }
     if ([request1.resource isKindOfClass:[PHAsset class]] &&
         [request2.resource isKindOfClass:[PHAsset class]]) {
         // Comparing PHAsset's directly is much faster then getting their localIdentifiers.

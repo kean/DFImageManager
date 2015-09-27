@@ -16,7 +16,7 @@
 - (nonnull instancetype)initWithCache:(nonnull NSCache *)cache {
     if (self = [super init]) {
         _cache = cache;
-#if __IPHONE_OS_VERSION_MIN_REQUIRED && !__WATCH_OS_VERSION_MIN_REQUIRED
+#if TARGET_OS_IOS && !TARGET_OS_WATCH
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeAllObjects) name:UIApplicationDidReceiveMemoryWarningNotification object:nil];
 #endif
     }
@@ -27,7 +27,7 @@
     return [self initWithCache:[NSCache df_sharedImageCache]];
 }
 
-#pragma mark - <DFImageCaching>
+#pragma mark <DFImageCaching>
 
 - (nullable DFCachedImageResponse *)cachedImageResponseForKey:(nullable id<NSCopying>)key {
     DFCachedImageResponse *response = [_cache objectForKey:key];
@@ -52,9 +52,8 @@
 }
 
 - (NSUInteger)costForImageResponse:(nonnull DFCachedImageResponse *)cachedResponse {
-    UIImage *image = cachedResponse.image;
-    CGImageRef imageRef = image.CGImage;
-    return (CGImageGetWidth(imageRef) * CGImageGetHeight(imageRef) * CGImageGetBitsPerPixel(imageRef)) / 8;
+    CGImageRef image = cachedResponse.image.CGImage;
+    return (CGImageGetWidth(image) * CGImageGetHeight(image) * CGImageGetBitsPerPixel(image)) / 8;
 }
 
 @end

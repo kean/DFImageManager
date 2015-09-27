@@ -22,7 +22,6 @@
 @property (nonatomic, readonly) NSTimeInterval expirationDate;
 
 /*! Initializes the DFCachedImageResponse with the given image, info and expiration date.
-  @param image An image, for best performance users should store decompressed images into memory cache.
  */
 - (nullable instancetype)initWithImage:(nonnull UIImage *)image info:( nullable NSDictionary *)info expirationDate:(NSTimeInterval)expirationDate NS_DESIGNATED_INITIALIZER;
 
