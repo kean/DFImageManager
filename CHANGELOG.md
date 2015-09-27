@@ -1,5 +1,36 @@
  [Changelog](https://github.com/kean/DFImageManager/releases) for all versions
 
+# DFImageManager 1.0.0
+
+DFImageManager 1.0.0 is the first major release. It introduces multiple changes that make DFImageManager more robust and future proof. The main difference is the absence of conditional compilation that relied on `__has_include` macros. In practice it means that optional subspecs are no longer 'zero config'. Please check carefully how you configure DFImageManager.
+
+## Changes
+
+### Major
+
+- Now requires iOS 8.0+
+- Remove conditional compilation that relied on __has_include macros
+- DFImageManager is no longer 'zero config' in terms of optional subspecs
+- DFImageManager/NSURLSession subspec is removed and sources made part of DFImageManager/Core subspec
+- Add DFCompositeImageDecoder
+- Add DFWebPImageDecoder
+- Add DFAnimatedImageView, DFAnimatedImageDecoder, DFAnimatedImageProcessor
+- DFImageManager/PhotosKit subspec is now optional
+- DFURLImageFetcher no longer sets "image/webp,image/*;q=0.8" as "Accept" HTTP header automatically
+- Remove +[DFImageManager sharedDecoder] dependency injector, there is now a single entry point to configure image manager and that is DFImageManagerConfiguration
+- Remove -[DFURLImageFetcher initWithSession:sessionDelegate:] method and DFURLImageFetcherSessionDelegate protocol, this feature was too hardcode for basic built-in networking.
+
+### Minor
+- #12 Lightweight generics thanks to @adly-holler
+- Add limited Carthage support
+- Add convenience class methods to DFImageManager that forward calls to sharedManager 
+- -[DFImageProcessing shouldProcessImage:forRequest:partial:] method is now optional
+- [DFImageTask resume] method now returns image task
+- Fix -[NSCache df_recommendedTotalCostLimit] for watchOS
+- Remove +[DFImageManager addSharedManager:] method
+- Remove +[DFImageManager defaultManager] method
+
+
 # DFImageManager 0.8.0
 
 `DFImageManager 0.8.0` makes things more cohesive. Documentation, examples, demos, project structure - everything was revised and uncluttered. This release also features limited watchOS 2 support, which at this point  includes `DFImageManager/Core` and `DFImageManager/NSURLSession` subpecs.
