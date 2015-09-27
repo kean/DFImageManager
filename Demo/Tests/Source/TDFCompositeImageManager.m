@@ -19,8 +19,8 @@
 
 @implementation _TDFMockImageTask
 
-- (void)resume {
-    // Do nothing
+- (DFImageTask *)resume {
+    return self;
 }
 
 - (void)cancel {
