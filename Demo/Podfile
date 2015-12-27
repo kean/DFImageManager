@@ -11,7 +11,7 @@ target 'DFImageManager-Example', :exclusive => true do
 	pod "DFImageManager/WebP", :path => "../"
 	pod "DFImageManager/PhotosKit", :path => "../"
 
-	pod "AFNetworking/UIKit", "~> 2.0"
+	pod "AFNetworking/UIKit", "~> 3.0"
 end
 
 target 'DFImageManager-Tests', :exclusive => true do

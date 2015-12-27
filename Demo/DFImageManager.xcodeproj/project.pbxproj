@@ -24,12 +24,12 @@
 		0C25A3A81BA0E48B0044BC00 /* UIViewController+SDFImageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C25A3961BA0E48B0044BC00 /* UIViewController+SDFImageManager.m */; };
 		0C300EB31BA0E357008DDEF6 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C300EB21BA0E357008DDEF6 /* main.m */; };
 		0C300EBE1BA0E357008DDEF6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0C300EBD1BA0E357008DDEF6 /* Assets.xcassets */; };
-		0C4188141BB6FF990060069C /* 10669363.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0C41880E1BB6FF990060069C /* 10669363.jpg */; settings = {ASSET_TAGS = (); }; };
-		0C4188151BB6FF990060069C /* 10849093.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0C41880F1BB6FF990060069C /* 10849093.jpg */; settings = {ASSET_TAGS = (); }; };
-		0C4188161BB6FF990060069C /* 10861057.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0C4188101BB6FF990060069C /* 10861057.jpg */; settings = {ASSET_TAGS = (); }; };
-		0C4188171BB6FF990060069C /* 10872981.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0C4188111BB6FF990060069C /* 10872981.jpg */; settings = {ASSET_TAGS = (); }; };
-		0C4188181BB6FF990060069C /* 10915709.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0C4188121BB6FF990060069C /* 10915709.jpg */; settings = {ASSET_TAGS = (); }; };
-		0C4188191BB6FF990060069C /* 10926234.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0C4188131BB6FF990060069C /* 10926234.jpg */; settings = {ASSET_TAGS = (); }; };
+		0C4188141BB6FF990060069C /* 10669363.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0C41880E1BB6FF990060069C /* 10669363.jpg */; };
+		0C4188151BB6FF990060069C /* 10849093.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0C41880F1BB6FF990060069C /* 10849093.jpg */; };
+		0C4188161BB6FF990060069C /* 10861057.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0C4188101BB6FF990060069C /* 10861057.jpg */; };
+		0C4188171BB6FF990060069C /* 10872981.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0C4188111BB6FF990060069C /* 10872981.jpg */; };
+		0C4188181BB6FF990060069C /* 10915709.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0C4188121BB6FF990060069C /* 10915709.jpg */; };
+		0C4188191BB6FF990060069C /* 10926234.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0C4188131BB6FF990060069C /* 10926234.jpg */; };
 		0C4D3DC61BA180EF008138FA /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0C4D3DC41BA180EF008138FA /* Info.plist */; };
 		0CCBC4E71BA1819F00B26297 /* TDFCompositeImageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CCBC4D01BA1819F00B26297 /* TDFCompositeImageManager.m */; };
 		0CCBC4E91BA1819F00B26297 /* TDFImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CCBC4D21BA1819F00B26297 /* TDFImageCache.m */; };
@@ -463,6 +463,7 @@
 				0C300EAB1BA0E357008DDEF6 /* Frameworks */,
 				0C300EAC1BA0E357008DDEF6 /* Resources */,
 				6CAB571D2576FBA77C74239E /* Copy Pods Resources */,
+				BC9F860A632073BA530D57DA /* Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -482,6 +483,7 @@
 				0C300EC41BA0E357008DDEF6 /* Frameworks */,
 				0C300EC51BA0E357008DDEF6 /* Resources */,
 				F2EE2AB43B4717327E16FE5A /* Copy Pods Resources */,
+				9C68A4C8E3AB4FEC36655B6A /* Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -590,6 +592,36 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-DFImageManager-Example/Pods-DFImageManager-Example-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		9C68A4C8E3AB4FEC36655B6A /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-DFImageManager-Tests/Pods-DFImageManager-Tests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		BC9F860A632073BA530D57DA /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-DFImageManager-Example/Pods-DFImageManager-Example-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		E1B108FC052D22D6E929C5CE /* Check Pods Manifest.lock */ = {
