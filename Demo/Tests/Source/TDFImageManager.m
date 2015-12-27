@@ -288,6 +288,25 @@
 
 #pragma mark - Progress
 
+- (void)testThatProgressHandlerIsCalled {
+    DFImageRequest *request = [DFImageRequest requestWithResource:[TDFMockResource resourceWithID:@"1"]];
+    DFImageTask *task = [_manager imageTaskForRequest:request completion:nil];
+    
+    double __block fractionCompleted = 0;
+    XCTestExpectation *expectation = [self expectationWithDescription:@"expectation"];
+    task.progressHandler = ^(int64_t completed, int64_t total){
+        fractionCompleted += 0.5;
+        XCTAssertEqual(fractionCompleted, completed / (total * 1.0));
+        if (fractionCompleted == 1.0) {
+            [expectation fulfill];
+        }
+    };
+    
+    [task resume];
+    
+    [self waitForExpectationsWithTimeout:1.0 handler:nil];
+}
+
 - (void)testThatProgressObjectIsUpdated {
     DFImageRequest *request = [DFImageRequest requestWithResource:[TDFMockResource resourceWithID:@"1"]];
     DFImageTask *task = [_manager imageTaskForRequest:request completion:nil];

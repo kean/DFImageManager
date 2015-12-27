@@ -317,6 +317,12 @@ DF_INIT_UNAVAILABLE_IMPL
     NSProgress *progress = task.internalProgress;
     progress.totalUnitCount = totalUnitCount;
     progress.completedUnitCount = completedUnitCount;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        void (^handler)(int64_t, int64_t) = task.progressHandler;
+        if (totalUnitCount > 0 && completedUnitCount > 0 && handler) {
+            handler(completedUnitCount, totalUnitCount);
+        }
+    });
 }
 
 - (void)imageLoader:(nonnull DFImageManagerLoader *)imageLoader imageTask:(nonnull DFImageTask *)task didReceiveProgressiveImage:(nonnull UIImage *)image {
