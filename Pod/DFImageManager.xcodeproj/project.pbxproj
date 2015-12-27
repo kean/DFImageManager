@@ -3,11 +3,10 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 47;
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0CD2C6CD1BB72C7F006F4A63 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0CD2C6CC1BB72C7F006F4A63 /* Info.plist */; };
 		0CD2C6CF1BB72C8B006F4A63 /* DFImageManager-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 0CD2C6CE1BB72C8B006F4A63 /* DFImageManager-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0CD2C72C1BB72CA8006F4A63 /* DFCachedImageResponse.h in Headers */ = {isa = PBXBuildFile; fileRef = 0CD2C6D71BB72CA8006F4A63 /* DFCachedImageResponse.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0CD2C72D1BB72CA8006F4A63 /* DFCachedImageResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD2C6D81BB72CA8006F4A63 /* DFCachedImageResponse.m */; };
@@ -450,7 +449,7 @@
 				};
 			};
 			buildConfigurationList = 0CD2C6B91BB72B25006F4A63 /* Build configuration list for PBXProject "DFImageManager" */;
-			compatibilityVersion = "Xcode 3.2";
+			compatibilityVersion = "Xcode 6.3";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -471,7 +470,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0CD2C6CD1BB72C7F006F4A63 /* Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
