@@ -7,38 +7,38 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0CD2C6CD1BB72C7F006F4A63 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0CD2C6CC1BB72C7F006F4A63 /* Info.plist */; settings = {ASSET_TAGS = (); }; };
+		0CD2C6CD1BB72C7F006F4A63 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0CD2C6CC1BB72C7F006F4A63 /* Info.plist */; };
 		0CD2C6CF1BB72C8B006F4A63 /* DFImageManager-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 0CD2C6CE1BB72C8B006F4A63 /* DFImageManager-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0CD2C72C1BB72CA8006F4A63 /* DFCachedImageResponse.h in Headers */ = {isa = PBXBuildFile; fileRef = 0CD2C6D71BB72CA8006F4A63 /* DFCachedImageResponse.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		0CD2C72D1BB72CA8006F4A63 /* DFCachedImageResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD2C6D81BB72CA8006F4A63 /* DFCachedImageResponse.m */; settings = {ASSET_TAGS = (); }; };
+		0CD2C72D1BB72CA8006F4A63 /* DFCachedImageResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD2C6D81BB72CA8006F4A63 /* DFCachedImageResponse.m */; };
 		0CD2C72E1BB72CA8006F4A63 /* DFImageCache.h in Headers */ = {isa = PBXBuildFile; fileRef = 0CD2C6D91BB72CA8006F4A63 /* DFImageCache.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		0CD2C72F1BB72CA8006F4A63 /* DFImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD2C6DA1BB72CA8006F4A63 /* DFImageCache.m */; settings = {ASSET_TAGS = (); }; };
+		0CD2C72F1BB72CA8006F4A63 /* DFImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD2C6DA1BB72CA8006F4A63 /* DFImageCache.m */; };
 		0CD2C7301BB72CA8006F4A63 /* NSCache+DFImageManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 0CD2C6DB1BB72CA8006F4A63 /* NSCache+DFImageManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		0CD2C7311BB72CA8006F4A63 /* NSCache+DFImageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD2C6DC1BB72CA8006F4A63 /* NSCache+DFImageManager.m */; settings = {ASSET_TAGS = (); }; };
+		0CD2C7311BB72CA8006F4A63 /* NSCache+DFImageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD2C6DC1BB72CA8006F4A63 /* NSCache+DFImageManager.m */; };
 		0CD2C7321BB72CA8006F4A63 /* DFImageManagerKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 0CD2C6DD1BB72CA8006F4A63 /* DFImageManagerKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0CD2C7331BB72CA8006F4A63 /* DFURLHTTPResponseValidator.h in Headers */ = {isa = PBXBuildFile; fileRef = 0CD2C6DF1BB72CA8006F4A63 /* DFURLHTTPResponseValidator.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		0CD2C7341BB72CA8006F4A63 /* DFURLHTTPResponseValidator.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD2C6E01BB72CA8006F4A63 /* DFURLHTTPResponseValidator.m */; settings = {ASSET_TAGS = (); }; };
+		0CD2C7341BB72CA8006F4A63 /* DFURLHTTPResponseValidator.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD2C6E01BB72CA8006F4A63 /* DFURLHTTPResponseValidator.m */; };
 		0CD2C7351BB72CA8006F4A63 /* DFURLImageFetcher.h in Headers */ = {isa = PBXBuildFile; fileRef = 0CD2C6E11BB72CA8006F4A63 /* DFURLImageFetcher.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		0CD2C7361BB72CA8006F4A63 /* DFURLImageFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD2C6E21BB72CA8006F4A63 /* DFURLImageFetcher.m */; settings = {ASSET_TAGS = (); }; };
+		0CD2C7361BB72CA8006F4A63 /* DFURLImageFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD2C6E21BB72CA8006F4A63 /* DFURLImageFetcher.m */; };
 		0CD2C7371BB72CA8006F4A63 /* DFURLResponseValidating.h in Headers */ = {isa = PBXBuildFile; fileRef = 0CD2C6E31BB72CA8006F4A63 /* DFURLResponseValidating.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0CD2C7381BB72CA8006F4A63 /* DFCompositeImageManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 0CD2C6E51BB72CA8006F4A63 /* DFCompositeImageManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		0CD2C7391BB72CA8006F4A63 /* DFCompositeImageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD2C6E61BB72CA8006F4A63 /* DFCompositeImageManager.m */; settings = {ASSET_TAGS = (); }; };
-		0CD2C73A1BB72CA8006F4A63 /* DFImageManager+Convenience.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD2C6E71BB72CA8006F4A63 /* DFImageManager+Convenience.m */; settings = {ASSET_TAGS = (); }; };
-		0CD2C73B1BB72CA8006F4A63 /* DFImageManager+SharedManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD2C6E81BB72CA8006F4A63 /* DFImageManager+SharedManager.m */; settings = {ASSET_TAGS = (); }; };
+		0CD2C7391BB72CA8006F4A63 /* DFCompositeImageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD2C6E61BB72CA8006F4A63 /* DFCompositeImageManager.m */; };
+		0CD2C73A1BB72CA8006F4A63 /* DFImageManager+Convenience.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD2C6E71BB72CA8006F4A63 /* DFImageManager+Convenience.m */; };
+		0CD2C73B1BB72CA8006F4A63 /* DFImageManager+SharedManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD2C6E81BB72CA8006F4A63 /* DFImageManager+SharedManager.m */; };
 		0CD2C73C1BB72CA8006F4A63 /* DFImageManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 0CD2C6E91BB72CA8006F4A63 /* DFImageManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		0CD2C73D1BB72CA8006F4A63 /* DFImageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD2C6EA1BB72CA8006F4A63 /* DFImageManager.m */; settings = {ASSET_TAGS = (); }; };
+		0CD2C73D1BB72CA8006F4A63 /* DFImageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD2C6EA1BB72CA8006F4A63 /* DFImageManager.m */; };
 		0CD2C73E1BB72CA8006F4A63 /* DFImageManagerConfiguration.h in Headers */ = {isa = PBXBuildFile; fileRef = 0CD2C6EB1BB72CA8006F4A63 /* DFImageManagerConfiguration.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		0CD2C73F1BB72CA8006F4A63 /* DFImageManagerConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD2C6EC1BB72CA8006F4A63 /* DFImageManagerConfiguration.m */; settings = {ASSET_TAGS = (); }; };
-		0CD2C7401BB72CA8006F4A63 /* DFImageManagerLoader.h in Headers */ = {isa = PBXBuildFile; fileRef = 0CD2C6EE1BB72CA8006F4A63 /* DFImageManagerLoader.h */; settings = {ASSET_TAGS = (); }; };
-		0CD2C7411BB72CA8006F4A63 /* DFImageManagerLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD2C6EF1BB72CA8006F4A63 /* DFImageManagerLoader.m */; settings = {ASSET_TAGS = (); }; };
-		0CD2C7421BB72CA8006F4A63 /* DFProgressiveImageDecoder.h in Headers */ = {isa = PBXBuildFile; fileRef = 0CD2C6F01BB72CA8006F4A63 /* DFProgressiveImageDecoder.h */; settings = {ASSET_TAGS = (); }; };
-		0CD2C7431BB72CA8006F4A63 /* DFProgressiveImageDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD2C6F11BB72CA8006F4A63 /* DFProgressiveImageDecoder.m */; settings = {ASSET_TAGS = (); }; };
+		0CD2C73F1BB72CA8006F4A63 /* DFImageManagerConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD2C6EC1BB72CA8006F4A63 /* DFImageManagerConfiguration.m */; };
+		0CD2C7401BB72CA8006F4A63 /* DFImageManagerLoader.h in Headers */ = {isa = PBXBuildFile; fileRef = 0CD2C6EE1BB72CA8006F4A63 /* DFImageManagerLoader.h */; };
+		0CD2C7411BB72CA8006F4A63 /* DFImageManagerLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD2C6EF1BB72CA8006F4A63 /* DFImageManagerLoader.m */; };
+		0CD2C7421BB72CA8006F4A63 /* DFProgressiveImageDecoder.h in Headers */ = {isa = PBXBuildFile; fileRef = 0CD2C6F01BB72CA8006F4A63 /* DFProgressiveImageDecoder.h */; };
+		0CD2C7431BB72CA8006F4A63 /* DFProgressiveImageDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD2C6F11BB72CA8006F4A63 /* DFProgressiveImageDecoder.m */; };
 		0CD2C7441BB72CA8006F4A63 /* DFImageDecoder.h in Headers */ = {isa = PBXBuildFile; fileRef = 0CD2C6F31BB72CA8006F4A63 /* DFImageDecoder.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		0CD2C7451BB72CA8006F4A63 /* DFImageDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD2C6F41BB72CA8006F4A63 /* DFImageDecoder.m */; settings = {ASSET_TAGS = (); }; };
+		0CD2C7451BB72CA8006F4A63 /* DFImageDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD2C6F41BB72CA8006F4A63 /* DFImageDecoder.m */; };
 		0CD2C7461BB72CA8006F4A63 /* DFImageProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = 0CD2C6F51BB72CA8006F4A63 /* DFImageProcessor.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		0CD2C7471BB72CA8006F4A63 /* DFImageProcessor.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD2C6F61BB72CA8006F4A63 /* DFImageProcessor.m */; settings = {ASSET_TAGS = (); }; };
+		0CD2C7471BB72CA8006F4A63 /* DFImageProcessor.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD2C6F61BB72CA8006F4A63 /* DFImageProcessor.m */; };
 		0CD2C7481BB72CA8006F4A63 /* UIImage+DFImageUtilities.h in Headers */ = {isa = PBXBuildFile; fileRef = 0CD2C6F71BB72CA8006F4A63 /* UIImage+DFImageUtilities.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		0CD2C7491BB72CA8006F4A63 /* UIImage+DFImageUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD2C6F81BB72CA8006F4A63 /* UIImage+DFImageUtilities.m */; settings = {ASSET_TAGS = (); }; };
+		0CD2C7491BB72CA8006F4A63 /* UIImage+DFImageUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD2C6F81BB72CA8006F4A63 /* UIImage+DFImageUtilities.m */; };
 		0CD2C74A1BB72CA8006F4A63 /* DFImageCaching.h in Headers */ = {isa = PBXBuildFile; fileRef = 0CD2C6FA1BB72CA8006F4A63 /* DFImageCaching.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0CD2C74B1BB72CA8006F4A63 /* DFImageDecoding.h in Headers */ = {isa = PBXBuildFile; fileRef = 0CD2C6FB1BB72CA8006F4A63 /* DFImageDecoding.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0CD2C74C1BB72CA8006F4A63 /* DFImageFetching.h in Headers */ = {isa = PBXBuildFile; fileRef = 0CD2C6FC1BB72CA8006F4A63 /* DFImageFetching.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -46,24 +46,24 @@
 		0CD2C74E1BB72CA8006F4A63 /* DFImageManaging.h in Headers */ = {isa = PBXBuildFile; fileRef = 0CD2C6FE1BB72CA8006F4A63 /* DFImageManaging.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0CD2C74F1BB72CA8006F4A63 /* DFImageProcessing.h in Headers */ = {isa = PBXBuildFile; fileRef = 0CD2C6FF1BB72CA8006F4A63 /* DFImageProcessing.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0CD2C7501BB72CA8006F4A63 /* DFImageManagerDefines.h in Headers */ = {isa = PBXBuildFile; fileRef = 0CD2C7011BB72CA8006F4A63 /* DFImageManagerDefines.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		0CD2C7511BB72CA8006F4A63 /* DFImageManagerDefines.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD2C7021BB72CA8006F4A63 /* DFImageManagerDefines.m */; settings = {ASSET_TAGS = (); }; };
+		0CD2C7511BB72CA8006F4A63 /* DFImageManagerDefines.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD2C7021BB72CA8006F4A63 /* DFImageManagerDefines.m */; };
 		0CD2C7521BB72CA8006F4A63 /* DFImageRequest.h in Headers */ = {isa = PBXBuildFile; fileRef = 0CD2C7031BB72CA8006F4A63 /* DFImageRequest.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		0CD2C7531BB72CA8006F4A63 /* DFImageRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD2C7041BB72CA8006F4A63 /* DFImageRequest.m */; settings = {ASSET_TAGS = (); }; };
+		0CD2C7531BB72CA8006F4A63 /* DFImageRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD2C7041BB72CA8006F4A63 /* DFImageRequest.m */; };
 		0CD2C7541BB72CA8006F4A63 /* DFImageRequestOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = 0CD2C7051BB72CA8006F4A63 /* DFImageRequestOptions.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		0CD2C7551BB72CA8006F4A63 /* DFImageRequestOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD2C7061BB72CA8006F4A63 /* DFImageRequestOptions.m */; settings = {ASSET_TAGS = (); }; };
+		0CD2C7551BB72CA8006F4A63 /* DFImageRequestOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD2C7061BB72CA8006F4A63 /* DFImageRequestOptions.m */; };
 		0CD2C7561BB72CA8006F4A63 /* DFImageResponse.h in Headers */ = {isa = PBXBuildFile; fileRef = 0CD2C7071BB72CA8006F4A63 /* DFImageResponse.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		0CD2C7571BB72CA8006F4A63 /* DFImageResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD2C7081BB72CA8006F4A63 /* DFImageResponse.m */; settings = {ASSET_TAGS = (); }; };
+		0CD2C7571BB72CA8006F4A63 /* DFImageResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD2C7081BB72CA8006F4A63 /* DFImageResponse.m */; };
 		0CD2C7581BB72CA8006F4A63 /* DFImageTask.h in Headers */ = {isa = PBXBuildFile; fileRef = 0CD2C7091BB72CA8006F4A63 /* DFImageTask.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		0CD2C7591BB72CA8006F4A63 /* DFImageTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD2C70A1BB72CA8006F4A63 /* DFImageTask.m */; settings = {ASSET_TAGS = (); }; };
+		0CD2C7591BB72CA8006F4A63 /* DFImageTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD2C70A1BB72CA8006F4A63 /* DFImageTask.m */; };
 		0CD2C7681BB72CA8006F4A63 /* DFCollectionViewPreheatingController.h in Headers */ = {isa = PBXBuildFile; fileRef = 0CD2C71C1BB72CA8006F4A63 /* DFCollectionViewPreheatingController.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		0CD2C7691BB72CA8006F4A63 /* DFCollectionViewPreheatingController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD2C71D1BB72CA8006F4A63 /* DFCollectionViewPreheatingController.m */; settings = {ASSET_TAGS = (); }; };
+		0CD2C7691BB72CA8006F4A63 /* DFCollectionViewPreheatingController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD2C71D1BB72CA8006F4A63 /* DFCollectionViewPreheatingController.m */; };
 		0CD2C76A1BB72CA8006F4A63 /* DFImageManagerKit+UI.h in Headers */ = {isa = PBXBuildFile; fileRef = 0CD2C71E1BB72CA8006F4A63 /* DFImageManagerKit+UI.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0CD2C76B1BB72CA8006F4A63 /* DFImageRequest+UIKitAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 0CD2C71F1BB72CA8006F4A63 /* DFImageRequest+UIKitAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		0CD2C76C1BB72CA8006F4A63 /* DFImageRequest+UIKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD2C7201BB72CA8006F4A63 /* DFImageRequest+UIKitAdditions.m */; settings = {ASSET_TAGS = (); }; };
+		0CD2C76C1BB72CA8006F4A63 /* DFImageRequest+UIKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD2C7201BB72CA8006F4A63 /* DFImageRequest+UIKitAdditions.m */; };
 		0CD2C76D1BB72CA8006F4A63 /* DFImageView.h in Headers */ = {isa = PBXBuildFile; fileRef = 0CD2C7211BB72CA8006F4A63 /* DFImageView.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		0CD2C76E1BB72CA8006F4A63 /* DFImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD2C7221BB72CA8006F4A63 /* DFImageView.m */; settings = {ASSET_TAGS = (); }; };
+		0CD2C76E1BB72CA8006F4A63 /* DFImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD2C7221BB72CA8006F4A63 /* DFImageView.m */; };
 		0CD2C76F1BB72CA8006F4A63 /* UIImageView+DFImageManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 0CD2C7231BB72CA8006F4A63 /* UIImageView+DFImageManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		0CD2C7701BB72CA8006F4A63 /* UIImageView+DFImageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD2C7241BB72CA8006F4A63 /* UIImageView+DFImageManager.m */; settings = {ASSET_TAGS = (); }; };
+		0CD2C7701BB72CA8006F4A63 /* UIImageView+DFImageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD2C7241BB72CA8006F4A63 /* UIImageView+DFImageManager.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -549,7 +549,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -590,7 +590,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";

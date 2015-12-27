@@ -5,18 +5,9 @@
 <a href="https://github.com/Carthage/Carthage"><img src="https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat"></a>
 </p>
 
-Advanced framework for loading, caching, processing, displaying and preheating images. It uses latest advancements in iOS SDK and doesn't reinvent existing technologies.
+Advanced framework for loading, caching, processing, displaying and preheating images.
 
-DFImageManager is a [pipeline](#h_design) that loads images using multiple dependencies which can be injected in runtime.
-
-> Programming in Swift? Try [Nuke](https://github.com/kean/Nuke).
-
-1. [Getting Started](#h_getting_started)
-2. [Usage](#h_usage)
-3. [Design](#h_design)
-4. [Installation](#installation)
-5. [Requirements](#h_requirements)
-6. [Supported Image Formats](#h_supported_image_formats)
+**Disclaimer:** It's deprecated in favor of [Nuke](https://github.com/kean/Nuke)
 
 ## <a name="h_features"></a>Features
 
