@@ -1,5 +1,16 @@
  [Changelog](https://github.com/kean/DFImageManager/releases) for all versions
 
+# DFImageManager 2.0.0
+
+- #86 Migrate to AFNetworking 3
+- #84 Add progressHandler to DFImageTask
+
+
+# DFImageManager 1.0.0
+
+- #85 Add Carthage support for iOS 8.0+ (was 9.0+ only) 
+
+
 # DFImageManager 1.0.0
 
 DFImageManager 1.0.0 is the first major release. It introduces multiple changes that make DFImageManager more robust and future proof. The main difference is the absence of conditional compilation that relied on `__has_include` macros, everything is implemented using classes. Conditional compilation now only takes place when default image manager is created and it doesn't rely on `__has_include`. In practice there are no changes whatsoever to the default image manager configuration, everything should work the same as it did in version 0.8.0.
