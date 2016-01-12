@@ -255,14 +255,15 @@
 }
 
 - (void)_loadOperation:(nonnull _DFImageLoadOperation *)operation didCompleteWithData:(nullable NSData *)data info:(nullable NSDictionary *)info error:(nullable NSError *)error {
-    if (data.length) {
+    if (error || !data.length) {
+        [self _loadOperation:operation didCompleteWithImage:nil info:info error:error];
+    }
+    else {
         typeof(self) __weak weakSelf = self;
         [_decodingQueue addOperationWithBlock:^{
             UIImage *image = [weakSelf.conf.decoder imageWithData:data partial:NO];
             [weakSelf _loadOperation:operation didCompleteWithImage:image info:info error:error];
         }];
-    } else {
-        [self _loadOperation:operation didCompleteWithImage:nil info:info error:error];
     }
 }
 
