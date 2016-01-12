@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
     s.name         = 'DFImageManager'
-    s.version      = '2.0.0'
+    s.version      = '2.0.1'
     s.summary      = 'Advanced framework for managing images. Zero config, yet immense customization.'
     s.description = <<-DESC
                     Advanced framework for loading, caching, processing, displaying and preheating images. DFImageManager is a pipeline that loads images using multiple dependencies which can be injected in runtime. It features optional AFNetworking, FLAnimatedImage and WebP integration.

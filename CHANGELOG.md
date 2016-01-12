@@ -1,5 +1,10 @@
  [Changelog](https://github.com/kean/DFImageManager/releases) for all versions
 
+# DFImageManager 2.0.1
+
+- #90 Fix an issue with incomplete image downloads (thanks to @HamzaGhazouani)
+
+
 # DFImageManager 2.0.0
 
 - #86 Migrate to AFNetworking 3
