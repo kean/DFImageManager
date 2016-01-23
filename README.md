@@ -9,6 +9,10 @@ Advanced framework for loading, caching, processing, displaying and preheating i
 
 **Disclaimer:** It's deprecated in favor of [Nuke](https://github.com/kean/Nuke)
 
+> This project has taken hundreds hours of work. If you find it useful, you can chip in for coffee to keep me going.
+
+> <a href="http://kean.github.io/donate/"><img height="36" src="https://cloud.githubusercontent.com/assets/1567433/12532142/598bc7e6-c21d-11e5-976d-45200104c174.png"></a>
+
 ## <a name="h_features"></a>Features
 
 - Zero config
