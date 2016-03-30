@@ -26,7 +26,7 @@
 
 /*! Duration it will take to animate image in if image view allows animations.
  */
-@property (nonatomic) float fadeDuration;
+@property (nonatomic) CGFloat fadeDuration;
 
 /*! Performs any clean up necessary to prepare the view for use again. Removes currently displayed image and cancels all requests registered with a receiver.
  */
