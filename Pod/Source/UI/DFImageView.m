@@ -37,7 +37,7 @@
 - (void)_commonInit {
     self.imageManager = [DFImageManager sharedManager];
     _allowsAnimations = YES;
-    _animationDuration = 0.25f;
+    self.animationDuration = 0.25f;
 }
 
 - (void)prepareForReuse {
