@@ -37,6 +37,7 @@
 - (void)_commonInit {
     self.imageManager = [DFImageManager sharedManager];
     _allowsAnimations = YES;
+    _fadeDuration = 0.25f;
 }
 
 - (void)prepareForReuse {
@@ -84,7 +85,7 @@
             animation.keyPath = @"opacity";
             animation.fromValue = @0.f;
             animation.toValue = @1.f;
-            animation.duration = 0.25f;
+            animation.duration = self.fadeDuration;
             animation;
         }) forKey:@"opacity"];
     } else {
