@@ -7,10 +7,6 @@
 
 Advanced framework for loading, caching, processing, displaying and preheating images.
 
-## DEPRECATED
-
-This project is deprecated in favor of [Nuke](https://github.com/kean/Nuke) which fixes a lot of design decisions made in DFImageManager.
-
 ## <a name="h_features"></a>Features
 
 - Zero config
