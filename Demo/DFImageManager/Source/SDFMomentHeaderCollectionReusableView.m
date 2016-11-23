@@ -18,6 +18,7 @@
 @implementation SDFMomentHeaderCollectionReusableView
 
 - (void)awakeFromNib {
+    [super awakeFromNib];
     self.labelBottomLeft.text = @"";
     self.labelBottomRight.text = @"";
     self.labelTopLeft.text = @"";

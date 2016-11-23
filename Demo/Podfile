@@ -1,10 +1,10 @@
 platform :ios, "8.0"
 
-xcodeproj "DFImageManager.xcodeproj"
+project "DFImageManager.xcodeproj"
 
 source "https://github.com/CocoaPods/Specs.git"
 
-target 'DFImageManager-Example', :exclusive => true do
+target 'DFImageManager-Example' do
 	pod "DFImageManager", :path => "../"
 	pod "DFImageManager/AFNetworking", :path => "../"
 	pod "DFImageManager/GIF", :path => "../"
@@ -14,7 +14,7 @@ target 'DFImageManager-Example', :exclusive => true do
 	pod "AFNetworking/UIKit", "~> 3.0"
 end
 
-target 'DFImageManager-Tests', :exclusive => true do
+target 'DFImageManager-Tests' do
 	pod "DFImageManager", :path => "../"
 	pod "DFImageManager/AFNetworking", :path => "../"
 	pod "DFImageManager/GIF", :path => "../"
