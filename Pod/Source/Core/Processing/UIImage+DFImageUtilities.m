@@ -35,6 +35,7 @@
         return image;
     }
     
+    CGContextSetInterpolationQuality(contextRef, kCGInterpolationHigh);
     CGContextDrawImage(contextRef, (CGRect){CGPointZero, imageSize}, imageRef);
     CGImageRef decompressedImageRef = CGBitmapContextCreateImage(contextRef);
     CGContextRelease(contextRef);
