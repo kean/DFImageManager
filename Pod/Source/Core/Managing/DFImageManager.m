@@ -130,7 +130,7 @@ DF_INIT_UNAVAILABLE_IMPL
     return self;
 }
 
-- (void)_performBlock:(__attribute__((noescape)) void (^__nonnull)())block {
+- (void)_performBlock:(__attribute__((noescape)) void (^__nonnull)(void))block {
     [_recursiveLock lock];
     if (!_invalidated) {
         block();
