@@ -10,7 +10,7 @@
 
 @property (nonnull, nonatomic, readonly) id<DFImageDecoding> decoder;
 @property (nonnull, nonatomic, readonly) NSOperationQueue *queue;
-@property (nonnull, nonatomic, readonly) NSMutableData *data;
+@property (nullable, nonatomic, readonly) NSMutableData *data;
 @property (nonatomic) BOOL executing;
 @property (nonatomic) BOOL decoding;
 @property (nonatomic) uint64_t decodedByteCount;
