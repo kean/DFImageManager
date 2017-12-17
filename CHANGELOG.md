@@ -1,5 +1,12 @@
  [Changelog](https://github.com/kean/DFImageManager/releases) for all versions
 
+# DFImageManager 2.0.2
+
+- Added ability to set the animation duration for fading in the image. Thanks to @holgersindbaek 
+- Fix Xcode 9 warnings
+- Fix Xcode 9 static analyzer issues
+
+
 # DFImageManager 2.0.1
 
 - #90 Fix an issue with incomplete image downloads (thanks to @HamzaGhazouani)

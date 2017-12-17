@@ -7,7 +7,7 @@
 
 Advanced framework for loading, caching, processing, displaying and preheating images.
 
-**This framework is no longer (well) supported.**
+**This framework is no longer maintained.**
 
 **Programming in Swift? Check out [Nuke](https://github.com/kean/Nuke)!**
 
